@@ -1,0 +1,3 @@
+[submodule "themes/hello-friend-ng-hz"]
+	path = themes/hello-friend-ng-hz
+	url = git@github.com:HaoZeke/hugo-theme-hello-friend-ng-hz.git
