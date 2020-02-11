@@ -26,6 +26,19 @@ theme = "hello-friend-ng-hz"
     org_dir = "content-org"
     md_dir = "content"
 
+  # Social icons
+  [[params.social]]
+    name = "twitter"
+    url  = "https://twitter.com/rg0swami"
+
+  [[params.social]]
+    name = "email"
+    url  = "mailto:rog32@hi.is"
+
+  [[params.social]]
+    name = "github"
+    url  = "https://github.com/HaoZeke"
+
 [languages]
   [languages.en]
     title = "Rohit Goswami"
@@ -43,6 +56,12 @@ theme = "hello-friend-ng-hz"
     # alt = "Your example logo alt text"
 
   # And you can even create generic menu
+
+[menu]
+  [[menu.main]]
+    identifier = "about"
+    name       = "About"
+    url        = "about/"
   [[menu.main]]
     identifier = "blog"
     name       = "Blog"
