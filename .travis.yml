@@ -18,8 +18,7 @@ install:
   - export PATH="${OX_HUGO_TMP_DIR}/pandoc/bin:${PATH}"
 
 script:
-  - make md1 ORG_FILE=content-org/all-posts.org
-  - make hugo
+  - make md
 
 deploy:
   provider: pages
