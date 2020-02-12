@@ -24,6 +24,7 @@ identified by something closer to my name.
 * Rationale
 :PROPERTIES:
 :EXPORT_FILE_NAME: rationale
+:EXPORT_HUGO_CATEGORIES: projects
 :EXPORT_HUGO_TAGS: ramblings explanations
 :EXPORT_DATE: 2020-02-11 23:28
 :END:
