@@ -120,8 +120,7 @@ even if they are found as dependencies."
       ;; `package-initialize' call is required before any of the below
       ;; can happen.
 
-      (add-to-list 'load-path (concat ox-hugo-site-git-root "doc/")) ;For ox-hugo-export-gh-doc.el
-      (add-to-list 'load-path ox-hugo-site-git-root) ;For ox-hugo.el, ox-blackfriday.el, etc.
+      (add-to-list 'load-path (concat ox-hugo-site-git-root "setup/")) ;For ox-hugo.el, ox-blackfriday.el, etc.
 
       (defvar ox-hugo-missing-packages '()
         "List populated at each startup that contains the list of packages that need
