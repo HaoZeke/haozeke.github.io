@@ -61,54 +61,32 @@ HUGO_ARGS=
 # Port for hugo server
 PORT=1337
 
-# Below is set to 1 during "make test"
-TEST_ENABLED=0
-
 # ox-hugo test directory; also contains the setup-ox-hugo.el
 OX_HUGO_TEST_DIR=$(shell pwd)/test
 
-# Base directory for the Hugo example site
-OX_HUGO_TEST_SITE_DIR=$(OX_HUGO_TEST_DIR)/site
-
 # Directory containing Org files for the test site
-OX_HUGO_TEST_ORG_DIR=$(OX_HUGO_TEST_SITE_DIR)/content-org
+OX_HUGO_TEST_ORG_DIR=$(HUGO_BASE_DIR)/content-org
 # https://stackoverflow.com/a/3774731/1219634
 # Note that the use of immediate assignment := rather than recursive
 # assignment = is important here: you do not want to be running the
 # shell escape every time SOURCES is inspected by make.
 
 # Path to the Org file (relative to pwd, or absolute)
-ORG_FILE=
+ORG_FILE=content-org/all-posts.org
 
 # Function to be run in emacs --batch
 FUNC=
 
-test_check=1
-
 .PHONY: help emacs-batch md1 \
-	vcheck_emacs vcheck_hugo vcheck_pandoc vcheck \
-	hugo hugo_doc hugo_test serve server diff \
-	test md testmkgold \
-	do_test $(test_org_files) \
-	doc_md doc_gh doc doc_htmltest doc_test \
-	ctemp diffgolden clean
+	hugo serve clean
 
 help:
 	@echo "Help for command-line Org->Markdown for Hugo Exporter"
 	@echo "====================================================="
-	@echo " make -j1 test      <-- Run test with checks enabled"
 	@echo " make md            <-- Only export the test Org files to Markdown, no checks"
-	@echo " make doc           <-- Build both Doc Site contents and GitHub docs"
-	@echo " make FOO.org       <-- Export the FOO.org file from content-org/ dir to Markdown file(s)"
-	@echo " make vcheck        <-- Print Emacs, Org and Pandoc versions"
 	@echo " make hugo          <-- Run hugo"
 	@echo " make serve         <-- Run the hugo server on http://localhost:$(PORT)"
-	@echo " make diff          <-- Run git diff"
-	@echo " make doc_md        <-- Build the Markdown content for the documentation site"
-	@echo " make hugo_doc      <-- Build the documentation site using Hugo"
-	@echo " make doc_gh        <-- Build README.org and CONTRIBUTING.org for GitHub"
-	@echo " make hugo_test     <-- Build the test site using Hugo"
-	@echo " make clean         <-- Delete the Hugo public/ directory and auto-installed elisp packages"
+	@echo " make clean         <-- Delete the Hugo public/ directory"
 	@echo " make               <-- Show this help"
 
 # Note: The Org file from $(ORG_FILE) is loaded *after* the --eval
@@ -123,7 +101,6 @@ emacs-batch:
 	@echo "$(ORG_FILE) ::"
 	@$(EMACS) --batch --eval "(progn\
 	(setenv \"OX_HUGO_TMP_DIR\" \"$(ox_hugo_tmp_dir)\")\
-	(setenv \"TEST_ENABLED\" \"$(TEST_ENABLED)\")\
 	(load-file (expand-file-name \"setup-ox-hugo.el\" \"$(OX_HUGO_TEST_DIR)\"))\
 	)" $(ORG_FILE) \
 	-f $(FUNC) \
@@ -132,66 +109,15 @@ emacs-batch:
 md1:
 	@$(MAKE_) emacs-batch FUNC=org-hugo-export-all-wim-to-md
 
-vcheck_emacs:
-	@mkdir -p $(ox_hugo_tmp_dir)
-ifeq ("$(EMACS_exists)","")
-	@$(CURL) -O $(EMACS_BIN_SOURCE)/emacs-bin-$(EMACS_BIN_VERSION).tar.gz
-	@tar xf emacs-bin-$(EMACS_BIN_VERSION).tar.gz -C /
-endif
-	@echo "Emacs binary used: $(EMACS)"
-	@$(EMACS) --batch --eval "(progn\
-	(setenv \"OX_HUGO_TMP_DIR\" \"$(ox_hugo_tmp_dir)\")\
-	(load-file (expand-file-name \"setup-ox-hugo.el\" \"$(OX_HUGO_TEST_DIR)\"))\
-	(message \"[Version check] Emacs %s\" emacs-version)\
-	(message \"[Version check] %s\" (org-version nil :full))\
-	)" \
-	--kill
-
-vcheck_hugo:
-	@mkdir -p $(ox_hugo_tmp_dir)
-ifeq ("$(HUGO_exists)","")
-	@mkdir -p $(ox_hugo_tmp_dir)/hugo
-	@find $(ox_hugo_tmp_dir)/hugo -maxdepth 1 -type d -name bin -exec rm -rf "{}" \;
-	@git clone $(HUGO_BIN_SOURCE) $(ox_hugo_tmp_dir)/hugo/bin
-	@tar xf $(ox_hugo_tmp_dir)/hugo/bin/hugo_DEV-Linux-64bit.tar.xz -C $(ox_hugo_tmp_dir)/hugo/bin
-endif
-	$(HUGO) version
-
-vcheck_pandoc:
-	@mkdir -p $(ox_hugo_tmp_dir)
-ifeq ("$(PANDOC_exists)","")
-	@mkdir -p $(ox_hugo_tmp_dir)/pandoc
-	@find $(ox_hugo_tmp_dir)/pandoc -maxdepth 1 -type d -name bin -exec rm -rf "{}" \;
-	@$(CURL) -O $(PANDOC_BIN_SOURCE)/$(PANDOC_ARCHIVE_NAME)
-	@tar xf $(PANDOC_ARCHIVE_NAME)
-	@mv pandoc-$(PANDOC_BIN_VERSION)/bin $(ox_hugo_tmp_dir)/pandoc/.
-	@rm -rf pandoc-$(PANDOC_BIN_VERSION)
-endif
-	$(PANDOC) --version
-
-vcheck: vcheck_emacs vcheck_hugo vcheck_pandoc
-
-hugo: vcheck_hugo
+hugo:
 	@cd $(HUGO_BASE_DIR) && $(HUGO) $(HUGO_ARGS)
 
-serve server: vcheck_hugo
+md:
+	@$(MAKE_) md1 hugo
+
+serve server:
 	@echo "Serving the site on $(HUGO_BASEURL):$(PORT) .."
 	@cd $(HUGO_BASE_DIR) && $(HUGO) server --port $(PORT) --buildDrafts --buildFuture --navigateToChanged
 
-diff:
-	@git diff
-
-test: vcheck_emacs vcheck_pandoc testmkgold do_test
-
-clean: ctemp
-	find $(OX_HUGO_TMP_DIR_BASE)  -maxdepth 1 -type d -name ox-hugo-dev -exec rm -rf "{}" \;
-	find $(OX_HUGO_TEST_SITE_DIR) -maxdepth 1 -type d \( -name public -o -name content-golden -o -name content-modified \) -exec rm -rf "{}" \;
-	find ./doc -maxdepth 1 -type d -name public -exec rm -rf "{}" \;
-	find ./doc/content -name "*.md" -delete
-	rm -f ox-hugo-autoloads.el
-
-# Set a make variable during rule execution
-# https://stackoverflow.com/a/1909390/1219634
-
-# Check if an executable exists
-# https://stackoverflow.com/a/34756868/1219634
+clean:
+	@rm -rf public
