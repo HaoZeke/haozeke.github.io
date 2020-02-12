@@ -1,0 +1,22 @@
+# Adapted from https://raw.githubusercontent.com/kaushalmodi/ox-hugo/master/.travis.yml
+dist: xenial
+language: minimal
+
+env:
+  global:
+    - CURL="curl -fsSkL --retry 9 --retry-delay 9"
+    - OX_HUGO_TMP_DIR="/tmp/${USER}/ox-hugo-dev"
+    - PANDOC_VERSION=2.5
+    - EMACS_VERSION=26.1
+
+install:
+  - $CURL -O https://github.com/npostavs/emacs-travis/releases/download/bins/emacs-bin-${EMACS_VERSION}.tar.gz
+  - tar xf emacs-bin-${EMACS_VERSION}.tar.gz -C /
+  - export EMACS=/tmp/emacs/bin/emacs
+  - $EMACS --version
+  # Add the yet-to-be Makefile downloaded pandoc to PATH
+  - export PATH="${OX_HUGO_TMP_DIR}/pandoc/bin:${PATH}"
+
+script:
+  - make md1 ORG_FILE=content-org/all-posts.org
+  - make hugo
