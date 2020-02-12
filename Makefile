@@ -103,11 +103,50 @@ emacs-batch:
 md1:
 	@$(MAKE_) emacs-batch FUNC=org-hugo-export-all-wim-to-md
 
-hugo:
+vcheck_emacs:
+	@mkdir -p $(ox_hugo_tmp_dir)
+ifeq ("$(EMACS_exists)","")
+	@$(CURL) -O $(EMACS_BIN_SOURCE)/emacs-bin-$(EMACS_BIN_VERSION).tar.gz
+	@tar xf emacs-bin-$(EMACS_BIN_VERSION).tar.gz -C /
+endif
+	@echo "Emacs binary used: $(EMACS)"
+	@$(EMACS) --batch --eval "(progn\
+	(setenv \"OX_HUGO_TMP_DIR\" \"$(ox_hugo_tmp_dir)\")\
+	(load-file (expand-file-name \"setup-ox-hugo.el\" \"$(OX_HUGO_TEST_DIR)\"))\
+	(message \"[Version check] Emacs %s\" emacs-version)\
+	(message \"[Version check] %s\" (org-version nil :full))\
+	)" \
+	--kill
+
+vcheck_hugo:
+	@mkdir -p $(ox_hugo_tmp_dir)
+ifeq ("$(HUGO_exists)","")
+	@mkdir -p $(ox_hugo_tmp_dir)/hugo
+	@find $(ox_hugo_tmp_dir)/hugo -maxdepth 1 -type d -name bin -exec rm -rf "{}" \;
+	@git clone $(HUGO_BIN_SOURCE) $(ox_hugo_tmp_dir)/hugo/bin
+	@tar xf $(ox_hugo_tmp_dir)/hugo/bin/hugo_DEV-Linux-64bit.tar.xz -C $(ox_hugo_tmp_dir)/hugo/bin
+endif
+	$(HUGO) version
+
+vcheck_pandoc:
+	@mkdir -p $(ox_hugo_tmp_dir)
+ifeq ("$(PANDOC_exists)","")
+	@mkdir -p $(ox_hugo_tmp_dir)/pandoc
+	@find $(ox_hugo_tmp_dir)/pandoc -maxdepth 1 -type d -name bin -exec rm -rf "{}" \;
+	@$(CURL) -O $(PANDOC_BIN_SOURCE)/$(PANDOC_ARCHIVE_NAME)
+	@tar xf $(PANDOC_ARCHIVE_NAME)
+	@mv pandoc-$(PANDOC_BIN_VERSION)/bin $(ox_hugo_tmp_dir)/pandoc/.
+	@rm -rf pandoc-$(PANDOC_BIN_VERSION)
+endif
+	$(PANDOC) --version
+
+vcheck: vcheck_emacs vcheck_hugo vcheck_pandoc
+
+hugo: vcheck_hugo
 	@cd $(HUGO_BASE_DIR) && $(HUGO) $(HUGO_ARGS)
 
 md:
-	@$(MAKE_) md1 hugo
+	@$(MAKE_) vcheck md1 hugo
 
 serve server:
 	@$(MAKE_) md1
