@@ -20,3 +20,14 @@ install:
 script:
   - make md1 ORG_FILE=content-org/all-posts.org
   - make hugo
+
+deploy:
+  provider: pages
+  local_dir: ./public/
+  token: $GH_TOKEN
+  target_branch: master # Required for user pages
+  cleanup: false
+  skip_cleanup: true
+  edge: true
+  on:
+    branch: src
