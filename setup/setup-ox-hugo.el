@@ -58,7 +58,7 @@ or newer.")
 (when ox-hugo-test-setup-verbose
   (message "ox-hugo-site-git-root: %S" ox-hugo-site-git-root))
 
-(defvar ox-hugo-autoloads-file (expand-file-name "ox-hugo-autoloads.el" ox-hugo-site-git-root)
+(defvar ox-hugo-autoloads-file (expand-file-name "ox-hugo-autoloads.el" (concat ox-hugo-site-git-root "setup/"))
   "Path to ox-hugo package's generated autoloads file.")
 
 ;; Below will prevent installation of `org' package as a dependency
@@ -235,67 +235,3 @@ Emacs installation.  If Emacs is installed using
 
   (with-eval-after-load 'ox
     (setq org-export-headline-levels 4))) ;default is 3
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Settings *only* for tests (applied during "make test")
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(when (string= "1" (getenv "TEST_ENABLED"))
-  ;; Set the time-zone to UTC.
-  ;; If TZ is unset, Emacs uses system wall clock time, which is a
-  ;; platform-dependent default time zone --
-  ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Time-Zone-Rules.html
-  (setenv "TZ" "UTC")
-
-  ;; Force the locate to en_US for the tests.
-  (set-locale-environment "en_US.UTF-8")
-  (setenv "LANGUAGE" "en_US.UTF-8")
-
-  ;; Set all local variables from .dir-locals.el, etc.
-  (setq enable-local-variables :all)
-
-  ;; Override the default `org-hugo-export-creator-string' so that this
-  ;; string is consistent in all ox-hugo tests.
-  (setq org-hugo-export-creator-string "Emacs + Org mode + ox-hugo")
-
-  ;; Override the inbuilt `current-time' function so that the "lastmod"
-  ;; tests work.
-  (defun ox-hugo-test/current-time-override (&rest args)
-    "Hard-code the 'current time' so that the lastmod tests are reproducible.
-Fake current time: 2100/12/21 00:00:00 (arbitrary)."
-    (encode-time 0 0 0 21 12 2100))
-  (advice-add 'current-time :override #'ox-hugo-test/current-time-override)
-  ;; (advice-remove 'current-time #'ox-hugo-test/current-time-override)
-
-  ;; issue # 272
-  (load (expand-file-name "test/issue-272-chkbox-items-to-front-matter.el"
-                          ox-hugo-site-git-root)
-        nil :nomessage :nosuffix)
-
-  (with-eval-after-load 'ox
-    (add-to-list 'org-export-exclude-tags "dont_export_during_make_test"))
-
-  ;; Wed Sep 04 22:23:03 EDT 2019 - kmodi
-  ;; The ox-hugo tests were failing on Travis only on Emacs 24.4 and
-  ;; 24.5 because the "/" got auto-appended to links without them:
-  ;; https://travis-ci.org/kaushalmodi/ox-hugo/jobs/580990010#L3740
-  ;; So when the https://ox-hugo.scripter.co link got exported via
-  ;; `org-html-link' internally, it got converted to
-  ;; https://ox-hugo.scripter.co/! As it turns out, this behavior got
-  ;; fixed in Emacs 25+ in:
-  ;; https://git.savannah.gnu.org/cgit/emacs.git/commit/?id=b792ecea1715e080ad8e232d3d154b8a25d2edfb
-  (unless (version<= "25.0" emacs-version)
-    (with-eval-after-load 'url-parse
-      (defun url-path-and-query (urlobj)
-        "Return the path and query components of URLOBJ.
-These two components are stored together in the FILENAME slot of
-the object.  The return value of this function is (PATH . QUERY),
-where each of PATH and QUERY are strings or nil."
-        (let ((name (url-filename urlobj))
-	      path query)
-          (when name
-            (if (string-match "\\?" name)
-	        (setq path  (substring name 0 (match-beginning 0))
-		      query (substring name (match-end 0)))
-	      (setq path name)))
-          (cons path query))))))
