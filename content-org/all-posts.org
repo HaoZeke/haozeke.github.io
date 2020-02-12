@@ -49,3 +49,34 @@ seemed kinda neat.
 - My [[https://dotdoom.grimoire.science/][doom-emacs configuration]]
 - Academic stuff is better tracked on [[https://publons.com/researcher/2911170/rohit-goswami/][Publons]] or [[https://scholar.google.co.in/citations?user=36gIdJMAAAAJ&hl=en][Google Scholar]] or my pages
   hosted by my favorite [[https://femtolab.science/people/rohit][IITK group]] or [[https://www.hi.is/starfsfolk/rog32][UI group]]
+* Taming Github Notifications
+:PROPERTIES:
+:EXPORT_FILE_NAME: ghNotif
+:EXPORT_HUGO_CATEGORIES: notes
+:EXPORT_HUGO_TAGS: tools github workflows
+:EXPORT_DATE: 2020-02-12 11:36
+:END:
+As a member of several large organizations, I get a lot of github notifications.
+Not all of these are of relevance to me. This is especially true of
+~psuedo-monorepo~ style repositories like the [[https://github.com/openjournals/joss-reviews][JOSS review system]] and
+*especially* the [[https://github.com/exercism/v3/][exercism community]].
+
+- I recently (re-)joined the [[https://exercism.io/][exercism community]] as a maintainer for the C++
+  lessons after having been a (sporadic) teacher
+- This was largely in response to a community call to action as the group needed
+  new blood to usher in *v3* of the exercism project
+
+Anyway, I have since found that at the small cost of possibly much of my public
+repo data, I can manage my notifications better with [[https://octobox.io/][Octobox]]
+
+** Octobox
+- It appears to be free for now
+- It syncs on demand (useful)
+- I can search things quite easily
+- They have a neat logo
+- There appear to be many features I probably won't use
+
+It looks like this:
+
+#+caption: Octobox Stock Photo
+[[file:images/octoboxSample.png]]
