@@ -292,3 +292,4 @@ hugo.linux
 
 # ox-hugo content
 /content/
+/static/ox-hugo/*
