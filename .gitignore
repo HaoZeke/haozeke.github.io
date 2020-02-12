@@ -290,3 +290,5 @@ hugo.linux
 
 # End of https://www.gitignore.io/api/hugo
 
+# ox-hugo content
+/content/
