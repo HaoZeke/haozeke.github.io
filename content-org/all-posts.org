@@ -21,7 +21,7 @@
 I'm [[https://orcid.org/0000-0002-2393-8056][Rohit Goswami]], better known across the web as ~HaoZeke~. I'm not the
 first of my name, which is why I mostly use ~rg0swami~ when I need to be
 identified by something closer to my name.
-* Rationale
+* Site Rationale
 :PROPERTIES:
 :EXPORT_FILE_NAME: rationale
 :EXPORT_HUGO_CATEGORIES: projects
