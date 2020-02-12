@@ -1,0 +1,50 @@
+#+author: Rohit Goswami
+
+#+hugo_base_dir: ../
+
+#+seq_todo: TODO DRAFT DONE
+#+seq_todo: TEST__TODO | TEST__DONE
+
+#+property: header-args :eval never-export
+
+#+startup: indent
+
+* About
+:PROPERTIES:
+:EXPORT_HUGO_SECTION: /
+:EXPORT_FILE_NAME: about
+:EXPORT_DATE: 2017-07-12T17:05:38-04:00
+:END:
+
+*Hi.*
+
+I'm [[https://orcid.org/0000-0002-2393-8056][Rohit Goswami]], better known across the web as ~HaoZeke~. I'm not the
+first of my name, which is why I mostly use ~rg0swami~ when I need to be
+identified by something closer to my name.
+* Rationale
+:PROPERTIES:
+:EXPORT_FILE_NAME: rationale
+:EXPORT_HUGO_TAGS: ramblings explanations
+:EXPORT_DATE: 2020-02-11 23:28
+:END:
+** Why this site exists
+I have a lot of online presences. I have been around (or at-least, lurking) for
+over ten years. Almost as long as I have been programming. Anyway, I have a
+penchant lately for using ~emacs~ and honestly there isn't very good support for
+~org-mode~ files. There are options recently with ~gatsby~ as well, but this
+seemed kinda neat.
+** What 'this' is
+- This site is [[http://gohugo.io/][built by Hugo]]
+- The posts are [[https://ox-hugo.scripter.co/][generated with ox-hugo]]
+- The theme is based of this [[https://github.com/rhazdon/hugo-theme-hello-friend-ng][excellent one]] and my modifications [[https://github.com/HaoZeke/hugo-theme-hello-friend-ng-hz][are here]]
+** What is here
+- Mostly random thoughts I don't mind people knowing
+- Some tech stuff which isn't coherent enough to be put in any form with
+  references
+- Emacs specific workflows which I might want to write about more than [[https://dotdoom.grimoire.science/][short
+  notes on the config]]
+** What isn't here
+- More coherent thoughts will *not* be here, that should and will go to my [[https://grimoire.science][grimoire]]
+- My [[https://dotdoom.grimoire.science/][doom-emacs configuration]]
+- Academic stuff is better tracked on [[https://publons.com/researcher/2911170/rohit-goswami/][Publons]] or [[https://scholar.google.co.in/citations?user=36gIdJMAAAAJ&hl=en][Google Scholar]] or my pages
+  hosted by my favorite [[https://femtolab.science/people/rohit][IITK group]] or [[https://www.hi.is/starfsfolk/rog32][UI group]]
