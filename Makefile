@@ -31,12 +31,6 @@ ifeq ("$(HUGO_exists)","")
 	HUGO := $(ox_hugo_tmp_dir)/hugo/bin/hugo
 endif
 
-HTMLTEST ?= htmltest
-HTMLTEST_exists := $(shell command -v $(HTMLTEST) 2> /dev/null)
-ifeq ("$(HTMLTEST_exists)","")
-	HTMLTEST := $(ox_hugo_tmp_dir)/htmltest/bin/htmltest
-endif
-
 PANDOC ?= pandoc
 PANDOC_exists := $(shell command -v $(PANDOC) 2> /dev/null)
 ifeq ("$(PANDOC_exists)","")
@@ -78,7 +72,7 @@ ORG_FILE=content-org/all-posts.org
 FUNC=
 
 .PHONY: help emacs-batch md1 \
-	hugo serve clean
+	hugo serve clean md
 
 help:
 	@echo "Help for command-line Org->Markdown for Hugo Exporter"
