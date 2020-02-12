@@ -202,8 +202,6 @@ Emacs installation.  If Emacs is installed using
 (defun org-hugo-export-all-wim-to-md ()
   (org-hugo-export-wim-to-md :all-subtrees nil nil :noerror))
 
-(require 'ox-hugo-export-gh-doc)        ;For `ox-hugo-export-gh-doc'
-
 ;; Allow setting few vars in Local Variables in the test files.
 (put 'org-hugo-auto-set-lastmod 'safe-local-variable 'booleanp)
 (put 'org-hugo-suppress-lastmod-period 'safe-local-variable 'floatp)

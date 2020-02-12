@@ -55,18 +55,18 @@ HUGO_ARGS=
 # Port for hugo server
 PORT=1337
 
-# ox-hugo test directory; also contains the setup-ox-hugo.el
-OX_HUGO_TEST_DIR=$(shell pwd)/test
+# Directory with the setup-ox-hugo.el
+OX_HUGO_SETUP_DIR=$(shell pwd)/setup
 
 # Directory containing Org files for the test site
-OX_HUGO_TEST_ORG_DIR=$(HUGO_BASE_DIR)/content-org
+OX_HUGO_CONTENT_ORG_DIR=$(HUGO_BASE_DIR)/content-org
 # https://stackoverflow.com/a/3774731/1219634
 # Note that the use of immediate assignment := rather than recursive
 # assignment = is important here: you do not want to be running the
 # shell escape every time SOURCES is inspected by make.
 
 # Path to the Org file (relative to pwd, or absolute)
-ORG_FILE=content-org/all-posts.org
+ORG_FILE=$(OX_HUGO_CONTENT_ORG_DIR)/all-posts.org
 
 # Function to be run in emacs --batch
 FUNC=
@@ -95,7 +95,7 @@ emacs-batch:
 	@echo "$(ORG_FILE) ::"
 	@$(EMACS) --batch --eval "(progn\
 	(setenv \"OX_HUGO_TMP_DIR\" \"$(ox_hugo_tmp_dir)\")\
-	(load-file (expand-file-name \"setup-ox-hugo.el\" \"$(OX_HUGO_TEST_DIR)\"))\
+	(load-file (expand-file-name \"setup-ox-hugo.el\" \"$(OX_HUGO_SETUP_DIR)\"))\
 	)" $(ORG_FILE) \
 	-f $(FUNC) \
 	--kill
@@ -110,6 +110,7 @@ md:
 	@$(MAKE_) md1 hugo
 
 serve server:
+	@$(MAKE_) md1
 	@echo "Serving the site on $(HUGO_BASEURL):$(PORT) .."
 	@cd $(HUGO_BASE_DIR) && $(HUGO) server --port $(PORT) --buildDrafts --buildFuture --navigateToChanged
 
