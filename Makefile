@@ -112,7 +112,7 @@ endif
 	@echo "Emacs binary used: $(EMACS)"
 	@$(EMACS) --batch --eval "(progn\
 	(setenv \"OX_HUGO_TMP_DIR\" \"$(ox_hugo_tmp_dir)\")\
-	(load-file (expand-file-name \"setup-ox-hugo.el\" \"$(OX_HUGO_TEST_DIR)\"))\
+	(load-file (expand-file-name \"setup-ox-hugo.el\" \"$(OX_HUGO_SETUP_DIR)\"))\
 	(message \"[Version check] Emacs %s\" emacs-version)\
 	(message \"[Version check] %s\" (org-version nil :full))\
 	)" \
