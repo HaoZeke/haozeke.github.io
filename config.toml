@@ -64,6 +64,10 @@ disableHugoGeneratorInject = false
     url  = "https://twitter.com/rg0swami"
 
   [[params.social]]
+    name = "keybase"
+    url  = "https://keybase.io/haozeke"
+
+  [[params.social]]
     name = "email"
     url  = "mailto:rog32@hi.is"
 
