@@ -81,3 +81,227 @@ It looks like this:
 
 #+caption: Octobox Stock Photo
 [[file:images/octoboxSample.png]]
+* Poetry and Direnv
+:PROPERTIES:
+:EXPORT_FILE_NAME: poetry-direnv
+:EXPORT_HUGO_CATEGORIES: programming
+:EXPORT_HUGO_TAGS: tools direnv workflows python
+:EXPORT_DATE: 2020-02-13 21:36
+:END:
+** Background
+- I end up writing about using [[https://python-poetry.org/][poetry]] a lot
+- I almost always [[https://direnv.net/][use direnv]] in real life too
+- I don't keep writing mini scripts in my ~.envrc~
+
+Honestly there's nothing here anyone using the [[https://github.com/direnv/direnv/wiki/Python][direnv wiki]] will find surprising,
+but then it is still neat to link back to.
+
+** Setting Up Poetry
+This essentially works by simply modifying the global ~.direnvrc~ which
+essentially gets sourced by every local ~.envrc~ anyway.
+#+BEGIN_SRC sh
+vim $HOME/.direnvrc
+#+END_SRC
+So what we put in there is the following snippet derived from other snippets [[https://github.com/direnv/direnv/wiki/Python][on
+the wiki]], and is actually now there too.
+
+#+BEGIN_SRC bash
+# PUT this here
+layout_poetry() {
+  if [[ ! -f pyproject.toml ]]; then
+    log_error 'No pyproject.toml found.  Use `poetry new` or `poetry init` to create one first.'
+    exit 2
+  fi
+
+  local VENV=$(dirname $(poetry run which python))
+  export VIRTUAL_ENV=$(echo "$VENV" | rev | cut -d'/' -f2- | rev)
+  export POETRY_ACTIVE=1
+  PATH_add "$VENV"
+}
+#+END_SRC
+
+Now we can just make ~.envrc~ files with ~layout_poetry~ and everything will
+/just work™/.
+
+* Replacing Jupyter with Orgmode
+:PROPERTIES:
+:EXPORT_FILE_NAME: jupyter-orgmode
+:EXPORT_HUGO_CATEGORIES: programming
+:EXPORT_HUGO_TAGS: tools emacs workflows python
+:EXPORT_DATE: 2020-02-13 22:36
+:END:
+** Background
+- I dislike Jupyter notebooks (and [[https://jupyter.org/][JupyterHub]]) a lot
+- [[https://tkf.github.io/emacs-ipython-notebook/][EIN]] is really not much of a solution either
+
+In the past I have written some posts on [[https://grimoire.science/latex-and-jupyterhub/][TeX with JupyterHub]] and discussed ways
+to use virtual [[https://grimoire.science/python-and-jupyterhub/][Python with JupyterHub]] in a more reasonable manner.
+
+However, I personally found that EIN was a huge pain to work with, and I mostly
+ended up working with the web-interface anyway.
+
+It is a bit redundant to do so, given that at-least for my purposes, the end
+result was a LaTeX document. Breaking down the rest of my requirements went a
+bit like this:
+
+- What exports well to TeX? :: *Org*, Markdown, anything which goes into pandoc
+- What displays code really well? :: LaTeX, Markdown, *Org*
+- What allows easy visualization of code snippets? :: Rmarkdown, RStudio,
+  JupyterHub, *Org* with babel
+
+Clearly, [[https://orgmode.org/manual/][orgmode]] is the common denominator, and ergo, a perfect JupyterHub alternative.
+** Setup
+Throughout this post I will assume the following structure:
+#+BEGIN_SRC bash :exports both
+tree tmp
+mkdir -p tmp/images
+touch tmp/myFakeJupyter.org
+#+END_SRC
+
+#+RESULTS:
+| tmp |                   |   |      |
+| ├── | images            |   |      |
+| └── | myFakeJupyter.org |   |      |
+| 1   | directory,        | 1 | file |
+
+As is evident, we have a folder ~tmp~ which will have all the things we need for
+dealing with our setup.
+
+*** Virtual Python
+Without waxing too eloquent on the whole reason behind doing this, since I will
+rant about virtual python management systems elsewhere, here I will simply
+describe my preferred method, which is [[https://python-poetry.org/][using poetry]].
+
+#+BEGIN_SRC bash
+# In a folder above tmp
+poetry init
+poetry add numpy matplotlib scipy pandas
+#+END_SRC
+
+The next part is optional, but a good idea if you figure out [[https://direnv.net/][using direnv]] and
+have configured ~layout_poetry~ as [[https://rgoswami.me/posts/poetry-direnv][described here]]:
+#+BEGIN_SRC bash
+# Same place as the poetry files
+echo "layout_poetry()" >> .envrc
+#+END_SRC
+
+*Note:*
+- We can nest an arbitrary number of the ~tmp~ structures under a single place
+  we define the poetry setup
+- I prefer using ~direnv~ to ensure that I never forget to hook into the right environment
+** Orgmode
+This is not an introduction to org, however in particular, there are some basic
+settings to keep in mind to make sure the set-up works as expected.
+
+*** Indentation
+Python is notoriously weird about whitespace, so we will ensure that our export
+process does not mangle whitespace and offend the python interpreter. We will
+have the following line at the top of our ~orgmode~ file:
+
+#+BEGIN_SRC orgmode :tangle tmp/myFakeJupyter.org :exports code
+# -*- org-src-preserve-indentation: t; org-edit-src-content: 0; -*-
+#+END_SRC
+
+*Note:*
+- this post is actually generating the file being discussed here by
+[[https://orgmode.org/manual/Extracting-Source-Code.html][tangling the file]]
+- You can get the whole file here
+*** TeX Settings
+These are also basically optional, but at the very least you will need the
+following:
+
+#+BEGIN_SRC orgmode :tangle tmp/myFakeJupyter.org
+#+author: Rohit Goswami
+#+title: Whatever
+#+subtitle: Wittier line about whatever
+#+date: \today
+#+OPTIONS: toc:nil
+#+END_SRC
+
+I actually use a lot of math using the ~TeX~ input mode in Emacs, so I like the
+following settings for math:
+
+#+BEGIN_SRC orgmode :tangle tmp/myFakeJupyter.org
+# For math display
+#+LATEX_HEADER: \usepackage{amsfonts}
+#+LATEX_HEADER: \usepackage{unicode-math}
+#+END_SRC
+
+There are a bunch of other settings which may be used, but these are the bare
+minimum, more on that would be in a snippet anyway.
+
+*Note:*
+- rendering math in the ~orgmode~ file in this manner requires that we
+ use ~XeTeX~ to compile the final file
+*** Org-Python
+We essentially need to ensure that:
+- Babel uses our virtual python
+- The same session is used for each block
+
+We will get our poetry python pretty easily:
+#+BEGIN_SRC bash
+which python
+#+END_SRC
+
+#+RESULTS:
+: /home/haozeke/.cache/pypoetry/virtualenvs/test-2aLV_5DQ-py3.8/bin/python
+
+Now we will use this as a common ~header-arg~ passed into the property drawer to
+make sure we don't need to set them in every code block.
+
+We can use the following structure in our file:
+
+#+BEGIN_SRC orgmode :tangle tmp/myFakeJupyter.org :exports code
+\* Python Stuff
+  :PROPERTIES:
+  :header-args:    :python /home/haozeke/.cache/pypoetry/virtualenvs/test-2aLV_5DQ-py3.8/bin/python :session One
+  :END:
+Now we can simply work with code as we normally would
+\#+BEGIN_SRC python
+print("Hello World")
+\#+END_SRC
+#+END_SRC
+
+*Note:*
+- For some reason, this property needs to be set on *every* heading (as of Feb 13 2020)
+- In the actual file you will want to remove extraneous  \ symbols:
+  - \* → *
+  - \#+BEGIN_SRC → #+BEGIN_SRC
+  - \#+END_SRC → #+END_SRC
+*** Python Images and Orgmode
+To view images in ~orgmode~ as we would in a JupyterLab notebook, we will use a
+slight trick.
+- We will ensure that the code block returns a file object with the arguments
+- The code block should end with a print statement to actually generate the file
+  name
+
+ So we want a code block like this:
+
+#+begin_example
+#+BEGIN_SRC python :results output file :exports both
+import matplotlib.pyplot as plt
+from sklearn.datasets.samples_generator import make_circles
+X, y = make_circles(100, factor=.1, noise=.1)
+plt.scatter(X[:, 0], X[:, 1], c=y, s=50, cmap='autumn')
+plt.xlabel('x1')
+plt.ylabel('x2')
+plt.savefig('images/plotCircles.png', dpi = 300)
+print('images/plotCircles.png') # return filename to org-mode
+#+end_src
+#+end_example
+
+Which would give the following when executed:
+
+#+begin_example
+#+RESULTS:
+[[file:images/plotCircles.png]]
+#+end_example
+
+*** Conclusions
+- The last step is of course to export the file as to a ~TeX~ file and then
+  compile that with something like ~latexmk -pdfxe -shell-escape file.tex~
+
+There are a million and one variations of this of course, but this is enough to
+get started.
+
+The whole file is also reproduced here.
