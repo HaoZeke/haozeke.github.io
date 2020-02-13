@@ -297,6 +297,21 @@ Which would give the following when executed:
 [[file:images/plotCircles.png]]
 #+end_example
 
+Since that looks pretty ugly, this will actually look like this:
+
+#+BEGIN_SRC python :results output file :exports both
+import matplotlib.pyplot as plt
+from sklearn.datasets.samples_generator import make_circles
+X, y = make_circles(100, factor=.1, noise=.1)
+plt.scatter(X[:, 0], X[:, 1], c=y, s=50, cmap='autumn')
+plt.xlabel('x1')
+plt.ylabel('x2')
+plt.savefig('images/plotCircles.png', dpi = 300)
+print('images/plotCircles.png') # return filename to org-mode
+#+end_src
+
+[[file:tmp/images/plotCircles.png]]
+
 *** Conclusions
 - The last step is of course to export the file as to a ~TeX~ file and then
   compile that with something like ~latexmk -pdfxe -shell-escape file.tex~
