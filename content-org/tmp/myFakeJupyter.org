@@ -1,0 +1,26 @@
+# -*- org-src-preserve-indentation: t; org-edit-src-content: 0; -*-
+
+#+author: Rohit Goswami
+#+title: Whatever
+#+subtitle: Wittier line about whatever
+#+date: \today
+#+OPTIONS: toc:nil
+* Python Stuff
+  :PROPERTIES:
+  :header-args:    :python /home/haozeke/.cache/pypoetry/virtualenvs/test-2aLV_5DQ-py3.8/bin/python :session One
+  :END:
+Now we can simply work with code as we normally would
+#+BEGIN_SRC python
+print("Hello World")
+#+END_SRC
+
+#+BEGIN_SRC python :results output file :exports both
+import matplotlib.pyplot as plt
+from sklearn.datasets.samples_generator import make_circles
+X, y = make_circles(100, factor=.1, noise=.1)
+plt.scatter(X[:, 0], X[:, 1], c=y, s=50, cmap='autumn')
+plt.xlabel('x1')
+plt.ylabel('x2')
+plt.savefig('images/plotCircles.png', dpi = 300)
+print('images/plotCircles.png') # return filename to org-mode
+#+end_src
