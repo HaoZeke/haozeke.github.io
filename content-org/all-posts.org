@@ -205,7 +205,7 @@ have the following line at the top of our ~orgmode~ file:
 *Note:*
 - this post is actually generating the file being discussed here by
 [[https://orgmode.org/manual/Extracting-Source-Code.html][tangling the file]]
-- You can get the whole file here
+- You can get the [[https://github.com/HaoZeke/haozeke.github.io/blob/src/content-org/tmp/myFakeJupyter.org][whole file here]]
 *** TeX Settings
 These are also basically optional, but at the very least you will need the
 following:
@@ -319,4 +319,4 @@ print('images/plotCircles.png') # return filename to org-mode
 There are a million and one variations of this of course, but this is enough to
 get started.
 
-The whole file is also reproduced here.
+The whole file is also [[https://github.com/HaoZeke/haozeke.github.io/blob/src/content-org/tmp/myFakeJupyter.org][reproduced here]].
