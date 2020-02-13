@@ -128,6 +128,7 @@ Now we can just make ~.envrc~ files with ~layout_poetry~ and everything will
 :EXPORT_FILE_NAME: jupyter-orgmode
 :EXPORT_HUGO_CATEGORIES: programming
 :EXPORT_HUGO_TAGS: tools emacs workflows python
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true
 :EXPORT_DATE: 2020-02-13 22:36
 :END:
 ** Background
@@ -312,7 +313,7 @@ print('images/plotCircles.png') # return filename to org-mode
 
 [[file:tmp/images/plotCircles.png]]
 
-*** Conclusions
+** Conclusions
 - The last step is of course to export the file as to a ~TeX~ file and then
   compile that with something like ~latexmk -pdfxe -shell-escape file.tex~
 
