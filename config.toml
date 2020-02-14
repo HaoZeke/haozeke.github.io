@@ -82,6 +82,18 @@ disableHugoGeneratorInject = false
     name = "github"
     url  = "https://github.com/HaoZeke"
 
+  [[params.social]]
+    name = "googlescholar"
+    url  = "https://scholar.google.co.in/citations?user=36gIdJMAAAAJ&hl=en"
+
+  [[params.social]]
+    name = "orcid"
+    url  = "https://orcid.org/0000-0002-2393-8056"
+
+  [[params.social]]
+    name = "publons"
+    url  = "https://publons.com/researcher/2911170/rohit-goswami/"
+
 [languages]
   [languages.en]
     title = "Rohit Goswami"
