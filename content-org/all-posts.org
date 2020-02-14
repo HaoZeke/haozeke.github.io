@@ -128,7 +128,7 @@ Now we can just make ~.envrc~ files with ~layout_poetry~ and everything will
 :EXPORT_FILE_NAME: jupyter-orgmode
 :EXPORT_HUGO_CATEGORIES: programming
 :EXPORT_HUGO_TAGS: tools emacs workflows python
-:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :EXPORT_DATE: 2020-02-13 22:36
 :END:
 ** Background
