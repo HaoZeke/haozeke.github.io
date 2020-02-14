@@ -52,6 +52,7 @@ disableHugoGeneratorInject = false
 
   # Metadata mostly used in document's head
   description = "Homepage and blog by Rohit Goswami (HaoZeke)"
+  homeSubtitle = "A random miscellany of my thoughts"
   keywords = "homepage, blog, science, development, programming"
   images = [""]
 
