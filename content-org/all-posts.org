@@ -321,3 +321,15 @@ There are a million and one variations of this of course, but this is enough to
 get started.
 
 The whole file is also [[https://github.com/HaoZeke/haozeke.github.io/blob/src/content-org/tmp/myFakeJupyter.org][reproduced here]].
+* TODO Orgmode and Hugo
+:PROPERTIES:
+:EXPORT_FILE_NAME: hugo-orgmode
+:EXPORT_HUGO_CATEGORIES: projects
+:EXPORT_HUGO_TAGS: tools emacs webdev hugo
+# :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_DATE: 2020-02-14 05:57
+:END:
+** Background
+- This is about the site you are reading
+- It is also a partial rant
+- It has a lot to do with web development in general
