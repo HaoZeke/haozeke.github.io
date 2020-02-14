@@ -62,6 +62,11 @@ disableHugoGeneratorInject = false
   # Default theme "light" or "dark"
   defaultTheme = "dark"
 
+[params.utterances]
+issue = "pathname"
+theme = "photon-dark"
+repo  ="haozeke/haozeke.github.io"
+
 [params.source]
     org_dir = "content-org"
     md_dir = "content"
