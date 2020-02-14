@@ -122,8 +122,16 @@ repo  ="haozeke/haozeke.github.io"
   [[menu.main]]
     identifier = "about"
     name       = "About"
-    url        = "about/"
+    url        = "/about"
   [[menu.main]]
     identifier = "blog"
     name       = "Blog"
     url        = "/posts"
+  [[menu.other]]
+    identifier = "tags"
+    name       = "Tags"
+    url        = "/tags"
+  [[menu.other]]
+    identifier = "categories"
+    name       = "Categories"
+    url        = "/categories"
