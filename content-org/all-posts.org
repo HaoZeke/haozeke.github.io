@@ -13,14 +13,17 @@
 :PROPERTIES:
 :EXPORT_HUGO_SECTION: /
 :EXPORT_FILE_NAME: about
-:EXPORT_DATE: 2017-07-12T17:05:38-04:00
+:EXPORT_DATE: 1995-08-10
 :END:
 
 *Hi.*
 
 I'm [[https://orcid.org/0000-0002-2393-8056][Rohit Goswami]], better known across the web as ~HaoZeke~. I'm not the
-first of my name, which is why I mostly use ~rg0swami~ when I need to be
+first of my name, which is why instead of ~rgoswami~, I occasionally use ~rg0swami~ when I need to be
 identified by something closer to my name.
+
+The actual username is a throwback to back when people *liked* being anonymous (and with multiple personalities)
+online, so that ought to give an idea of how old I am.
 * Site Rationale
 :PROPERTIES:
 :EXPORT_FILE_NAME: rationale
