@@ -66,6 +66,7 @@ disableHugoGeneratorInject = false
 issue = "pathname"
 theme = "photon-dark"
 repo  ="haozeke/haozeke.github.io"
+label = "Utterance 💬"
 
 [params.source]
     org_dir = "content-org"
