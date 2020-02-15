@@ -380,7 +380,7 @@ an Emacs-native workflow.
 :EXPORT_FILE_NAME: pandora-proxychains
 :EXPORT_HUGO_CATEGORIES: personal
 :EXPORT_HUGO_TAGS: tools workflow
-:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :comments true
 :EXPORT_DATE: 2020-02-15 05:28
 :END:
 ** Background
