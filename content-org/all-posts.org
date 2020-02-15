@@ -434,3 +434,19 @@ sudo pacman -S pianobar
 proxychains pianobar
    #+END_SRC
 3. Profit
+
+I also like setting up some defaults to make life easier:
+#+BEGIN_SRC bash
+mkdir -p ~/.config/pianobar
+vim ~/.config/pianobar/config
+#+END_SRC
+I normally set the following (inspired by the [[https://wiki.archlinux.org/index.php/Pianobar][ArchWiki]]):
+#+BEGIN_SRC conf
+audio_quality = {high, medium, low}
+autostart_station = $ID
+password = "$PASS"
+user = "$emailID"
+#+END_SRC
+
+The ~autostart_station ID~ can be obtained by inspecting the terminal output
+during an initial run. I usually set it to the QuickMix station.
