@@ -375,3 +375,62 @@ and terminal with some pretty printing and object viewing functionality. It is
 really great, but it is also relatively resource intensive. It turns out that
 thanks to Emacs ESS, it is possible to circumvent Rstudio completely in favor of
 an Emacs-native workflow.
+* Pandora and Proxychains
+:PROPERTIES:
+:EXPORT_FILE_NAME: pandora-proxychains
+:EXPORT_HUGO_CATEGORIES: personal
+:EXPORT_HUGO_TAGS: tools workflow
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_DATE: 2020-02-15 05:28
+:END:
+** Background
+- Pandora doesn't work outside the states
+- I keep forgetting how to set-up ~proxychains~
+** Proxychains
+Technically this article [[https://github.com/rofl0r/proxychains-ng][expects proxychains-ng]], which seems to be the more
+up-to-date fork of the original ~proxychains~.
+
+1. Install ~proxychains-ng~
+   #+BEGIN_SRC bash
+# I am on archlinux..
+sudo pacman -S proxychains-ng
+   #+END_SRC
+2. Copy the configuration to the ~$HOME~ directory
+   #+BEGIN_SRC bash
+cp /etc/proxychains.conf .
+   #+END_SRC
+3. Edit said configuration to add some US-based proxy
+
+In my particular case, I don't keep the tor section enabled.
+#+BEGIN_SRC bash :exports both :results raw
+tail $HOME/proxychains.conf
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+#
+#       proxy types: http, socks4, socks5
+#        ( auth types supported: "basic"-http  "user/pass"-socks )
+#
+[ProxyList]
+# add proxy here ...
+# meanwile
+# defaults set to "tor"
+# socks4 	127.0.0.1 9050
+#+end_example
+
+I actually use [[https://windscribe.com][Windscribe]] for my VPN needs, and they have a neat [[https://windscribe.com/getconfig/socks][SOCKS5 proxy
+setup]]. This works out to a line like ~socks5 $IP $PORT $USERNAME $PASS~ being
+added. The default generator gives you a pretty server name, but to get the IP
+I use ~ping $SERVER~ and put that in the ~conf~ file.
+** Pandora
+I use the excellent ~pianobar~ frontend.
+1. Get [[https://github.com/PromyLOPh/pianobar][pianobar]]
+   #+BEGIN_SRC bash
+sudo pacman -S pianobar
+   #+END_SRC
+2. Use it with ~proxychains~
+   #+BEGIN_SRC bash
+proxychains pianobar
+   #+END_SRC
+3. Profit
