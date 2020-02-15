@@ -336,3 +336,42 @@ The whole file is also [[https://github.com/HaoZeke/haozeke.github.io/blob/src/c
 - This is about the site you are reading
 - It is also a partial rant
 - It has a lot to do with web development in general
+* TODO Switching to Colemak
+:PROPERTIES:
+:EXPORT_FILE_NAME: colemak-switch
+:EXPORT_HUGO_CATEGORIES: notes
+:EXPORT_HUGO_TAGS: workflow programming personal
+# :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_DATE: 2020-02-15 04:06
+:END:
+** Background
+I just realized that it has been over two years since I switched from QWERTY to
+COLEMAK but somehow never managed to write about it. It was a major change in my
+life, and it took forever to get acclimatized. I do not think I'll ever again be
+in a position to make such a change in my life again, but it was definitely
+worth it.
+** Touch Typing
+My interest in touch typing in I decided to digitize my notes for posterity, during the
+last two years of my undergraduate studies back in Harcourt Butler Technical
+Institute (HBTI) Kanpur, India. in one of my many instances of yak shaving, I
+realized I could
+** QWERTY
+There were (and are) some fantastic resources for learning to touch type
+nowadays, I personally used:
+-
+** Colemak
+Having finally broken into the giddy regimes of 150+ wpm, I was ecstatic, and
+* TODO Replacing Rstudio with Emacs
+:PROPERTIES:
+:EXPORT_FILE_NAME: rstudio-emacs
+:EXPORT_HUGO_CATEGORIES: programming
+:EXPORT_HUGO_TAGS: tools emacs workflows R
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_DATE: 2020-02-15 04:38
+:END:
+** Background
+RStudio is one of the best IDEs around, in that it is essentially a text editor
+and terminal with some pretty printing and object viewing functionality. It is
+really great, but it is also relatively resource intensive. It turns out that
+thanks to Emacs ESS, it is possible to circumvent Rstudio completely in favor of
+an Emacs-native workflow.
