@@ -7,7 +7,7 @@
 #+hugo_custom_front_matter: :toc true :comments true
 #+hugo_tags: solutions R ISLR
 #+hugo_categories: programming
-#+draft: false
+#+hugo_draft: false
 #+comments: true
 
 * Chapter IV - Classification
