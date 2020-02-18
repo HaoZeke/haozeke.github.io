@@ -66,7 +66,7 @@ OX_HUGO_CONTENT_ORG_DIR=$(HUGO_BASE_DIR)/content-org
 # shell escape every time SOURCES is inspected by make.
 
 # Path to the Org file (relative to pwd, or absolute)
-ORG_FILE=$(OX_HUGO_CONTENT_ORG_DIR)/all-posts.org
+ORG_FILE=$(OX_HUGO_CONTENT_ORG_DIR)/*.org
 
 # Function to be run in emacs --batch
 FUNC=
