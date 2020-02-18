@@ -1,6 +1,6 @@
 #+title:  "ISLR :: Multiple Linear Regression"
 #+author: "Rohit Goswami"
-#+date: 2020-01-15T05:28:00+00:00
+#+date: 2020-01-15 05:28
 
 #+hugo_base_dir: ../
 #+export_file_name: islr-ch2-ch3
