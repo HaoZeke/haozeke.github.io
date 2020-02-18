@@ -66,7 +66,7 @@ OX_HUGO_CONTENT_ORG_DIR=$(HUGO_BASE_DIR)/content-org
 # shell escape every time SOURCES is inspected by make.
 
 # Path to the Org file (relative to pwd, or absolute)
-ORG_FILE=$(OX_HUGO_CONTENT_ORG_DIR)/*.org $(OX_HUGO_CONTENT_ORG_DIR)/sol01_ISLR.org $(OX_HUGO_CONTENT_ORG_DIR)/sol02_ISLR.org
+ORG_FILE:=$(wildcard $(OX_HUGO_CONTENT_ORG_DIR)/*.org)
 
 # Function to be run in emacs --batch
 FUNC=
@@ -101,7 +101,9 @@ emacs-batch:
 	--kill
 
 md1:
-	@$(MAKE_) emacs-batch FUNC=org-hugo-export-all-wim-to-md
+	for org in $(ORG_FILE) ; do \
+	make emacs-batch ORG_FILE=$$org FUNC=org-hugo-export-all-wim-to-md ; \
+    done
 
 vcheck_emacs:
 	@mkdir -p $(ox_hugo_tmp_dir)
