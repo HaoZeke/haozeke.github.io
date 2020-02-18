@@ -1,0 +1,1626 @@
+#+title:  "ISLR :: Multiple Linear Regression"
+#+author: "Rohit Goswami"
+#+date: 2020-01-15T05:28:00+00:00
+
+#+hugo_base_dir: ../
+#+export_file_name: islr-ch2-ch3
+#+hugo_custom_front_matter: :toc true :comments true
+#+hugo_tags: solutions R ISLR
+#+hugo_categories: programming
+#+draft: false
+#+comments: true
+
+* Chapter II - Statistical Learning
+  :PROPERTIES:
+  :CUSTOM_ID: chapter-ii---statistical-learning
+  :END:
+
+All the questions are as per the
+[[https://faculty.marshall.usc.edu/gareth-james/ISL/][ISL seventh
+printing]] [fn:1].
+
+** Question 2.8 - Pages 54-55
+   :PROPERTIES:
+   :CUSTOM_ID: question-2.8---pages-54-55
+   :END:
+
+This exercise relates to the =College= data set, which can be found in
+the file =College.csv=. It contains a number of variables for $777$
+different universities and colleges in the US. The variables are
+
+- =Private= : Public/private indicator
+- =Apps= : Number of applications received
+- =Accept= : Number of applicants accepted
+- =Enroll= : Number of new students enrolled
+- =Top10perc= : New students from top 10 % of high school class
+- =Top25perc= : New students from top 25 % of high school class
+- =F.Undergrad= : Number of full-time undergraduates
+- =P.Undergrad= : Number of part-time undergraduates
+- =Outstate= : Out-of-state tuition
+- =Room.Board= : Room and board costs
+- =Books= : Estimated book costs
+- =Personal= : Estimated personal spending
+- =PhD= : Percent of faculty with Ph.D.'s
+- =Terminal= : Percent of faculty with terminal degree
+- =S.F.Ratio= : Student/faculty ratio
+- =perc.alumni= : Percent of alumni who donate
+- =Expend= : Instructional expenditure per student
+- =Grad.Rate= : Graduation rate
+
+Before reading the data into R, it can be viewed in Excel or a text
+editor.
+
+*(a)* Use the =read.csv()= function to read the data into R . Call the
+loaded data =college=. Make sure that you have the directory set to the
+correct location for the data.
+
+*(b)* Look at the data using the =fix()= function. You should notice
+that the ﬁrst column is just the name of each university. We don't
+really want R to treat this as data. However, it may be handy to have
+these names for later. Try the following commands:
+
+#+BEGIN_SRC R
+  rownames(college)=college[,1]
+  fix(college)
+#+END_SRC
+
+You should see that there is now a row.names column with the name of
+each university recorded. This means that R has given each row a name
+corresponding to the appropriate university. R will not try to perform
+calculations on the row names. However, we still need to eliminate the
+ﬁrst column in the data where the names are stored. Try:
+
+#+BEGIN_SRC R
+  college=college[,-1]
+  fix(college)
+#+END_SRC
+
+*(c)*
+
+1. Use the =summary()= function to produce a numerical summary of the
+   variables in the data set.
+2. Use the =pairs()= function to produce a scatterplot matrix of the
+   ﬁrst ten columns or variables of the data. Recall that you can
+   reference the first ten columns of a matrix =A= using =A[,1:10]= .
+3. Use the =plot()= function to produce side-by-side boxplots of
+   Outstate versus Private .
+4. Create a new qualitative variable, called Elite , by binning the
+   =Top10perc= variable. We are going to divide universities into two
+   groups based on whether or not the proportion of students coming from
+   the top $10%$ of their high school classes exceeds $50%$.
+
+#+BEGIN_SRC R
+  Elite = rep("No", nrow(college))
+  Elite [college$Top10perc >50]="Yes"
+  Elite = as.factor (Elite)
+  college = data.frame (college, Elite)
+#+END_SRC
+
+Use the =summary()= function to see how many elite univer- sities there
+are. Now use the =plot()= function to produce side-by-side boxplots of
+=Outstate= versus =Elite= .
+
+5. Use the hist() function to produce some histograms with differing
+   numbers of bins for a few of the quantitative vari- ables. You may
+   fnd the command =par(mfrow=c(2,2))= useful: it will divide the print
+   window into four regions so that four plots can be made
+   simultaneously. Modifying the arguments to this function will divide
+   the screen in other ways.
+6. Continue exploring the data, and provide a brief summary of what you
+   discover.
+
+*** Answer
+    :PROPERTIES:
+    :CUSTOM_ID: answer
+    :END:
+
+Instead of reading in data, for ISLR in particular we can load the
+[[https://rdrr.io/cran/ISLR/][ISLR library]] which is on CRAN and
+contains the data-sets required for the book.
+
+#+BEGIN_SRC R
+  install.packages("ISLR")
+#+END_SRC
+
+Thus, we can now read it in as =library("ISLR")=
+
+The remaining sections are meant to be executed, and are marked as such,
+with =r= in ={}=.
+
+*(c)*
+
+We will load the dataset once for the whole document.
+
+#+BEGIN_SRC R
+  library("ISLR")
+#+END_SRC
+
+1. Usage of the =summary()= function
+
+#+BEGIN_SRC R
+  summary(ISLR::College)
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##  Private        Apps           Accept          Enroll       Top10perc
+  ##  No :212   Min.   :   81   Min.   :   72   Min.   :  35   Min.   : 1.00
+  ##  Yes:565   1st Qu.:  776   1st Qu.:  604   1st Qu.: 242   1st Qu.:15.00
+  ##            Median : 1558   Median : 1110   Median : 434   Median :23.00
+  ##            Mean   : 3002   Mean   : 2019   Mean   : 780   Mean   :27.56
+  ##            3rd Qu.: 3624   3rd Qu.: 2424   3rd Qu.: 902   3rd Qu.:35.00
+  ##            Max.   :48094   Max.   :26330   Max.   :6392   Max.   :96.00
+  ##    Top25perc      F.Undergrad     P.Undergrad         Outstate
+  ##  Min.   :  9.0   Min.   :  139   Min.   :    1.0   Min.   : 2340
+  ##  1st Qu.: 41.0   1st Qu.:  992   1st Qu.:   95.0   1st Qu.: 7320
+  ##  Median : 54.0   Median : 1707   Median :  353.0   Median : 9990
+  ##  Mean   : 55.8   Mean   : 3700   Mean   :  855.3   Mean   :10441
+  ##  3rd Qu.: 69.0   3rd Qu.: 4005   3rd Qu.:  967.0   3rd Qu.:12925
+  ##  Max.   :100.0   Max.   :31643   Max.   :21836.0   Max.   :21700
+  ##    Room.Board       Books           Personal         PhD
+  ##  Min.   :1780   Min.   :  96.0   Min.   : 250   Min.   :  8.00
+  ##  1st Qu.:3597   1st Qu.: 470.0   1st Qu.: 850   1st Qu.: 62.00
+  ##  Median :4200   Median : 500.0   Median :1200   Median : 75.00
+  ##  Mean   :4358   Mean   : 549.4   Mean   :1341   Mean   : 72.66
+  ##  3rd Qu.:5050   3rd Qu.: 600.0   3rd Qu.:1700   3rd Qu.: 85.00
+  ##  Max.   :8124   Max.   :2340.0   Max.   :6800   Max.   :103.00
+  ##     Terminal       S.F.Ratio      perc.alumni        Expend
+  ##  Min.   : 24.0   Min.   : 2.50   Min.   : 0.00   Min.   : 3186
+  ##  1st Qu.: 71.0   1st Qu.:11.50   1st Qu.:13.00   1st Qu.: 6751
+  ##  Median : 82.0   Median :13.60   Median :21.00   Median : 8377
+  ##  Mean   : 79.7   Mean   :14.09   Mean   :22.74   Mean   : 9660
+  ##  3rd Qu.: 92.0   3rd Qu.:16.50   3rd Qu.:31.00   3rd Qu.:10830
+  ##  Max.   :100.0   Max.   :39.80   Max.   :64.00   Max.   :56233
+  ##    Grad.Rate
+  ##  Min.   : 10.00
+  ##  1st Qu.: 53.00
+  ##  Median : 65.00
+  ##  Mean   : 65.46
+  ##  3rd Qu.: 78.00
+  ##  Max.   :118.00
+#+END_EXAMPLE
+
+2. Usage of =pairs()=
+
+#+BEGIN_SRC R
+  tenColl <- ISLR::College[,1:10] # For getting the first ten columns
+  pairs(tenColl) # Scatterplot
+#+END_SRC
+
+#+CAPTION: Pairs
+[[file:/islr/sol01/unnamed-chunk-3-1.png]]
+
+3. Boxplot creation with =plot()=
+
+#+BEGIN_SRC R
+  plot(ISLR::College$Private,ISLR::College$Outstate,xlab="Private",ylab="Outstate")
+#+END_SRC
+
+#+CAPTION: Boxplots
+[[file:/islr/sol01/unnamed-chunk-4-1.png]]
+
+4. Binning and plotting
+
+#+BEGIN_SRC R
+  college=ISLR::College
+  Elite=rep("No",nrow(college))
+  Elite[college$Top10perc>50]="Yes"
+  Elite=as.factor(Elite)
+  college<-data.frame(college,Elite)
+  summary(college$Elite)
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##  No Yes
+  ## 699  78
+#+END_EXAMPLE
+
+#+BEGIN_SRC R
+  plot(college$Outstate,college$Elite,xlab="Outstate",ylab="Elite")
+#+END_SRC
+
+#+CAPTION: Plotting Outstate and Elite
+[[file:/islr/sol01/unnamed-chunk-6-1.png]]
+
+5. Histograms with =hist()=
+
+#+BEGIN_SRC R
+  par(mfrow=c(2,2))
+  hist(college$Enroll)
+  hist(college$perc.alumni, col=2)
+  hist(college$Personal, col=3, breaks=10)
+  hist(college$PhD, breaks=10)
+#+END_SRC
+
+#+CAPTION: Histogram
+[[file:/islr/sol01/unnamed-chunk-7-1.png]]
+
+#+BEGIN_SRC R
+  hist(college$Top10perc, col="blue")
+  hist(college$Outstate, col=23)
+#+END_SRC
+
+#+CAPTION: Colored Histogram
+[[file:/islr/sol01/unnamed-chunk-7-2.png]]
+
+6. Explorations (graphical)
+
+$0$ implies the faculty have PhDs. It is clear that people donate more
+when faculty do not have terminal degrees.
+
+#+BEGIN_SRC R
+  plot(college$Terminal-college$PhD, college$perc.alumni)
+#+END_SRC
+
+#+CAPTION: Terminal degrees and alumni
+[[file:/islr/sol01/unnamed-chunk-8-1.png]]
+
+High tuition correlates to high graduation rate.
+
+#+BEGIN_SRC R
+  plot(college$Expend, college$Grad.Rate)
+#+END_SRC
+
+#+CAPTION: Tuiton and graduation
+[[file:/islr/sol01/unnamed-chunk-9-1.png]]
+
+Low acceptance implies a low student to faculty ratio.
+
+#+BEGIN_SRC R
+  plot(college$Accept / college$Apps, college$S.F.Ratio)
+#+END_SRC
+
+#+CAPTION: Acceptance and Student/Faculty ratio
+[[file:/islr/sol01/unnamed-chunk-10-1.png]]
+
+** Question 2.9 - Page 56
+   :PROPERTIES:
+   :CUSTOM_ID: question-2.9---page-56
+   :END:
+
+This exercise involves the =Auto= data set studied in the lab. Make sure
+that the missing values have been removed from the data.
+
+*(a)* Which of the predictors are quantitative, and which are
+qualitative?
+
+*(b)* What is the /range/ of each quantitative predictor? You can answer
+this using the =range()= function.
+
+*(c)* What is the mean and standard deviation of each quantitative
+predictor?
+
+*(d)* Now remove the 10th through 85th observations. What is the range,
+mean, and standard deviation of each predictor in the subset of the data
+that remains?
+
+*(e)* Using the full data set, investigate the predictors graphically,
+using scatterplots or other tools of your choice. Create some plots
+highlighting the relationships among the predictors. Comment on your
+findings.
+
+*(f)* Suppose that we wish to predict gas mileage (=mpg=) on the basis
+of the other variables. Do your plots suggest that any of the other
+variables might be useful in predicting =mpg=? Justify your answer.
+
+*** Answer
+    :PROPERTIES:
+    :CUSTOM_ID: answer-1
+    :END:
+
+Once again, since the dataset is loaded from the library, we will simply
+start manipulating it.
+
+#+BEGIN_SRC R
+  # Clean data
+  autoDat<-na.omit(ISLR::Auto) # renamed for convenience
+#+END_SRC
+
+*(a)* To determine weather the variables a qualitative or quantitative
+we can either inspect the variables by eye, or query the dataset.
+
+#+BEGIN_SRC R
+  summary(autoDat) # Observe the output for variance
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##       mpg          cylinders      displacement     horsepower        weight
+  ##  Min.   : 9.00   Min.   :3.000   Min.   : 68.0   Min.   : 46.0   Min.   :1613
+  ##  1st Qu.:17.00   1st Qu.:4.000   1st Qu.:105.0   1st Qu.: 75.0   1st Qu.:2225
+  ##  Median :22.75   Median :4.000   Median :151.0   Median : 93.5   Median :2804
+  ##  Mean   :23.45   Mean   :5.472   Mean   :194.4   Mean   :104.5   Mean   :2978
+  ##  3rd Qu.:29.00   3rd Qu.:8.000   3rd Qu.:275.8   3rd Qu.:126.0   3rd Qu.:3615
+  ##  Max.   :46.60   Max.   :8.000   Max.   :455.0   Max.   :230.0   Max.   :5140
+  ##
+  ##   acceleration        year           origin                      name
+  ##  Min.   : 8.00   Min.   :70.00   Min.   :1.000   amc matador       :  5
+  ##  1st Qu.:13.78   1st Qu.:73.00   1st Qu.:1.000   ford pinto        :  5
+  ##  Median :15.50   Median :76.00   Median :1.000   toyota corolla    :  5
+  ##  Mean   :15.54   Mean   :75.98   Mean   :1.577   amc gremlin       :  4
+  ##  3rd Qu.:17.02   3rd Qu.:79.00   3rd Qu.:2.000   amc hornet        :  4
+  ##  Max.   :24.80   Max.   :82.00   Max.   :3.000   chevrolet chevette:  4
+  ##                                                  (Other)           :365
+#+END_EXAMPLE
+
+#+BEGIN_SRC R
+  str(autoDat) # Directly find find out
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ## 'data.frame':    392 obs. of  9 variables:
+  ##  $ mpg         : num  18 15 18 16 17 15 14 14 14 15 ...
+  ##  $ cylinders   : num  8 8 8 8 8 8 8 8 8 8 ...
+  ##  $ displacement: num  307 350 318 304 302 429 454 440 455 390 ...
+  ##  $ horsepower  : num  130 165 150 150 140 198 220 215 225 190 ...
+  ##  $ weight      : num  3504 3693 3436 3433 3449 ...
+  ##  $ acceleration: num  12 11.5 11 12 10.5 10 9 8.5 10 8.5 ...
+  ##  $ year        : num  70 70 70 70 70 70 70 70 70 70 ...
+  ##  $ origin      : num  1 1 1 1 1 1 1 1 1 1 ...
+  ##  $ name        : Factor w/ 304 levels "amc ambassador brougham",..: 49 36 231 14 161 141 54 223 241 2 ...
+#+END_EXAMPLE
+
+From the above view, we can see that there is only one listed as a
+qualitative variable or factor, and that is =name=. However, we can also
+do this in a cleaner manner or at-least in a different manner with a
+function.
+
+#+BEGIN_SRC R
+  findFactors <- sapply(autoDat,is.factor)
+  findFactors
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##          mpg    cylinders displacement   horsepower       weight acceleration
+  ##        FALSE        FALSE        FALSE        FALSE        FALSE        FALSE
+  ##         year       origin         name
+  ##        FALSE        FALSE         TRUE
+#+END_EXAMPLE
+
+Though only *name* is listed as a qualitative variable, we note that
+*origin* seems to be almost qualitative as well.
+
+#+BEGIN_SRC R
+  length(unique(autoDat$origin))
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ## [1] 3
+#+END_EXAMPLE
+
+#+BEGIN_SRC R
+  unique(autoDat$origin)
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ## [1] 1 3 2
+#+END_EXAMPLE
+
+Infact we can check that nothing else has this property by repeated
+application of =sapply=, though a pipe would be more satisfying
+
+#+BEGIN_SRC R
+  getUniq<-sapply(autoDat, unique)
+  getLengths<-sapply(getUniq,length)
+  getLengths
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##          mpg    cylinders displacement   horsepower       weight acceleration
+  ##          127            5           81           93          346           95
+  ##         year       origin         name
+  ##           13            3          301
+#+END_EXAMPLE
+
+This is really nicer with pipes
+
+#+BEGIN_SRC R
+  library(dplyr)
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##
+  ## Attaching package: 'dplyr'
+#+END_EXAMPLE
+
+#+BEGIN_EXAMPLE
+  ## The following objects are masked from 'package:stats':
+  ##
+  ##     filter, lag
+#+END_EXAMPLE
+
+#+BEGIN_EXAMPLE
+  ## The following objects are masked from 'package:base':
+  ##
+  ##     intersect, setdiff, setequal, union
+#+END_EXAMPLE
+
+#+BEGIN_SRC R
+  autoDat %>% sapply(unique) %>% sapply(length)
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##          mpg    cylinders displacement   horsepower       weight acceleration
+  ##          127            5           81           93          346           95
+  ##         year       origin         name
+  ##           13            3          301
+#+END_EXAMPLE
+
+At any rate, we know now that *origin* and *name* are probably
+qualitative, and the rest are quantitative.
+
+*(b)* Using =range()=
+
+A nice feature of the dataset we have is that the suspected qualitative
+variables are at the end of the dataset. So we can simply select the
+first $7$ rows and go nuts on them.
+
+#+BEGIN_SRC R
+  autoDat[,1:7] %>% sapply(range) # or sapply(autoDat[,1:7],range)
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##       mpg cylinders displacement horsepower weight acceleration year
+  ## [1,]  9.0         3           68         46   1613          8.0   70
+  ## [2,] 46.6         8          455        230   5140         24.8   82
+#+END_EXAMPLE
+
+Once again, more elegant with pipes and =subset()=
+
+#+BEGIN_SRC R
+  autoDat %>% subset(select=-c(name,origin)) %>% sapply(range)
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##       mpg cylinders displacement horsepower weight acceleration year
+  ## [1,]  9.0         3           68         46   1613          8.0   70
+  ## [2,] 46.6         8          455        230   5140         24.8   82
+#+END_EXAMPLE
+
+#+BEGIN_SRC R
+  # Even simpler with dplyr
+  autoDat %>% select(-name,-origin) %>% sapply(range)
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##       mpg cylinders displacement horsepower weight acceleration year
+  ## [1,]  9.0         3           68         46   1613          8.0   70
+  ## [2,] 46.6         8          455        230   5140         24.8   82
+#+END_EXAMPLE
+
+*(c)* Mean and standard deviation
+
+#+BEGIN_SRC R
+  noFactors <- autoDat %>% select(-name,-origin)
+  noFactors %>% sapply(mean)
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##          mpg    cylinders displacement   horsepower       weight acceleration
+  ##    23.445918     5.471939   194.411990   104.469388  2977.584184    15.541327
+  ##         year
+  ##    75.979592
+#+END_EXAMPLE
+
+#+BEGIN_SRC R
+  noFactors %>% sapply(sd)
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##          mpg    cylinders displacement   horsepower       weight acceleration
+  ##     7.805007     1.705783   104.644004    38.491160   849.402560     2.758864
+  ##         year
+  ##     3.683737
+#+END_EXAMPLE
+
+*(d)* Removing observations 10-85 and testing.
+
+#+BEGIN_SRC R
+  noFactors[-(10:85),] %>% sapply(mean)
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##          mpg    cylinders displacement   horsepower       weight acceleration
+  ##    24.404430     5.373418   187.240506   100.721519  2935.971519    15.726899
+  ##         year
+  ##    77.145570
+#+END_EXAMPLE
+
+#+BEGIN_SRC R
+  noFactors[-(10:85),] %>% sapply(sd)
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##          mpg    cylinders displacement   horsepower       weight acceleration
+  ##     7.867283     1.654179    99.678367    35.708853   811.300208     2.693721
+  ##         year
+  ##     3.106217
+#+END_EXAMPLE
+
+*(e)* Plots for determining relationships
+
+#+BEGIN_SRC R
+  par(mfrow=c(2,2))
+  plot(autoDat$weight, autoDat$horsepower)
+  plot(autoDat$weight, autoDat$acceleration)
+  plot(autoDat$displacement, autoDat$acceleration)
+  plot(autoDat$cylinders, autoDat$acceleration)
+#+END_SRC
+
+#+CAPTION: Relationship determination
+[[file:/islr/sol01/unnamed-chunk-21-1.png]]
+
+- Evidently horsepower is directly proportional to weight but
+  acceleration is inversely proportional to weight
+- Acceleration is also inversely proportional to displacement
+- Cylinders are a poor measure, not surprising since there are only $5$
+  values
+
+*(f)* Choosing predictors for gas mileage =mpg=
+
+Let us recall certain key elements of the quantitative aspects of the
+dataset.
+
+#+BEGIN_SRC R
+  summary(noFactors) # To understand the spread
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##       mpg          cylinders      displacement     horsepower        weight
+  ##  Min.   : 9.00   Min.   :3.000   Min.   : 68.0   Min.   : 46.0   Min.   :1613
+  ##  1st Qu.:17.00   1st Qu.:4.000   1st Qu.:105.0   1st Qu.: 75.0   1st Qu.:2225
+  ##  Median :22.75   Median :4.000   Median :151.0   Median : 93.5   Median :2804
+  ##  Mean   :23.45   Mean   :5.472   Mean   :194.4   Mean   :104.5   Mean   :2978
+  ##  3rd Qu.:29.00   3rd Qu.:8.000   3rd Qu.:275.8   3rd Qu.:126.0   3rd Qu.:3615
+  ##  Max.   :46.60   Max.   :8.000   Max.   :455.0   Max.   :230.0   Max.   :5140
+  ##   acceleration        year
+  ##  Min.   : 8.00   Min.   :70.00
+  ##  1st Qu.:13.78   1st Qu.:73.00
+  ##  Median :15.50   Median :76.00
+  ##  Mean   :15.54   Mean   :75.98
+  ##  3rd Qu.:17.02   3rd Qu.:79.00
+  ##  Max.   :24.80   Max.   :82.00
+#+END_EXAMPLE
+
+#+BEGIN_SRC R
+  getLengths # To get the number of unique values
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##          mpg    cylinders displacement   horsepower       weight acceleration
+  ##          127            5           81           93          346           95
+  ##         year       origin         name
+  ##           13            3          301
+#+END_EXAMPLE
+
+From this we can assert easily that the number of cylinders is not of
+much interest for predictions of the mileage.
+
+#+BEGIN_SRC R
+  par(mfrow=c(3,2))
+  plot(noFactors$mpg,noFactors$horsepower)
+  plot(noFactors$mpg,noFactors$weight)
+  plot(noFactors$mpg,noFactors$displacement)
+  plot(noFactors$mpg,noFactors$acceleration)
+  plot(noFactors$mpg,noFactors$year)
+#+END_SRC
+
+#+CAPTION: Predictions
+[[file:/islr/sol01/unnamed-chunk-23-1.png]]
+
+- So now we know that the mileage increases when horsepower is low,
+  weight is low, displacement is low and acceleration is high
+
+Where low represents an inverse response and high represents a direct
+response.
+
+- It is also clear that the mileage increases every year
+
+* Chapter III - Linear Regression
+  :PROPERTIES:
+  :CUSTOM_ID: chapter-iii---linear-regression
+  :END:
+
+** Question 3.9 - Page 122
+   :PROPERTIES:
+   :CUSTOM_ID: question-3.9---page-122
+   :END:
+
+This question involves the use of multiple linear regression on the Auto
+data set.
+
+*(a)* Produce a scatterplot matrix which includes all of the variables
+in the data set.
+
+*(b)* Compute the matrix of correlations between the variables using the
+function =cor()= . You will need to exclude the name variable, =cor()=
+which is qualitative.
+
+*(c)* Use the =lm()= function to perform a multiple linear regression
+with =mpg= as the response and all other variables except name as the
+predictors. Use the =summary()= function to print the results. Comment
+on the output. For instance:
+
+1. Is there a relationship between the predictors and the response?
+2. Which predictors appear to have a statistically significant
+   relationship to the response?
+3. What does the coefficient for the year variable suggest?
+
+*(d)* Use the =plot()= function to produce diagnostic plots of the
+linear regression fit. Comment on any problems you see with the fit. Do
+the residual plots suggest any unusually large outliers? Does the
+leverage plot identify any observations with unusually high leverage?
+
+*(e)* Use the =*= and =:= symbols to fit linear regression models with
+interaction effects. Do any interactions appear to be statistically
+significant?
+
+*(f)* Try a few different transformations of the variables, such as
+$\log{X}$, $\sqrt{X}$, $X^2$.Comment on your ﬁndings.
+
+*** Answer
+    :PROPERTIES:
+    :CUSTOM_ID: answer-2
+    :END:
+
+Once again, we will use the dataset from the library.
+
+#+BEGIN_SRC R
+  cleanAuto <- na.omit(autoDat)
+  summary(cleanAuto) # Already created above, so no need to do na.omit again
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##       mpg          cylinders      displacement     horsepower        weight
+  ##  Min.   : 9.00   Min.   :3.000   Min.   : 68.0   Min.   : 46.0   Min.   :1613
+  ##  1st Qu.:17.00   1st Qu.:4.000   1st Qu.:105.0   1st Qu.: 75.0   1st Qu.:2225
+  ##  Median :22.75   Median :4.000   Median :151.0   Median : 93.5   Median :2804
+  ##  Mean   :23.45   Mean   :5.472   Mean   :194.4   Mean   :104.5   Mean   :2978
+  ##  3rd Qu.:29.00   3rd Qu.:8.000   3rd Qu.:275.8   3rd Qu.:126.0   3rd Qu.:3615
+  ##  Max.   :46.60   Max.   :8.000   Max.   :455.0   Max.   :230.0   Max.   :5140
+  ##
+  ##   acceleration        year           origin                      name
+  ##  Min.   : 8.00   Min.   :70.00   Min.   :1.000   amc matador       :  5
+  ##  1st Qu.:13.78   1st Qu.:73.00   1st Qu.:1.000   ford pinto        :  5
+  ##  Median :15.50   Median :76.00   Median :1.000   toyota corolla    :  5
+  ##  Mean   :15.54   Mean   :75.98   Mean   :1.577   amc gremlin       :  4
+  ##  3rd Qu.:17.02   3rd Qu.:79.00   3rd Qu.:2.000   amc hornet        :  4
+  ##  Max.   :24.80   Max.   :82.00   Max.   :3.000   chevrolet chevette:  4
+  ##                                                  (Other)           :365
+#+END_EXAMPLE
+
+*(a)* Scatterplot
+
+#+BEGIN_SRC R
+  pairs(cleanAuto)
+#+END_SRC
+
+#+CAPTION: Scatterplot
+[[file:/islr/sol01/unnamed-chunk-25-1.png]]
+
+*(b)* Correlation matrix. For this we exclude the qualitative variables
+either by using =select= or by using the existing =noFactors= dataset
+
+#+BEGIN_SRC R
+  # A full set
+  ISLR::Auto %>% na.omit %>% select(-name,-origin) %>% cor
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##                     mpg  cylinders displacement horsepower     weight
+  ## mpg           1.0000000 -0.7776175   -0.8051269 -0.7784268 -0.8322442
+  ## cylinders    -0.7776175  1.0000000    0.9508233  0.8429834  0.8975273
+  ## displacement -0.8051269  0.9508233    1.0000000  0.8972570  0.9329944
+  ## horsepower   -0.7784268  0.8429834    0.8972570  1.0000000  0.8645377
+  ## weight       -0.8322442  0.8975273    0.9329944  0.8645377  1.0000000
+  ## acceleration  0.4233285 -0.5046834   -0.5438005 -0.6891955 -0.4168392
+  ## year          0.5805410 -0.3456474   -0.3698552 -0.4163615 -0.3091199
+  ##              acceleration       year
+  ## mpg             0.4233285  0.5805410
+  ## cylinders      -0.5046834 -0.3456474
+  ## displacement   -0.5438005 -0.3698552
+  ## horsepower     -0.6891955 -0.4163615
+  ## weight         -0.4168392 -0.3091199
+  ## acceleration    1.0000000  0.2903161
+  ## year            0.2903161  1.0000000
+#+END_EXAMPLE
+
+*(c)* Multiple Linear Regression
+
+#+BEGIN_SRC R
+  # Fit against every variable
+  lm.fit=lm(mpg~.,data=noFactors)
+  summary(lm.fit)
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##
+  ## Call:
+  ## lm(formula = mpg ~ ., data = noFactors)
+  ##
+  ## Residuals:
+  ##     Min      1Q  Median      3Q     Max
+  ## -8.6927 -2.3864 -0.0801  2.0291 14.3607
+  ##
+  ## Coefficients:
+  ##                Estimate Std. Error t value Pr(>|t|)
+  ## (Intercept)  -1.454e+01  4.764e+00  -3.051  0.00244 **
+  ## cylinders    -3.299e-01  3.321e-01  -0.993  0.32122
+  ## displacement  7.678e-03  7.358e-03   1.044  0.29733
+  ## horsepower   -3.914e-04  1.384e-02  -0.028  0.97745
+  ## weight       -6.795e-03  6.700e-04 -10.141  < 2e-16 ***
+  ## acceleration  8.527e-02  1.020e-01   0.836  0.40383
+  ## year          7.534e-01  5.262e-02  14.318  < 2e-16 ***
+  ## ---
+  ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+  ##
+  ## Residual standard error: 3.435 on 385 degrees of freedom
+  ## Multiple R-squared:  0.8093, Adjusted R-squared:  0.8063
+  ## F-statistic: 272.2 on 6 and 385 DF,  p-value: < 2.2e-16
+#+END_EXAMPLE
+
+#+BEGIN_SRC R
+  # Fit against one variable
+  noFactors %>% lm(mpg~horsepower,data=.) %>% summary
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##
+  ## Call:
+  ## lm(formula = mpg ~ horsepower, data = .)
+  ##
+  ## Residuals:
+  ##      Min       1Q   Median       3Q      Max
+  ## -13.5710  -3.2592  -0.3435   2.7630  16.9240
+  ##
+  ## Coefficients:
+  ##              Estimate Std. Error t value Pr(>|t|)
+  ## (Intercept) 39.935861   0.717499   55.66   <2e-16 ***
+  ## horsepower  -0.157845   0.006446  -24.49   <2e-16 ***
+  ## ---
+  ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+  ##
+  ## Residual standard error: 4.906 on 390 degrees of freedom
+  ## Multiple R-squared:  0.6059, Adjusted R-squared:  0.6049
+  ## F-statistic: 599.7 on 1 and 390 DF,  p-value: < 2.2e-16
+#+END_EXAMPLE
+
+#+BEGIN_SRC R
+  noFactors %>% lm(mpg~year,data=.) %>% summary
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##
+  ## Call:
+  ## lm(formula = mpg ~ year, data = .)
+  ##
+  ## Residuals:
+  ##      Min       1Q   Median       3Q      Max
+  ## -12.0212  -5.4411  -0.4412   4.9739  18.2088
+  ##
+  ## Coefficients:
+  ##              Estimate Std. Error t value Pr(>|t|)
+  ## (Intercept) -70.01167    6.64516  -10.54   <2e-16 ***
+  ## year          1.23004    0.08736   14.08   <2e-16 ***
+  ## ---
+  ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+  ##
+  ## Residual standard error: 6.363 on 390 degrees of freedom
+  ## Multiple R-squared:  0.337,  Adjusted R-squared:  0.3353
+  ## F-statistic: 198.3 on 1 and 390 DF,  p-value: < 2.2e-16
+#+END_EXAMPLE
+
+#+BEGIN_SRC R
+  noFactors %>% lm(mpg~acceleration,data=.) %>% summary
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##
+  ## Call:
+  ## lm(formula = mpg ~ acceleration, data = .)
+  ##
+  ## Residuals:
+  ##     Min      1Q  Median      3Q     Max
+  ## -17.989  -5.616  -1.199   4.801  23.239
+  ##
+  ## Coefficients:
+  ##              Estimate Std. Error t value Pr(>|t|)
+  ## (Intercept)    4.8332     2.0485   2.359   0.0188 *
+  ## acceleration   1.1976     0.1298   9.228   <2e-16 ***
+  ## ---
+  ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+  ##
+  ## Residual standard error: 7.08 on 390 degrees of freedom
+  ## Multiple R-squared:  0.1792, Adjusted R-squared:  0.1771
+  ## F-statistic: 85.15 on 1 and 390 DF,  p-value: < 2.2e-16
+#+END_EXAMPLE
+
+#+BEGIN_SRC R
+  noFactors %>% lm(mpg~weight,data=.) %>% summary
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##
+  ## Call:
+  ## lm(formula = mpg ~ weight, data = .)
+  ##
+  ## Residuals:
+  ##      Min       1Q   Median       3Q      Max
+  ## -11.9736  -2.7556  -0.3358   2.1379  16.5194
+  ##
+  ## Coefficients:
+  ##              Estimate Std. Error t value Pr(>|t|)
+  ## (Intercept) 46.216524   0.798673   57.87   <2e-16 ***
+  ## weight      -0.007647   0.000258  -29.64   <2e-16 ***
+  ## ---
+  ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+  ##
+  ## Residual standard error: 4.333 on 390 degrees of freedom
+  ## Multiple R-squared:  0.6926, Adjusted R-squared:  0.6918
+  ## F-statistic: 878.8 on 1 and 390 DF,  p-value: < 2.2e-16
+#+END_EXAMPLE
+
+#+BEGIN_SRC R
+  noFactors %>% lm(mpg~displacement,data=.) %>% summary
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##
+  ## Call:
+  ## lm(formula = mpg ~ displacement, data = .)
+  ##
+  ## Residuals:
+  ##      Min       1Q   Median       3Q      Max
+  ## -12.9170  -3.0243  -0.5021   2.3512  18.6128
+  ##
+  ## Coefficients:
+  ##              Estimate Std. Error t value Pr(>|t|)
+  ## (Intercept)  35.12064    0.49443   71.03   <2e-16 ***
+  ## displacement -0.06005    0.00224  -26.81   <2e-16 ***
+  ## ---
+  ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+  ##
+  ## Residual standard error: 4.635 on 390 degrees of freedom
+  ## Multiple R-squared:  0.6482, Adjusted R-squared:  0.6473
+  ## F-statistic: 718.7 on 1 and 390 DF,  p-value: < 2.2e-16
+#+END_EXAMPLE
+
+1. Clearly there is a relationship between the predictors and variables,
+   mostly as described previously, with the following broad trends:
+
+   - Inversely proportional to Horsepower, Weight, and Displacement
+
+2. The predictors which have a relationship to the response are (based
+   on R squared values):
+   $$ all > weight > displacement > horsepower > year > acceleration $$
+   However, things lower than horsepower are not statistically
+   significant.
+3. The visual analysis of the =year= variable suggests that the mileage
+   grows every year. However, it is clear from the summary, that there
+   is no statistical significance of year when used to fit a single
+   parameter linear model. We note that when we compare this to the
+   multiple linear regression analysis, we see that the year factor
+   accounts for $0.7508$ of the total, that is, the cars become more
+   efficient every year
+
+*(d)* Lets plot these
+
+#+BEGIN_SRC R
+  par(mfrow=c(2,2))
+  noFactors %>% lm(mpg~horsepower,data=.) %>% plot(main="Mileage v/s Horsepower")
+#+END_SRC
+
+
+[[file:/islr/sol01/unnamed-chunk-28-1.png]]
+
+#+BEGIN_SRC R
+  noFactors %>% lm(mpg~weight,data=.) %>% plot(main="Mileage v/s Weight")
+#+END_SRC
+
+[[file:/islr/sol01/unnamed-chunk-28-2.png]]
+
+#+BEGIN_SRC R
+  noFactors %>% lm(mpg~year,data=.) %>% plot(main="Mileage v/s Year")
+#+END_SRC
+
+[[file:/islr/sol01/unnamed-chunk-28-3.png]]
+
+#+BEGIN_SRC R
+  noFactors %>% lm(mpg~acceleration,data=.) %>% plot(main="Mileage v/s Acceleration")
+#+END_SRC
+
+[[file:/islr/sol01/unnamed-chunk-28-4.png]]
+
+#+BEGIN_SRC R
+  noFactors %>% lm(mpg~displacement,data=.) %>% plot(main="Mileage v/s Displacement")
+#+END_SRC
+
+[[file:/islr/sol01/unnamed-chunk-28-5.png]]
+
+#+BEGIN_SRC R
+  noFactors %>% lm(mpg~.,data=.) %>% plot(main="Mileage Multiple Regression")
+#+END_SRC
+
+[[file:/islr/sol01/unnamed-chunk-28-6.png]]
+
+Form this we can see that the fit is not very accurate as there is a
+clear curve to the residuals. The 14th point has high leverage, though
+it is of a small magnitude. Thus it is not expected to have affected the
+plot too much.
+
+*We know* that an observation with a studentized residual greater than
+$3$ in absolute value are possible outliers. Hence we must plot this.
+
+#+BEGIN_SRC R
+  # Predict and get the plot
+  fitPlot <- noFactors %>% lm(mpg~.,data=.)
+  # See residuals
+  plot(xlab="Prediction",ylab="Studentized Residual",x=predict(fitPlot),y=rstudent(fitPlot))
+#+END_SRC
+
+[[file:/islr/sol01/unnamed-chunk-29-1.png]]
+
+#+BEGIN_SRC R
+  # Try a linear fit of studentized residuals
+  par(mfrow=c(2,2))
+  plot(lm(predict(fitPlot)~rstudent(fitPlot)))
+#+END_SRC
+
+[[file:/islr/sol01/unnamed-chunk-29-2.png]]
+
+Clearly the studentized residuals are nonlinear w.r.t the prediction.
+Also, some points are above the absolute value of $3$ so they might be
+outliers, in keeping with the leverage plot.
+
+*(e)* Interaction effects
+
+*We recall* that =x*y= corresponds to =x+y+x:y=
+
+#+BEGIN_SRC R
+  # View the correlation matrix
+  cleanAuto %>% select(-name,-origin) %>% cor
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##                     mpg  cylinders displacement horsepower     weight
+  ## mpg           1.0000000 -0.7776175   -0.8051269 -0.7784268 -0.8322442
+  ## cylinders    -0.7776175  1.0000000    0.9508233  0.8429834  0.8975273
+  ## displacement -0.8051269  0.9508233    1.0000000  0.8972570  0.9329944
+  ## horsepower   -0.7784268  0.8429834    0.8972570  1.0000000  0.8645377
+  ## weight       -0.8322442  0.8975273    0.9329944  0.8645377  1.0000000
+  ## acceleration  0.4233285 -0.5046834   -0.5438005 -0.6891955 -0.4168392
+  ## year          0.5805410 -0.3456474   -0.3698552 -0.4163615 -0.3091199
+  ##              acceleration       year
+  ## mpg             0.4233285  0.5805410
+  ## cylinders      -0.5046834 -0.3456474
+  ## displacement   -0.5438005 -0.3698552
+  ## horsepower     -0.6891955 -0.4163615
+  ## weight         -0.4168392 -0.3091199
+  ## acceleration    1.0000000  0.2903161
+  ## year            0.2903161  1.0000000
+#+END_EXAMPLE
+
+#+BEGIN_SRC R
+  summary(lm(mpg~weight*displacement*year,data=noFactors[(10:85),]))
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##
+  ## Call:
+  ## lm(formula = mpg ~ weight * displacement * year, data = noFactors[(10:85),
+  ##     ])
+  ##
+  ## Residuals:
+  ##     Min      1Q  Median      3Q     Max
+  ## -5.3020 -0.9055  0.0966  0.8912  3.7049
+  ##
+  ## Coefficients:
+  ##                            Estimate Std. Error t value Pr(>|t|)
+  ## (Intercept)               3.961e+02  2.578e+02   1.537    0.129
+  ## weight                   -1.030e-01  1.008e-01  -1.021    0.311
+  ## displacement             -1.587e+00  1.308e+00  -1.213    0.229
+  ## year                     -4.889e+00  3.623e+00  -1.349    0.182
+  ## weight:displacement       3.926e-04  3.734e-04   1.051    0.297
+  ## weight:year               1.317e-03  1.418e-03   0.929    0.356
+  ## displacement:year         2.150e-02  1.846e-02   1.165    0.248
+  ## weight:displacement:year -5.287e-06  5.253e-06  -1.007    0.318
+  ##
+  ## Residual standard error: 1.8 on 68 degrees of freedom
+  ## Multiple R-squared:  0.922,  Adjusted R-squared:  0.914
+  ## F-statistic: 114.9 on 7 and 68 DF,  p-value: < 2.2e-16
+#+END_EXAMPLE
+
+#+BEGIN_SRC R
+  summary(lm(mpg~weight*displacement*year,data=noFactors))
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##
+  ## Call:
+  ## lm(formula = mpg ~ weight * displacement * year, data = noFactors)
+  ##
+  ## Residuals:
+  ##     Min      1Q  Median      3Q     Max
+  ## -9.6093 -1.6472 -0.0531  1.2289 14.5604
+  ##
+  ## Coefficients:
+  ##                            Estimate Std. Error t value Pr(>|t|)
+  ## (Intercept)              -8.437e+01  3.128e+01  -2.697   0.0073 **
+  ## weight                    8.489e-03  1.322e-02   0.642   0.5212
+  ## displacement              3.434e-01  1.969e-01   1.744   0.0820 .
+  ## year                      1.828e+00  4.127e-01   4.430 1.23e-05 ***
+  ## weight:displacement      -6.589e-05  5.055e-05  -1.303   0.1932
+  ## weight:year              -2.433e-04  1.744e-04  -1.395   0.1638
+  ## displacement:year        -5.566e-03  2.674e-03  -2.082   0.0380 *
+  ## weight:displacement:year  1.144e-06  6.823e-07   1.677   0.0944 .
+  ## ---
+  ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+  ##
+  ## Residual standard error: 2.951 on 384 degrees of freedom
+  ## Multiple R-squared:  0.8596, Adjusted R-squared:  0.8571
+  ## F-statistic:   336 on 7 and 384 DF,  p-value: < 2.2e-16
+#+END_EXAMPLE
+
+- Adding the interaction effects of the $3$ most positive R value terms
+  improves the existing prediction to be better than that obtained by
+  considering all effects.
+- We note that the best model is obtained by removing the range
+  identified in chapter 2.
+
+*(f)* Nonlinear transformations
+
+#+BEGIN_SRC R
+  summary(lm(mpg~weight*displacement*year+I(year^2),data=noFactors[(10:85),]))
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##
+  ## Call:
+  ## lm(formula = mpg ~ weight * displacement * year + I(year^2),
+  ##     data = noFactors[(10:85), ])
+  ##
+  ## Residuals:
+  ##     Min      1Q  Median      3Q     Max
+  ## -5.1815 -0.8235  0.0144  1.0076  3.9420
+  ##
+  ## Coefficients:
+  ##                            Estimate Std. Error t value Pr(>|t|)
+  ## (Intercept)              -4.205e+03  1.810e+03  -2.324   0.0232 *
+  ## weight                   -8.800e-02  9.709e-02  -0.906   0.3680
+  ## displacement             -1.030e+00  1.276e+00  -0.807   0.4225
+  ## year                      1.238e+02  5.026e+01   2.464   0.0163 *
+  ## I(year^2)                -9.000e-01  3.506e-01  -2.567   0.0125 *
+  ## weight:displacement       2.471e-04  3.634e-04   0.680   0.4988
+  ## weight:year               1.113e-03  1.365e-03   0.815   0.4177
+  ## displacement:year         1.368e-02  1.800e-02   0.760   0.4501
+  ## weight:displacement:year -3.254e-06  5.111e-06  -0.637   0.5264
+  ## ---
+  ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+  ##
+  ## Residual standard error: 1.73 on 67 degrees of freedom
+  ## Multiple R-squared:  0.929,  Adjusted R-squared:  0.9205
+  ## F-statistic: 109.6 on 8 and 67 DF,  p-value: < 2.2e-16
+#+END_EXAMPLE
+
+#+BEGIN_SRC R
+  summary(lm(mpg~.-I(log(acceleration^2)),data=noFactors[(10:85),]))
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##
+  ## Call:
+  ## lm(formula = mpg ~ . - I(log(acceleration^2)), data = noFactors[(10:85),
+  ##     ])
+  ##
+  ## Residuals:
+  ##    Min     1Q Median     3Q    Max
+  ## -6.232 -1.470 -0.211  1.075  7.088
+  ##
+  ## Coefficients:
+  ##                Estimate Std. Error t value Pr(>|t|)
+  ## (Intercept)  41.3787633 24.1208720   1.715   0.0907 .
+  ## cylinders     0.0863161  0.6112822   0.141   0.8881
+  ## displacement -0.0148491  0.0103249  -1.438   0.1549
+  ## horsepower   -0.0158500  0.0151259  -1.048   0.2984
+  ## weight       -0.0039125  0.0008546  -4.578 2.02e-05 ***
+  ## acceleration -0.1473786  0.1438220  -1.025   0.3091
+  ## year         -0.0378187  0.3380266  -0.112   0.9112
+  ## ---
+  ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+  ##
+  ## Residual standard error: 2.262 on 69 degrees of freedom
+  ## Multiple R-squared:  0.8751, Adjusted R-squared:  0.8642
+  ## F-statistic: 80.55 on 6 and 69 DF,  p-value: < 2.2e-16
+#+END_EXAMPLE
+
+- The best model I found was still the one without the non-linear
+  transformation but with removed outliers and additional interaction
+  effects of =displacement=,=year= and =weight=
+
+- A popular approach is to use a =log= transform for both the inputs and
+  the outputs
+
+#+BEGIN_SRC R
+  summary(lm(log(mpg)~.,data=noFactors[(10:85),]))
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##
+  ## Call:
+  ## lm(formula = log(mpg) ~ ., data = noFactors[(10:85), ])
+  ##
+  ## Residuals:
+  ##       Min        1Q    Median        3Q       Max
+  ## -0.285805 -0.052358 -0.001456  0.066521  0.209739
+  ##
+  ## Coefficients:
+  ##                Estimate Std. Error t value Pr(>|t|)
+  ## (Intercept)   3.886e+00  1.028e+00   3.781 0.000328 ***
+  ## cylinders    -1.771e-02  2.604e-02  -0.680 0.498669
+  ## displacement -1.540e-04  4.399e-04  -0.350 0.727314
+  ## horsepower   -2.343e-03  6.444e-04  -3.636 0.000529 ***
+  ## weight       -1.960e-04  3.641e-05  -5.383 9.51e-07 ***
+  ## acceleration -1.525e-02  6.128e-03  -2.489 0.015224 *
+  ## year          4.138e-03  1.440e-02   0.287 0.774703
+  ## ---
+  ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+  ##
+  ## Residual standard error: 0.09636 on 69 degrees of freedom
+  ## Multiple R-squared:  0.919,  Adjusted R-squared:  0.912
+  ## F-statistic: 130.5 on 6 and 69 DF,  p-value: < 2.2e-16
+#+END_EXAMPLE
+
+#+BEGIN_SRC R
+  summary(lm(log(mpg)~log(weight*displacement*year),data=noFactors[(10:85),]))
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##
+  ## Call:
+  ## lm(formula = log(mpg) ~ log(weight * displacement * year), data = noFactors[(10:85),
+  ##     ])
+  ##
+  ## Residuals:
+  ##      Min       1Q   Median       3Q      Max
+  ## -0.41121 -0.04107  0.01266  0.07791  0.21056
+  ##
+  ## Coefficients:
+  ##                                   Estimate Std. Error t value Pr(>|t|)
+  ## (Intercept)                        8.91995    0.26467   33.70   <2e-16 ***
+  ## log(weight * displacement * year) -0.34250    0.01508  -22.71   <2e-16 ***
+  ## ---
+  ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+  ##
+  ## Residual standard error: 0.1158 on 74 degrees of freedom
+  ## Multiple R-squared:  0.8745, Adjusted R-squared:  0.8728
+  ## F-statistic: 515.6 on 1 and 74 DF,  p-value: < 2.2e-16
+#+END_EXAMPLE
+
+** Question 3.10 - Page 123
+   :PROPERTIES:
+   :CUSTOM_ID: question-3.10---page-123
+   :END:
+
+This question should be answered using the Carseats data set.
+
+*(a)* Fit a multiple regression model to predict =Sales= using =Price=,
+=Urban=, and =US=.
+
+*(b)* Provide an interpretation of each coefficient in the model. Be
+careful---some of the variables in the model are qualitative!
+
+*(c)* Write out the model in equation form, being careful to handle the
+qualitative variables properly.
+
+*(d)* For which of the predictors can you reject the null hypothesis
+$H_0:\beta_j=0$?
+
+*(e)* On the basis of your response to the previous question, ﬁt a
+smaller model that only uses the predictors for which there is evidence
+of association with the outcome.
+
+*(f)* How well do the models in (a) and (e) fit the data?
+
+*(g)* Using the model from (e), obtain $95%$ confidence intervals for
+the coefficient(s).
+
+*(h)* Is there evidence of outliers or high leverage observations in the
+model from (e)?
+
+*** Answer
+    :PROPERTIES:
+    :CUSTOM_ID: answer-3
+    :END:
+
+Load the dataset (and clean it)
+
+#+BEGIN_SRC R
+  cleanCarSeats <- na.omit(ISLR::Carseats)
+#+END_SRC
+
+Obtain summary statistics
+
+#+BEGIN_SRC R
+  cleanCarSeats %>% sapply(unique) %>% sapply(length)
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##       Sales   CompPrice      Income Advertising  Population       Price
+  ##         336          73          98          28         275         101
+  ##   ShelveLoc         Age   Education       Urban          US
+  ##           3          56           9           2           2
+#+END_EXAMPLE
+
+#+BEGIN_SRC R
+  str(cleanCarSeats)
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ## 'data.frame':    400 obs. of  11 variables:
+  ##  $ Sales      : num  9.5 11.22 10.06 7.4 4.15 ...
+  ##  $ CompPrice  : num  138 111 113 117 141 124 115 136 132 132 ...
+  ##  $ Income     : num  73 48 35 100 64 113 105 81 110 113 ...
+  ##  $ Advertising: num  11 16 10 4 3 13 0 15 0 0 ...
+  ##  $ Population : num  276 260 269 466 340 501 45 425 108 131 ...
+  ##  $ Price      : num  120 83 80 97 128 72 108 120 124 124 ...
+  ##  $ ShelveLoc  : Factor w/ 3 levels "Bad","Good","Medium": 1 2 3 3 1 1 3 2 3 3 ...
+  ##  $ Age        : num  42 65 59 55 38 78 71 67 76 76 ...
+  ##  $ Education  : num  17 10 12 14 13 16 15 10 10 17 ...
+  ##  $ Urban      : Factor w/ 2 levels "No","Yes": 2 2 2 2 2 1 2 2 1 1 ...
+  ##  $ US         : Factor w/ 2 levels "No","Yes": 2 2 2 2 1 2 1 2 1 2 ...
+#+END_EXAMPLE
+
+#+BEGIN_SRC R
+  summary(cleanCarSeats)
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##      Sales          CompPrice       Income        Advertising
+  ##  Min.   : 0.000   Min.   : 77   Min.   : 21.00   Min.   : 0.000
+  ##  1st Qu.: 5.390   1st Qu.:115   1st Qu.: 42.75   1st Qu.: 0.000
+  ##  Median : 7.490   Median :125   Median : 69.00   Median : 5.000
+  ##  Mean   : 7.496   Mean   :125   Mean   : 68.66   Mean   : 6.635
+  ##  3rd Qu.: 9.320   3rd Qu.:135   3rd Qu.: 91.00   3rd Qu.:12.000
+  ##  Max.   :16.270   Max.   :175   Max.   :120.00   Max.   :29.000
+  ##    Population        Price        ShelveLoc        Age          Education
+  ##  Min.   : 10.0   Min.   : 24.0   Bad   : 96   Min.   :25.00   Min.   :10.0
+  ##  1st Qu.:139.0   1st Qu.:100.0   Good  : 85   1st Qu.:39.75   1st Qu.:12.0
+  ##  Median :272.0   Median :117.0   Medium:219   Median :54.50   Median :14.0
+  ##  Mean   :264.8   Mean   :115.8                Mean   :53.32   Mean   :13.9
+  ##  3rd Qu.:398.5   3rd Qu.:131.0                3rd Qu.:66.00   3rd Qu.:16.0
+  ##  Max.   :509.0   Max.   :191.0                Max.   :80.00   Max.   :18.0
+  ##  Urban       US
+  ##  No :118   No :142
+  ##  Yes:282   Yes:258
+  ##
+  ##
+  ##
+  ##
+#+END_EXAMPLE
+
+We can see that:
+
+- *Urban*, *US* and *ShelveLoc* are factors with 2,2 and 3 levels
+  respectively
+- Education has only 9 unique values so we might as well consider it to
+  be a factor too if we need to
+
+*(a)* Multiple Regression Model
+
+Fit it to things
+
+#+BEGIN_SRC R
+  summary(lm(Sales~.,data=cleanCarSeats))
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##
+  ## Call:
+  ## lm(formula = Sales ~ ., data = cleanCarSeats)
+  ##
+  ## Residuals:
+  ##     Min      1Q  Median      3Q     Max
+  ## -2.8692 -0.6908  0.0211  0.6636  3.4115
+  ##
+  ## Coefficients:
+  ##                   Estimate Std. Error t value Pr(>|t|)
+  ## (Intercept)      5.6606231  0.6034487   9.380  < 2e-16 ***
+  ## CompPrice        0.0928153  0.0041477  22.378  < 2e-16 ***
+  ## Income           0.0158028  0.0018451   8.565 2.58e-16 ***
+  ## Advertising      0.1230951  0.0111237  11.066  < 2e-16 ***
+  ## Population       0.0002079  0.0003705   0.561    0.575
+  ## Price           -0.0953579  0.0026711 -35.700  < 2e-16 ***
+  ## ShelveLocGood    4.8501827  0.1531100  31.678  < 2e-16 ***
+  ## ShelveLocMedium  1.9567148  0.1261056  15.516  < 2e-16 ***
+  ## Age             -0.0460452  0.0031817 -14.472  < 2e-16 ***
+  ## Education       -0.0211018  0.0197205  -1.070    0.285
+  ## UrbanYes         0.1228864  0.1129761   1.088    0.277
+  ## USYes           -0.1840928  0.1498423  -1.229    0.220
+  ## ---
+  ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+  ##
+  ## Residual standard error: 1.019 on 388 degrees of freedom
+  ## Multiple R-squared:  0.8734, Adjusted R-squared:  0.8698
+  ## F-statistic: 243.4 on 11 and 388 DF,  p-value: < 2.2e-16
+#+END_EXAMPLE
+
+#+BEGIN_SRC R
+  summary(lm(Sales~US*Price*Urban,data=cleanCarSeats))
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##
+  ## Call:
+  ## lm(formula = Sales ~ US * Price * Urban, data = cleanCarSeats)
+  ##
+  ## Residuals:
+  ##     Min      1Q  Median      3Q     Max
+  ## -6.7952 -1.6659 -0.0984  1.6119  7.2433
+  ##
+  ## Coefficients:
+  ##                       Estimate Std. Error t value Pr(>|t|)
+  ## (Intercept)          13.456350   1.727210   7.791 6.03e-14 ***
+  ## USYes                 2.049051   2.322591   0.882    0.378
+  ## Price                -0.061657   0.014875  -4.145 4.17e-05 ***
+  ## UrbanYes             -0.651545   2.071401  -0.315    0.753
+  ## USYes:Price          -0.001567   0.019972  -0.078    0.937
+  ## USYes:UrbanYes       -1.122034   2.759662  -0.407    0.685
+  ## Price:UrbanYes        0.010793   0.017796   0.606    0.545
+  ## USYes:Price:UrbanYes  0.001288   0.023619   0.055    0.957
+  ## ---
+  ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+  ##
+  ## Residual standard error: 2.473 on 392 degrees of freedom
+  ## Multiple R-squared:  0.2467, Adjusted R-squared:  0.2333
+  ## F-statistic: 18.34 on 7 and 392 DF,  p-value: < 2.2e-16
+#+END_EXAMPLE
+
+#+BEGIN_SRC R
+  summary(lm(Sales~US+Price+Urban,data=cleanCarSeats))
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##
+  ## Call:
+  ## lm(formula = Sales ~ US + Price + Urban, data = cleanCarSeats)
+  ##
+  ## Residuals:
+  ##     Min      1Q  Median      3Q     Max
+  ## -6.9206 -1.6220 -0.0564  1.5786  7.0581
+  ##
+  ## Coefficients:
+  ##              Estimate Std. Error t value Pr(>|t|)
+  ## (Intercept) 13.043469   0.651012  20.036  < 2e-16 ***
+  ## USYes        1.200573   0.259042   4.635 4.86e-06 ***
+  ## Price       -0.054459   0.005242 -10.389  < 2e-16 ***
+  ## UrbanYes    -0.021916   0.271650  -0.081    0.936
+  ## ---
+  ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+  ##
+  ## Residual standard error: 2.472 on 396 degrees of freedom
+  ## Multiple R-squared:  0.2393, Adjusted R-squared:  0.2335
+  ## F-statistic: 41.52 on 3 and 396 DF,  p-value: < 2.2e-16
+#+END_EXAMPLE
+
+*(b)* Interpret stuff
+
+To interpret the data, we need to determine which of the models fits the
+data best, we will use =anova()= to test this:
+
+#+BEGIN_SRC R
+  lmCarSAll<-lm(Sales~.,data=cleanCarSeats)
+  lmCarStimesPUU<-lm(Sales~US*Price*Urban,data=cleanCarSeats)
+  lmCarSplusPUU<-lm(Sales~US+Price+Urban,data=cleanCarSeats)
+  anova(lmCarSAll,lmCarStimesPUU,lmCarSplusPUU)
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ## Analysis of Variance Table
+  ##
+  ## Model 1: Sales ~ CompPrice + Income + Advertising + Population + Price +
+  ##     ShelveLoc + Age + Education + Urban + US
+  ## Model 2: Sales ~ US * Price * Urban
+  ## Model 3: Sales ~ US + Price + Urban
+  ##   Res.Df     RSS Df Sum of Sq        F    Pr(>F)
+  ## 1    388  402.83
+  ## 2    392 2397.10 -4  -1994.27 480.2082 < 2.2e-16 ***
+  ## 3    396 2420.83 -4    -23.73   5.7149 0.0001772 ***
+  ## ---
+  ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#+END_EXAMPLE
+
+#+BEGIN_SRC R
+  anova(lmCarStimesPUU,lmCarSplusPUU)
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ## Analysis of Variance Table
+  ##
+  ## Model 1: Sales ~ US * Price * Urban
+  ## Model 2: Sales ~ US + Price + Urban
+  ##   Res.Df    RSS Df Sum of Sq      F Pr(>F)
+  ## 1    392 2397.1
+  ## 2    396 2420.8 -4   -23.734 0.9703 0.4236
+#+END_EXAMPLE
+
+*Remember* that it is not possible to use =anova()= unless the same
+variables are present in all the models being tested, so it is
+meaningless to use =anova= for =lmCarSAll= along with the others,
+because we can't change the interaction model to get only the main
+effects.
+
+- We note that due to the low value of the F-statistic and the non-zero
+  value of the p-value we cannot disregard the null hypothesis, or in
+  other words, the models are basically the same in terms of their
+  performance.
+
+This means that I would like to continue with the simpler model, since
+the increase in R squared is too small to account for dealing with the
+additional factors.
+
+- We see immediately, that there is a positive correlation only with
+  being in the US
+- Increases in price and being in an urban area actually decrease the
+  sales, which is not surprising since being in the an urban area is
+  probably correlated to a higher price, which we can check immediately
+
+#+BEGIN_SRC R
+  summary(lm(Price~Urban,data=cleanCarSeats))
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##
+  ## Call:
+  ## lm(formula = Price ~ Urban, data = cleanCarSeats)
+  ##
+  ## Residuals:
+  ##     Min      1Q  Median      3Q     Max
+  ## -92.514 -15.514   1.205  14.595  74.486
+  ##
+  ## Coefficients:
+  ##             Estimate Std. Error t value Pr(>|t|)
+  ## (Intercept)  114.076      2.180  52.330   <2e-16 ***
+  ## UrbanYes       2.438      2.596   0.939    0.348
+  ## ---
+  ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+  ##
+  ## Residual standard error: 23.68 on 398 degrees of freedom
+  ## Multiple R-squared:  0.002211,   Adjusted R-squared:  -0.0002965
+  ## F-statistic: 0.8817 on 1 and 398 DF,  p-value: 0.3483
+#+END_EXAMPLE
+
+We see that our assumption is validated. Being in an urban area has a
+low t-statistic for a positive increase on the slope
+
+- Returning to our previous model, we note that there is a high value of
+  the p-value of the t-statistic for =Urban= being true, this means
+  there isn't a real relationship between being in an urban area and the
+  sales. This makes intuitive sense as well
+
+*note* =t-test= is essentially a linear model with one variable, that
+is, if we want to find out if there is a relation between having a store
+in an urban area, we could sum all the urban yes and divide by the
+number of observations and compare that to the sum of all the urban no
+divided by the number of observations which is essentially the =t-test=
+again.
+
+- =Price= is significant, and has an inverse relation with the sales, so
+  we should keep that in mind
+
+*(c)* In Equation Form:
+
+$$ Sales=1.200573*USYes - 0.054459*Price - 0.021916*UrbanYes + 13.043469 $$
+
+*(e)* Other models
+
+- We know from our case-study on testing the full multiple linear
+  regression for =Sales= that there are definitely more important
+  variables being ignored. However, we also know that =Urban= is not
+  significant, so we can use a smaller model.
+
+#+BEGIN_SRC R
+  lmCarSplusPU<-lm(Sales~US+Price, data=cleanCarSeats)
+#+END_SRC
+
+*(f)* Comparison of models
+
+#+BEGIN_SRC R
+  summary(lmCarSplusPU)
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##
+  ## Call:
+  ## lm(formula = Sales ~ US + Price, data = cleanCarSeats)
+  ##
+  ## Residuals:
+  ##     Min      1Q  Median      3Q     Max
+  ## -6.9269 -1.6286 -0.0574  1.5766  7.0515
+  ##
+  ## Coefficients:
+  ##             Estimate Std. Error t value Pr(>|t|)
+  ## (Intercept) 13.03079    0.63098  20.652  < 2e-16 ***
+  ## USYes        1.19964    0.25846   4.641 4.71e-06 ***
+  ## Price       -0.05448    0.00523 -10.416  < 2e-16 ***
+  ## ---
+  ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+  ##
+  ## Residual standard error: 2.469 on 397 degrees of freedom
+  ## Multiple R-squared:  0.2393, Adjusted R-squared:  0.2354
+  ## F-statistic: 62.43 on 2 and 397 DF,  p-value: < 2.2e-16
+#+END_EXAMPLE
+
+#+BEGIN_SRC R
+  anova(lmCarSplusPUU,lmCarSplusPU)
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ## Analysis of Variance Table
+  ##
+  ## Model 1: Sales ~ US + Price + Urban
+  ## Model 2: Sales ~ US + Price
+  ##   Res.Df    RSS Df Sum of Sq      F Pr(>F)
+  ## 1    396 2420.8
+  ## 2    397 2420.9 -1  -0.03979 0.0065 0.9357
+#+END_EXAMPLE
+
+As expected, the low value of the F statistic and the high p-value for
+the =anova()= test asserts that the null hypothesis cannot be neglected,
+thus there are no differences between the model with the insignificant
+parameter, which is also seen in the =R= squared value, which is the
+same for both models
+
+*(g)* Confidence Intervals
+
+#+BEGIN_SRC R
+  confint(lmCarSplusPU)
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##                   2.5 %      97.5 %
+  ## (Intercept) 11.79032020 14.27126531
+  ## USYes        0.69151957  1.70776632
+  ## Price       -0.06475984 -0.04419543
+#+END_EXAMPLE
+
+#+BEGIN_SRC R
+  confint(lmCarSplusPUU)
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##                   2.5 %      97.5 %
+  ## (Intercept) 11.76359670 14.32334118
+  ## USYes        0.69130419  1.70984121
+  ## Price       -0.06476419 -0.04415351
+  ## UrbanYes    -0.55597316  0.51214085
+#+END_EXAMPLE
+
+- ☐ Look into trying to plot this with =ggplot=
+
+*(h)* Outliers
+
+- We will first check the leverage plots
+
+#+BEGIN_SRC R
+  par(mfrow=c(2,2))
+  plot(lmCarSplusPU)
+#+END_SRC
+
+#+CAPTION: Leverage Plots
+[[file:/islr/sol01/unnamed-chunk-41-1.png]]
+
+We can see there is a point with high leverage, but it has a low
+residual. In any case we should check further.
+
+- Now we will check the studentized residuals to see if they are greater
+  than 3
+
+#+BEGIN_SRC R
+  # See residuals
+  plot(xlab="Prediction",ylab="Studentized Residual",x=predict(lmCarSplusPU),y=rstudent(lmCarSplusPU))
+#+END_SRC
+
+#+CAPTION: Studentized residuals
+[[file:/islr/sol01/unnamed-chunk-42-1.png]]
+
+Thus I would say there are no outliers in our dataset, as none of our
+datapoints have an absolute studentized residual above 3.
+[fn:1] James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). An Introduction to Statistical Learning: with Applications in R. Berlin, Germany: Springer Science & Business Media.
