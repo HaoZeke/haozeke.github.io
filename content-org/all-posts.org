@@ -56,7 +56,7 @@ seemed kinda neat.
 :PROPERTIES:
 :EXPORT_FILE_NAME: ghNotif
 :EXPORT_HUGO_CATEGORIES: notes
-:EXPORT_HUGO_TAGS: tools github workflows
+:EXPORT_HUGO_TAGS: tools github workflow
 :EXPORT_DATE: 2020-02-12 11:36
 :END:
 ** Background
@@ -88,7 +88,7 @@ It looks like this:
 :PROPERTIES:
 :EXPORT_FILE_NAME: poetry-direnv
 :EXPORT_HUGO_CATEGORIES: programming
-:EXPORT_HUGO_TAGS: tools direnv workflows python
+:EXPORT_HUGO_TAGS: tools direnv workflow python
 :EXPORT_DATE: 2020-02-13 21:36
 :END:
 ** Background
@@ -130,7 +130,7 @@ Now we can just make ~.envrc~ files with ~layout_poetry~ and everything will
 :PROPERTIES:
 :EXPORT_FILE_NAME: jupyter-orgmode
 :EXPORT_HUGO_CATEGORIES: programming
-:EXPORT_HUGO_TAGS: tools emacs workflows python
+:EXPORT_HUGO_TAGS: tools emacs workflow python
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :EXPORT_DATE: 2020-02-13 22:36
 :END:
@@ -365,7 +365,7 @@ Having finally broken into the giddy regimes of 150+ wpm, I was ecstatic, and
 :PROPERTIES:
 :EXPORT_FILE_NAME: rstudio-emacs
 :EXPORT_HUGO_CATEGORIES: programming
-:EXPORT_HUGO_TAGS: tools emacs workflows R
+:EXPORT_HUGO_TAGS: tools emacs workflow R
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :EXPORT_DATE: 2020-02-15 04:38
 :END:
