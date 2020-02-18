@@ -3,6 +3,7 @@
 #+date: 2020-02-17 15:28
 
 #+hugo_base_dir: ../
+#+hugo_section: ./posts
 #+export_file_name: islr-ch4
 #+hugo_custom_front_matter: :toc true :comments true
 #+hugo_tags: solutions R ISLR
