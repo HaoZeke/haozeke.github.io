@@ -40,15 +40,6 @@ more involved.
                    "GGally","precerec") # For plots
 #+END_SRC
 
-#+BEGIN_EXAMPLE
-  ## Warning in install.packages("remotes", "data.table", "GGally", "precerec"): 'lib
-  ## = "data.table"' is not writable
-#+END_EXAMPLE
-
-#+BEGIN_EXAMPLE
-  ## Error in install.packages("remotes", "data.table", "GGally", "precerec"): unable to install packages
-#+END_EXAMPLE
-
 #+BEGIN_SRC R
   library(remotes)
   remotes::install_github("mlr-org/mlr3")
@@ -318,45 +309,6 @@ a quick peek at them all.
 #+BEGIN_SRC R
   as.data.table(mlr_learners)
 #+END_SRC
-
-#+BEGIN_EXAMPLE
-  ## Warning: Package 'glmnet' required but not installed for Learner
-  ## 'classif.glmnet'
-#+END_EXAMPLE
-
-#+BEGIN_EXAMPLE
-  ## Warning: Package 'kknn' required but not installed for Learner 'classif.kknn'
-#+END_EXAMPLE
-
-#+BEGIN_EXAMPLE
-  ## Warning: Package 'ranger' required but not installed for Learner
-  ## 'classif.ranger'
-#+END_EXAMPLE
-
-#+BEGIN_EXAMPLE
-  ## Warning: Package 'xgboost' required but not installed for Learner
-  ## 'classif.xgboost'
-#+END_EXAMPLE
-
-#+BEGIN_EXAMPLE
-  ## Warning: Package 'glmnet' required but not installed for Learner 'regr.glmnet'
-#+END_EXAMPLE
-
-#+BEGIN_EXAMPLE
-  ## Warning: Package 'kknn' required but not installed for Learner 'regr.kknn'
-#+END_EXAMPLE
-
-#+BEGIN_EXAMPLE
-  ## Warning: Package 'DiceKriging' required but not installed for Learner 'regr.km'
-#+END_EXAMPLE
-
-#+BEGIN_EXAMPLE
-  ## Warning: Package 'ranger' required but not installed for Learner 'regr.ranger'
-#+END_EXAMPLE
-
-#+BEGIN_EXAMPLE
-  ## Warning: Package 'xgboost' required but not installed for Learner 'regr.xgboost'
-#+END_EXAMPLE
 
 #+BEGIN_EXAMPLE
   ##                     key                                    feature_types
