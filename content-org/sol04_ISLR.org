@@ -1,6 +1,6 @@
 #+title:  "ISLR :: Linear Model Selection and Regularization"
 #+author: "Rohit Goswami"
-#+date: 2020-02-19 07:00
+#+date: 2020-02-19 7:00
 
 #+hugo_base_dir: ../
 #+hugo_section: ./posts
