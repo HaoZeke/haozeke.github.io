@@ -253,7 +253,7 @@ By now we might have a pretty good idea of how this will look, but it is
 still worth seeing.
 
 #+BEGIN_SRC R
-  weeklyDat %>% select(-Direction) %>% sapply(mean)
+  weeklyDat %>% subset(select=-c(Direction)) %>% sapply(mean)
 #+END_SRC
 
 #+BEGIN_EXAMPLE
@@ -268,7 +268,7 @@ interesting though, is that the =Today= variable has roughly the same
 mean as the =Lag= variables.
 
 #+BEGIN_SRC R
-  weeklyDat %>% select(-Direction) %>% sapply(sd)
+  weeklyDat %>% subset(select=-c(Direction)) %>% sapply(sd)
 #+END_SRC
 
 #+BEGIN_EXAMPLE
@@ -284,7 +284,7 @@ This is largely redundant in terms of new information.
     :END:
 
 #+BEGIN_SRC R
-  weeklyDat %>% select(-Direction) %>% cor
+  weeklyDat %>% subset(select=-c(Direction)) %>% cor
 #+END_SRC
 
 #+BEGIN_EXAMPLE
@@ -314,7 +314,7 @@ data instead.
 
 #+BEGIN_SRC R
   # Uses caret
-  corrCols=weeklyDat %>% select(-Direction) %>% cor %>% findCorrelation(cutoff=0.8)
+  corrCols=weeklyDat %>% subset(select=-c(Direction)) %>% cor %>% findCorrelation(cutoff=0.8)
   reducedDat<-weeklyDat[-c(corrCols)]
   reducedDat %>% summary
 #+END_SRC
@@ -353,7 +353,7 @@ the methodology
 here]].
 
 #+BEGIN_SRC R
-  weeklyDat %>% select(-Direction) %>% gather(-Year,key="Variable", value="Value") %>% ggplot(aes(x=Value,y=Year)) +
+  weeklyDat %>% subset(select=-c(Direction)) %>% gather(-Year,key="Variable", value="Value") %>% ggplot(aes(x=Value,y=Year)) +
     geom_point() +
     facet_wrap(~Variable) +
     coord_flip()
@@ -367,7 +367,7 @@ That didn't really tell us much which we didn't already get from the
 variable since we don't have that many in the first place..
 
 #+BEGIN_SRC R
-  weeklyDat %>% select(-Direction) %>% pairs
+  weeklyDat %>% subset(select=-c(Direction)) %>% pairs
 #+END_SRC
 
 #+CAPTION: Pairs
@@ -407,7 +407,7 @@ variables.
 A really good-looking box-plot is easy to get with the =caret= library:
 
 #+BEGIN_SRC R
-  weeklyDat %>% select(-Direction) %>% featurePlot(
+  weeklyDat %>% subset(select=-c(Direction)) %>% featurePlot(
               y = weeklyDat$Direction,
               plot = "box",
               # Pass in options to bwplot()
@@ -439,7 +439,7 @@ our correlation matrix as well.
 #+END_EXAMPLE
 
 #+BEGIN_SRC R
-  weeklyDat %>% select(-Direction) %>% cor %>% melt %>% ggplot(aes(x=Var1,y=Var2,fill=value)) +
+  weeklyDat %>% subset(select=-c(Direction)) %>% cor %>% melt %>% ggplot(aes(x=Var1,y=Var2,fill=value)) +
     geom_tile()
 #+END_SRC
 
