@@ -1251,10 +1251,27 @@ We might want to take a look at these.
   ##  2.297296e+01 -4.700560e+01  4.195006e+01  2.003912e-01  2.383197e+01
 #+END_EXAMPLE
 
+- But five seems like a better bet.
+
+#+BEGIN_SRC R
+  coefficients(modelFit,id=5)
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ##   (Intercept)    PrivateYes    Room.Board           PhD   perc.alumni 
+  ## -2864.6325619  2936.7416766     1.0677573    40.5334088    61.3147684 
+  ##        Expend 
+  ##     0.2253945
+#+END_EXAMPLE
+
 *** b) GAM
     :PROPERTIES:
     :CUSTOM_ID: b-gam
     :END:
+
+#+BEGIN_SRC R
+  library(gam)
+#+END_SRC
 
 #+BEGIN_SRC R
   fit = gam(Outstate ~ Private+s(Apps,3)+Accept+Enroll+
@@ -1270,14 +1287,32 @@ We might want to take a look at these.
 #+END_EXAMPLE
 
 #+BEGIN_SRC R
+  fit2 = gam(Outstate ~ Private+s(Room.Board,2)+s(PhD,3)+s(perc.alumni)+Expend
+          , data = colDat)
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ## Warning in model.matrix.default(mt, mf, contrasts): non-list contrasts argument
+  ## ignored
+#+END_EXAMPLE
+
+#+BEGIN_SRC R
   par(mfrow=c(2,2))
   plot(fit,se=TRUE)
 #+END_SRC
 
-[[file:/islr/sol5/unnamed-chunk-36-1.png
-]][[file:/islr/sol5/unnamed-chunk-36-2.png
-]][[file:/islr/sol5/unnamed-chunk-36-3.png
-]][[file:/islr/sol5/unnamed-chunk-36-4.png]]
+[[file:/islr/sol5/unnamed-chunk-39-1.png]]
+[[file:/islr/sol5/unnamed-chunk-39-2.png]]
+[[file:/islr/sol5/unnamed-chunk-39-3.png]]
+[[file:/islr/sol5/unnamed-chunk-39-4.png]]
+
+#+BEGIN_SRC R
+  par(mfrow=c(2,2))
+  plot(fit2,se=TRUE)
+#+END_SRC
+
+[[file:/islr/sol5/unnamed-chunk-40-2.png]]
+
 
 *** c) Evaluate
     :PROPERTIES:
@@ -1302,6 +1337,26 @@ We might want to take a look at these.
 
 #+BEGIN_EXAMPLE
   ## [1] 0.7731239
+#+END_EXAMPLE
+
+#+BEGIN_SRC R
+  pred2 <- predict(fit2, test_set)
+  mse.error2 <- mean((test_set$Outstate - pred2)^2)
+  mse.error2 %>% print
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ## [1] 4121902
+#+END_EXAMPLE
+
+#+BEGIN_SRC R
+  gam.tss2 = mean((test_set$Outstate - mean(test_set$Outstate))^2)
+  test.rss2 = 1 - mse.error2/gam.tss2
+  test.rss2 %>% print
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ## [1] 0.7466987
 #+END_EXAMPLE
 
 This is pretty good model, all told.
@@ -1369,6 +1424,49 @@ This is pretty good model, all told.
   ## perc.alumni                             
   ## Expend                                  
   ## Grad.Rate                               
+  ## ---
+  ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#+END_EXAMPLE
+
+#+BEGIN_SRC R
+  summary(fit2) %>% print
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+  ## 
+  ## Call: gam(formula = Outstate ~ Private + s(Room.Board, 2) + s(PhD, 
+  ##     3) + s(perc.alumni) + Expend, data = colDat)
+  ## Deviance Residuals:
+  ##       Min        1Q    Median        3Q       Max 
+  ## -8676.030 -1345.678    -8.409  1265.524  9590.459 
+  ## 
+  ## (Dispersion Parameter for gaussian family taken to be 4175193)
+  ## 
+  ##     Null Deviance: 12559297426 on 776 degrees of freedom
+  ## Residual Deviance: 3194023899 on 765.0002 degrees of freedom
+  ## AIC: 14064.05 
+  ## 
+  ## Number of Local Scoring Iterations: 2 
+  ## 
+  ## Anova for Parametric Effects
+  ##                   Df     Sum Sq    Mean Sq F value    Pr(>F)    
+  ## Private            1 3751107814 3751107814  898.43 < 2.2e-16 ***
+  ## s(Room.Board, 2)   1 2913770756 2913770756  697.88 < 2.2e-16 ***
+  ## s(PhD, 3)          1 1149711330 1149711330  275.37 < 2.2e-16 ***
+  ## s(perc.alumni)     1  556759894  556759894  133.35 < 2.2e-16 ***
+  ## Expend             1  554812125  554812125  132.88 < 2.2e-16 ***
+  ## Residuals        765 3194023899    4175193                      
+  ## ---
+  ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+  ## 
+  ## Anova for Nonparametric Effects
+  ##                  Npar Df Npar F     Pr(F)    
+  ## (Intercept)                                  
+  ## Private                                      
+  ## s(Room.Board, 2)       1 4.9853 0.0258517 *  
+  ## s(PhD, 3)              2 9.1614 0.0001171 ***
+  ## s(perc.alumni)         3 0.8726 0.4548496    
+  ## Expend                                       
   ## ---
   ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 #+END_EXAMPLE
