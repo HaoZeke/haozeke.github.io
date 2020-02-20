@@ -375,6 +375,9 @@ and terminal with some pretty printing and object viewing functionality. It is
 really great, but it is also relatively resource intensive. It turns out that
 thanks to Emacs ESS, it is possible to circumvent Rstudio completely in favor of
 an Emacs-native workflow.
+* TODO Role models and colleges
+* TODO My current courses
+* TODO Rude college admissions
 * Pandora and Proxychains
 :PROPERTIES:
 :EXPORT_FILE_NAME: pandora-proxychains
