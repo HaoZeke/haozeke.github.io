@@ -258,7 +258,7 @@ We can use the following structure in our file:
 #+BEGIN_SRC orgmode :tangle tmp/myFakeJupyter.org :exports code
 \* Python Stuff
   :PROPERTIES:
-  :header-args:    :python /home/haozeke/.cache/pypoetry/virtualenvs/test-2aLV_5DQ-py3.8/bin/python :session One
+  :header-args:    :python /home/haozeke/.cache/pypoetry/virtualenvs/test-2aLV_5DQ-py3.8/bin/python :session One :results output :exports both
   :END:
 Now we can simply work with code as we normally would
 \#+BEGIN_SRC python
@@ -316,6 +316,16 @@ print('images/plotCircles.png') # return filename to org-mode
 
 [[file:tmp/images/plotCircles.png]]
 
+*** Bonus
+A better way to simulate standard ~jupyter~ workflows is to just specify the
+properties once at the beginning.
+
+#+BEGIN_SRC orgmode
+#+PROPERTY: header-args:python :python /home/haozeke/.cache/pypoetry/virtualenvs/test-2aLV_5DQ-py3.8/bin/python :session One :results output :exports both
+#+END_SRC
+
+This setup circumvents having to set the properties per sub-tree, though for
+very large projects, it is useful to use different processes.
 ** Conclusions
 - The last step is of course to export the file as to a ~TeX~ file and then
   compile that with something like ~latexmk -pdfxe -shell-escape file.tex~
