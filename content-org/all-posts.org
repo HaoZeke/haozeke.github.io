@@ -463,3 +463,16 @@ user = "$emailID"
 
 The ~autostart_station ID~ can be obtained by inspecting the terminal output
 during an initial run. I usually set it to the QuickMix station.
+* TODO Bojack Horseman
+:PROPERTIES:
+:EXPORT_FILE_NAME: bojack-horseman
+:EXPORT_HUGO_CATEGORIES: personal
+:EXPORT_HUGO_TAGS: thoughts random review TV
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :comments true
+:EXPORT_DATE: 2020-02-27 22:28
+:END:
+** Background
+There is a lot of hate for the ending of Bojack. I don't think this is a place
+where I would normally discuss things I watch, but then again, why the hell not.
+People who know me probably recognize my handle from niche anime sites where I
+am very vocal about anime I watch.
