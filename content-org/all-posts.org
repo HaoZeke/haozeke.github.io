@@ -346,31 +346,115 @@ The whole file is also [[https://github.com/HaoZeke/haozeke.github.io/blob/src/c
 - This is about the site you are reading
 - It is also a partial rant
 - It has a lot to do with web development in general
-* TODO Switching to Colemak
+* Switching to Colemak
 :PROPERTIES:
 :EXPORT_FILE_NAME: colemak-switch
 :EXPORT_HUGO_CATEGORIES: notes
 :EXPORT_HUGO_TAGS: workflow programming personal
-# :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
-:EXPORT_DATE: 2020-02-15 04:06
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:EXPORT_DATE: 2020-02-29 14:06
 :END:
 ** Background
 I just realized that it has been over two years since I switched from QWERTY to
 COLEMAK but somehow never managed to write about it. It was a major change in my
-life, and it took forever to get acclimatized. I do not think I'll ever again be
+life, and it took forever to get acclimatized to. I do not think I'll ever again be
 in a position to make such a change in my life again, but it was definitely
 worth it.
 ** Touch Typing
 My interest in touch typing in I decided to digitize my notes for posterity, during the
 last two years of my undergraduate studies back in Harcourt Butler Technical
 Institute (HBTI) Kanpur, India. in one of my many instances of yak shaving, I
-realized I could
-** QWERTY
+realized I could probably consume and annotate a lot more content by typing
+faster. Given that at that stage I was already a fast talker, it seemed like a
+natural extension. There was probably an element of nostalgia involved as well.
+That and the end of a bachelors involves the thesis, which generally involves a
+lot of typing.
+
 There were (and are) some fantastic resources for learning to touch type
 nowadays, I personally used:
--
-** Colemak
+- [[https://www.typing.com/][Typing.com]] :: This is short, but a pretty good basic setup. The numbering and
+  special characters are a bit much to take in at the level of practice you get
+  by completing all the previous exercises, but eventually they make for a good workout.
+- [[https://www.typingclub.com/en-gb/login/][TypingClub]] :: This is what I ended up working my way through. It is
+  comprehensive, beautiful, and fun.
+
+Also, later, I ended up using [[https://www.keybr.com/][keybr]] a lot, simply because typing gibberish is a
+good way of practicing, and it is independent of the keyboard layout.
+
+Just to foreshadow things, the enemy facing me at this point was the layout
+itself[fn:img] .
+
+https://www.keyboard-design.com/kb-images/qwerty-kla.jpg
+
+** Alternate layouts
 Having finally broken into the giddy regimes of 150+ wpm, I was ecstatic, and
+decided to start working my way through some longer reports. However, I quickly
+realized I was unable to type for more than a couple of minutes without getting
+terribly cramped. Once it got to the point of having to visit a physiotherapist,
+I had to call it quits. At that stage, relearning the entire touch typing
+corpus, given that I already was used to QWERTY, seemed pretty bleak.
+
+It took forever, and I ended up applying my choices to my phone keyboard as
+well, which presumably helped me in terms of increasing familiarity, had the
+unintended effect of making me seem distant to people I was close to, since my
+verbose texts suddenly devolved to painful one-liners.
+
+The alternative layouts I tried were:
+
+- [[https://www.dvorak-keyboard.com/][DVORAK]] :: At the time, TypingClub only supported QWERTY and DVORAK, so it was
+  pretty natural for me to try it out. There are also some [[https://www.dvzine.org/][very nice comics
+  about it]]. I remember that it was pretty neat, with
+  a good even distribution, until I tried coding. The placement of the
+  semicolons make it impossible to use while programming. I would still say it
+  makes for a comfortable layout, as long as special characters are not required.
+
+https://www.keyboard-design.com/kb-images/dvorak-kla.jpg
+
+- [[http://mkweb.bcgsc.ca/carpalx][CarpalX]] :: I experimented with the entire carpalx family, but I was unable to get
+  used to it. I liked QFMLWY best. I do recommend reading the training methodology, especially if
+  anyone is interested in numerical optimization in general. More importantly,
+  though it was relatively easy to set up on my devices and operating systems,
+  the fact that it wasn't natively supported meant a lot of grief whenever I
+  inevitably had to use a public computer.
+
+https://www.keyboard-design.com/kb-images/qgmlwy-kla.jpg
+
+- Colemak :: Eventually I decided to go with [[https://colemak.com/][Colemak]], especially since it is
+  widely available. Nothing is easier than ~setxkbmap us -variant colemak -option grp:alt_shift_toggle~ on public machines and it's easy on Windows as
+  well. Colemak seems like a good compromise. I personally have not been able to
+  reach the same speeds I managed with QWERTY, even after a year, but then
+  again, I can be a lot more consistent, and it hurts less. Nowadays, Colemak
+  has made its way onto most typing sites as well, including TypingClub
+
+https://www.keyboard-design.com/kb-images/colemak-kla.jpg
+
+*** What about VIM?
+- DVORAK makes it impossible, so do most other layouts, but there are some
+  tutorials purporting to help use vim movement with DVORAK
+- Colemak isn't any better, but the fact of the matter is that once you know VIM
+  on QWERTY, and have separately internalized colemak or something else, hitting
+  keys is just hitting keys
+
+All that said, I still occasionally simply remap HJKL (QWERTY movement) to HNEI
+(Colemak analog) when it is feasible.
+** Conclusion
+Changing layouts was a real struggle. Watching my WPM drop back to lower than
+hunt and peck styles was pretty humiliating, especially since the reports kept
+coming in, and more than once I switched to QWERTY. However, since then, I have
+managed to stay on course. I guess if I think about it, it boils down to a few
+scattered thoughts:
+- Typing is kinda like running a marathon, knowing how it is done and doing it
+  are two different things
+- Tell *everyone*, so people can listen to you lament your reduced speed and not
+  hate you for replying slowly
+- Practice everyday, because, well, it works out in the long run, even when you
+  plateau
+- Alternate shifts! That's really something which should show up more in
+  tutorials, especially for listicles, not changing the shifts will really hurt
+- Try and get a mechanical keyboard (like the [[https://www.annepro.net/][Anne Pro 2]] or the [[https://www.coolermaster.com/catalog/peripheral/keyboards/masterkeys-pro-l-white/][Coolermaster Masterkeys]]), they're fun and easy to change layouts on
+
+[fn:img] The images are [[https://www.keyboard-design.com/best-keyboard-layouts.html][from here]], where there's also an effort based metric
+used to score keyboard layouts.
 * TODO Replacing Rstudio with Emacs
 :PROPERTIES:
 :EXPORT_FILE_NAME: rstudio-emacs
@@ -463,16 +547,49 @@ user = "$emailID"
 
 The ~autostart_station ID~ can be obtained by inspecting the terminal output
 during an initial run. I usually set it to the QuickMix station.
-* TODO Bojack Horseman
+* Bojack Horseman
 :PROPERTIES:
 :EXPORT_FILE_NAME: bojack-horseman
 :EXPORT_HUGO_CATEGORIES: personal
 :EXPORT_HUGO_TAGS: thoughts random review TV
-:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :comments false
 :EXPORT_DATE: 2020-02-27 22:28
 :END:
 ** Background
-There is a lot of hate for the ending of Bojack. I don't think this is a place
-where I would normally discuss things I watch, but then again, why the hell not.
-People who know me probably recognize my handle from niche anime sites where I
-am very vocal about anime I watch.
+For a while I was worried about writing about a TV show here. I thought it might
+be frivolous, or worse, might outweigh the other kinds of articles I would like
+to write. However, like most things, that which is ignored just grows, so it is
+easier to just write and forget about it.
+** The Show
+Much has been said about how Bojack Horseman is one of the best shows ever, and
+they're all correct. For that matter I won't be going into the details of how
+every episode ties together a tapestry of lives in a meaningful way, or any of
+that. The show was amazingly poignant. The characters felt real. Which actually
+leads me to the real issue.
+** The End
+The end of Bojack was *good*. It was the way it was meant to be. For a
+slice-of-life show, it is a natural conclusion. It isn't necessary that any
+catharsis occurs or that the characters change or become better or all that
+jazz. It isn't about giving the viewers closure. It is simply about a window
+onto the lives of (fictional) characters being shut. To that end, I disliked
+attempts to bring closure in the show itself.
+
+One of the main reasons why I felt strongly enough to write this, is simply
+because when I looked around, the prevailing opinion was that the main character
+should have been killed off, _for his sins_. This strikes me as a very flippant
+attitude to take. It reeks of people trying to make the show a cautionary tale,
+which is frankly speaking a weird approach to take towards any fictional story.
+The idea that the character should be redeemed also seemed equally weak, for
+much the same reasons.
+
+The fact that the characters are hypocrites, and that none of them are as good
+or bad as they make themselves out to be is one of the best parts of the show.
+
+** Conclusion
+That's actually all I have to say about this. I thought of adding relevant memes
+or listing episodes or name dropping sites, but this isn't buzzfeed. The show is
+incredible, and there are far better ways of proving that. Bust out your
+favorite search engine + streaming content provider / digital piracy eye-patch
+and give it a whirl. The only thing I'd suggest is watching everything in order,
+it's just that kind of show.
+
