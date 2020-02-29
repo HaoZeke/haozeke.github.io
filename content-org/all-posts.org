@@ -593,3 +593,11 @@ favorite search engine + streaming content provider / digital piracy eye-patch
 and give it a whirl. The only thing I'd suggest is watching everything in order,
 it's just that kind of show.
 
+* TODO The Morpho Language
+:PROPERTIES:
+:EXPORT_FILE_NAME: morpho-lang
+:EXPORT_HUGO_CATEGORIES: programming
+:EXPORT_HUGO_TAGS: programming review
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:EXPORT_DATE: 2020-02-29 17:06
+:END:
