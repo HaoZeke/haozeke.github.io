@@ -346,7 +346,7 @@ The whole file is also [[https://github.com/HaoZeke/haozeke.github.io/blob/src/c
 - This is about the site you are reading
 - It is also a partial rant
 - It has a lot to do with web development in general
-* Switching to Colemak
+* DONE Switching to Colemak
 :PROPERTIES:
 :EXPORT_FILE_NAME: colemak-switch
 :EXPORT_HUGO_CATEGORIES: notes
@@ -547,7 +547,7 @@ user = "$emailID"
 
 The ~autostart_station ID~ can be obtained by inspecting the terminal output
 during an initial run. I usually set it to the QuickMix station.
-* Bojack Horseman
+* DONE Bojack Horseman
 :PROPERTIES:
 :EXPORT_FILE_NAME: bojack-horseman
 :EXPORT_HUGO_CATEGORIES: personal
