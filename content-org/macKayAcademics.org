@@ -200,5 +200,5 @@ advocated here:
   attains their maximum potential and feels happy about it.
 - Happy graduates who get A grades are likely to become grateful alumni donors.
 
-[fn:note] If you have good cause why this should not be distributed here in this manner, please contact me and I will do the needful
+[fn:note] If you have a good reason why this should not be distributed here in this manner, please contact me and I will do the needful
 [fn:book] Also known for the fabulous free book called [[http://www.inference.org.uk/mackay/itila/][Information Theory, Inference, and Learning Algorithms]]
