@@ -795,7 +795,6 @@ that it's all one ~brew~ now.
 :EXPORT_FILE_NAME: shortpost
 :EXPORT_HUGO_CATEGORIES: notes
 :EXPORT_HUGO_TAGS: tools rationale workflow ideas
-# :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :EXPORT_DATE: 2020-03-16 00:16
 :END:
 ** Background
