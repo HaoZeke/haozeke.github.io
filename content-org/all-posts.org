@@ -814,3 +814,32 @@ detail I would prefer to provide.
   when I want to revisit my own ideas
 ** Conclusions
 - I will be making shorter posts here, like the random one on [[https://rgoswami.me/posts/ghnotif/][octobox]]
+* D3 for Git
+:PROPERTIES:
+:EXPORT_FILE_NAME: d3git
+:EXPORT_HUGO_CATEGORIES: notes
+:EXPORT_HUGO_TAGS: tools rationale workflow ideas
+:EXPORT_DATE: 2020-03-16 00:17
+:END:
+** Background
+- I have had a lot of discussions regarding the teaching of ~git~
+- This is mostly as a part of the SoftwareCarpentries, or in view of my
+  involvement with univ.ai, or simply in every public space I am associated with
+- Without getting into my views, I just wanted to keep this resource in mind
+** The site
+- Learning ~git~ is a highly contentious thing
+- People seem to be fond of GUI tools, especially since on non *nix systems, it
+  seems that there is a lot of debate surrounding obtaining the ~git~ utility in
+  the first place
+
+One of the best ways of understanding (without installing stuff) the mental
+models required for working with ~git~ is [[https://onlywei.github.io/explain-git-with-d3/#checkout][this site]]
+
+#+caption: A screenshot of the site
+[[file:images/d3git.png]]
+
+- However, as is clear, this is not exactly a replacement for a good old
+command-line.
+
+- It does make for a good resource for teaching with slides, or for generating
+  other static visualizations, where live coding is not an option
