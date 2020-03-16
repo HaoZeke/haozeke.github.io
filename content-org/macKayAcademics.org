@@ -170,7 +170,7 @@ Charlie need not be very big. If Charlie gets lost and left behind, we are
 wasting everyone's time by having him sit in classes where new material is
 presented. A stitch in time saves nine (Figure 4).
 
-#+CAPTION: A stitch in time saves nine. Curve C shows Charlie's progress in a course taught at the pace that is ideal for Alice. The more Charlie is left behind, the slower he learns. By the end of the course, there is a big gap between A and C. Curve C shows Charlie's progress in a course taught at the pace that is ideal for him. Just a small decrease in class pace allows the big gap between Alice and Charlie to be eliminated.
+#+CAPTION: A stitch in time saves nine. Curve C shows Charlie's progress in a course taught at the pace that is ideal for Alice. The more Charlie is left behind, the slower he learns. By the end of the course, there is a big gap between A and C. Curve C′ shows Charlie's progress in a course taught at the pace that is ideal for him. Just a small decrease in class pace allows the big gap between Alice and Charlie to be eliminated.
 [[file:/macKayAs/figs_ABC31.jpg]]
 
 Teaching methods must be modified to ensure that everyone in the class benefits.
