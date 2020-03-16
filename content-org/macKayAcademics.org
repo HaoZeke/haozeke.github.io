@@ -1,0 +1,204 @@
+#+title:  "Everyone Should Get an A"
+#+author: "David MacKay"
+#+date: 2020-03-16 02:24
+
+#+hugo_base_dir: ../
+#+hugo_section: ./posts
+#+export_file_name: mackay-all-a
+#+hugo_custom_front_matter: :toc true :comments false
+#+hugo_tags: academics teaching evaluation ideas
+#+hugo_categories: programming
+#+hugo_draft: false
+#+comments: false
+
+* Background
+- I recently read this post written by the now deceased [[http://www.inference.org.uk/mackay/][Prof. David MacKay]] [fn::book]
+- It should be read widely, however, given that it is distributed as a ~ps.gz~
+  which is then a ~.ps~ file, and thus probably inaccessible to many of the
+  people who should read it (there is [[http://www.inference.org.uk/mackay/exams.pdf][also a pdf]])
+- *THIS IS NOT MY CONTENT* [fn::note]
+- Now, enjoy the post
+
+* Everyone Should Get an A
+Imagine a University – call it Camwick – where all students arrive with straight
+A grades. They are successful, enthusiastic, and curious. By the time they
+leave, only one third still receive straight As. The other two thirds get lower
+grades, do not enjoy their studies, and are not fun to teach. Is Camwick
+University a success? Camwick could point to its excellent teaching assessment
+scores and argue that it is ‘adding value’: students emerge knowing more. Future
+employers love the University’s policy of assigning grades – the University
+ranks its students, saving companies the bother of assessing job applicants
+themselves. But should a University be a sorting service? Isn’t something wrong
+with an institution that takes in mainly A-quality input and turns out less than
+half A-quality output? If a University fails to turn out as much A-quality
+enthusiasts as come in, is it in fact a place of intellectual *destruction*,
+throwing away the potential of the majority of its students? What are the roots
+of this destruction?
+
+** Exams
+I would recommend that Camwick consider abolishing traditional exams. In the
+current system, Camwick teaches Anna, Bob, and Charlie, who are  all smart, then
+examines them; Anna comes 'top', Bob 'second' and Charlie 'third'. Perhaps
+Charlie, given a little more time, would have figured out the material, but he
+wasn't quite ready when the exam arrived - perhaps because other courses
+consumed his attention.
+
+Bob's response to his 'failure' is to adopt strategies of tlittle educational
+value: he parrot learns, he crams, and he asks lecturers to tell him what's
+going to be on the exam. The exams become the focus of attention, even though
+the purpose of Bob's going to the University was learning.
+
+Charlie's response is to give up on doing 'well', and coast through University,
+no longer understanding everything. He loses self-worth and resents the
+University for making him feel bad.
+
+Some courses at Camwick assign grades using continuous assessment instead of
+exams. But continuous assessment has the same effect as exams on Bob and
+Charlie. So course grades based on continuous assessment should be abolished at
+the same time as exams.
+
+#+CAPTION: Everyone can get an A, regardless of learning rate, if their education is not halted by exams. Traditional system on the left, with an educational system on the right.
+[[file:/macKayAs/fig1.jpg]]
+
+If Camwick had no exams, the focus of attention would have to be elsewhere. How
+about education, for example? Students could spend their time at Camwick
+exploring subjects that interest them, and attending classes that offer
+something they want to know about, free from the stress and misdirection of the
+exam system. Lecturers would at all times be friends rather than adversaries.
+[When I was an undergraduate at Cambridge, I asked a physis lecturer to clarify
+topic $N$, which I felt had not been covered clearly. His response: "That's
+what I love about $N$: some students get it, some don't - so we get beautiful
+bell shaped curves in the exam."]
+
+Of course the extreme suggestion of abolishing all exams will not go down well:
+"What about standards?" "How can we get funding if we do not" "How do we award
+degrees that people will respect?" Traditionalists might say that students
+appreciate exams for the targets and feedback. Well, there's nothing to stop us
+giving students targets or feedback. We can provide events just like exams, if
+students want them - self-administered tests, for example, would allow students
+to check how well they have assimilated all the material in a course. Other
+systems of targets and feedback that students enjoy include project work,
+problem-based learning, and portfolio-based assessment.
+
+As a compromise, let's modify our proposal a little: *Camwick should become a place where the only achievable grade is an A.* I'm not recommending that we
+simply give everyone an A. It's a crime to let standards slip. When I say
+everyone should get an A, I mean that everyone should be allowed to get /to/ an
+A.
+
+Think back to Alice, Bob, and Charlie. Alice grasped most of the material in the
+course and achieved an A. Given a little more time and little less stress, Bob
+and Charlie could probably have grasped it all too, and become equally strong
+masters of the material. What good does it do Bob and Charlie to record the fact
+that they were a little slower than alice? Wouldn't it have been better,
+educationally, to give Bob and Charlie a little more time and help, so that they
+achieved the same A standard?
+
+Does a bus-driver-training school /rank/ its graduating drivers? No, it ensures
+that all attain the standard required of a bus-driver. Would you like to be
+treated by a C-grade doctor? No, everyone wants an A-grade doctor! So doctors
+and drivers are (I hope!) trained and trained and not let out until they are
+A-grade in standard. Why should other professions be treated differently?
+
+Figure 1a shows the command of the material of each student as a function of
+time in the traditional system. A traditional exam interrupts the learning
+process, and Bob and Charlie are recorded as having achieved a lower standard.
+Figure 1b shows the same students in an exam-free system, assuming they learn at
+the same rate as in the old system. Each student takes a different time to
+achieve full command of the course material. Every student has the satisfaction
+of achieving full command of the material.
+
+#+CAPTION: Everyone can get an A, regardless of learning rate, if their education is not halted by exams. Traditional system on the left, with an educational system on the right.
+[[file:/macKayAs/fig2.jpg]]
+
+The difference between the two systems is also striking if we assume that
+students start the course at different levels of ability. In Figure 2, albert
+comes from a privileged background and already knows half the course material
+when he arrives. Brenda and Catharine arrive at a lower educational level.
+Brenda and Catharine are actually faster learners than Albert, but, as Figure 2a
+shows, the traditional exam system rewards Albert with the A grade
+('congratulations, you started first!'), and brands Brenda and Catharine
+failures. In the 'Only A-grades' system, everyone attains an A-grade in due
+course; and Albert isn't actually first to finish.
+
+The information about 'who finished when' could in principle be retained in
+order to provide some sort of student-ranking service to employers, but I would
+strongly urge the destruction of all such records. Only the achieving of an A
+grade should be recorded, nothing else. Why?
+
+1. Because being ranked creates stress.
+2. Because students who are competing with each other for ranks may be reluctant
+   to help each other learn. In contrast, in the 'Only A-grades' system, the top
+   students lose nothing if they help their peers; indeed, they may gain in
+   several ways: peer-teaching strengthens the students' grasp on material, and
+   often speeds up the whole class.
+3. Evidence that a student is a quick learner may well make itself evident in
+   her transcript without rankings being made: Alice, covering material quickly,
+   will have time to take extra courses. So in one year she'll accumulate a
+   slightly fatter sheaf of A-grade qualifications.
+4. What value are rankings? If future employers want students to be formally
+   evaluated, they can pay for an evaluation service. Why ruin a great
+   institution? The very best students might like grades too, as they enjoy
+   being congratulated. But the 'only A-grades' system will congratualte them
+   too.
+
+These ideas are not new, nor are they unprecedented. In many German
+Universities, first- and second-year courses have no grades, no obligatory
+coursework, and no obligatory exams. End-of-course exams are provided only as a
+service to students, to help them find out if they have indeed grasped the
+material and are ready progress to the next stage.
+
+In practice, how should we organize courses so that everyone reaches 100%
+mastery? For Bob and Charlie's benefit, the average pace probably has to be
+reduced. Figure 3 shows one way of organizing the material in stages, so that a
+class is kept together. Whenever Alice has completed the material in a stage,
+she can spend time on other interests, or can help other members of the class.
+
+#+CAPTION: Possible course plan. This scheme assumes that the students have rates of progress ranging from A (fastest) to C (slowest). Every two weeks, a consolidation period is inserted to ensure that C has assimilated all the learning objectives. Alice can use the consolidation period to pursue others interests or act as a peer-teacher.
+[[file:/macKayAs/figs_ABC21.jpg]]
+
+Camwick staff who say "we can't possibly cover a full degree course if we reduce
+the pace!" should bear in mind that, had Bob and charlie gone to a less
+prestigious University, they probably would have got first-class degrees. How
+can this paradox - going slowing and arriving at almost the same time - be
+explained? I suspect an important factor is this: struggling students get ever
+slower if we pile on new material before they have assimilated the old. For
+example, 2ⁿᵈ-year Lagrangian dynamics is difficult to absorb if one hasn't
+grasped 1ˢᵗ-year Newtonian dynamics. So the steady linear progress assumed in
+Figures 1 to 3 is a poor model of Carlie. The more Charlie is left behind, the
+slower he learns. This means that the true difference in pace between Alice and
+Charlie need not be very big. If Charlie gets lost and left behind, we are
+wasting everyone's time by having him sit in classes where new material is
+presented. A stitch in time saves nine (Figure 4).
+
+#+CAPTION: A stitch in time saves nine. Curve C shows Charlie's progress in a course taught at the pace that is ideal for Alice. The more Charlie is left behind, the slower he learns. By the end of the course, there is a big gap between A and C. Curve C shows Charlie's progress in a course taught at the pace that is ideal for him. Just a small decrease in class pace allows the big gap between Alice and Charlie to be eliminated.
+[[file:/macKayAs/figs_ABC31.jpg]]
+
+Teaching methods must be modified to ensure that everyone in the class benefits.
+I advocate interactive teaching: students are asked questions and encouraged to
+ask questions and to be active participants in their own learning. It's not
+enough to ask a question and let one person in the class (Alice!) answer it. The
+whole class must have the chance to think, puzzle and discuss; the teacher must
+ascertain the level of understanding of the whole class. In large classes, I
+find Mazur's voting method works well: a lecture is centered on two or three
+carefully chosen questions with multiple-choice answers. Students discuss a
+question with their neighbors, then all vote. The vote informs the lecturer
+whether previous material has been understood. Diversity of votes can seed a
+useful discussion.
+
+To conclude, here are a few further advantages of the educational approach
+advocated here:
+
+- Happy, curious, and self-motivated students are fun to teach.
+- At present, British students have little choice of university teaching and
+  assessment style: all universities give out grades. Shouldn't we offer them a
+  choice? Some students would like the chance to go to a place with high
+  standards where only A-grades are awarded.
+- If some universities adopt student-centered educational policies and stop
+  ranking students, perhaps these attitudes will spread to schools, with
+  consequent benefits to pupils, and in due course, to universities. Dumbed-down
+  A levels could be replaced by educational programmes that ensure that everyone
+  attains their maximum potential and feels happy about it.
+- Happy graduates who get A grades are likely to become grateful alumni donors.
+
+[fn::note] If you have good cause why this should not be distributed here in this manner, please contact me and I will do the needful
+[fn::book] Also known for the fabulous free book called [[http://www.inference.org.uk/mackay/itila/][Information Theory, Inference, and Learning Algorithms]]
