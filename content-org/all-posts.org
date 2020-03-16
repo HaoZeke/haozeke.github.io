@@ -823,8 +823,8 @@ detail I would prefer to provide.
 :END:
 ** Background
 - I have had a lot of discussions regarding the teaching of ~git~
-- This is mostly as a part of the SoftwareCarpentries, or in view of my
-  involvement with univ.ai, or simply in every public space I am associated with
+- This is mostly as a part of [[https://static.carpentries.org/maintainers/#HaoZeke][the SoftwareCarpentries]], or in view of my
+  [[https://www.univ.ai/teams/rohit-goswami][involvement with univ.ai]], or simply in every public space I am associated with
 - Without getting into my views, I just wanted to keep this resource in mind
 ** The site
 - Learning ~git~ is a highly contentious thing
@@ -838,8 +838,7 @@ models required for working with ~git~ is [[https://onlywei.github.io/explain-gi
 #+caption: A screenshot of the site
 [[file:images/d3git.png]]
 
-- However, as is clear, this is not exactly a replacement for a good old
-command-line.
+- However, as is clear, this is not exactly a replacement for a good old command-line.
 
 - It does make for a good resource for teaching with slides, or for generating
   other static visualizations, where live coding is not an option
