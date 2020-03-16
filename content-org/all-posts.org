@@ -790,3 +790,27 @@ echo 'export PATH="$PATH:$HOME/.bin"' >> ~/.zshrc
 [fn:nixUsr] Much of this section is directly adapted from [[https://nixos.wiki/wiki/Nix_Installation_Guide#Installing_without_root_permissions][the NixOS wiki]]
 [fn:brewStuff] This used to be called linuxbrew, but the [[https://docs.brew.sh/Homebrew-on-Linux][new site]] makes it clear
 that it's all one ~brew~ now.
+* Shorter Posts
+:PROPERTIES:
+:EXPORT_FILE_NAME: shortpost
+:EXPORT_HUGO_CATEGORIES: notes
+:EXPORT_HUGO_TAGS: tools rationale workflow ideas
+# :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_DATE: 2020-03-16 00:16
+:END:
+** Background
+Sometime this year, I realized that I no longer have access to a lot of my older
+communication. This included, a lot of resources I enjoyed and shared with the
+people who were around me at that point in time. To counter this, I have decided
+to opt for shorter posts, even if they don't always include the same level of
+detail I would prefer to provide.
+
+*** Alternatives
+- I have an automated system based around IFTTT combined with Twitter, Diigo,
+  and even Pocket
+- However, that doesn't really tell me much, and trawling through a massive glut
+  of data is often pointless as well
+- There's always Twitter, but I don't really care to hear the views of others
+  when I want to revisit my own ideas
+** Conclusions
+- I will be making shorter posts here, like the random one on [[https://rgoswami.me/posts/ghnotif/][octobox]]
