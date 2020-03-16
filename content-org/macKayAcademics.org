@@ -15,7 +15,7 @@
 - I recently read this post written by the now deceased [[http://www.inference.org.uk/mackay/][Prof. David MacKay]] [fn:book]
 - It should be read widely, however, given that it is distributed as a ~ps.gz~
   which is then a ~.ps~ file, and thus probably inaccessible to many of the
-  people who should read it (there is [[http://www.inference.org.uk/mackay/exams.pdf][also a pdf]])
+  people who should read it, I decided to rework it for native online consumption (there is [[http://www.inference.org.uk/mackay/exams.pdf][also a pdf]])
 - *THIS IS NOT MY CONTENT* [fn:note]
 - Now, enjoy the post
 
