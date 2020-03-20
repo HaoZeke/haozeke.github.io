@@ -906,3 +906,4 @@ models required for working with ~git~ is [[https://onlywei.github.io/explain-gi
 
 - It does make for a good resource for teaching with slides, or for generating
   other static visualizations, where live coding is not an option
+* TODO d-SEAMS got published
