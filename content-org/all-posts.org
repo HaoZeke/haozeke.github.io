@@ -908,7 +908,7 @@ models required for working with ~git~ is [[https://onlywei.github.io/explain-gi
 
 - It does make for a good resource for teaching with slides, or for generating
   other static visualizations, where live coding is not an option
-* Trees and Bags
+* TODO Trees and Bags
 :PROPERTIES:
 :EXPORT_FILE_NAME: trees-and-bags
 :EXPORT_HUGO_CATEGORIES: notes
@@ -918,7 +918,7 @@ models required for working with ~git~ is [[https://onlywei.github.io/explain-gi
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :bibliography refs.bib
 :EXPORT_HUGO_PANDOC_CITATIONS: t
 :EXPORT_BIBLIOGRAPHY: biblio/refs.bib
-:EXPORT_DATE: 2020-03-25 17:04
+:EXPORT_DATE: 2020-03-25 22:48
 :END:
 # :EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :nocite '(@hastieElementsStatisticalLearning2009)
 
