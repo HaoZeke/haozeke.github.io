@@ -33,8 +33,10 @@ series of posts and avatars[fn:notrefs].
 ** Intangible Positions
 This is a set of things which are primarily online and/or voluntary in a
 non-academic sense.
+- I administer and design a bunch of websites, mostly verified [[https://keybase.io/HaoZeke][on Keybase]]
 - I am a certified Software Carpentries [[https://static.carpentries.org/instructors#HaoZeke][instructor]]
-- I [[https://static.carpentries.org/maintainers/#HaoZeke][official maintain]], for the Software Carpentries, the lesson on R (r-novice-inflammation)
+- I [[https://static.carpentries.org/maintainers/#HaoZeke][officially maintain]], for the Software Carpentries, the lesson on R (r-novice-inflammation)
+- I [[https://aur.archlinux.org/packages/?SeB=m&K=HaoZeke][also maintain]] some packages on the AUR (ArchLinux User Repository)
 - I hone coursework development and teaching [[https://www.univ.ai/teams/rohit-goswami][with univ.ai]]
 - I [[https://forum.xda-developers.com/xperia-z5/orig-development/cm-14-1-lineageos-t3536846][maintain(ed)]] the official LineageOS image for the Xperia Z5 Dual
 ** Historical Places
