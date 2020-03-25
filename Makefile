@@ -31,11 +31,11 @@ ifeq ("$(HUGO_exists)","")
 	HUGO := $(ox_hugo_tmp_dir)/hugo/bin/hugo
 endif
 
-PANDOC ?= pandoc
-PANDOC_exists := $(shell command -v $(PANDOC) 2> /dev/null)
-ifeq ("$(PANDOC_exists)","")
+# PANDOC ?= pandoc
+# PANDOC_exists := $(shell command -v $(PANDOC) 2> /dev/null)
+# ifeq ("$(PANDOC_exists)","")
 	PANDOC := $(ox_hugo_tmp_dir)/pandoc/bin/pandoc
-endif
+# endif
 
 HUGO_BIN_SOURCE ?= https://gitlab.com/kaushalmodi/unofficial-hugo-dev-builds.git
 HUGO_VERSION ?= DEV
@@ -132,14 +132,14 @@ endif
 
 vcheck_pandoc:
 	@mkdir -p $(ox_hugo_tmp_dir)
-ifeq ("$(PANDOC_exists)","")
+# ifeq ("$(PANDOC_exists)","")
 	@mkdir -p $(ox_hugo_tmp_dir)/pandoc
 	@find $(ox_hugo_tmp_dir)/pandoc -maxdepth 1 -type d -name bin -exec rm -rf "{}" \;
 	@$(CURL) -O $(PANDOC_BIN_SOURCE)/$(PANDOC_ARCHIVE_NAME)
 	@tar xf $(PANDOC_ARCHIVE_NAME)
 	@mv pandoc-$(PANDOC_BIN_VERSION)/bin $(ox_hugo_tmp_dir)/pandoc/.
 	@rm -rf pandoc-$(PANDOC_BIN_VERSION)
-endif
+# endif
 	$(PANDOC) --version
 
 vcheck: vcheck_emacs vcheck_hugo vcheck_pandoc
