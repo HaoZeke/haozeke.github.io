@@ -1,6 +1,8 @@
 #+author: Rohit Goswami
 
 #+hugo_base_dir: ../
+#+hugo_front_matter_format: yaml
+#+bibliography: biblio/refs.bib
 
 #+seq_todo: TODO DRAFT DONE
 #+seq_todo: TEST__TODO | TEST__DONE
