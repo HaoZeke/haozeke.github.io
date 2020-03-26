@@ -942,7 +942,7 @@ was contrasted to another popular ensemble method, namely the Random
 Forest method, in the previous section.
 
 Before delving into the mathematics, recall that the approach taken by
-bagging is essentially (@cichoszDataMiningAlgorithms2015):
+bagging is given as per @cichoszDataMiningAlgorithms2015 to be:
 
 - create base models with *bootstrap* samples of the training set
 - combine models by unweighted voting (for classification) or by
@@ -1035,8 +1035,7 @@ intuitively, on estimates on data-sets of the same size.
 
 Continuing with the same notation, we will note that the bootstrap is
 obtained by draw random data-sets with replacement from the training
-data, where each sample is the same size as the original
-(@hastieElementsStatisticalLearning2009).
+data, where each sample is the same size as the original; as noted by @hastieElementsStatisticalLearning2009.
 
 We will consider the bootstrap estimate for the standard deviation of
 the $\hat{θ}$ operator, which is denoted by $σ(F,n,\hat{\theta})=σ(F)$
