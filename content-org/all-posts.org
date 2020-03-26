@@ -910,17 +910,15 @@ models required for working with ~git~ is [[https://onlywei.github.io/explain-gi
 
 - It does make for a good resource for teaching with slides, or for generating
   other static visualizations, where live coding is not an option
-* TODO Trees and Bags
+* DONE Trees and Bags
 :PROPERTIES:
 :EXPORT_FILE_NAME: trees-and-bags
 :EXPORT_HUGO_CATEGORIES: notes
 :EXPORT_HUGO_TAGS: theory statistics
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :link-citations true
-:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :bibliography refs.bib
 :EXPORT_HUGO_PANDOC_CITATIONS: t
-:EXPORT_BIBLIOGRAPHY: biblio/refs.bib
-:EXPORT_DATE: 2020-03-25 22:48
+:EXPORT_DATE: 2020-03-26 00:48
 :END:
 # :EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :nocite '(@hastieElementsStatisticalLearning2009)
 
@@ -928,6 +926,9 @@ models required for working with ~git~ is [[https://onlywei.github.io/explain-gi
   Explain why using bagging for prediction trees generally improves
   predictions over regular prediction trees.
 #+END_QUOTE
+
+
+** Introduction
 
 Bagging (or Bootstrap Aggregation) is one of the most commonly used
 ensemble method for improving the prediction of trees. We will broadly
@@ -961,9 +962,9 @@ We will recall, for this discussion, the bias variance trade off which
 is the basis of our model accuracy estimates (for regression) as per the
 formulation of @jamesIntroductionStatisticalLearning2013.
 
-$$
+\begin{equation}
 E(y₀-\hat{f}(x₀))²=\mathrm{Var}(\hat{f}(x₀))+[\mathrm{Bias(\hat{f(x₀)})}]²+\mathrm{Var}(ε)
-$$
+\end{equation}
 
 Where:
 
@@ -988,7 +989,9 @@ good estimator:
 Also for the rest of this section, we will need to recall from
 @hastieElementsStatisticalLearning2009, that the bias is given by:
 
-$$[E(\hat{f_{k}}(x₀)-f(x₀)]²$$
+\begin{equation}
+[E(\hat{f_{k}}(x₀)-f(x₀)]²
+\end{equation}
 
 Where the expectation averages over the randomness in the training data.
 
@@ -1009,7 +1012,7 @@ We will model our discussion on the work of
 - The $\hat{θ}$ symbol is an estimate of the true quantity $θ$
 - This is defined by the estimate being $\hat{θ}=θ(\hat{F})$
 - $\hat{F}$ is the empirical probability distribution, defined by mass
-  $1\n$ at $xᵢ ∀ i∈I$, i is from 1 to n
+  $1/n$ at $xᵢ ∀ i∈I$, i is from 1 to n
 
 The points above establishes our bias to be given by
 $E_Fθ(\hat{F})-θ(F)$ such that $E_F$ is the expectation under x₁⋯xₙ~F.
@@ -1018,7 +1021,9 @@ To derive the Jacknife estimate $(\tilde{θ})$ we will simply
 sequentially delete points xᵢ (changing $\hat{F}$), and recompute our
 estimate $\hat{θ}$, which then simplifies to:
 
-$$\tilde{θ}\equiv n\hat{θ}-(\frac{n-1}{n})∑_{i=1}ⁿ\hat{θ}$$
+\begin{equation}
+\tilde{θ}\equiv n\hat{θ}-(\frac{n-1}{n})∑_{i=1}ⁿ\hat{θ}
+\end{equation}
 
 In essence, the Jacknife estimate is obtained by making repeated
 estimates on increasingly smaller data-sets. This intuition lets us
@@ -1039,7 +1044,9 @@ the $\hat{θ}$ operator, which is denoted by $σ(F,n,\hat{\theta})=σ(F)$
 The bootstrap is simple the standard deviation at the approximate F,
 i.e., at $F=\hat{F}$:
 
-$$\hat{\mathrm{SD}}=\sigma(\hat{F}) $$
+\begin{equation}
+\hat{\mathrm{SD}}=\sigma(\hat{F})
+\end{equation}
 
 Since we generally have no closed form analytical form for $σ(F)$ we
 must use a Monte Carlo algorithm:
@@ -1067,7 +1074,7 @@ validation demands non-overlapping data partitions.
 The somewhat surprising result can be proved when $\hat{θ}=θ(\hat{F}$ is
 a quadratic functional, namely:
 
-$$ \hat{\mathrm{Bias}}_{boot}=\frac{n-1}{n} \hat{\mathrm{Bias}}_{jack}$$
+\begin{equation}\hat{\mathrm{Bias}}_{boot}=\frac{n-1}{n} \hat{\mathrm{Bias}}_{jack}\end{equation}
 
 In practice however, we will simply recall that the Jacknife tends to
 overestimate, and the Bootstrap tends to underestimation.
@@ -1104,8 +1111,8 @@ In particular, following @hastieElementsStatisticalLearning2009, it is
 possible to see that the MSE tends to decrease by bagging.
 
 \begin{align}
-E*P[Y-\hat{f}^*(x)]²&=&E_P[Y-f*{ag}(x)+f*{ag}(x)-\hat{f}^\*(x)]² \\
-&=&E_P[Y-f*{ag}(x)]²+E*P[\hat{f}^\*(x)-f*{ag}(x)]² ≥ E*P[Y-f*{ag}(x)]²
+ E_P[Y-\hat{f}^*(x)]² & = & E_P[Y-f*{ag}(x)+f^*_{ag}(x)-\hat{f}^*(x)]² \\
+& = & E_P[Y-f^*_{ag}(x)]²+E_P[\hat{f}^*(x)-f^*_{ag}(x)]² ≥ E_P[Y-f^*_{ag}(x)]²
 \end{align}
 
 Where:
@@ -1139,7 +1146,7 @@ the following considerations.
   $λ=1$
 - The probability of the iᵗʰ example will occur at least once is then
   $1-(1/e)≈0.632$
-- This means for each base learner, there are around $36.8$% originall
+- This means for each base learner, there are around $36.8$ % original
   training samples which have not been used in its training process
 
 The goodness can thus be estimated using these OOB error, which is
