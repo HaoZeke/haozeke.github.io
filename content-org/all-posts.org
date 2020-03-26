@@ -918,7 +918,7 @@ models required for working with ~git~ is [[https://onlywei.github.io/explain-gi
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :link-citations true
 :EXPORT_HUGO_PANDOC_CITATIONS: t
-:EXPORT_DATE: 2020-03-26 00:48
+:EXPORT_DATE: 2020-03-26 00:28
 :END:
 # :EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :nocite '(@hastieElementsStatisticalLearning2009)
 
