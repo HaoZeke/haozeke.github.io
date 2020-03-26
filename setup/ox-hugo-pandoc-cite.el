@@ -18,6 +18,7 @@
                   "-simple_tables"
                   "+pipe_tables"
                   "-fenced_divs"
+                  "-raw_attribute"
                   "-fenced_code_attributes"
                   "-bracketed_spans")
     "--atx-headers"
