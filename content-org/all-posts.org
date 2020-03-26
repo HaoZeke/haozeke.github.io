@@ -9,7 +9,7 @@
 
 #+property: header-args :eval never-export
 
-#+startup: indent
+#+startup: logdone indent
 
 * About
 :PROPERTIES:
