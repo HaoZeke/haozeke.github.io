@@ -1159,3 +1159,74 @@ performed, random forests algorithms perform bagging.
 
 [fn:smooth] This is mostly true for reasonably smooth true functions
 * TODO d-SEAMS got published
+* TODO Why I don't cure cancer
+With the coronavirus pandemic going on, some of the louder rabble of the
+academic community (as evinced by Twitter) have been calling for the shut down
+of non-essential work. The real reason why it doesn't matter if there's a
+pandemic going on is simply because the work keeps you up anyway. Working on
+projects you love is like carrying a pandemic around with you all the time. It
+is impossible to let go of in the first place. Understandably not everyone works
+like this, and there are as many reasons to be on a project as there are people
+probably.
+* TODO Machine Learning is not the future
+- I dislike machine learning in terms of scientific achievement
+- Competitions are no way to bring a field forward
+- State of the art on a month to month basis is a very poor way of understanding
+  any field
+- The ability to provide direct industrial applications is probably why this is
+  so popular
+
+This kind of behavior would be pretty unthinkable in other fields. The push to
+clear a benchmark simply discards the basic ideas behind learning a subject in
+the first place.
+* TODO The net is not for socializing
+- I used to go online to be an idea, an embodiment of an idea
+Nowadays we bring our selves to the internet and I don't think that is as
+liberating as the older format.
+* TODO Analytics: Google to Goat
+:PROPERTIES:
+:EXPORT_FILE_NAME: goat-google
+:EXPORT_HUGO_CATEGORIES: notes
+:EXPORT_HUGO_TAGS: tools rationale workflow ideas
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments false
+:EXPORT_DATE: 2020-04-09 11:17
+:END:
+** Background
+Like a lot of my tech based rants, this was brought on by a recent [[https://news.ycombinator.com/item?id=22813168][Hacker News
+post]]. I won't go into why the product listed there is a hollow faux FOSS
+rip-off. I won't discuss how that 'free' analytics option, like many others are
+just hobby projects taking pot shots at other projects. Or how insanely
+overpriced most alternatives are.
+
+I will however discuss why and how I transitioned to using the awesome Goat
+Counter.
+** Google Analytics
+I would like to point out that it is OK to start out with Google Analytics. It
+is easy, and free, and scales well. There are reasons not to, but it is a good
+starting point.
+
+*** Pros
+- Google Analytics is free, truly free
+- The metrics are very detailed
+- It is easy to set up
+*** Cons
+- Privacy concerns
+- Blocked by people
+- Easy to obsess over metrics
+
+** Goat Counter
+As with most Hacker News posts, the article itself was nothing compared to the
+excellent comment thread. It was there that I came across people praising [[https://www.goatcounter.com/][Goat Counter]].
+
+*** Pros
+- Is open sourced ([[https://github.com/zgoat/goatcounter][here on Github]])
+- Super lightweight
+- Anonymous statistics
+- Easy to share
+*** Cons
+- Has an upper limit on free accounts (10k a month)
+- I am not very fond of Go
+** Conclusions
+I might eventually go back to GA, if I go over the 10k page view limit. Then
+again, I might not. It might be more like, I only care about the first 10k
+people who make it to my site.
