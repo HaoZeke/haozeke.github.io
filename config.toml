@@ -80,6 +80,7 @@ label = "Utterance 💬"
 
   [[params.social]]
     name = "mastodon"
+    rel  = "me"
     url  = "https://mastodon.cloud/@rgoswami"
 
   [[params.social]]
