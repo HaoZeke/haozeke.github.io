@@ -85,7 +85,10 @@ These mugshots are exactly that, mugshots for profile icons[fn:mountaintapir].
 [[file:images/avatarCollage.jpg]]
 
 ** Donations
-If you've gotten this far, you might also want to check [[https://www.patreon.com/rgoswami][my patreon page out]][fn:patreon].
+If you've gotten this far, you might also want to check out the
+following [fn:patreon]:
+- [[https://www.patreon.com/rgoswami][Patreon]]
+- [[https://liberapay.com/rohit][Librepay]]
 
 [fn:patreon] There won't ever be any content behind paywalls though
 [fn:growingUp] I grew up on the verdant and beautiful [[https://www.tifr.res.in/][TIFR Mumbai]] campus, and
