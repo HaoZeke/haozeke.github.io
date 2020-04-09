@@ -84,6 +84,10 @@ These mugshots are exactly that, mugshots for profile icons[fn:mountaintapir].
 #+caption: A collage of mugshots, shuffled and not ordered by date to confuse people trying to kill me
 [[file:images/avatarCollage.jpg]]
 
+** Donations
+If you've gotten this far, you might also want to check [[https://www.patreon.com/rgoswami][my patreon page out]][fn:patreon].
+
+[fn:patreon] There won't ever be any content behind paywalls though
 [fn:growingUp] I grew up on the verdant and beautiful [[https://www.tifr.res.in/][TIFR Mumbai]] campus, and
 completed high school and undergraduate stuff while playing with peacocks and things on
 the [[https://www.iitk.ac.in][IIT Kanpur]] campus
@@ -1231,3 +1235,7 @@ excellent comment thread. It was there that I came across people praising [[http
 I might eventually go back to GA, if I go over the 10k page view limit. Then
 again, I might not. It might be more like, I only care about the first 10k
 people who make it to my site.
+* TODO Fediverse Thoughts
+** Background
+I recently decided to take a half day off. Naturally I began looking into things
+I've never seen before. I then ran into the delightful fediverse again.
