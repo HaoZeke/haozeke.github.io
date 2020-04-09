@@ -47,6 +47,9 @@ disableHugoGeneratorInject = false
   dateformNum     = "2006-01-02"
   dateformNumTime = "2006-01-02 15:04 -0700"
 
+  # From my fork
+  goatCounter = "rgoswami"
+
   # Set disableReadOtherPosts to true in order to hide the links to other posts.
   disableReadOtherPosts = false
 
