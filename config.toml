@@ -79,6 +79,10 @@ label = "Utterance 💬"
     url  = "https://twitter.com/rg0swami"
 
   [[params.social]]
+    name = "mastodon"
+    url  = "https://mastodon.cloud/@rgoswami"
+
+  [[params.social]]
     name = "keybase"
     url  = "https://keybase.io/haozeke"
 
