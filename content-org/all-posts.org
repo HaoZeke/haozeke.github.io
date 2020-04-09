@@ -1183,7 +1183,8 @@ the first place.
 - I used to go online to be an idea, an embodiment of an idea
 Nowadays we bring our selves to the internet and I don't think that is as
 liberating as the older format.
-* TODO Analytics: Google to Goat
+* DONE Analytics: Google to Goat
+CLOSED: [2020-04-09 Thu 17:17]
 :PROPERTIES:
 :EXPORT_FILE_NAME: goat-google
 :EXPORT_HUGO_CATEGORIES: notes
