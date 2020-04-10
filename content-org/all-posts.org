@@ -1251,13 +1251,13 @@ CLOSED: [2020-04-10 Fri 16:01]
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
 :END:
 ** Background
-A few weeks ago, I ended up recording a video for the Stanford Code in Place
+A few weeks ago, I ended up recording a video for the [[https://compedu.stanford.edu/codeinplace/announcement/][Stanford Code in Place]]
 initiative (which can be [[https://youtu.be/J0ULMEtM00w][found here]]). I heard back a while ago, and am now to lead a section for the
 course!
 
 I'll probably be making a series of short posts as this process continues.
 ** On-Boarding
-This was very reminiscent of the Carpentries instructor training, which makes
+This was very reminiscent of the [[http://carpentries.github.io/instructor-training/][Carpentries instructor training]], which makes
 sense, given how well thought out that experience was.
 
 We started out with a pre-presentation where people were able to just spitball
