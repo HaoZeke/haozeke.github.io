@@ -1242,3 +1242,34 @@ people who make it to my site.
 ** Background
 I recently decided to take a half day off. Naturally I began looking into things
 I've never seen before. I then ran into the delightful fediverse again.
+* DONE On-boarding for Code in Place
+CLOSED: [2020-04-10 Fri 16:01]
+:PROPERTIES:
+:EXPORT_FILE_NAME: scp-onboarding
+:EXPORT_HUGO_CATEGORIES: notes
+:EXPORT_HUGO_TAGS: ideas teaching
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
+** Background
+A few weeks ago, I ended up recording a video for the Stanford Code in Place
+initiative (which can be [[https://youtu.be/J0ULMEtM00w][found here]]). I heard back a while ago, and am now to lead a section for the
+course!
+
+I'll probably be making a series of short posts as this process continues.
+** On-Boarding
+This was very reminiscent of the Carpentries instructor training, which makes
+sense, given how well thought out that experience was.
+
+We started out with a pre-presentation where people were able to just spitball
+and connect, which is pretty neat.
+
+One of the interesting parts of this, was the idea of *interactive recorded
+lectures*, where the professors will be watching lectures with the students. The
+entire slide deck [[https://docs.google.com/presentation/d/12DFKzJWYunNbVMdJ3PbMlS3ZutSoPlMnyzXpFcKyHJc/edit#slide=id.p2][is here]].
+
+The other great idea for this kind of long course was the idea of having a Tea
+room and a Teachers lounge where people can just tune in to chat.
+*** Caveats
+A couple of things which keep cropping up for online teaching in general are the
+following:
+- Zoom does not have persistent chats, so an auxiliary tool like an [[https://board.net][Etherpad]] is great
