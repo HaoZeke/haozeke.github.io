@@ -3,3 +3,9 @@
   to = "https://dotdoom.rgoswami.me"
   status = 301
   force = true
+
+[[redirects]]
+  from = "/doomhome"
+  to = "https://dotdoom.rgoswami.me"
+  status = 301
+  force = true
