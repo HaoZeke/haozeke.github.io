@@ -1247,11 +1247,11 @@ CLOSED: [2020-04-10 Fri 16:01]
 :PROPERTIES:
 :EXPORT_FILE_NAME: scp-onboarding
 :EXPORT_HUGO_CATEGORIES: notes
-:EXPORT_HUGO_TAGS: ideas teaching
+:EXPORT_HUGO_TAGS: ideas teaching cs106a
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
 :END:
 ** Background
-A few weeks ago, I ended up recording a video for the [[https://compedu.stanford.edu/codeinplace/announcement/][Stanford Code in Place]]
+A few weeks ago, I ended up recording a video for the [[https://compedu.stanford.edu/codeinplace/announcement/][Stanford CS106A: Code in Place]]
 initiative (which can be [[https://youtu.be/J0ULMEtM00w][found here]]). I heard back a while ago, and am now to lead a section for the
 course!
 
