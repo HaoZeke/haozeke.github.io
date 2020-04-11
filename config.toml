@@ -1,6 +1,6 @@
 baseurl = "https://rgoswami.me"
 languageCode = "en-us"
-theme = "hello-friend-ng-hz"
+theme = ["hugo-search-fuse-js","hello-friend-ng-hz"]
 
 PygmentsCodeFences = true
 PygmentsStyle = "monokai"
@@ -30,6 +30,9 @@ disableRSS     = false
 disableSitemap = false
 disable404     = false
 disableHugoGeneratorInject = false
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
 
 [blackfriday]
   hrefTargetBlank = true
