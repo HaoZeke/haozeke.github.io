@@ -122,7 +122,7 @@ label = "Utterance 💬"
     readOtherPosts = "Read other posts"
 
     [languages.en.params.logo]
-      logoText = "/home/haozeke/"
+      logoText = "~/haozeke/"
       logoHomeLink = "/"
     # or
     #
