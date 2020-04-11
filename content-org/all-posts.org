@@ -1273,3 +1273,16 @@ room and a Teachers lounge where people can just tune in to chat.
 A couple of things which keep cropping up for online teaching in general are the
 following:
 - Zoom does not have persistent chats, so an auxiliary tool like an [[https://board.net][Etherpad]] is great
+* Search
+:PROPERTIES:
+:EXPORT_HUGO_SECTION: /
+:EXPORT_FILE_NAME: search
+:END:
+#+begin_src yaml :front_matter_extra t
+layout: "search"
+outputs:
+  - html
+  - json
+sitemap:
+  priority: 0.1
+#+end_src
