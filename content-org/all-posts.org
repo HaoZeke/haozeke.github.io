@@ -1273,6 +1273,56 @@ room and a Teachers lounge where people can just tune in to chat.
 A couple of things which keep cropping up for online teaching in general are the
 following:
 - Zoom does not have persistent chats, so an auxiliary tool like an [[https://board.net][Etherpad]] is great
+* DONE Small Section On-boarding
+CLOSED: [2020-04-14 Tue 02:48]
+:PROPERTIES:
+:EXPORT_FILE_NAME: scp-smallgrp
+:EXPORT_HUGO_CATEGORIES: notes
+:EXPORT_HUGO_TAGS: ideas teaching cs106a
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
+** Background
+As I mentioned in my [[https://rgoswami.me/posts/scp-onboarding/][last post]], I'm leading a section for [[https://compedu.stanford.edu/codeinplace/announcement/][Stanford CS106A: Code
+in Place]]. I did also mention I'd try to keep a set of short notes on the
+process. So there[fn:videos].
+** The Training
+Given the overwhelming number of students, and section leaders, the small groups
+are for fostering a community of teachers.
+
+# Arun Kulshrestha is the section leader. He graduated a while ago from Stanford
+# and was a section leader too.
+
+- [ ] Consider allowing for daisy chaining during introductions
+- [ ] Discussions are the primary take-away
+- [ ] Only the instructor should be coding during the session
+
+*** Core components
+- Clarity
+- Content
+- Atmosphere
+- Section management
+- Correctness
+*** Sectional Details
+- Check in at the start
+- Notice the space
+- Check in regularly
+- Avoid negative phrases
+- Establish norms and the general culture
+*** Zoom Norms
+- Have people introduce themselves
+- Mute people when they aren't talking
+- Raise hands
+- Try to use icebreakers which respect privacy
+*** Materials
+Here's some of the stuff which, being as it was open-sourced, I suppose is OK to
+put here[fn:help].
+- [[https://docs.google.com/document/d/1PPei3a5yORmKW1KusD4kearBUzZZM8DYCG7X0NY1oaM/preview][Section Leader Training]]
+- [[https://docs.google.com/document/d/1VTnPA7dMwqpoE_Dl-jWL32g99P_ey4g-NmF7OEzhqR8/preview][Section Leaders' Guide to Virtual Sections]]
+- [[https://docs.google.com/document/d/1lHdnwAB17iLyvASZbWrIZz4PVy9zMmHjxGBGPwXNDs4/preview#heading=h.7dq0u3orjv9z][Some Zoom Icebreakers]]
+[fn:help] If you know otherwise, let me know in the comments
+[fn:videos] As you may know, the official playlist [[https://www.youtube.com/channel/UCWw34Ie0yNe96myEZ5RLHhg][is here]]
+** This Week
+
 * Search
 :PROPERTIES:
 :EXPORT_HUGO_SECTION: /
