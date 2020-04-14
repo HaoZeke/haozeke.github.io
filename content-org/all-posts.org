@@ -137,8 +137,8 @@ seemed kinda neat.
 - Emacs specific workflows which I might want to write about more than [[https://dotdoom.grimoire.science/][short
   notes on the config]]
 ** What isn't here
-- More coherent thoughts will *not* be here, that should and will go to my [[https://grimoire.science][grimoire]]
-- My [[https://dotdoom.grimoire.science/][doom-emacs configuration]]
+- Some collections should and will go to my [[https://grimoire.science][grimoire]]
+- My [[https://dotdoom.rgoswami.me][doom-emacs configuration]]
 - Academic stuff is better tracked on [[https://publons.com/researcher/2911170/rohit-goswami/][Publons]] or [[https://scholar.google.co.in/citations?user=36gIdJMAAAAJ&hl=en][Google Scholar]] or my pages
   hosted by my favorite [[https://femtolab.science/people/rohit][IITK group]] or [[https://www.hi.is/starfsfolk/rog32][UI group]]
 * Taming Github Notifications
