@@ -100,6 +100,19 @@ a personal list of people associated with each city, not a cover letter
 [fn:notpersonal] This is not a replacement for [[https://www.instagram.com/rg0swami/][an Instagram feed]] or a [[https://www.facebook.com/rg0swami][Facebook
 wall]], or even a [[https://www.researchgate.net/profile/Rohit_Goswami2][ResearchGate]] or [[https://publons.com/researcher/2911170/rohit-goswami/][Publons]] or [[https://orcid.org/0000-0002-2393-8056][ORCID]] page; all of which I do sporadically remember I have
 [fn:mountaintapir] Made with the [[https://github.com/tttppp/mountain_tapir][Mountain Tapir Collage Maker]]
+* Search
+:PROPERTIES:
+:EXPORT_HUGO_SECTION: /
+:EXPORT_FILE_NAME: search
+:END:
+#+begin_src yaml :front_matter_extra t
+layout: "search"
+outputs:
+  - html
+  - json
+sitemap:
+  priority: 0.1
+#+end_src
 * Site Rationale
 :PROPERTIES:
 :EXPORT_FILE_NAME: rationale
@@ -1322,17 +1335,3 @@ put here[fn:help].
 [fn:help] If you know otherwise, let me know in the comments
 [fn:videos] As you may know, the official playlist [[https://www.youtube.com/channel/UCWw34Ie0yNe96myEZ5RLHhg][is here]]
 ** This Week
-
-* Search
-:PROPERTIES:
-:EXPORT_HUGO_SECTION: /
-:EXPORT_FILE_NAME: search
-:END:
-#+begin_src yaml :front_matter_extra t
-layout: "search"
-outputs:
-  - html
-  - json
-sitemap:
-  priority: 0.1
-#+end_src
