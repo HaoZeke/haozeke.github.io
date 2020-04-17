@@ -1334,4 +1334,37 @@ put here[fn:help].
 - [[https://docs.google.com/document/d/1lHdnwAB17iLyvASZbWrIZz4PVy9zMmHjxGBGPwXNDs4/preview#heading=h.7dq0u3orjv9z][Some Zoom Icebreakers]]
 [fn:help] If you know otherwise, let me know in the comments
 [fn:videos] As you may know, the official playlist [[https://www.youtube.com/channel/UCWw34Ie0yNe96myEZ5RLHhg][is here]]
-** This Week
+* DONE CS106A Section Meeting I
+CLOSED: [2020-04-17 Fri 22:54]
+:PROPERTIES:
+:EXPORT_FILE_NAME: scp-smallgrp-meet1
+:EXPORT_HUGO_CATEGORIES: notes
+:EXPORT_HUGO_TAGS: teaching cs106a
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
+** Background
+As I mentioned [[https://rgoswami.me/posts/scp-onboarding/][earlier]], I'm leading a section for [[https://compedu.stanford.edu/codeinplace/announcement/][Stanford CS106A: Code
+in Place]]. I did also mention I'd try to keep a set of short notes on the
+process. I finally had my first section meeting!
+** Preparation
+I went through the following:
+- Sent out a welcome message
+- Detailed the workflow
+- Set up a HackMD instance
+- Set up some slides in ~beamer~ [fn:whyslides]
+
+However, after that, I was still concerned since I didn't get much of a response on the ice-breakers for EdStem. Thankfully, everyone showed up.
+** Teaching
+- I had a fabulous session, and we went through a variety of concepts.
+- Didn't spend much time on icebreakers, but did get a feel for where the students stand on the functional vs imperative programming paradigms
+- Possibly because of working through two different approaches, the 40 minute long session went on for two hours and fifteen minutes.
+- Some students had more of a background than the others, thankfully computational thinking is not normally taught very well
+
+** Conclusion
+
+- The notes are [[https://hackmd.io/tqd-a5SlSbK_NAtnSdqEPA][visible here]], and the session was [[https://youtu.be/rLak1v4k4o0][recorded here]][fn:whatnow]
+- It was fun, and I hope the students enjoyed it as much as I did.
+- I will probably expand this in terms of the concepts covered, to give the students more of an overview of what was covered
+
+[fn:whyslides] Even though most of the session was supposed to be live, it was still helpful to show I was interested enough to set up slides
+[fn:whatnow] As always, advice is much appreciated (and moderated)
