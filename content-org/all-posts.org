@@ -1368,3 +1368,89 @@ However, after that, I was still concerned since I didn't get much of a response
 
 [fn:whyslides] Even though most of the session was supposed to be live, it was still helpful to show I was interested enough to set up slides
 [fn:whatnow] As always, advice is much appreciated (and moderated)
+* DONE CS106A Small Group Training
+CLOSED: [2020-04-22 Wed 07:01]
+:PROPERTIES:
+:EXPORT_FILE_NAME: scp-smallgrp-trainig
+:EXPORT_HUGO_CATEGORIES: notes
+:EXPORT_HUGO_TAGS: teaching cs106a
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments false
+:END:
+** Background
+As I mentioned [[https://rgoswami.me/posts/scp-onboarding/][earlier]], I'm leading a section for [[https://compedu.stanford.edu/codeinplace/announcement/][Stanford CS106A: Code
+in Place]]. This post relates to the notes and thoughts garnered during the small group training session [fn:whenpost].
+** Reflections
+*** Demographics
+Redacted. Did not use breakout meetings due to privacy issues.
+*** Engagement and Participation
+- Some people were more active (skewed responses)
+- Some of the more rudimentary questions might have been suppressed
+*** Highlighted Moments
+- Covering multiple perspectives
+- Different mental models
+*** Challenges and Transformations
+- Technical debt was an issue
+- Lack of engagement
+- Went on for too long
+For me in particular:
+#+BEGIN_QUOTE
+It took over two hours, and though most people stayed on, not everyone was engaged.
+#+END_QUOTE
+** Scenarios
+These are to be dealt with as per the [[https://docs.google.com/document/d/13RZzvY_9WTR_sjo_Y4oBNchsAWAv_z6kSJ9395snANU/preview][guidelines here]]. Since different groups covered different scenarios, not all of these have answers here.
+*** Ensuring Engagement
+#+BEGIN_QUOTE
+You have some students who didn't participate at all in the section. What do you do?
+#+END_QUOTE
+*** Effective Communication
+#+BEGIN_QUOTE
+What might not be effective about the policy, “Students should just tell me if I say something that offends them”?
+#+END_QUOTE
+*** Sharing Experiences
+#+BEGIN_QUOTE
+You just finished your section and are staying behind to answer questions from your students. A couple students asked what it’s like studying/working in an engineering/tech field.
+
+What things might you want to keep in mind when answering their questions?
+#+END_QUOTE
+*** Time Management
+#+BEGIN_QUOTE
+Section went way over time due to lots of questions being asked by students. What are some time management strategies you can use moving forward?
+#+END_QUOTE
+*** Homework Assists
+#+BEGIN_QUOTE
+A sectionee posts in your Ed group, “I am a little bit frustrated because I don't really know where to start on the first assignment. A little hint would be very helpful.” How do you respond?
+#+END_QUOTE
+*** Debugging
+#+BEGIN_QUOTE
+A  sectionee shows you the following buggy code for printing all the elements in a list:
+
+my_lst = ['apple', 'banana', 'carrot']
+i = 0
+while len(my_lst) > 0:
+  print(my_lst[i])
+  i = i + 1
+
+They explain that the code works (it prints all the elements in the right order) but then throws a weird error: “IndexError: list index out of range.”  How would you help them find their bug?
+#+END_QUOTE
+*** Quitting
+#+BEGIN_QUOTE
+You have a student who is already discouraged by how difficult the first assignment is and has told you they don’t feel cut out for CS.  What do you say to them?
+#+END_QUOTE
+1. Provide encouragement
+2. Give examples of hardship faced
+3. Be positive and make sure they don’t feel worse, even if they do follow through and quit
+4. “You’re not the first”
+5. Takes a lot of time. Doesn’t happen overnight
+6. Ask them why they don’t feel cut out and try to solve that problem
+
+*** Looking up issues
+#+BEGIN_QUOTE
+Why might it be problematic to say something like, “It’s easy to download X or look up the answer to Y”? Why might those statements not be true?
+#+END_QUOTE
+1. Difficulty in backgrounds (language barriers)
+2. They might not be able to understand stackoverflow.com until they learn more CS
+3. They might not know where to look online (lack of domain expertise)
+4. Dependencies (for downloads)
+5. Makes them feel bad if they don’t end up finding it easy
+
+[fn:whenpost] This post was created on the day of training, 21-04-20, but will be posted later
