@@ -1467,12 +1467,12 @@ I have been wanting to find a workflow which allows me to bypass writing a lot o
 ** Packages
 Support for Mathematica in modern orgmode is mainly through the use of [[https://github.com/emacsmirror/org/blob/master/contrib/lisp/ob-mathematica.el][ob-mathematica]], which is the official org-babel extension (from ~contrib~) for working with Mathematica. However, ~ob-mathematica~ relies on the now-defunct ~mma~ package for font-locking, which is less than ideal. Thankfully, there exists the excellent [[https://github.com/kawabata/wolfram-mode][wolfram-mode]] package which happens to be in MELPA as well. Finally, since the default return type of a ~mathematica~ block is an input-string meant to be used in another ~mathematica~ block, which is not useful when we work with ~org-babel~, we will use the excellent ~mash.pl~ utility [[http://ai.eecs.umich.edu/people/dreeves/mash/][from here]], as suggested by the ~ob-mathematica~ package to sanitize our output and set a unifying path.
 
-So to recap, use your favorite MELPA manager to get:
-- [ ] ~ob-mathematica~
-- [ ] ~wolfram-mode~
-- [ ] ~mash.pl~
+So to recap, use your favorite manager to get:
+- [ ] ~ob-mathematica~ (in contrib)
+- [ ] ~wolfram-mode~ ([[https://melpa.org/#/wolfram-mode][MELPA]])
+- [ ] ~mash.pl~ ([[http://ai.eecs.umich.edu/people/dreeves/mash][from here]])
 
-That said, the configuration is then simply [fn:fullconf]:
+After obtaining the packages, the configuration is then simply [fn:fullconf]:
 
 #+begin_src emacs-lisp
 ;; Load mathematica from contrib
