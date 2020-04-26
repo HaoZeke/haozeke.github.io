@@ -10,5 +10,5 @@
   status = 301
   force = true
 
-[[plugins]]
-package = "netlify-plugin-subfont"
+# [[plugins]]
+# package = "netlify-plugin-subfont"
