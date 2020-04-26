@@ -219,7 +219,7 @@ Now we can just make ~.envrc~ files with ~layout_poetry~ and everything will
 :PROPERTIES:
 :EXPORT_FILE_NAME: jupyter-orgmode
 :EXPORT_HUGO_CATEGORIES: programming
-:EXPORT_HUGO_TAGS: tools emacs workflow python
+:EXPORT_HUGO_TAGS: tools emacs workflow orgmode
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :EXPORT_DATE: 2020-02-13 22:36
 :END:
@@ -1454,3 +1454,105 @@ Why might it be problematic to say something like, “It’s easy to download X 
 5. Makes them feel bad if they don’t end up finding it easy
 
 [fn:whenpost] This post was created on the day of training, 21-04-20, but will be posted later
+* DONE Using Mathematica with Orgmode
+CLOSED: [2020-04-26 Sun 20:01]
+:PROPERTIES:
+:EXPORT_FILE_NAME: org-mathematica
+:EXPORT_HUGO_CATEGORIES: programming
+:EXPORT_HUGO_TAGS: tools emacs workflow orgmode
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+** Background
+I have been wanting to find a workflow which allows me to bypass writing a lot of TeX by hand for a while now. To that end I looked into using a computer algebra system (CAS). Naturally, my first choice was the [[http://maxima.sourceforge.net/][FOSS Maxima]] (also because it uses Lisp under the hood). However, for all the reasons [[http://thingwy.blogspot.com/2015/07/maxima-versus-mathematica-should-i-go.html][listed here]], relating to its accuracy, which have not been fixed even though the post was over 5 years ago, I ended up having to go with the closed source [[https://www.wolfram.com/mathematica/][Mathematica]].
+** Packages
+Support for Mathematica in modern orgmode is mainly through the use of [[https://github.com/emacsmirror/org/blob/master/contrib/lisp/ob-mathematica.el][ob-mathematica]], which is the official org-babel extension (from ~contrib~) for working with Mathematica. However, ~ob-mathematica~ relies on the now-defunct ~mma~ package for font-locking, which is less than ideal. Thankfully, there exists the excellent [[https://github.com/kawabata/wolfram-mode][wolfram-mode]] package which happens to be in MELPA as well. Finally, since the default return type of a ~mathematica~ block is an input-string meant to be used in another ~mathematica~ block, which is not useful when we work with ~org-babel~, we will use the excellent ~mash.pl~ utility [[http://ai.eecs.umich.edu/people/dreeves/mash/][from here]], as suggested by the ~ob-mathematica~ package to sanitize our output and set a unifying path.
+
+So to recap, use your favorite MELPA manager to get:
+- [ ] ~ob-mathematica~
+- [ ] ~wolfram-mode~
+- [ ] ~mash.pl~
+
+That said, the configuration is then simply [fn:fullconf]:
+
+#+begin_src emacs-lisp
+;; Load mathematica from contrib
+(org-babel-do-load-languages 'org-babel-load-languages
+                             (append org-babel-load-languages
+                                     '(mathematica . t)
+                                     ))
+;; Sanitize output and deal with paths
+(setq org-babel-mathematica-command "~/.local/bin/mash")
+;; Font-locking
+(add-to-list 'org-src-lang-modes '("mathematica" . wolfram))
+;; For wolfram-mode
+(setq mathematica-command-line "~/.local/bin/mash")
+#+end_src
+
+** Results
+*** LaTeX
+Now we are in a position to simply evaluate content with font-locking. We will test our set up with an example lifted from the ~ob-mathematica~ [[https://github.com/analyticd/wy-els/blob/master/ob-mathematica.el][source-code]].
+
+#+NAME: example-table
+#+caption: A table
+  | 1 | 4 |
+  | 2 | 4 |
+  | 3 | 6 |
+  | 4 | 8 |
+  | 7 | 0 |
+
+#+BEGIN_SRC mathematica :var x=example-table :results latex
+(1+Transpose@x) // TeXForm
+#+END_SRC
+
+#+RESULTS:
+#+begin_export latex
+\left(
+\begin{array}{ccccc}
+ 2 & 3 & 4 & 5 & 8 \\
+ 5 & 5 & 7 & 9 & 1 \\
+\end{array}
+\right)
+#+end_export
+
+Where our header-line (with ~#+begin_src~) is:
+#+BEGIN_SRC orgmode
+mathematica :var x=example-table :results latex
+#+END_SRC
+
+*** Sanity Checks
+
+We can also test the example from the [[http://thingwy.blogspot.com/2015/07/maxima-versus-mathematica-should-i-go.html][blog post]] earlier to test basic mathematical sanity.
+
+#+BEGIN_SRC mathematica :results raw
+Limit[Log[b - a + I eta], eta -> 0, Direction -> -1,Assumptions -> {a > 0, b > 0, a > b}]
+TeXForm[Limit[Log[b - a + I eta], eta -> 0, Direction -> 1,Assumptions -> {a > 0, b > 0, a > b}]]
+#+END_SRC
+
+#+RESULTS:
+$(I*Pi + Log[a - b])*\log (a-b)-i \pi$
+
+*** Inline Math
+
+Note that we can now also write fractions, integrals and other cumbersome TeX objects a lot faster with this syntax, like src_mathematica[:exports none :results raw]{Integrate[x^2,x] // TeXForm} $\frac{x^3}{3}$. Where we are using the following snippet:
+
+#+BEGIN_SRC orgmode
+src_mathematica[:exports none :results raw]{Integrate[x^2,x] // TeXForm}
+#+END_SRC
+
+*** Plots
+
+For plots, the standard ~orgmode~ rules apply, that is, we have to export to a file and return the name through our code snippet. Consider:
+#+BEGIN_SRC mathematica :results file
+p=Plot[Sin[x], {x, 0, 6 Pi},Frame->True];
+Export["images/sine.png",p];
+Print["images/sine.png"]
+#+END_SRC
+
+#+RESULTS:
+#+caption: An exported Mathematica image
+[[file:images/sine.png]]
+
+Where we have used ~mathematica :results file~ as our header line.
+
+[fn:whydoom] The dark side has cookies
+[fn:fullconf] For reference, my whole config [[https://dotdoom.rgoswami.me][is here]]
