@@ -1470,7 +1470,7 @@ Support for Mathematica in modern orgmode is mainly through the use of [[https:/
 So to recap, use your favorite manager to get:
 - [x] ~ob-mathematica~ (in contrib)
 - [x] ~wolfram-mode~ ([[https://melpa.org/#/wolfram-mode][MELPA]])
-- [x] ~mash.pl~ ([[http://ai.eecs.umich.edu/people/dreeves/mash][from here]])
+- [x] ~mash.pl~ ([[http://ai.eecs.umich.edu/people/dreeves/mash][from here]]) [fn:aboutmash]
 
 After obtaining the packages, the configuration is then simply [fn:fullconf]:
 
@@ -1478,7 +1478,7 @@ After obtaining the packages, the configuration is then simply [fn:fullconf]:
 ;; Load mathematica from contrib
 (org-babel-do-load-languages 'org-babel-load-languages
                              (append org-babel-load-languages
-                                     '(mathematica . t)
+                                     '((mathematica . t))
                                      ))
 ;; Sanitize output and deal with paths
 (setq org-babel-mathematica-command "~/.local/bin/mash")
@@ -1554,5 +1554,60 @@ Print["images/sine.png"]
 
 Where we have used ~mathematica :results file~ as our header line.
 
+[fn:aboutmash] As noted in the comments, it is nicer to rename ~mash.pl~ to ~mash~
 [fn:whydoom] The dark side has cookies
 [fn:fullconf] For reference, my whole config [[https://dotdoom.rgoswami.me][is here]]
+* TODO Thoughts on Chemical Engineering
+:PROPERTIES:
+:EXPORT_FILE_NAME: cheme-thoughts
+:EXPORT_HUGO_CATEGORIES: notes
+:EXPORT_HUGO_TAGS: ramblings explanations
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments false
+:END:
+** Background
+** Mass and Energy Balances
+From the first lecture on the topic, I came away with an implicit understanding, that though reactor design might be the heart of a chemical engineering plant, the soul would be mass and energy balances.
+* TODO An Orgmode Note Workflow
+:PROPERTIES:
+:EXPORT_FILE_NAME: org-note-workflow
+:EXPORT_HUGO_CATEGORIES: notes
+:EXPORT_HUGO_TAGS: ramblings explanations
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments false
+:END:
+** Background
+One of the main reasons to use ~orgmode~ is definitely to get a better note taking workflow. Closely related to blogging or writing, the ideal note workflow is one which lets you keep a bunch of throwaway ideas and also somehow have access to them in a coherent manner. This will be a long post, and it is a work-in-progress, so, keep that in mind. Since this is mainly me work-shopping my technique, the philosophy will come in a later post probably.
+** Reference Management
+Reference management is one of the main reasons to consider a plain-text setup, and mine is no different. The options most commonly seen are:
+- Mendeley :: This is a great option, and the most mobile friendly of the bunch. Sadly, the price tiers aren't very friendly so I have to give it a hard pass.
+- Jabref :: This is fun, but really more of a per-project management system, but it works well for that. The fact that it is Java based was a major issue for me.
+- Zotero :: This is what I personally use and recommend. More on that in a later post.
+** Bibliography
+Since I will be using ~org-ref~, it makes no sense to load or work with the ~+biblio~ module at the moment.
+** Org-Roam
+This is the heart of the workflow, and really what most of the configuration will focus on. For me,
+** Deft
+** Org-Roam-Bibtex
+** Org-Journal
+** Org-Protocol
+I will only cover the bare minimum relating to the use of ~org-capture~ here, because eventually I intend to handle a lot more cases with [[https://github.com/abo-abo/orca][orca]].
+*** Templates
+This might get complicated but I am only trying to get the bare minimum for
+~org-protocol~ right now.
+#+BEGIN_SRC emacs-lisp
+;; Actually start using templates
+(after! org-capture
+  ;; Firefox and Chrome
+  (add-to-list 'org-capture-templates
+               '("P" "Protocol" entry ; key, name, type
+                 (file+headline +org-capture-notes-file "Inbox") ; target
+                 "* %^{Title}\nSource: %u, %c\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n\n%?"
+                 :prepend t ; properties
+                 :kill-buffer t))
+  (add-to-list 'org-capture-templates
+               '("L" "Protocol Link" entry
+                 (file+headline +org-capture-notes-file "Inbox")
+                 "* %? [[%:link][%(transform-square-brackets-to-round-ones \"%:description\")]]\n"
+                 :prepend t
+                 :kill-buffer t))
+)
+#+END_SRC
