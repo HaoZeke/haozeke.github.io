@@ -1702,3 +1702,211 @@ Note that we have used ~rst :exports both :results raw~ as the header argument.
 
 ** Conclusions
 Will probably follow this up with an actual package, which should handle the entire spectrum of ~pandoc~ back-ends.
+* DONE Refactoring Dotfiles For Colemak
+CLOSED: [2020-05-02 Sat 20:30]
+:PROPERTIES:
+:EXPORT_FILE_NAME: colemak-dots-refactor
+:EXPORT_HUGO_CATEGORIES: notes
+:EXPORT_HUGO_TAGS: workflow programming personal
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+** Background
+I have, in the past written about how I [[Switching to Colemak][made the switch]] to Colemak. However,
+until recently, I was still trying to mimic the VIM keybindings from QWERTY.
+This is a post where I discuss the changes I made to ensure that I never have to
+stretch my fingers in odd ways again. The main idea is expressed well by [[https://github.com/jooize/vim-colemak][vim-colemak]].
+#+BEGIN_SRC shell
+Colemak layout:                  |                 QWERTY layout:
+`12345 67890-=     Move around:  |  (instead of)   `12345 67890-=
+ qwfpg jluy;[]\         e        |       k          qwert yuiop[]\
+ arstd HNEIo'         h   i      |     h   l        asdfg HJKL;'
+ zxcvb km,./            n        |       j          zxcvb nm,./
+#+END_SRC
+** Emacs
+Though I have [[https://github.com/hlissner/doom-emacs/issues/783#issuecomment-535805347][mentioned publicly]], that I was using the regular QWERTY motion
+keys, I realized I had actually started to use the mouse more often, simply
+because it was a pain to navigate. Thankfully, ~emacs~ has [[https://github.com/wbolster/evil-colemak-basics][evil-colemak-basics]],
+which is fabulous. For reference, these make it really easy for QWERTY users to
+make the switch if they're previously used to VIM bindings.
+#+BEGIN_SRC rst :results raw :exports results
+.. list-table::
+   :header-rows: 1
+
+   * - Colemak
+     - Qwerty
+     - Action
+     - States
+     - At Qwerty position?
+     - Remarks
+
+   * - ``h``, ``n``, ``e``, ``i``
+     - ``h``, ``j``, ``k``, ``l``
+     - navigate
+     - ``mnvo``
+     - yes
+     -
+
+   * - ``k``, ``K``
+     - ``n``, ``N``
+     - search next/previous
+     - ``mnvo``
+     - yes
+     -
+
+   * - ``u``, ``U``
+     - ``i``, ``I``
+     - insert
+     - ``_nv_``
+     - yes
+     -
+
+   * - ``l``
+     - ``u``
+     - undo
+     - ``_nv_``
+     - yes
+     -
+
+   * - ``N``
+     - ``J``
+     - join lines
+     - ``_nv_``
+     - yes
+     -
+
+   * - ``E``
+     - ``K``
+     - lookup
+     - ``mnv_``
+     - yes
+     -
+
+   * - ``u``
+     - ``i``
+     - inner text object keymap
+     - ``___o``
+     - yes
+     -
+
+   * - ``f``, ``F``
+     - ``e``, ``E``
+     - jump to end of word
+     - ``mnvo``
+     - yes
+     - with ``t-f-j`` rotation
+
+   * - ``t``, ``T``
+     - ``f``, ``f``
+     - jump to character
+     - ``mnvo``
+     - yes
+     - with ``t-f-j`` rotation
+
+   * - ``j``, ``J``
+     - ``t``, ``T``
+     - jump until character
+     - ``mnvo``
+     - no
+     - with ``t-f-j`` rotation
+
+   * - ``j``, ``J``
+     - ``e``, ``E``
+     - jump to end of word
+     - ``mnvo``
+     - no
+     - without ``t-f-j`` rotation
+#+END_SRC
+
+#+RESULTS:
+| Colemak            | Qwerty             | Action                   | States | At Qwerty position? | Remarks                  |
+|--------------------+--------------------+--------------------------+--------+---------------------+--------------------------|
+| =h=, =n=, =e=, =i= | =h=, =j=, =k=, =l= | navigate                 | =mnvo= | yes                 |                          |
+| =k=, =K=           | =n=, =N=           | search next/previous     | =mnvo= | yes                 |                          |
+| =u=, =U=           | =i=, =I=           | insert                   | =_nv_= | yes                 |                          |
+| =l=                | =u=                | undo                     | =_nv_= | yes                 |                          |
+| =N=                | =J=                | join lines               | =_nv_= | yes                 |                          |
+| =E=                | =K=                | lookup                   | =mnv_= | yes                 |                          |
+| =u=                | =i=                | inner text object keymap | =___o= | yes                 |                          |
+| =f=, =F=           | =e=, =E=           | jump to end of word      | =mnvo= | yes                 | with =t-f-j= rotation    |
+| =t=, =T=           | =f=, =f=           | jump to character        | =mnvo= | yes                 | with =t-f-j= rotation    |
+| =j=, =J=           | =t=, =T=           | jump until character     | =mnvo= | no                  | with =t-f-j= rotation    |
+| =j=, =J=           | =e=, =E=           | jump to end of word      | =mnvo= | no                  | without =t-f-j= rotation |
+
+Where the table above is from the fantastic [[https://github.com/wbolster/evil-colemak-basics][readme]].
+
+I still had some issues, mostly relating to searching in buffers, so I ended
+using ~swiper-isearch~ more which is a bonus too.
+** Vimium
+I use the excellent [[https://vimium.github.io/][vimium]] to make Chrome be a little less annoying. Luckily [[https://github.com/philc/vimium/wiki/colemak][the Wiki]] seems to have a reasonable suggestion for colemak. The basic idea is to migrate from
+#+BEGIN_SRC conf
+mapkey n j
+mapkey N J
+mapkey e k
+mapkey E K
+mapkey i l
+mapkey I L
+mapkey k n
+mapkey K N
+mapkey l i
+mapkey L I
+mapkey j e
+mapkey J E
+#+END_SRC
+** Zsh
+To ensure uniform bindings, I used to use ~bindkey -v~ but will need some minor
+changes to that set up. I based this part of my configuration off the bindings
+of [[https://github.com/bunnyfly/dotfiles/blob/master/zshrc][bunnyfly]].
+#+BEGIN_SRC shell
+bindkey -v
+# Colemak.
+  bindkey -M vicmd "h" backward-char
+  bindkey -M vicmd "n" down-line-or-history
+  bindkey -M vicmd "e" up-line-or-history
+  bindkey -M vicmd "i" forward-char
+  bindkey -M vicmd "s" vi-insert
+  bindkey -M vicmd "S" vi-insert-bol
+  bindkey -M vicmd "k" vi-repeat-search
+  bindkey -M vicmd "K" vi-rev-repeat-search
+  bindkey -M vicmd "l" beginning-of-line
+  bindkey -M vicmd "L" end-of-line
+  bindkey -M vicmd "j" vi-forward-word-end
+  bindkey -M vicmd "J" vi-forward-blank-word-end
+
+# Sane Undo, Redo, Backspace, Delete.
+  bindkey -M vicmd "u" undo
+  bindkey -M vicmd "U" redo
+  bindkey -M vicmd "^?" backward-delete-char
+  bindkey -M vicmd "^[[3~" delete-char
+
+# Keep ctrl+r searching
+  bindkey -M viins '^R' history-incremental-pattern-search-forward
+  bindkey -M viins '^r' history-incremental-pattern-search-backward
+#+END_SRC
+** Zathura
+There is no better ~pdf~ viewer than [[https://pwmt.org/projects/zathura/][zathura]], and it also works for ~djvu~ and
+friends. As a plus point, it normally has very reasonable ~vim~ bindings, and an
+excellent configuration system, so we will leverage that. The best part is that
+we can just add to it using ~include zathuraColemak~ or whatever so as to be
+minimally invasive.
+
+#+BEGIN_SRC vim
+map h scroll left
+map n scroll down
+map e scroll up
+map i scroll right
+
+map N scroll half-down
+map E scroll half-up
+
+map k search next
+map K search previous
+
+map <PageUp> navigate previous
+map <PageDown> navigate next
+
+map q quit
+#+END_SRC
+** Conclusions
+That seems to be it for now. If I think of more programs I use regularly which
+allow VIM bindings, or keybindings in general, I'll probably just update this
+post. My full dotfiles are [[https://github.com/HaoZeke/Dotfiles][present here]], and now include a ~colemak~ target.
