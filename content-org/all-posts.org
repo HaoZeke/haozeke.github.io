@@ -1906,6 +1906,15 @@ map <PageDown> navigate next
 
 map q quit
 #+END_SRC
+** i3
+I have some bindings set up in terms of $left $right $up and $down, so it was
+simple to re-bind them.
+#+BEGIN_SRC vim
+set $left h
+set $down n
+set $up e
+set $right i
+#+END_SRC
 ** Conclusions
 That seems to be it for now. If I think of more programs I use regularly which
 allow VIM bindings, or keybindings in general, I'll probably just update this
