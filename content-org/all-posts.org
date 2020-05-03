@@ -2,6 +2,7 @@
 
 #+hugo_base_dir: ../
 #+hugo_front_matter_format: yaml
+#+hugo_front_matter_key_replace: description>summary
 #+bibliography: biblio/refs.bib
 
 #+seq_todo: TODO DRAFT DONE
@@ -17,6 +18,10 @@
 :EXPORT_FILE_NAME: about
 :EXPORT_DATE: 1995-08-10
 :END:
+
+#+begin_description
+A short historical recollection of some *thoughts* and _stuff_.
+#+end_description
 
 *Hi.*
 
@@ -113,11 +118,12 @@ outputs:
 sitemap:
   priority: 0.1
 #+end_src
-* Site Rationale
+#+begin_description
+Search in full-text, the entire contents of the site.
+#+end_description
+* DONE Site Rationale :@projects:ramblings:explanations:
 :PROPERTIES:
 :EXPORT_FILE_NAME: rationale
-:EXPORT_HUGO_CATEGORIES: projects
-:EXPORT_HUGO_TAGS: ramblings explanations
 :EXPORT_DATE: 2020-02-11 23:28
 :END:
 ** Why this site exists
@@ -141,11 +147,9 @@ seemed kinda neat.
 - My [[https://dotdoom.rgoswami.me][doom-emacs configuration]]
 - Academic stuff is better tracked on [[https://publons.com/researcher/2911170/rohit-goswami/][Publons]] or [[https://scholar.google.co.in/citations?user=36gIdJMAAAAJ&hl=en][Google Scholar]] or my pages
   hosted by my favorite [[https://femtolab.science/people/rohit][IITK group]] or [[https://www.hi.is/starfsfolk/rog32][UI group]]
-* Taming Github Notifications
+* DONE Taming Github Notifications :@notes:tools:github:workflow:
 :PROPERTIES:
 :EXPORT_FILE_NAME: ghNotif
-:EXPORT_HUGO_CATEGORIES: notes
-:EXPORT_HUGO_TAGS: tools github workflow
 :EXPORT_DATE: 2020-02-12 11:36
 :END:
 ** Background
@@ -173,11 +177,9 @@ It looks like this:
 
 #+caption: Octobox Stock Photo
 [[file:images/octoboxSample.png]]
-* Poetry and Direnv
+* DONE Poetry and Direnv :@programming:tools:direnv:workflow:python:
 :PROPERTIES:
 :EXPORT_FILE_NAME: poetry-direnv
-:EXPORT_HUGO_CATEGORIES: programming
-:EXPORT_HUGO_TAGS: tools direnv workflow python
 :EXPORT_DATE: 2020-02-13 21:36
 :END:
 ** Background
@@ -215,11 +217,9 @@ layout_poetry() {
 Now we can just make ~.envrc~ files with ~layout_poetry~ and everything will
 /just work™/.
 
-* Replacing Jupyter with Orgmode
+* DONE Replacing Jupyter with Orgmode :@programming:tools:emacs:workflow:orgmode:
 :PROPERTIES:
 :EXPORT_FILE_NAME: jupyter-orgmode
-:EXPORT_HUGO_CATEGORIES: programming
-:EXPORT_HUGO_TAGS: tools emacs workflow orgmode
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :EXPORT_DATE: 2020-02-13 22:36
 :END:
@@ -423,23 +423,17 @@ There are a million and one variations of this of course, but this is enough to
 get started.
 
 The whole file is also [[https://github.com/HaoZeke/haozeke.github.io/blob/src/content-org/tmp/myFakeJupyter.org][reproduced here]].
-* TODO Orgmode and Hugo
+* TODO Orgmode and Hugo :@projects:tools:emacs:webdev:hugo:
 :PROPERTIES:
 :EXPORT_FILE_NAME: hugo-orgmode
-:EXPORT_HUGO_CATEGORIES: projects
-:EXPORT_HUGO_TAGS: tools emacs webdev hugo
-# :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
-:EXPORT_DATE: 2020-02-14 05:57
 :END:
 ** Background
 - This is about the site you are reading
 - It is also a partial rant
 - It has a lot to do with web development in general
-* DONE Switching to Colemak
+* DONE Switching to Colemak :@notes:workflow:personal:explanations:
 :PROPERTIES:
 :EXPORT_FILE_NAME: colemak-switch
-:EXPORT_HUGO_CATEGORIES: notes
-:EXPORT_HUGO_TAGS: workflow programming personal
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
 :EXPORT_DATE: 2020-02-29 14:06
 :END:
@@ -544,11 +538,9 @@ scattered thoughts:
 
 [fn:img] The images are [[https://www.keyboard-design.com/best-keyboard-layouts.html][from here]], where there's also an effort based metric
 used to score keyboard layouts.
-* TODO Replacing Rstudio with Emacs
+* TODO Replacing Rstudio with Emacs :@programming:tools:emacs:workflow:R:
 :PROPERTIES:
 :EXPORT_FILE_NAME: rstudio-emacs
-:EXPORT_HUGO_CATEGORIES: programming
-:EXPORT_HUGO_TAGS: tools emacs workflow R
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :EXPORT_DATE: 2020-02-15 04:38
 :END:
@@ -561,11 +553,9 @@ an Emacs-native workflow.
 * TODO Role models and colleges
 * TODO My current courses
 * TODO Rude college admissions
-* Pandora and Proxychains
+* DONE Pandora and Proxychains :@personal:tools:workflow:
 :PROPERTIES:
 :EXPORT_FILE_NAME: pandora-proxychains
-:EXPORT_HUGO_CATEGORIES: personal
-:EXPORT_HUGO_TAGS: tools workflow
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :comments true
 :EXPORT_DATE: 2020-02-15 05:28
 :END:
@@ -636,11 +626,9 @@ user = "$emailID"
 
 The ~autostart_station ID~ can be obtained by inspecting the terminal output
 during an initial run. I usually set it to the QuickMix station.
-* DONE Bojack Horseman
+* Bojack Horseman :@personal:thoughts:random:review:TV:
 :PROPERTIES:
 :EXPORT_FILE_NAME: bojack-horseman
-:EXPORT_HUGO_CATEGORIES: personal
-:EXPORT_HUGO_TAGS: thoughts random review TV
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :comments false
 :EXPORT_DATE: 2020-02-27 22:28
 :END:
@@ -682,21 +670,15 @@ favorite search engine + streaming content provider / digital piracy eye-patch
 and give it a whirl. The only thing I'd suggest is watching everything in order,
 it's just that kind of show.
 
-* TODO The Morpho Language
+* TODO The Morpho Language :@programming:review:
 :PROPERTIES:
 :EXPORT_FILE_NAME: morpho-lang
-:EXPORT_HUGO_CATEGORIES: programming
-:EXPORT_HUGO_TAGS: programming review
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
-:EXPORT_DATE: 2020-02-29 17:06
 :END:
-* TODO Towards DOOM-Emacs
+* TODO Towards DOOM-Emacs :@programming:workflow:review:
 :PROPERTIES:
 :EXPORT_FILE_NAME: towards-doom-emacs
-:EXPORT_HUGO_CATEGORIES: personal
-:EXPORT_HUGO_TAGS: programming workflow review
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments false
-:EXPORT_DATE: 2020-02-29 17:06
 :END:
 ** Background
 [[https://dotdoom.grimoire.science/][My doom-emacs configuration]] gets a rather insane number of views every month.
@@ -707,11 +689,9 @@ However, before delving into it, I thought I'd discuss the chronological aspects
 of my road to doom. In a nutshell it was just:
 
 Word → Notepad++ → Sublime Text 3 → VIM → Emacs (Spacemacs) → Emacs (doom-emacs)
-* DONE Provisioning Dotfiles on an HPC
+* DONE Provisioning Dotfiles on an HPC :@programming:workflow:projects:hpc:
 :PROPERTIES:
 :EXPORT_FILE_NAME: prov-dots
-:EXPORT_HUGO_CATEGORIES: programming
-:EXPORT_HUGO_TAGS: programming workflow projects hpc
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
 :EXPORT_DATE: 2020-03-16 00:06
 :END:
@@ -879,11 +859,9 @@ echo 'export PATH="$PATH:$HOME/.bin"' >> ~/.zshrc
 [fn:nixUsr] Much of this section is directly adapted from [[https://nixos.wiki/wiki/Nix_Installation_Guide#Installing_without_root_permissions][the NixOS wiki]]
 [fn:brewStuff] This used to be called linuxbrew, but the [[https://docs.brew.sh/Homebrew-on-Linux][new site]] makes it clear
 that it's all one ~brew~ now.
-* Shorter Posts
+* DONE Shorter Posts :@notes:tools:rationale:workflow:ideas:
 :PROPERTIES:
 :EXPORT_FILE_NAME: shortpost
-:EXPORT_HUGO_CATEGORIES: notes
-:EXPORT_HUGO_TAGS: tools rationale workflow ideas
 :EXPORT_DATE: 2020-03-16 00:16
 :END:
 ** Background
@@ -902,11 +880,9 @@ detail I would prefer to provide.
   when I want to revisit my own ideas
 ** Conclusions
 - I will be making shorter posts here, like the random one on [[https://rgoswami.me/posts/ghnotif/][octobox]]
-* D3 for Git
+* DONE D3 for Git :@notes:tools:rationale:workflow:ideas:
 :PROPERTIES:
 :EXPORT_FILE_NAME: d3git
-:EXPORT_HUGO_CATEGORIES: notes
-:EXPORT_HUGO_TAGS: tools rationale workflow ideas
 :EXPORT_DATE: 2020-03-16 00:17
 :END:
 ** Background
@@ -930,11 +906,9 @@ models required for working with ~git~ is [[https://onlywei.github.io/explain-gi
 
 - It does make for a good resource for teaching with slides, or for generating
   other static visualizations, where live coding is not an option
-* DONE Trees and Bags
+* DONE Trees and Bags :@notes:theory:statistics:math:
 :PROPERTIES:
 :EXPORT_FILE_NAME: trees-and-bags
-:EXPORT_HUGO_CATEGORIES: notes
-:EXPORT_HUGO_TAGS: theory statistics
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :link-citations true
 :EXPORT_HUGO_PANDOC_CITATIONS: t
@@ -1203,12 +1177,10 @@ the first place.
 - I used to go online to be an idea, an embodiment of an idea
 Nowadays we bring our selves to the internet and I don't think that is as
 liberating as the older format.
-* DONE Analytics: Google to Goat
+* DONE Analytics: Google to Goat :@notes:tools:rationale:workflow:ideas:
 CLOSED: [2020-04-09 Thu 17:17]
 :PROPERTIES:
 :EXPORT_FILE_NAME: goat-google
-:EXPORT_HUGO_CATEGORIES: notes
-:EXPORT_HUGO_TAGS: tools rationale workflow ideas
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments false
 :EXPORT_DATE: 2020-04-09 11:17
 :END:
@@ -1255,12 +1227,10 @@ people who make it to my site.
 ** Background
 I recently decided to take a half day off. Naturally I began looking into things
 I've never seen before. I then ran into the delightful fediverse again.
-* DONE On-boarding for Code in Place
+* DONE On-boarding for Code in Place :@notes:ideas:teaching:cs106a:
 CLOSED: [2020-04-10 Fri 16:01]
 :PROPERTIES:
 :EXPORT_FILE_NAME: scp-onboarding
-:EXPORT_HUGO_CATEGORIES: notes
-:EXPORT_HUGO_TAGS: ideas teaching cs106a
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
 :END:
 ** Background
@@ -1286,12 +1256,10 @@ room and a Teachers lounge where people can just tune in to chat.
 A couple of things which keep cropping up for online teaching in general are the
 following:
 - Zoom does not have persistent chats, so an auxiliary tool like an [[https://board.net][Etherpad]] is great
-* DONE Small Section On-boarding
+* DONE Small Section On-boarding :@notes:teaching:cs106a:
 CLOSED: [2020-04-14 Tue 02:48]
 :PROPERTIES:
 :EXPORT_FILE_NAME: scp-smallgrp
-:EXPORT_HUGO_CATEGORIES: notes
-:EXPORT_HUGO_TAGS: ideas teaching cs106a
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
 :END:
 ** Background
@@ -1334,12 +1302,10 @@ put here[fn:help].
 - [[https://docs.google.com/document/d/1lHdnwAB17iLyvASZbWrIZz4PVy9zMmHjxGBGPwXNDs4/preview#heading=h.7dq0u3orjv9z][Some Zoom Icebreakers]]
 [fn:help] If you know otherwise, let me know in the comments
 [fn:videos] As you may know, the official playlist [[https://www.youtube.com/channel/UCWw34Ie0yNe96myEZ5RLHhg][is here]]
-* DONE CS106A Section Meeting I
+* DONE CS106A Section Meeting I :@notes:teaching:cs106a:
 CLOSED: [2020-04-17 Fri 22:54]
 :PROPERTIES:
 :EXPORT_FILE_NAME: scp-smallgrp-meet1
-:EXPORT_HUGO_CATEGORIES: notes
-:EXPORT_HUGO_TAGS: teaching cs106a
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
 :END:
 ** Background
@@ -1368,12 +1334,10 @@ However, after that, I was still concerned since I didn't get much of a response
 
 [fn:whyslides] Even though most of the session was supposed to be live, it was still helpful to show I was interested enough to set up slides
 [fn:whatnow] As always, advice is much appreciated (and moderated)
-* DONE CS106A Small Group Training
+* DONE CS106A Small Group Training :@notes:teaching:cs106a:
 CLOSED: [2020-04-22 Wed 07:01]
 :PROPERTIES:
 :EXPORT_FILE_NAME: scp-smallgrp-trainig
-:EXPORT_HUGO_CATEGORIES: notes
-:EXPORT_HUGO_TAGS: teaching cs106a
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments false
 :END:
 ** Background
@@ -1454,12 +1418,10 @@ Why might it be problematic to say something like, “It’s easy to download X 
 5. Makes them feel bad if they don’t end up finding it easy
 
 [fn:whenpost] This post was created on the day of training, 21-04-20, but will be posted later
-* DONE Using Mathematica with Orgmode
+* DONE Using Mathematica with Orgmode :@programming:tools:emacs:workflow:orgmode:
 CLOSED: [2020-04-26 Sun 20:01]
 :PROPERTIES:
 :EXPORT_FILE_NAME: org-mathematica
-:EXPORT_HUGO_CATEGORIES: programming
-:EXPORT_HUGO_TAGS: tools emacs workflow orgmode
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :END:
 ** Background
@@ -1557,21 +1519,17 @@ Where we have used ~mathematica :results file~ as our header line.
 [fn:aboutmash] As noted in the comments, it is nicer to rename ~mash.pl~ to ~mash~
 [fn:whydoom] The dark side has cookies
 [fn:fullconf] For reference, my whole config [[https://dotdoom.rgoswami.me][is here]]
-* TODO Thoughts on Chemical Engineering
+* TODO Thoughts on Chemical Engineering :@notes:ramblings:explanations:
 :PROPERTIES:
 :EXPORT_FILE_NAME: cheme-thoughts
-:EXPORT_HUGO_CATEGORIES: notes
-:EXPORT_HUGO_TAGS: ramblings explanations
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments false
 :END:
 ** Background
 ** Mass and Energy Balances
 From the first lecture on the topic, I came away with an implicit understanding, that though reactor design might be the heart of a chemical engineering plant, the soul would be mass and energy balances.
-* TODO An Orgmode Note Workflow
+* TODO An Orgmode Note Workflow :@notes:ramblings:explanations:
 :PROPERTIES:
 :EXPORT_FILE_NAME: org-note-workflow
-:EXPORT_HUGO_CATEGORIES: notes
-:EXPORT_HUGO_TAGS: ramblings explanations
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments false
 :END:
 ** Background
@@ -1611,12 +1569,10 @@ This might get complicated but I am only trying to get the bare minimum for
                  :kill-buffer t))
 )
 #+END_SRC
-* DONE Pandoc to Orgmode with Babel
+* DONE Pandoc to Orgmode with Babel :@programming:tools:emacs:workflow:orgmode:
 CLOSED: [2020-05-02 Sat 16:39]
 :PROPERTIES:
 :EXPORT_FILE_NAME: org-pandoc-babel
-:EXPORT_HUGO_CATEGORIES: programming
-:EXPORT_HUGO_TAGS: tools emacs workflow orgmode
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :END:
 ** Background
@@ -1702,12 +1658,10 @@ Note that we have used ~rst :exports both :results raw~ as the header argument.
 
 ** Conclusions
 Will probably follow this up with an actual package, which should handle the entire spectrum of ~pandoc~ back-ends.
-* DONE Refactoring Dotfiles For Colemak
+* DONE Refactoring Dotfiles For Colemak :@notes:workflow:programming:personal:
 CLOSED: [2020-05-02 Sat 20:30]
 :PROPERTIES:
 :EXPORT_FILE_NAME: colemak-dots-refactor
-:EXPORT_HUGO_CATEGORIES: notes
-:EXPORT_HUGO_TAGS: workflow programming personal
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :END:
 ** Background
