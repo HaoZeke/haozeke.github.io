@@ -135,7 +135,8 @@ seemed kinda neat.
 ** What 'this' is
 - This site is [[http://gohugo.io/][built by Hugo]]
 - The posts are [[https://ox-hugo.scripter.co/][generated with ox-hugo]]
-- The theme is based of this [[https://github.com/rhazdon/hugo-theme-hello-friend-ng][excellent one]] and my modifications [[https://github.com/HaoZeke/hugo-theme-hello-friend-ng-hz][are here]]
+- The theme is based of this [[https://github.com/rhazdon/hugo-theme-hello-friend-ng][excellent one]] by Djordje Atlialp, which in turn is based off of this [[https://github.com/panr/hugo-theme-hello-friend][theme by panr]]
+    - My modifications [[https://github.com/HaoZeke/hugo-theme-hello-friend-ng-hz][are here]]
 ** What is here
 - Mostly random thoughts I don't mind people knowing
 - Some tech stuff which isn't coherent enough to be put in any form with
