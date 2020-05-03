@@ -121,7 +121,7 @@ sitemap:
 #+begin_description
 Search in full-text, the entire contents of the site.
 #+end_description
-* DONE Site Rationale :@projects:ramblings:explanations:
+* DONE Site Rationale :@personal:ramblings:explanations:
 :PROPERTIES:
 :EXPORT_FILE_NAME: rationale
 :EXPORT_DATE: 2020-02-11 23:28
@@ -423,7 +423,7 @@ There are a million and one variations of this of course, but this is enough to
 get started.
 
 The whole file is also [[https://github.com/HaoZeke/haozeke.github.io/blob/src/content-org/tmp/myFakeJupyter.org][reproduced here]].
-* TODO Orgmode and Hugo :@projects:tools:emacs:webdev:hugo:
+* TODO Orgmode and Hugo :@programming:tools:emacs:webdev:hugo:
 :PROPERTIES:
 :EXPORT_FILE_NAME: hugo-orgmode
 :END:
@@ -431,7 +431,7 @@ The whole file is also [[https://github.com/HaoZeke/haozeke.github.io/blob/src/c
 - This is about the site you are reading
 - It is also a partial rant
 - It has a lot to do with web development in general
-* DONE Switching to Colemak :@notes:workflow:personal:explanations:
+* DONE Switching to Colemak :@personal:workflow:explanations:
 :PROPERTIES:
 :EXPORT_FILE_NAME: colemak-switch
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
@@ -1658,7 +1658,7 @@ Note that we have used ~rst :exports both :results raw~ as the header argument.
 
 ** Conclusions
 Will probably follow this up with an actual package, which should handle the entire spectrum of ~pandoc~ back-ends.
-* DONE Refactoring Dotfiles For Colemak :@notes:workflow:programming:personal:
+* DONE Refactoring Dotfiles For Colemak :@programming:workflow:
 CLOSED: [2020-05-02 Sat 20:30]
 :PROPERTIES:
 :EXPORT_FILE_NAME: colemak-dots-refactor
