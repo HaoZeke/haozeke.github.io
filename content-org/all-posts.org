@@ -1792,7 +1792,10 @@ Where the table above is from the fantastic [[https://github.com/wbolster/evil-c
 I still had some issues, mostly relating to searching in buffers, so I ended
 using ~swiper-isearch~ more which is a bonus too.
 ** Vimium
-I use the excellent [[https://vimium.github.io/][vimium]] to make Chrome be a little less annoying. Luckily [[https://github.com/philc/vimium/wiki/colemak][the Wiki]] seems to have a reasonable suggestion for colemak. The basic idea is to migrate from
+I use the excellent [[https://vimium.github.io/][vimium]] to make Chrome be a little less annoying. Luckily [[https://github.com/philc/vimium/wiki/colemak][the
+Wiki]] seems to have a reasonable suggestion for colemak. The basic idea is to
+migrate the underlying keys directly to ensure very few manual changes are
+required.
 #+BEGIN_SRC conf
 mapkey n j
 mapkey N J
