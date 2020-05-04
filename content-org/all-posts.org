@@ -437,10 +437,11 @@ The whole file is also [[https://github.com/HaoZeke/haozeke.github.io/blob/src/c
 :EXPORT_FILE_NAME: colemak-switch
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
 :EXPORT_DATE: 2020-02-29 14:06
+:EXPORT_HUGO_AUTO_SET_LASTMOD: t
 :END:
 ** Background
 I just realized that it has been over two years since I switched from QWERTY to
-COLEMAK but somehow never managed to write about it. It was a major change in my
+Colemak but somehow never managed to write about it. It was a major change in my
 life, and it took forever to get acclimatized to. I do not think I'll ever again be
 in a position to make such a change in my life again, but it was definitely
 worth it.
@@ -519,8 +520,8 @@ https://www.keyboard-design.com/kb-images/colemak-kla.jpg
   on QWERTY, and have separately internalized colemak or something else, hitting
   keys is just hitting keys
 
-All that said, I still occasionally simply remap HJKL (QWERTY movement) to HNEI
-(Colemak analog) when it is feasible.
++All that said, I still occasionally simply remap HJKL (QWERTY movement) to HNEI (Colemak analog) when it is feasible.+
+*update:* I actually ended up refactoring my entire Dotfiles to use more Colemak native bindings, as described [[Refactoring Dotfiles For Colemak][in this post]].
 ** Conclusion
 Changing layouts was a real struggle. Watching my WPM drop back to lower than
 hunt and peck styles was pretty humiliating, especially since the reports kept
