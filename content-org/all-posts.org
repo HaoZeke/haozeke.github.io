@@ -1817,10 +1817,10 @@ Wiki]] seems to have a reasonable suggestion for colemak. The basic idea is to
 migrate the underlying keys directly to ensure very few manual changes are
 required.
 #+BEGIN_SRC conf
-mapkey n j
-mapkey N J
-mapkey e k
-mapkey E K
+mapkey e j
+mapkey E J
+mapkey n k
+mapkey N K
 mapkey i l
 mapkey I L
 mapkey k n
