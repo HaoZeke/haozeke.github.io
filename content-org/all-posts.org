@@ -1792,6 +1792,25 @@ Where the table above is from the fantastic [[https://github.com/wbolster/evil-c
 
 I still had some issues, mostly relating to searching in buffers, so I ended
 using ~swiper-isearch~ more which is a bonus too.
+
+*** Pdf-Tools
+For my ~doom-emacs~ configuration, I also set the following map:
+#+BEGIN_SRC emacs-lisp
+(after! pdf-view
+  (add-hook! 'pdf-view-mode-hook (evil-colemak-basics-mode -1))
+ (map!
+   :map pdf-view-mode-map
+   :n "g g"          #'pdf-view-first-page
+   :n "G"            #'pdf-view-last-page
+   :n "N"            #'pdf-view-next-page-command
+   :n "E"            #'pdf-view-previous-page-command
+   :n "e"            #'evil-collection-pdf-view-previous-line-or-previous-page
+   :n "n"            #'evil-collection-pdf-view-next-line-or-next-page
+ )
+#+END_SRC
+Where the most important thing is the hook which removes the
+~evil-colemak-basics~ binding. Since it is a single mode and hook, ~after-hook!~
+is the same as ~after-hook~[fn:attribute].
 ** Vimium
 I use the excellent [[https://vimium.github.io/][vimium]] to make Chrome be a little less annoying. Luckily [[https://github.com/philc/vimium/wiki/colemak][the
 Wiki]] seems to have a reasonable suggestion for colemak. The basic idea is to
@@ -1878,3 +1897,42 @@ set $right i
 That seems to be it for now. If I think of more programs I use regularly which
 allow VIM bindings, or keybindings in general, I'll probably just update this
 post. My full dotfiles are [[https://github.com/HaoZeke/Dotfiles][present here]], and now include a ~colemak~ target.
+[fn:attribute] The hook fix was suggested by the fantastic [[https://github.com/hlissner/][hlissner]] on the super friendly doom Discord server.
+* TODO An Ode To Mons :@programming:workflow:tools:
+:PROPERTIES:
+:EXPORT_FILE_NAME: ode-mons
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+** Background
+** X-Windows and Xternal Screens
+Yes that's a pun.
+* TODO Reclaiming The Web With RSS :@notes:ramblings:workflow:tools:
+:PROPERTIES:
+:EXPORT_FILE_NAME: reclaim-web-rss
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+** Background
+I came across some fascinating sites recently, which didn't bother to have an RSS feed. I've been an RSS fan for as long as I can remember, so, that's really about it.
+** Context
+*** Do I need an RSS reader?
+If you follow a bunch of talented, but sporadic content creators, then *yes*. If you plan on subscribing to news-feeds and consolidated feeds which spam you with a million links per minute, then *no*. To clarify, the feed reader setup is essentially a mechanism by which the audience opts-in to post subscriptions, but without putting the onus on the creator to harvest user-emails or any other data[fn:privacy].
+*** RSS? Atom? asrtinuo?
+One of the words in the title is not a feed. That said, the concept of a feed, given the rise of Facebook, is probably not hard for anyone to understand anymore. The specifications are a little different, though in practice from an end-user perspective, there are few (if any) differences.
+**** Halp?
+There are excellent guidelines for every static site generator, and
+** Programs
+First of all, *no one* really needs to have an RSS subscription. This actually applies to *every* provider, from Feedly, Inoreader, The Old Reader, etc. to even FOSS projects like Miniflux [fn:supportfoss]. Locally, there are a couple of options, but I will only cover things I have used personally.
+*** RSSOwl
+RSSOwl was fantastic. It looked great, ran smoothly, and had nifty desktop integration. That is, until it stopped working. Though it is a Java package so it is always possible to downgrade your JRE and JDK, sadly this is probably not worth the effort.
+*** News Flash
+A successor to the well-known Feedbin, this seems to check most of the boxes for me. Though it does not come with a tray icon, KDocker is quick to step into that breach.
+** Personal Workflow
+While consuming content, there are only a couple of things to do.
+** Conclusions
+I am not sure there will ever be a resurgence of RSS feeds, given the rise of newsletters. It would be nice to see more people get back to RSS though.
+- [x] Don't be the product
+- [x] Don't be beholden to search engine rankings
+- [x] Support content creators, not SEO specialists
+
+[fn:supportfoss] That said, you should always try to support FOSS products, so if you really feel the need to have a central server, go FOSS
+[fn:privacy] That last bit, is probably why companies like [[http://xanadu.ai/][Xanadu]] and others prefer to have a mailing list....
