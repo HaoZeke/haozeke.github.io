@@ -1719,7 +1719,7 @@ A pair of square brackets indicates an optional argument, and RefTeX
 will prompt for the values of these arguments.
 #+END_SRC
 ** Indexing Notes
-This part of the workflow builds on the concepts best known as [[https://www.zettelkasten.de/][Zettelkasten method]]. More details about the philosophy behind ~org-roam~ is [[https://org-roam.readthedocs.io/en/latest/][here]].
+This part of the workflow builds on the concepts best known as the [[https://www.zettelkasten.de/][Zettelkasten method]]. More details about the philosophy behind ~org-roam~ is [[https://org-roam.readthedocs.io/en/latest/][here]].
 *** Org-Roam
 The first part of this interface is essentially just the ~doom-emacs~
 configuration, adapted for those who don't believe in the dark side below.
