@@ -26,6 +26,7 @@ enableRobotsTXT = true
 enableGitInfo   = true
 enableEmoji     = true
 enableMissingTranslationPlaceholders = false
+
 disableRSS     = false
 disableSitemap = false
 disable404     = false
