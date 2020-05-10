@@ -1534,7 +1534,7 @@ From the first lecture on the topic, I came away with an implicit understanding,
 CLOSED: [2020-05-10 Sun 15:01]
 :PROPERTIES:
 :EXPORT_FILE_NAME: org-note-workflow
-:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments false
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :END:
 ** Background
 One of the main reasons to use ~orgmode~ is definitely to get a better note
