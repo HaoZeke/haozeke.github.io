@@ -1577,7 +1577,7 @@ The concepts above will be handled by the following packages.
 | Backlinks | org-roam, org-ref, org-noter | Covers websites, bibliographies, and pdfs respectively |
 
 A key component in this workflow is actually facilitated by the fabulous
-~org-roam-bibtex~ [[https://github.com/Zaeph/org-roam-bibtex][or ORB]]. The basic idea is to ensure meaningful templates which
+~org-roam-bibtex~ [[https://github.com/org-roam/org-roam-bibtex][or ORB]]. The basic idea is to ensure meaningful templates which
 interpolate smoothly with ~org-roam~, ~org-ref~, ~helm-bibtex~, and
 ~org-capture~.
 *** Basic Variables
@@ -1800,7 +1800,7 @@ The configuration required is:
 
            :unnarrowed t))))
 #+END_SRC
-Where most of the configuration is essentially the template again. Like ~helm-bibtex~, ORB allows taking arbitrary keys from the ~.bib~ file.
+Where most of the configuration is essentially the template again. Like ~helm-bibtex~, [[https://github.com/org-roam/org-roam-bibtex][ORB]] allows taking arbitrary keys from the ~.bib~ file.
 ** Org Noter
 The final aspect of a ~pdf~ workflow is simply ensuring that every ~pdf~ is
 associated with notes. The philosophy of ~org-noter~ is [[https://github.com/weirdNox/org-noter][best described here]].
