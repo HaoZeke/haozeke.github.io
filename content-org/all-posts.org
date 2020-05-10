@@ -1692,7 +1692,7 @@ To break-down aspects of the configuration snippet above:
 Note that for some reason,
 the format specifiers for ~org-ref~ are *not* the keys in ~.bib~ but are
 instead, the following[fn:wherereforg]:
-#+BEGIN_QUOTE
+#+BEGIN_SRC bash
 In the format, the following percent escapes will be expanded.
 %l   The BibTeX label of the citation.
 %a   List of author names, see also `reftex-cite-punctuation'.
@@ -1717,7 +1717,7 @@ display, and for (setq reftex-comment-citations t).
 string has been formatted.
 A pair of square brackets indicates an optional argument, and RefTeX
 will prompt for the values of these arguments.
-#+END_QUOTE
+#+END_SRC
 ** Indexing Notes
 This part of the workflow builds on the concepts best known as [[https://www.zettelkasten.de/][Zettelkasten method]]. More details about the philosophy behind ~org-roam~ is [[https://org-roam.readthedocs.io/en/latest/][here]].
 *** Org-Roam
