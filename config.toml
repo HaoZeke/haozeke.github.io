@@ -38,6 +38,7 @@ disableHugoGeneratorInject = false
   hrefTargetBlank = true
 
 [taxonomies]
+  author   = "authors"
   tag      = "tags"
   category = "categories"
 
@@ -124,6 +125,7 @@ label = "Utterance 💬"
     readOtherPosts = "Read other posts"
 
     [languages.en.params.logo]
+      path = "/images/home.png"
       logoText = "~/haozeke/"
       logoHomeLink = "/"
     # or
@@ -131,7 +133,7 @@ label = "Utterance 💬"
     # path = "/img/your-example-logo.svg"
     # alt = "Your example logo alt text"
 
-  # And you can even create generic menu
+  # And you can even create a generic menu
 
 [menu]
   [[menu.main]]
