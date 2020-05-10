@@ -1751,7 +1751,7 @@ configuration, adapted for those who don't believe in the dark side below.
   ;; `org-roam'. If `+org-roam-open-buffer-on-find-file' is non-nil, the
   ;; org-roam buffer will be opened for you when you use `org-roam-find-file'
   ;; (but not `find-file', to limit the scope of this behavior).
-  (add-hook! 'find-file-hook
+  (add-hook 'find-file-hook
     (defun +org-roam-open-buffer-maybe-h ()
       (and +org-roam-open-buffer-on-find-file
            (memq 'org-roam-buffer--update-maybe post-command-hook)
@@ -1784,7 +1784,7 @@ The configuration required is:
   :after (org-roam)
   :hook (org-roam-mode . org-roam-bibtex-mode)
   :config
-  (add-hook! 'org-mode (org-roam-bibtex-mode t))
+  (add-hook 'org-mode (org-roam-bibtex-mode t))
   (setq org-roam-bibtex-preformat-keywords
    '("=key=" "title" "url" "file" "author-or-editor" "keywords"))
   (setq orb-templates
