@@ -2085,7 +2085,6 @@ Where the table above is from the fantastic [[https://github.com/wbolster/evil-c
 
 I still had some issues, mostly relating to searching in buffers, so I ended
 using ~swiper-isearch~ more which is a bonus too.
-
 *** Pdf-Tools
 For my ~doom-emacs~ configuration, I also set the following map:
 #+BEGIN_SRC emacs-lisp
@@ -2104,6 +2103,20 @@ For my ~doom-emacs~ configuration, I also set the following map:
 Where the most important thing is the hook which removes the
 ~evil-colemak-basics~ binding. Since it is a single mode and hook, ~after-hook!~
 is the same as ~after-hook~[fn:attribute].
+*** Window Management
+Somehow these are not part of the ~evil-colemak~ defaults.
+#+BEGIN_SRC emacs-lisp
+(after! evil
+  (map! :map evil-window-map
+        (:leader
+         (:prefix ("w" . "Select Window")
+          :n :desc "Left"  "h" 'evil-window-left
+          :n :desc "Up"    "e" 'evil-window-up
+          :n :desc "Down"  "n" 'evil-window-down
+          :n :desc "Right" "i" 'evil-window-right
+          ))
+        ))
+#+END_SRC
 ** Vimium
 I use the excellent [[https://vimium.github.io/][vimium]] to make Chrome be a little less annoying. Luckily [[https://github.com/philc/vimium/wiki/colemak][the
 Wiki]] seems to have a reasonable suggestion for colemak. The basic idea is to
