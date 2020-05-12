@@ -2252,3 +2252,67 @@ I am not sure there will ever be a resurgence of RSS feeds, given the rise of ne
 
 [fn:supportfoss] That said, you should always try to support FOSS products, so if you really feel the need to have a central server, go FOSS
 [fn:privacy] That last bit, is probably why companies like [[http://xanadu.ai/][Xanadu]] and others prefer to have a mailing list....
+
+* DONE Compton to Picom and Zoom Shadows :@notes:workflow:tools:
+CLOSED: [2020-05-12 Tue 01:32]
+:PROPERTIES:
+:EXPORT_FILE_NAME: compton-zoom-shadow
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+** Background
+I have been leading the fantastic section 881 as a virtual section leader for
+the Stanford CS106A: Code in Place initiative for the past four weeks. I have
+also spent a lot of time on Zoom, sharing my screen. Fun fact. My screen shares
+look like this:
+
+#+DOWNLOADED: screenshot @ 2020-05-12 01:05:38
+#+caption: Zoom screen share with weird overlay
+[[file:images/Background/2020-05-12_01-05-38_screenshot.png]]
+
+This post is about hunting down what caused this amazing zoom
+glitch[fn:whatglitch] and how I finally fixed it.
+** Tiling Windows and Compositors
+For reasons best left to another post, I use the fabulous [[https://i3wm.org/][i3 window manager]],
+with colemak keybindings [[i3][described here]]. Recall that, [[https://en.wikipedia.org/wiki/Compositing_window_manager][from Wikipedia]]:
+#+BEGIN_QUOTE
+A compositing window manager is a window manager that provides applications with an off-screen buffer for each window. The window manager composites the window buffers into an image representing the screen and writes the result into the display memory.
+#+END_QUOTE
+
+For reasons I can no longer recall, ~compton~ has been a tradition aspect of my
+workflow. As per my last update back in April last year; my configuration [[https://github.com/HaoZeke/Dotfiles/blob/8213473f313aa8fb9eb4c22d6b36a801b1584df6/dotfiles/archLinux/.config/compton.conf][is here]].
+** Compton to Picom
+Some time ago (actually [[https://github.com/yshui/picom/issues/222][many months ago]]), ~compton~
+itself transitioned over to ~picom~, but remained largely compatible with my old
+configuration.
+To be clear, the transition was largely painless, with ample warnings in the
+terminal showing up; along with very reasonable fallbacks. The key aspect of my ~compton.conf~ which caused the shadowing was:
+#+BEGIN_SRC shell
+shadow = true;
+shadow-radius = 5;
+shadow-offset-x = -5;
+shadow-offset-y = -5;
+shadow-opacity = 0.5;
+#+END_SRC
+The corrective measure was simply to set ~shadow-opacity~ to nothing; that is:
+#+BEGIN_SRC shell
+shadow-opacity = 0.0;
+#+END_SRC
+The rest of the configuration [[https://github.com/HaoZeke/Dotfiles/blob/master/dotfiles/archLinux/.config/picom.conf][is here]]; and contains a lot more, mostly
+pertaining to opacity and other pretty effects[fn:plugdots].
+** Conclusion
+Finally we have achieved the goal of having normal screen sharing capabilities;
+as seen below:
+
+#+DOWNLOADED: screenshot @ 2020-05-12 01:13:37
+#+caption: Just in time to see an excellent pun
+[[file:images/Conclusion/2020-05-12_01-13-37_screenshot.png]]
+
+The struggle was real, though the cause was trivial, and really highlights the
+need to always know your system packages. In this case, no doubt my students
+would have preferred not having to suffer through the darkness of my
+screen[fn:bojackplug]. This has been a rather trivial post, but one to keep in
+mind none-the-less.
+
+[fn:whatglitch] To be clear, none of the windows were the glitch. The issue was the darkened overlay
+[fn:bojackplug] Though it might have also served as a metaphor for *darkness*
+[fn:plugdots] The rest of [[https://github.com/HaoZeke/Dotfiles][my Dotfiles]], managed by the [[https://github.com/kobus-v-schoor/dotgit][excellent dotgit]] are also worth a look
