@@ -2117,6 +2117,16 @@ Somehow these are not part of the ~evil-colemak~ defaults.
           ))
         ))
 #+END_SRC
+*** Search
+Harmonizing with Vimium.
+#+BEGIN_SRC emacs-lisp
+(after! evil (map! :map evil-motion-state-map
+                   (:n :desc "Previous match" "K" 'evil-ex-search-previous
+                    :n :desc "Next match" "k" 'evil-ex-search-next
+                    :n :desc "Forward search" "/" 'evil-search-forward
+                    )
+                   ))
+#+END_SRC
 ** Vimium
 I use the excellent [[https://vimium.github.io/][vimium]] to make Chrome be a little less annoying. Luckily [[https://github.com/philc/vimium/wiki/colemak][the
 Wiki]] seems to have a reasonable suggestion for colemak. The basic idea is to
