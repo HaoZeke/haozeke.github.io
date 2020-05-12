@@ -2260,8 +2260,8 @@ CLOSED: [2020-05-12 Tue 01:32]
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :END:
 ** Background
-I have been leading the fantastic section 881 as a virtual section leader for
-the Stanford CS106A: Code in Place initiative for the past four weeks. I have
+I [[https://rgoswami.me/tags/cs106a/][have been leading]] the fantastic section 881 as a virtual section leader for
+the [[https://compedu.stanford.edu/codeinplace/v1/#/course][Stanford CS106A: Code in Place]] initiative for the past four weeks. I have
 also spent a lot of time on Zoom, sharing my screen. Fun fact. My screen shares
 look like this:
 
