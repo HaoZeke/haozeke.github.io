@@ -2283,7 +2283,7 @@ workflow. As per my last update back in April last year; my configuration [[http
 ** Compton to Picom
 Some time ago (actually [[https://github.com/yshui/picom/issues/222][many months ago]]), ~compton~
 itself transitioned over to ~picom~, but remained largely compatible with my old
-configuration.
+configuration[fn:archwikiplug].
 To be clear, the transition was largely painless, with ample warnings in the
 terminal showing up; along with very reasonable fallbacks. The key aspect of my ~compton.conf~ which caused the shadowing was:
 #+BEGIN_SRC shell
@@ -2316,3 +2316,5 @@ mind none-the-less.
 [fn:whatglitch] To be clear, none of the windows were the glitch. The issue was the darkened overlay
 [fn:bojackplug] Though it might have also served as a metaphor for *darkness*
 [fn:plugdots] The rest of [[https://github.com/HaoZeke/Dotfiles][my Dotfiles]], managed by the [[https://github.com/kobus-v-schoor/dotgit][excellent dotgit]] are also worth a look
+
+[fn:archwikiplug] As always, the [[https://wiki.archlinux.org/index.php/Picom][ArchLinux Wiki]] is a great place for more information
