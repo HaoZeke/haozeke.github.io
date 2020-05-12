@@ -2253,7 +2253,7 @@ I am not sure there will ever be a resurgence of RSS feeds, given the rise of ne
 [fn:supportfoss] That said, you should always try to support FOSS products, so if you really feel the need to have a central server, go FOSS
 [fn:privacy] That last bit, is probably why companies like [[http://xanadu.ai/][Xanadu]] and others prefer to have a mailing list....
 
-* DONE Compton to Picom and Zoom Shadows :@notes:workflow:tools:
+* DONE Compton to Picom and Zoom Glitches :@notes:workflow:tools:
 CLOSED: [2020-05-12 Tue 01:32]
 :PROPERTIES:
 :EXPORT_FILE_NAME: compton-zoom-shadow
