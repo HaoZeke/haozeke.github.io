@@ -2318,3 +2318,14 @@ mind none-the-less.
 [fn:plugdots] The rest of [[https://github.com/HaoZeke/Dotfiles][my Dotfiles]], managed by the [[https://github.com/kobus-v-schoor/dotgit][excellent dotgit]] are also worth a look
 
 [fn:archwikiplug] As always, the [[https://wiki.archlinux.org/index.php/Picom][ArchLinux Wiki]] is a great place for more information
+
+* TODO Fancy Unicode XeTeX in Orgmode :@notes:tools:emacs:workflow:orgmode:
+:PROPERTIES:
+:EXPORT_FILE_NAME: fancy-unicode-orgmode
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+
+\begin{align}
+\nonumber W_{r\rightarrow\infty}=&-\int_{r}^{\infty}\!F\,\mathrm{d}y=-    \int_r^\infty \!     \dfrac{1}{4\pi \epsilon_0} \dfrac{q^2}{\alpha^2}     \dfrac{\alpha^3}{y^3}\left(1-    \dfrac{\alpha^2}    {y^2}\right)^{-2}\,\mathrm{d}y\\
+=&-\dfrac{1}{4\pi \epsilon_0} \dfrac{q^2}{\alpha^2}\alpha^3     \underbrace{\int_r^\infty     \! y^{-3} \left(1-\dfrac{\alpha^2}    {y^2}\right)^{-2} \,\mathrm{d}y}_{I} \label{eq:WcondI}
+\end{align}
