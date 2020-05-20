@@ -2330,7 +2330,8 @@ mind none-the-less.
 =&-\dfrac{1}{4\pi \epsilon_0} \dfrac{q^2}{\alpha^2}\alpha^3     \underbrace{\int_r^\infty     \! y^{-3} \left(1-\dfrac{\alpha^2}    {y^2}\right)^{-2} \,\mathrm{d}y}_{I} \label{eq:WcondI}
 \end{align}
 
-* TODO LosslessCut, Zoom and an AMA for CS106A :@notes:teaching:cs106a:tools:
+* DONE LosslessCut, Zoom and an AMA for CS106A :@notes:teaching:cs106a:tools:
+CLOSED: [2020-05-20 Wed 20:21]
 :PROPERTIES:
 :EXPORT_FILE_NAME: losslesscut-zoom-ama
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments false
