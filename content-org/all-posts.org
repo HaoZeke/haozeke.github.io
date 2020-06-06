@@ -2127,6 +2127,17 @@ Harmonizing with Vimium.
                     )
                    ))
 #+END_SRC
+*** Page Movement
+Though this is more of a personal preference, I find it more natural to bind N
+and E to page-wise movement instead of join lines and lookup, since I almost
+never use those commands, and the movement keys echo what I expect elsewhere.
+#+BEGIN_SRC emacs-lisp
+(after! evil
+  (map! :map evil-colemak-basics-keymap
+      :n "N" 'evil-scroll-page-up
+      :n "E" 'evil-scroll-page-down)
+  )
+#+END_SRC
 ** Vimium
 I use the excellent [[https://vimium.github.io/][vimium]] to make Chrome be a little less annoying. Luckily [[https://github.com/philc/vimium/wiki/colemak][the
 Wiki]] seems to have a reasonable suggestion for colemak. The basic idea is to
