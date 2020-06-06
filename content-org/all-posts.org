@@ -2369,3 +2369,245 @@ mind. The introductory video turned out to be:
 {{< youtube aOuqgyHHOK4 >}}
 
 [fn:whatsettings] For me, the Vimeo Youtube HQ 1080p60 preset worked out well
+* TODO FOSS Maintenance and Me :@personal:ramblings:explanations:thoughts:
+Write about being the [[https://github.com/chriskempson/base16/issues/225#issuecomment-639739616][new maintainer]] for the base16-zathura thing and the AUR packages I maintain.
+* DONE Nix with R and devtools :@programming:tools:nix:workflow:R:
+CLOSED: [2020-06-06 Sat 05:49]
+:PROPERTIES:
+:EXPORT_FILE_NAME: nix-r-devtools
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+** Overview
+This post discusses briefly, the ~nix-shell~ environment for reproducible
+programming. In particular, there is an emphasis on extensions for installing
+and working with packages not in [[https://cran.r-project.org/web/packages/][CRAN]], i.e. packages off Github which are
+normally installed with ~devtools~.
+** Background
+The entire [[https://nixos.org/][nix ecosystem]] is fantastic, and is the main packaging
+system used by [[https://dseams.info][d-SEAMS]] as well.
+Recently I began working through the [[https://xcelab.net/rm/statistical-rethinking/][excellent second edition]] of "Statistical
+Rethinking" by [[https://twitter.com/rlmcelreath][Richard McElreath]], which was made available [fn:whatwhy].
+
+Unfortunately, the ~rethinking~ package which is a major component of the book
+itself depends on the V8 engine for some reason. The reigning AUR [fn:whutaur]
+package ([[https://aur.archlinux.org/packages/v8-r/][V8-r]]) broke with a [[https://aur.archlinux.org/packages/v8-r/#comment-749561][fun error message]] I couldn't be bothered to deal
+with. Ominously, the [[https://pastebin.com/CbdCMZ8d][rest of the logs]] prominently featured ~Warning: Running
+gclient on Python 3.~. Given that older ~python~ versions have been permanently
+retired, this seemed like a bad thing to deal with [fn:sonothing]. In any case,
+having weaned off non-nix dependency tools for ~python~ and friends, it seemed
+strange to not do the same for R.
+
+The standard installation for the package entails obtaining ~rstan~ (which is trivial with ~nixpkgs~) and then using:
+#+BEGIN_SRC R
+install.packages(c("coda","mvtnorm","devtools","loo","dagitty"))
+library(devtools)
+devtools::install_github("rmcelreath/rethinking")
+#+END_SRC
+We will break this down and work through this installation in Nix space.
+** Nix and R
+The standard approach to setting up a project ~shell.nix~ is simply by using the
+~mkshell~ function. There are some common aspects to this workflow, with more
+language specific details documented here. A simple first version might be:
+
+#+BEGIN_SRC nix
+let
+    pkgs = import <nixpkgs> { };
+in pkgs.mkShell {
+    buildInputs = with pkgs; [
+        zsh
+        R
+        rPackages.ggplot
+        rPackages.data_table
+    ];
+    shellHook = ''
+    echo "hello"
+    '';
+  LOCALE_ARCHIVE = stdenv.lib.optionalString stdenv.isLinux
+    "${glibcLocales}/lib/locale/locale-archive";
+}
+#+END_SRC
+
+Where we note that we can install CRAN packages as easily as regular packages
+(like R), except for the fact that they are kept in a ~pkgs.rPackages~
+environment, as opposed to ~pkgs~. This is actually a common convention most
+languages with central repos. The most interesting thing to note is that,
+similar to the convention for ~nix-python~ setups, packages with a dot in the
+name will be converted to having an underscore, i.e. ~data.table~ ->
+~data_table~.
+
+However, for the rethinking package, and many others, there is no current CRAN
+package, and so the ~rPackages~ approach fails.
+
+The ~LOCALE_ARCHIVE~ needs to be set for Linux machines, and is required for
+working with other packages.
+
+** Nix-R and Devtools
+To work with non-CRAN packages, we need to modify our package setup a little. We
+will also simplify our file to split the ~pkgs~ and the ~r-pkgs~.
+*** Naive Approach
+The naive approach works by using the ~shellHook~ to set ~R_LIBS_USER~ to save
+user packages per-project.
+#+BEGIN_SRC nix
+{ pkgs ? import <nixpkgs> { } }:
+with pkgs;
+let
+  my-r-pkgs = rWrapper.override {
+    packages = with rPackages; [
+      ggplot2
+      knitr
+      rstan
+      tidyverse
+      V8
+      dagitty
+      coda
+      mvtnorm
+      shape
+      Rcpp
+      tidybayes
+    ];
+  };
+in mkShell {
+  buildInputs = [ git glibcLocales openssl openssh curl wget R my-r-pkgs ];
+  shellHook = ''
+    mkdir -p "$(pwd)/_libs"
+    export R_LIBS_USER="$(pwd)/_libs"
+  '';
+  GIT_SSL_CAINFO = "${cacert}/etc/ssl/certs/ca-bundle.crt";
+  LOCALE_ARCHIVE = stdenv.lib.optionalString stdenv.isLinux
+    "${glibcLocales}/lib/locale/locale-archive";
+}
+#+END_SRC
+
+Note that here we will also need to set the ~GIT_SSL_CAINFO~ to prevent some
+errors during the build process [fn:seenelsewhere].
+*** Native Approach
+The native approach essentially leverages the ~nix~ method for building ~R~
+packages. This is the most reproducible of the lot, and also has the useful
+property of storing the files in the ~nix-store~ so re-using packages across
+different projects will not store, build or download the package again. The
+values required can be calculated from ~nix-prefetch-git~ as follows:
+
+#+BEGIN_SRC bash
+nix-env -i nix-prefetch-git
+nix-prefetch-git https://github.com/rmcelreath/rethinking.git
+#+END_SRC
+
+The crux of this approach is the following snippet [fn:defnfrm]:
+#+BEGIN_SRC nix
+(buildRPackage {
+  name = "rethinking";
+  src = fetchFromGitHub {
+    owner = "rmcelreath";
+    repo = "rethinking";
+    rev = "d0978c7f8b6329b94efa2014658d750ae12b1fa2";
+    sha256 = "1qip6x3f6j9lmcmck6sjrj50a5azqfl6rfhp4fdj7ddabpb8n0z0";
+  };
+  propagatedBuildInputs = [ coda MASS mvtnorm loo shape rstan dagitty ];
+ })
+#+END_SRC
+
+**** Project Shell
+This formulation for some strange reason does not work from the shell or environment by default, but does work with ~nix-shell --run bash --pure~.
+#+BEGIN_SRC nix
+{ pkgs ? import <nixpkgs> { } }:
+with pkgs;
+let
+  my-r-pkgs = rWrapper.override {
+    packages = with rPackages; [
+      ggplot2
+      knitr
+      rstan
+      tidyverse
+      V8
+      dagitty
+      coda
+      mvtnorm
+      shape
+      Rcpp
+      tidybayes
+      (buildRPackage {
+        name = "rethinking";
+        src = fetchFromGitHub {
+          owner = "rmcelreath";
+          repo = "rethinking";
+          rev = "d0978c7f8b6329b94efa2014658d750ae12b1fa2";
+          sha256 = "1qip6x3f6j9lmcmck6sjrj50a5azqfl6rfhp4fdj7ddabpb8n0z0";
+        };
+        propagatedBuildInputs = [ coda MASS mvtnorm loo shape rstan dagitty ];
+      })
+    ];
+  };
+in mkShell {
+  buildInputs = [ git glibcLocales openssl which openssh curl wget my-r-pkgs ];
+  shellHook = ''
+    mkdir -p "$(pwd)/_libs"
+    export R_LIBS_USER="$(pwd)/_libs"
+    echo ${my-r-pkgs}/bin/R
+  '';
+  GIT_SSL_CAINFO = "${cacert}/etc/ssl/certs/ca-bundle.crt";
+  LOCALE_ARCHIVE = stdenv.lib.optionalString stdenv.isLinux
+    "${glibcLocales}/lib/locale/locale-archive";
+}
+#+END_SRC
+
+The reason behind this is simply that ~rWrapper~ forms an extra package which has lower precedence than the user profile ~R~, which is documented in more detail here on the [[https://nixos.wiki/wiki/R][NixOS wiki]].
+
+**** User Profile
+This is a more general approach which defines the environment for R with all the
+relevant libraries and is described in the [[https://nixos.org/nixpkgs/manual/#r][nixpkgs manual]]. The following code
+should be placed in ~$HOME/.config/nixpkgs/config.nix~:
+
+#+BEGIN_SRC nix
+{
+  packageOverrides = super:
+    let self = super.pkgs;
+    in {
+      rEnv = super.rWrapper.override {
+        packages = with self.rPackages; [
+          ggplot2
+          knitr
+          tidyverse
+          tidybayes
+          (buildRPackage {
+            name = "rethinking";
+            src = self.fetchFromGitHub {
+              owner = "rmcelreath";
+              repo = "rethinking";
+              rev = "d0978c7f8b6329b94efa2014658d750ae12b1fa2";
+              sha256 = "1qip6x3f6j9lmcmck6sjrj50a5azqfl6rfhp4fdj7ddabpb8n0z0";
+            };
+            propagatedBuildInputs =
+              [ coda MASS mvtnorm loo shape rstan dagitty ];
+          })
+        ];
+      };
+    };
+}
+#+END_SRC
+
+This snippet allows us to use our ~R~ as follows:
+#+BEGIN_SRC bash
+# Install things
+nix-env -f "<nixpkgs>" -iA rEnv
+# Fix locale
+export LOCALE_ARCHIVE="$(nix-build --no-out-link "<nixpkgs>" -A glibcLocales)/lib/locale/locale-archive"
+# Profit
+R
+#+END_SRC
+
+Note that in this method, on Linux systems, the locale problem has to be fixed
+with the explicit export. This means that this should be used mostly with
+project level environments, instead of populating the global shell RC files.
+
+** Conclusions
+Of the methods described, the most useful method for working with packages not
+hosted on CRAN is through the user-profile, while the ~shell.nix~ method is
+useful in conjunction, for managing various projects. So the ideal approach is
+then to use the user profile for installing anything which normally uses
+~devtools~ and then use ~shell.nix~ for the rest.
+
+[fn:whatwhy] As part of [[https://ugla.hi.is/kennsluskra/index.php?sid=&tab=nam&chapter=namskeid&id=71055920203][a summer course]] at the University of Iceland relating to their successful [[http://covid.hi.is/][COVID-19 model]]
+[fn:whutaur] The [[https://wiki.archlinux.org/index.php/Arch_User_Repository][Arch User Repository]] is the port of first call for most ArchLinux users
+[fn:sonothing] Though, like any good AUR user, I did post a bug report
+[fn:seenelsewhere] This approach is also [[https://churchman.nl/tag/r/][discussed here]]
+[fn:defnfrm] As discussed on [[https://github.com/NixOS/nixpkgs/issues/44290][this issue]], this [[https://stackoverflow.com/questions/55176609/how-to-install-r-and-packages-through-configuration-nix-and-how-to-add-packages][stackoverflow question]] and also [[https://github.com/rikhuijzer/nix-with-r/blob/master/default.nix][seen here]]
