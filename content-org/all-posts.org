@@ -2138,6 +2138,19 @@ never use those commands, and the movement keys echo what I expect elsewhere.
       :n "E" 'evil-scroll-page-down)
   )
 #+END_SRC
+*** Evil Org
+Annoyingly, ~evil-org-mode~ had a map which kept overriding all my other
+settings. Thankfully it has a helper variable to set movement. I also do not
+need this anyway, at-least not by default.
+#+BEGIN_SRC emacs-lisp
+(after! org
+  (remove-hook 'org-mode-hook 'evil-org-mode)
+  (setq evil-org-movement-bindings
+        '((up . "e") (down . "n")
+          (left . "h") (right . "i"))
+        )
+)
+#+END_SRC
 ** Vimium
 I use the excellent [[https://vimium.github.io/][vimium]] to make Chrome be a little less annoying. Luckily [[https://github.com/philc/vimium/wiki/colemak][the
 Wiki]] seems to have a reasonable suggestion for colemak. The basic idea is to
