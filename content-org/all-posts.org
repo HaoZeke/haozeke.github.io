@@ -2398,7 +2398,7 @@ having weaned off non-nix dependency tools for ~python~ and friends, it seemed
 strange to not do the same for R.
 
 The standard installation for the package entails obtaining ~rstan~ (which is trivial with ~nixpkgs~) and then using:
-#+BEGIN_SRC R
+#+BEGIN_SRC r
 install.packages(c("coda","mvtnorm","devtools","loo","dagitty"))
 library(devtools)
 devtools::install_github("rmcelreath/rethinking")
@@ -2487,7 +2487,7 @@ property of storing the files in the ~nix-store~ so re-using packages across
 different projects will not store, build or download the package again. The
 values required can be calculated from ~nix-prefetch-git~ as follows:
 
-#+BEGIN_SRC bash
+#+BEGIN_SRC sh
 nix-env -i nix-prefetch-git
 nix-prefetch-git https://github.com/rmcelreath/rethinking.git
 #+END_SRC
@@ -2586,7 +2586,7 @@ should be placed in ~$HOME/.config/nixpkgs/config.nix~:
 #+END_SRC
 
 This snippet allows us to use our ~R~ as follows:
-#+BEGIN_SRC bash
+#+BEGIN_SRC sh
 # Install things
 nix-env -f "<nixpkgs>" -iA rEnv
 # Fix locale
