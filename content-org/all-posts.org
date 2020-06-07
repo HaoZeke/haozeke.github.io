@@ -2134,8 +2134,8 @@ never use those commands, and the movement keys echo what I expect elsewhere.
 #+BEGIN_SRC emacs-lisp
 (after! evil
   (map! :map evil-colemak-basics-keymap
-      :n "N" 'evil-scroll-page-up
-      :n "E" 'evil-scroll-page-down)
+      :nv "N" 'evil-scroll-page-up
+      :nv "E" 'evil-scroll-page-down)
   )
 #+END_SRC
 *** Evil Org
