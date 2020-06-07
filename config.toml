@@ -46,6 +46,18 @@ disableHugoGeneratorInject = false
 [author]
   name = "Rohit Goswami (HaoZeke)"
 
+[markup]
+  [markup.highlight]
+    codeFences = true
+    guessSyntax = true
+    hl_Lines = ""
+    lineNoStart = 1
+    lineNos = false
+    lineNumbersInTable = true
+    noClasses = true
+    style = "solarized-dark256"
+    tabWidth = 2
+
 [params]
   dateform        = "Jan 2, 2006"
   dateformShort   = "Jan 2"
@@ -55,7 +67,7 @@ disableHugoGeneratorInject = false
   # From my fork
   goatCounter = "rgoswami"
   search = true
-  prism = true
+  prism = false
 
   # Set disableReadOtherPosts to true in order to hide the links to other posts.
   disableReadOtherPosts = false
