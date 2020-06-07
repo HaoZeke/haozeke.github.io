@@ -25,11 +25,11 @@ endif
 EMACS_BIN_SOURCE ?= https://github.com/npostavs/emacs-travis/releases/download/bins
 EMACS_BIN_VERSION ?= 26
 
-HUGO ?= hugo
-HUGO_exists := $(shell command -v $(HUGO) 2> /dev/null)
-ifeq ("$(HUGO_exists)","")
+# HUGO ?= hugo
+# HUGO_exists := $(shell command -v $(HUGO) 2> /dev/null)
+# ifeq ("$(HUGO_exists)","")
 	HUGO := $(ox_hugo_tmp_dir)/hugo/bin/hugo
-endif
+# endif
 
 # PANDOC ?= pandoc
 # PANDOC_exists := $(shell command -v $(PANDOC) 2> /dev/null)
@@ -122,12 +122,12 @@ endif
 
 vcheck_hugo:
 	@mkdir -p $(ox_hugo_tmp_dir)
-ifeq ("$(HUGO_exists)","")
+# ifeq ("$(HUGO_exists)","")
 	@mkdir -p $(ox_hugo_tmp_dir)/hugo
 	@find $(ox_hugo_tmp_dir)/hugo -maxdepth 1 -type d -name bin -exec rm -rf "{}" \;
 	@git clone $(HUGO_BIN_SOURCE) $(ox_hugo_tmp_dir)/hugo/bin
 	@tar xf $(ox_hugo_tmp_dir)/hugo/bin/hugo_DEV-Linux-64bit.tar.xz -C $(ox_hugo_tmp_dir)/hugo/bin
-endif
+# endif
 	$(HUGO) version
 
 vcheck_pandoc:
