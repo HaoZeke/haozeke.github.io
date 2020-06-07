@@ -54,9 +54,13 @@ disableHugoGeneratorInject = false
     lineNoStart = 1
     lineNos = false
     lineNumbersInTable = true
-    noClasses = true
+    noClasses = false
     style = "solarized-dark256"
     tabWidth = 2
+  [markup.tableOfContents]
+    endLevel = 3
+    ordered = true
+    startLevel = 2
 
 [params]
   dateform        = "Jan 2, 2006"
