@@ -2219,11 +2219,20 @@ map E scroll half-up
 map k search forward
 map K search backward
 
-map <PageUp> navigate previous
-map <PageDown> navigate next
+# For TOC navigation
+map [index] o toggle_index
 
-map q quit
+# hjkl →  hnei
+map [index] n navigate_index down
+map [index] e navigate_index up
+map [index] h navigate_index collapse
+map [index] i navigate_index expand
+
+map [index] H navigate_index collapse-all
+map [index] I navigate_index expand-all
 #+END_SRC
+Zathura is a complicated beast, however, and my [[https://github.com/HaoZeke/Dotfiles/blob/master/dotfiles/colemak/.zshColemak][full configuration]] contains a
+lot more information.
 ** i3
 I have some bindings set up in terms of $left $right $up and $down, so it was
 simple to re-bind them.
