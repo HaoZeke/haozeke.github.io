@@ -2625,6 +2625,7 @@ Note that in this method, on Linux systems, the locale problem has to be fixed
 with the explicit export. This means that this should be used mostly with
 project level environments, instead of populating the global shell RC files.
 
+*Update:* There is [[Emacs for Nix-R][another post]] with methods to reload this configuration automatically
 ** Conclusions
 Of the methods described, the most useful method for working with packages not
 hosted on CRAN is through the user-profile, while the ~shell.nix~ method is
@@ -3276,6 +3277,142 @@ have worked out well. ~R~ with Nix has finally become a truly viable combination
 for any and every analysis under the sun. Some parts of the workflow are still a
 bit janky, but will probably resolve themselves over time.
 
+*Update:* There is [[Emacs for Nix-R][a final part]] detailing automated ways of reloading the system configuration
+
 [fn:wherehook] My motivations were laid out in the [[Nix with R and devtools][aforementioned post]], and will not be repeated
 [fn:explaaiin] For why these are the way they are see the this is written, see the [[Nix with R and devtools][aforementioned post]]
 [fn:callbacktopost] Christine Dodrill [[https://christine.website/blog/how-i-start-nix-2020-03-08][has a great write up]] on using these tools as well
+* DONE Emacs for Nix-R :@programming:tools:nix:workflow:R:emacs:
+CLOSED: [2020-06-10 Wed 00:12]
+:PROPERTIES:
+:EXPORT_FILE_NAME: emacs-nix-r
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+BEGIN_QUOTE
+A short post on my current set-up for ~R~ with ~nixpkgs~ and ~emacs~ to
+auto-compile my system configuration.
+#+END_QUOTE
+** Background
+This is my third post on working with ~nixpkgs~ and ~R~.
+
+- [[Nix with R and devtools][Part I]] covered ways of working effectively with ~R~ and ~nixpkgs~
+- [[Statistical Rethinking and Nix][Part II]] dealt with composing dependent ~devtools~ packages in a per-package environment, with a focus on ~rethinking~ and ~tidybayes.rethinking~
+
+This final part is about automating the system-wide configuration using ~emacs~.
+Specifically ~doom-emacs~. Naturally, this is the most optimal way to work with
+~nix~ packages as well.
+*** System Configuration
+After experimenting with a per-project layout, I decided to use the full system
+configuration instead of the per-project layout. So I simply set:
+#+BEGIN_SRC nix
+# $HOME/.config/nixpkgs/config.nix
+{
+  packageOverrides = super:
+    let
+      self = super.pkgs;
+      rethinking = with self.rPackages;
+        buildRPackage {
+          name = "rethinking";
+          src = self.fetchFromGitHub {
+            owner = "rmcelreath";
+            repo = "rethinking";
+            rev = "d0978c7f8b6329b94efa2014658d750ae12b1fa2";
+            sha256 = "1qip6x3f6j9lmcmck6sjrj50a5azqfl6rfhp4fdj7ddabpb8n0z0";
+          };
+          propagatedBuildInputs = [ coda MASS mvtnorm loo shape rstan dagitty ];
+        };
+      tidybayes_rethinking = with self.rPackages;
+        buildRPackage {
+          name = "tidybayes.rethinking";
+          src = self.fetchFromGitHub {
+            owner = "mjskay";
+            repo = "tidybayes.rethinking";
+            rev = "df903c88f4f4320795a47c616eef24a690b433a4";
+            sha256 = "1jl3189zdddmwm07z1mk58hcahirqrwx211ms0i1rzbx5y4zak0c";
+          };
+          propagatedBuildInputs =
+            [ dplyr tibble rlang MASS tidybayes rethinking rstan ];
+        };
+    in {
+      rEnv = super.rWrapper.override {
+        packages = with self.rPackages; [
+          tidyverse
+          devtools
+          modelr
+          purrr
+          forcats
+          ####################
+          # Machine Learning #
+          ####################
+          # MLR3
+          mlr3
+          mlr3viz
+          mlr3learners
+          mlr3pipelines
+          # Plotting tools
+          ggplot2
+          cowplot
+          ggrepel
+          RColorBrewer
+          # Stan Stuff
+          rstan
+          tidybayes
+          # Text Utilities
+          orgutils
+          latex2exp
+          kableExtra
+          knitr
+          data_table
+          printr
+          # Devtools Stuff
+          rethinking
+          tidybayes_rethinking
+        ];
+      };
+    };
+}
+#+END_SRC
+If any of these look strange, refer to the [[Nix with R and devtools][earlier posts]].
+** Automation Pains
+~direnv~, ~lorri~ and
+~niv~ are not really useful for working with the system-wide configuration, but
+an elegant solution still exists, which leverages ~firestarter~ and
+~after-save-hooks~ in ~emacs~.
+*** Firestarter
+[[https://depp.brause.cc/firestarter/][Firestarter]] is my favorite method of working with shell commands after saving
+things. My setup is simply:
+#+begin_src emacs-lisp
+; packages.el
+(package! firestarter)
+#+end_src
+This is coupled with a simple configuration.
+#+begin_src emacs-lisp
+; config.el
+(use-package! firestarter
+  :ensure t
+  :init
+  (firestarter-mode)
+  :config
+  (setq firestarter-default-type t)
+)
+#+end_src
+The default type corresponds to demanding the shell outupt for the commands.
+*** Nix-R Stuff
+To finalize this setup, we will need to modify our system configuration
+slightly. For brevity, we simply note the following local variables.
+
+#+BEGIN_SRC nix
+# $HOME/.config/nixpkgs/config.nix
+# Local Variables:
+# firestarter: "nix-env -f '<nixpkgs>' -iA rEnv"
+# firestarter-default-type: (quote failure)
+# End:
+#+END_SRC
+
+The ~firestarter-default-type~ used here is to ensure that errors are displayed
+in a buffer.
+** Conclusion
+This is my current setup. It works out better than most of my other attempts and
+seems to be an optimal approach. The packages are versioned, everything is
+automated, and I can reproduce changes across all my machines. Will stick with
+this.
