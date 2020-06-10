@@ -3375,7 +3375,7 @@ configuration instead of the per-project layout. So I simply set:
 If any of these look strange, refer to the [[Nix with R and devtools][earlier posts]].
 ** Automation Pains
 ~direnv~, ~lorri~ and
-~niv~ are not really useful for working with the system-wide configuration, but
+~niv~ (the heroes of [[Statistical Rethinking and Nix][Part II]]) are not really useful for working with the system-wide configuration, but
 an elegant solution still exists, which leverages ~firestarter~ and
 ~after-save-hooks~ in ~emacs~.
 *** Firestarter
