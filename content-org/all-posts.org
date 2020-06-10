@@ -3411,6 +3411,11 @@ slightly. For brevity, we simply note the following local variables.
 
 The ~firestarter-default-type~ used here is to ensure that errors are displayed
 in a buffer.
+
+To check what is being installed (if anything) simply run:
+#+BEGIN_SRC bash
+nix-env -f "<nixpkgs>" -iA rEnv --dry-run
+#+END_SRC
 ** Conclusion
 This is my current setup. It works out better than most of my other attempts and
 seems to be an optimal approach. The packages are versioned, everything is
