@@ -2311,7 +2311,7 @@ with colemak keybindings [[i3][described here]]. Recall that, [[https://en.wikip
 A compositing window manager is a window manager that provides applications with an off-screen buffer for each window. The window manager composites the window buffers into an image representing the screen and writes the result into the display memory.
 #+END_QUOTE
 
-For reasons I can no longer recall, ~compton~ has been a tradition aspect of my
+For reasons I can no longer recall, ~compton~ has been a traditional aspect of my
 workflow. As per my last update back in April last year; my configuration [[https://github.com/HaoZeke/Dotfiles/blob/8213473f313aa8fb9eb4c22d6b36a801b1584df6/dotfiles/archLinux/.config/compton.conf][is here]].
 ** Compton to Picom
 Some time ago (actually [[https://github.com/yshui/picom/issues/222][many months ago]]), ~compton~
