@@ -37,7 +37,8 @@ online, so that ought to give an idea of how old I am. A curriculum vitae is
 It is difficult to keep this section short and not let it spill
 into an unstructured memoir. For a while I considered trying to consolidate my
 online presences but that turned out to be completely impossible without a
-series of posts and avatars[fn:notrefs].
+series of posts and avatars[fn:notrefs]. I did however eventually set up a
+sporadically updated [[Collection of WebLinks][collection of web-links]] involving me.
 ** Intangible Positions
 This is a set of things which are primarily online and/or voluntary in a
 non-academic sense.
@@ -106,6 +107,78 @@ a personal list of people associated with each city, not a cover letter
 [fn:notpersonal] This is not a replacement for [[https://www.instagram.com/rg0swami/][an Instagram feed]] or a [[https://www.facebook.com/rg0swami][Facebook
 wall]], or even a [[https://www.researchgate.net/profile/Rohit_Goswami2][ResearchGate]] or [[https://publons.com/researcher/2911170/rohit-goswami/][Publons]] or [[https://orcid.org/0000-0002-2393-8056][ORCID]] page; all of which I do sporadically remember I have
 [fn:mountaintapir] Made with the [[https://github.com/tttppp/mountain_tapir][Mountain Tapir Collage Maker]]
+* DONE Collection of WebLinks :@personal:ramblings:
+CLOSED: [1995-08-10]
+:PROPERTIES:
+:EXPORT_FILE_NAME: rg-collection-weblinks
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments false
+:END:
+#+BEGIN_QUOTE
+An attempt to re-claim and verify my digital presence.
+#+END_QUOTE
+** Background
+I mentioned [[About][on my about page]], that it is nigh impossible to keep track of every
+digital trace there is of me. That said, it is really not even a countable
+infinite set yet, so it is a good idea to get started before it gets much worse.
+This is minimally curated, and will only be sporadically updated, so take
+everything here with a grain of salt. I honestly have no idea why anyone who is
+not me would like to see this, other than to prove one of these with respect to
+the rest[fn:whereswaldo].
+** Profiles
+*** Professional
+- [[https://english.hi.is/staff/rog32][University of Iceland]]
+- [[https://femtolab.science/people/rohit][FemtoLab]]
+*** Voluntary
+- The Carpentries
+  - [[https://carpentries.org/instructors#HaoZeke][Instructor]], [[https://carpentries.org/maintainers#HaoZeke][Maintainer]]
+- [[https://forum.igdore.org/t/rohit-goswami/656][IGDORE]]
+- [[https://www.univ.ai/teams/rohit-goswami][Univ.ai]]
+*** Academic
+- [[https://publons.com/researcher/2911170/rohit-goswami/][Publons]]
+- [[https://peerj.com/rgoswami/][PeerJ]]
+- [[http://scholar.google.com/citations?user=36gIdJMAAAAJ&hl=en][Google Scholar]]
+- [[https://orcid.org/0000-0002-2393-8056][OrCiD]]
+- [[https://loop.frontiersin.org/people/829611/overview][Loop]]
+- [[https://osf.io/c47v3/][OSF]]
+*** Societies
+- [[https://engage.aiche.org/network/community-directory/profile?UserKey=8f135c8b-747d-4f79-95fd-84975458e3bd][American Institute of Chemical Engineers]]
+- [[https://ieeexplore.ieee.org/author/37086865956][IEEE]]
+*** Communities
+- [[https://figshare.com/authors/Rohit_Goswami/5453063][Figshare]]
+*** Misc
+- [[https://github.com/HaoZeke][Github]]
+- [[https://gitlab.com/HaoZeke][Gitlab]]
+- [[https://www.goodreads.com/user/show/33462912-rohit-goswami][Goodreads]]
+- [[https://keybase.io/HaoZeke][Keybase]]
+** Pages and Articles
+*** By Me
+- Everything on [[https://keybase.io/HaoZeke][any of my many websites]]
+- [[https://www.aiche.org/community/sites/committees/young-professionals/blog/fundamental-research-chemical-engineering-undergrad][Write-up on research with a ChemE undergraduate degree]] for the American Institute of Chemical Engineers (AIChE) Young Professionals Committee (YPC)
+- Hackernoon article on [[https://hackernoon.com/locking-and-encrypting-apps-with-encfs-c1484e77f479][Locking and Encrypting Apps with Encfs]]
+*** Mentioning Me
+- Quoted in a [[https://www.stanforddaily.com/2020/06/08/code-in-place-makes-cs-accessible-to-thousands-worldwide/][Stanford Daily Article on CS106A Code in Place]]
+- [[https://fortran-lang.org/newsletter/2020/06/01/Fortran-Newsletter-June-2020/][Fortran Monthly Newsletter (June 2020)]]
+- Emacs News
+  - [[https://sachachua.com/blog/2020/05/2020-05-11-emacs-news/][2020-05-11]] :: for [[An Orgmode Note Workflow][An Orgmode Note Workflow]]
+  - [[https://sachachua.com/blog/2020/05/2020-05-04-emacs-news/][2020-05-04]] :: for [[Pandoc to Orgmode with Babel][Pandoc to Orgmode with Babel]]
+  - [[https://sachachua.com/blog/2020/04/2020-04-27-emacs-news/][2020-04-27]] :: for [[Using Mathematica with Orgmode][Using Mathematica with Orgmode]]
+  - [[https://sachachua.com/blog/2020/04/2020-04-06-emacs-news/][2020-04-06]] :: for [[Replacing Jupyter with Orgmode][Replacing Jupyter with Orgmode]]
+** Videos
+*** Of Me
+- Everything [[https://www.youtube.com/channel/UC9f_UGqNsa60kmNGj_WkLPw?][on my YouTube channel]]
+- [[https://www.youtube.com/watch?v=Q1St1VT43sc&feature=youtu.be][Discussion session]] for the CS196A Code in Place AMA with the students
+
+*** Including Me
+This category involves recordings where I asked questions, and therefore
+technically involve me in a sense.
+- Code in Place AMA with [[https://www.youtube.com/watch?v=J7S_SJ2Adi4&list=PLcil-m27rjnZ2f85ao8_EauguYhzkzSQA&index=5&t=0s][Stanford CS Lecturers]]
+
+**** IAS TML Lecture Questions
+I've been sitting in on these for a while thanks to Ke Li, but this section lists the lectures I asked a question in
+  - "[[https://video.ias.edu/tml/2020/0609-AleksanderMadry][What Do Models Learn?]]" by Aleksander Mądry
+  - "[[https://video.ias.edu/machinelearning/2020/0611-MichaelI.Jordan][Langevin Dynamics in Machine Learning]]" by Michael Jordan
+
+[fn:whereswaldo] If you do think you have seen me somewhere not on this list, drop me an email
 * Search
 :PROPERTIES:
 :EXPORT_HUGO_SECTION: /
