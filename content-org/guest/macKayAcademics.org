@@ -2,7 +2,7 @@
 #+author: "David MacKay"
 #+date: 2020-03-16 02:24
 
-#+hugo_base_dir: ../
+#+hugo_base_dir: ../../
 #+hugo_section: ./posts
 #+export_file_name: mackay-all-a
 #+hugo_custom_front_matter: :toc true :comments false
