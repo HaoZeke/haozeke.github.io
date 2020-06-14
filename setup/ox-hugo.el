@@ -1815,7 +1815,12 @@ a communication channel."
                                       headline info))))
                          ".")))
               (heading (concat todo-fmtd " " priority title))) ;Headline text without tags
-          (concat bullet (make-string (- 4 (length bullet)) ?\s) heading tags "\n\n"
+          (concat "<!--list-separator-->\n\n"
+                  ;; Above is needed just in case the body of the
+                  ;; section above is ending with a plain list. That
+                  ;; HTML comment will force-end the <ul> or <ol> tag
+                  ;; of that preceding list.
+                  bullet " " heading tags "\n\n"
                   (and contents (replace-regexp-in-string "^" "    " contents)))))
        (t
         (let* ((anchor (format "{#%s}" ;https://gohugo.io/extras/crossreferences/
@@ -2317,8 +2322,7 @@ and rewrite link paths to make blogging more seamless."
 
 INFO is a plist used as a communication channel."
   (let* ((exportables org-hugo-external-file-extensions-allowed-for-copying)
-         (bundle-dir (and (plist-get info :hugo-bundle)
-                          (org-hugo--get-pub-dir info)))
+         (bundle-dir (and (plist-get info :hugo-bundle) pub-dir))
          (resources (org-hugo--parse-property-arguments (plist-get info :hugo-resources))))
     (when (and bundle-dir resources)
       (dolist (resource resources)
@@ -2347,17 +2351,17 @@ PATH is the path to the image or any other attachment.
 INFO is a plist used as a communication channel."
   ;; (message "[ox-hugo attachment DBG] The Hugo section is: %s" (plist-get info :hugo-section))
   ;; (message "[ox-hugo attachment DBG] The Hugo base dir is: %s" (plist-get info :hugo-base-dir))
-  (let* ((path-unhexified (url-unhex-string path))
+ (let* ((pub-dir (org-hugo--get-pub-dir info)) ;This needs to happen first so that the check for HUGO_BASE_DIR happens.
+         (hugo-base-dir (file-name-as-directory (plist-get info :hugo-base-dir)))
+         (path-unhexified (url-unhex-string path))
          (path-true (file-truename path-unhexified))
          (exportables org-hugo-external-file-extensions-allowed-for-copying)
          (bundle-dir (and (plist-get info :hugo-bundle)
                           (org-hugo--get-pub-dir info)))
          (bundle-name (when bundle-dir
                         (let* ((content-dir (file-truename
-                                             (file-name-as-directory (expand-file-name
-                                                                      "content"
-                                                                      (file-name-as-directory
-                                                                       (plist-get info :hugo-base-dir))))))
+                                             (file-name-as-directory
+                                              (expand-file-name "content" hugo-base-dir))))
                                (is-home-branch-bundle (string= bundle-dir content-dir)))
                           (cond
                            (is-home-branch-bundle
@@ -2365,10 +2369,8 @@ INFO is a plist used as a communication channel."
                            (t ;`bundle-dir'="/foo/bar/" -> `bundle-name'="bar"
                             (file-name-base (directory-file-name bundle-dir)))))))
          (static-dir (file-truename
-                      (concat
-                       (file-name-as-directory (plist-get info :hugo-base-dir))
-                       "static/")))
-         (dest-dir (or bundle-dir static-dir))
+                      (file-name-as-directory
+                       (expand-file-name "static" hugo-base-dir))))         (dest-dir (or bundle-dir static-dir))
          ret)
     (unless (file-directory-p static-dir)
       (user-error "Please create the %s directory" static-dir))
@@ -3028,7 +3030,7 @@ to ((name . \"foo\") (weight . 80))."
     valid-menu-alist))
 
 (defun org-hugo--get-sanitized-title (info)
-  "Return sanitized version of an Org headline TITLE.
+  "Return sanitized version of an Org headline TITLE as a string.
 
 INFO is a plist used as a communication channel.
 
@@ -3040,7 +3042,10 @@ If the extracted document title is nil, and exporting the title
 is disabled, return nil.
 
 If the extracted document title is non-nil, return it after
-removing all markup characters."
+
+removing all markup characters.
+Also double-quote the title if it doesn't already contain any
+double-quotes."
   (let ((title (when (plist-get info :with-title)
                  (plist-get info :title))))
     (when title
@@ -3068,7 +3073,14 @@ removing all markup characters."
         (setq title (replace-regexp-in-string "---\\([^-]\\)" "—\\1" title)) ;EM DASH
         (setq title (replace-regexp-in-string "--\\([^-]\\)" "–\\1" title)) ;EN DASH
 
-        (setq title (replace-regexp-in-string "\\.\\.\\." "…" title)))) ;HORIZONTAL ELLIPSIS
+        (setq title (replace-regexp-in-string "\\.\\.\\." "…" title)) ;HORIZONTAL ELLIPSIS
+
+        ;; Double-quote the title so that even if the title contains
+        ;; just numbers or a date, it still gets rendered as a string
+        ;; type in Hugo. Do this only if the title doesn't already
+        ;; contain double-quotes.
+        (unless (string-match "\"" title)
+          (setq title (format "\"%s\"" title)))))
     title))
 
 (defun org-hugo--replace-underscores-with-spaces (str)
@@ -3650,6 +3662,7 @@ are \"toml\" and \"yaml\"."
                      "HUGO_PANDOC_CITATIONS"
                      "BIBLIOGRAPHY"
                      "HUGO_AUTO_SET_LASTMOD"
+                     "LANGUAGE"
                      "AUTHOR")))
     (mapcar (lambda (str)
               (concat "EXPORT_" str))
