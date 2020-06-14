@@ -12,7 +12,7 @@
 
 #+startup: logdone indent
 
-* About
+* DONE About
 :PROPERTIES:
 :EXPORT_HUGO_SECTION: /
 :EXPORT_FILE_NAME: about
@@ -184,7 +184,7 @@ I've been sitting in on these for a while thanks to Ke Li, but this section list
   - "[[https://video.ias.edu/machinelearning/2020/0611-MichaelI.Jordan][Langevin Dynamics in Machine Learning]]" by Michael Jordan
 
 [fn:whereswaldo] If you do think you have seen me somewhere not on this list, drop me an email
-* Search
+* DONE Search
 :PROPERTIES:
 :EXPORT_HUGO_SECTION: /
 :EXPORT_FILE_NAME: search
@@ -200,7 +200,7 @@ sitemap:
 #+begin_description
 Search in full-text, the entire contents of the site.
 #+end_description
-* Categories
+* DONE Categories
 :PROPERTIES:
 :EXPORT_HUGO_SECTION: /categories/
 :EXPORT_FILE_NAME: _index.md
@@ -208,7 +208,7 @@ Search in full-text, the entire contents of the site.
 #+begin_src yaml :front_matter_extra t
 mainlist: True
 #+end_src
-* Tags
+* DONE Tags
 :PROPERTIES:
 :EXPORT_HUGO_SECTION: /tags/
 :EXPORT_FILE_NAME: _index.md
