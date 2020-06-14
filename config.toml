@@ -61,8 +61,9 @@ disableHugoGeneratorInject = false
     endLevel = 3
     ordered = false
     startLevel = 2
-  [markup.goldmark.renderer]
-    unsafe = true
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
 
 [params]
   dateform        = "Jan 2, 2006"
