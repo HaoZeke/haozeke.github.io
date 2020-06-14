@@ -2,7 +2,7 @@
 #+author: "Rohit Goswami"
 #+date: 2020-02-19 9:47
 
-#+hugo_base_dir: ../
+#+hugo_base_dir: ../../../
 #+hugo_section: ./posts
 #+export_file_name: islr-ch7
 #+hugo_custom_front_matter: :toc true :comments true
@@ -31,110 +31,6 @@ printing]].
               "pls","latex2exp","data.table")
   invisible(lapply(libsUsed, library, character.only = TRUE))
 #+END_SRC
-
-#+BEGIN_EXAMPLE
-  ## 
-  ## Attaching package: 'dplyr'
-#+END_EXAMPLE
-
-#+BEGIN_EXAMPLE
-  ## The following objects are masked from 'package:stats':
-  ## 
-  ##     filter, lag
-#+END_EXAMPLE
-
-#+BEGIN_EXAMPLE
-  ## The following objects are masked from 'package:base':
-  ## 
-  ##     intersect, setdiff, setequal, union
-#+END_EXAMPLE
-
-#+BEGIN_EXAMPLE
-  ## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──
-#+END_EXAMPLE
-
-#+BEGIN_EXAMPLE
-  ## ✔ tibble  2.1.3     ✔ purrr   0.3.3
-  ## ✔ tidyr   1.0.0     ✔ stringr 1.4.0
-  ## ✔ readr   1.3.1     ✔ forcats 0.4.0
-#+END_EXAMPLE
-
-#+BEGIN_EXAMPLE
-  ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-  ## ✖ dplyr::filter() masks stats::filter()
-  ## ✖ dplyr::lag()    masks stats::lag()
-#+END_EXAMPLE
-
-#+BEGIN_EXAMPLE
-  ## Loading required package: lattice
-#+END_EXAMPLE
-
-#+BEGIN_EXAMPLE
-  ## 
-  ## Attaching package: 'caret'
-#+END_EXAMPLE
-
-#+BEGIN_EXAMPLE
-  ## The following object is masked from 'package:purrr':
-  ## 
-  ##     lift
-#+END_EXAMPLE
-
-#+BEGIN_EXAMPLE
-  ## 
-  ## Attaching package: 'MASS'
-#+END_EXAMPLE
-
-#+BEGIN_EXAMPLE
-  ## The following object is masked from 'package:dplyr':
-  ## 
-  ##     select
-#+END_EXAMPLE
-
-#+BEGIN_EXAMPLE
-  ## 
-  ## Attaching package: 'gridExtra'
-#+END_EXAMPLE
-
-#+BEGIN_EXAMPLE
-  ## The following object is masked from 'package:dplyr':
-  ## 
-  ##     combine
-#+END_EXAMPLE
-
-#+BEGIN_EXAMPLE
-  ## 
-  ## Attaching package: 'pls'
-#+END_EXAMPLE
-
-#+BEGIN_EXAMPLE
-  ## The following object is masked from 'package:caret':
-  ## 
-  ##     R2
-#+END_EXAMPLE
-
-#+BEGIN_EXAMPLE
-  ## The following object is masked from 'package:stats':
-  ## 
-  ##     loadings
-#+END_EXAMPLE
-
-#+BEGIN_EXAMPLE
-  ## 
-  ## Attaching package: 'data.table'
-#+END_EXAMPLE
-
-#+BEGIN_EXAMPLE
-  ## The following object is masked from 'package:purrr':
-  ## 
-  ##     transpose
-#+END_EXAMPLE
-
-#+BEGIN_EXAMPLE
-  ## The following objects are masked from 'package:dplyr':
-  ## 
-  ##     between, first, last
-#+END_EXAMPLE
 
 * Question 7.6 - Page 299
   :PROPERTIES:
