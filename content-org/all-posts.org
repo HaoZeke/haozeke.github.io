@@ -200,6 +200,22 @@ sitemap:
 #+begin_description
 Search in full-text, the entire contents of the site.
 #+end_description
+* Categories
+:PROPERTIES:
+:EXPORT_HUGO_SECTION: /categories/
+:EXPORT_FILE_NAME: _index.md
+:END:
+#+begin_src yaml :front_matter_extra t
+mainlist: True
+#+end_src
+* Tags
+:PROPERTIES:
+:EXPORT_HUGO_SECTION: /tags/
+:EXPORT_FILE_NAME: _index.md
+:END:
+#+begin_src yaml :front_matter_extra t
+mainlist: True
+#+end_src
 * DONE Site Rationale :@personal:ramblings:explanations:
 :PROPERTIES:
 :EXPORT_FILE_NAME: rationale
