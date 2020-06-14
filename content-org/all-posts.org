@@ -2164,6 +2164,22 @@ Where the table above is from the fantastic [[https://github.com/wbolster/evil-c
 
 I still had some issues, mostly relating to searching in buffers, so I ended
 using ~swiper-isearch~ more which is a bonus too.
+
+*** Visual Lines
+Since I tend to keep ~visual-line-mode~ all the time, it makes sense to actually swap working with lines and visual lines.
+To work this through this needs [[https://github.com/YourFin/evil-better-visual-line/][evil-better-visual-line]].
+#+BEGIN_SRC emacs-lisp
+(use-package! evil-better-visual-line
+  :after evil-colemak-basics
+  :config
+  (evil-better-visual-line-on)
+  (map! :map evil-colemak-basics-keymap
+        (:nvm "n" 'evil-better-visual-line-next-line
+         :nvm "e" 'evil-better-visual-line-previous-line
+         :nvm "g n" 'evil-next-line
+         :nvm "g e" 'evil-previous-line))
+)
+#+END_SRC
 *** Pdf-Tools
 For my ~doom-emacs~ configuration, I also set the following map:
 #+BEGIN_SRC emacs-lisp
