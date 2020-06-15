@@ -14,7 +14,7 @@
 # package = "netlify-plugin-subfont"
 [build]
   publish = "public"
-  command = "hugo --gc --minify"
+  command = "make md"
 
 [build.environment]
   HUGO_VERSION = "0.72.0"
