@@ -14,7 +14,7 @@
 # package = "netlify-plugin-subfont"
 [build]
   publish = "public"
-  command = "make md"
+  command = "npm install -g postcss-cli && npm install -g autoprefixer && make md"
 
 [build.environment]
   HUGO_VERSION = "0.72.0"
