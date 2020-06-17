@@ -164,6 +164,7 @@ the rest[fn:whereswaldo].
 - Quoted in a [[https://www.stanforddaily.com/2020/06/08/code-in-place-makes-cs-accessible-to-thousands-worldwide/][Stanford Daily Article on CS106A Code in Place]]
 - [[https://fortran-lang.org/newsletter/2020/06/01/Fortran-Newsletter-June-2020/][Fortran Monthly Newsletter (June 2020)]]
 - Emacs News
+  - [[https://sachachua.com/blog/2020/05/2020-05-11-emacs-news/][2020-06-15]] :: for [[Emacs for Nix-R][Emacs for Nix-R]]
   - [[https://sachachua.com/blog/2020/05/2020-05-11-emacs-news/][2020-05-11]] :: for [[An Orgmode Note Workflow][An Orgmode Note Workflow]]
   - [[https://sachachua.com/blog/2020/05/2020-05-04-emacs-news/][2020-05-04]] :: for [[Pandoc to Orgmode with Babel][Pandoc to Orgmode with Babel]]
   - [[https://sachachua.com/blog/2020/04/2020-04-27-emacs-news/][2020-04-27]] :: for [[Using Mathematica with Orgmode][Using Mathematica with Orgmode]]
