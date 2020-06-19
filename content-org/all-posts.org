@@ -3547,7 +3547,7 @@ The sad reality of working in a field dominated by institutional actors which do
 ** Standard methods
 Essentially for the exporter, the document is broken into[fn:halptex]:
 - *document_class* :: This cannot be changed arbitrarily and [[https://orgmode.org/manual/LaTeX-specific-export-settings.html#LaTeX-specific-export-settings][has to be]] a valid element of ~org-latex-classes~
-- *preamble* :: This section of the document is essentially everything before ~\begin{document}~
+- *preamble* :: This section of the document is essentially everything before ~\begin{document}~ and after ~\documentclass{...}~
 - *body* :: The rest of the document
 
 We will briefly cover the standard methods of entering TeX in each of these sections, in reverse order since that is the direction in which the intuitive aspect decreases.
@@ -3562,7 +3562,7 @@ The method of writing TeX in ~orgmode~ for the document involves simply writing 
 % #+END_SRC
 #+END_SRC
 
-Which will actually rendered in a real document of course[fn:butwhatformula]:
+Which will actually be rendered in a real document of course[fn:butwhatformula]:
 # It is the Möbius inversion formula
 
 \begin{align}
@@ -3570,7 +3570,7 @@ Which will actually rendered in a real document of course[fn:butwhatformula]:
        &= \Pi(x) -\frac{1}{2}\Pi(x^{\frac{1}{2}}) - \frac{1}{3}\Pi(x^{\frac{1}{3}}) - \frac{1}{5}\Pi(x^{\frac{1}{5}}) + \frac{1}{6} \Pi(x^{\frac{1}{6}}) -\cdots,
 \end{align}
 
-There is also the inline form of designating LaTeX ~@@\sin{x}@@~ which is essentially $\sin{x}$.
+There is also the inline form of writing LaTeX with ~@@\sin{x}@@~ which is essentially $\sin{x}$.
 *** Preamble
 The main use of the preamble is to either add classes or modify class options for loaded packages like ~geometry~. Essentially, for ~orgmode~, anything prefixed with ~#+LATEX_HEADER:~ gets inserted in the preamble.
 #+BEGIN_SRC org :exports code
@@ -3578,7 +3578,7 @@ The main use of the preamble is to either add classes or modify class options fo
 #+LATEX_HEADER: \usepackage{unicode-math}
 #+LATEX_HEADER: \usepackage{mathtools}
 #+END_SRC
-For larger documents, this gets quite annoying for just loading packages. We will demonstrate a more aesthetically pleasant form later in this post.
+For larger documents, this gets quite annoying for loading packages. We will demonstrate a more aesthetically pleasant form later in this post.
 *** LaTeX classes
 Working with document classes is the least intuitive of all TeX manipulations, because for some reason, ~#+LATEX_CLASS:~ only accepts values defined in ~org-latex-classes~.
 
@@ -3595,7 +3595,11 @@ The standard approach to extending the ~orgmode~ TeX backend is to add lines lik
 
 This is alright for often used classes like the ~koma-⋆~ family of LaTeX document-classes, but it is hardly ideal for one-off TeX templates which are meant for say, grant proposals[fn:grantwhat].
 ** Elisp to the rescue
-The core idea is quite simple. Since ~orgmode~ files are literate documents, and ~emacs~ is self-documenting and completely programmable, it should be possible to execute code to deterministically set the state of ~emacs~ before exporting the document to TeX. Practically this needs a few moving parts. In the following sections, assume that we have a ~.cls~ file which defines a document-class ~foo~.
+The core idea is quite simple.
+#+BEGIN_QUOTE
+Since ~orgmode~ files are literate documents, and ~emacs~ is self-documenting and completely programmable, it should be possible to execute code to deterministically set the state of ~emacs~ before exporting the document to TeX.
+#+END_QUOTE
+Practically this has a few moving parts. In the following sections, assume that we have a ~.cls~ file which defines a document-class ~foo~ with a bunch of packages which conflict with our global configuration.
 *** Adding Document Classes
 Instead of adding the code snippet to our global configuration, we will now add it to the document directly with the comments indicating the appropriate environment.
 #+BEGIN_SRC emacs-lisp :exports code  :results none :eval never
