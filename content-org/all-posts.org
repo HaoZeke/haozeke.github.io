@@ -178,7 +178,8 @@ the rest[fn:whereswaldo].
 This category involves recordings where I asked questions, and therefore
 technically involve me in a sense.
 - Code in Place AMA with [[https://www.youtube.com/watch?v=J7S_SJ2Adi4&list=PLcil-m27rjnZ2f85ao8_EauguYhzkzSQA&index=5&t=0s][Stanford CS Lecturers]]
-
+**** Fortran Maintainers Monthly Calls
+- [[https://www.youtube.com/watch?v=i-gRNGRzugc][June 2020]]
 **** IAS TML Lecture Questions
 I've been sitting in on these for a while thanks to Ke Li, but this section lists the lectures I asked a question in
   - "[[https://video.ias.edu/tml/2020/0609-AleksanderMadry][What Do Models Learn?]]" by Aleksander Mądry
