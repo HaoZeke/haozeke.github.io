@@ -10,7 +10,7 @@
 
 #+property: header-args :eval never-export
 
-#+startup: logdone indent
+#+startup: logdone indent overview inlineimages
 
 * DONE About
 :PROPERTIES:
