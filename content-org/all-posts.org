@@ -3704,3 +3704,27 @@ This method could be extended to essentially resetting all ~emacs~ variables on 
 [fn:butwhatformula] Props to anyone who recognizes that formula
 * TODO Computational Science and Math
 One of the earliest memories of feedback I recall was about my handwriting. To this day it remains an ugly scrawl, with legibility tending to nil in cursive.
+
+* DONE LineageOS Maintainer Appreciation :@personal:ramblings:thoughts:
+CLOSED: [2020-06-28 Sun 18:35]
+:PROPERTIES:
+:EXPORT_FILE_NAME: linos-maintainer-appre
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
+#+BEGIN_QUOTE
+A post on a surprisingly heartwarming community appreciation effort.
+#+END_QUOTE
+
+** Background
+As probably anyone who has asked me about my programming experience has heard, my first real foray into the FOSS community was being a [[https://forum.xda-developers.com/member.php?u=1964056][LineageOS co-maintainer]] (as HaoZeke) for the Xperia Z5 Dual. I haven't thought about the community all that much for a few years, mostly since XDA became pretty toxic, and Android development just got, less exciting.
+** The Email
+I recieved two of these from different accounts:
+#+BEGIN_QUOTE
+Thank you so much for your contribution to making my phone the phone it is!
+
+Have a great day!
+#+END_QUOTE
+
+[[file:images/lineageOS.jpg]]
+** Conclusion
+This was completely unexpected, and really made my day. In reterospect this seems like something which should be made more explicit, more often.
