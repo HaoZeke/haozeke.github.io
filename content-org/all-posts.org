@@ -158,8 +158,12 @@ the rest[fn:whereswaldo].
 **** Lists
 - [[https://www.cirm-math.fr/Listes/liste_pre_verif.php?id_renc=2146&num_semaine=0][Mathematical Methods of Modern Statistics 2]] ([[https://www.cirm-math.com/cirm-virtual-event-2146.html][info]])
 - [[https://chemeng.iisc.ac.in/rare-events/gallery.html][Gallery of RARE 2019]] at IISc
-- [[https://coderefinery.github.io/2020-05-25-online/][2020 MegaCodeRefinery]] (helper)
 - [[https://gitlab.com/openresearchlabs/probabilistic_data_analysis_2020/-/blob/master/session7.md][Probablistic Data Analysis]] (University of Turku)
+**** Teaching
+- [[https://smcclatchy.github.io/2020-06-22-biotechPartners-pm/][Data Carpentry Ecology for Biotech Partners]] :: June 22-July 2, 2020 (instructor)
+- [[https://sadilar.github.io/2020-06-29-SA-ONLINE/][Online Data Carpentry Workshop
+SADiLaR, South Africa]] :: 29 June - 3 July, 2020 (instructor)
+- [[https://coderefinery.github.io/2020-05-25-online/][2020 MegaCodeRefinery]] (helper)
 **** Quotes
 - Quoted in a [[https://www.stanforddaily.com/2020/06/08/code-in-place-makes-cs-accessible-to-thousands-worldwide/][Stanford Daily Article on CS106A Code in Place]]
 - [[https://fortran-lang.org/newsletter/2020/06/01/Fortran-Newsletter-June-2020/][Fortran Monthly Newsletter (June 2020)]]
@@ -169,7 +173,7 @@ the rest[fn:whereswaldo].
   - [[https://sachachua.com/blog/2020/05/2020-05-11-emacs-news/][2020-05-11]] :: for [[An Orgmode Note Workflow][An Orgmode Note Workflow]]
   - [[https://sachachua.com/blog/2020/05/2020-05-04-emacs-news/][2020-05-04]] :: for [[Pandoc to Orgmode with Babel][Pandoc to Orgmode with Babel]]
   - [[https://sachachua.com/blog/2020/04/2020-04-27-emacs-news/][2020-04-27]] :: for [[Using Mathematica with Orgmode][Using Mathematica with Orgmode]]
-  - [[https://sachachua.com/blog/2020/04/2020-04-27-emacs-news/][2020-04-13]] :: for [[https://dotdoom.rgoswami.me/][my dotDoom doom-emacs configuration]]
+  - [[https://sachachua.com/blog/2020/04/2020-04-13-emacs-news/][2020-04-13]] :: for [[https://dotdoom.rgoswami.me/][my dotDoom doom-emacs configuration]]
   - [[https://sachachua.com/blog/2020/04/2020-04-06-emacs-news/][2020-04-06]] :: for [[Replacing Jupyter with Orgmode][Replacing Jupyter with Orgmode]]
 ** Videos
 *** Of Me
