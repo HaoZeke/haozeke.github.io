@@ -136,6 +136,10 @@ label = "Utterance 💬"
     name = "publons"
     url  = "https://publons.com/researcher/2911170/rohit-goswami/"
 
+  [[params.social]]
+    name = "calendly"
+    url  = "https://calendly.com/rg0swami"
+
 [languages]
   [languages.en]
     title = "Rohit Goswami"
