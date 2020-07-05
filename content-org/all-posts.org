@@ -1292,7 +1292,7 @@ CLOSED: [2020-04-09 Thu 17:17]
 ** Background
 Like a lot of my tech based rants, this was brought on by a recent [[https://news.ycombinator.com/item?id=22813168][Hacker News
 post]]. I won't go into why the product listed there is a hollow faux FOSS
-rip-off. I won't discuss how that 'free' analytics option, like many others are
+rip-off. I won't discuss how the 'free' analytics option, like many others are
 just hobby projects taking pot shots at other projects. Or how insanely
 overpriced most alternatives are.
 
