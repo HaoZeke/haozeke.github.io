@@ -73,6 +73,7 @@ disableHugoGeneratorInject = false
 
   # From my fork
   goatCounter = "rgoswami"
+  clicky = 101265002
   search = true
   prism = false
 
