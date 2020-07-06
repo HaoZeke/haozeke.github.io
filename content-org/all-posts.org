@@ -1328,6 +1328,8 @@ excellent comment thread. It was there that I came across people praising [[http
 I might eventually go back to GA, if I go over the 10k page view limit. Then
 again, I might not. It might be more like, I only care about the first 10k
 people who make it to my site.
+
+**UPDATE:** This site has since shifted to Clicky, for [[Analytics II: Goat to Clicky][reasons outlined here]]
 * TODO Fediverse Thoughts
 ** Background
 I recently decided to take a half day off. Naturally I began looking into things
@@ -3733,3 +3735,123 @@ Have a great day!
 [[file:images/lineageOS.jpg]]
 ** Conclusion
 This was completely unexpected, and really made my day. In reterospect this seems like something which should be made more explicit, more often.
+
+* DONE Analytics II: Goat to Clicky :@notes:tools:rationale:workflow:ideas:
+CLOSED: [2020-07-06 Mon 23:09]
+:PROPERTIES:
+:EXPORT_FILE_NAME: goat-clicky
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+BEGIN_QUOTE
+A follow up to [[Analytics: Google to Goat][my earlier post on analytics]], and on migrating from Goat Counter to Clicky.
+#+END_QUOTE
+
+** Background
+A few days ago I recieved the following email:
+#+BEGIN_QUOTE
+Hi there!
+
+I made some changes to the GoatCounter plans/pricing:
+
+1. GoatCounter now has a "Starter" plan, this is €5/month, limited to 100k pageviews/month, comes with a custom domain, and allow commercial use. This is mostly the same as the "personal plus" plan there was before, except that it allows commercial use. If you had a "personal plus" for a custom domain before then you now have a Starter plan.
+
+2. Starting on August 1st the data retention will be limited for the Free and Starter plans: the Free plan will be limited to 6 months, the Starter plan to 12 months, and the business plans remain unlimited. There is an export feature if you wish to retain your old pageviews.
+
+Some background on this:
+
+There seems to be a gap between "free for personal use" and "€15/month for commercial use". I've gotten quite a bit of feedback of small (potential) commercial users who just run a small website, where €15/month really is prohibitively expensive.
+
+The entire idea behind making it free for personal use is that I'd like GoatCounter to be usable by as many people as possible, while also ensuring commercial users pay their fair share. Redistributing software is free, but developing it is not.
+
+The general thinking is that larger businesses with several employees (who can easily afford €15/month) will have more than 100k pageviews/month, whereas for most startups and the like 100k should be more than enough.
+
+The entire thing is a bit of a balancing act 😅 I may tweak the pricing further in the future based on additional experience and feedback.
+
+As for the data retention: the biggest issue here is that some not-especially-active sites have had short bursts of millions of pageviews in a short time because they wrote or made something that got widely shared.
+
+The hits/months limit isn't strictly enforced because I don't want to tell people to get a plan just because they wrote a popular article that got to the front page of HN, Reddit, Twitter, etc, and GoatCounter has no problem handling these levels of pageviews, so that's all fine.
+
+But on the other hand, a million pageviews currently takes up about 400M of disk space including backups (although this could probably be reduced a bit with a more clever backup strategy). Disk space is pretty cheap, but it does add up.
+
+It also means more effort on scaling GoatCounter; limiting the data retention is an easy way to reduce the pressure on this. It also gives people a bit more incentive to get a plan 😅
+
+As always, self-hosting isn't affected by any of this. This just applies to the goatcounter.com service.
+
+Feel free to let me know if you've got any questions or feedback.
+
+Cheers,
+Martin
+#+END_QUOTE
+** Personal Repercussions
+I should point out that I unequivocally support Martin's decision. It is fair and equitable. That said, continuity is super important to me. I've mentioned earlier that for me, the daily limit is not much of an issue but I do like to look back at my collective history.
+** Goat Counter
+[[https://www.goatcounter.com/][Goat Counter]] is still definitely my go-to option for both self-hosting and shelling out, if the 15 euro fee is acceptable. Honestly, the best option is probably opening a PR or making a tool to aggregate metrics offline, since it is still possible to export the data. The major drawback is the six month window.
+** Clicky
+[[https://clicky.com/][Clicky]] is pretty great, and they have a good example of [[https://clicky.com/compare/google][what works out in their favor compared to Google Analytics]].
+*** Pros
+- Free tier has no time limit
+- Has a nice dark theme
+*** Cons
+- Not open source
+- Capped at 3K daily views
+- Blocked by some VPN providers (Windscribe)
+** Conclusions
+It is unfortunate to have had to move, since this does imply losing the past eight months of metrics. Eventually I might even go back to steady dependable Google Analytics. Until this, Clicky will do.
+* TODO Multiscreen Monitors and Touchscreens :@notes:tools:workflow:
+:PROPERTIES:
+:EXPORT_FILE_NAME: multi-monitor-touch
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
+#+BEGIN_QUOTE
+A short post on multiple screens for laptops with touch-support and ArchLinux.
+#+END_QUOTE
+
+** Background
+Of late, I have been attempting to move away from paper, for environmental reasons. Also because paper is difficult to keep track of and is essentially the antithesis of a computer oriented workflow.
+** Multiple screens
+
+We need to figure out what the touch input devices are:
+
+#+BEGIN_SRC bash :exports both
+xinput --list
+#+END_SRC
+
+#+RESULTS:
+| ⎡ Virtual core pointer                             | id=2  | [master pointer  (3)] |
+| ⎜   ↳ Virtual core XTEST pointer                   | id=4  | [slave  pointer  (2)] |
+| ⎜   ↳ Wacom Pen and multitouch sensor Finger touch | id=10 | [slave  pointer  (2)] |
+| ⎜   ↳ Wacom Pen and multitouch sensor Pen stylus   | id=11 | [slave  pointer  (2)] |
+| ⎜   ↳ ETPS/2 Elantech TrackPoint                   | id=14 | [slave  pointer  (2)] |
+| ⎜   ↳ ETPS/2 Elantech Touchpad                     | id=15 | [slave  pointer  (2)] |
+| ⎜   ↳ Wacom Pen and multitouch sensor Pen eraser   | id=17 | [slave  pointer  (2)] |
+| ⎣ Virtual core keyboard                            | id=3  | [master keyboard (2)] |
+| ↳ Virtual core XTEST keyboard                      | id=5  | [slave  keyboard (3)] |
+| ↳ Power Button                                     | id=6  | [slave  keyboard (3)] |
+| ↳ Video Bus                                        | id=7  | [slave  keyboard (3)] |
+| ↳ Power Button                                     | id=8  | [slave  keyboard (3)] |
+| ↳ Sleep Button                                     | id=9  | [slave  keyboard (3)] |
+| ↳ Integrated Camera: Integrated C                  | id=12 | [slave  keyboard (3)] |
+| ↳ AT Translated Set 2 keyboard                     | id=13 | [slave  keyboard (3)] |
+| ↳ ThinkPad Extra Buttons                           | id=16 | [slave  keyboard (3)] |
+
+The ~postswitch~ needs to be:
+
+#+BEGIN_SRC bash
+#!/bin/sh
+# .config/autorandr/postswitch
+xinput --map-to-output 'Wacom Pen and multitouch sensor Finger touch' eDP1
+xinput --map-to-output 'Wacom Pen and multitouch sensor Pen stylus' eDP1
+xinput --map-to-output 'Wacom Pen and multitouch sensor Pen eraser' eDP1
+notify-send "Screen configuration changed"
+#+END_SRC
+
+This needs to be combined with ~autorandr-launcher~ [[https://github.com/smac89/autorandr-launcher][from here]], and then set up as follows:
+
+#+BEGIN_SRC bash
+git clone https://github.com/smac89/autorandr-launcher.git
+cd autorandr-launcher
+sudo make install
+sudo systemctl--user enable autorandr_launcher.service
+#+END_SRC
+
+** Conclusion
