@@ -76,6 +76,7 @@ disableHugoGeneratorInject = false
   clicky = "101265002"
   search = true
   prism = false
+  codefold = true
 
   # Set disableReadOtherPosts to true in order to hide the links to other posts.
   disableReadOtherPosts = false
