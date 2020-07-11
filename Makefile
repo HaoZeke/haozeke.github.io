@@ -65,8 +65,14 @@ OX_HUGO_CONTENT_ORG_DIR=$(HUGO_BASE_DIR)/content-org
 # assignment = is important here: you do not want to be running the
 # shell escape every time SOURCES is inspected by make.
 
-# Path to the Org file (relative to pwd, or absolute)
-ORG_FILE:=$(wildcard $(OX_HUGO_CONTENT_ORG_DIR)/*.org)
+# Path to the Org files (relative to pwd, or absolute)
+ORG_FILE:=$(shell find content-org -name "*.org" -not -path "**/tmp/*")
+#$(filter-out $(wildcard $(OX_HUGO_CONTENT_ORG_DIR)/tmp/*.org),$(ALL_ORG))
+# Levels
+# LVL_TWO:=$(wildcard $(OX_HUGO_CONTENT_ORG_DIR)/**/**/*.org)
+# LVL_ONE:=$(wildcard $(OX_HUGO_CONTENT_ORG_DIR)/**/*.org)
+# MAIN_ORG:=$(OX_HUGO_CONTENT_ORG_DIR)/all-posts.org
+# ALL_ORG:=$(MAIN_ORG)$(LVL_ONE)$(LVL_TWO)
 
 # Function to be run in emacs --batch
 FUNC=
