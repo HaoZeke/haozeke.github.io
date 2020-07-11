@@ -3789,7 +3789,7 @@ I should point out that I unequivocally support Martin's decision. It is fair an
 - Blocked by some VPN providers (Windscribe)
 ** Conclusions
 It is unfortunate to have had to move, since this does imply losing the past eight months of metrics. Eventually I might even go back to steady dependable Google Analytics. Until this, Clicky will do.
-* DONE Multiscreen Monitors and Touchscreens :@notes:tools:workflow:
+* DONE Multiple Monitors with Touchscreens :@notes:tools:workflow:
 CLOSED: [2020-07-11 Sat 22:45]
 :PROPERTIES:
 :EXPORT_FILE_NAME: multi-monitor-touch
