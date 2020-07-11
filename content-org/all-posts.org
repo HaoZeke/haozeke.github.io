@@ -2367,14 +2367,6 @@ That seems to be it for now. If I think of more programs I use regularly which
 allow VIM bindings, or keybindings in general, I'll probably just update this
 post. My full dotfiles are [[https://github.com/HaoZeke/Dotfiles][present here]], and now include a ~colemak~ target.
 [fn:attribute] The hook fix was suggested by the fantastic [[https://github.com/hlissner/][hlissner]] on the super friendly doom Discord server.
-* TODO An Ode To Mons :@programming:workflow:tools:
-:PROPERTIES:
-:EXPORT_FILE_NAME: ode-mons
-:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
-:END:
-** Background
-** X-Windows and Xternal Screens
-Yes that's a pun.
 * TODO Reclaiming The Web With RSS :@notes:ramblings:workflow:tools:
 :PROPERTIES:
 :EXPORT_FILE_NAME: reclaim-web-rss
@@ -3801,7 +3793,7 @@ It is unfortunate to have had to move, since this does imply losing the past eig
 CLOSED: [2020-07-11 Sat 22:45]
 :PROPERTIES:
 :EXPORT_FILE_NAME: multi-monitor-touch
-:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :END:
 #+BEGIN_QUOTE
 A short tutorial post on multiple screens for laptops with touch-support and ArchLinux. Also evolved into a long rant, with an Easter egg.
@@ -3812,7 +3804,7 @@ Of late, I have been attempting to move away from paper, for environmental reaso
 However, there are still a few things I cannot do without a pointing device (and some kind of canvas). Scrawl squiggly lines on papers I'm reviewing. That and, scrawl weird symbols which don't actually follow a coherent mathematical notation but might be later written up in latex to prove a point. Also, and I haven't mastered any of the drawing systems (like [[https://en.wikibooks.org/wiki/LaTeX/PGF/TikZ][Tikz]]) yet, so for squiggly charts I rely on [[https://jamboard.google.com/][Jamboard]] (while teaching) and [[https://github.com/xournalpp/xournalpp][Xournal++]] for collaborations.
 
 I also happen to have a [[https://www.notebookcheck.net/Lenovo-ThinkPad-X380-Yoga-i5-8250U-FHD-Convertible-Review.316442.0.html][ThinkPad X380]] (try ~sudo dmidecode -t system | grep Version~) which has an in-built stylus, and since Linux support for touchscreens from 2018 is known to be incredible, I coupled this with the [[https://www.lenovo.com/us/en/thinkvisionM14/][ThinkVision M14]] as a second screen.
-** Multiple Screens
+** X-Windows and X-ternal Screens
 
 We will define two separate solutions:
 - [[https://github.com/Ventto/mons][mons]] :: Using arbitrary external monitors
@@ -3825,7 +3817,7 @@ I use the [[https://github.com/phillipberndt/autorandr][python rewrite]] simply 
 
 *** Mons
 ~xrandr~ is awesome. Unfortunately, more often than not, I forget the commands to interact with it appropriately.
-[[https://github.com/Ventto/mons][mons]] does my dirty work for me.
+[[https://github.com/Ventto/mons][mons]] does my dirty work for me[fn:monsgood].
 
 #+BEGIN_SRC bash
 # -e is extend
@@ -3905,3 +3897,4 @@ We now have a setup which ensures that the touch enabled area is constant, witho
 file:images/myXournalScrib.png
 
 [fn:environ] Also because paper is difficult to keep track of and is essentially the antithesis of a computer oriented workflow.
+[fn:monsgood] I actually planned a whole post called "An Ode to Mons", when I first found out about it.
