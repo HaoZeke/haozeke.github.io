@@ -127,9 +127,10 @@ the rest[fn:whereswaldo].
 *** Professional
 - [[https://english.hi.is/staff/rog32][University of Iceland]]
 - [[https://femtolab.science/people/rohit][FemtoLab]]
+- [[https://g.co/kgs/Y9fpDC][Google Knowledge Panel]]
 *** Voluntary
 - The Carpentries
-  - [[https://carpentries.org/instructors#HaoZeke][Instructor]], [[https://carpentries.org/maintainers#HaoZeke][Maintainer]]
+  - [[https://carpentries.org/instructors#HaoZeke][Instructor]], [[https://carpentries.org/maintainers#HaoZeke][Maintainer]], [[https://2020.carpentrycon.org/task-force/][CarpentyrCon2020 Committee Task Force]]
 - [[https://forum.igdore.org/t/rohit-goswami/656][IGDORE]]
 - [[https://www.univ.ai/teams/rohit-goswami][Univ.ai]]
 *** Academic
@@ -154,12 +155,15 @@ the rest[fn:whereswaldo].
 - Everything on [[https://keybase.io/HaoZeke][any of my many websites]]
 - [[https://www.aiche.org/community/sites/committees/young-professionals/blog/fundamental-research-chemical-engineering-undergrad][Write-up on research with a ChemE undergraduate degree]] for the American Institute of Chemical Engineers (AIChE) Young Professionals Committee (YPC)
 - Hackernoon article on [[https://hackernoon.com/locking-and-encrypting-apps-with-encfs-c1484e77f479][Locking and Encrypting Apps with Encfs]]
+- Reproducible Environments with the Nix Packaging System at [[https://2020.carpentrycon.org/schedule/#session-10][CarpentryCon 2020]]
 *** Mentioning Me
 **** Lists
 - [[https://www.cirm-math.fr/Listes/liste_pre_verif.php?id_renc=2146&num_semaine=0][Mathematical Methods of Modern Statistics 2]] ([[https://www.cirm-math.com/cirm-virtual-event-2146.html][info]])
 - [[https://chemeng.iisc.ac.in/rare-events/gallery.html][Gallery of RARE 2019]] at IISc
 - [[https://gitlab.com/openresearchlabs/probabilistic_data_analysis_2020/-/blob/master/session7.md][Probablistic Data Analysis]] (University of Turku)
+- [[https://twitter.com/aiidateam/status/1281323480290660352][AiiDA Virtual Tutotrial 2020]]
 **** Teaching
+- [[http://www.wavelf.org/ij6TzydE3kTSF8cwwIUj][Water, Chemicals and more with Computers for Chemistry (WC3)]] :: July 28-August 28, 2020 (co-lead)
 - [[https://smcclatchy.github.io/2020-06-22-biotechPartners-pm/][Data Carpentry Ecology for Biotech Partners]] :: June 22-July 2, 2020 (instructor)
 - [[https://sadilar.github.io/2020-06-29-SA-ONLINE/][Online Data Carpentry Workshop
 SADiLaR, South Africa]] :: 29 June - 3 July, 2020 (instructor)
@@ -179,10 +183,11 @@ SADiLaR, South Africa]] :: 29 June - 3 July, 2020 (instructor)
 *** Of Me
 - Everything [[https://www.youtube.com/channel/UC9f_UGqNsa60kmNGj_WkLPw?][on my YouTube channel]]
 - [[https://www.youtube.com/watch?v=Q1St1VT43sc&feature=youtu.be][Discussion session]] for the CS196A Code in Place AMA with the students
-
+- Panelist for the CarpentryCon 2020 session on [[https://pad.carpentries.org/cchome-teaching-online][lessons learnt from remote teaching]]
 *** Including Me
 This category involves recordings where I asked questions, and therefore
 technically involve me in a sense.
+- I appear [[https://www.linkedin.com/posts/univ-ai_neuralnetwork-regularisation-ucla-activity-6689748037511782400-gMSx][in the audience of this clip]] on neural networks and regularization
 - Code in Place AMA with [[https://www.youtube.com/watch?v=J7S_SJ2Adi4&list=PLcil-m27rjnZ2f85ao8_EauguYhzkzSQA&index=5&t=0s][Stanford CS Lecturers]]
 **** Fortran Maintainers Monthly Calls
 - [[https://www.youtube.com/watch?v=i-gRNGRzugc][June 2020]]
