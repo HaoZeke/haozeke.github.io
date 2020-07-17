@@ -3898,3 +3898,5 @@ file:images/myXournalScrib.png
 
 [fn:environ] Also because paper is difficult to keep track of and is essentially the antithesis of a computer oriented workflow.
 [fn:monsgood] I actually planned a whole post called "An Ode to Mons", when I first found out about it.
+
+* TODO On Writing Grant Applications
