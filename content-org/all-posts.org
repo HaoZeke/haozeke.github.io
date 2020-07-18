@@ -185,6 +185,7 @@ SADiLaR, South Africa]] :: 29 June - 3 July, 2020 (instructor)
 - Everything [[https://www.youtube.com/channel/UC9f_UGqNsa60kmNGj_WkLPw?][on my YouTube channel]]
 - [[https://www.youtube.com/watch?v=Q1St1VT43sc&feature=youtu.be][Discussion session]] for the CS196A Code in Place AMA with the students
 - Panelist for the CarpentryCon 2020 session on [[https://pad.carpentries.org/cchome-teaching-online][lessons learnt from remote teaching]]
+- Student Presentation at UI on [[https://hi.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=6cda865b-c58a-4a79-89a3-ab9300d6ede6][Scrum for Software Quality Management]]
 *** Including Me
 This category involves recordings where I asked questions, and therefore
 technically involve me in a sense.
