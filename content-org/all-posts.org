@@ -162,6 +162,7 @@ the rest[fn:whereswaldo].
 - [[https://chemeng.iisc.ac.in/rare-events/gallery.html][Gallery of RARE 2019]] at IISc
 - [[https://gitlab.com/openresearchlabs/probabilistic_data_analysis_2020/-/blob/master/session7.md][Probablistic Data Analysis]] (University of Turku)
 - [[https://twitter.com/aiidateam/status/1281323480290660352][AiiDA Virtual Tutotrial 2020]]
+- [[https://tcevents.chem.uzh.ch/event/12/contributions/45/author/73][FortranCon 2020 Author]]
 **** Teaching
 - [[http://www.wavelf.org/ij6TzydE3kTSF8cwwIUj][Water, Chemicals and more with Computers for Chemistry (WC3)]] :: July 28-August 28, 2020 (co-lead)
 - [[https://smcclatchy.github.io/2020-06-22-biotechPartners-pm/][Data Carpentry Ecology for Biotech Partners]] :: June 22-July 2, 2020 (instructor)
