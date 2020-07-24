@@ -66,7 +66,7 @@ OX_HUGO_CONTENT_ORG_DIR=$(HUGO_BASE_DIR)/content-org
 # shell escape every time SOURCES is inspected by make.
 
 # Path to the Org files (relative to pwd, or absolute)
-ORG_FILE:=$(shell find content-org -name "*.org" -not -path "**/tmp/*")
+ORG_FILE:=$(shell find content-org -name "*.*org" -not -path "**/tmp/*")
 #$(filter-out $(wildcard $(OX_HUGO_CONTENT_ORG_DIR)/tmp/*.org),$(ALL_ORG))
 # Levels
 # LVL_TWO:=$(wildcard $(OX_HUGO_CONTENT_ORG_DIR)/**/**/*.org)
