@@ -1530,7 +1530,7 @@ It is important to note that the divergent transitions are probably why the numb
 ***** Results
 We can see that the number of effective samples increases almost constantly. This is probably due to correlations in the chain, which are removed during the warmup period.
 
-* Chapter X: Big Entropy and the Generalized Linear Model
+* Chapter XI: God Spiked The Integers
 ** Easy Questions (Ch11)
 *** DONE 11E1
 CLOSED: [2020-06-20 Sat 00:35]

@@ -3942,3 +3942,66 @@ This part is fun to write, building towards a goal, is a special kind of write u
     - This actually would need a whole other post, but it is great
 ** Conclusions
 If this post seemed short, it is probably because even though a lot else went into the proposal, until I hear otherwise next year, it would be presumptous to write more. That said, it was and is an enjoyable exercise.
+
+* DONE Some Solutions for Statistical Rethinking² :@programming:R:SR2:solutions:workflow:
+CLOSED: [2020-07-24 Fri 17:35]
+:PROPERTIES:
+:EXPORT_FILE_NAME: some-sol-sr2
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+BEGIN_QUOTE
+A meta post introducing my solutions to the fantastic [[https://xcelab.net/rm/statistical-rethinking/][excellent second edition]] of "Statistical
+Rethinking" by [[https://twitter.com/rlmcelreath][Richard McElreath]], a.k.a. Statistical Rethinking². Also discusses strategies to keep up with the material, mostly meant for self-study groupps.
+#+END_QUOTE
+
+** Background
+As [[Statistical Rethinking and Nix][detailed previously]], I recently was part of a course centered around Bayesian modeling for the Icelandic COVID-19 pandemic. The Bayesian mindset needs no introduction, and this post is completely inadequete to explain why anyone should be interested (that's what the book is for!). That said, especially for self-paced study groups, it might help to have some structure.
+
+** Solutions
+These are meant to be sample solutions, and everyone *should* solve these for themselves. Each solution contains the packages used, as well as a colophon in the later posts to ensure reproduciblity.
+Essentially this consists of four posts:
+- [[https://rgoswami.me/posts/sr2-ch2-ch3-ch4/][Week I]] :: Covers the first four chapters {1,2,3,4}
+- [[https://rgoswami.me/posts/sr2-ch5-ch6-ch7/][Week II]] :: Covers the next three chapters {5,6,7}
+- [[https://rgoswami.me/posts/sr2-ch9-ch11-ch12/][Week III]] :: Covers five chapters {9,11,12}
+- [[https://rgoswami.me/posts/sr2-ch13-ch14][Week IV]] :: The last five chapters {13,14}
+
+More concisely:
+
+| *Chapter*                                        | *Solutions* |
+| 1. The Golem of Prague                           | N/A         |
+| 2. Small Worlds and Large Worlds                 | [[https://rgoswami.me/posts/sr2-ch2-ch3-ch4/#chapter-ii-the-golem-of-prague][here]]        |
+| 3. Sampling the Imaginary                        | [[https://rgoswami.me/posts/sr2-ch2-ch3-ch4/#chapter-iii-sampling-the-imaginary][here]]        |
+| 4. Geocentric Models                             | [[https://rgoswami.me/posts/sr2-ch2-ch3-ch4/#chapter-iv-geocentric-models][here]]        |
+| 5. The Many Variables & The Spurious Waffles     | [[https://rgoswami.me/posts/sr2-ch5-ch6-ch7/#chapter-v-the-many-variables-and-the-spurious-waffles][here]]        |
+| 6. The Haunted DAG & The Causal Terror           | [[https://rgoswami.me/posts/sr2-ch5-ch6-ch7/#chapter-vi-the-haunted-dag-and-the-causal-terror][here]]        |
+| 7. Ulysses’ Compass                              | [[https://rgoswami.me/posts/sr2-ch5-ch6-ch7/#chapter-vii-ulysses-compass][here]]        |
+| 8. Conditional Manatees                          | N/A         |
+| 9. Markov Chain Monte Carlo                      | [[https://rgoswami.me/posts/sr2-ch9-ch11-ch12/#chapter-ix-markov-chain-monte-carlo][here]]        |
+| 10. Big Entropy and the Generalized Linear Model | N/A         |
+| 11. God Spiked the Integers                      | [[https://rgoswami.me/posts/sr2-ch9-ch11-ch12/#chapter-xi-god-spiked-the-integers][here]]        |
+| 12. Monsters and Mixtures                        | [[https://rgoswami.me/posts/sr2-ch9-ch11-ch12/#chapter-xii-monsters-and-mixtures][here]]        |
+| 13. Models With Memory                           | [[https://rgoswami.me/posts/sr2-ch13-ch14/#chapter-xiii-models-with-memory][here]]        |
+| 14. Adventures in Covariance                     | [[https://rgoswami.me/posts/sr2-ch13-ch14/#chapter-xiv-adventures-in-covariance][here]]        |
+| 15. Missing Data and Other Opportunities         | TBA         |
+| 16. Generalized Linear Madness                   | TBA         |
+| 17. Horoscopes                                   | N/A         |
+
+*** Pacing
+The solutions compiled here were from an accelerated 4-week course covering the Statistical Rethinking² in four weeks. The book is more traditionally used in a full-semester course, so that should be kept in mind as well.
+** Resources
+These are highly opinionated and the following list is in no way complete.
+*** Canonical Content
+- [[https://xcelab.net/rm/statistical-rethinking/][Richard's Website]]
+- The [[https://www.youtube.com/playlist?list=PLDcUM9US4XdNM4Edgs7weiyIguLSToZRI][YouTube 2019 playlist]]
+- [[https://twitter.com/rlmcelreath][Richard on Twitter]]
+- The [[https://mc-stan.org/][Stan page]]
+*** Additional Content
+- An [[https://www.youtube.com/watch?v=eDMGDhyDxuY&list=PLFVtMSYAlp5-MsffvdbR-iqfHSaOBgwpn&index=2&t=19s][introduction to Frequentist and Bayesian statistics]] from LLNL by Kristin Lennox
+- A [[https://rpubs.com/bgautijonsson/week4_covid][simple COVID-19 model]] for Iceland
+- More [[https://covid.hi.is/english/][complete COVID-19 model]] for Iceland
+- [[https://gitlab.com/openresearchlabs/probabilistic_data_analysis_2020/-/blob/master/annurev-statistics-031219-041300.pdf][Convergence Diagnostics for MCMC]]
+- Betancourt's [[https://arxiv.org/pdf/1701.02434.pdf][Conceptual Introduction to HMC]]
+*** Follow-up Courses
+- [[https://github.com/avehtari/BDA_course_Aalto][Bayesian Data Analysis]]
+** Conclusions
+This has been a short meta post which is essentially meant to collect content posted with dates in the past. Though this is not exactly a complete reference for beginners, it might still help people.
