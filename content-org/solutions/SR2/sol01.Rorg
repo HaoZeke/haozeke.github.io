@@ -1,11 +1,11 @@
 # -*- org-src-preserve-indentation: t; org-edit-src-content: 0; Mode: POLY-ORG -*-
-#+title:  "SR2 :: Solutions for Chapters {1,2,3}"
+#+title:  "SR2 :: Solutions for Chapters {2,3,4}"
 #+author: "Rohit Goswami"
 #+date: 2020-06-07
 
 #+hugo_base_dir: ../../../
 #+hugo_section: ./posts
-#+export_file_name: sr2-ch1-ch2-ch3
+#+export_file_name: sr2-ch2-ch3-ch4
 #+hugo_custom_front_matter: :toc true :comments true :link-citations true
 #+hugo_tags: solutions R SR2
 #+hugo_categories: programming
