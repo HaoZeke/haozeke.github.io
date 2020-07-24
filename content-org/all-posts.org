@@ -133,6 +133,9 @@ the rest[fn:whereswaldo].
   - [[https://carpentries.org/instructors#HaoZeke][Instructor]], [[https://carpentries.org/maintainers#HaoZeke][Maintainer]], [[https://2020.carpentrycon.org/task-force/][CarpentyrCon2020 Committee Task Force]]
 - [[https://forum.igdore.org/t/rohit-goswami/656][IGDORE]]
 - [[https://www.univ.ai/teams/rohit-goswami][Univ.ai]]
+- TeX Users Group
+  - [[http://tug.org/tug2020/][TUG 2020 Conference Committee member]]
+  - TUG Zulip Admin
 *** Academic
 - [[https://publons.com/researcher/2911170/rohit-goswami/][Publons]]
 - [[https://peerj.com/rgoswami/][PeerJ]]
@@ -163,6 +166,9 @@ the rest[fn:whereswaldo].
 - [[https://gitlab.com/openresearchlabs/probabilistic_data_analysis_2020/-/blob/master/session7.md][Probablistic Data Analysis]] (University of Turku)
 - [[https://twitter.com/aiidateam/status/1281323480290660352][AiiDA Virtual Tutotrial 2020]]
 - [[https://tcevents.chem.uzh.ch/event/12/contributions/45/author/73][FortranCon 2020 Author]]
+- CECAM Participant for:
+  - [[https://www.cecam.org/workshop-details/26#participant_tab][CECAM-DE-SMSM: (Machine) learning how to coarse-grain]]
+  - [[https://www.cecam.org/workshop-details/28#participant_tab][CECAM-DE-SMSM: ESPResSo and Python: Versatile Tools for Soft Matter Research]]
 **** Teaching
 - [[http://www.wavelf.org/ij6TzydE3kTSF8cwwIUj][Water, Chemicals and more with Computers for Chemistry (WC3)]] :: July 28-August 28, 2020 (co-lead)
 - [[https://smcclatchy.github.io/2020-06-22-biotechPartners-pm/][Data Carpentry Ecology for Biotech Partners]] :: June 22-July 2, 2020 (instructor)
@@ -194,9 +200,11 @@ technically involve me in a sense.
 **** Fortran Maintainers Monthly Calls
 - [[https://www.youtube.com/watch?v=i-gRNGRzugc][June 2020]]
 **** IAS TML Lecture Questions
-I've been sitting in on these for a while thanks to Ke Li, but this section lists the lectures I asked a question in
+I've been sitting in on these for a while thanks to Ke Li, but this section lists some of the lectures I asked a question in
   - "[[https://video.ias.edu/tml/2020/0609-AleksanderMadry][What Do Models Learn?]]" by Aleksander Mądry
-  - "[[https://video.ias.edu/machinelearning/2020/0611-MichaelI.Jordan][Langevin Dynamics in Machine Learning]]" by Michael Jordan
+  - "[[https://youtu.be/QTnjqdxG99c?t=3879][Langevin Dynamics in Machine Learning]]" by Michael Jordan
+  - "[[https://youtu.be/Wx8J-Kw3fTA?t=4814][Graph Nets: The Next Generation]]" by Max Welling
+  - "[[https://youtu.be/IbKWTF4MzMY?t=3787][Priors for Semantic Variables]]" by Yoshua Bengio
 
 [fn:whereswaldo] If you do think you have seen me somewhere not on this list, drop me an email
 * DONE Search
