@@ -4,15 +4,6 @@
 #+date: 2020-06-14
 #+options: todo:nil
 
-#+hugo_base_dir: ../../../
-#+hugo_section: ./posts
-#+export_file_name: sr2-ch5-ch6-ch7
-#+hugo_custom_front_matter: :toc true :comments true :link-citations true
-#+hugo_tags: solutions R SR2
-#+hugo_categories: programming
-#+hugo_draft: false
-#+bibliography: ../../biblio/refs.bib
-
 #+PROPERTY: header-args:R :session oneR :results output :exports both :cache yes
 #+BEGIN_QUOTE
 Setup details [[https://rgoswami.me/posts/rethinking-r-nix/][are described here]], and the meta-post about these solutions [[https://rgoswami.me/posts/some-sol-sr2/][is here]].
