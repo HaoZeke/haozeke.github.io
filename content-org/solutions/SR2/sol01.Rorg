@@ -1,0 +1,1385 @@
+# -*- org-src-preserve-indentation: t; org-edit-src-content: 0; Mode: POLY-ORG -*-
+#+title:  "SR2 :: Solutions for Chapters {1,2,3}"
+#+author: "Rohit Goswami"
+#+date: 2020-06-07
+
+#+hugo_base_dir: ../../../
+#+hugo_section: ./posts
+#+export_file_name: sr2-ch1-ch2-ch3
+#+hugo_custom_front_matter: :toc true :comments true
+#+hugo_tags: solutions R SR2
+#+hugo_categories: programming
+#+hugo_draft: false
+
+#+PROPERTY: header-args:R :session oneR :results output :exports both :cache yes
+* Materials
+The [[https://ugla.hi.is/kennsluskra/index.php?sid=&tab=nam&chapter=namskeid&id=71055920203][summmer course]][fn:whatyear] is based off of [[https://xcelab.net/rm/statistical-rethinking/][the second edition of
+Statistical Rethinking]] by [[https://twitter.com/rlmcelreath][Richard McElreath]]. Details on how to run this [[https://rgoswami.me/posts/rethinking-r-nix/][are described here]], and the meta-post about these solutions [[https://rgoswami.me/posts/some-sol-sr2/][is here]].
+This post covers the following exercise questions:
+- [X] Chapter 2
+  - [X] Easy {1,2,3,4}
+  - [X] Medium {1,2,4}
+- [X] Chapter 3
+  - [X] Easy {1,2,3,4,5}
+  - [X] Medium {1,2,3,4,6}
+- [X] Chapter 4
+  - [X] Easy {1,2,3,4,5}
+  - [X] Medium {1,2,3,4,5,6,7}
+** Packages
+:PROPERTIES:
+ :header-args: :R :cache no :exports code :results none
+ :END:
+#+BEGIN_SRC R
+libsUsed<-c("tidyverse","tidybayes","orgutils",
+            "rethinking","tidybayes.rethinking",
+            "ggplot2","kableExtra","dplyr","glue",
+            "latex2exp","data.table","printr")
+invisible(lapply(libsUsed, library, character.only = TRUE));
+#+END_SRC
+
+We also set the following theme parameters for the plots.
+#+BEGIN_SRC R
+theme_set(theme_grey(base_size=24))
+#+END_SRC
+
+* Chapter II: The Golem of Prague
+** Easy Questions (Ch2)
+*** 2E1
+   :PROPERTIES:
+   :CUSTOM_ID: e1
+   :END:
+
+Which of the expressions below correspond to the statement: /the
+probability of rain on Monday?
+
+1. Pr(rain)
+2. Pr(rain|Monday)
+3. Pr(Monday|rain)
+4. Pr(rain, Monday)/Pr(Monday)
+**** Solution
+We can read each of these sentences as follows:
+- Pr(rain) :: Probability of rain
+- Pr(rain|Monday) :: Probability of rain given that it is Monday, or probability that it rains on Monday
+- Pr(Monday|rain) :: Probability of being a Monday given that it rains
+- Pr(rain,Monday)/Pr(Monday) :: Compound statement
+
+We further note that we can express the joint probability of 4. to be equivalent to the probability written in 2.
+
+#+BEGIN_EXPORT latex
+\begin{align}
+\frac{\mathrm{Pr(rain,Monday)}}{\mathrm{Pr(Monday)}} = \frac{\mathrm{Pr(rain|Monday)\times Pr(Monday)}}{\mathrm{Pr(Monday)}}=\mathrm{Pr(rain|Monday)}                                         
+\end{align}
+#+END_EXPORT
+
+
+Hence the correct solutions are *options 2 and 4*.
+*** 2E2
+   :PROPERTIES:
+   :CUSTOM_ID: e2
+   :END:
+
+Which of the following statements corresponds to the expression:
+/Pr(Monday|rain)?/
+
+1. The probability of rain on Monday.
+2. The probability of rain, given that it is Monday.
+3. The probability that it is Monday, given that it is raining.
+4. The probability that it is Monday and that it is raining.
+
+**** Solution
+Using the same logic as described previously we note that the sentences
+correspond to the following formulations:
+
+- Pr(rain,Monday) :: The probability of rain on Monday.
+- Pr(rain|Monday) :: The probability of rain, given that it is Monday.
+- Pr(Monday|rain) :: The probability that it is Monday, given that it is raining.
+- Pr(Monday,rain) :: The probability that it is Monday and that it is raining.
+
+  Hence *only option 3* is correct.
+
+*** 2E3
+   :PROPERTIES:
+   :CUSTOM_ID: e3
+   :END:
+
+Which of the expressions below correspond to the statement: /the
+probability that it is Monday, given that it is raining?/
+
+1. Pr(Monday|rain)
+2. Pr(rain|Monday)
+3. Pr(rain|Monday)Pr(Monday)
+4. Pr(rain|Monday)Pr(Monday)/Pr(rain)
+5. Pr(Monday|rain)Pr(rain)/Pr(Monday)
+
+**** Solution
+
+We will simplify these slightly.
+
+#+BEGIN_EXPORT latex
+\[
+Pr(rain|Monday)Pr(Monday) = Pr(rain|Monday)\times Pr(Monday)\times Pr(Monday)
+\]
+
+\[
+\begin{split}
+\frac{Pr(rain|Monday)Pr(Monday)}{Pr(rain)} &= \frac{Pr(rain,Monday)\times Pr(Monday)}{Pr(Monday)×Pr(rain)} \\ &=\frac{Pr(rain,Monday)}{Pr(rain)}=Pr(Monday|rain)
+\end{split}
+\]
+
+\[
+\begin{split}
+\frac{Pr(Monday|rain)×Pr(rain)}{Pr(Monday)} &= \left[\frac{Pr(Monday,rain)}{Pr(rain)}\right]×\left[\frac{Pr(rain)}{Pr(Monday)}\right] \\ &=\frac{Pr(Monday,rain)}{Pr(Monday)}=Pr(rain|Monday)
+\end{split}
+\]
+#+END_EXPORT
+
+Hence the correct solutions are *options 1 and 4*.
+
+*** 2E4
+   :PROPERTIES:
+   :CUSTOM_ID: e4
+   :END:
+
+The Bayesian statistician Bruno de Finetti (1906--1985) began his 1973
+book on probability theory with the declaration: "PROBABILITY DOES NOT
+EXIST." The capitals appeared in the original, so I imagine de Finetti
+wanted us to shout this statement. What he meant is that probability is
+a device for describing uncertainty from the perspective of an observer
+with limited knowledge; it has no objective reality. Discuss the globe
+tossing example from the chapter, in light of this statement. What does
+it mean to say "the probability of water is 0.7"?
+
+**** Solution
+The de Finetti school of thought subscribed to the belief that all processes
+were deterministic and therefore did not have any inherent probabilitic
+interpretation. With this framework, uncertainty did not have any physical
+realization, and so the random effects of a process could be accounted for
+entirely in terms of aleatoric and epistemic uncertainity without needing to
+consider the fact that in some processes (not discovered then) like quantum
+mechanics, random effects are part of the physical system, and are not due to a
+lack of information. Under this assumption, the entirity of probability is
+simply an numerical artifact with which the lack of information about a process
+could be expressed. Thus the statement "the probability of water is 0.7" would
+mean that the observable is 0.7, i.e., it would express the partial knowledge of
+the observer, and not have any bearing on the (presumably fully deterministic)
+underlying process which is a (presumed) exact function of angular momentum, and
+other exact classical properties.
+
+** Questions of Medium Complexity (Ch2)
+*** 2M1
+   :PROPERTIES:
+   :CUSTOM_ID: m1
+   :END:
+
+Recall the globe tossing model from the chapter. Compute and plot the
+grid approximate posterior distribution for each of the following sets
+of observations. In each case, assume a uniform prior for $p$.
+
+1. W, W, W
+2. W, W, W, L
+3. L, W, W, L, W, W, W
+
+**** Solution
+
+#+BEGIN_SRC R
+nPoints<-50
+# Grid
+pGrid<-seq(0,1,length.out=nPoints)
+# Prior
+prior<-rep(1,nPoints)
+# Likelihood for each grid point
+likelihood<-pGrid %>% dbinom(3,3,prob=.)
+noStdPosterior<-likelihood*prior
+# Posterior
+posterior<- noStdPosterior / sum(noStdPosterior)
+#+END_SRC
+
+#+RESULTS[8175e8c79f6bfc372a45a7eabf94c8ace6b23910]:
+
+Now we can visualize this.
+
+#+header: :width 1280 :height 1280 :units px
+#+BEGIN_SRC R :file img/globeWWW.png :results graphics file :cache no
+tibble(pGrid,posterior) %>% ggplot(aes(x=pGrid,y=posterior))+
+  geom_line(size=3)+geom_point(size=5,color="red")+
+  labs(
+    title="Globe Tosses",
+    subtitle="2M1.1)W W W",
+    y="Posterior",
+    x="Grid Approximation points"
+  )+
+  scale_x_continuous(breaks = seq(0,1,length.out=10),
+                     labels = seq(0,1,length.out=10) %>% sprintf("%.2f",.),
+                     expand = c(0, 0))+
+  theme(
+    plot.title.position = "plot",
+        )
+#+END_SRC
+
+#+RESULTS[a70cfe843531988acdfba6572d8a260321b44f9d]:
+[[file:img/globeWWW.png]]
+
+For the remaining parts we will use a more abbreviated solution.
+
+#+header: :width 1280 :height 1280 :units px
+#+BEGIN_SRC R :file img/globeWWWL.png :results graphics file :cache no
+tibble(pGrid,
+       li2=pGrid %>% dbinom(3,4,prob=.),
+       prior) %>% mutate(post2unstd=li2*prior) %>% mutate(posterior=post2unstd/sum(post2unstd)) %>% ggplot(aes(x=pGrid,y=posterior))+
+  geom_line(size=3)+geom_point(size=5,color="red")+
+  labs(
+    title="Globe Tosses",
+    subtitle="2M1.2) W W W L",
+    y="Posterior",
+    x="Grid Approximation points"
+  )+
+  scale_x_continuous(breaks = seq(0,1,length.out=10),
+                     labels = seq(0,1,length.out=10) %>% sprintf("%.2f",.),
+                     expand = c(0, 0))+
+  theme(
+    plot.title.position = "plot"
+        )
+#+END_SRC
+
+#+RESULTS:
+[[file:img/globeWWWL.png]]
+
+For the final part, note that since the observations are independent, the
+ordering is irrelevant.
+
+#+header: :width 1280 :height 1280 :units px
+#+BEGIN_SRC R :file img/globeW5L7.png :results graphics file :cache no
+tibble(pGrid,
+       li2=pGrid %>% dbinom(5,7,prob=.),
+       prior) %>% mutate(post2unstd=li2*prior) %>% mutate(posterior=post2unstd/sum(post2unstd)) %>% ggplot(aes(x=pGrid,y=posterior))+
+  geom_line(size=3)+geom_point(size=5,color="red")+
+  labs(
+    title="Globe Tosses",
+    subtitle="2M1.2) L W W L W W W",                
+    y="Posterior",
+    x="Grid Approximation points"
+  )+
+  scale_x_continuous(breaks = seq(0,1,length.out=10),
+                     labels = seq(0,1,length.out=10) %>% sprintf("%.2f",.),
+                     expand = c(0, 0))+
+  theme(
+    plot.title.position = "plot"
+        )
+#+END_SRC
+
+#+RESULTS:
+[[file:img/globeW5L7.png]]
+
+*** 2M2
+   :PROPERTIES:
+   :CUSTOM_ID: m2
+   :END:
+
+Now assume a prior for $p$ that is equal to zero when $p < 0.5$ and is a
+positive constant when $p\geq 0.5$. Again compute and plot the grid
+approximate posterior distribution for each of the sets of observations
+in the problem just above.
+
+1. W, W, W
+2. W, W, W, L
+3. L, W, W, L, W, W, W
+
+**** Solution
+We proceed in much the same way as in the previous question. We also use the vectorized ~ifelse~ instead of explicitly using a ~for~ loop.
+
+#+BEGIN_SRC R
+nPoints<-50
+## Grid
+pGrid<-seq(0,1,length.out=nPoints)
+## Prior
+prior<-ifelse(pGrid<0.5,0,1)
+#+END_SRC
+
+#+RESULTS:
+
+#+header: :width 1280 :height 1280 :units px
+#+BEGIN_SRC R :file img/globeW3P.png :results graphics file :cache no
+tibble(pGrid,
+       li2=pGrid %>% dbinom(3,3,prob=.),
+       prior) %>% mutate(post2unstd=li2*prior) %>% mutate(posterior=post2unstd/sum(post2unstd)) %>% ggplot(aes(x=pGrid,y=posterior))+
+  geom_line(size=3)+geom_point(size=5,color="red")+
+  labs(
+    title="Globe Tosses with Prior information",
+    subtitle="2M2.1) W W W",                
+    y="Posterior",
+    x="Grid Approximation points"
+  )+
+  scale_x_continuous(breaks = seq(0,1,length.out=10),
+                     labels = seq(0,1,length.out=10) %>% sprintf("%.2f",.),
+                     expand = c(0, 0))+
+  theme(
+    plot.title.position = "plot"
+        )
+#+END_SRC
+
+#+RESULTS:
+[[file:img/globeW3P.png]]
+
+#+header: :width 1280 :height 1280 :units px
+#+BEGIN_SRC R :file img/2m2globeW3L1P.png :results graphics file :cache no
+tibble(pGrid,
+       li2=pGrid %>% dbinom(3,4,prob=.),
+       prior) %>% mutate(post2unstd=li2*prior) %>% mutate(posterior=post2unstd/sum(post2unstd)) %>% ggplot(aes(x=pGrid,y=posterior))+
+  geom_line(size=3)+geom_point(size=5,color="red")+
+  labs(
+    title="Globe Tosses with Prior information",
+    subtitle="2M2.2) W W W L",
+    y="Posterior",            
+    x="Grid Approximation points"
+  )+
+  scale_x_continuous(breaks = seq(0,1,length.out=10),
+                     labels = seq(0,1,length.out=10) %>% sprintf("%.2f",.),
+                     expand = c(0, 0))+
+  theme(
+    plot.title.position = "plot"
+        )
+#+END_SRC
+
+#+RESULTS:
+[[file:img/2m2globeW3L1P.png]]
+
+#+header: :width 1280 :height 1280 :units px
+#+BEGIN_SRC R :file img/2m3globeW5L2P.png :results graphics file :cache no
+tibble(pGrid,
+       li2=pGrid %>% dbinom(5,7,prob=.),
+       prior) %>% mutate(post2unstd=li2*prior) %>% mutate(posterior=post2unstd/sum(post2unstd)) %>% ggplot(aes(x=pGrid,y=posterior))+
+  geom_line(size=3)+geom_point(size=5,color="red")+
+  labs(
+    title="Globe Tosses with Prior information",
+    subtitle="2M2.3) L W W L W W W",
+    y="Posterior",
+    x="Grid Approximation points"
+  )+
+  scale_x_continuous(breaks = seq(0,1,length.out=10),
+                     labels = seq(0,1,length.out=10) %>% sprintf("%.2f",.),
+                     expand = c(0, 0))+
+  theme(
+    plot.title.position = "plot"
+        )
+#+END_SRC
+
+#+RESULTS:
+[[file:img/2m3globeW5L2P.png]]
+
+*** 2M4
+   :PROPERTIES:
+   :CUSTOM_ID: m4
+   :END:
+Suppose you have a deck with only three cards. Each card has two sides,
+and each side is either black or white. One card has two black sides.
+The second card has one black and one white side. The third card has two
+white sides. Now suppose all three cards are placed in a bag and
+shuffled. Someone reaches into the bag and pulls out a card and places
+it flat on a table. A black side is shown facing up, but you don't know
+the color of the side facing down. Show that the probability that the
+other side is also black is 2/3. Use the counting method (Section 2 of
+this chapter) to approach this problem. This means counting up the ways
+that each card could produce the observed data (a black side facing up
+on the table).
+**** Solution
+Let us begin by defining what is given to us.
+- There are three cards
+  - One has a black side and a white side (cBW)
+  - One is colored black on both sides (cBB)
+  - One is colored white on both sides (cWW)
+
+Our total probability universe is defined by all possible states defined by the
+enumeration of possible states for each card and their combinations. In other
+words, it is a universe defined by color and the number of cards.
+
+The question posed is essentially, given a single observation, that is that a
+random draw from our universe has produced a black side (note that we already
+know that there is one card so it satisfies the requirements of being a valid
+state of the universe we are considering), what is the probability of the other
+side being black as well?
+
+Hence we can express this as O: cB? and we need P(B|cB?). We will enumerate
+possibilities of observing the black side in our universe.
+- cBW :: This has $1$ way of producing cB?
+- cBB :: This has $2$ ways of producing cB?
+- cWW :: This has $0$ ways of producing cB?
+
+| Card | Ways to cB? |
+| cBW  |           1 |
+| cBB  |           2 |
+| cWW  |           0 |
+
+So we see that there are $3$ ways to see a black side in a single draw, and two of these come from (cBB), thus the probability of seeing another black side is $\frac{2}{3}$.
+
+* Chapter III: Sampling the Imaginary
+** Easy Questions (Ch3)
+These questions are associated with the following code snippet for the globe tossing example.
+#+BEGIN_SRC R
+p_grid<-seq(from=0, to=1, length.out=1000)
+prior<-rep(1,1000)
+likelihood<-dbinom(6,size=9,prob=p_grid)
+posterior<-likelihood*prior
+posterior<-posterior/sum(posterior)         
+set.seed(100)
+samples<-sample(p_grid,prob=posterior,size=1e4,replace=TRUE)
+#+END_SRC
+
+#+RESULTS:
+
+*** 3E1
+   :PROPERTIES:
+   :CUSTOM_ID: e1-1
+   :END:
+
+How much posterior probability lies below $p = 0.2$?
+
+**** Solution
+
+We can check the number of samples as follows:
+
+#+BEGIN_SRC R
+ifelse(samples<0.2,1,0) %>% sum(.)
+#+END_SRC
+
+#+RESULTS:
+: [1] 4
+
+Now we will simply divide by the number of samples.
+
+#+BEGIN_SRC R
+ifelse(samples<0.2,1,0) %>% sum(.)/1e4
+#+END_SRC
+
+#+RESULTS:
+: [1] 4e-04
+
+More practically, the percentage of the probability density below $p=0.2$ is:
+#+BEGIN_SRC R
+ifelse(samples<0.2,1,0) %>% sum(.)/1e4 *100
+#+END_SRC
+
+#+RESULTS:
+: [1] 0.04
+
+*** 3E2
+   :PROPERTIES:
+   :CUSTOM_ID: e2-1
+   :END:
+
+How much posterior probability lies above $p = 0.8$?
+
+**** Solution
+
+#+BEGIN_SRC R
+ifelse(samples>0.8,1,0) %>% sum(.)/1e4 *100
+#+END_SRC
+
+#+RESULTS:
+: [1] 11.16
+
+*** 3E3
+   :PROPERTIES:
+   :CUSTOM_ID: e3-1
+   :END:
+
+How much posterior probability lies between $p = 0.2$ and $p = 0.8$?
+
+**** Solution
+#+BEGIN_SRC R
+ifelse(samples>0.2 & samples<0.8,1,0) %>% sum(.)/1e4 *100
+#+END_SRC
+
+#+RESULTS:
+: [1] 88.8
+
+*** 3E4
+   :PROPERTIES:
+   :CUSTOM_ID: e4-1
+   :END:
+
+20% of the posterior probability lies below which value of $p$?
+
+**** Solution
+#+BEGIN_SRC R
+samples %>% quantile(0.2)
+#+END_SRC
+
+#+RESULTS:
+:       20%
+: 0.5185185
+
+*** 3E5
+   :PROPERTIES:
+   :CUSTOM_ID: e5
+   :END:
+
+20% of the posterior probability lies above which value of $p$?
+
+**** Solution
+
+#+BEGIN_SRC R
+samples %>% quantile(0.8)
+#+END_SRC
+
+#+RESULTS:
+:       80%
+: 0.7557558
+
+** Questions of Medium Complexity (Ch3)
+*** 3M1
+   :PROPERTIES:
+   :CUSTOM_ID: m1-1
+   :END:
+
+Suppose the globe tossing data had turned out to be 8 water in 15
+tosses. Construct the posterior distribution, using grid approximation.
+Use the same flat prior as before.
+
+**** Solution
+#+BEGIN_SRC R
+nPoints<-1000
+## Grid
+pGrid<-seq(0,1,length.out=nPoints)
+## Prior
+prior<-rep(1,nPoints)
+#+END_SRC
+
+#+RESULTS:
+
+#+header: :width 1280 :height 1280 :units px
+#+BEGIN_SRC R :file img/3m1globeW8N15.png :results graphics file :cache no
+tibble(pGrid,
+       li2=pGrid %>% dbinom(8,15,prob=.),
+       prior) %>% mutate(post2unstd=li2*prior) %>% mutate(posterior=post2unstd/sum(post2unstd)) %>% ggplot(aes(x=pGrid,y=posterior))+
+  geom_line(size=3)+geom_point(size=5,color="red")+
+  labs(
+    title="Globe Tosses with a Flat Prior",
+    subtitle="3M1) 8W in 15 tosses",
+    y="Posterior",
+    x="Grid Approximation points"
+  )+
+  scale_x_continuous(breaks = seq(0,1,length.out=10),
+                     labels = seq(0,1,length.out=10) %>% sprintf("%.2f",.),
+                     expand = c(0, 0))+
+  theme(
+    plot.title.position = "plot"
+        )
+#+END_SRC
+
+#+RESULTS:
+[[file:img/3m1globeW8N15.png]]
+
+*** 3M2
+   :PROPERTIES:
+   :CUSTOM_ID: m2-1
+   :END:
+
+Draw 10,000 samples from the grid approximation from above. Then use the
+samples to calculate the 90% HPDI for $p$.
+
+**** Solution
+For this, we will create a ~tibble~ of the experiment and then sample from it.
+
+#+BEGIN_SRC R
+exp3m2<-tibble(pGrid,
+       li2=pGrid %>% dbinom(8,15,prob=.),
+       prior) %>% mutate(post2unstd=li2*prior) %>% mutate(posterior=post2unstd/sum(post2unstd))
+
+sample(pGrid,prob=exp3m2$posterior,size=1e4,replace=TRUE) %>% HPDI(prob=0.9)
+#+END_SRC
+
+#+RESULTS:
+:
+:      |0.9      0.9|
+: 0.3293293 0.7167167
+
+*** 3M3
+   :PROPERTIES:
+   :CUSTOM_ID: m3
+   :END:
+
+Construct a posterior predictive check for this model and data. This
+means simulate the distribution of samples, averaging over the posterior
+uncertainty in $p$. What is the probability of observing 8 water in 15
+tosses.
+
+**** Solution
+As covered in the chapter, we will sample from the posterior distribution and
+use that to obtain experiment instances with ~rbinom~. Finally we will then use
+these instances to count our way to the probability of observing the true data.
+
+#+BEGIN_SRC R
+waterPred<-sample(pGrid,prob=exp3m2$posterior,size=1e4,replace=TRUE) %>% rbinom(1e4,size=15,prob=.)
+ifelse(waterPred==8,1,0) %>% sum(.)/1e4
+#+END_SRC
+
+#+RESULTS:
+: [1] 0.1447
+
+This seems like a very poor model, but the spread of the realizations is
+probably a better measure.
+
+#+BEGIN_SRC R
+waterPred %>% summary
+#+END_SRC
+
+#+RESULTS:
+:    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
+:   0.000   6.000   8.000   7.936  10.000  15.000
+
+This does seem to indicate that at any rate the realizations are close enough
+to 8 for the model to be viable. A visualization of this should also be checked.
+
+#+header: :width 720 :height 720 :units px
+#+BEGIN_SRC R :file img/3m3globeW8N15hist.png :results graphics file :cache no
+waterPred %>% simplehist
+#+END_SRC
+
+#+RESULTS:
+[[file:img/3m3globeW8N15hist.png]]
+
+*** 3M4
+   :PROPERTIES:
+   :CUSTOM_ID: m4-1
+   :END:
+
+Using the posterior distribution constructed from the new (8/15) data,
+now calculate the probability of observing 6 water in 9 tosses
+
+**** Solution
+
+We will reuse the posterior, and recalculate our samples (corresponding to new
+possible instances).
+
+#+BEGIN_SRC R
+waterPred<-sample(pGrid,prob=exp3m2$posterior,size=1e4,replace=TRUE) %>% rbinom(1e4,size=9,prob=.)
+#+END_SRC
+
+#+BEGIN_SRC R
+ifelse(waterPred==6,1,0) %>% sum(.)/1e4
+waterPred %>% summary
+#+END_SRC
+
+#+RESULTS:
+: [1] 0.1723
+:
+:    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
+:   0.000   4.000   5.000   4.777   6.000   9.000
+
+Though the numerical value is not very different from the previous solution, we
+note that the centrality measures are much worse.
+
+#+header: :width 720 :height 720 :units px
+#+BEGIN_SRC R :file img/3m4globeW6N9hist.png :results graphics file :cache no
+waterPred %>% simplehist
+#+END_SRC
+
+#+RESULTS:
+[[file:img/3m4globeW6N9hist.png]]
+
+*** 3M6
+   :PROPERTIES:
+   :CUSTOM_ID: m6
+   :END:
+
+Suppose you want to estimate the Earth's proportion of water very
+precisely. Specifically, you want the 99% percentile interval of the
+posterior distribution of p to be only 0.05 wide. This means the
+distance between the upper and lower bound of the interval should be
+0.05. How many times will you have to toss the globe to do this?
+
+**** Solution
+Since the no information of the model has been provided here, we will consider
+reason out an approach, before making an estimate.
+
+The number globe tosses corresponds to the number of observations we require. A
+percentile interval this narrow will essentially require a large number of
+samples i.e. be in the large number limit, so the choice of prior should not
+matter much. The width of our interval should also be related to the number of
+grid points we use in our approximation.
+
+
+We will first use the true amount of water on the planet (approximately 71
+percent) to generate information for the number of throws.
+
+Let us generate observations.
+
+#+BEGIN_SRC  R
+nThrows<-10000
+nWater<-0.71*nThrows %>% round
+#+END_SRC
+
+#+RESULTS:
+
+
+We will set up a simple model for this, with an indifferent prior along with a
+better prior.
+
+#+BEGIN_SRC R
+nPoints<-1000
+## Grid
+pGrid<-seq(0,1,length.out=nPoints)
+## Prior
+prior<-rep(1,nPoints)
+betterPrior<-ifelse(pGrid<0.5,0,1)
+#+END_SRC
+
+#+RESULTS:
+
+We will define a function for generating our results since we will need to perform this a few times.
+#+BEGIN_SRC R
+genModel<- function(nThrows){
+nWater<-0.71*nThrows %>% round
+tibble(pGrid,
+       li2=pGrid %>% dbinom(nWater,nThrows,prob=.),
+       prior,betterPrior) %>%
+  mutate(
+    postUnifNSD=li2*prior,
+    postUnif=postUnifNSD/sum(postUnifNSD),
+    smplUnif=sample(pGrid,
+                    prob=postUnif,
+                    size=nrow(.),
+                    replace=TRUE),
+    predUnif=rbinom(nrow(.),size=9,prob=smplUnif),
+    postBPNSD=li2*betterPrior,
+    postBP=postBPNSD/sum(postBPNSD),
+    smplBP=sample(pGrid,
+                    prob=postBP,
+                    size=nrow(.),
+                    replace=TRUE),
+    predBP=rbinom(nrow(.),size=9,prob=smplBP)
+  )
+}
+#+END_SRC
+
+#+RESULTS:
+
+It would be nice to look at the different priors as well.
+
+#+header: :width 720 :height 720 :units px
+#+BEGIN_SRC R :file img/3m6globeNP.png :results graphics file :cache no
+genModel2(1e4) %>% .$predBP %>% simplehist
+#+END_SRC
+
+#+RESULTS:
+[[file:img/3m6globeNP.png]]
+
+#+header: :width 720 :height 720 :units px
+#+BEGIN_SRC R :file img/3m6globeNP.png :results graphics file :cache no
+genModel(1e6) %>% .$predUnif %>% simplehist
+#+END_SRC
+
+#+RESULTS:
+[[file:img/3m6globeNP.png]]
+
+As can be expected, with the large number of observations, the priors barely
+make a difference.
+
+We note that what we are looking for is a credibility width of less than 0.05 at
+a probability of 0.99.
+
+#+BEGIN_SRC R
+get99Width<- function(x,nx) {
+  piInter<-PI(x$postUnif,prob=0.99)
+  hpdiInter<-HPDI(x$postUnif,prob=0.99)
+  tibble(wPI=piInter[2]-piInter[1],wHPDI=hpdiInter[2]-hpdiInter[1],nSamples=nx)
+}
+#+END_SRC
+
+#+RESULTS:
+
+Now we are in a position to start testing samples.
+#+BEGIN_SRC R
+base100<-genModel(1e2) %>% get99Width(1e2)
+t<-1000
+while(min(base100$wPI) & min(base100$wHPDI) > 0.005) {
+  t<-t*10
+  base100<-genModel(t) %>% get99Width(t) %>% bind_rows(base100)
+}
+base100 %>% toOrg
+#+END_SRC
+
+#+RESULTS:
+:
+: |                 wPI |               wHPDI | nSamples |
+: |---------------------+---------------------+----------|
+: |  0.0464554168997065 | 0.00121611594937107 |    1e+05 |
+: |  0.0735809517149284 |  0.0511200696528017 |    10000 |
+: | 0.00884431494702241 |  0.0088121623437198 |      100 |
+
+
+There is an inherent problem with this formulation, and that is that the model
+confidence is based on the observations which were drawn to emulate the true
+distribution of water on Earth. This means that a highly tight width, should be
+recognized to still be highly dependent on the observed data. Let us try to
+obtain the same intervals with a randomized observation setup instead.
+
+In order to do this we simply modify the number of water observations.
+
+#+BEGIN_SRC R
+genModel2<- function(nThrows){
+tibble(pGrid,
+       li2=pGrid %>% dbinom(sample(1:nThrows, 1, replace=TRUE),nThrows,prob=.),
+       prior,betterPrior) %>%
+  mutate(
+    postUnifNSD=li2*prior,
+    postUnif=postUnifNSD/sum(postUnifNSD),
+    smplUnif=sample(pGrid,
+                    prob=postUnif,
+                    size=nrow(.),
+                    replace=TRUE),
+    predUnif=rbinom(nrow(.),size=9,prob=smplUnif),
+    postBPNSD=li2*betterPrior,
+    postBP=postBPNSD/sum(postBPNSD),
+    smplBP=sample(pGrid,
+                    prob=postBP,
+                    size=nrow(.),
+                    replace=TRUE),
+    predBP=rbinom(nrow(.),size=9,prob=smplBP)
+  )
+}
+#+END_SRC
+
+#+RESULTS:
+
+We can now test these the same way.
+
+#+BEGIN_SRC R
+base100<-genModel2(100) %>% get99Width(100)
+t<-100
+while(min(base100$wPI) & min(base100$wHPDI) > 0.05) {
+  t<-t+100
+  base100<-genModel2(t) %>% get99Width(t) %>% bind_rows(base100)
+}
+base100 %>% toOrg
+#+END_SRC
+
+#+RESULTS:
+:
+: |                 wPI |               wHPDI | nSamples |
+: |---------------------+---------------------+----------|
+: | 0.00853874459759265 | 0.00851020493831213 |      100 |
+
+
+* Chapter IV: Geocentric Models
+** Easy Questions (Ch4)
+*** 4E1
+   :PROPERTIES:
+   :CUSTOM_ID: e1-2
+   :END:
+
+In the model definition below, which line is the likelihood?
+
+#+BEGIN_EXPORT latex
+\[
+\begin{aligned}
+y_i &\sim \mathrm{Normal}(\mu, \sigma) \\
+\mu &\sim \mathrm{Normal}(0, 10) \\
+\sigma &\sim \mathrm{Exponential}
+\end{aligned}
+\]
+#+END_EXPORT
+
+**** Solution
+
+The likelihood is defined by the first line, that is, $y_i \sim\mathrm{Normal}(\mu, \sigma)$
+
+*** 4E2
+   :PROPERTIES:
+   :CUSTOM_ID: e2-2
+   :END:
+
+In the model definition above, how many parameters are in the posterior
+distribution?
+
+**** Solution
+
+The model has two parameters for the posterior distribution, $\mu$ and $\sigma$.
+
+*** 4E3
+   :PROPERTIES:
+   :CUSTOM_ID: e3-2
+   :END:
+
+Using the model definition above, write down the appropriate form of
+Bayes' theorem that includes the proper likelihood and priors.
+
+**** Solution
+
+The appropriate form of Bayes' theorem in this case is:
+
+$$ \mathrm(Pr)(\mu,\sigma|y)=\frac{\mathrm{Normal}(y|\mu,\sigma)\mathrm{Normal}(\mu|0,10)\mathrm{Exponential}(\sigma|1)}{\int\int \mathrm{Normal}(y|\mu,\sigma)\mathrm{Normal}(\mu|0,10)\mathrm{Exponential}(\sigma|1)d\mu d\sigma} $$
+
+*** 4E4
+   :PROPERTIES:
+   :CUSTOM_ID: e4-2
+   :END:
+
+In the model definition below, which line is the linear model?
+
+#+BEGIN_EXPORT latex
+\[
+\begin{aligned}
+y_i &\sim \mathrm{Normal}(\mu, \sigma) \\
+\mu_i &= \alpha + \beta x_i \\
+\alpha &\sim \mathrm{Normal}(0, 10) \\
+\beta &\sim \mathrm{Normal}(0, 1) \\
+\sigma &\sim \mathrm{Exponential}(2)
+\end{aligned}
+\]
+#+END_EXPORT
+
+**** Solution
+
+The second line is the linear model in the definition, that is:
+$$\mu_i = \alpha + \beta x_i$$
+
+*** 4E5
+   :PROPERTIES:
+   :CUSTOM_ID: e5-1
+   :END:
+
+In the model definition just above, how many parameters are in the
+posterior distribution?
+
+**** Solution
+The model defined has three independent parameters for the posterior
+distribution, which are $\alpha$, $\beta$ and $\sigma$. Though $\mu$ is a
+parameter, it is defined in terms of $\alpha$, $\beta$ and $x$ so will not be
+considered to be a parameter for the posterior.
+
+** Questions of Medium Complexity (Ch4)
+*** 4M1
+   :PROPERTIES:
+   :CUSTOM_ID: m1-2
+   :END:
+
+For the model definition below, simulate observed $y$ values from the
+prior (not the posterior).
+
+#+BEGIN_EXPORT latex
+\[
+\begin{aligned}
+y_i &\sim \mathrm{Normal}(\mu, \sigma) \\
+\mu &\sim \mathrm{Normal}(0, 10) \\
+\sigma &\sim \mathrm{Exponential}(1)
+\end{aligned}
+\]
+#+END_EXPORT
+
+**** Solution
+Sampling from the prior involves averaging over the prior distributions of $\mu$
+and $\sigma$.
+#+BEGIN_SRC R
+muPrior<-rnorm(1e4,0,10)
+sigmaPrior<-rexp(1e4,1)
+hSim<-rnorm(1e4,muPrior,sigmaPrior)
+#+END_SRC
+
+We can visualize this as well.
+
+#+header: :width 1280 :height 1280 :units px
+#+BEGIN_SRC R :file img/priorSim.png :results graphics file :cache no
+hSim %>% qplot(binwidth=0.8)
+#+END_SRC
+
+#+RESULTS:
+[[file:img/priorSim.png]]
+
+*** 4M2
+   :PROPERTIES:
+   :CUSTOM_ID: m2-2
+   :END:
+
+Translate the model just above into a =quap= formula.
+
+**** Solution
+#+BEGIN_SRC R
+ex4m2<-alist(
+  y~dnorm(mu,sigma),
+  mu~dnorm(0,10),
+  sigma~dexp(1)           
+)
+#+END_SRC
+*** 4M3
+   :PROPERTIES:
+   :CUSTOM_ID: m3-1
+   :END:
+
+Translate the =quap= model formula below into a mathematical model
+definition
+
+**** Solution
+The model defined can be expressed mathematically as:
+#+BEGIN_EXPORT latex
+\[
+\begin{aligned}
+y_{i} &\sim \mathrm{Normal}(\mu, \sigma) \\
+\mu_i &= \alpha + \beta x_i \\
+\alpha &\sim \mathrm{Normal}(0, 10) \\
+\beta &\sim \mathrm{Normal}(0, 1) \\
+\sigma &\sim \mathrm{Exponential}(1)                          
+\end{aligned}
+\]
+#+END_EXPORT
+
+*** 4M4
+   :PROPERTIES:
+   :CUSTOM_ID: m4-2
+   :END:
+
+A sample of students is measured for height each year for 3y ears. After
+the third year,you want to fit a linear regression predicting height
+using year as a predictor. Write down the mathematical model definition
+for this regression, using any variable names and priors you choose. Be
+prepared to defend your choice of priors.
+
+**** Solution
+Let us first declare a model.
+#+BEGIN_EXPORT latex
+\[
+\begin{aligned}
+h_{ij} &\sim \mathrm{Normal}(\mu_{ij}, \sigma) \\
+\mu_{ij} &= \alpha + \beta x_{j} \\
+\alpha &\sim \mathrm{Normal}(100, 8) \\
+\beta &\sim \mathrm{Log-Normal}(0, 2) \\                                                                       
+\sigma &\sim \mathrm{Exponential}(1)
+\end{aligned}
+\]
+#+END_EXPORT
+Where the double subscript is meant to indicate that the data is obtained both per year and per student. That is, we have:
+- $y_{ij}$ is the *height* of each student each year
+- $x_{j}$ is the "reduced" year, that is the difference between a particular year and the average sample year
+
+The prior distributions are not too complicated. Since the distribution of males
+and females in the student population is missing, as is information on the age
+distribution, we will set a conservative lower value of 120 centimeters, based
+on the understanding that the students have at-least 3 years in school, so they
+are growing, so we assume students grow around 8 centimeters every year.
+
+The distribution for beta is a log-normal distribution to ensure that we do not
+sample negative values which might arise from sampling a Gaussian. This is due
+to the assumption that the students grow every year.
+
+Following the procedures of the chapter, we will visualize realizations from the
+prior.
+
+#+BEGIN_SRC R
+nDraws<-50
+a<-rnorm(nDraws,100,8)
+b<-rlnorm(nDraws,0,2)
+sigmaPrior<-rexp(nDraws,1)
+#+END_SRC
+
+#+RESULTS:
+
+We will express our yearly function:
+#+BEGIN_SRC R
+genYr<- function(x,yr) {rnorm(1,a[x]+b[x]*(yr-1.5),sigmaPrior[x])}
+#+END_SRC
+
+#+RESULTS:
+
+Now we will assume a class size of 35 for our priors.
+
+#+BEGIN_SRC R
+testDat<-tibble(student=1:36)
+testDat$year1<-sapply(testDat$student,FUN=genYr,yr=1)
+testDat$year2<-sapply(testDat$student,FUN=genYr,yr=2)
+testDat$year3<-sapply(testDat$student,FUN=genYr,yr=3)
+#+END_SRC
+
+#+RESULTS:
+
+We will now look at this.
+
+#+header: :width 1280 :height 1280 :units px
+#+BEGIN_SRC R :file img/tryHeight.png :results graphics file :cache no
+testDat %>% pivot_longer(-student,names_to = "year",values_to = "height") %>% ggplot(aes(x=student,y=height,color=year))+
+  geom_line(size=4,alpha=0.4)+
+  geom_point(size=4,colour="blue")+
+  labs(
+    title="Student Height variation",
+    subtitle="By year",
+    y="Height",
+    x="Student"
+  )+
+  theme(
+    plot.title.position = "plot",
+        )
+#+END_SRC
+
+#+RESULTS:
+[[file:img/tryHeight.png]]
+
+#+header: :width 1280 :height 1280 :units px
+#+BEGIN_SRC R :file img/tryHeightYear.png :results graphics file :cache no
+testDat %>% pivot_longer(-student,names_to = "year",values_to = "height") %>% ggplot(aes(x=year,y=height,color=student))+
+  geom_line(size=4,alpha=0.4)+
+  geom_point(size=4,colour="blue")+
+  labs(
+    title="Student Height variation",
+    subtitle="By year",
+    y="Height",
+    x="Student"
+  )+
+  theme(                                                         
+    plot.title.position = "plot",
+        )
+#+END_SRC
+
+#+RESULTS:
+[[file:img/tryHeightYear.png]]
+
+This seems to be a pretty reasonable model, all things considered.
+*** 4M5
+   :PROPERTIES:
+   :CUSTOM_ID: m5
+   :END:
+
+Now suppose I remind you that every student got taller each year. Does
+this information lead you to change your choice of priors? How?
+
+**** Solution
+Since we have incorporated a LogNormal term, we do not need to change our choice
+of prior. However, the parameters of our previous model did include some heights decreasing, so we will modify the LogNormal distribution on beta. Recall that we would like to see around 7 centimeters of growth, so our mean should be exp(1+2/2) which is around 7. 
+
+#+BEGIN_EXPORT latex
+\[
+\begin{aligned}
+h_{ij} &\sim \mathrm{Normal}(\mu_{ij}, \sigma) \\
+\mu_{ij} &= \alpha + \beta x_{j} \\
+\alpha &\sim \mathrm{Normal}(100, 8) \\
+\beta &\sim \mathrm{Log-Normal}(1, 2) \\                                                                       
+\sigma &\sim \mathrm{Exponential}(1)
+\end{aligned}
+\]
+#+END_EXPORT
+
+Simulating draws as before.
+
+#+BEGIN_SRC R
+nDraws<-50
+a<-rnorm(nDraws,100,8)
+b<-rlnorm(nDraws,1,2)
+sigmaPrior<-rexp(nDraws,1)
+genYr<- function(x,yr) {rnorm(1,a[x]+b[x]*(yr-1.5),sigmaPrior[x])}
+testDat<-tibble(student=1:36)
+testDat$year1<-sapply(testDat$student,FUN=genYr,yr=1)
+testDat$year2<-sapply(testDat$student,FUN=genYr,yr=2)
+testDat$year3<-sapply(testDat$student,FUN=genYr,yr=3)
+#+END_SRC
+
+#+RESULTS:
+
+#+header: :width 1280 :height 1280 :units px
+#+BEGIN_SRC R :file img/4m5tryHeight.png :results graphics file :cache no
+testDat %>% pivot_longer(-student,names_to = "year",values_to = "height") %>% ggplot(aes(x=student,y=height,color=year))+
+  geom_line(size=4,alpha=0.4)+
+  geom_point(size=4,colour="blue")+
+  labs(
+    title="Student Height variation",
+    subtitle="By year with better priors",
+    y="Height",
+    x="Student"
+  )+
+  theme(
+    plot.title.position = "plot",
+        )
+#+END_SRC
+
+#+RESULTS:
+[[file:img/4m5tryHeight.png]]
+
+*** 4M6
+   :PROPERTIES:
+   :CUSTOM_ID: m6-1
+   :END:
+
+Now suppose I tell you that the variance among heights for students of
+the same age is never more than 64cm. How does this lead you to revise
+your priors?
+
+**** Solution
+This information will change the variance term in our model. We will incorporate
+this into our model by using a uniform distribution for sigma.
+The new model is then:
+#+BEGIN_EXPORT latex
+\[
+\begin{aligned}
+h_{ij} &\sim \mathrm{Normal}(\mu_{ij}, \sigma) \\
+\mu_{ij} &= \alpha + \beta x_{j} \\
+\alpha &\sim \mathrm{Normal}(100, 8) \\
+\beta &\sim \mathrm{Log-Normal}(1, 2) \\                                                                       
+\sigma &\sim \mathrm{Uniform}(0,8)
+\end{aligned}      
+\]
+#+END_EXPORT
+
+Simulating draws as before.
+
+#+BEGIN_SRC R
+nDraws<-50
+a<-rnorm(nDraws,100,8)
+b<-rlnorm(nDraws,1,2)
+sigmaPrior<-runif(nDraws,0,8)
+genYr<- function(x,yr) {rnorm(1,a[x]+b[x]*(yr-1.5),sigmaPrior[x])}
+testDat<-tibble(student=1:36)
+testDat$year1<-sapply(testDat$student,FUN=genYr,yr=1)
+testDat$year2<-sapply(testDat$student,FUN=genYr,yr=2)
+testDat$year3<-sapply(testDat$student,FUN=genYr,yr=3)
+#+END_SRC
+
+#+RESULTS:
+
+We will now look at this.
+
+#+header: :width 1280 :height 1280 :units px
+#+BEGIN_SRC R :file img/4m6tryHeight.png :results graphics file :cache no
+testDat %>% pivot_longer(-student,names_to = "year",values_to = "height") %>% ggplot(aes(x=year,y=height,color=student))+
+  geom_line(size=4,alpha=0.4)+
+  geom_point(size=4,colour="blue")+
+  labs(
+    title="Student Height variation",
+    subtitle="By year with additional information",
+    y="Height",
+    x="Student"
+  )+
+  theme(
+    plot.title.position = "plot",
+        )
+#+END_SRC
+
+#+RESULTS:
+[[file:img/4m6tryHeight.png]]
+
+#+header: :width 1280 :height 1280 :units px
+#+BEGIN_SRC R :file img/4m6tryHeightYear.png :results graphics file :cache no
+testDat %>% pivot_longer(-student,names_to = "year",values_to = "height") %>% mutate(year=year %>% as.factor %>% as.numeric) %>% filter(student==3) %>% ggplot(aes(x=year,y=height,color=student))+
+  geom_line(size=4,alpha=0.4)+
+  geom_point(size=4,colour="blue")+
+  labs(
+    title="Student Height variation with additional information",
+    subtitle="By year",
+    y="Height",
+    x="year"
+  )+
+  theme(                                                         
+    plot.title.position = "plot",
+        )
+#+END_SRC
+
+#+RESULTS:
+[[file:img/4m6tryHeightYear.png]]
+This is now much more reasonable.
+*** 4M7
+   :PROPERTIES:
+   :CUSTOM_ID: m7
+   :END:
+
+Refit model =m4.3= from the chapter, but omit the mean weight =xbar=
+this time. Compare the new model's posterior to that of the original
+model. In particular, look at the covariance among the parameters. What
+is different? Then compare the posterior predictions of both models.
+
+**** Solution
+Let us re-create the original data model first.
+#+BEGIN_SRC R
+data(Howell1)
+howDat<-Howell1
+howDat<-howDat %>% filter(age>=18)
+#+END_SRC
+
+Recall that the original model was given by:
+#+BEGIN_SRC R :results raw
+xbar<-mean(howDat$weight)
+m43<-quap(
+  alist(
+    height ~ dnorm(mu,sigma),
+    mu<-a+b*(weight-xbar),
+    a ~ dnorm(178,20),
+    b ~ dlnorm(0,1),
+    sigma ~ dunif(0,50)
+  ),data=howDat
+)
+m43 %>% precis %>% toOrg
+#+END_SRC
+
+#+RESULTS:
+
+| row.names |             mean |                sd |             5.5% |             94.5% |
+|-----------+------------------+-------------------+------------------+-------------------|
+| a         | 154.601366268055 | 0.270307670586024 | 154.169362403256 |  155.033370132855 |
+| b         | 0.90328084058895 | 0.041923632631821 | 0.83627877851613 | 0.970282902661771 |
+| sigma     | 5.07188106954248 | 0.191154797986941 | 4.76637878273641 |  5.37738335634854 |
+
+Now we can incorporate the new information we have.
+#+BEGIN_SRC R :results raw
+m43b<-quap(
+  alist(
+    height ~ dnorm(mu,sigma),
+    mu<-a+b*weight,
+    a ~ dnorm(178,20),
+    b ~ dlnorm(0,1),
+    sigma ~ dunif(0,50)
+  ),data=howDat
+)
+m43b %>% precis %>% toOrg
+#+END_SRC
+
+#+RESULTS:
+
+| row.names |              mean |                 sd |              5.5% |             94.5% |
+|-----------+-------------------+--------------------+-------------------+-------------------|
+| a         |  114.515009160638 |   1.89397291870405 |  111.488074634765 |   117.54194368651 |
+| b         | 0.891112682994587 | 0.0416750085549524 | 0.824507970215838 | 0.957717395773337 |
+| sigma     |  5.06263423083996 |  0.190299406826185 |  4.75849902431897 |  5.36676943736095 |
+
+Thus we note that the slope is the same, while the intercept changes. Now we
+need to check the covariances. We will convert from the variable covariance
+scale to the correlation matrix.
+
+#+BEGIN_SRC R
+m43b %>% vcov %>% cov2cor %>% round(.,2)
+#+END_SRC
+
+#+RESULTS:
+:           a     b sigma
+: a      1.00 -0.99  0.02
+: b     -0.99  1.00 -0.02
+: sigma  0.02 -0.02  1.00
+
+#+BEGIN_SRC R
+m43 %>% vcov %>% cov2cor %>% round(.,2)
+#+END_SRC
+
+#+RESULTS:
+:       a b sigma
+: a     1 0     0
+: b     0 1     0
+: sigma 0 0     1
+
+The contrast between the two is very clear from the correlation matrices, the
+new model has an almost perfect negatively correlated intercept and slope.
+
+#+header: :width 720 :height 720 :units px
+#+BEGIN_SRC R :file img/4m7OrigM.png :results graphics file :cache no
+m43 %>% pairs
+#+END_SRC
+
+#+RESULTS:
+[[file:img/4m7OrigM.png]]
+
+#+header: :width 720 :height 720 :units px
+#+BEGIN_SRC R :file img/4m7NewM.png :results graphics file :cache no
+m43b %>% pairs
+#+END_SRC
+
+#+RESULTS:
+[[file:img/4m7NewM.png]]
+
+This indicates that the scaling of the variables leads to a completely different
+model in terms of the parameter relationships, in-spite of the fact that the
+models have almost the same posterior predictions.
+
+[fn:whatyear] Summer of 2020
