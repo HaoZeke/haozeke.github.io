@@ -8,11 +8,10 @@
 #+hugo_section: ./posts
 #+export_file_name: sr2-ch5-ch6-ch7
 #+hugo_custom_front_matter: :toc true :comments true :link-citations true
-#+hugo_pandoc_citations: t
 #+hugo_tags: solutions R SR2
 #+hugo_categories: programming
 #+hugo_draft: false
-#+bibliography: refs.bib
+#+bibliography: ../../biblio/refs.bib
 
 #+PROPERTY: header-args:R :session oneR :results output :exports both :cache yes
 #+BEGIN_QUOTE

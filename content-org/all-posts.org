@@ -3951,7 +3951,7 @@ CLOSED: [2020-07-24 Fri 17:35]
 :END:
 #+BEGIN_QUOTE
 A meta post introducing my solutions to the fantastic [[https://xcelab.net/rm/statistical-rethinking/][excellent second edition]] of "Statistical
-Rethinking" by [[https://twitter.com/rlmcelreath][Richard McElreath]], a.k.a. Statistical Rethinking². Also discusses strategies to keep up with the material, mostly meant for self-study groupps.
+Rethinking" by [[https://twitter.com/rlmcelreath][Richard McElreath]], a.k.a. Statistical Rethinking². Also discusses strategies to keep up with the material, mostly meant for self-study groups.
 #+END_QUOTE
 
 ** Background
