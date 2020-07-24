@@ -6,15 +6,21 @@
 #+hugo_base_dir: ../../../
 #+hugo_section: ./posts
 #+export_file_name: sr2-ch1-ch2-ch3
-#+hugo_custom_front_matter: :toc true :comments true
+#+hugo_custom_front_matter: :toc true :comments true :link-citations true
 #+hugo_tags: solutions R SR2
 #+hugo_categories: programming
 #+hugo_draft: false
+#+bibliography: ../../biblio/refs.bib
 
 #+PROPERTY: header-args:R :session oneR :results output :exports both :cache yes
+
+#+BEGIN_QUOTE
+Setup details [[https://rgoswami.me/posts/rethinking-r-nix/][are described here]], and the meta-post about these solutions [[https://rgoswami.me/posts/some-sol-sr2/][is here]].
+#+END_QUOTE
+
 * Materials
 The [[https://ugla.hi.is/kennsluskra/index.php?sid=&tab=nam&chapter=namskeid&id=71055920203][summmer course]][fn:whatyear] is based off of [[https://xcelab.net/rm/statistical-rethinking/][the second edition of
-Statistical Rethinking]] by [[https://twitter.com/rlmcelreath][Richard McElreath]]. Details on how to run this [[https://rgoswami.me/posts/rethinking-r-nix/][are described here]], and the meta-post about these solutions [[https://rgoswami.me/posts/some-sol-sr2/][is here]].
+Statistical Rethinking]] by [[https://twitter.com/rlmcelreath][Richard McElreath]].
 This post covers the following exercise questions:
 - [X] Chapter 2
   - [X] Easy {1,2,3,4}
