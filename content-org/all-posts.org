@@ -3943,7 +3943,7 @@ This part is fun to write, building towards a goal, is a special kind of write u
 ** Conclusions
 If this post seemed short, it is probably because even though a lot else went into the proposal, until I hear otherwise next year, it would be presumptous to write more. That said, it was and is an enjoyable exercise.
 
-* DONE Some Solutions for Statistical Rethinking² :@programming:R:SR2:solutions:workflow:
+* DONE A Short Guide to Statistical Rethinking² :@programming:R:SR2:solutions:workflow:
 CLOSED: [2020-07-24 Fri 17:35]
 :PROPERTIES:
 :EXPORT_FILE_NAME: some-sol-sr2
