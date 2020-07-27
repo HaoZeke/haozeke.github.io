@@ -197,6 +197,7 @@ This category involves recordings where I asked questions, and therefore
 technically involve me in a sense.
 - I appear [[https://www.linkedin.com/posts/univ-ai_neuralnetwork-regularisation-ucla-activity-6689748037511782400-gMSx][in the audience of this clip]] on neural networks and regularization
 - Code in Place AMA with [[https://www.youtube.com/watch?v=J7S_SJ2Adi4&list=PLcil-m27rjnZ2f85ao8_EauguYhzkzSQA&index=5&t=0s][Stanford CS Lecturers]]
+- I [[http://www.youtube.com/watch?v=-Y_OYhoHOb8][appear (audibly)]] to ask a question for the TUG2020 closing seminar by John MacFarlane
 **** Fortran Maintainers Monthly Calls
 - [[https://www.youtube.com/watch?v=i-gRNGRzugc][June 2020]]
 **** IAS TML Lecture Questions
