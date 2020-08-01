@@ -558,6 +558,10 @@ The whole file is also [[https://github.com/HaoZeke/haozeke.github.io/blob/src/c
 :EXPORT_DATE: 2020-02-29 14:06
 :EXPORT_HUGO_AUTO_SET_LASTMOD: t
 :END:
+#+BEGIN_QUOTE
+Thoughts on and rationale behind leaving QWERTY and touch typing in general. Followed [[Refactoring Dotfiles For Colemak][by this post]] on refactoring my Dotfiles.
+#+END_QUOTE
+
 ** Background
 I just realized that it has been over two years since I switched from QWERTY to
 Colemak but somehow never managed to write about it. It was a major change in my
@@ -2079,6 +2083,10 @@ CLOSED: [2020-05-02 Sat 20:30]
 :EXPORT_FILE_NAME: colemak-dots-refactor
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :END:
+#+BEGIN_QUOTE
+A more actionable follow up to [[Switching to Colemak][my personal recollections]] relating to my switch to Colemak.
+#+END_QUOTE
+
 ** Background
 I have, in the past written about how I [[Switching to Colemak][made the switch]] to Colemak. However,
 until recently, I was still trying to mimic the VIM keybindings from QWERTY.
@@ -2306,6 +2314,8 @@ mapkey L I
 mapkey j e
 mapkey J E
 #+END_SRC
+** Vim
+For a lot of terminal edits, ~vim~ is still my editor of choice, and [[https://github.com/jooize/vim-colemak][vim-colemak]] works without any trouble [[https://github.com/HaoZeke/Dotfiles/commit/d6df2743822e6fcf4761d569600a8e9a802a7af4][in my configuration]].
 ** Zsh
 To ensure uniform bindings, I used to use ~bindkey -v~ but will need some minor
 changes to that set up. I based this part of my configuration off the bindings
