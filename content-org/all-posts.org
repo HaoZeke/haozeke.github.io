@@ -4006,3 +4006,119 @@ These are highly opinionated and the following list is in no way complete.
 - [[https://github.com/avehtari/BDA_course_Aalto][Bayesian Data Analysis]]
 ** Conclusions
 This has been a short meta post which is essentially meant to collect content posted with dates in the past. Though this is not exactly a complete reference for beginners, it might still help people.
+
+* DONE Explorations with Backlight Controllers :@notes:tools:workflow:
+CLOSED: [2020-08-01 Sat 20:00]
+:PROPERTIES:
+:EXPORT_FILE_NAME: expl-backlight-control
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+BEGIN_QUOTE
+A short post detailing the many trials and tribulations of setting brightness on multiple monitors in tandem.
+#+END_QUOTE
+
+** Background
+As regular readers might know, I have a multi-screen setup, which accounts for having touch enabled on my primary laptop screen (detailed [[Multiple Monitors with Touchscreens][here]]). A failing of this setup was that I was not able to control the brightness of both monitors at the same time.
+** Existing Stack
+Since I use ~i3~, my brightness control is simply done with ~bindsym~ lines as follows[fn:wheredot]:
+#+BEGIN_SRC conf
+bindsym XF86MonBrightnessDown exec light -U 10
+bindsym XF86MonBrightnessUp exec light -A 10
+#+END_SRC
+Note that to get the right ~bindsym~ I use [[https://github.com/wavexx/screenkey][screenkey]] with the ~keysyms~ preference. My software of choice was
+Unfortunately, my existing setup (with ~light~, since that is in the Arch ~community~ repo) did not actually allow dimming external screens arbitarily. To be more exact,
+#+BEGIN_SRC bash :results raw
+light -h
+#+END_SRC
+
+#+begin_example
+Usage:
+  light [OPTIONS] [VALUE]
+
+Commands:
+  -H, -h      Show this help and exit
+  -V          Show program version and exit
+  -L          List available devices
+  -A          Increase brightness by value
+  -U          Decrease brightness by value
+  -T          Multiply brightness by value (can be a non-whole number, ignores raw mode)
+  -S          Set brightness to value
+  -G          Get brightness
+  -N          Set minimum brightness to value
+  -P          Get minimum brightness
+  -O          Save the current brightness
+  -I          Restore the previously saved brightness
+
+Options:
+  -r          Interpret input and output values in raw mode (ignored for -T)
+  -s          Specify device target path to use, use -L to list available
+  -v          Specify the verbosity level (default 0)
+                 0: Values only
+                 1: Values, Errors.
+                 2: Values, Errors, Warnings.
+                 3: Values, Errors, Warnings, Notices.
+
+Copyright (C) 2012 - 2018  Fredrik Haikarainen
+This is free software, see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE
+#+end_example
+
+Clearly it is possible to target specific devices, but for arbitrary additions this is quite tough. Additionally, the project has been more or less been stuck in [[https://github.com/haikarainen/light/issues/37][maintainence mode for a while now]].
+** Multi-head Configurations
+*** Exposing Brightness
+The first hurdle faced in o was actually getting the external monitor to expose the right controls. This is accomplished neatly with ~ddci-driver~ [[https://gitlab.com/ddcci-driver-linux/ddcci-driver-linux][found here]]. As demonstrated (courtesy of [[https://wiki.archlinux.org/index.php/Backlight#Backlight_utilities][the ArchWiki]]):
+#+BEGIN_SRC bash
+# Load module
+sudo modprobe ddcci_backlight
+# Check that it worked
+sudo ddcutil capabilities | grep "Feature: 10"
+sudo ddcutil getvcp 10
+# Set brightness
+sudo ddcutil setvcp 10 70
+#+END_SRC
+One of the obvious caveats of this technique is that ~sudo~ access or a dedicated ~polkit~ agent is required. My preferred method of loading this comes from [[https://aur.archlinux.org/packages/ddcci-driver-linux-dkms/][a comment]] on the ~ddcci-driver-linux-dkms~ page of the AUR:
+#+BEGIN_SRC bash
+# Put in /etc/systemd/system/ddcci-backlight.service:
+# https://aur.archlinux.org/packages/ddcci-driver-linux-dkms/
+# Placing "ddcci_backlight" into /etc/modules-load.d
+# leads to hang on boot with external (HDMI) monitor
+# connected to the laptop, so we need to add the module later.
+
+# And ddcci_backlight can't detect monitor during sddm.service startup.
+
+[Unit]
+After=multi-user.target
+Before=sddm.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/modprobe ddcci_backlight
+ExecStop=/usr/bin/modprobe --remove ddcci_backlight
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+#+END_SRC
+This is then activated with a standard ~systemctl enable ddcci_backlight.service~ command. At this point, the device interface should be exposed to most backlight controllers.
+*** Xrandr
+This is the most obvious of all methods, and does not even require the ~ddcci-driver~. We will simply tweak the brightness with ~xrandr~.
+#+BEGIN_SRC bash
+# Get devices
+xrandr | grep " connected"
+# Tweak
+xrandr --output DP1 --brightness 0.2
+#+END_SRC
+
+Note that this is an in-exact method, since it actually adjusts the gamma value instead, and it effectively tints your screen rather than modifying the brightness.
+*** Clight
+[[https://github.com/FedeDP/Clight][clight]] is an excellent, highly performant alternative to redshift, but it tends to force the main screen brightness to zero. Nothing which can't be configured away, but in practice, I work late and tend to turn off the tint anyway. This requires a daemon to be run, as well as needing to be turned on manually for ~i3~. A very elegant additional feature gained by using ~clight~ is that external monitors are turned off automagically when lockscreens are activated.
+*** Brillo
+[[https://github.com/CameronNemo/brillo][brillo]] is one of the newer controllers, and is pretty actively developed. The interface is almost exactly like ~light~, and unlike ~clight~ there is no need to use a daemon. It meshes perfectly with a key-press based system like ~i3~ and also has controls for keyboard LEDS as well as for smoothed ramping up and down of the brightness. Most importantly, it features an ~-e~ flag which sets the brightness across all output devices. Essentially this means my configuration is simply modified to:
+#+BEGIN_SRC conf
+bindsym XF86MonBrightnessDown exec brillo -e -U 10
+bindsym XF86MonBrightnessUp exec brillo -e -A 10
+#+END_SRC
+** Conclusions
+*tl;dr* moving from ~light~ to ~brillo~ with ~ddcci-driver-linux-dkms~ was a fantastic idea.
+
+[fn:wheredot] My dotfiles [[https://github.com/HaoZeke/Dotfiles][are here]]
