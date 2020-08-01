@@ -171,10 +171,9 @@ the rest[fn:whereswaldo].
   - [[https://www.cecam.org/workshop-details/26#participant_tab][CECAM-DE-SMSM: (Machine) learning how to coarse-grain]]
   - [[https://www.cecam.org/workshop-details/28#participant_tab][CECAM-DE-SMSM: ESPResSo and Python: Versatile Tools for Soft Matter Research]]
 **** Teaching
-- [[http://www.wavelf.org/ij6TzydE3kTSF8cwwIUj][Water, Chemicals and more with Computers for Chemistry (WC3m)]] :: July 28-August 28, 2020 (co-lead)
+- [[https://wc3m.github.io/][Water, Chemicals and more with Computers for Chemistry (WC3m)]] :: July 28-August 28, 2020 (co-lead)
 - [[https://smcclatchy.github.io/2020-06-22-biotechPartners-pm/][Data Carpentry Ecology for Biotech Partners]] :: June 22-July 2, 2020 (instructor)
-- [[https://sadilar.github.io/2020-06-29-SA-ONLINE/][Online Data Carpentry Workshop
-SADiLaR, South Africa]] :: 29 June - 3 July, 2020 (instructor)
+- [[https://sadilar.github.io/2020-06-29-SA-ONLINE/][Online Data Carpentry Workshop SADiLaR, South Africa]] :: 29 June - 3 July, 2020 (instructor)
 - [[https://coderefinery.github.io/2020-05-25-online/][2020 MegaCodeRefinery]] (helper)
 **** Quotes
 - Quoted in a [[https://www.stanforddaily.com/2020/06/08/code-in-place-makes-cs-accessible-to-thousands-worldwide/][Stanford Daily Article on CS106A Code in Place]]
