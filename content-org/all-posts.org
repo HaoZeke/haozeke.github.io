@@ -160,6 +160,7 @@ the rest[fn:whereswaldo].
 - Hackernoon article on [[https://hackernoon.com/locking-and-encrypting-apps-with-encfs-c1484e77f479][Locking and Encrypting Apps with Encfs]]
 - Reproducible Environments with the Nix Packaging System at [[https://2020.carpentrycon.org/schedule/#session-10][CarpentryCon 2020]]
 - The Water, Chemicals and more with Computers for Chemistry (WC3m) [[https://wc3m.github.io/][course website]]
+- A collaborative post on [[https://carpentries.org/blog/2020/08/r-4-migration/][migrating to R 4.0 for The Carpentries]]
 *** Mentioning Me
 **** Lists
 - [[https://www.cirm-math.fr/Listes/liste_pre_verif.php?id_renc=2146&num_semaine=0][Mathematical Methods of Modern Statistics 2]] ([[https://www.cirm-math.com/cirm-virtual-event-2146.html][info]])
@@ -167,6 +168,7 @@ the rest[fn:whereswaldo].
 - [[https://gitlab.com/openresearchlabs/probabilistic_data_analysis_2020/-/blob/master/session7.md][Probablistic Data Analysis]] (University of Turku)
 - [[https://twitter.com/aiidateam/status/1281323480290660352][AiiDA Virtual Tutotrial 2020]]
 - [[https://tcevents.chem.uzh.ch/event/12/contributions/45/author/73][FortranCon 2020 Author]]
+- [[https://github.com/stan-dev/math/releases/tag/v3.3.0][Stan Math 3.3.0 contributor]]
 - CECAM Participant for:
   - [[https://www.cecam.org/workshop-details/26#participant_tab][CECAM-DE-SMSM: (Machine) learning how to coarse-grain]]
   - [[https://www.cecam.org/workshop-details/28#participant_tab][CECAM-DE-SMSM: ESPResSo and Python: Versatile Tools for Soft Matter Research]]
