@@ -163,7 +163,8 @@ the rest[fn:whereswaldo].
 - A collaborative post on [[https://carpentries.org/blog/2020/08/r-4-migration/][migrating to R 4.0 for The Carpentries]]
 *** Mentioning Me
 **** Lists
-- [[https://www.cirm-math.fr/Listes/liste_pre_verif.php?id_renc=2146&num_semaine=0][Mathematical Methods of Modern Statistics 2]] ([[https://www.cirm-math.com/cirm-virtual-event-2146.html][info]])
+- [[https://www.cirm-math.fr/Listes/liste_pre_verif.php?id_renc=2146&num_semaine=0][CIRM Mathematical Methods of Modern Statistics 2]] ([[https://www.cirm-math.com/cirm-virtual-event-2146.html][info]]) [participant]
+- Kavli IPMU conference on "[[https://indico.ipmu.jp/event/314/overview][The McKay correspondence, mutation and related topics]]" ([[https://indico.ipmu.jp/event/314/registrations/participants][participant]])
 - [[https://chemeng.iisc.ac.in/rare-events/gallery.html][Gallery of RARE 2019]] at IISc
 - [[https://gitlab.com/openresearchlabs/probabilistic_data_analysis_2020/-/blob/master/session7.md][Probablistic Data Analysis]] (University of Turku)
 - [[https://twitter.com/aiidateam/status/1281323480290660352][AiiDA Virtual Tutotrial 2020]]
@@ -200,14 +201,17 @@ technically involve me in a sense.
 - I appear [[https://www.linkedin.com/posts/univ-ai_neuralnetwork-regularisation-ucla-activity-6689748037511782400-gMSx][in the audience of this clip]] on neural networks and regularization
 - Code in Place AMA with [[https://www.youtube.com/watch?v=J7S_SJ2Adi4&list=PLcil-m27rjnZ2f85ao8_EauguYhzkzSQA&index=5&t=0s][Stanford CS Lecturers]]
 - I [[http://www.youtube.com/watch?v=-Y_OYhoHOb8][appear (audibly)]] to ask a question for the TUG2020 closing seminar by John MacFarlane
+**** HPC Carpentry
+- [[https://pad.carpentries.org/hpccarpentry-tour][A guided tour]]
 **** Fortran Maintainers Monthly Calls
 - [[https://www.youtube.com/watch?v=i-gRNGRzugc][June 2020]]
 **** IAS TML Lecture Questions
-I've been sitting in on these for a while thanks to Ke Li, but this section lists some of the lectures I asked a question in
+I've been sitting in on these for a while thanks to [[https://www.math.ias.edu/~ke.li/][Ke Li]], but this section lists some of the lectures I asked a question in
   - "[[https://video.ias.edu/tml/2020/0609-AleksanderMadry][What Do Models Learn?]]" by Aleksander Mądry
   - "[[https://youtu.be/QTnjqdxG99c?t=3879][Langevin Dynamics in Machine Learning]]" by Michael Jordan
   - "[[https://youtu.be/Wx8J-Kw3fTA?t=4814][Graph Nets: The Next Generation]]" by Max Welling
   - "[[https://youtu.be/IbKWTF4MzMY?t=3787][Priors for Semantic Variables]]" by Yoshua Bengio
+  - "A Blueprint of Standardized and Composable Machine Learning" by Eric Xing
 
 [fn:whereswaldo] If you do think you have seen me somewhere not on this list, drop me an email
 * DONE Search
@@ -4134,3 +4138,366 @@ bindsym XF86MonBrightnessUp exec brillo -e -A 10
 *tl;dr* moving from ~light~ to ~brillo~ with ~ddcci-driver-linux-dkms~ was a fantastic idea.
 
 [fn:wheredot] My dotfiles [[https://github.com/HaoZeke/Dotfiles][are here]]
+
+* DONE HPC Dotfiles and LMod :@programming:workflow:projects:hpc:
+CLOSED: [2020-08-09 Sun 02:29]
+:PROPERTIES:
+:EXPORT_FILE_NAME: hpc-dots-lmod
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+** Background
+My move away from the power, but unimaginatively named HPC clusters of IITK [fn:reallythatbad] brought me in close contact with the Lua based [fn:mustisay] [[https://lmod.readthedocs.io/en/latest/index.html][lmod module system]]. Rather than fall into the rabbit hole of [[https://docs.brew.sh/Homebrew-on-Linux][brew]] we will leverage the existing system to add our new libraries. Not finding any good collections of these composable environments, and [[Provisioning Dotfiles on an HPC][having failed once before]] to install Nix as a user with admin access, I decided to [[https://github.com/HaoZeke/hzHPC_lmod][start my own collection of Lmod recipies]]. The rest of this post details the installation proceedure to be carried out in conjunction with the [[https://github.com/HaoZeke/hzHPC_lmod][hzHPC_lmod repo]].
+** Setting Up
+These are reproduced from the repo for completeness.
+#+BEGIN_SRC bash
+git clone https://github.com/kobus-v-schoor/dotgit.git
+mkdir -p ~/.local/bin
+cp -r dotgit/bin/dotgit* ~/.local/bin
+cat dotgit/bin/bash_completion >> ~/.bash_completion
+rm -rf dotgit
+#+END_SRC
+I actually strongly suggest using a target from [[https://github.com/HaoZeke/Dotfiles][my Dotfiles]] in conjunction with this, but it isn't really required, so:
+#+BEGIN_SRC
+~/.local/bin/dotgit restore hzhpc
+#+END_SRC
+Note that because of the suggested separation, I have not opted to setup a shell or even ensure that there are scripts here to help keep ~module~ in your path. Those are in [[https://github.com/HaoZeke/Dotfiles][my Dotfiles]].
+** LMod Libraries
+#+BEGIN_QUOTE
+*Note that*: [[http://ihpc.is/garpur/][garpur]] already has ~lmod~ and a module for GNU ~gcc~ 9.2.0
+#+END_QUOTE
+
+The scripts in this post will also be part of the [[https://github.com/HaoZeke/haozeke.github.io/][repo]], but keep in mind that these are not meant to be robust ways to install anything, and every command should be run by hand because things will probably break badly.
+*** Autotools
+Following the standard approach outlined in the [[https://www.gnu.org/software/automake/faq/autotools-faq.html#How-can-I-install-software-below-my-home-directory_003f][GNU Autotools FAQ]]:
+#+BEGIN_SRC bash :noeval :tangle codeSnips/lmod-help/getAutotools.sh :eval never
+mkdir -p ~/tmpHPC
+cd $HOME/tmpHPC
+myprefix=$HOME/.hpc/autotools
+export PATH
+wget http://ftp.gnu.org/gnu/m4/m4-1.4.18.tar.gz
+wget http://ftp.gnu.org/gnu/autoconf/autoconf-2.69.tar.gz
+wget http://ftp.gnu.org/gnu/automake/automake-1.16.2.tar.gz
+wget http://ftp.gnu.org/gnu/libtool/libtool-2.4.6.tar.gz
+gzip -dc m4-1.4.18.tar.gz | tar xvf -
+gzip -dc autoconf-2.69.tar.gz | tar xvf -
+gzip -dc automake-1.16.2.tar.gz | tar xvf -
+gzip -dc libtool-2.4.6.tar.gz | tar xvf -
+cd m4-1.4.18
+./configure -C --prefix=$myprefix/m4/1.4.18 && make -j$(nproc) && make install
+cd ../autoconf-2.69
+./configure -C --prefix=$myprefix/autoconf/2.69 && make -j$(nproc) && make install
+cd ../automake-1.16.2
+./configure -C --prefix=$myprefix/automake/1.16.2 && make -j$(nproc) && make install
+cd ../libtool-2.4.6
+./configure -C --prefix=$myprefix/libtool/2.4.6 && make -j$(nproc) && make install
+#+END_SRC
+Combined with the [[https://lmod.readthedocs.io/en/latest/020_advanced.html][lmod manual]] gives rise to the following definiton (roughly the same for each one):
+#+BEGIN_SRC bash
+local home    = os.getenv("HOME")
+local version = myModuleVersion()
+local pkgName = myModuleName()
+local pkg     = pathJoin(home,".hpc",pkgName,version,"bin")
+prepend_path("PATH", pkg)
+#+END_SRC
+We will no longer bother with the module definitions for the rest of this post, as they are handled and documented in the repo.
+*** Perl
+This is essentially the setup from the [[https://learn.perl.org/installing/unix_linux.html][main docs]].
+#+BEGIN_SRC bash :noeval :tangle codeSnips/lmod-help/getPerl.sh :eval never
+# Get Perl
+curl -L http://xrl.us/installperlnix | bash
+# Use Perl
+ml use perl/5.28.0
+cpanm ExtUtils::MakeMaker # For git
+#+END_SRC
+*** Git
+This is very similar to the previous approach. However, since by default the system ~perl~ was being picked up, some slight changes have been made.
+#+BEGIN_SRC bash
+myprefix=$HOME/.hpc/git/2.9.5
+PATH=$myprefix/bin:$PATH
+export PATH
+wget https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.9.5.tar.gz
+gzip -dc git-2.9.5.tar.gz | tar xvf -
+cd git-2.9.5
+./configure -C --prefix=$myprefix
+make -j $(nproc)
+make install
+#+END_SRC
+**** Caveat
+Also, for TRAMP, I would prefer having a more constant path, so I symlinked it:
+#+BEGIN_SRC bash
+mkdir ~/.hpc/bin
+ln ~/.hpc/git/2.9.5/bin/git ~/.hpc/bin/git
+#+END_SRC
+*** Boost
+The [[https://www.boost.org/][boost website]] is utterly incomprehensible. As is the documentation. Also, fun fact, the move from ~svn~ makes things worse. Thankfully, a quick dive into the slightly [[https://github.com/boostorg/wiki/wiki/Getting-Started%3A-Overview][better Github wiki]] led to this nugget:
+
+#+BEGIN_SRC bash
+git clone --recursive https://github.com/boostorg/boost.git
+cd boost
+git checkout tags/boost-1.73.0 # or whatever branch you want to use
+./bootstrap.sh
+./b2 headers
+#+END_SRC
+
+This means I'm almost done!
+
+#+BEGIN_SRC bash
+./b2
+./b2 install --prefix=$HOME/.hpc/boost/boost-1.73.0
+#+END_SRC
+*** Pkg-Config
+#+BEGIN_SRC bash
+myprefix=$HOME/.hpc/pkg-config/0.29.2
+wget https://pkg-config.freedesktop.org/releases/pkg-config-0.29.2.tar.gz
+gzip -dc pkg-config-0.29.2.tar.gz | tar xvf -
+cd pkg-config-0.29.2
+./configure --prefix=$myprefix --with-internal-glib --disable-host-tool --docdir=$myprefix/share/doc/pkg-config-0.29.2
+mkdir $myprefix/lib
+make -j $(nproc)
+make install
+#+END_SRC
+*** Zlib
+#+BEGIN_SRC bash
+myprefix=$HOME/.hpc/zlib/1.2.11
+wget http://zlib.net/zlib-1.2.11.tar.gz
+gzip -dc zlib-1.2.11.tar.gz | tar xvf -
+cd zlib-1.2.11
+./configure --prefix=$myprefix
+make -j $(nproc)
+make install
+#+END_SRC
+*** XZ Utils
+#+BEGIN_SRC bash
+myprefix=$HOME/.hpc/xz/5.2.5
+wget https://tukaani.org/xz/xz-5.2.5.tar.gz
+gzip -dc xz-5.2.5.tar.gz | tar xvf -
+cd xz-5.2.5
+./configure --prefix=$myprefix --enable-threads=yes
+make -j $(nproc)
+make install
+#+END_SRC
+*** OpenSSL
+#+BEGIN_SRC bash
+myprefix=$HOME/.hpc/openssl/1.1.1d
+wget https://www.openssl.org/source/openssl-1.1.1d.tar.gz
+gzip -dc openssl-1.1.1d.tar.gz | tar xvf -
+cd openssl-1.1.1d
+./config --prefix=$myprefix --openssldir=$myprefix/etc/ssl shared zlib-dynamic
+make -j $(nproc)
+make install
+#+END_SRC
+*** Cmake
+#+BEGIN_SRC bash
+myprefix=$HOME/.hpc/cmake/3.18.1
+wget https://github.com/Kitware/CMake/releases/download/v3.18.1/cmake-3.18.1.tar.gz
+gzip -dc cmake-3.18.1.tar.gz | tar xvf -
+cd cmake-3.18.1
+./bootstrap --prefix=$myprefix
+make -j $(nproc)
+make install
+#+END_SRC
+*** GNU-Make
+#+BEGIN_SRC bash
+myprefix=$HOME/.hpc/make/4.3
+wget http://ftp.gnu.org/gnu/make/make-4.3.tar.gz
+gzip -dc make-4.3.tar.gz | tar xvf -
+cd make-4.3
+./configure --prefix=$myprefix
+make -j $(nproc)
+make install
+#+END_SRC
+*** Brotli
+#+BEGIN_SRC bash
+myprefix=$HOME/.hpc/brotli/1.0.1
+git clone https://github.com/bagder/libbrotli
+cd libbrotli
+./autogen.sh
+./configure --prefix=$myprefix
+make -j $(nproc)
+make install
+#+END_SRC
+*** ncurses
+We will need to manually ensure the paths for ~pkg-config~ are in a feasible location.
+#+BEGIN_SRC bash
+myprefix=$HOME/.hpc/ncurses/6.2
+wget https://invisible-mirror.net/archives/ncurses/ncurses-6.2.tar.gz
+gzip -dc ncurses-6.2.tar.gz | tar xvf -
+cd ncurses-6.2
+./configure --prefix=$myprefix --enable-widec --enable-pc-files --with-shared
+make -j $(nproc)
+make install
+mkdir pkgconfig
+cp misc/formw.pc misc/menuw.pc misc/ncurses++w.pc misc/ncursesw.pc misc/panelw.pc pkgconfig/
+mv pkgconfig $myprefix/lib/
+#+END_SRC
+*** texinfo
+#+BEGIN_SRC bash
+myprefix=$HOME/.hpc/texinfo/6.7
+wget http://ftp.gnu.org/gnu/texinfo/texinfo-6.7.tar.gz
+gzip -dc texinfo-6.7.tar.gz | tar xvf -
+cd texinfo-6.7
+./configure --prefix=$myprefix
+make -j $(nproc)
+make install
+#+END_SRC
+*** gperf
+#+BEGIN_SRC bash
+myprefix=$HOME/.hpc/gperf/3.1
+wget http://ftp.gnu.org/gnu/gperf/gperf-3.1.tar.gz
+gzip -dc gperf-3.1.tar.gz | tar xvf -
+cd gperf-3.1
+./configure --prefix=$myprefix
+make -j $(nproc)
+make install
+#+END_SRC
+*** libseccomp
+There is a bug, which requires modifying ~src/system.c~ to change ~__NR_seccomp~ to ~_nr_seccomp~.
+#+BEGIN_SRC bash
+myprefix=$HOME/.hpc/libseccomp/2.5.0
+git clone https://github.com/seccomp/libseccomp
+git checkout tags/v2.5.0
+./autogen.sh
+./configure --prefix=$myprefix
+make -j $(nproc)
+make install
+#+END_SRC
+*** BDWGC
+#+BEGIN_SRC bash
+myprefix=$HOME/.hpc/bdwgc/8.0.4
+wget https://github.com/ivmai/bdwgc/releases/download/v8.0.4/gc-8.0.4.tar.gz
+gzip -dc gc-8.0.4.tar.gz | tar xvf -
+cd gc-8.0.4
+./configure --prefix=$myprefix --enable-cplusplus
+make -j $(nproc)
+make install
+#+END_SRC
+*** pcre
+We will prep both ~pcre2~ and ~pcre~.
+#+BEGIN_QUOTE
+myprefix=$HOME/.hpc/pcre2/10.35
+wget https://ftp.pcre.org/pub/pcre/pcre2-10.35.tar.gz
+gzip -dc pcre2-10.35.tar.gz | tar xvf -
+cd pcre2-10.35
+./configure --prefix=$myprefix \
+            --enable-pcre2-16  \
+            --enable-pcre2-32  \
+            --enable-pcre2grep-libz
+make -j $(nproc)
+make install
+#+END_QUOTE
+
+#+BEGIN_QUOTE
+myprefix=$HOME/.hpc/pcre/8.44
+wget https://ftp.pcre.org/pub/pcre/pcre-8.44.tar.gz
+gzip -dc pcre-8.44.tar.gz | tar xvf -
+cd pcre-8.44
+./configure --prefix=$myprefix \
+            --enable-pcre-16  \
+            --enable-pcre-32  \
+            --enable-pcregrep-libz
+make -j $(nproc)
+make install
+#+END_QUOTE
+*** bison
+#+BEGIN_SRC bash
+myprefix=$HOME/.hpc/bison/3.7.1
+wget http://ftp.gnu.org/gnu/bison/bison-3.7.1.tar.gz
+gzip -dc bison-3.7.1.tar.gz | tar xvf -
+cd bison-3.7.1
+./configure --prefix=$myprefix
+make -j $(nproc)
+make install
+#+END_SRC
+*** jq
+#+BEGIN_SRC bash
+myprefix=$HOME/.hpc/jq/1.16
+git clone https://github.com/stedolan/jq.git
+cd jq
+git submodule update --init
+git checkout tags/jq-1.6
+autoreconf -fi
+./configure --prefix=$myprefix --with-oniguruma=builtin
+make -j $(nproc)
+make install
+#+END_SRC
+*** bzip2
+Needed to manually configure it as shown [[https://github.com/samtools/htslib/issues/696#issuecomment-387405020][here]]
+#+BEGIN_SRC bash
+myprefix=$HOME/.hpc/bzip2/1.0.8
+wget https://www.sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz
+gzip -dc bzip2-1.0.8.tar.gz | tar xvf -
+cd bzip2-1.0.8
+make -f Makefile-libbz2_so
+ln -sf libbz2.so.1.0 libbz2.so
+cp -avf bzlib.h $myprefix/include
+cp -avf libbz2.so* $myprefix/lib
+#+END_SRC
+*** sqlite
+#+BEGIN_SRC bash
+myprefix=$HOME/.hpc/sqlite/3.32.3
+wget https://www.sqlite.org/2020/sqlite-autoconf-3320300.tar.gz
+gzip -dc sqlite-autoconf-3320300.tar.gz | tar xvf -
+cd sqlite-autoconf-3320300
+./configure --prefix=$myprefix
+make -j $(nproc)
+make install
+#+END_SRC
+*** editline
+#+BEGIN_SRC bash
+myprefix=$HOME/.hpc/editline/1.17.1
+wget https://github.com/troglobit/editline/releases/download/1.17.1/editline-1.17.1.tar.gz
+gzip -dc editline-1.17.1.tar.gz | tar xvf -
+cd editline-1.17.1
+./configure --prefix=$myprefix
+make -j $(nproc)
+make install
+#+END_SRC
+** Applications
+Libraries and ~git~ aside, there are some tools we might want to have.
+*** ag
+The silver searcher, along with ~rg~ is very useful to have.
+#+BEGIN_SRC bash
+myprefix=$HOME/.hpc/the_silver_searcher/2.2.0
+wget https://geoff.greer.fm/ag/releases/the_silver_searcher-2.2.0.tar.gz
+gzip -dc the_silver_searcher-2.2.0.tar.gz | tar xvf -
+cd the_silver_searcher-2.2.0
+./configure --prefix=$myprefix
+make -j $(nproc)
+make install
+#+END_SRC
+*** Neovim
+#+BEGIN_SRC bash
+myprefix=$HOME/.hpc/nvim/0.5.0
+wget https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
+chmod +x nvim.appimage
+./nvim.appimage --appimage-extract
+mkdir -p $myprefix
+mv squashfs-root/usr/* $myprefix
+#+END_SRC
+*** Tmux
+#+BEGIN_SRC bash
+myprefix=$HOME/.hpc/tmux/3.1b
+wget https://github.com/tmux/tmux/releases/download/3.1b/tmux-3.1b-x86_64.AppImage
+chmod +x tmux-3.1b-x86_64.AppImage
+rm -rf squashfs-root
+./tmux-3.1b-x86_64.AppImage --appimage-extract
+mkdir -p $myprefix
+mv squashfs-root/usr/bin squashfs-root/usr/lib squashfs-root/usr/share $myprefix
+#+END_SRC
+
+*** Zsh
+More of an update than a requirement.
+#+BEGIN_SRC bash
+myprefix=$HOME/.hpc/zsh/5.8
+wget https://github.com/zsh-users/zsh/archive/zsh-5.8.tar.gz
+gzip -dc zsh-5.8.tar.gz | tar xvf -
+cd zsh-zsh-5.8
+./configure --prefix=$myprefix
+make -j $(nproc)
+make install
+#+END_SRC
+** Conclusion
+Having composed a bunch of these, I will of course try to somehow get ~nix~ up and running so it can bootstrap itself and allow me to work in peace. I might also eventually create shell scripts to automate updating these, but hopefully I can set up ~nix~ and not re-create package manager logic in ~lua~.
+
+[fn:reallythatbad] They were called ~hpc2013~ and ~hpc2010~ respectively
+[fn:mustisay] I really like Lua, enough to embed it in [[https://dseams.info][d-SEAMS]]
