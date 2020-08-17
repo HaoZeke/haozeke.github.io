@@ -4140,6 +4140,7 @@ bindsym XF86MonBrightnessUp exec brillo -e -A 10
 
 [fn:wheredot] My dotfiles [[https://github.com/HaoZeke/Dotfiles][are here]]
 
+* TODO Switching from Zplug to Zinit
 * DONE HPC Dotfiles and LMod :@programming:workflow:projects:hpc:
 CLOSED: [2020-08-09 Sun 02:29]
 :PROPERTIES:
