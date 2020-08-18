@@ -4503,7 +4503,7 @@ Having composed a bunch of these, I will of course try to somehow get ~nix~ up a
 
 [fn:reallythatbad] They were called ~hpc2013~ and ~hpc2010~ respectively
 [fn:mustisay] I really like Lua, enough to embed it in [[https://dseams.info][d-SEAMS]]
-* DONE A Tutorial Introduction to Nix
+* DONE A Tutorial Introduction to Nix :@programming:tools:nix:workflow:python:
 CLOSED: [2020-08-18 Tue 16:18]
 :PROPERTIES:
 :EXPORT_FILE_NAME: ccon-tut-nix
