@@ -104,7 +104,7 @@ help:
 emacs-batch:
 	@echo ""
 	@echo "$(ORG_FILE) ::"
-	@$(EMACS) --batch --eval "(progn\
+	PATH=${PATH} $(EMACS) --batch --eval "(progn\
 	(setenv \"OX_HUGO_TMP_DIR\" \"$(ox_hugo_tmp_dir)\")\
 	(load-file (expand-file-name \"setup-ox-hugo.el\" \"$(OX_HUGO_SETUP_DIR)\"))\
 	)" $(ORG_FILE) \
@@ -113,7 +113,7 @@ emacs-batch:
 
 md1:
 	for org in $(ORG_FILE) ; do \
-	PATH=${PATH} make emacs-batch ORG_FILE=$$org FUNC=org-hugo-export-all-wim-to-md ; \
+	make emacs-batch ORG_FILE=$$org FUNC=org-hugo-export-all-wim-to-md ; \
     done
 
 vcheck_emacs:
