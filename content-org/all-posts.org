@@ -4503,3 +4503,425 @@ Having composed a bunch of these, I will of course try to somehow get ~nix~ up a
 
 [fn:reallythatbad] They were called ~hpc2013~ and ~hpc2010~ respectively
 [fn:mustisay] I really like Lua, enough to embed it in [[https://dseams.info][d-SEAMS]]
+* DONE A Tutorial Introduction to Nix
+CLOSED: [2020-08-18 Tue 16:18]
+:PROPERTIES:
+:EXPORT_FILE_NAME: ccon-tut-nix
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_BIBLIOGRAPHY: biblio/CarpentryCon2020.bib
+:EXPORT_HUGO_PANDOC_CITATIONS: t
+:END:
+#+BEGIN_QUOTE
+Brief introduction to a nix based project workflow.
+#+END_QUOTE
+
+** Background
+For [[https://2020.carpentrycon.org/][CarpentryCon@Home 2020]], along with [[https://scholar.google.com/citations?user=mviv92EAAAAJ&hl=en][Amrita Goswami]], I am to prepare and deliver a workshop on "[[https://2020.carpentrycon.org/schedule/#session-10][Reproducible Environments with the Nix Packaging System]]". In particular, as a community of practice lesson, the focus is not on packaging (as is typical of most Nix tutorials) nor on the Nix expression language itself, but instead on the use of Nix as a replacement for virtual environments using ~mkShell~.
+** Materials
+This is a Carpentries style single page lesson on setting up and working with Nix for reproducible environments. It was concieved to be a complimentary resource to the content of [[https://github.com/HaoZeke/CarpentryCon2020_Nix][this repository]], namely:
+- [[https://github.com/HaoZeke/CarpentryCon2020_Nix/blob/master/slides/nixPython/nixPython.pdf][Slides on Python packages with Nix]]
+- [[https://rgoswami.me/posts/nix-r-devtools/][Nix with R and devtools]]
+- [[https://rgoswami.me/posts/rethinking-r-nix/][Statistical Rethinking and Nix]]
+- [[https://pad.carpentries.org/cchome-nix-packaging][An Etherpad]]
+** Ten seconds into Nix
+A few words to keep in mind, in no particular order.
+- Nix is based of good academic principles by @dolstraNixSafePolicyFree2004 and @dolstraNixOSPurelyFunctional2010
+  + It has been used in large scientific projects for reproducibility (e.g. [[https://dseams.info][d-SEAMS]] of @goswamiDSEAMSDeferredStructural2020)
+- The Nix expression language is a *domain specific language*
+  + Turing completeness is not a goal or a requirement
+- Can leverage binary caches
+  + Not _always_ true, only when installed in ~/nix~
+** Setup
+For this particular tutorial, we will assume the standard Nix installation proceedure, that is, one where the installer has root access to create the initial ~/nix~ directory and set up the build users[fn:whynotsingle]. This follows directly from the [[https://nixos.org/nix/manual/#chap-installation][Nix Manual]]:
+#+BEGIN_SRC bash
+# You need root permissions for this!!!
+sh <(curl -L https://nixos.org/nix/install) --daemon
+#+END_SRC
+At this point we will also install the canonnical first package, the ~hello~ package, which simply outputs a friendly greeting.
+#+BEGIN_SRC bash
+nix-env -i hello
+#+END_SRC
+Note that the basic package search operation is ~nix search~ and it gives outputs which look like:
+
+#+DOWNLOADED: screenshot @ 2020-08-18 14:57:27
+#+caption: The ~nix search emacs~ output
+[[file:images/Setup/2020-08-18_14-57-27_screenshot.png]]
+
+Though this is not bad by any standard, we will try to get a more interactive management tool.
+** Basic Helpers
+The first few things to obtain are:
+- [[https://github.com/madjar/nox][nox]] :: This is a better package management helper
+- [[https://github.com/nmattia/niv][niv]] :: For pinning dependencies as discussed later
+- [[https://github.com/target/lorri][lorri]] :: For working seamlessly with project environments
+
+*** Exercise 1
+#+BEGIN_QUOTE
+Try installing these and use ~nox emacs~ to test the output
+#+END_QUOTE
+
+#+DOWNLOADED: screenshot @ 2020-08-18 15:06:17
+#+caption: The ~nox emacs~ output
+[[file:images/Basic_Helpers/2020-08-18_15-06-17_screenshot.png]]
+
+** More Dependable Dependencies
+*** Standard Channels
+Nix works by searching a repository (local or online) of package derivations. Indeed, we can pass ~nix-env~ any local fork of the main [[https://github.com/NixOS/nixpkgs][nixpkgs repo]] as well.
+
+#+BEGIN_SRC bash
+# don't run this, it is a large repo
+git clone https://github.com/NixOS/nixpkgs.git $mynixdir
+# make changes..
+$EDITOR $nixpkgs/pkgs/applications/editors/emacs/default.nix
+nix-env -i emacs -f $nixpkgs
+#+END_SRC
+
+- This might serve as a way to mass modify the ~nixpkgs~ in a pinch
+  + However, we will almost *never* use this in practice
+  + The overlay approach is much better
+- It is also useful if we need to build local derivations
+*** Pinning Dependencies
+Compared to globally tracking the branches of ~nixpkgs~ or even local changes and forks, for project oriented workflows it is better to use ~niv~ which we obtained previously. In a nutshell, ~niv~ will generate a ~json~ file to keep track of dependencies and wraps it in a ~nix~ file we can subsequently import and use.
+** Project Setup
+We are now in a position to start working with a project oriented workflow.
+#+BEGIN_SRC bash :exports both
+# Make directories
+mkdir myFirstNix
+cd myFirstNix
+# Setup
+niv init
+niv update nixpkgs -b nixpkgs-unstable
+#+END_SRC
+At this stage your project should have the following structure:
+#+BEGIN_SRC bash :exports both
+tree myFirstNix
+#+END_SRC
+
+#+RESULTS:
+| myFirstNix |              |   |       |
+| └──        | nix          |   |       |
+| ├──        | sources.json |   |       |
+| └──        | sources.nix  |   |       |
+|            |              |   |       |
+| 1          | directory,   | 2 | files |
+We can now move on to the heart of this tutorial, the ~nix-shell~. In a nutshell, running ~nix-shell~ when there is a defined ~shell.nix~ will spawn a virtual environment with the nix packages requested.
+*** lorri and direnv
+Though we haven't as yet generated a ~shell.nix~ we should point out that writing one by hand will mean that we need to rebuild the enviroment when we make changes using ~nix-shell~ every time. A more elegant approach is to offload the rebuilding of the environment to ~lorri~ which also has a neat ~direnv~ integrration. Let's try that out.
+#+BEGIN_SRC bash :exports both
+cd myFirstNix
+lorri init
+#+END_SRC
+
+#+RESULTS:
+| Aug | 18 | 15:24:06.524 | INFO | wrote | file, | path: | ./shell.nix |
+| Aug | 18 | 15:24:06.524 | INFO | wrote | file, | path: | ./.envrc    |
+| Aug | 18 | 15:24:06.524 | INFO | done  |       |       |             |
+At this point we should now have:
+#+BEGIN_SRC bash :exports both
+tree -a myFirstNix
+#+END_SRC
+
+#+RESULTS:
+| myFirstNix |            |              |       |
+| ├──        | .envrc     |              |       |
+| ├──        | nix        |              |       |
+| │          | ├──        | sources.json |       |
+| │          | └──        | sources.nix  |       |
+| └──        | shell.nix  |              |       |
+|            |            |              |       |
+| 1          | directory, | 4            | files |
+
+We might want to take a quick look at what is being loaded into the environment and the ~shell.nix~ at this point.
+
+#+caption: ~shell.nix~
+#+BEGIN_SRC nix
+let
+  pkgs = import <nixpkgs> {};
+in
+pkgs.mkShell {
+  buildInputs = [
+    pkgs.hello
+  ];
+}
+#+END_SRC
+
+#+caption: ~.envrc~
+#+BEGIN_SRC bash
+eval "$(lorri direnv)"
+#+END_SRC
+The ~.envrc~ output is not very useful at a glance, however when we cd into the directory it is very verbose and explicit about what is being set up.
+
+#+DOWNLOADED: screenshot @ 2020-08-18 15:31:31
+#+caption: Sample output of the evaluation
+[[file:images/Project_Setup/2020-08-18_15-31-31_screenshot.png]]
+
+Note that in order to set ~lorri~ up, we will need to set up a daemon.
+#+BEGIN_SRC bash
+systemctl --user start lorri
+direnv allow
+#+END_SRC
+
+*** Pinning with niv
+Note that inspite of having set up ~niv~, we have not yet used the sources defined therein. We will now fix this, by modifying ~shell.nix~.
+#+caption: ~shell.nix~ with ~niv~
+#+BEGIN_SRC nix
+let
+  sources = import ./nix/sources.nix;
+  pkgs = import sources.nixpkgs { };
+  inherit (pkgs.lib) optional optionals;
+in
+pkgs.mkShell {
+  buildInputs = [
+    pkgs.hello
+  ];
+}
+#+END_SRC
+** Purity and Environments
+There are a couple of things to note about this setup.
+- The default shell is ~bash~
+- On occasion, depending on your Dotfiles you might have paths overriden in an annoying way
+One workaround is to use nix shell with an argument:
+#+BEGIN_SRC bash
+nix-shell --run "bash"
+#+END_SRC
+- We can also pass ~--pure~ to the function, but at the cost of having to define many more dependencies for our shell
+** mkShell
+The ~mkShell~ function is the focus of our tutorial, and we will mostly work around passing in different environments and hooks. Let us start by defining a hook.
+*** Shell Hooks
+Often, we will want to set an environment variable in our shell in advance. We should not use ~direnv~ for this, and instead we will focus on the ~shellHook~ option. Syntactically, we note that this is of the form:
+#+BEGIN_SRC nix
+let
+  hook = ''
+  export myvar="Test"
+  ''
+in pkgs.mkShell {
+  shellHook = hook;
+}
+#+END_SRC
+Often we will describe variables in the let section in favor of cluttering the actual function call itself.
+** Overriding Global Packages
+For overriding global packages, it is best to leverage the ~config.nix~ (which is commonly in ~$HOME/.config/nixpkgs/config.nix~) file instead of the current environment, though it could be managed in a per-project setup as well. Consider the case where we need to disable tests for a particular packages, say ~libuv~.
+#+caption: A sample ~config.nix~ file
+#+BEGIN_SRC nix
+{
+  packageOverrides = pkgs:
+    with pkgs; {
+      libuv = libuv.overrideAttrs (oldAttrs: {
+        doCheck = false;
+        doInstallCheck = false;
+      });
+    };
+}
+#+END_SRC
+** Python Dependencies
+As R dependency management has been covered [[Nix-R and Devtools][in an earlier post]], we will focus on the management of ~python~ environments.
+*** Generic Environments
+We can define existing packages as follows (and can check for existence with ~nox~) using the ~let..in~ syntax.
+#+caption: Shell with basic ~python~ environment
+#+BEGIN_SRC nix
+let
+  # Niv
+  sources = import ./nix/sources.nix;
+  pkgs = import sources.nixpkgs { };
+  inherit (pkgs.lib) optional optionals;
+  # Python
+  pythonEnv = pkgs.python38.withPackages (ps: with ps;[
+    numpy
+    toolz
+  ]);
+in pkgs.mkShell {
+  buildInputs = with pkgs; [
+    pythonEnv
+
+    black
+    mypy
+
+    libffi
+    openssl
+  ];
+}
+#+END_SRC
+*** Project Local Pip
+We can leverage a trick from [[https://churchman.nl/2019/01/22/using-nix-to-create-python-virtual-environments/][here]] to set a local directory for ~pip~ installations, which boils down to some path hacking.
+#+BEGIN_SRC nix
+let
+  # Niv
+  sources = import ./nix/sources.nix;
+  pkgs = import sources.nixpkgs { };
+  inherit (pkgs.lib) optional optionals;
+  # Python
+  pythonEnv = pkgs.python38.withPackages (ps: with ps;[
+    numpy
+    toolz
+  ]);
+  hook = ''
+     export PIP_PREFIX="$(pwd)/_build/pip_packages"
+     export PYTHONPATH="$(pwd)/_build/pip_packages/lib/python3.8/site-packages:$PYTHONPATH"
+     unset SOURCE_DATE_EPOCH
+  '';
+in pkgs.mkShell {
+  buildInputs = with pkgs; [
+    pythonEnv
+
+    black
+    mypy
+
+    libffi
+    openssl
+  ];
+  shellHook = hook;
+}
+
+#+END_SRC
+*Note that* this is discouraged as we will lose the caching capabilities of nix.
+** Non-Standard Python
+For more control over the environment, we can define it in more detail with some overlays.
+#+BEGIN_SRC nix
+let
+  python = pkgs.python38.override {
+    packageOverrides = self: super: {
+      pytest = super.pytest.overridePythonAttrs (old: rec {
+        doCheck = false;
+        doInstallCheck = false;
+      });
+    };
+  };
+  myPy = python.withPackages
+    (p: with p; [ numpy pip pytest ]);
+in pkgs.mkShell {
+  buildInputs = with pkgs; [
+    myPy
+  ];
+}
+#+END_SRC
+We have used both overriden packages and standard packages in the above formulation.
+*** Building Packages
+For cases where we are certain that no existing package is present (use ~nox~) we can also build them. Take ~f90wrap~ as an example, and we will use the Github version, rather than the PyPi version (the difference is in the source fetch function).
+#+BEGIN_SRC nix
+f90wrap = self.buildPythonPackage rec {
+  pname = "f90wrap";
+  version = "0.2.3";
+  src = pkgs.fetchFromGitHub {
+    owner = "jameskermode";
+    repo = "f90wrap";
+    rev = "master";
+    sha256 = "0d06nal4xzg8vv6sjdbmg2n88a8h8df5ajam72445mhzk08yin23";
+  };
+  buildInputs = with pkgs; [ gfortran stdenv ];
+  propagatedBuildInputs = with self; [
+    setuptools
+    setuptools-git
+    wheel
+    numpy
+  ];
+  preConfigure = ''
+    export F90=${pkgs.gfortran}/bin/gfortran
+  '';
+  doCheck = false;
+  doIstallCheck = false;
+};
+#+END_SRC
+This is quite involved, _discuss_.
+*** Setting Versions
+We can finally generalize our ~shell.nix~ to default to ~python 3.8~ but also take a command through ~--argstr~:
+#+BEGIN_SRC bash
+nix-shell --argstr pythonVersion 36 --run "bash"
+#+END_SRC
+Where we need to simply define the option at the top of the file, with a default.
+#+caption: Full ~shell.nix~
+#+BEGIN_SRC nix
+{ pythonVersion ? "38" }:
+# Define
+let
+  sources = import ./nix/sources.nix;
+  pkgs = import sources.nixpkgs { };
+  inherit (pkgs.lib) optional optionals;
+  hook = ''
+    # Python Stuff
+     export PIP_PREFIX="$(pwd)/_build/pip_packages"
+     export PYTHONPATH="$(pwd)/_build/pip_packages/lib/python3.8/site-packages:$PYTHONPATH"
+     unset SOURCE_DATE_EPOCH
+  '';
+  # Apparently pip needs 1980 or above
+  # https://github.com/ento/elm-doc/blob/master/shell.nix
+  python = pkgs."python${pythonVersion}".override {
+    packageOverrides = self: super: {
+      pytest = super.pytest.overridePythonAttrs (old: rec {
+        doCheck = false;
+        doInstallCheck = false;
+      });
+      ase = super.ase.overridePythonAttrs (old: rec {
+        doCheck = false;
+        doInstallCheck = false;
+      });
+      f90wrap = self.buildPythonPackage rec {
+        pname = "f90wrap";
+        version = "0.2.3";
+        src = pkgs.fetchFromGitHub {
+          owner = "jameskermode";
+          repo = "f90wrap";
+          rev = "master";
+          sha256 = "0d06nal4xzg8vv6sjdbmg2n88a8h8df5ajam72445mhzk08yin23";
+        };
+        buildInputs = with pkgs; [ gfortran stdenv ];
+        propagatedBuildInputs = with self; [
+          setuptools
+          setuptools-git
+          wheel
+          numpy
+        ];
+        preConfigure = ''
+          export F90=${pkgs.gfortran}/bin/gfortran
+        '';
+        doCheck = false;
+        doInstallCheck = false;
+      };
+    };
+  };
+  myPy = python.withPackages
+    (p: with p; [ ase ipython ipykernel scipy numpy f90wrap pip ]);
+in pkgs.mkShell {
+  buildInputs = with pkgs; [
+    # Required for the shell
+    zsh
+    perl
+    git
+    direnv
+    fzf
+    ag
+    fd
+
+    # Building thigns
+    gcc9
+    gfortran
+    openblas
+
+    myPy
+    # https://github.com/sveitser/i-am-emotion/blob/294971493a8822940a153ba1bf211bad3ae396e6/gpt2/shell.nix
+  ];
+  shellHook = hook;
+}
+#+END_SRC
+This is enough to cover almost all use-cases for ~python~ environments.
+** Build Helpers
+Note that we can speed up some aspects of fetch with the prefetch commands:
+#+BEGIN_SRC bash
+nix-prefetch-git $giturl
+nix-prefetch-url $url
+#+END_SRC
+In practice, some trial and error is easier.
+** Supplementary Reading Material
+Though these are in no means exhaustive, they may offer a slightly more advanced or different focus than the material covered here.
+*** References
+- Manuals
+  - [[https://nixos.org/nix/manual/][Nix]] and Nixpkgs
+- [[https://nixos.wiki/][Nix Wiki]]
+  - [[https://nixos.wiki/index.php?title=Cheatsheet&useskin=vector][Nix Cheatsheet]]
+- [[https://github.com/NixOS/nixpkgs/blob/master/doc/languages-frameworks/][Language Sections]]
+*** Learning Paths
+- [[https://nixos.org/nixos/nix-pills/][Nix pills]]
+- [[https://nixos.org/learn.html][Official tutorials]]
+- [[https://nix.dev/][Nix dev]] has some nice opinionated tips
+** Conclusions
+The standard dive into Nix is based on building derviations and playing with language, which is in no means a bad one, just too long for the time allocated. The best way to get into Nix is to start using it for everything.
+
+[fn:whynotsingle] For reasons pertaining to latency and ease-of-use, we will assume the multi-user installation
