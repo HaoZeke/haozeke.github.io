@@ -48,7 +48,7 @@ PANDOC_BIN_SOURCE ?= https://github.com/jgm/pandoc/releases/download/$(PANDOC_BI
 # Set paths
 .EXPORT_ALL_VARIABLES:
 
-PATH = $(ox_hugo_tmp_dir)/pandoc:$(PATH)
+PATH = $(ox_hugo_tmp_dir)/pandoc:$(shell echo $PATH)
 
 # baseURL value set via environment variable HUGO_BASEURL
 HUGO_BASEURL ?= http://localhost
