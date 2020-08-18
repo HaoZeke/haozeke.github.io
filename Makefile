@@ -46,7 +46,8 @@ PANDOC_ARCHIVE_NAME ?= pandoc-$(PANDOC_BIN_VERSION)-linux-amd64.tar.gz
 PANDOC_BIN_SOURCE ?= https://github.com/jgm/pandoc/releases/download/$(PANDOC_BIN_VERSION)
 
 # Set paths
-export PATH := $(ox_hugo_tmp_dir)/pandoc:$(PATH)
+PATH  := $(ox_hugo_tmp_dir)/pandoc:$(PATH)
+SHELL := env PATH=$(PATH) /bin/bash
 
 # baseURL value set via environment variable HUGO_BASEURL
 HUGO_BASEURL ?= http://localhost
