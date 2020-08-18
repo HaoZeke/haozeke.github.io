@@ -4,6 +4,15 @@
 #+date: 2020-06-14
 #+options: todo:nil
 
+#+hugo_base_dir: ../../../
+#+hugo_section: ./posts
+#+export_file_name: sr2-ch5-ch6-ch7
+#+hugo_custom_front_matter: :toc true :comments true :link-citations true
+#+hugo_tags: solutions R SR2
+#+hugo_categories: programming
+#+hugo_draft: false
+#+bibliography: ../../biblio/refs.bib
+
 #+PROPERTY: header-args:R :session oneR :results output :exports both :cache yes
 #+BEGIN_QUOTE
 Setup details [[https://rgoswami.me/posts/rethinking-r-nix/][are described here]], and the meta-post about these solutions [[https://rgoswami.me/posts/some-sol-sr2/][is here]].
@@ -557,7 +566,7 @@ What happens to the effective number of parameters as measured by PSIS or WAIC, 
 **** Solution
 Since a strength of a prior is directly related to the process of regularization, it is clear that as a prior becomes more concentrated, the model tends to be more critical of new data, and therefore the effective number of parameters will drop proportionately. Another approach to the same problem is to understand that the prior encodes our previous beliefs which in effect represents additional data which the model a-priori has been trained with.
 
-We can test this simply by re-using the models we defined for 7M3 in [[7M3]].
+We can test this simply by re-using the models we defined for 7M3.
 
 #+BEGIN_SRC R :exports code
 yDat <- rnorm(5)
