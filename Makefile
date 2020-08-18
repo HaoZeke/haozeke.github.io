@@ -35,6 +35,7 @@ endif
 # PANDOC_exists := $(shell command -v $(PANDOC) 2> /dev/null)
 # ifeq ("$(PANDOC_exists)","")
 	PANDOC := $(ox_hugo_tmp_dir)/pandoc/bin/pandoc
+	PANDOC_CITEPROC := $(ox_hugo_tmp_dir)/pandoc/bin/pandoc-citeproc
 # endif
 
 HUGO_BIN_SOURCE ?= https://gitlab.com/kaushalmodi/unofficial-hugo-dev-builds.git
@@ -150,6 +151,9 @@ vcheck_pandoc:
 	@rm -rf pandoc-$(PANDOC_BIN_VERSION)
 # endif
 	$(PANDOC) --version
+	pandoc --version
+	pandoc-citeproc --version
+	$(PANDOC_CITEPROC) --version
 
 vcheck: vcheck_emacs vcheck_hugo vcheck_pandoc
 
