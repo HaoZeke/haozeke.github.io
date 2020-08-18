@@ -46,9 +46,8 @@ PANDOC_ARCHIVE_NAME ?= pandoc-$(PANDOC_BIN_VERSION)-linux-amd64.tar.gz
 PANDOC_BIN_SOURCE ?= https://github.com/jgm/pandoc/releases/download/$(PANDOC_BIN_VERSION)
 
 # Set paths
-.EXPORT_ALL_VARIABLES:
-
-PATH = $(ox_hugo_tmp_dir)/pandoc:$(shell echo $PATH)
+PATH  := $(ox_hugo_tmp_dir)/pandoc:$(PATH)
+SHELL := env PATH=$(PATH) /bin/bash
 
 # baseURL value set via environment variable HUGO_BASEURL
 HUGO_BASEURL ?= http://localhost
@@ -114,7 +113,7 @@ emacs-batch:
 
 md1:
 	for org in $(ORG_FILE) ; do \
-	make emacs-batch ORG_FILE=$$org FUNC=org-hugo-export-all-wim-to-md ; \
+	PATH=${PATH} make emacs-batch ORG_FILE=$$org FUNC=org-hugo-export-all-wim-to-md ; \
     done
 
 vcheck_emacs:
@@ -153,8 +152,8 @@ vcheck_pandoc:
 	@rm -rf pandoc-$(PANDOC_BIN_VERSION)
 # endif
 	$(PANDOC) --version
-	pandoc --version
-	pandoc-citeproc --version
+	PATH=${PATH} pandoc --version
+	PATH=${PATH} pandoc-citeproc --version
 	$(PANDOC_CITEPROC) --version
 
 vcheck: vcheck_emacs vcheck_hugo vcheck_pandoc
