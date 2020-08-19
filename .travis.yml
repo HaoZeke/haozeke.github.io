@@ -18,13 +18,10 @@ language: nix
 # - nix-shell
 
 script:
-  - nix-shell --run "npm install && rake hugoBuild" --pure
+  - nix-shell --run "npm install && make md" --pure
 cache:
   directories:
     - /home/travis/build/HaoZeke/haozeke.github.io/.tmp/
-
-before_deploy:
-  - openssl aes-256-cbc -K $encrypted_ed4c4b03e7d6_key -iv $encrypted_ed4c4b03e7d6_iv -in travis-deployer.enc -out travis-deployer -d
 
 deploy:
   provider: pages
