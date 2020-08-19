@@ -4,6 +4,7 @@
 #        2 is the orgmode setup file,
 #        3 is the temporary directory
 
+export PATH="$(pwd)/.tmp/bin:$PATH"
 pandoc --version
 pandoc-citeproc --version
 
