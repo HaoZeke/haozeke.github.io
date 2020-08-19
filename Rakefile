@@ -22,6 +22,11 @@ task :clean do
   rm_rf "content"
 end
 
+desc "Install pandoc"
+task :getPandoc do
+  sh "scripts/getPandocVersion 2.10.1"
+end
+
 desc "Serve site with Hugo"
 task :hugoServe, [:port] => [:md] do |t, args|
   args.with_defaults(:port => "1337")
