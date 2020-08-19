@@ -23,6 +23,7 @@ in pkgs.mkShell {
     emacs
     hugo
     git
+    curl
     nodejs
     postcss-cli
     # Ruby
