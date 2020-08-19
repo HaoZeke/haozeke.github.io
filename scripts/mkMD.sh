@@ -4,7 +4,8 @@
 #        2 is the orgmode setup file,
 #        3 is the temporary directory
 
-./getPandocVersion 2.10.1
+export VERSION=2.10.1
+./scripts/getPandocVersion
 pandoc --version
 pandoc-citeproc --version
 
