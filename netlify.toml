@@ -14,9 +14,9 @@
 # package = "netlify-plugin-subfont"
 [build]
   publish = "public"
-  command = "export PATH=$PWD/.tmp/bin:$PATH && rake hugoBuild"
+  command = "export PATH=.tmp/bin:$PATH && rake hugoBuild"
 
 [build.environment]
   HUGO_VERSION = "0.72.0"
   HUGO_ENV = "production"
-  PATH = "$PWD/.tmp/bin:$PATH"
+  PATH = "$(PWD)/.tmp/bin:$PATH"
