@@ -1,12 +1,12 @@
 # Adapted from https://raw.githubusercontent.com/kaushalmodi/ox-hugo/master/.travis.yml
 language: nix
 
-env:
-  global:
-    # - CURL="curl -fsSkL --retry 9 --retry-delay 9"
-    - OX_HUGO_TMP_DIR="/tmp/${USER}/ox-hugo-dev"
-    # - PANDOC_VERSION=2.5
-    # - EMACS_VERSION=26.1
+# env:
+#   global:
+#     # - CURL="curl -fsSkL --retry 9 --retry-delay 9"
+#     - OX_HUGO_TMP_DIR="/tmp/${USER}/ox-hugo-dev"
+# - PANDOC_VERSION=2.5
+# - EMACS_VERSION=26.1
 
 # install:
 # - $CURL -O https://github.com/npostavs/emacs-travis/releases/download/bins/emacs-bin-${EMACS_VERSION}.tar.gz
@@ -19,6 +19,9 @@ env:
 
 script:
   - nix-shell --run "npm install && rake hugoBuild" --pure
+cache:
+  directories:
+    - ./.tmp/
 
 before_deploy:
   - openssl aes-256-cbc -K $encrypted_ed4c4b03e7d6_key -iv $encrypted_ed4c4b03e7d6_iv -in travis-deployer.enc -out travis-deployer -d
