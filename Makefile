@@ -100,7 +100,7 @@ help:
 emacs-batch:
 	@echo ""
 	@echo "$(ORG_FILE) ::"
-	PATH=$(ox_hugo_tmp_dir)/pandoc:${PATH} $(EMACS) --batch --eval "(progn\
+	$(EMACS) --batch --eval "(progn\
 	(setenv \"OX_HUGO_TMP_DIR\" \"$(ox_hugo_tmp_dir)\")\
 	(load-file (expand-file-name \"setup-ox-hugo.el\" \"$(OX_HUGO_SETUP_DIR)\"))\
 	)" $(ORG_FILE) \
@@ -148,8 +148,6 @@ vcheck_pandoc:
 	@rm -rf pandoc-$(PANDOC_BIN_VERSION)
 # endif
 	$(PANDOC) --version
-	PATH=${PATH} pandoc --version
-	PATH=${PATH} pandoc-citeproc --version
 	$(PANDOC_CITEPROC) --version
 
 vcheck: vcheck_emacs vcheck_hugo vcheck_pandoc
