@@ -4,6 +4,10 @@
 #        2 is the orgmode setup file,
 #        3 is the temporary directory
 
+./getPandocVersion 2.10.1
+pandoc --version
+pandoc-citeproc --version
+
 emacs --batch --eval \
 	"(progn (setenv \"OX_HUGO_TMP_DIR\" \"$3\") \
     (load-file (expand-file-name \"setup-ox-hugo.el\" \"$2\" )))" \
