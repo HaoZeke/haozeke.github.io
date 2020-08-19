@@ -18,7 +18,7 @@ language: nix
 # - nix-shell
 
 script:
-  - nix-shell --run "npm install && make md"
+  - nix-shell --run "npm install && rake hugoBuild"
 cache:
   directories:
     - /home/travis/build/HaoZeke/haozeke.github.io/.tmp/
