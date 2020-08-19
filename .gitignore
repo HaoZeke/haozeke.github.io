@@ -404,3 +404,5 @@ dist
 
 # Temp folder
 .tmp/
+# Keys
+deploy_key.*

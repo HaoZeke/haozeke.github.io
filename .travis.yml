@@ -23,10 +23,14 @@ cache:
   directories:
     - /home/travis/build/HaoZeke/haozeke.github.io/.tmp/
 
+before_install:
+  - openssl aes-256-cbc -K $encrypted_189e52c2c347_key -iv $encrypted_189e52c2c347_iv
+    -in deploy_key.enc -out deploy_key -d
+
 deploy:
   provider: pages
   local_dir: ./public/
-  deploy_key: travis-deployer
+  deploy_key: deploy_key
   target_branch: master # Required for user pages
   cleanup: false
   skip_cleanup: true
