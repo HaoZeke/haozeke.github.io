@@ -19,4 +19,4 @@
 [build.environment]
   HUGO_VERSION = "0.72.0"
   HUGO_ENV = "production"
-  PATH = "$(PWD)/.tmp/bin:$PATH"
+  PATH = ".tmp/bin:$PATH"
