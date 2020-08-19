@@ -41,7 +41,7 @@ end
 desc "Orgmode to markdown with Emacs"
 task :md => ORG_FILES.ext(".md")
 rule ".md" => ->(f){source_for_md(f)} do |t|
-  %x(PATH=".tmp/bin:$PATH" && scripts/mkMD.sh #{t.source} \
+  %x(PATH=".tmp/bin:$PATH" scripts/mkMD.sh #{t.source} \
                      #{oxSetup} \
                      #{oxTmp}
                      )
