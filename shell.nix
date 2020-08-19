@@ -24,6 +24,7 @@ in pkgs.mkShell {
     hugo
     git
     nodejs
+    postcss-cli
     # Ruby
     myGems
     (lowPrio myGems.wrappedRuby)
