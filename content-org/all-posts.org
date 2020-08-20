@@ -130,7 +130,7 @@ the rest[fn:whereswaldo].
 - [[https://g.co/kgs/Y9fpDC][Google Knowledge Panel]]
 *** Voluntary
 - The Carpentries
-  - [[https://carpentries.org/instructors#HaoZeke][Instructor]], [[https://carpentries.org/maintainers#HaoZeke][Maintainer]], [[https://2020.carpentrycon.org/task-force/][CarpentyrCon2020 Committee Task Force]]
+  - [[https://carpentries.org/instructors#HaoZeke][Instructor]], [[https://carpentries.org/maintainers#HaoZeke][Maintainer]], [[https://2020.carpentrycon.org/task-force/][CarpentyrCon2020 Committee Task Force]], [[https://2020.carpentrycon.org/schedule/#session-10][CarpentryCon2020 Speaker]]
 - [[https://forum.igdore.org/t/rohit-goswami/656][IGDORE]]
 - [[https://www.univ.ai/teams/rohit-goswami][Univ.ai]]
 - TeX Users Group
@@ -195,6 +195,7 @@ the rest[fn:whereswaldo].
 - [[https://www.youtube.com/watch?v=Q1St1VT43sc&feature=youtu.be][Discussion session]] for the CS196A Code in Place AMA with the students
 - Panelist for the CarpentryCon 2020 session on [[https://pad.carpentries.org/cchome-teaching-online][lessons learnt from remote teaching]]
 - Student Presentation at UI on [[https://hi.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=6cda865b-c58a-4a79-89a3-ab9300d6ede6][Scrum for Software Quality Management]]
+- CarpentryCon 2020 [[https://www.youtube.com/watch?v=np6TPzME0aA][session recording]] on "[[https://2020.carpentrycon.org/schedule/#session-10][Reproducible Environments with the Nix Packaging System]]"
 *** Including Me
 This category involves recordings where I asked questions, and therefore
 technically involve me in a sense.
