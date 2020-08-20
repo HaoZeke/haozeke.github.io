@@ -4528,6 +4528,7 @@ This is a Carpentries style single page lesson on setting up and working with Ni
 - [[https://rgoswami.me/posts/nix-r-devtools/][Nix with R and devtools]]
 - [[https://rgoswami.me/posts/rethinking-r-nix/][Statistical Rethinking and Nix]]
 - [[https://pad.carpentries.org/cchome-nix-packaging][An Etherpad]]
+- [[https://www.youtube.com/watch?v=np6TPzME0aA][Session recording]]
 ** Ten seconds into Nix
 A few words to keep in mind, in no particular order.
 - Nix is based of good academic principles by @dolstraNixSafePolicyFree2004 and @dolstraNixOSPurelyFunctional2010
@@ -4926,6 +4927,11 @@ Though these are in no means exhaustive, they may offer a slightly more advanced
 - [[https://nixos.org/nixos/nix-pills/][Nix pills]]
 - [[https://nixos.org/learn.html][Official tutorials]]
 - [[https://nix.dev/][Nix dev]] has some nice opinionated tips
+*** Personal Correspondence
+Tyson Whitehead from Compute Canada was kind enough to bring the folllowing additional training materials:
+- A wiki pertaining to usage of Nix on in [[https://git.computecanada.ca/nix/training/-/tree/ccwiki][an HPC setting]]
+- SWC style workshop materials from [[https://git.computecanada.ca/nix/training/-/tree/20180618-tecc][TECC 2018]]
+- [[https://git.computecanada.ca/nix/training/-/tree/20180115-sharcnet][SHARCNET live presentation materials]] from 2018
 ** Conclusions
 The standard dive into Nix is based on building derviations and playing with language, which is in no means a bad one, just too long for the time allocated. The best way to get into Nix is to start using it for everything.
 
