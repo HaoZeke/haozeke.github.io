@@ -4504,6 +4504,10 @@ Having composed a bunch of these, I will of course try to somehow get ~nix~ up a
 
 [fn:reallythatbad] They were called ~hpc2013~ and ~hpc2010~ respectively
 [fn:mustisay] I really like Lua, enough to embed it in [[https://dseams.info][d-SEAMS]]
+* TODO Local Nix without Root :@programming:workflow:projects:hpc:nix:tools:
+** Patches
+If there are errors with multi-threading in the ~xz~ library, feel free to comment them out.
+
 * DONE A Tutorial Introduction to Nix :@programming:tools:nix:workflow:python:
 CLOSED: [2020-08-18 Tue 16:18]
 :PROPERTIES:
