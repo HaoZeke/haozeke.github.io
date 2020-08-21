@@ -75,6 +75,9 @@
 (require 'ox-blackfriday)
 (require 'ffap)                         ;For `ffap-url-regexp'
 (require 'ob-core)                      ;For `org-babel-parse-header-arguments'
+;; `org-refile.el' is new in Org 9.4
+;; https://code.orgmode.org/bzg/org-mode/commit/f636cf91b6cbe322eca56e23283f4614548c9d65
+(require 'org-refile nil :noerror)      ;For `org-get-outline-path'
 (declare-function org-hugo-pandoc-cite--parse-citations-maybe "ox-hugo-pandoc-cite")
 
 (defvar ffap-url-regexp)                ;Silence byte-compiler
@@ -732,13 +735,13 @@ newer."
 (org-export-define-derived-backend 'hugo 'blackfriday ;hugo < blackfriday < md < html
   :menu-entry
   '(?H "Export to Hugo-compatible Markdown"
-       ((?H "Subtree or File to Md file"
+       ((?H "Subtree or File to Md file            "
             (lambda (a _s v _b)
               (org-hugo-export-wim-to-md nil a v)))
         (?h "File to Md file"
             (lambda (a s v _b)
               (org-hugo-export-to-md a s v)))
-        (?O "Subtree or File to Md file and open"
+        (?O "Subtree or File to Md file and open   "
             (lambda (a _s v _b)
               (if a
                   (org-hugo-export-wim-to-md nil :async v)
@@ -748,7 +751,7 @@ newer."
               (if a
                   (org-hugo-export-to-md :async s v)
                 (org-open-file (org-hugo-export-to-md nil s v)))))
-        (?A "All subtrees (or File) to Md file(s)"
+        (?A "All subtrees (or File) to Md file(s)  "
             (lambda (a _s v _b)
               (org-hugo-export-wim-to-md :all-subtrees a v)))
         (?t "File to a temporary Md buffer"
@@ -955,6 +958,19 @@ is in progress.  See `org-hugo--before-export-function' and
     ;; (message "[ox-hugo ob-exp] ret: %S" ret)
     ret))
 
+
+;;;; Workaround to fix the regression in the behavior of `org-babel--string-to-number'.
+;; https://lists.gnu.org/r/emacs-orgmode/2020-02/msg00931.html
+(defun org-hugo--org-babel--string-to-number (string)
+  "If STRING represents a number return its value.
+Otherwise return nil.
+
+This function restores the behavior of
+`org-babel--string-to-number' to that of before
+https://code.orgmode.org/bzg/org-mode/commit/6b2a7cb20b357e730de151522fe4204c96615f98."
+  (and (string-match-p "\\`-?\\([0-9]\\|\\([1-9]\\|[0-9]*\\.\\)[0-9]*\\)\\'" string)
+       (string-to-number string)))
+
 (defun org-hugo--before-export-function (subtreep)
   "Function to be run before an ox-hugo export.
 
@@ -968,7 +984,8 @@ This is an internal function."
   (unless subtreep
     ;; Reset the variables that are used only for subtree exports.
     (setq org-hugo--subtree-coord nil))
-  (advice-add 'org-babel-exp-code :around #'org-hugo--org-babel-exp-code))
+  (advice-add 'org-babel-exp-code :around #'org-hugo--org-babel-exp-code)
+  (advice-add 'org-babel--string-to-number :override #'org-hugo--org-babel--string-to-number))
 
 (defun org-hugo--after-export-function (info outfile)
   "Function to be run after an ox-hugo export.
@@ -982,6 +999,7 @@ INFO is a plist used as a communication channel.
 OUTFILE is the Org exported file name.
 
 This is an internal function."
+  (advice-remove 'org-babel--string-to-number #'org-hugo--org-babel--string-to-number)
   (advice-remove 'org-babel-exp-code #'org-hugo--org-babel-exp-code)
   (when (and outfile
              (org-hugo--pandoc-citations-enabled-p info))
@@ -2302,7 +2320,15 @@ and rewrite link paths to make blogging more seamless."
                   (org-link-unescape desc)))
          ;; Only link description, but no link attributes.
          (desc
-          (format "[%s](%s)" desc path))
+          (let* ((path-has-space (and
+                                  (not (string-prefix-p "{{< relref " path))
+                                  (string-match-p "\\s-" path)))
+                 (path (if path-has-space
+                           ;; https://github.com/kaushalmodi/ox-hugo/issues/376
+                           ;; https://github.com/gohugoio/hugo/issues/6742#issuecomment-573924706
+                           (format "<%s>" path)
+                         path)))
+            (format "[%s](%s)" desc path)))
          ;; Only link attributes, but no link description.
          (link-param-str
           (let ((path (org-html-encode-plain-text path)))
@@ -2322,7 +2348,8 @@ and rewrite link paths to make blogging more seamless."
 
 INFO is a plist used as a communication channel."
   (let* ((exportables org-hugo-external-file-extensions-allowed-for-copying)
-         (bundle-dir (and (plist-get info :hugo-bundle) pub-dir))
+         (bundle-dir (and (plist-get info :hugo-bundle)
+                          (org-hugo--get-pub-dir info)))
          (resources (org-hugo--parse-property-arguments (plist-get info :hugo-resources))))
     (when (and bundle-dir resources)
       (dolist (resource resources)
@@ -2351,13 +2378,12 @@ PATH is the path to the image or any other attachment.
 INFO is a plist used as a communication channel."
   ;; (message "[ox-hugo attachment DBG] The Hugo section is: %s" (plist-get info :hugo-section))
   ;; (message "[ox-hugo attachment DBG] The Hugo base dir is: %s" (plist-get info :hugo-base-dir))
- (let* ((pub-dir (org-hugo--get-pub-dir info)) ;This needs to happen first so that the check for HUGO_BASE_DIR happens.
+  (let* ((pub-dir (org-hugo--get-pub-dir info)) ;This needs to happen first so that the check for HUGO_BASE_DIR happens.
          (hugo-base-dir (file-name-as-directory (plist-get info :hugo-base-dir)))
          (path-unhexified (url-unhex-string path))
          (path-true (file-truename path-unhexified))
          (exportables org-hugo-external-file-extensions-allowed-for-copying)
-         (bundle-dir (and (plist-get info :hugo-bundle)
-                          (org-hugo--get-pub-dir info)))
+         (bundle-dir (and (plist-get info :hugo-bundle) pub-dir))
          (bundle-name (when bundle-dir
                         (let* ((content-dir (file-truename
                                              (file-name-as-directory
@@ -2370,7 +2396,8 @@ INFO is a plist used as a communication channel."
                             (file-name-base (directory-file-name bundle-dir)))))))
          (static-dir (file-truename
                       (file-name-as-directory
-                       (expand-file-name "static" hugo-base-dir))))         (dest-dir (or bundle-dir static-dir))
+                       (expand-file-name "static" hugo-base-dir))))
+         (dest-dir (or bundle-dir static-dir))
          ret)
     (unless (file-directory-p static-dir)
       (user-error "Please create the %s directory" static-dir))
@@ -2566,6 +2593,7 @@ channel."
          (fm-format (plist-get info :hugo-front-matter-format)))
     ;; (message "ox-hugo src [dbg] lang: %S" lang)
     ;; (message "ox-hugo src [dbg] is-fm-extra: %S" is-fm-extra)
+    ;; (message "ox-hugo src [dbg] parameters: %S" parameters)
     (if (and is-fm-extra
              (member lang '("toml" "yaml")))
         (progn
@@ -2778,6 +2806,10 @@ BODY is the result of the export.
 INFO is a plist holding export options."
   ;; Copy the page resources to the bundle directory.
   (org-hugo--maybe-copy-resources info)
+  ;; (message "[ox-hugo body filter] ITEM %S" (org-entry-get (point) "ITEM"))
+  ;; (message "[ox-hugo body filter] TAGS: %S" (org-entry-get (point) "TAGS"))
+  ;; (message "[ox-hugo body filter] ALLTAGS: %S" (org-entry-get (point) "ALLTAGS"))
+
   ;; `org-md-plain-text' would have escaped all underscores in plain
   ;; text i.e. "_" would have been converted to "\_".
   ;; We need to undo that underscore escaping in Emoji codes for those
@@ -2785,13 +2817,11 @@ INFO is a plist holding export options."
   ;; Example: Convert ":raised\_hands:" back to ":raised_hands:".
   ;; More Emoji codes: https://www.emoji.codes/
   ;; (Requires setting "enableEmoji = true" in config.toml.)
-  ;; (message "[ox-hugo body filter] ITEM %S" (org-entry-get (point) "ITEM"))
-  ;; (message "[ox-hugo body filter] TAGS: %S" (org-entry-get (point) "TAGS"))
-  ;; (message "[ox-hugo body filter] ALLTAGS: %S" (org-entry-get (point) "ALLTAGS"))
   (setq body (replace-regexp-in-string
               "\\(:[a-z0-9]+\\)[\\]\\(_[a-z0-9]+:\\)"
               "\\1\\2"
               body))
+
   (when (and (org-hugo--plist-get-true-p info :hugo-delete-trailing-ws)
              (not (org-hugo--plist-get-true-p info :preserve-breaks)))
     (setq body (with-temp-buffer
@@ -3042,8 +3072,8 @@ If the extracted document title is nil, and exporting the title
 is disabled, return nil.
 
 If the extracted document title is non-nil, return it after
-
 removing all markup characters.
+
 Also double-quote the title if it doesn't already contain any
 double-quotes."
   (let ((title (when (plist-get info :with-title)
