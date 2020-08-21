@@ -51,9 +51,7 @@ The text is assumed to be in Org mode format.
 
 This can be used in any buffer.  For example, you can write an
 itemized list in Org mode syntax in a Markdown buffer and use
-this command to convert it.
-
-\(fn)" t nil)
+this command to convert it." t nil)
 
 (autoload 'org-blackfriday-export-to-markdown "ox-blackfriday" "\
 Export current buffer to a Github Flavored Markdown file.
@@ -240,9 +238,7 @@ The optional argument NOERROR is passed to
 Get Emacs, Org and Hugo version and ox-hugo customization info.
 The information is converted to Markdown format and copied to the
 kill ring.  The same information is displayed in the Messages
-buffer and returned as a string in Org format.
-
-\(fn)" t nil)
+buffer and returned as a string in Org format." t nil)
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ox-hugo" '("org-hugo-")))
 
