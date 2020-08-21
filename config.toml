@@ -1,4 +1,4 @@
-baseurl = "https://rgoswami.me"
+baseurl = "/"
 languageCode = "en-us"
 theme = ["hugo-search-fuse-js","hello-friend-ng-hz"]
 
