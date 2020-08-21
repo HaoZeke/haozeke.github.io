@@ -26,10 +26,11 @@ cache:
 deploy:
   provider: pages
   local_dir: ./public/
-  deploy_key: travis-deployer
+  github_token: $GITHUB_TOKEN
   target_branch: master # Required for user pages
   cleanup: false
   skip_cleanup: true
+  fqdn: rgoswami.me
   edge: true
   on:
     branch: src
