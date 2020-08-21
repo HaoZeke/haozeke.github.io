@@ -4917,7 +4917,7 @@ nix-prefetch-url $url
 In practice, some trial and error is easier.
 ** Supplementary Reading Material
 Though these are in no means exhaustive, they may offer a slightly more advanced or different focus than the material covered here.
-*** References
+*** Core Content
 - Manuals
   - [[https://nixos.org/nix/manual/][Nix]] and Nixpkgs
 - [[https://nixos.wiki/][Nix Wiki]]
