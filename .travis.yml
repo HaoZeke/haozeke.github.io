@@ -41,13 +41,12 @@ cache:
     - $HOME/nix.store
 
 deploy:
-  provider: pages:git
+  provider: pages
   local_dir: ./public/
-  token: $GITHUB_TOKEN
-  target_branch: master # Required for user pages
-  cleanup: false
   skip_cleanup: true
+  github_token: $GITHUB_TOKEN # Set in the settings page of your repository, as a secure variable
+  keep_history: true
+  target_branch: master # Required for user pages
   fqdn: rgoswami.me
-  edge: true
   on:
     branch: src
