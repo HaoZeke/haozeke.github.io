@@ -20,7 +20,7 @@ publishDir   = "public"
 buildDrafts  = false
 buildFuture  = false
 buildExpored = false
-canonifyURLs = true
+canonifyURLs = false
 
 enableRobotsTXT = true
 enableGitInfo   = false # See https://github.com/kaushalmodi/ox-hugo/blob/5de3da970f9ead05930781dd0b73b5011310b2ba/doc/config.toml#L14
