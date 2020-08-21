@@ -38,9 +38,9 @@ cache:
     - $HOME/nix.store
 
 deploy:
-  provider: pages
+  provider: pages:git
   local_dir: ./public/
-  github_token: $GITHUB_TOKEN
+  token: $GITHUB_TOKEN
   target_branch: master # Required for user pages
   cleanup: false
   skip_cleanup: true
