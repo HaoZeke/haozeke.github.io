@@ -7,7 +7,7 @@ let
     gemdir = ./.;
   };
   myHaskellEnv = pkgs.haskellPackages.ghcWithPackages
-    (haskellPackages: with haskellPackages; [ pandoc pandoc-citeproc ]);
+    (haskellPackages: with haskellPackages; [ pandoc_2_10_1 pandoc-citeproc ]);
   hook = ''
     mkdir -p "$(pwd)/_libs"
     export R_LIBS_USER="$(pwd)/_libs"
