@@ -4551,7 +4551,7 @@ Note that the basic package search operation is ~nix search~ and it gives output
 
 #+DOWNLOADED: screenshot @ 2020-08-18 14:57:27
 #+caption: The ~nix search emacs~ output
-[[file:images/Setup/2020-08-18_14-57-27_screenshot.png]]
+[[file:images/Setup/nixSearchSetup.png]]
 
 Though this is not bad by any standard, we will try to get a more interactive management tool.
 ** Basic Helpers
@@ -4567,7 +4567,7 @@ Try installing these and use ~nox emacs~ to test the output
 
 #+DOWNLOADED: screenshot @ 2020-08-18 15:06:17
 #+caption: The ~nox emacs~ output
-[[file:images/Basic_Helpers/2020-08-18_15-06-17_screenshot.png]]
+[[file:images/Basic_Helpers/basicHelpers.png]]
 
 ** More Dependable Dependencies
 *** Standard Channels
@@ -4658,7 +4658,7 @@ The ~.envrc~ output is not very useful at a glance, however when we cd into the 
 
 #+DOWNLOADED: screenshot @ 2020-08-18 15:31:31
 #+caption: Sample output of the evaluation
-[[file:images/Project_Setup/2020-08-18_15-31-31_screenshot.png]]
+[[file:images/Project_Setup/prjSetup.png]]
 
 Note that in order to set ~lorri~ up, we will need to set up a daemon.
 #+BEGIN_SRC bash
