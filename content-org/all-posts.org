@@ -4933,6 +4933,6 @@ Tyson Whitehead from Compute Canada was kind enough to bring the folllowing addi
 - SWC style workshop materials from [[https://git.computecanada.ca/nix/training/-/tree/20180618-tecc][TECC 2018]]
 - [[https://git.computecanada.ca/nix/training/-/tree/20180115-sharcnet][SHARCNET live presentation materials]] from 2018
 ** Conclusions
-The standard dive into Nix is based on building derviations and playing with language, which is in no means a bad one, just too long for the time allocated. The best way to get into Nix is to start using it for everything.
+The standard dive into Nix is based on building derivations and playing with language, which is in no means a bad one, just too long for the time allocated. The best way to get into Nix is to start using it for everything.
 
 [fn:whynotsingle] For reasons pertaining to latency and ease-of-use, we will assume the multi-user installation
