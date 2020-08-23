@@ -4936,3 +4936,88 @@ Tyson Whitehead from Compute Canada was kind enough to bring the folllowing addi
 The standard dive into Nix is based on building derivations and playing with language, which is in no means a bad one, just too long for the time allocated. The best way to get into Nix is to start using it for everything.
 
 [fn:whynotsingle] For reasons pertaining to latency and ease-of-use, we will assume the multi-user installation
+* DONE Nix Shells for Node Projects :@programming:tools:nix:workflow:node:
+CLOSED: [2020-08-23 Sun 10:09]
+:PROPERTIES:
+:EXPORT_FILE_NAME: nix-shell-node
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_PANDOC_CITATIONS: t
+:END:
+** Background
+As a prelude to writing up the details of how this site is generated, I realized I should write up a ~nix~ oriented workflow for ~node~ packages.
+** Tooling and Idea
+The basic concepts are:
+- Use ~npm~ to generate a ~package-lock.json~ file
+- Use ~node2nix~ in a shell to generate a set of ~nix~ derivations
+- Enter a shell environment with the ~nix~ inputs
+- Profit
+
+However, the nuances of this are a bit annoying at first.
+** Packaging Requirements
+We will use the standard ~npm~ installation method at first, but since we shouldn't keep installing and removing things, so we need a way to modify ~package.json~ without running ~npm~ and will therefore add ~add-dependency~.
+#+BEGIN_SRC bash
+npm install add-dependency
+#+END_SRC
+** Setting up Node2Nix
+We will first clean the directory of what we do not need.
+
+#+BEGIN_SRC bash
+rm -rf default.nix node-env.nix node-packages.nix node_modules
+#+END_SRC
+
+Now we can enter a shell with ~node2nix~ and generate files for the node packages.
+
+#+BEGIN_SRC bash
+nix-shell -p 'nodePackages.node2nix'
+node2nix -l package-lock.json
+#+END_SRC
+
+** A Nix Environment
+
+We will use the standard setup described in [[A Tutorial Introduction to Nix][the tutorial post]]:
+#+BEGIN_SRC bash
+nix-env -i niv lorri
+niv init
+niv update nixpkgs -b nixpkgs-unstable
+#+END_SRC
+
+This is to be in conjunction with the following ~shell.nix~ file [fn:whythis].
+
+#+BEGIN_SRC nix
+{ sources ? import ./nix/sources.nix }:
+let
+  pkgs = import sources.nixpkgs { };
+  nodeEnv = pkgs.callPackage ./node-env.nix { };
+  nodePackages = pkgs.callPackage ./node-packages.nix {
+    globalBuildInputs = with pkgs; [ zsh ];
+    inherit nodeEnv;
+  };
+in nodePackages.shell
+#+END_SRC
+
+Note that we have overridden the ~nodePackages~ shell which is defined in the files created by ~node2nix~.
+
+We can now enter the environment and setup ~node_modules~[fn:whatlorri].
+#+BEGIN_SRC bash
+nix-shell
+ln -s $NODE_PATH node_modules
+#+END_SRC
+
+** Updates
+Unfortunately, this setup is a little fragile to updates. We will need to exit and re-create the setup. Note that we are removing the lock file now as well.
+
+#+BEGIN_SRC bash
+# In the nix-shell
+add-dependencies babel-loader @babel/core @babel/preset-env core-js @babel/plugin-transform-regenerator
+# Do not run in nix-shell
+rm -rf default.nix node-env.nix node-packages.nix node_modules package-lock.json
+# Update in a line
+nix-shell -p 'nodePackages.node2nix' --run 'node2nix package.json'
+#+END_SRC
+
+The single line update mechanism can be run in the ~nix-shell~ itself, making things marginally less painful.
+** Conclusions
+This has been a short introduction to working with the ~nix-shell~ ecosystem. It isn't as fast as working with the normal setup, and it is a pretty annoying workflow. Given that most CI setups have good support for caching ~npm~ dependencies, it doesn't seem worthwhile at the moment.
+
+[fn:whatlorri] We can't use ~lorri~ yet since we need to selectively add and remove the symbolic link to ~node_modules~
+[fn:whythis] There might be a better approach defined in [[https://github.com/svanderburg/node2nix/issues/175][this issue]] later
