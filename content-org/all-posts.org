@@ -1661,7 +1661,7 @@ Where we have used ~mathematica :results file~ as our header line.
 ** Background
 ** Mass and Energy Balances
 From the first lecture on the topic, I came away with an implicit understanding, that though reactor design might be the heart of a chemical engineering plant, the soul would be mass and energy balances.
-* DONE An Orgmode Note Workflow :@notes:ramblings:explanations:
+* DONE An Orgmode Note Workflow :@programming:tools:emacs:workflow:orgmode:
 CLOSED: [2020-05-10 Sun 15:01]
 :PROPERTIES:
 :EXPORT_FILE_NAME: org-note-workflow
