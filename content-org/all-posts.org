@@ -5058,7 +5058,7 @@ let
     pkgs = pkgs;
     requirements = ''
       copier
-      f90wrap
+      black
     '';
   };
 in pkgs.mkShell {
