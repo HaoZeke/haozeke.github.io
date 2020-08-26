@@ -5054,8 +5054,14 @@ let
     ref = "2.2.2";
   });
   customPython = mach-nix.mkPython {
-    providers = { _default = "nixpkgs,wheel,sdist"; };
-    pkgs = pkgs;
+    requirements = ''
+      copier
+      pytest
+    '';
+    providers = {
+      _default = "nixpkgs,wheel,sdist";
+      pytest = "nixpkgs";
+    };
     overrides_pre = [
       (pythonSelf: pythonSuper: {
         pytest = pythonSuper.pytest.overrideAttrs (oldAttrs: {
@@ -5064,17 +5070,9 @@ let
         });
       })
     ];
-    requirements = ''
-      copier
-      black
-    '';
+    pkgs = pkgs;
   };
-in pkgs.mkShell {
-  buildInputs = with pkgs;
-    [
-      customPython
-    ];
-}
+in pkgs.mkShell { buildInputs = with pkgs; [ customPython ]; }
 #+END_SRC
 
 Note that we have essentially written out a ~requirements.txt~ and can actually pass a path there instead as well. The key point to make it work with ~niv~ is the ~pkgs~ parameter.
