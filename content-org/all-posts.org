@@ -5062,12 +5062,59 @@ let
       _default = "nixpkgs,wheel,sdist";
       pytest = "nixpkgs";
     };
+    pkgs = pkgs;
+  };
+in pkgs.mkShell { buildInputs = with pkgs; [ customPython ]; }
+#+END_SRC
+
+Note that we have essentially written out a ~requirements.txt~ and can actually pass a path there instead as well. The key point to make it work with ~niv~ is the ~pkgs~ parameter. To use the older method of overriding parts of the setup, we can use the ~overrides_pre~ hook as shown below:
+#+BEGIN_SRC nix
+let
+  sources = import ./prjSource/nix/sources.nix;
+  pkgs = import sources.nixpkgs { };
+  inherit (pkgs.lib) optional optionals;
+  mach-nix = import (builtins.fetchGit {
+    url = "https://github.com/DavHau/mach-nix/";
+    ref = "2.2.2";
+  });
+  customPython = mach-nix.mkPython {
+    requirements = ''
+      copier
+      pytest
+      f90wrap
+    '';
+    providers = {
+      _default = "nixpkgs,wheel,sdist";
+      pytest = "nixpkgs";
+    };
     overrides_pre = [
       (pythonSelf: pythonSuper: {
         pytest = pythonSuper.pytest.overrideAttrs (oldAttrs: {
           doCheck = false;
           doInstallCheck = false;
         });
+        f90wrap = pythonSelf.buildPythonPackage rec {
+          pname = "f90wrap";
+          version = "0.2.3";
+          src = pkgs.fetchFromGitHub {
+            owner = "jameskermode";
+            repo = "f90wrap";
+            rev = "master";
+            sha256 = "0d06nal4xzg8vv6sjdbmg2n88a8h8df5ajam72445mhzk08yin23";
+          };
+          buildInputs = with pkgs; [ gfortran stdenv ];
+          propagatedBuildInputs = with pythonSelf; [
+            setuptools
+            setuptools-git
+            wheel
+            numpy
+          ];
+          preConfigure = ''
+            export F90=${pkgs.gfortran}/bin/gfortran
+          '';
+          doCheck = false;
+          doIstallCheck = false;
+        };
       })
     ];
     pkgs = pkgs;
@@ -5075,8 +5122,7 @@ let
 in pkgs.mkShell { buildInputs = with pkgs; [ customPython ]; }
 #+END_SRC
 
-Note that we have essentially written out a ~requirements.txt~ and can actually pass a path there instead as well. The key point to make it work with ~niv~ is the ~pkgs~ parameter.
-
+We can also pull in overrides from ~poetry2nix~ with ~overrides_post~ as [[https://github.com/DavHau/mach-nix/blob/master/examples.md][described here]].
 ** Conclusion
 With the completion of this final remaining hurdle, ~nix~ is now fully realized as a ~python~ management system. At this point the "only" thing remaining is to find an optimal way of leveraging ~nix~ for setting up re-usable data science and scientific computing projects.
 
