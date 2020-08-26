@@ -5056,6 +5056,14 @@ let
   customPython = mach-nix.mkPython {
     providers = { _default = "nixpkgs,wheel,sdist"; };
     pkgs = pkgs;
+    overrides_pre = [
+      (pythonSelf: pythonSuper: {
+        pytest = pythonSuper.pytest.overrideAttrs (oldAttrs: {
+          doCheck = false;
+          doInstallCheck = false;
+        });
+      })
+    ];
     requirements = ''
       copier
       black
