@@ -5022,11 +5022,13 @@ This has been a short introduction to working with the ~nix-shell~ ecosystem. It
 [fn:whatlorri] We can't use ~lorri~ yet since we need to selectively add and remove the symbolic link to ~node_modules~
 [fn:whythis] There might be a better approach defined in [[https://github.com/svanderburg/node2nix/issues/175][this issue]] later
 
-* TODO Mach-Nix for Nix Python and Niv :@programming:tools:nix:workflow:python:
+* DONE Mach-Nix for Nix Python and Niv :@programming:tools:nix:workflow:python:
+CLOSED: [2020-08-26 Wed 05:42]
 :PROPERTIES:
 :EXPORT_FILE_NAME: mach-nix-niv-python
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :END:
+
 #+BEGIN_QUOTE
 Short post on using ~mach-nix~ with ~niv~.
 #+END_QUOTE
