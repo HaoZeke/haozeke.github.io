@@ -5021,3 +5021,56 @@ This has been a short introduction to working with the ~nix-shell~ ecosystem. It
 
 [fn:whatlorri] We can't use ~lorri~ yet since we need to selectively add and remove the symbolic link to ~node_modules~
 [fn:whythis] There might be a better approach defined in [[https://github.com/svanderburg/node2nix/issues/175][this issue]] later
+
+* TODO Mach-Nix for Nix Python and Niv :@programming:tools:nix:workflow:python:
+:PROPERTIES:
+:EXPORT_FILE_NAME: mach-nix-niv-python
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+BEGIN_QUOTE
+Short post on using ~mach-nix~ with ~niv~.
+#+END_QUOTE
+
+** Background
+In previous posts, there was a [[A Tutorial Introduction to Nix][discussion on a ground up approach to adding packages]] which aren't on the core ~nixpkgs~ channels using GitHub or PyPi sources. However, this lacked a way to do so programmatically, and also a way to convert existing python projects.
+
+** Python Dependency Management
+This time, instead of the more pedagogical approach of building packages from PyPi or GitHub, we will use overlays and the excellent [[https://github.com/DavHau/mach-nix][mach-nix]]
+ to speed up the process. We will continue to use [[https://github.com/nmattia/niv][niv]].
+ #+BEGIN_SRC bash
+niv init
+niv update nixpkgs -b nixpkgs-unstable
+ #+END_SRC
+
+To leverage ~mach-nix~ we will simply need the following setup to work with ~niv~.
+
+#+BEGIN_SRC nix
+let
+  sources = import ./nix/sources.nix;
+  pkgs = import sources.nixpkgs { };
+  inherit (pkgs.lib) optional optionals;
+  mach-nix = import (builtins.fetchGit {
+    url = "https://github.com/DavHau/mach-nix/";
+    ref = "2.2.2";
+  });
+  customPython = mach-nix.mkPython {
+    providers = { _default = "nixpkgs,wheel,sdist"; };
+    pkgs = pkgs;
+    requirements = ''
+      copier
+      f90wrap
+    '';
+  };
+in pkgs.mkShell {
+  buildInputs = with pkgs;
+    [
+      customPython
+    ];
+}
+#+END_SRC
+
+Note that we have essentially written out a ~requirements.txt~ and can actually pass a path there instead as well. The key point to make it work with ~niv~ is the ~pkgs~ parameter.
+
+** Conclusion
+With the completion of this final remaining hurdle, ~nix~ is now fully realized as a ~python~ management system. At this point the "only" thing remaining is to find an optimal way of leveraging ~nix~ for setting up re-usable data science and scientific computing projects.
+
