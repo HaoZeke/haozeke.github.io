@@ -4784,6 +4784,7 @@ let
   hook = ''
      export PIP_PREFIX="$(pwd)/_build/pip_packages"
      export PYTHONPATH="$(pwd)/_build/pip_packages/lib/python3.8/site-packages:$PYTHONPATH"
+     export PATH="$PIP_PREFIX/bin:$PATH"
      unset SOURCE_DATE_EPOCH
   '';
 in pkgs.mkShell {
@@ -4867,6 +4868,7 @@ let
     # Python Stuff
      export PIP_PREFIX="$(pwd)/_build/pip_packages"
      export PYTHONPATH="$(pwd)/_build/pip_packages/lib/python3.8/site-packages:$PYTHONPATH"
+     export PATH="$PIP_PREFIX/bin:$PATH"
      unset SOURCE_DATE_EPOCH
   '';
   # Apparently pip needs 1980 or above
