@@ -39,7 +39,7 @@ disableHugoGeneratorInject = false
   hrefTargetBlank = true
 
 [taxonomies]
-  author   = "authors"
+  author   = "author"
   tag      = "tags"
   category = "categories"
 
