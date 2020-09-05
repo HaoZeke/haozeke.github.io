@@ -4186,12 +4186,85 @@ I actually strongly suggest using a target from [[https://github.com/HaoZeke/Dot
 ~/.local/bin/dotgit restore hzhpc
 #+END_SRC
 Note that because of the suggested separation, I have not opted to setup a shell or even ensure that there are scripts here to help keep ~module~ in your path. Those are in [[https://github.com/HaoZeke/Dotfiles][my Dotfiles]].
+If, you *opt to not use* these ~dotfiles~, then *do not* run the ~ml load~ commands.
 ** LMod Libraries
 #+BEGIN_QUOTE
 *Note that*: [[http://ihpc.is/garpur/][garpur]] already has ~lmod~ and a module for GNU ~gcc~ 9.2.0
 #+END_QUOTE
 
 The scripts in this post will also be part of the [[https://github.com/HaoZeke/haozeke.github.io/][repo]], but keep in mind that these are not meant to be robust ways to install anything, and every command should be run by hand because things will probably break badly.
+*** GMP
+#+BEGIN_SRC bash
+myprefix=$HOME/.hpc/gcc/gmp/6.2.0
+export PATH
+wget https://gmplib.org/download/gmp/gmp-6.2.0.tar.xz
+tar xfv gmp-6.2.0.tar.xz
+cd gmp-6.2.0
+./configure --prefix=$myprefix    \
+            --enable-cxx     \
+            --docdir=$myprefix/doc/gmp-6.1.2
+make -j$(nproc)
+make install
+#+END_SRC
+*** MPFR
+#+BEGIN_SRC bash
+myprefix=$HOME/.hpc/gcc/mpfr/4.1.0
+export PATH
+wget https://www.mpfr.org/mpfr-current/mpfr-4.1.0.tar.xz
+tar xfv mpfr-4.1.0.tar.xz
+cd mpfr-4.1.0
+./configure --prefix=$myprefix    \
+            --enable-thread-safe     \
+            --with-gmp=$HOME/.hpc/gcc/gmp/6.2.0 \
+            --docdir=$myprefix/doc/mpfr-4.1.0
+make -j$(nproc)
+make install
+#+END_SRC
+*** MPC
+#+BEGIN_SRC bash
+myprefix=$HOME/.hpc/gcc/mpc/1.2.0
+export PATH
+wget https://ftp.gnu.org/gnu/mpc/mpc-1.2.0.tar.gz
+tar xfv mpc-1.2.0.tar.gz
+cd mpc-1.2.0
+./configure --prefix=$myprefix    \
+            --with-gmp=$HOME/.hpc/gcc/gmp/6.2.0 \
+            --with-mpfr=$HOME/.hpc/gcc/mpfr/4.1.0 \
+            --docdir=$myprefix/doc/mpc-1.2.0
+make -j$(nproc)
+make install
+#+END_SRC
+*** GCC 9.2.0
+#+BEGIN_SRC bash :noeval :tangle codeSnips/lmod-help/getGCC920.sh :eval never
+mkdir -p ~/tmpHPC
+cd $HOME/tmpHPC
+myprefix=$HOME/.hpc/gcc/9.2.0
+export PATH
+export LIBRARY_PATH=/usr/lib64/:$LIBRARY_PATH
+wget https://ftp.gnu.org/gnu/gcc/gcc-9.2.0/gcc-9.2.0.tar.xz
+tar xfv gcc-9.2.0.tar.xz
+cd gcc-9.2.0
+case $(uname -m) in
+  x86_64)
+    sed -e '/m64=/s/lib64/lib/' \
+        -i.orig gcc/config/i386/t-linux64
+  ;;
+esac
+mkdir -p build                                         &&
+cd    build                                            &&
+
+SED=sed                               \
+../configure --prefix=$myprefix            \
+             --enable-languages=c,c++,fortran \
+             --disable-multilib       \
+             --with-gmp=$HOME/.hpc/gcc/gmp/6.2.0 \
+             --with-mpfr=$HOME/.hpc/gcc/mpfr/4.1.0 \
+             --with-mpc=$HOME/.hpc/gcc/mpc/1.2.0 \
+             --disable-bootstrap      \
+             --with-system-zlib
+make -j$(nproc)
+ml load gcc/9.2.0
+#+END_SRC
 *** Autotools
 Following the standard approach outlined in the [[https://www.gnu.org/software/automake/faq/autotools-faq.html#How-can-I-install-software-below-my-home-directory_003f][GNU Autotools FAQ]]:
 #+BEGIN_SRC bash :noeval :tangle codeSnips/lmod-help/getAutotools.sh :eval never
@@ -4215,6 +4288,7 @@ cd ../automake-1.16.2
 ./configure -C --prefix=$myprefix/automake/1.16.2 && make -j$(nproc) && make install
 cd ../libtool-2.4.6
 ./configure -C --prefix=$myprefix/libtool/2.4.6 && make -j$(nproc) && make install
+ml load autotools/autotools
 #+END_SRC
 Combined with the [[https://lmod.readthedocs.io/en/latest/020_advanced.html][lmod manual]] gives rise to the following definiton (roughly the same for each one):
 #+BEGIN_SRC bash
@@ -4233,6 +4307,7 @@ curl -L http://xrl.us/installperlnix | bash
 # Use Perl
 ml use perl/5.28.0
 cpanm ExtUtils::MakeMaker # For git
+ml load perl/5.28.0
 #+END_SRC
 *** Git
 This is very similar to the previous approach. However, since by default the system ~perl~ was being picked up, some slight changes have been made.
@@ -4243,9 +4318,10 @@ export PATH
 wget https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.9.5.tar.gz
 gzip -dc git-2.9.5.tar.gz | tar xvf -
 cd git-2.9.5
-./configure -C --prefix=$myprefix
+./configure --with-perl=$(which perl) -C --prefix=$myprefix
 make -j $(nproc)
 make install
+ml load git/2.9.5
 #+END_SRC
 **** Caveat
 Also, for TRAMP, we would prefer having a more constant path, so we can set up a symlink:
@@ -4269,6 +4345,7 @@ This means we're almost done!
 #+BEGIN_SRC bash
 ./b2
 ./b2 install --prefix=$HOME/.hpc/boost/boost-1.73.0
+ml load boost/boost-1.73.0
 #+END_SRC
 *** Pkg-Config
 #+BEGIN_SRC bash
@@ -4280,6 +4357,7 @@ cd pkg-config-0.29.2
 mkdir $myprefix/lib
 make -j $(nproc)
 make install
+ml load pkg-config/0.29.2
 #+END_SRC
 *** Zlib
 #+BEGIN_SRC bash
@@ -4290,6 +4368,7 @@ cd zlib-1.2.11
 ./configure --prefix=$myprefix
 make -j $(nproc)
 make install
+ml load zlib/1.2.11
 #+END_SRC
 *** XZ Utils
 #+BEGIN_SRC bash
@@ -4300,6 +4379,7 @@ cd xz-5.2.5
 ./configure --prefix=$myprefix --enable-threads=yes
 make -j $(nproc)
 make install
+ml load xz/5.2.5
 #+END_SRC
 *** OpenSSL
 #+BEGIN_SRC bash
@@ -4310,6 +4390,7 @@ cd openssl-1.1.1d
 ./config --prefix=$myprefix --openssldir=$myprefix/etc/ssl shared zlib-dynamic
 make -j $(nproc)
 make install
+ml load openssl/1.1.1d
 #+END_SRC
 *** Cmake
 #+BEGIN_SRC bash
@@ -4320,6 +4401,7 @@ cd cmake-3.18.1
 ./bootstrap --prefix=$myprefix
 make -j $(nproc)
 make install
+ml load cmake/3.18.1
 #+END_SRC
 *** GNU-Make
 #+BEGIN_SRC bash
@@ -4330,6 +4412,7 @@ cd make-4.3
 ./configure --prefix=$myprefix
 make -j $(nproc)
 make install
+ml load make/4.3
 #+END_SRC
 *** Brotli
 #+BEGIN_SRC bash
@@ -4340,6 +4423,7 @@ cd libbrotli
 ./configure --prefix=$myprefix
 make -j $(nproc)
 make install
+ml load brotli/1.0.1
 #+END_SRC
 *** ncurses
 We will need to manually ensure the paths for ~pkg-config~ are in a feasible location.
@@ -4354,6 +4438,7 @@ make install
 mkdir pkgconfig
 cp misc/formw.pc misc/menuw.pc misc/ncurses++w.pc misc/ncursesw.pc misc/panelw.pc pkgconfig/
 mv pkgconfig $myprefix/lib/
+ml load ncurses/6.2
 #+END_SRC
 *** texinfo
 #+BEGIN_SRC bash
@@ -4364,6 +4449,7 @@ cd texinfo-6.7
 ./configure --prefix=$myprefix
 make -j $(nproc)
 make install
+ml load texinfo/6.7
 #+END_SRC
 *** gperf
 #+BEGIN_SRC bash
@@ -4374,17 +4460,31 @@ cd gperf-3.1
 ./configure --prefix=$myprefix
 make -j $(nproc)
 make install
+ml load gperf/3.1
 #+END_SRC
 *** libseccomp
 There is a bug, which requires modifying ~src/system.c~ to change ~__NR_seccomp~ to ~_nr_seccomp~.
 #+BEGIN_SRC bash
 myprefix=$HOME/.hpc/libseccomp/2.5.0
 git clone https://github.com/seccomp/libseccomp
+cd libseccomp
 git checkout tags/v2.5.0
 ./autogen.sh
 ./configure --prefix=$myprefix
 make -j $(nproc)
 make install
+ml load libseccomp/2.5.0
+#+END_SRC
+Alternatively, it is easier to work with an older version.
+#+BEGIN_SRC bash
+myprefix=$HOME/.hpc/libseccomp/2.4.4
+wget https://github.com/seccomp/libseccomp/releases/download/v2.4.4/libseccomp-2.4.4.tar.gz
+tar xfv libseccomp-2.4.4.tar.gz
+cd libseccomp-2.4.4
+./configure --prefix=$myprefix
+make -j $(nproc)
+make install
+ml load libseccomp/2.4.4
 #+END_SRC
 *** BDWGC
 #+BEGIN_SRC bash
@@ -4395,6 +4495,7 @@ cd gc-8.0.4
 ./configure --prefix=$myprefix --enable-cplusplus
 make -j $(nproc)
 make install
+ml load bdwgc/8.0.4
 #+END_SRC
 *** pcre
 We will prep both ~pcre2~ and ~pcre~.
@@ -4409,6 +4510,7 @@ cd pcre2-10.35
             --enable-pcre2grep-libz
 make -j $(nproc)
 make install
+ml load pcre2/10.35
 #+END_QUOTE
 
 #+BEGIN_QUOTE
@@ -4422,6 +4524,7 @@ cd pcre-8.44
             --enable-pcregrep-libz
 make -j $(nproc)
 make install
+ml load pcre/8.44
 #+END_QUOTE
 *** bison
 #+BEGIN_SRC bash
@@ -4432,18 +4535,18 @@ cd bison-3.7.1
 ./configure --prefix=$myprefix
 make -j $(nproc)
 make install
+ml load bison/3.7.1
 #+END_SRC
 *** jq
 #+BEGIN_SRC bash
-myprefix=$HOME/.hpc/jq/1.16
-git clone https://github.com/stedolan/jq.git
-cd jq
-git submodule update --init
-git checkout tags/jq-1.6
-autoreconf -fi
-./configure --prefix=$myprefix --with-oniguruma=builtin
-make -j $(nproc)
+myprefix=$HOME/.hpc/jq/1.6
+wget https://github.com/stedolan/jq/releases/download/jq-1.6/jq-1.6.tar.gz
+tar xfv jq-1.6.tar.gz
+cd jq-1.6
+./configure --prefix=$myprefix --with-oniguruma=builtin --disable-maintainer-mode
+make LDFLAGS=-all-static -j $(nproc)
 make install
+ml load jq/1.6
 #+END_SRC
 *** bzip2
 Needed to manually configure it as shown [[https://github.com/samtools/htslib/issues/696#issuecomment-387405020][here]]
@@ -4456,6 +4559,7 @@ make -f Makefile-libbz2_so
 ln -sf libbz2.so.1.0 libbz2.so
 cp -avf bzlib.h $myprefix/include
 cp -avf libbz2.so* $myprefix/lib
+ml load bzip2/1.0.8
 #+END_SRC
 *** sqlite
 #+BEGIN_SRC bash
@@ -4466,6 +4570,7 @@ cd sqlite-autoconf-3320300
 ./configure --prefix=$myprefix
 make -j $(nproc)
 make install
+ml load sqlite/3.32.3
 #+END_SRC
 *** editline
 #+BEGIN_SRC bash
@@ -4476,6 +4581,7 @@ cd editline-1.17.1
 ./configure --prefix=$myprefix
 make -j $(nproc)
 make install
+ml load editline/1.17.1
 #+END_SRC
 ** Applications
 Libraries and ~git~ aside, there are some tools we might want to have.
@@ -4489,6 +4595,7 @@ cd the_silver_searcher-2.2.0
 ./configure --prefix=$myprefix
 make -j $(nproc)
 make install
+ml load the_silver_searcher/2.2.0
 #+END_SRC
 *** Neovim
 #+BEGIN_SRC bash
@@ -4498,6 +4605,7 @@ chmod +x nvim.appimage
 ./nvim.appimage --appimage-extract
 mkdir -p $myprefix
 mv squashfs-root/usr/* $myprefix
+ml load nvim/0.5.0
 #+END_SRC
 *** Tmux
 #+BEGIN_SRC bash
@@ -4508,6 +4616,7 @@ rm -rf squashfs-root
 ./tmux-3.1b-x86_64.AppImage --appimage-extract
 mkdir -p $myprefix
 mv squashfs-root/usr/bin squashfs-root/usr/lib squashfs-root/usr/share $myprefix
+ml load tmux/3.1b
 #+END_SRC
 
 *** Zsh
@@ -4520,6 +4629,7 @@ cd zsh-zsh-5.8
 ./configure --prefix=$myprefix
 make -j $(nproc)
 make install
+ml load zsh/5.8
 #+END_SRC
 ** Conclusion
 Having composed a bunch of these, I will of course try to somehow get ~nix~ up and running so it can bootstrap itself and allow me to work in peace. I might also eventually create shell scripts to automate updating these, but hopefully I can set up ~nix~ and not re-create package manager logic in ~lua~.
@@ -5150,3 +5260,38 @@ We can also pull in overrides from ~poetry2nix~ with ~overrides_post~ as [[https
 ** Conclusion
 With the completion of this final remaining hurdle, ~nix~ is now fully realized as a ~python~ management system. At this point the "only" thing remaining is to find an optimal way of leveraging ~nix~ for setting up re-usable data science and scientific computing projects.
 
+* TODO Introduce JuPyYod
+#+BEGIN_QUOTE
+The rationale behind my ~JuPyYod~ project for working with Python and Nix
+#+END_QUOTE
+
+** Background
+A lot of my projects have a few common requirements, namely:
+- A lot of common packages
+- A ~python~ based workflow
+  + Often this includes a ~jupyter~ component depending on my collaborators
+From my own background, I typically *demand* a couple of things:
+- Reproducibility
+- Tests
+- Coverage
+- Docs
+Typically these are at odds with the ad-hoc nature of the scripts.
+** Tooling
+For the rest of this post, I will focus on the components which come together in my latest project, ~JuPyYod~.
+*** Nix
+- Ensures reproducible code
+  + Freely converts to ~docker~
+- Has great Travis CI support
+- Also useful for building at a later stage
+*** Project Generators
+For project generators, the options were:
+- Cookiecutter :: This is [[https://github.com/audreyr/cookiecutter][well defined and super popular]], but having to write ~json~ by hand was really not a very appealing prospect
+- *Copier* :: This is a newer template engine, but with an appealing set of features as [[https://copier.readthedocs.io/en/latest/comparisons/][compared here]]
+*** Static Types
+Most of my problems stem from ~python~ being sloppy to read compared to statically typed languages like Fortran or C++, so ~mypy~ integration goes a long way towards fixing that.
+*** Runtime Type Checks
+*** Linting and Formatting
+We will use ~black~ ([[https://github.com/psf/black][site]]) and ~flake8~ ([[http://flake8.pycqa.org/en/latest/][site]]) for formatting and linting respectively.
+** Inspirations
+Some of the following configurations influenced this set-up to a large/small extent:
+- [[https://sourcery.ai/blog/python-best-practices/][Sourcery's python project ideas]]
