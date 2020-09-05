@@ -4290,6 +4290,12 @@ cd ../libtool-2.4.6
 ./configure -C --prefix=$myprefix/libtool/2.4.6 && make -j$(nproc) && make install
 ml load autotools/autotools
 #+END_SRC
+We also need the archive.
+#+BEGIN_SRC bash
+myprefix=$HOME/.hpc/autotools
+git clone git://git.sv.gnu.org/autoconf-archive.git
+cd autoconf-archive
+#+END_SRC
 Combined with the [[https://lmod.readthedocs.io/en/latest/020_advanced.html][lmod manual]] gives rise to the following definiton (roughly the same for each one):
 #+BEGIN_SRC bash
 local home    = os.getenv("HOME")
@@ -4537,6 +4543,17 @@ make -j $(nproc)
 make install
 ml load bison/3.7.1
 #+END_SRC
+*** flex
+#+BEGIN_SRC bash
+myprefix=$HOME/.hpc/flex/2.6.4
+wget https://github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz
+gzip -dc flex-2.6.4.tar.gz | tar xvf -
+cd flex-2.6.4
+./configure --prefix=$myprefix 
+make -j $(nproc)
+make install
+ml load flex/2.6.4
+#+END_SRC
 *** jq
 #+BEGIN_SRC bash
 myprefix=$HOME/.hpc/jq/1.6
@@ -4561,6 +4578,7 @@ cp -avf bzlib.h $myprefix/include
 cp -avf libbz2.so* $myprefix/lib
 ml load bzip2/1.0.8
 #+END_SRC
+
 *** sqlite
 #+BEGIN_SRC bash
 myprefix=$HOME/.hpc/sqlite/3.32.3
