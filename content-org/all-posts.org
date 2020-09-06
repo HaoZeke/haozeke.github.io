@@ -4660,9 +4660,78 @@ Having composed a bunch of these, I will of course try to somehow get ~nix~ up a
 [fn:reallythatbad] They were called ~hpc2013~ and ~hpc2010~ respectively
 [fn:mustisay] I really like Lua, enough to embed it in [[https://dseams.info][d-SEAMS]]
 * TODO Local Nix without Root :@programming:workflow:projects:hpc:nix:tools:
+:PROPERTIES:
+:EXPORT_FILE_NAME: local-nix-no-root
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+** Background
+Nis is not well known for being friendly to users without root access. This is typically made worse by the "exotic" filesystem attributes common to HPC networks (this also plagues [[https://github.com/andrewchambers/hermes/issues/75][hermes]]).
+** Setup
+The premise is similar to my earlier post [[HPC Dotfiles and LMod][on HPC Dotfiles]]. For ~nix~ in particular, there are some complications we will cover.
+#+BEGIN_SRC bash
+myprefix=$HOME/.hpc/nix/nix-boot
+nixdir=$HOME/.nix
+nix_version=2.3.7
+ml load boost
+ml load editline
+ml load brotli/1.0.1
+ml load libseccomp/2.4.4
+ml load bdwgc/8.0.4
+wget http://nixos.org/releases/nix/nix-${nix_version}/nix-${nix_version}.tar.bz2
+tar xfv nix-2.3.7.tar.bz2
+cd nix-2.3.7
+./configure  --enable-gc --prefix=$myprefix --with-store-dir=$nixdir/store --localstatedir=$nixdir/var --with-boost=$BOOST_ROOT --disable-seccomp-sandboxing --disable-doc-gen
+vim src/libutil/compression.cc
+# Remove everything from 239
+# to allow only the else
+make -j $(nproc)
+make install
+# CPPFLAGS="-I$HOME/.hpc/bzip2/1.0.8/include" LDFLAGS="-L$HOME/.hpc/bzip2/1.0.8/lib -Wl,-R$HOME/.hpc/bzip2/1.0.8/lib"
+ml load nix/user
+#+END_SRC
+
+Now we still need to set a profile. Inspect  ~.hpc/nix/nix-boot/etc/profile.d/nix.sh~ and check the value of ~NIX_PROFILES~
+
+#+BEGIN_SRC bash
+# Replace with the real value
+ln -sf $NIX_PROFILES
+# OR
+nix-env --switch-profile .nix/var/nix/profiles/default
+#+END_SRC
+** Rebuilding Natively
+At this point we can use ~nix~ to build itself:
+#+BEGIN_SRC nix
+      storeDir = "/home/rog32/.nix/store";
+      stateDir = "/home/rog32/.nix/var";
+      confDif = "/home/rog32/.nix/etc";
+#+END_SRC
 ** Patches
 If there are errors with multi-threading in the ~xz~ library, feel free to comment them out.
+We will also need [[https://github.com/NixOS/nix/pull/1584/files][this patch]] and [[https://nixos.wiki/wiki/Nix_Installation_Guide][this one]].
 
+#+BEGIN_SRC c++
+#ifdef HAVE_LZMA_MT
+            lzma_mt mt_options = {};
+            mt_options.flags = 0;
+            mt_options.timeout = 300; // Using the same setting as the xz cmd line
+            mt_options.preset = LZMA_PRESET_DEFAULT;
+            mt_options.filters = NULL;
+            mt_options.check = LZMA_CHECK_CRC64;
+            mt_options.threads = lzma_cputhreads();
+            mt_options.block_size = 0;
+            if (mt_options.threads == 0)
+                mt_options.threads = 1;
+            // FIXME: maybe use lzma_stream_encoder_mt_memusage() to control the
+            // number of threads.
+            ret = lzma_stream_encoder_mt(&strm, &mt_options);
+            done = true;
+#else
+            printMsg(lvlError, "warning: parallel XZ compression requested but not supported, falling back to single-threaded compression");
+#endif
+#+END_SRC
+
+** Conclusions
+Though this is slow and seems like an inefficient use of cluster resources, the benefits of reproducible environments typically outweighs the cost.
 * DONE A Tutorial Introduction to Nix :@programming:tools:nix:workflow:python:
 CLOSED: [2020-08-18 Tue 16:18]
 :PROPERTIES:
