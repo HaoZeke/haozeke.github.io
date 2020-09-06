@@ -4557,11 +4557,13 @@ ml load flex/2.6.4
 *** jq
 #+BEGIN_SRC bash
 myprefix=$HOME/.hpc/jq/1.6
-wget https://github.com/stedolan/jq/releases/download/jq-1.6/jq-1.6.tar.gz
-tar xfv jq-1.6.tar.gz
-cd jq-1.6
-./configure --prefix=$myprefix --with-oniguruma=builtin --disable-maintainer-mode
-make LDFLAGS=-all-static -j $(nproc)
+git clone https://github.com/stedolan/jq.git
+cd jq
+git submodule update --init
+git checkout tags/jq-1.6
+autoreconf -fi
+./configure --prefix=$myprefix --with-oniguruma=builtin
+make -j $(nproc)
 make install
 ml load jq/1.6
 #+END_SRC
@@ -4574,8 +4576,11 @@ gzip -dc bzip2-1.0.8.tar.gz | tar xvf -
 cd bzip2-1.0.8
 make -f Makefile-libbz2_so
 ln -sf libbz2.so.1.0 libbz2.so
+mkdir -p $myprefix/include
+mkdir -p $myprefix/lib
 cp -avf bzlib.h $myprefix/include
 cp -avf libbz2.so* $myprefix/lib
+make install PREFIX=$myprefix
 ml load bzip2/1.0.8
 #+END_SRC
 
