@@ -4659,56 +4659,81 @@ Having composed a bunch of these, I will of course try to somehow get ~nix~ up a
 
 [fn:reallythatbad] They were called ~hpc2013~ and ~hpc2010~ respectively
 [fn:mustisay] I really like Lua, enough to embed it in [[https://dseams.info][d-SEAMS]]
-* TODO Local Nix without Root :@programming:workflow:projects:hpc:nix:tools:
+* DONE Local Nix without Root :@programming:workflow:projects:hpc:nix:tools:
+CLOSED: [2020-09-07 Mon 18:30]
 :PROPERTIES:
 :EXPORT_FILE_NAME: local-nix-no-root
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :END:
+#+BEGIN_QUOTE
+Monkeying around with ~nix~ for HPC systems which have no root access and NFS filesystems.
+#+END_QUOTE
 ** Background
-Nis is not well known for being friendly to users without root access. This is typically made worse by the "exotic" filesystem attributes common to HPC networks (this also plagues [[https://github.com/andrewchambers/hermes/issues/75][hermes]]).
+Nix is not well known for being friendly to users without root access. This is typically made worse by the "exotic" filesystem attributes common to HPC networks (this also plagues [[https://github.com/andrewchambers/hermes/issues/75][hermes]]).
+The short pitch is simply:
+
+#+DOWNLOADED: screenshot @ 2020-09-07 17:34:25
+#+caption: Does your HPC look like this?
+[[file:images/Background/2020-09-07_17-34-25_screenshot.png]]
+
+#+DOWNLOADED: screenshot @ 2020-09-07 17:37:28
+#+caption: It really is an HPC
+[[file:images/Background/2020-09-07_17-37-28_screenshot.png]]
+
+
+If your HPC doesn't look that swanky and you'd like it to, then read on. Note that there are all the obvious benefits of ~nix~ as well, but this is a more eye-catchy pitch.
 ** Setup
-The premise is similar to my earlier post [[HPC Dotfiles and LMod][on HPC Dotfiles]]. For ~nix~ in particular, there are some complications we will cover.
+#+BEGIN_QUOTE
+The basic concept is to install ~nix~ from source, with appropriate patches, and then mess around with paths until it is ready and willing to work with stores which are not ~/nix~ [fn:thateasy]
+#+END_QUOTE
+This concept is strongly influenced by the work [[https://github.com/jefdaj/nix-no-root][described in this repo]]. The premise is similar to my earlier post [[HPC Dotfiles and LMod][on HPC Dotfiles]]. For the purposes of this post, we will assume that all the packages in the [[HPC Dotfiles and LMod][previous post]]
+exist. ~lmod~ is not required, feel free to use an alternative path management system, or even just ~$HOME/.local~ but if ~lmod~ is present, it is highly recommended [fn:whatalternatives]. We *will need* the following:
+
+- Pinned set of nixpkgs :: We would like to be able to modify a lot of paths, which is normally a bad practice, but then we don't normally rebuild all packages either. Grab a copy of the ~nixpkgs~ by following the instructions below. Now is also the time to fork the repo if you'd like to keep track of your changes.
+#+BEGIN_SRC bash
+mkdir -p $HOME/Git/Github
+cd $HOME/Git/Github
+git clone https://github.com/NixOS/nixpkgs
+#+END_SRC
+- dotgit :: We use the older, bash version of [[https://github.com/kobus-v-schoor/dotgit/][the excellent dotgit]] since ~python~ is not always present in HPC environments.
+#+BEGIN_SRC bash
+git clone https://github.com/kobus-v-schoor/dotgit/
+mkdir -p $HOME/.local/bin
+cp dotgit/old/bin/bash_completion dotgit/old/bin/dotgit dotgit/old/bin/dotgit_headers dotgit/old/bin/fish_completion.fish $HOME/.local/bin/ -r
+#+END_SRC
+- lmod packages :: If you do not or cannot use modulefiles as [[HPC Dotfiles and LMod][described in the earlier post]], inspect the module-files being loaded and set paths accordingly.
+#+BEGIN_SRC bash
+cd $HOME/Git/Github
+git clone https://github.com/HaoZeke/hzHPC_lmod
+cd hzHPC_lmod
+$HOME/.local/bin/dotgit restore hzhpc
+#+END_SRC
+
+Now we can start by obtaining the ~nix~ sources.
 #+BEGIN_SRC bash
 myprefix=$HOME/.hpc/nix/nix-boot
 nixdir=$HOME/.nix
 nix_version=2.3.7
+ml load gcc/9.2.0 flex bison
 ml load boost
 ml load editline
 ml load brotli/1.0.1
 ml load libseccomp/2.4.4
 ml load bdwgc/8.0.4
+ml load bzip2/1.0.8
+ml load openssl sqlite
 wget http://nixos.org/releases/nix/nix-${nix_version}/nix-${nix_version}.tar.bz2
 tar xfv nix-2.3.7.tar.bz2
 cd nix-2.3.7
-./configure  --enable-gc --prefix=$myprefix --with-store-dir=$nixdir/store --localstatedir=$nixdir/var --with-boost=$BOOST_ROOT --disable-seccomp-sandboxing --disable-doc-gen
-vim src/libutil/compression.cc
-# Remove everything from 239
-# to allow only the else
-make -j $(nproc)
-make install
-# CPPFLAGS="-I$HOME/.hpc/bzip2/1.0.8/include" LDFLAGS="-L$HOME/.hpc/bzip2/1.0.8/lib -Wl,-R$HOME/.hpc/bzip2/1.0.8/lib"
-ml load nix/user
 #+END_SRC
 
-Now we still need to set a profile. Inspect  ~.hpc/nix/nix-boot/etc/profile.d/nix.sh~ and check the value of ~NIX_PROFILES~
+Before actually configuring and installing from source, we need some patches.
+*** Patches
+I suggest carefully typing out the patches, though leave a comment if you want a repo with these changes (if you must star something in the meantime, [[https://github.com/dseams/seams-core][star this]]).
+- Start with [[https://github.com/NixOS/nix/pull/1584/files][this patch]]
+- Also [[https://nixos.wiki/wiki/Nix_Installation_Guide][this one]]
 
-#+BEGIN_SRC bash
-# Replace with the real value
-ln -sf $NIX_PROFILES
-# OR
-nix-env --switch-profile .nix/var/nix/profiles/default
-#+END_SRC
-** Rebuilding Natively
-At this point we can use ~nix~ to build itself:
-#+BEGIN_SRC nix
-      storeDir = "/home/rog32/.nix/store";
-      stateDir = "/home/rog32/.nix/var";
-      confDif = "/home/rog32/.nix/etc";
-#+END_SRC
-** Patches
-If there are errors with multi-threading in the ~xz~ library, feel free to comment them out.
-We will also need [[https://github.com/NixOS/nix/pull/1584/files][this patch]] and [[https://nixos.wiki/wiki/Nix_Installation_Guide][this one]].
-
+Remove the following ~ifdef~ stuff from  ~src/libutil/compression.cc~, leaving only the contents of the ~else~ statement.
 #+BEGIN_SRC c++
 #ifdef HAVE_LZMA_MT
             lzma_mt mt_options = {};
@@ -4730,8 +4755,111 @@ We will also need [[https://github.com/NixOS/nix/pull/1584/files][this patch]] a
 #endif
 #+END_SRC
 
+If there is trouble with the bzip2 library, set ~$HOME/.hpc/bzip2/1.0.8/include/bzlib.h~ in ~src/libutil/compression.cc~, but expand ~$HOME~.
+
+Finally, you will need edit ~nixpkgs~.
+#+BEGIN_SRC nix
+# vim pkgs/os-specific/linux/busybox/default.nix
+  debianName = "busybox_1.30.1-6";
+  debianTarball = fetchzip {
+    url = "http://deb.debian.org/debian/pool/main/b/busybox/${debianName}.debian.tar.xz";
+    sha256 = "05n6mxc8n4zsli4dijrr2x5c9ggwi223i5za4n0xwhgd4lkhqymw";
+  };
+#+END_SRC
+
+*** User Build
+We can now complete the build.
+#+BEGIN_SRC bash
+./configure  --enable-gc --prefix=$myprefix --with-store-dir=$nixdir/store --localstatedir=$nixdir/var --with-boost=$BOOST_ROOT --disable-seccomp-sandboxing --disable-doc-gen CPPFLAGS="-I$HOME/.hpc/bzip2/1.0.8/include" LDFLAGS="-L$HOME/.hpc/bzip2/1.0.8/lib -Wl,-R$HOME/.hpc/bzip2/1.0.8/lib"
+make -j $(nproc)
+make install
+ml load nix/user # Hooray!
+#+END_SRC
+
+Now we still need to set a profile. Inspect  ~.hpc/nix/nix-boot/etc/profile.d/nix.sh~ and check the value of ~NIX_PROFILES~
+
+#+BEGIN_SRC bash
+chmod +x .hpc/nix/nix-boot/etc/profile.d/nix.sh
+./.hpc/nix/nix-boot/etc/profile.d/nix.sh
+# OR, and this is better
+nix-env --switch-profile .nix/var/nix/profiles/default
+mkdir -p  ~/.nix/var/nix/profiles
+#+END_SRC
+** Rebuilding Natively
+The astute reader will have noticed that we glibly monkeyed around with the ~nix~ source in the previous section, but all will be made well since we can rebuild to use ~nix~ with itself. Do *replace the variable with the corresponding path*:
+#+BEGIN_SRC nix
+storeDir = "$HOME/.nix/store";
+stateDir = "$HOME/.nix/var";
+confDif = "$HOME/.nix/etc";
+#+END_SRC
+
+We can "speed up" our build by disabling all tests. Go to the copy of ~nixpkgs~ and run:
+
+#+BEGIN_SRC bash
+find pkgs  -type f -name 'default.nix' | xargs sed -i 's/doCheck = true/doCheck = false/'
+#+END_SRC
+
+#+BEGIN_SRC bash
+mkdir -p $HOME/.nix/var/nix/profiles/
+nix-env -i nix -f $HOME/Git/Github/nixpkgs -j$(nproc) --keep-going --show-trace -v --cores 4 2>&1 | tee nix-no-root.log
+ml load nix/bootstrapped
+#+END_SRC
+
+This will still take a couple of hours at least. Around 3-4 hours. Try to set this up on a lazy weekend to evade sysadmins.
+
+** Usage
+We have finally obtained a bootstrapped ~nix~ which is bound to our set of ~nixpkgs~. To ensure its use:
+#+BEGIN_SRC bash
+ml use $HOME/Modulefiles
+ml purge
+ml load nix/bootstrapped
+ml save
+#+END_SRC
+*** Basic Packages
+Now we can get some basic stuff too.
+#+BEGIN_SRC bash
+nix-env -i tmux zsh lsof pv git -f $HOME/Git/Github/nixpkgs -j$(nproc) --keep-going --show-trace --cores 4 2>&1 | tee nix-install-base.log
+#+END_SRC
+*** Ruby Caveats
+While installing packages which depend on ~ruby~, there will be permission errors inside the build folder. These can be "fixed" by setting very permissive controls on the *sub-directory* in question. *Do not* set permissions directly on the ~.nix/store/$HASH~ folder, as doing so will make ~nix~ reject the build artifact.
+#+BEGIN_SRC bash
+# neovim depends on ruby
+nix-env -i neovim -v -f $HOME/Git/Github/nixpkgs
+#+END_SRC
+
+The permissions fix is a little more involved. The best way to fix this is to note where the build is occurring (e.g. ~/tmp~) and run a ~watch~ command to fix permissions.
+
+#+BEGIN_SRC bash
+watch -n1 -x chmod 777 -R /tmp/nix-build-ruby-2.6.6.drv-0/source/lib/
+#+END_SRC
+
+Naturally this must be run in a separate window.
+
+*** Dotfiles
+Feel free to set up ~dotfiles~ ([[https://github.com/HaoZeke/Dotfiles][mine]], perhaps) to profit even further. We will consider the process of obtaining my set below.
+Minimally, we will want to obtain ~tmux~ and ~zsh~.
+#+BEGIN_SRC bash
+nix-env -i tmux zsh -v -f $HOME/Git/Github/nixpkgs
+#+END_SRC
+Now we can set the ~dotfiles~ up.
+#+BEGIN_SRC bash
+git clone https://github.com/HaoZeke/Dotfiles
+cd Dotfiles
+$HOME/.local/bin/dotgit restore hzhpc
+#+END_SRC
+The final installation configures ~neovim~ and ~tmux~.
+#+BEGIN_SRC bash
+zsh
+# Should install things with zinit
+tmux
+# CTRL+b --> SHIFT+I to install
+nvim
+#+END_SRC
 ** Conclusions
-Though this is slow and seems like an inefficient use of cluster resources, the benefits of reproducible environments typically outweighs the cost.
+Though this is slow and seems like an inefficient use of cluster resources, the benefits of reproducible environments typically outweighs the cost. Also it is much more pleasant to have a proper package manager which can work with Dotfiles.
+
+[fn:thateasy] Note that this will of course entail rebuilding everything from scratch, every time, which means no binary caches. This there is no reasonable defence for trying this out without access to a high powered limited access machine
+[fn:whatalternatives] The rest of the post assumes we are on the same page and working towards the same end-goal, substitute and remix at will
 * DONE A Tutorial Introduction to Nix :@programming:tools:nix:workflow:python:
 CLOSED: [2020-08-18 Tue 16:18]
 :PROPERTIES:
