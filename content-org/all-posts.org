@@ -163,6 +163,7 @@ the rest[fn:whereswaldo].
 - A collaborative post on [[https://carpentries.org/blog/2020/08/r-4-migration/][migrating to R 4.0 for The Carpentries]]
 *** Mentioning Me
 **** Lists
+- [[https://www.cirm-math.fr/Listes/liste_pre_verif.php?id_renc=2255&num_semaine=0][CIRM - Jean-Morlet Chair - Quasi-Monte Carlo Methods and Applications]] ([[https://www.chairejeanmorlet.com/2255.html][info]]) [participant]
 - [[https://www.cirm-math.fr/Listes/liste_pre_verif.php?id_renc=2146&num_semaine=0][CIRM Mathematical Methods of Modern Statistics 2]] ([[https://www.cirm-math.com/cirm-virtual-event-2146.html][info]]) [participant]
 - Kavli IPMU conference on "[[https://indico.ipmu.jp/event/314/overview][The McKay correspondence, mutation and related topics]]" ([[https://indico.ipmu.jp/event/314/registrations/participants][participant]])
 - [[https://chemeng.iisc.ac.in/rare-events/gallery.html][Gallery of RARE 2019]] at IISc
@@ -175,9 +176,11 @@ the rest[fn:whereswaldo].
   - [[https://www.cecam.org/workshop-details/28#participant_tab][CECAM-DE-SMSM: ESPResSo and Python: Versatile Tools for Soft Matter Research]]
 **** Teaching
 - [[https://wc3m.github.io/][Water, Chemicals and more with Computers for Chemistry (WC3m)]] :: July 28-August 28, 2020 (co-lead)
+- [[https://coderefinery.github.io/2020-05-25-online/][2020 MegaCodeRefinery]] (helper)
+***** Carpentries
+- [[https://nairps.github.io/2020-09-08-ggc-SBDH-online/][Data Carpentry Workshop for Social Sciences Georgina Gwinnett College]] :: September 8-11, 2020 (instructor)
 - [[https://smcclatchy.github.io/2020-06-22-biotechPartners-pm/][Data Carpentry Ecology for Biotech Partners]] :: June 22-July 2, 2020 (instructor)
 - [[https://sadilar.github.io/2020-06-29-SA-ONLINE/][Online Data Carpentry Workshop SADiLaR, South Africa]] :: 29 June - 3 July, 2020 (instructor)
-- [[https://coderefinery.github.io/2020-05-25-online/][2020 MegaCodeRefinery]] (helper)
 **** Quotes
 - Quoted in a [[https://www.stanforddaily.com/2020/06/08/code-in-place-makes-cs-accessible-to-thousands-worldwide/][Stanford Daily Article on CS106A Code in Place]]
 - [[https://fortran-lang.org/newsletter/2020/06/01/Fortran-Newsletter-June-2020/][Fortran Monthly Newsletter (June 2020)]]
