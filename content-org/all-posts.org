@@ -5289,7 +5289,7 @@ CLOSED: [2020-09-07 Mon 18:30]
 Monkeying around with ~nix~ for HPC systems which have no root access and NFS filesystems.
 #+END_QUOTE
 ** Background
-Nix is not well known for being friendly to users without root access. This is typically made worse by the "exotic" filesystem attributes common to HPC networks (this also plagues [[https://github.com/andrewchambers/hermes/issues/75][hermes]]).
+Nix is not well known for being friendly to users without root access. This is typically made worse by the "exotic" filesystem attributes common to HPC networks (this also plagues [[https://github.com/andrewchambers/hermes/issues/75][hermes]]). An [[Provisioning Dotfiles on an HPC][earlier post]] details how and why ~proot~ failed.
 The short pitch is simply:
 
 #+DOWNLOADED: screenshot @ 2020-09-07 17:34:25
