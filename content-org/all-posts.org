@@ -5444,13 +5444,13 @@ Now we can get some basic stuff too.
 nix-env -i tmux zsh lsof pv git -f $HOME/Git/Github/nixpkgs -j$(nproc) --keep-going --show-trace --cores 4 2>&1 | tee nix-install-base.log
 #+END_SRC
 *** Ruby Caveats
-While installing packages which depend on ~ruby~, there will be permission errors inside the build folder. These can be "fixed" by setting very permissive controls on the *sub-directory* in question. *Do not* set permissions directly on the ~.nix/store/$HASH~ folder, as doing so will make ~nix~ reject the build artifact.
+While installing packages which depend on ~ruby~, there will be permission errors inside the build folder. These can be "fixed" by setting very permissive controls on the *build-directory* in question. *Do not* set permissions directly on the ~.nix/store/$HASH~ folder, as doing so will make ~nix~ reject the build artifact.
 #+BEGIN_SRC bash
 # neovim depends on ruby
 nix-env -i neovim -v -f $HOME/Git/Github/nixpkgs
 #+END_SRC
 
-The permissions fix is a little more involved. The best way to fix this is to note where the build is occurring (e.g. ~/tmp~) and run a ~watch~ command to fix permissions.
+A more elegant way to fix permissions involves a slightly more convoluted approach. We can note where the build is occurring (e.g. ~/tmp~) and run a ~watch~ command to fix permissions.
 
 #+BEGIN_SRC bash
 watch -n1 -x chmod 777 -R /tmp/nix-build-ruby-2.6.6.drv-0/source/lib/
@@ -5481,7 +5481,7 @@ nvim
 ** Conclusions
 Though this is slow and seems like an inefficient use of cluster resources, the benefits of reproducible environments typically outweighs the cost. Also it is much more pleasant to have a proper package manager which can work with Dotfiles.
 
-[fn:thateasy] Note that this will of course entail rebuilding everything from scratch, every time, which means no binary caches. This there is no reasonable defence for trying this out without access to a high powered limited access machine
+[fn:thateasy] Note that this will of course entail rebuilding everything from scratch, every time, which means no binary caches. Thus there is no reasonable defence for trying this out without access to a high powered limited access machine
 [fn:whatalternatives] The rest of the post assumes we are on the same page and working towards the same end-goal, substitute and remix at will
 * TODO Introduce JuPyYod
 #+BEGIN_QUOTE
@@ -5518,3 +5518,9 @@ We will use ~black~ ([[https://github.com/psf/black][site]]) and ~flake8~ ([[htt
 ** Inspirations
 Some of the following configurations influenced this set-up to a large/small extent:
 - [[https://sourcery.ai/blog/python-best-practices/][Sourcery's python project ideas]]
+
+** JupyterLab
+Unfortunately, notwithstanding efforts from Tweag, involving JupyterWith, the state of dealing with impure paths is still murky. So it makes sense to set up a user-level ~conda~ setup.
+#+BEGIN_SRC bash
+nix-env -i conda-shell
+#+END_SRC
