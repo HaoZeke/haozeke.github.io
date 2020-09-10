@@ -163,6 +163,7 @@ the rest[fn:whereswaldo].
 - A collaborative post on [[https://carpentries.org/blog/2020/08/r-4-migration/][migrating to R 4.0 for The Carpentries]]
 *** Mentioning Me
 **** Lists
+- [[https://web-eur.cvent.com/event/16fae83c-5b72-4690-a368-829688f0d14b/summary][Heilbronn Annual Conference 2020]] ([[https://web-eur.cvent.com/event/16fae83c-5b72-4690-a368-829688f0d14b/websitePage:1faf08a0-dcdd-4a2c-b4b8-d9d445202377?RefId=HIMR][participant]])
 - [[https://www.cirm-math.fr/Listes/liste_pre_verif.php?id_renc=2255&num_semaine=0][CIRM - Jean-Morlet Chair - Quasi-Monte Carlo Methods and Applications]] ([[https://www.chairejeanmorlet.com/2255.html][info]]) [participant]
 - [[https://www.cirm-math.fr/Listes/liste_pre_verif.php?id_renc=2146&num_semaine=0][CIRM Mathematical Methods of Modern Statistics 2]] ([[https://www.cirm-math.com/cirm-virtual-event-2146.html][info]]) [participant]
 - Kavli IPMU conference on "[[https://indico.ipmu.jp/event/314/overview][The McKay correspondence, mutation and related topics]]" ([[https://indico.ipmu.jp/event/314/registrations/participants][participant]])
