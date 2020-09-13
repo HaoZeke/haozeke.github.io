@@ -5479,6 +5479,14 @@ tmux
 # CTRL+b --> SHIFT+I to install
 nvim
 #+END_SRC
+*** Misc NFS
+For issues concerning NFS lock files, consider simply moving the problematic file and let things sort themselves out. Consider:
+#+BEGIN_SRC bash
+nix-build
+# something about a .nfs lockfile in some .nix/$HASH-pkg/.nfs0234234
+mv .nix/$HASH-pkg/ .diePKGs/
+nix-build # profit
+#+END_SRC
 ** Conclusions
 Though this is slow and seems like an inefficient use of cluster resources, the benefits of reproducible environments typically outweighs the cost. Also it is much more pleasant to have a proper package manager which can work with Dotfiles.
 
@@ -5525,3 +5533,67 @@ Unfortunately, notwithstanding efforts from Tweag, involving JupyterWith, the st
 #+BEGIN_SRC bash
 nix-env -i conda-shell
 #+END_SRC
+
+* TODO Rstudio with Nix :@programming:tools:nix:workflow:R:
+:PROPERTIES:
+:EXPORT_FILE_NAME: nix-rstudio
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+BEGIN_QUOTE
+This post covers the setup of Rstudio with custom packages, along with Qt
+patches.
+#+END_QUOTE
+
+** Background
+After the post on using [[Nix with R and devtools][non-CRAN packages with Nix]], I naively assumed I had covered all possible use-cases involving Nix and R. Unfortunately, because GUI programs which aren't browsers or Emacs tend to fly underneath my personal radar, it wasn't until I was up to teach a [[https://nairps.github.io/2020-09-08-ggc-SBDH-online/][Data Carpentries lesson at Georgia Gwinnett College]] that I realized RStudio has additional messy moving parts.
+
+In particular, the error inspiring this post is:
+#+BEGIN_SRC bash
+qt.glx: qglx_findConfig: Failed to finding matching FBConfig for QSurfaceFormat(version 2.0, options QFlags<QSurfaceFormat::FormatOption>(), depthBufferSize -1, redBufferSize 1, greenBufferSize 1, blueBufferSize 1, alphaBufferSize -1, stencilBufferSize -1, samples -1, swapBehavior QSurfaceFormat::SingleBuffer, swapInterval 1, colorSpace QSurfaceFormat::DefaultColorSpace, profile  QSurfaceFormat::NoProfile)
+qt.glx: qglx_findConfig: Failed to finding matching FBConfig for QSurfaceFormat(version 2.0, options QFlags<QSurfaceFormat::FormatOption>(), depthBufferSize -1, redBufferSize 1, greenBufferSize 1, blueBufferSize 1, alphaBufferSize -1, stencilBufferSize -1, samples -1, swapBehavior QSurfaceFormat::SingleBuffer, swapInterval 1, colorSpace QSurfaceFormat::DefaultColorSpace, profile  QSurfaceFormat::NoProfile)
+Could not initialize GLX
+zsh: abort (core dumped)  rstudio
+#+END_SRC
+
+To put that in context, however, before attempting a fix, we will start at the beginning.
+
+** RStudio and Nix
+Similar to the environment created with ~rWrapper~ we will set up a global environment in our ~config.nix~.
+#+BEGIN_SRC nix
+{
+  packageOverrides = super:
+    let
+      self = super.pkgs;
+    in {
+      rStudioEnv = super.rstudioWrapper.override {
+        packages = with self.rPackages; [ tidyverse ];
+      };
+    };
+}
+#+END_SRC
+
+The extensions to this are fairly standard, and follow the CRAN guidelines in [[Nix with R and devtools][the previous post]]. Installation works the same way too.
+#+BEGIN_SRC bash
+nix-env -f "<nixpkgs>" -iA rStudioEnv
+#+END_SRC
+
+At this point , when things seem to be rosy, we obtain the error discussed earlier.
+
+#+BEGIN_SRC bash
+rstudio
+qt.glx: qglx_findConfig: Failed to finding matching FBConfig for QSurfaceFormat(version 2.0, options QFlags<QSurfaceFormat::FormatOption>(), depthBufferSize -1, redBufferSize 1, greenBufferSize 1, blueBufferSize 1, alphaBufferSize -1, stencilBufferSize -1, samples -1, swapBehavior QSurfaceFormat::SingleBuffer, swapInterval 1, colorSpace QSurfaceFormat::DefaultColorSpace, profile  QSurfaceFormat::NoProfile)
+qt.glx: qglx_findConfig: Failed to finding matching FBConfig for QSurfaceFormat(version 2.0, options QFlags<QSurfaceFormat::FormatOption>(), depthBufferSize -1, redBufferSize 1, greenBufferSize 1, blueBufferSize 1, alphaBufferSize -1, stencilBufferSize -1, samples -1, swapBehavior QSurfaceFormat::SingleBuffer, swapInterval 1, colorSpace QSurfaceFormat::DefaultColorSpace, profile  QSurfaceFormat::NoProfile)
+Could not initialize GLX
+zsh: abort (core dumped)  rstudio
+#+END_SRC
+
+** Fixes
+The crux of the error is that the drivers [[https://github.com/NixOS/nixpkgs/issues/9415#issuecomment-134051412][are always considered to be impure]]. The fix is [[https://github.com/NixOS/nixpkgs/issues/9415#issuecomment-139655485][described here]], and can be interpreted as follows.
+
+- We need to figure out where the library is to begin with.
+
+#+BEGIN_SRC bash
+ldconfig -p | grep libGLX
+#+END_SRC
+
+** Conclusion
