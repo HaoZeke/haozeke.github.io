@@ -4618,6 +4618,7 @@ wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 chmod +x Miniconda3-latest-Linux-x86_64.sh
 ./Miniconda3-latest-Linux-x86_64.sh
 # Do not allow it to mess up the shell rc files
+eval "$($HOME/miniconda3/bin/conda shell.zsh hook)"
 #+END_SRC
 Note that we will prefer the manual evaluation since it can be handled in the ~lmod~ file.
 ** Applications
