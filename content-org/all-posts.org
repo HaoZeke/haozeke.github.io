@@ -4610,6 +4610,16 @@ make -j $(nproc)
 make install
 ml load editline/1.17.1
 #+END_SRC
+*** Miniconda
+We don't need this very much, but it is still useful for some edge cases, mainly revolving around ~jupyter~ infrastructure.
+#+BEGIN_SRC bash
+cd $HOME
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+chmod +x Miniconda3-latest-Linux-x86_64.sh
+./Miniconda3-latest-Linux-x86_64.sh
+# Do not allow it to mess up the shell rc files
+#+END_SRC
+Note that we will prefer the manual evaluation since it can be handled in the ~lmod~ file.
 ** Applications
 Libraries and ~git~ aside, there are some tools we might want to have.
 *** ag
