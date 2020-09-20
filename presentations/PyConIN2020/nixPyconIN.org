@@ -1,0 +1,944 @@
+#+TITLE:     Reproducible Scalable Workflows with Nix, Papermill and Renku
+#+SUBTITLE:  PyCon India 2020
+#+AUTHOR:    Rohit Goswami,\textsc{\scriptsize\ MInstP AMIE AMIChemE}
+#+EMAIL:     rog32@hi.is
+#+DATE:      October 3, 2020
+#+BEAMER_HEADER: \titlegraphic[height=1.5cm]{images/physUoI.png}{}
+#+BEAMER_HEADER: \mail{rog32@hi.is}
+
+* Configuration :ignoreheading:ignore:
+:PROPERTIES:
+:VISIBILITY: folded
+:END:
+
+#+BEGIN_SRC emacs-lisp :exports none :eval always
+(require 'ox-extra)
+(ox-extras-activate '(ignore-headlines))
+#+END_SRC
+
+#+RESULTS:
+
+#
+# LaTeX Stuff
+#
+
+#+DESCRIPTION:
+#+KEYWORDS:
+#+LANGUAGE:  en
+#+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc toc:nil
+#+INFOJS_OPT: view:nil toc:nil ltoc:t mouse:underline buttons:0 path:https://orgmode.org/org-info.js
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+LINK_UP:
+#+LINK_HOME:
+
+#+LATEX_COMPILER: xelatex
+#+LATEX_HEADER: \PassOptionsToPackage{unicode=true}{hyperref}
+#+LATEX_HEADER: \PassOptionsToPackage{hyphens}{url}
+#+LATEX_HEADER: \PassOptionsToPackage{dvipsnames,svgnames*,x11names*,table}{xcolor}
+#+LATEX_HEADER: \usepackage{amssymb,amsmath}
+#+LATEX_HEADER: \usepackage{mathtools}
+#+LATEX_HEADER: \usepackage{physics}
+#+LATEX_HEADER: \usepackage{hyperref}
+#+LATEX_HEADER: \hypersetup{
+#+LATEX_HEADER:             pdftitle={Reproducible Scalable Workflows with Nix, Papermill and Renku},
+#+LATEX_HEADER:             pdfauthor={Rohit Goswami},
+#+LATEX_HEADER:             pdfborder={0 0 0},
+#+LATEX_HEADER:             breaklinks=true}
+#+LATEX_HEADER: % Make use of float-package and set default placement for figures to H
+#+LATEX_HEADER: \usepackage{float}
+#+LATEX_HEADER: \floatplacement{figure}{H}
+
+#+LATEX_HEADER: \usepackage{fontspec}
+#+LATEX_HEADER: \setromanfont{EB Garamond}
+#+LATEX_HEADER: \usefonttheme{serif}
+#+LATEX_HEADER: \usepackage{xeCJK}
+
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger,unknownkeysallowed,aspectratio=169,red,colorblocks]
+#+startup: beamer
+#+BEAMER_THEME: Verona
+#+BEAMER_FRAME_LEVEL: 2
+#+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
+
+#+LATEX_HEADER: \usepackage[absolute,overlay]{textpos}
+
+#+LATEX_HEADER: \newcommand*{\XOffsetFromBottomLeft}{32.5em}%
+#+LATEX_HEADER: \newcommand*{\YOffsetFromBottomLeft}{2.7ex}%
+#+LATEX_HEADER: \newcommand*{\BottomLeftText}[1]{%
+#+LATEX_HEADER:     \par%
+#+LATEX_HEADER: \scriptsize\begin{textblock*}{17.0cm}(\dimexpr\textwidth-\XOffsetFromBottomLeft\relax,\dimexpr\textheight-\YOffsetFromBottomLeft\relax)
+#+LATEX_HEADER:         #1%
+#+LATEX_HEADER:     \end{textblock*}%
+#+LATEX_HEADER: }%
+
+# References
+#+LATEX_HEADER: \usepackage[doi=false,isbn=false,url=false,eprint=false]{biblatex}
+#+LATEX_HEADER: \bibliography{IN2020.bib}
+
+# From https://tex.stackexchange.com/questions/477784/adjust-spacing-between-main-text-and-footnote-in-beamer-slides
+#+LATEX_HEADER: \setbeamertemplate{footnote}{%
+#+LATEX_HEADER:  \makebox[1em][l]{\insertfootnotemark}%
+#+LATEX_HEADER:  \begin{minipage}{\dimexpr\linewidth-1em}
+#+LATEX_HEADER:    \footnotesize\linespread{0.84}\selectfont\insertfootnotetext
+#+LATEX_HEADER:  \end{minipage}\vskip 0pt}%
+
+* Start Here :ignoreheading:ignore:
+* Outline
+*** TOC
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+#+BEGIN_EXPORT latex
+\tableofcontents
+#+END_EXPORT
+*** Screenshot
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+#+ATTR_LaTeX: :width 0.4\textwidth
+file:images/logos/pyConIN2020.png
+* Section I
+:PROPERTIES:
+:BEAMER_opt: standout
+:END:
+#+BEGIN_EXPORT latex
+\section{Backstory}
+\begin{center}
+  \Huge Backstory
+\end{center}
+#+END_EXPORT
+* Standard Approach
+*** Workflow
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+- Language Agnostic
+**** Workflow
+
+- Write functions/objects
+  + Refactor in modules
+- Test
+  + Unit
+  + Integration
+- Documentation
+- Use after importing
+
+*** Screenshot
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+
+#+ATTR_LaTeX: :width 0.8\textwidth
+[[file:images/Standard_Approach/2020-09-20_04-19-58_screenshot.png]]
+
+*** No Column :B_ignoreheading:
+:PROPERTIES:
+:BEAMER_env: ignoreheading
+:END:
+#+BEGIN_EXPORT latex
+\vspace{\fill}
+#+END_EXPORT
+
+*Not interactive enough for data-files*
+* Modern Data Analysis
+*** Examples
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+- Try before you buy
+- Doesn't play nice with tests
+**** Python Interactivity
+- IPython (~ipython~)
+- Jupyter (Lab/Notebook)
+- Colab (Google)
+*** Screenshot
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+
+[[file:images/Modern_Data_Analysis/2020-09-20_04-32-08_screenshot.png]]
+
+* Jupyter
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+
+fullcite:communityTuringWayHandbook2019
+
+#+DOWNLOADED: screenshot @ 2020-09-20 04:38:32
+[[file:images/A_block/2020-09-20_04-38-32_screenshot.png]]
+
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+
+file:images/turingWay/Jupyter.jpg
+* Jupyter Notebooks
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+- ~ipynb~ files can be exported independently
+  + Or via server extensions
+#+DOWNLOADED: screenshot @ 2020-09-20 10:34:58
+[[file:images/A_block/2020-09-20_10-34-58_screenshot.png]]
+
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+
+#+DOWNLOADED: screenshot @ 2020-09-20 09:14:03
+#+ATTR_LaTeX: :width 0.7\textwidth
+[[file:images/A_screenshot/2020-09-20_09-14-03_screenshot.png]]
+
+
+#+DOWNLOADED: screenshot @ 2020-09-20 09:10:45
+
+** No Column :B_ignoreheading:
+:PROPERTIES:
+:BEAMER_env: ignoreheading
+:END:
+From [[https://jupyter.readthedocs.io/en/latest/projects/architecture/content-architecture.html][the Jupyter documentation]]
+* Reconciliation
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.3
+:END:
+
+- A crisis of *faith*
+- Made worse by Colab
+
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.7
+:END:
+
+#+DOWNLOADED: screenshot @ 2020-09-20 06:18:07
+[[file:images/Reconciliation/2020-09-20_06-18-07_screenshot.png]]
+
+* Section II
+:PROPERTIES:
+:BEAMER_opt: standout
+:END:
+#+BEGIN_EXPORT latex
+\section{Packaging}
+\begin{center}
+  \Huge Packaging
+\end{center}
+#+END_EXPORT
+* Python Modules
+- A ~.py~ file is a *module*
+- It is *standalone* if it only imports from the standard library
+* Pure Python Packages
+- A directory with ~__init__.py~ in it is a *package*
+- Use ~pip~
+* Distributions
+*** Standard
+:PROPERTIES:
+:BEAMER_col: 0.45
+:END:
+**** Standard
+- Built by ~setuptools~ with ~setup.py~
+- Simple source only ~.tar.gz~
+*** Binary
+:PROPERTIES:
+:BEAMER_col: 0.45
+:END:
+**** Binary
+- ~wheel~
+  + For all your interoperable needs
+  + Includes static libraries
+*** No Column :B_ignoreheading:
+:PROPERTIES:
+:BEAMER_env: ignoreheading
+:END:
+- Distributions have zero or more packages
+* The Python Gradient
+
+Consider the packaging gradient\footnotemark
+#+DOWNLOADED: screenshot @ 2020-05-22 23:00:30
+[[file:images/The_Python_Gradient/2020-05-22_23-00-30_screenshot.png]]
+- Libraries and Dev tools are all we get (from PyPI)
+
+#+BEGIN_EXPORT latex
+\footnotetext{by Mahmoud Hashemi (PyBay'17): \url{https://www.youtube.com/watch?v=iLVNWfPWAC8}}
+#+END_EXPORT
+
+# * The Python Gradient II
+# Only gets worse\footnotemark
+
+# #+DOWNLOADED: screenshot @ 2020-09-20 02:39:54
+# [[file:images/The_Python_Gradient_II/2020-09-20_02-39-54_screenshot.png]]
+
+# #+BEGIN_EXPORT latex
+# \footnotetext{by Mahmoud Hashemi (PyBay'17): \url{https://www.youtube.com/watch?v=iLVNWfPWAC8}}
+# #+END_EXPORT
+* Pip Requirements
+- Python
+- System libraries
+- Build tools
+  - Wheels don't work for arbitrary distributions
+* Dependency Resolution
+*** Column1
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+- ~requirements.txt~ (pip)
+- Poetry (pretty)
+  + ~pyproject.toml~
+  + ~poetry.lock~
+- Pipenv (older)
+  + ~Pipfile~ + lockfile
+- Pipx (~pip~ but for applications)
+- Pyenv and friends
+*** Image
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+
+#+DOWNLOADED: screenshot @ 2020-09-20 05:09:56
+#+ATTR_LaTeX: :width 0.6\textwidth
+[[file:images/Dependency_Resolution/2020-09-20_05-09-56_screenshot.png]]
+
+*** No Column :B_ignoreheading:
+:PROPERTIES:
+:BEAMER_env: ignoreheading
+:END:
+* System Dependencies
+*** Column1
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+- Appimages
+- Containers
+  + ~docker~, ~flatpak~, ~snapcraft~
+- Impure filesystems
+  + Anaconda
+*** Image
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+
+#+ATTR_LaTeX: :width 0.6\textwidth
+[[file:images/System_Dependencies/2020-09-20_05-23-11_screenshot.png]]
+
+
+*** No Column :B_ignoreheading:
+:PROPERTIES:
+:BEAMER_env: ignoreheading
+:END:
+
+* Section III
+:PROPERTIES:
+:BEAMER_opt: standout
+:END:
+#+BEGIN_EXPORT latex
+\section{Nix}
+\begin{center}
+  \Huge Nix
+\end{center}
+#+END_EXPORT
+* What?
+#+DOWNLOADED: screenshot @ 2020-05-22 23:04:53
+#+ATTR_LATEX: :width 0.5\linewidth
+[[file:images/What?/2020-05-22_23-04-53_screenshot.png]]
+- \tiny from https://brianmckenna.org/files/presentations/rootconf19-nix.pdf
+* Nix
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+
+fullcite:dolstraNixSafePolicyFree2004,dolstraNixOSPurelyFunctional2010
+
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+
+#+CAPTION: User environments (from [[https://nixos.org/nix/manual/#ch-basic-package-mgmt][the manual]])
+#+ATTR_LaTeX: :width 150pt
+#+DOWNLOADED: screenshot @ 2020-05-22 23:15:22
+[[file:images/A_screenshot/2020-05-22_23-15-22_screenshot.png]]
+* Why?
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+#+BEGIN_QUOTE
+Protects against self harm
+#+END_QUOTE
+#+BEGIN_QUOTE
+Exposes things taken for granted
+#+END_QUOTE
+#+BEGIN_QUOTE
+Enforces consistency
+#+END_QUOTE
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+- Reliable :: Purely functional, no broken dependencies
+- Reproducible :: Each package is in isolation
+- How? :: store + hash + name + version
+* Installation (Multi-User)
+#+BEGIN_SRC bash :eval never
+sh <(curl https://nixos.org/nix/install) --daemon
+#+END_SRC
+
+#+RESULTS:
+
+- Needs ~sudo~ but should not be run as root
+- Will make build users with IDs between 30001 and 30032 along with a group ID 30000
+* Nix Python - Trial I
+#+BEGIN_SRC bash :eval never
+nix-shell -p 'python38.withPackages(ps: with ps; [ numpy toolz ])'
+#+END_SRC
+
+- Check which ~python~ is loaded
+- Check which modules are present
+* Nix with Scripts
+#+BEGIN_SRC bash :eval never
+#! /usr/bin/env nix-shell
+#! nix-shell -i python3 -p "python3.withPackages(ps: [ps.numpy])"
+
+import numpy
+
+print(numpy.__version__)
+#+END_SRC
+* An Aside into Purity
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+#+BEGIN_SRC bash :eval never
+nix-shell --pure --run 'bash'
+#+END_SRC
+- Why?
+- What do we solve with this?
+
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+
+#+DOWNLOADED: screenshot @ 2020-05-22 23:57:17
+#+caption: Stateless builds from https://slides.com/garbas/mozilla-all-hands-london-2016#/7/0/3
+[[file:images/A_screenshot/2020-05-22_23-57-17_screenshot.png]]
+
+* Shell in a File
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+#+BEGIN_SRC nix :tangle /home/haozeke/testNix/shell.nix
+with import <nixpkgs> {};
+
+let
+  pythonEnv = python35.withPackages (ps: [
+    ps.numpy
+    ps.toolz
+  ]);
+in mkShell {
+  buildInputs = [
+    pythonEnv
+    which
+  ];}
+#+END_SRC
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+- What *tools* are we adding?
+- What *environment* are we using?
+* Nix Python Expressions I
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+#+BEGIN_SRC nix :eval never
+f90wrap = self.buildPythonPackage rec {
+  pname = "f90wrap";
+  version = "0.2.3";
+  src = pkgs.fetchFromGitHub {
+    owner = "jameskermode";
+    repo = "f90wrap";
+    rev = "master";
+    sha256 = "0d06nal4xzg8vv6sjdbmg2n88a8h8df5ajam72445mhzk08yin23";
+  };
+  buildInputs = with pkgs; [ gfortran stdenv ];
+#+END_SRC
+
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+- The self portion is from overriding the python environment
+- We will dispense with this later
+** No Column :B_ignoreheading:
+:PROPERTIES:
+:BEAMER_env: ignoreheading
+:END:
+* Nix Python Expressions II
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+#+BEGIN_SRC nix :eval never
+  propagatedBuildInputs = with self; [
+    setuptools
+    setuptools-git
+    wheel
+    numpy
+  ];
+  preConfigure = ''
+    export F90=${pkgs.gfortran}/bin/gfortran
+  '';
+  doCheck = false;
+  doIstallCheck = false;
+};
+#+END_SRC
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+- More details here: https://rgoswami.me/posts/ccon-tut-nix/
+- Note that the ~propagatedBuildInputs~ are for the python packages
+* Friendly Nix
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+#+BEGIN_SRC bash
+nix-env -i nox
+nox niv
+#+END_SRC
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+- Niv :: For pinning packages
+- Nox :: Interactive package management
+- [[https://github.com/target/lorri/][Lorri]] :: For automatically reloading environments
+- Mach-Nix :: For working with Python
+- Nix-Prefetch-Url :: For obtaining SHA hashes
+* Section IV
+:PROPERTIES:
+:BEAMER_opt: standout
+:END:
+#+BEGIN_EXPORT latex
+\section{Setup}
+\begin{center}
+  \Huge Setup
+\end{center}
+#+END_EXPORT
+* Replacing Conda I
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+#+BEGIN_SRC nix
+let
+  sources = import ./prjSource/nix/sources.nix;
+  pkgs = import sources.nixpkgs { };
+  mach-nix = import (builtins.fetchGit {
+    url = "https://github.com/DavHau/mach-nix/";
+    ref = "2.2.2";
+  });
+#+END_SRC
+
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+- Note our definition of ~mach-nix~
+- Best practices involve ~niv~ pinned sources
+* Replacing Conda II
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+#+BEGIN_SRC nix
+  customPython = mach-nix.mkPython {
+    requirements = builtins.readFile ./requirements.txt;
+    providers = {
+      _default = "nixpkgs,wheel,sdist";
+      pytest = "nixpkgs";
+    };
+    pkgs = pkgs;
+  };
+in pkgs.mkShell { buildInputs = with pkgs; [ customPython ]; }
+#+END_SRC
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+- More details here: https://rgoswami.me/posts/mach-nix-niv-python/
+* Replacing Conda III
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+#+BEGIN_SRC nix
+    overrides_pre = [
+      (pythonSelf: pythonSuper: {
+        pytest = pythonSuper.pytest.overrideAttrs (oldAttrs: {
+          doCheck = false;
+        });
+        f90wrap = pythonSelf.buildPythonPackage rec {...};
+      })
+    ];
+#+END_SRC
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+- An important aspect of ~mkPython~
+- More details here: https://rgoswami.me/posts/mach-nix-niv-python/
+* More Nix
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+- Try [[https://nixos.org/nixos/nix-pills/why-you-should-give-it-a-try.html][Nix Pills]]
+- Roll your own environment
+- Make a docker image
+- Try a more [[https://github.com/d-SEAMS/seams-core/blob/691da72262db40625774a2aed05d23c17a211360/nix/pkgs/sharkML/sharkML.nix][complex system]] ([[https://dseams.info][d-SEAMS]] cite:goswamiDSEAMSDeferredStructural2020)
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+
+#+DOWNLOADED: screenshot @ 2020-05-22 23:54:29
+[[file:images/A_screenshot/2020-05-22_23-54-29_screenshot.png]]
+    
+* Section V
+:PROPERTIES:
+:BEAMER_opt: standout
+:END:
+#+BEGIN_EXPORT latex
+\section{Reproducibility}
+\begin{center}
+  \Huge Reproducibility
+\end{center}
+#+END_EXPORT
+* What Reproducibility?
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+
+fullcite:communityTuringWayHandbook2019
+
+#+ATTR_LaTeX: :width 0.4\textwidth
+file:images/turingWay/LogoDetailWithText.jpg
+
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+file:images/reproducibility.jpg
+* Data Science Woes
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+- Version Control
+  - Git, SVN, Mercurial (~hg~)
+- Collaboration
+  - Overleaf, Google Drive, OneDrive
+- Reproduce environments
+  - Docker, Conda, *Nix*
+- Re-run analysis
+  - Luigi, any CWL runner
+
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+
+file:images/ReproducibleMatrix.jpg
+
+* Section VI
+:PROPERTIES:
+:BEAMER_opt: standout
+:END:
+#+BEGIN_EXPORT latex
+\section{Provenance and Clusters}
+\begin{center}
+  \Huge Provenance and Clusters
+\end{center}
+#+END_EXPORT
+* Cluster Woes
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+- No ~docker~
+  + If lucky, will have ~singularity~
+- No userspace support
+- Probably runs CentOS or something
+- Has a networked file system
+- Uses a resource queue
+  + Slurm, PBS
+- Might have support for ~lmod~
+
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+
+#+DOWNLOADED: screenshot @ 2020-09-20 07:44:11
+[[file:images/A_screenshot/2020-09-20_07-44-11_screenshot.png]]
+
+* Provenance
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+
+fullcite:communityTuringWayHandbook2019
+
+#+DOWNLOADED: screenshot @ 2020-09-20 06:42:35
+[[file:images/A_block/2020-09-20_06-42-35_screenshot.png]]
+
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+file:images/turingWay/Provenance.jpg
+* Setup Jupyter
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+- Prefer ~conda~
+  + Export a ~yml~ with setup
+- Use ~nvm~
+- Track provenance manually
+  + For plugins and setup
+- Consider ~direnv~
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+#+BEGIN_SRC bash
+jupyter lab --generate-config
+vim ~/.jupyter/jupyter_notebook_config.py
+# Change c.NotebookApp.notebook_dir to a full path
+#+END_SRC
+* Xeus Python
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+- Best Jupyter debugger
+- Does not support all magics
+
+#+DOWNLOADED: screenshot @ 2020-09-20 07:40:27
+[[file:images/A_screenshot/2020-09-20_07-40-27_screenshot.png]]
+
+
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+#+DOWNLOADED: screenshot @ 2020-09-20 07:39:12
+[[file:images/Xeus_Python/2020-09-20_07-39-12_screenshot.png]]
+
+* Reusing Notebooks
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+file:images/logos/papermill_logo_wide.png
+*** Papermill
+- Notebooks are *functions*
+- Can be parameterized on the fly
+  + No need to refactor
+  + Cells *become* the analysis
+- Mostly supports integration tests
+
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+
+#+DOWNLOADED: screenshot @ 2020-09-20 07:16:32
+#+ATTR_LaTeX: :width 0.4\textwidth
+[[file:images/A_screenshot/2020-09-20_07-16-32_screenshot.png]]
+
+*** Jupytext
+- Notebooks are literate snippets
+- Must refactor cells into functions
+- Supports testing more transparently
+  + Unit tests
+** No Column :B_ignoreheading:
+:PROPERTIES:
+:BEAMER_env: ignoreheading
+:END:
+- Actually these work best together, especially as ~papermill~ can be called in ~python~ directly
+* Jupytext I
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+- Works best with version control
+  + Never commit an ~.ipynb~!
+- Encourages functions
+  + Easier to unit-test later
+- Is literate
+  + Closer to ~ipython~ histories
+  + Fits well with ~orgmode~ (via ~pandoc~)
+
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+
+#+DOWNLOADED: screenshot @ 2020-09-20 07:11:59
+#+ATTR_LaTeX: :width 0.6\textwidth
+[[file:images/A_screenshot/2020-09-20_07-11-59_screenshot.png]]
+
+* Jupytext II
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+
+#+DOWNLOADED: screenshot @ 2020-09-20 09:01:21
+#+ATTR_LaTeX: :width 0.83\textwidth
+[[file:images/A_screenshot/2020-09-20_09-01-21_screenshot.png]]
+
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+
+#+DOWNLOADED: screenshot @ 2020-09-20 09:01:40
+#+ATTR_LaTeX: :width 0.83\textwidth
+[[file:images/A_screenshot/2020-09-20_09-01-40_screenshot.png]]
+
+* Renku
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+- Has a Web-UI
+- Uses standard Git LFS under the hood
+- Generates CWL files for each command
+  + These become a provenance or lineage history
+  + Image from renku docs
+
+#+DOWNLOADED: screenshot @ 2020-09-20 06:55:30
+[[file:images/A_block/2020-09-20_06-55-30_screenshot.png]]
+
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+
+
+#+BEGIN_QUOTE
+Renku (連句 “linked verses”), is a Japanese form of popular collaborative linked verse poetry, written by more than one author working together.*
+#+END_QUOTE
+
+—Wikipedia
+
+#+BEGIN_SRC python
+renku run python run_analysis.py -i inputs -o outputs
+#+END_SRC
+** No Column :B_ignoreheading:
+:PROPERTIES:
+:BEAMER_env: ignoreheading
+:END:
+* Section VII
+:PROPERTIES:
+:BEAMER_opt: standout
+:END:
+#+BEGIN_EXPORT latex
+\section{Towards the Future}
+\begin{center}
+  \Huge Towards the Future
+\end{center}
+#+END_EXPORT
+
+* Parting Practicalities
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+- Keep Jupyter *impure*
+- Do *not* rely on Colab
+- Always keep a plain-text version
+- Replace *functions* with parameterized Jupyter notebooks
+- Reduce magics in parameterized notebooks
+  + Maximize Xeus where possible
+- Ask your sys-admins for ~nix~ or try a user-install
+  + Unsupported but try: https://rgoswami.me/posts/local-nix-no-root/
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+- ~conda~ should be used for *global* installations
+  + Like Jupyter
+- Use ~nix~ derivations for actual environments
+- Use ~renku~ to track provenance per project
+  + Also tracks databases
+** No Column :B_ignoreheading:
+:PROPERTIES:
+:BEAMER_env: ignoreheading
+:END:
+
+* Conclusions
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+- Interactivity is here to stay
+  + Especially in data science
+- Jupyter notebooks are here to stay
+  + Scalable development is still possible
+- Nix ensures reproducible system dependencies
+
+#+ATTR_LaTeX: :width 0.7\textwidth
+file:images/turingWay/BannerCongratulations.jpg
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+- Meeting old-school TDD developers halfway is best
+*** Tools
+- Xeus Python :: PDB on steroids for Notebooks
+- Jupytext :: Version Control and literate programming
+- Papermill :: Notebooks-are-functions
+- Renku :: Write CWL without tears
+** No Column :B_ignoreheading:
+:PROPERTIES:
+:BEAMER_env: ignoreheading
+:END:
+* References
+:PROPERTIES:
+:BEAMER_opt: allowframebreaks
+:END:
+
+\printbibliography
+
+* End
+:PROPERTIES:
+:BEAMER_opt: standout
+:END:
+#+BEGIN_EXPORT latex
+\begin{center}
+  \Huge Thank you
+\end{center}
+#+END_EXPORT
+
+# Local Variables:
+# before-save-hook: org-babel-execute-buffer
+# after-save-hook: haozeke/org-save-and-export-beamer
+# End:
