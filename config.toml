@@ -103,8 +103,11 @@ disableHugoGeneratorInject = false
 # [params.intensedebate]
 # accountID = "03433eb5474ac59759898fb85454590c"
 
-[params.graphcomments]
-accountID = "rgoswami"
+# [params.graphcomments]
+# accountID = "rgoswami"
+
+[params.commentbox]
+accountID = "5662446949761024-proj"
 
 [params.source]
     org_dir = "content-org"
