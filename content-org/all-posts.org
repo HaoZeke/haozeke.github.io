@@ -5611,3 +5611,198 @@ ldconfig -p | grep libGLX
 #+END_SRC
 
 ** Conclusion
+* DONE Documenting C++ with Doxygen and Sphinx - Exhale :@programming:documentation:workflow:cpp:
+CLOSED: [2020-09-22 Tue 06:58]
+:PROPERTIES:
+:EXPORT_FILE_NAME: doc-cpp-dox-sph-exhale
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+BEGIN_QUOTE
+This post outlines a basic workflow for C++ projects using Doxygen, Sphinx, and Exhale.
+#+END_QUOTE
+** Background
+My project proposal for documenting [[https://github.com/symengine/symengine][Symengine]] was recently accepted for the Google Summer of Docs initiative. In the past I have been more than happy to document C++ code using *only* [[https://www.doxygen.nl/][Doxygen]] (with [[https://docs.dseams.info][pretty fantastic results]]), while keeping example usage separate ([[https://wiki.dseams.info][d-SEAMS wiki]]). Though this is still a feasible method, a monolithic multi-project setup might benefit from [[https://www.sphinx-doc.org/][Sphinx]], which is what will be covered.
+*** Series
+This post is the first in a series based on best C++ documentation practices for Sphinx+Doxygen workflows.
+1. *Documenting C++ with Doxygen and Sphinx - Exhale* <-- You are here!
+2. [[Publishing Doxygen and Sphinx with Nix and Rake ][Publishing Doxygen and Sphinx with Nix and Rake]]
+3. [[Documenting C++ with Doxygen and Sphinx - doxyrest][Documenting C++ with Doxygen and Sphinx - doxyrest]]
+4. Adding Tutorials to Sphinx Projects
+** Goals
+A couple of goals informed this approach:
+- We expect our documentation to link to the source files
+- We expect a lot of Python developers to contribute
+  + Hence Sphinx
+- We would like to write ~.ipynb~ files into the docs
+  + Another reason to use Sphinx (via [[https://myst-nb.readthedocs.io/en/latest/][MyST{NB}]])
+** Folder Structure
+#+BEGIN_SRC bash :eval never :exports both
+tree -d $prj/ -L 2
+#+END_SRC
+
+#+RESULTS:
+| .   |             |           |
+| ├── | docs        |           |
+| │   | ├──         | Doxygen   |
+| │   | └──         | Sphinx    |
+| ├── | nix         |           |
+| │   | └──         | pkgs      |
+| ├── | projects    |           |
+| │   | └──         | symengine |
+| └── | scripts     |           |
+|     |             |           |
+| 8   | directories |           |
+
+Essentially we have a ~scripts~ directory to store basic build scripts, and two kinds of documentation folders.
+** Basic Doxygen
+The ~doxygen~ setup is beautifully simple:
+#+BEGIN_SRC bash
+cd docs/Doxygen
+doxygen -g
+# Easier to edit
+mv Doxyfile Doxyfile.cfg
+#+END_SRC
+Now we can modify some basic settings in a separate file
+#+BEGIN_SRC bash
+touch Doxyfile-prj.cfg
+vim Doxyfile-prj.cfg # or whatever
+#+END_SRC
+Edit the file to be (minimally):
+#+BEGIN_SRC bash
+@INCLUDE                = "./Doxyfile.cfg"
+GENERATE_HTML           = NO
+GENERATE_XML            = YES
+XML_PROGRAMLISTING = NO
+
+# Project Stuff
+PROJECT_NAME           = "myProject"
+PROJECT_BRIEF          = "Dev docs"
+OUTPUT_DIRECTORY       = "./gen_docs"
+#+END_SRC
+With this we will now be able to obtain the ~xml~ files for the rest of this setup.
+** Exhale
+For our first attempt, we will focus on the automation of Sphinx using the [[https://github.com/svenevs/exhale][exhale tool]].
+#+BEGIN_SRC bash
+# Basic setup
+poetry init
+poetry add exhale breathe
+#+END_SRC
+Now we can generate the basic Sphinx structure.
+#+BEGIN_SRC bash
+# Separate source and build
+sphinx-quickstart --sep --makefile docs/Sphinx \
+    --project "My Proj" \
+    --author "Juurj" \
+    --release "latest" \
+    --language "en"
+#+END_SRC
+This allows us to generate the Sphinx documentation we require, with some changes to the ~docs/Sphinx/source/config.py~ file (lifted from the [[https://github.com/svenevs/exhale][exhale documentation]]):
+#+BEGIN_SRC python
+extensions = [
+    'breathe',
+    'exhale',
+]
+
+# -- Exhale configuration ---------------------------------------------------
+# Setup the breathe extension
+breathe_projects = {
+    "My Proj": "./../../Doxygen/gen_docs/xml"
+}
+breathe_default_project = "My Proj"
+
+ # Setup the exhale extension
+exhale_args = {
+    # These arguments are required
+    "containmentFolder":     "./api",
+    "rootFileName":          "library_root.rst",
+    "rootFileTitle":         "Library API",
+    "doxygenStripFromPath":  "..",
+    # Suggested optional arguments
+    "createTreeView":        True,
+    # TIP: if using the sphinx-bootstrap-theme, you need
+    # "treeViewIsBootstrap": True,
+}
+
+# Tell sphinx what the primary language being documented is.
+primary_domain = 'cpp'
+
+# Tell sphinx what the pygments highlight language should be.
+highlight_language = 'cpp'
+#+END_SRC
+We also need to add the output to the ~index.rst~ use the following:
+#+BEGIN_SRC rst
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+   api/library_root
+#+END_SRC
+At this point we are ready to manually build our documentation.
+#+BEGIN_SRC bash
+cd docs/Doxygen
+doxygen Doxyfile-prj.cfg
+cd ../Sphinx
+make html
+#+END_SRC
+This is still pretty cumbersome though. We can view our documentation in a more pleasant manner with ~darkhttpd~.
+#+BEGIN_SRC bash
+darkhttpd docs/Sphinx/build/html
+#+END_SRC
+With this we now beautify the documentation (with the [[https://github.com/executablebooks/sphinx-book-theme][sphinx_book_theme]]):
+#+BEGIN_SRC bash
+poetry add sphinx-book-theme
+#+END_SRC
+We need to set the theme as well (in the Sphinx ~config.py~ file):
+#+BEGIN_SRC python
+html_theme = 'sphinx_book_theme'
+#+END_SRC
+This leads to some pretty documentation.
+
+#+DOWNLOADED: screenshot @ 2020-09-22 06:41:11
+#+caption: Generated documentation (Exhale)
+[[file:images/Exhale/2020-09-22_06-41-11_screenshot.png]]
+
+
+#+DOWNLOADED: screenshot @ 2020-09-22 06:44:48
+#+caption: Exhale does a great job with file-based hierarchy.
+[[file:images/Exhale/2020-09-22_06-44-48_screenshot.png]]
+
+** Conclusions
+At this point, we have a basic setup, which we can tweak with a bunch of themes, and/or different parsers, but this is still pretty rough around the edges. However, a caveat of this setup is that the actual contents of the source are not visible in the generated documentation. In [[Publishing Doxygen and Sphinx with Nix and Rake][the next post]], we will look at automating this setup for deploying with Travis.
+* TODO Publishing Doxygen and Sphinx with Nix and Rake :@programming:documentation:workflow:nix:cpp:
+:PROPERTIES:
+:EXPORT_FILE_NAME: pub-doc-cpp-dox-sph-nix
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+BEGIN_QUOTE
+Automating documenation deployment with Travis, ~rake~ and ~nix~
+#+END_QUOTE
+** Background
+In [[Documenting C++ with Doxygen and Sphinx - Exhale][the previous post]] we generated documentatino
+*** Series
+1. [[Documenting C++ with Doxygen and Sphinx - Exhale][Documenting C++ with Doxygen and Sphinx - Exhale]]
+2. *Publishing Doxygen and Sphinx with Nix and Rake* <-- You are here
+3. [[Documenting C++ with Doxygen and Sphinx - doxyrest][Documenting C++ with Doxygen and Sphinx - doxyrest]]
+4. Adding Tutorials to Sphinx Projects
+** Adding Nix
+It wouldn't make sense for me to not stick ~nix~ into this. I recall the dark days of setting up ~Dockerfiles~ to ensure reproducible environments on Travis.
+* TODO Documenting C++ with Doxygen and Sphinx - doxyrest :@programming:documentation:workflow:nix:cpp:
+#+BEGIN_QUOTE
+Advanced documentation customization with doxyrest for C++ projects
+#+END_QUOTE
+** Background
+*** Series
+1. [[Documenting C++ with Doxygen and Sphinx - Exhale][Documenting C++ with Doxygen and Sphinx - Exhale]]
+2. [[Publishing Doxygen and Sphinx with Nix and Rake][Publishing Doxygen and Sphinx with Nix and Rake]]
+3. *Documenting C++ with Doxygen and Sphinx - doxyrest* <-- You are here
+4. [[Adding Tutorials to Sphinx Projects][Adding Tutorials to Sphinx Projects]]
+* TODO Adding Tutorials to Sphinx Projects :@programming:documentation:workflow:cpp:
+#+BEGIN_QUOTE
+Multi-source documentation coupled to tutorials, using ~.ipynb~ and other extensions
+#+END_QUOTE
+** Background
+*** Series
+1. [[Documenting C++ with Doxygen and Sphinx - Exhale][Documenting C++ with Doxygen and Sphinx - Exhale]]
+2. [[Publishing Doxygen and Sphinx with Nix and Rake][Publishing Doxygen and Sphinx with Nix and Rake]]
+3. [[Documenting C++ with Doxygen and Sphinx - doxyrest][Documenting C++ with Doxygen and Sphinx - doxyrest]]
+4. *Adding Tutorials to Sphinx Projects* <-- You are here
