@@ -5892,7 +5892,7 @@ mv build/html ../../public
 # End:
 #+END_SRC
 
-This calls on a ~deps.nix~ which we shall generate in a manner very reminiscent of the ~shell.nix~ [fn:whybother] as follows:
+This calls on a ~deps.nix~[fn:whatshebang] which we shall generate in a manner very reminiscent of the ~shell.nix~ [fn:whybother] as follows:
 
 #+BEGIN_SRC nix
 let
@@ -6126,6 +6126,7 @@ A lot has happened on the tooling end, even though the documentation itself has 
 [fn:whatthen] [[https://python-poetry.org/][Poetry]] and [[https://pipenv-fork.readthedocs.io/][Pipenv]] come to mind
 [fn:whybother] In this instance, we could have simply called on ~shell.nix~ instead, but it illustrates a more general concept
 [fn:teachmerake] [[https://avdi.codes/tag/rake/page/2/][Avdi's blog has a fantastic introduction]] to ~rake~ and ~Rakefiles~
+[fn:whatshebang] Chris Warbo has a good [[http://chriswarbo.net/projects/nixos/nix_shell_shebangs.html][introduction to the nix shebang]]
 * TODO Documenting C++ with Doxygen and Sphinx - doxyrest :@programming:documentation:workflow:nix:cpp:
 #+BEGIN_QUOTE
 Advanced documentation customization with doxyrest for C++ projects
