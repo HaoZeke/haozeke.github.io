@@ -6122,7 +6122,7 @@ rake -T
 #+END_SRC
 Activate this with the usual ~direnv allow~. This has the added benefit of listing the defined tasks when ~cd~'ing into the project directory.
 ** Conclusions
-A lot has happened on the tooling end, even though the documentation itself has not been updated further. We have managed setup a robust environment which is both reproducible and also amenable to users who do not have ~nix~. We have also setup a build system, which can help us in many more ways as well (asset optimization through the ~rails~ pipeline). In the next post, we will return to the documentation itself for further tinkering.
+A lot has happened on the tooling end, even though the documentation itself has not been updated further. We have managed to setup a robust environment which is both reproducible and also amenable to users who do not have ~nix~. We have also setup a build system, which can help us in many more ways as well (asset optimization through the ~rails~ pipeline). In the next post, we will return to the documentation itself for further tinkering.
 [fn:whatthen] [[https://python-poetry.org/][Poetry]] and [[https://pipenv-fork.readthedocs.io/][Pipenv]] come to mind
 [fn:whybother] In this instance, we could have simply called on ~shell.nix~ instead, but it illustrates a more general concept
 [fn:teachmerake] [[https://avdi.codes/tag/rake/page/2/][Avdi's blog has a fantastic introduction]] to ~rake~ and ~Rakefiles~
