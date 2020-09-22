@@ -406,3 +406,4 @@ dist
 .tmp/
 # Keys
 deploy_key*
+presentations/**/*.tex
