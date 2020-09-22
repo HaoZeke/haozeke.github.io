@@ -5506,6 +5506,20 @@ Though this is slow and seems like an inefficient use of cluster resources, the 
 
 [fn:thateasy] Note that this will of course entail rebuilding everything from scratch, every time, which means no binary caches. Thus there is no reasonable defence for trying this out without access to a high powered limited access machine
 [fn:whatalternatives] The rest of the post assumes we are on the same page and working towards the same end-goal, substitute and remix at will
+* TODO Jupyter for HPC Environments :@programming:workflow:projects:hpc:tools:
+** Background
+Unfortunately, the closely coupled nature of Jupyter instances require both ~nodejs~ builds and ~python~ extensions. Furthermore there are no real tangible gains to running ~jupyterWith~ instances with ~nix~ on a per-project basis.
+** Reproducible Environments
+We will use ~conda~ along with ~nvm~ to manage the dependencies of our ~jupyter~ instance, and spin it up only when required as facilitated by ~tmux~.
+*** Paths
+Unfortunately it is impossible to set the file-system paths in a machine agnostic manner, since the configuration file cannot accept environment variables.
+#+BEGIN_SRC bash
+jupyter lab --generate-config
+vim ~/.jupyter/jupyter_notebook_config.py
+# Change c.NotebookApp.notebook_dir to a full path
+#+END_SRC
+** Automation
+
 * TODO Introduce JuPyYod
 #+BEGIN_QUOTE
 The rationale behind my ~JuPyYod~ project for working with Python and Nix
