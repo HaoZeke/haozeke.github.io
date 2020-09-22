@@ -136,6 +136,7 @@ the rest[fn:whereswaldo].
 - TeX Users Group
   - [[http://tug.org/tug2020/][TUG 2020 Conference Committee member]]
   - TUG Zulip Admin
+- [[https://developers.google.com/season-of-docs/docs/participants/project-sympy-rohitgoswami][Google Summer of Docs 2020 Symengine]]
 *** Academic
 - [[https://publons.com/researcher/2911170/rohit-goswami/][Publons]]
 - [[https://peerj.com/rgoswami/][PeerJ]]
@@ -163,6 +164,7 @@ the rest[fn:whereswaldo].
 - A collaborative post on [[https://carpentries.org/blog/2020/08/r-4-migration/][migrating to R 4.0 for The Carpentries]]
 *** Mentioning Me
 **** Lists
+- [[https://sites.google.com/view/2020crt/home?authuser=0][2020 Categorifications in Representation Theory]] ([[https://sites.google.com/view/2020crt/registered-participants?authuser=0][participant]])
 - [[https://web-eur.cvent.com/event/16fae83c-5b72-4690-a368-829688f0d14b/summary][Heilbronn Annual Conference 2020]] ([[https://web-eur.cvent.com/event/16fae83c-5b72-4690-a368-829688f0d14b/websitePage:1faf08a0-dcdd-4a2c-b4b8-d9d445202377?RefId=HIMR][participant]])
 - [[https://www.cirm-math.fr/Listes/liste_pre_verif.php?id_renc=2255&num_semaine=0][CIRM - Jean-Morlet Chair - Quasi-Monte Carlo Methods and Applications]] ([[https://www.chairejeanmorlet.com/2255.html][info]]) [participant]
 - [[https://www.cirm-math.fr/Listes/liste_pre_verif.php?id_renc=2146&num_semaine=0][CIRM Mathematical Methods of Modern Statistics 2]] ([[https://www.cirm-math.com/cirm-virtual-event-2146.html][info]]) [participant]
@@ -179,7 +181,8 @@ the rest[fn:whereswaldo].
 - [[https://wc3m.github.io/][Water, Chemicals and more with Computers for Chemistry (WC3m)]] :: July 28-August 28, 2020 (co-lead)
 - [[https://coderefinery.github.io/2020-05-25-online/][2020 MegaCodeRefinery]] (helper)
 ***** Carpentries
-- [[https://nairps.github.io/2020-09-08-ggc-SBDH-online/][Data Carpentry Workshop for Social Sciences Georgina Gwinnett College]] :: September 8-11, 2020 (instructor)
+- [[https://flatironinstitute.github.io/sciware-swc-2020-09-git/][Sciware: Git and GitHub at the Flatiron Institute]] :: September 24 and October 1, 2020 (instructor)
+- [[https://nairps.github.io/2020-09-08-ggc-SBDH-online/][Data Carpentry Workshop for Social Sciences Georgia Gwinnett College]] :: September 8-11, 2020 (instructor)
 - [[https://smcclatchy.github.io/2020-06-22-biotechPartners-pm/][Data Carpentry Ecology for Biotech Partners]] :: June 22-July 2, 2020 (instructor)
 - [[https://sadilar.github.io/2020-06-29-SA-ONLINE/][Online Data Carpentry Workshop SADiLaR, South Africa]] :: 29 June - 3 July, 2020 (instructor)
 **** Quotes
