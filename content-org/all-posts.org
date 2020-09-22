@@ -5639,9 +5639,9 @@ My project proposal for documenting [[https://github.com/symengine/symengine][Sy
 *** Series
 This post is the first in a series based on best C++ documentation practices for Sphinx+Doxygen workflows.
 1. *Documenting C++ with Doxygen and Sphinx - Exhale* <-- You are here!
-2. [[Publishing Doxygen and Sphinx with Nix and Rake ][Publishing Doxygen and Sphinx with Nix and Rake]]
-3. [[Documenting C++ with Doxygen and Sphinx - doxyrest][Documenting C++ with Doxygen and Sphinx - doxyrest]]
-4. Adding Tutorials to Sphinx Projects
+2. Publishing Doxygen and Sphinx with Nix and Rake (TBD)
+3. Documenting C++ with Doxygen and Sphinx - doxyrest (TBD)
+4. Adding Tutorials to Sphinx Projects (TBD)
 ** Goals
 A couple of goals informed this approach:
 - We expect our documentation to link to the source files
@@ -5782,7 +5782,7 @@ This leads to some pretty documentation.
 [[file:images/Exhale/2020-09-22_06-44-48_screenshot.png]]
 
 ** Conclusions
-At this point, we have a basic setup, which we can tweak with a bunch of themes, and/or different parsers, but this is still pretty rough around the edges. However, a caveat of this setup is that the actual contents of the source are not visible in the generated documentation. In [[Publishing Doxygen and Sphinx with Nix and Rake][the next post]], we will look at automating this setup for deploying with Travis.
+At this point, we have a basic setup, which we can tweak with a bunch of themes, and/or different parsers, but this is still pretty rough around the edges. However, a caveat of this setup is that the actual contents of the source are not visible in the generated documentation. In the next post, we will look at automating this setup for deploying with Travis.
 * TODO Publishing Doxygen and Sphinx with Nix and Rake :@programming:documentation:workflow:nix:cpp:
 :PROPERTIES:
 :EXPORT_FILE_NAME: pub-doc-cpp-dox-sph-nix
