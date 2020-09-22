@@ -100,8 +100,11 @@ disableHugoGeneratorInject = false
 # repo  ="haozeke/haozeke.github.io"
 # label = "Utterance 💬"
 
-[params.intensedebate]
-accountID = "03433eb5474ac59759898fb85454590c"
+# [params.intensedebate]
+# accountID = "03433eb5474ac59759898fb85454590c"
+
+[params.graphcomments]
+accountID = "rgoswami"
 
 [params.source]
     org_dir = "content-org"
