@@ -5991,7 +5991,7 @@ task :name do
 end
 #+END_SRC
 
-Some variation of this will be considered when appropriate.
+Some variations of this will be considered when appropriate.
 **** Clean
 A ~clean~ task is a good first task, being as it is almost trivial in all build systems.
 #+BEGIN_SRC ruby
