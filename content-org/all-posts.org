@@ -6152,3 +6152,43 @@ Multi-source documentation coupled to tutorials, using ~.ipynb~ and other extens
 2. [[Publishing Doxygen and Sphinx with Nix and Rake][Publishing Doxygen and Sphinx with Nix and Rake]]
 3. [[Documenting C++ with Doxygen and Sphinx - doxyrest][Documenting C++ with Doxygen and Sphinx - doxyrest]]
 4. *Adding Tutorials to Sphinx Projects* <-- You are here
+
+* DONE PyCon India 2020 :@conferences:presentations:ramblings:nix:python:
+CLOSED: [2020-10-02 Fri 23:56]
+:PROPERTIES:
+:EXPORT_FILE_NAME: pycon-in-2020-meta
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+BEGIN_QUOTE
+A meta-post on my talk at PyCon India 2020
+#+END_QUOTE
+** Background
+I [[https://in.pycon.org/2020/][am to present]] at PyCon IN 2020. Some of the motivating reasons for having a post are:
+- I would like to preserve questions
+- I would like to collect the video, slides and other miscellaneous stuff in one location [fn:officialsite]
+- It would be nice to have my own thoughts here afterwards
+
+Details of this happy circumstance are reproduced below from the [[https://in.pycon.org/cfp/2020/proposals/reproducible-scalable-workflows-with-nix-papermill-and-renku~dNkxD/][CFP here]].
+*** Details
+- Title :: Reproducible Scalable Workflows with Nix, Papermill and Renku
+**** Abstract
+#+BEGIN_QUOTE
+The provenance of Jupyter notebook interfaces can no longer be denied in the data-science and analysis community. In particular, fledgling and "fresh out of school" researchers and practitioners are used to using Jupyter notebooks for their initial analysis. As might be expected, these workflows are difficult to reproduce and also store. Caching efficiency and dependency re-use are almost always sub-optimal with virtual environments, compared to native installations, and the same issues (along with additional security concerns) plague docker setups as well. There are a set of Jupyter tools which have evolved to close this gap, like JupyText. However, the fundamental aspect of reproducing workflows on high performance computing clusters, of being able to compose programmatically, compilation rules which efficiently use underlying hardware with minimal user intervention is still not a solved problem. In this talk, I will discuss packaging Python applications and workflows in an end-to-end composable manner using the Nix ecosystem, which leverages a functional programming paradigm and then show how this allows for both user-friendly low-compute analysis, while being scalable on large clusters. To that end, the tools introduced will be:
+
+The Nix programming language (emphasis on developer environments for python with mkShell)
+Jupyter Python kernels (the Xeus kernel for Python debugging) and Jupytext
+Papermill for parameterizing notebooks
+Renku for tracing provenance
+The goal is to have the audience familiarized with the best practices for reproducibility and analysis. The focus will be on scientific HPC applications, though any managed cluster can and will benefit from the practices described.
+#+END_QUOTE
+**** Other Content
+A more in-depth introductory workshop on Nix itself given by me (and Amrita Goswami) at [[https://2020.carpentrycon.org/schedule/#session-10][CarpentryCon2020]] is here:
+- [[https://github.com/HaoZeke/CarpentryCon2020_Nix][CarpentryCon2020 Materials]]
+- [[https://rgoswami.me/posts/ccon-tut-nix/][A tutorial introduction to Nix and Python]]
+** Slides
+The slides are embedded below. The ~orgmode~ source [[https://github.com/HaoZeke/haozeke.github.io/blob/src/presentations/PyConIN2020/nixPyconIN.org][is here on the site's GH repo]].
+#+BEGIN_EXPORT html
+<script async class="speakerdeck-embed" data-id="6db471426fc24d6cbfb433f2464b8146" data-ratio="1.77966101694915" src="//speakerdeck.com/assets/embed.js"></script>
+#+END_EXPORT
+
+[fn:officialsite] One location I am going to be able to keep track of
