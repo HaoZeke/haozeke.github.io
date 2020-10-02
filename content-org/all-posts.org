@@ -159,9 +159,14 @@ the rest[fn:whereswaldo].
 - Everything on [[https://keybase.io/HaoZeke][any of my many websites]]
 - [[https://www.aiche.org/community/sites/committees/young-professionals/blog/fundamental-research-chemical-engineering-undergrad][Write-up on research with a ChemE undergraduate degree]] for the American Institute of Chemical Engineers (AIChE) Young Professionals Committee (YPC)
 - Hackernoon article on [[https://hackernoon.com/locking-and-encrypting-apps-with-encfs-c1484e77f479][Locking and Encrypting Apps with Encfs]]
-- Reproducible Environments with the Nix Packaging System at [[https://2020.carpentrycon.org/schedule/#session-10][CarpentryCon 2020]]
 - The Water, Chemicals and more with Computers for Chemistry (WC3m) [[https://wc3m.github.io/][course website]]
 - A collaborative post on [[https://carpentries.org/blog/2020/08/r-4-migration/][migrating to R 4.0 for The Carpentries]]
+**** Tech Conferences
+These are tech talks, for academic presentations, [[https://github.com/haozeke/cv][my CV is a better guide]].
+- Reproducible Scalable Workflows with Nix, Papermill and Renku at [[https://in.pycon.org/2020/][PyCon India 2020]]
+- Reproducible Environments with the Nix Packaging System at [[https://2020.carpentrycon.org/schedule/#session-10][CarpentryCon 2020]]
+**** Lightning Talks
+- Nix from the dark ages (without Root) at [[https://2020.nixcon.org/][NixCon 2020]]
 *** Mentioning Me
 **** Lists
 - [[https://sites.google.com/view/2020crt/home?authuser=0][2020 Categorifications in Representation Theory]] ([[https://sites.google.com/view/2020crt/registered-participants?authuser=0][participant]])
