@@ -6192,3 +6192,47 @@ The slides are embedded below. The ~orgmode~ source [[https://github.com/HaoZeke
 #+END_EXPORT
 
 [fn:officialsite] One location I am going to be able to keep track of
+
+* DONE Replacing Zoom with Open Broadcaster Software :@notes:workflow:tools:
+CLOSED: [2020-10-03 Sat 17:05]
+:PROPERTIES:
+:EXPORT_FILE_NAME: rep-zoom-obs
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+BEGIN_QUOTE
+A post on local recordings
+#+END_QUOTE
+** Background
+Since the advent of the COVID-19 situation, there has been an increase in the demand for recorded materials. Standard approaches involve Zoom, which is not only proprietary, but also quite a bit of a privacy nightmare. The last straw was the random placement of my speaker bauble head.
+
+#+DOWNLOADED: screenshot @ 2020-10-03 16:51:07
+#+caption: Zoom webcam placement
+[[file:images/Background/2020-10-03_16-51-07_screenshot.png]]
+
+At this point, given that I was to set up a pre-recorded video for [[Talk Supplements for PyCon India 2020][PyCon India 2020]], I decided to look into alternatives.
+** Alternatives
+The search for alternative screen recording systems isn't really a very new one. For group work (like [[https://wc3m.github.io/][W3cm]] [fn:whatthat]), I tend to prefer Skype, since it handles speaker galleries very well. Unfortunately, Skype has no capacity for recording single person calls, at least as yet. This is not the place for an extended debate on the pros and cons of Skype, or Google Meet (only records corporate accounts), or the rest. Instead, lets sum up all these issue with the simple understanding that, if *one person* wants to record a webcam connected to their local computer, along with the screen, it is insane to imagine that the only way to get this is by:
+- Making an account somewhere (Zoom, Meet, Skype, anything)
+- Giving a cloud service permission to record our screens
+At the same time, a lot of standard tools for screen recording do not play nice with webcam recorders (like [[https://www.maartenbaert.be/simplescreenrecorder/][Simple Screen Recorder]] and [[https://help.gnome.org/users/cheese/stable/][Cheese]]).
+** Open Broadcaster Software
+The [[https://duckduckgo.com/?q=obs+studio&ia=web][OBS studio project]] is a godsend. It allows for simultaneously managing multiple streams, of both audio and video. Furthermore, since these are implemented as overlays, it is possible to fine-tune the positioning of each of these, which is something Zoom and friends lack.
+
+#+DOWNLOADED: screenshot @ 2020-10-03 16:53:51
+#+caption: Into the matrix
+[[file:images/Open_Broadcaster_Software/2020-10-03_16-53-51_screenshot.png]]
+
+The ability to resize the webcam is best shown in the figure below.
+
+#+DOWNLOADED: screenshot @ 2020-10-03 16:58:26
+#+caption: Almost Zoom, only better
+[[file:images/Open_Broadcaster_Software/2020-10-03_16-58-26_screenshot.png]]
+
+OBS also generates beautifully small videos and supports live-streaming.
+*** Common Caveats
+- The standard setting is set to work with hardware acceleration, which may not be present for many users
+  + Use the settings to change this back to the software setting
+** Conclusions
+I cannot imagine going back to Zoom to record anything local. It is an added bonus that OBS is both cross-platform and FOSS. It is only incredible more people do not use it.
+
+[fn:whatthat] Water, Chemicals and more with Computers for Chemistry, a computational chemistry course aimed at middle school students taught with my sister [[http://scholar.google.com/citations?user=mviv92EAAAAJ&hl=en][Amrita Goswami]]
