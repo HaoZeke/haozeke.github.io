@@ -1,6 +1,6 @@
 #+TITLE:     Reproducible Scalable Workflows with Nix, Papermill and Renku
 #+SUBTITLE:  PyCon India 2020
-#+AUTHOR:    Rohit Goswami,\textsc{\scriptsize\ MInstP AMIE AMIChemE}
+#+AUTHOR:    Rohit Goswami\textsc{\scriptsize\ MInstP AMIE AMIChemE}
 #+EMAIL:     rog32@hi.is
 #+DATE:      October 3, 2020
 #+BEAMER_HEADER: \titlegraphic[height=1.5cm]{images/physUoI.png}{}
