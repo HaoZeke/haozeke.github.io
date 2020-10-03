@@ -6153,7 +6153,7 @@ Multi-source documentation coupled to tutorials, using ~.ipynb~ and other extens
 3. [[Documenting C++ with Doxygen and Sphinx - doxyrest][Documenting C++ with Doxygen and Sphinx - doxyrest]]
 4. *Adding Tutorials to Sphinx Projects* <-- You are here
 
-* DONE PyCon India 2020 :@conferences:presentations:ramblings:nix:python:
+* DONE Talk Supplements for PyCon India 2020 :@conferences:presentations:ramblings:nix:python:
 CLOSED: [2020-10-02 Fri 23:56]
 :PROPERTIES:
 :EXPORT_FILE_NAME: pycon-in-2020-meta
