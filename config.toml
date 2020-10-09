@@ -136,6 +136,10 @@ accountID = "rgoswami"
     url  = "https://github.com/HaoZeke"
 
   [[params.social]]
+    name = "goodreads"
+    url  = "https://www.goodreads.com/user/show/33462912-rohit-goswami"
+
+  [[params.social]]
     name = "googlescholar"
     url  = "https://scholar.google.co.in/citations?user=36gIdJMAAAAJ&hl=en"
 
