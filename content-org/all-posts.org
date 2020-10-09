@@ -6236,3 +6236,76 @@ OBS also generates beautifully small videos and supports live-streaming.
 I cannot imagine going back to Zoom to record anything local. It is an added bonus that OBS is both cross-platform and FOSS. It is only incredible more people do not use it.
 
 [fn:whatthat] Water, Chemicals and more with Computers for Chemistry, a computational chemistry course aimed at middle school students taught with my sister [[http://scholar.google.com/citations?user=mviv92EAAAAJ&hl=en][Amrita Goswami]]
+
+* TODO Old Laptops as Secondary Monitors
+:PROPERTIES:
+:EXPORT_FILE_NAME: laptop-as-second-screens
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+** Background
+My X380 sadly has been having port issues. This meant that my M14 was no longer a viable option for my second screen needs.
+** Outline
+The general form of the solution works in one of two ways:
+- VNC Viewer :: Where the (second-screen) laptop connects to a VNC server on the primary laptop
+- Peripheral Shares :: Where the secondary laptop runs a server to enable proxying mouse and keyboard access from the primary laptop
+** VNC and Windows
+For laptops running
+** VNC and Linux
+This is a pretty standard setup.
+** VNC and Android
+There are two parts to this solution. Note that, as Android devices don't run X11 systems in a meaningful way, the direct access method is through a paid application, a2vnc server lite, which also did not work well in my tests. We will therefore focus on setting a VNC viewer up to connect to the primary laptop.
+*** Primary Settings
+**** XRandR Setup
+For the primary laptop, we will start by obtaining our present screens configuration.
+#+BEGIN_SRC bash :exports both :results raw :eval never
+xrandr | grep " connected"
+#+END_SRC
+
+#+BEGIN_SRC bash
+eDP1 connected primary 1920x1080+1920+0 (normal left inverted right x axis y axis) 290mm x 170mm
+#+END_SRC
+
+Naturally your output will differ. We also need the resolution of the Android device. In my case, they are the same. At this point we are ready to figure out the mode-line.
+
+#+BEGIN_SRC bash :results raw
+gtf 1920 1080 60
+#+END_SRC
+
+#+BEGIN_SRC bash
+  # 1920x1080 @ 60.00 Hz (GTF) hsync: 67.08 kHz; pclk: 172.80 MHz
+  Modeline "1920x1080_60.00"  172.80  1920 2040 2248 2576  1080 1081 1084 1118  -HSync +Vsync
+#+END_SRC
+
+Let us now use this information to create a bunch of modelines.
+
+#+BEGIN_SRC bash
+xrandr --newmode "1920x1080_60.00"  172.80  1920 2040 2248 2576  1080 1081 1084 1118  -HSync +Vsync
+#+END_SRC
+
+Note that we can create more of these in the same manner. We can now move forward with making a virtual screen.
+
+#+BEGIN_SRC bash
+xrandr --addmode VIRTUAL1 1920x1080_60.00
+#+END_SRC
+
+We can now finally set up the output.
+
+#+BEGIN_SRC bash
+xrandr --output VIRTUAL1 --mode 1920x1080_60.00 --left-of eDP1
+#+END_SRC
+
+Note that it is better to use ~mons~ to work with our newly created virtual screen.
+
+#+BEGIN_SRC bash
+mons -e left
+#+END_SRC
+
+**** VNC Setup
+Now we need prepare our VNC. ~x11vnc~ is recommended at the moment.
+#+BEGIN_SRC bash
+x11vnc -vencrypt nodh:only-ssl -ssl SAVE -clip 1920x1080+0+0
+#+END_SRC
+*** Android Settings
+For this section, I personally use [[https://play.google.com/store/apps/details?id=com.iiordanov.bVNC&hl=en&gl=US][bVNC Pro]]. The setup is pretty dead simple. A basic VNC connection is all that is required.
+** Conclusion
+The final setup.
