@@ -6420,3 +6420,35 @@ in hsPkgs.shellFor {
 [fn:fightme] [[https://joel.net/how-one-guy-ruined-hacktoberfest2020-drama][This is an extreme case]], but all "part-time" developers end up contributing features which rot over time
 [fn:whyverbose] If the post seems overly verbose, it is because these are tangled directly
 
+* DONE Talk Supplements for NixCon 2020 :@conferences:presentations:ramblings:nix:hpc:
+CLOSED: [2020-10-17 Sat 10:40]
+:PROPERTIES:
+:EXPORT_FILE_NAME: nixcon-in-2020-meta
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+BEGIN_QUOTE
+A meta-post on my lightning talk at NixCon 2020
+#+END_QUOTE
+** Background
+Much the same as the rationale behind my [[Talk Supplements for PyCon India 2020][meta-post on my talk at PyCon India 2020]], that is:
+- I would like to preserve questions
+- I would like to collect the video, slides and other miscellaneous stuff in one location [fn:officialsite]
+- It would be nice to have my own thoughts here afterwards
+*** Details
+- Title :: Nix from the dark ages (without Root)
+- Proposal :: [[https://cfp.nixcon.org/nixcon2020/talk/CUE78W/][See the cfp response here]]
+**** Abstract
+#+BEGIN_QUOTE
+Short comments from the trenches of High Performance Clusters on working with Nix on kernel locked-in systems without proot support.
+#+END_QUOTE
+**** Other Content
+Anything on this site [[https://rgoswami.me/tags/nix/][tagged with Nix]]. Also an introduction to ~nix~ given by me (and Amrita Goswami) at [[https://2020.carpentrycon.org/schedule/#session-10][CarpentryCon2020]] is here:
+- [[https://github.com/HaoZeke/CarpentryCon2020_Nix][CarpentryCon2020 Materials]]
+- [[https://rgoswami.me/posts/ccon-tut-nix/][A tutorial introduction to Nix and Python]]
+** Slides
+The slides are embedded below. The ~orgmode~ source [[https://github.com/HaoZeke/haozeke.github.io/blob/src/presentations/NixCon2020/darkNix.org][is here on the site's GH repo]].
+#+BEGIN_EXPORT html
+<script async class="speakerdeck-embed" data-id="2cc4e5d0cca445be95e1e77827ea782c" data-ratio="1.37081659973226" src="//speakerdeck.com/assets/embed.js"></script>
+#+END_EXPORT
+
+[fn:officialsite] One location I am going to be able to keep track of
