@@ -6242,6 +6242,9 @@ I cannot imagine going back to Zoom to record anything local. It is an added bon
 :EXPORT_FILE_NAME: laptop-as-second-screens
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :END:
+#+begin_quote
+Dual screen workflows without screens across operating systems
+#+end_quote
 ** Background
 My X380 sadly has been having port issues. This meant that my M14 was no longer a viable option for my second screen needs.
 ** Outline
@@ -6251,7 +6254,18 @@ The general form of the solution works in one of two ways:
 ** VNC and Windows
 For laptops running
 ** VNC and Linux
-This is a pretty standard setup.
+*** Peripheral Share
+For the secondary laptop we need to run a server (~tigervnc~) without setting an external screen.
+#+begin_src bash
+x0vncserver -rfbauth ~/.vnc/passwd
+#+end_src
+Now on the main laptop, we will simply leverage ~x2vnc~ to extend into the secondary laptop.
+#+begin_src bash
+x2vnc $ip -west
+#+end_src
+Where we can get the IP (local) by checking with ~ifconfig~ on the secondary laptop.
+**** Meta
+This works best when combined with a networked file-system, since then you can interact with files in tandem. Otherwise, there is quite a bit of ~git~ based back and forth.
 ** VNC and Android
 There are two parts to this solution. Note that, as Android devices don't run X11 systems in a meaningful way, the direct access method is through a paid application, a2vnc server lite, which also did not work well in my tests. We will therefore focus on setting a VNC viewer up to connect to the primary laptop.
 *** Primary Settings
@@ -6307,5 +6321,102 @@ x11vnc -vencrypt nodh:only-ssl -ssl SAVE -clip 1920x1080+0+0
 #+END_SRC
 *** Android Settings
 For this section, I personally use [[https://play.google.com/store/apps/details?id=com.iiordanov.bVNC&hl=en&gl=US][bVNC Pro]]. The setup is pretty dead simple. A basic VNC connection is all that is required.
+*** Comments
+In practice, I use the x86 setup, with the secondary laptop acting as a viewer for a virtual screen, mostly because that way I can tune into multiple Zoom meetings (a bonus).
 ** Conclusion
-The final setup.
+The final setup is quite robust to changes. Future posts might go into setting up the kind of local networking tools to help move files, code and more between both machines, to improve on the peripheral share approach.
+
+* TODO Haskell with Nix for Hacktoberfest :@programming:tools:nix:workflow:python:
+:PROPERTIES:
+:EXPORT_FILE_NAME: haskell-with-nix-hacktober
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+BEGIN_QUOTE
+Short post on Haskell Nix, and Hacktoberfest
+#+END_QUOTE
+** Background
+Full disclaimer. This post is not like my other ~nix~ posts, which are /ex-cathedra/ expositions. My working knowledge of Haskell, however, is essentially some non-production hacking of [[https://github.com/jaspervdj/hakyll][Hakyll]] and [[https://github.com/jgm/pandoc][Pandoc]]. That said, I thought I'd take advantage of the [[https://github.com/kowainik/learn4haskell#how-to-get-started][learn4haskell initiative]] of [[https://hacktoberfest.digitalocean.com/][Hacktoberfest]]. I truly do believe incentivized FOSS development is terrible [fn:fightme], though incentivized learning is not that bad, so I was pleasantly surprised to see this excellent initiative. Plus, I'd always wanted to get into Haskell. Naturally, working through something without a take is pointless, so I thought I'd work through the exercises with a bit of Nix.
+** Setup
+There are several methods of working with ~nix~ and Haskell, typically centered around ~cabal2nix~ and ~stack2nix~ (including [[https://docs.haskellstack.org/en/stable/README/][this official approach]]). I will implement and leverage the [[https://input-output-hk.github.io/haskell.nix/][haskell.nix approach]]. Additionally, I will leverage some [[https://www.youtube.com/watch?v=5p2Aq3bRuL0][concepts from Tsoding]] and [[https://github.com/hlissner/doom-emacs][doom-emacs]] as always.
+
+*** Haskell-Nix
+This section follows directly from the [[https://input-output-hk.github.io/haskell.nix/tutorials/getting-started/][haskell.nix documentation]], as adapted to the ~learn4haskell~ project.
+
+#+begin_src bash
+nix-env -iA cachix -f https://cachix.org/api/v1/install
+cachix use iohk
+cachix use ghcide-nix
+#+end_src
+
+#+RESULTS:
+: Configured https://iohk.cachix.org binary cache in /home/haozeke/.config/nix/nix.conf
+
+We will also setup the optional keys in ~nix.conf~. Assuming that someone is "following along" we will configure our *fork* of the ~learn4haskell~ project in the standard manner. In case you haven't done so already, and you have set up the very excellent [[https://github.com/github/hub][hub wrapper for git]].
+
+#+begin_src bash
+# wherever you keep git stuff
+git clone https://github.com/kowainik/learn4haskell
+cd learn4haskell
+hub fork
+#+end_src
+
+Anyway now we can start by pinning dependencies, with some inspiration from [[https://github.com/Ptival/haskell-nix-template/][this template]].
+
+#+begin_src bash :eval never
+nix-env -i niv
+niv init
+niv add input-output-hk/haskell.nix
+niv add cachix/ghcide-nix
+#+end_src
+
+With that out of the way, we will start working on a ~default.nix~ [fn:whyverbose].
+
+#+begin_src nix :tangle ~/Git/Github/Haskell/learn4haskell/default.nix :comments link
+let
+  # Variables
+  name = "learn4haskell";
+  compiler-nix-name = "ghc884";
+  # Niv
+  sources = import ./nix/sources.nix;
+  # Load haskellNix first
+  haskellNix = import (fetchTarball { inherit (sources."haskell.nix") url sha256; }) {
+      sourcesOverride = {
+        hackageSrc = fetchTarball { inherit (sources."hackage.nix") url sha256; };
+      };
+  };
+  # Override pkgs with the cached versions
+  pkgs = import haskellNix.sources.nixpkgs haskellNix.nixpkgsArgs;
+  inherit (pkgs.lib) optional optionals;
+in pkgs.haskell-nix.project {
+  inherit compiler-nix-name;
+  src = pkgs.haskell-nix.haskellLib.cleanGit {
+    inherit name;
+    src = ./.;
+  };
+}
+#+end_src
+
+Now for a nice development environment in a ~shell.nix~ file.
+
+#+begin_src nix :tangle ~/Git/Github/Haskell/learn4haskell/shell.nix :comments link
+let
+  hsPkgs = import ./default.nix { inherit pkgs; };
+in hsPkgs.shellFor {
+    # Include only the *local* packages of your project.
+    packages = ps: with ps; [
+      learn4haskell
+    ];
+    withHoogle = true;
+    tools = { cabal = "3.2.0.0"; hlint = "2.2.11"; };
+    buildInputs = with pkgs.haskellPackages;
+      [ ghcid ];
+    # Prevents cabal from choosing alternate plans, so that
+    # *all* dependencies are provided by Nix.
+    exactDeps = true;
+}
+#+end_src
+
+
+[fn:fightme] [[https://joel.net/how-one-guy-ruined-hacktoberfest2020-drama][This is an extreme case]], but all "part-time" developers end up contributing features which rot over time
+[fn:whyverbose] If the post seems overly verbose, it is because these are tangled directly
+
