@@ -1,0 +1,292 @@
+#+TITLE: Nix From The Dark Ages: Without Root
+#+SUBTITLE: NixCon 2020
+#+AUTHOR: Rohit Goswami
+# I need the footnotes to be inlined
+#+STARTUP: fninline
+#+EXCLUDE_TAGS: noexport
+
+#+BEGIN_SRC emacs-lisp :exports none :eval always
+(require 'ox-extra)
+(ox-extras-activate '(ignore-headlines))
+#+END_SRC
+
+#+RESULTS:
+
+* Configuration :ignoreheading:ignore:
+:PROPERTIES:
+:VISIBILITY: folded
+:END:
+
+# Kanged from https://gitlab.com/oer/oer-reveal/blob/master/org/config.org
+# Also https://gitlab.com/oer/emacs-reveal-howto/-/blob/master/howto.org
+** General Options :ignoreheading:ignore:
+# No Table of contents, no section numbers
+#+OPTIONS: toc:nil num:nil
+
+# Enable smart quotes
+#+OPTIONS: ':t
+** RevealJS Options :ignoreheading:ignore:
+
+# Enable: browser history, fragment IDs in URLs, mouse wheel, links between presentations
+#+OPTIONS: reveal_history:t reveal_fragmentinurl:t
+#+OPTIONS: reveal_mousewheel:t reveal_inter_presentation_links:t
+
+# Disable separate PDF pages for each fragment.  Just use one per slide.
+#+OPTIONS: reveal_pdfseparatefragments:nil
+
+# Display notes on separate page for PDF export.
+#+REVEAL_EXPORT_NOTES_TO_PDF: separate-page
+
+# Transition styles: none/fade/slide/convex/concave/zoom/cube
+#+REVEAL_TRANS: fade
+# Set a base theme, then override
+#+REVEAL_THEME: white
+#+REVEAL_EXTRA_CSS: /home/haozeke/.config/doom/revealExtras/robot-lung.css
+#+REVEAL_EXTRA_CSS: /home/haozeke/.config/doom/revealExtras/rlExtras.css
+#+REVEAL_EXTRA_CSS: /home/haozeke/.config/doom/revealExtras/oerFragments.css
+#+REVEAL_MARGIN: 0.2
+#+REVEAL_PREAMBLE: <div class="line top"></div> <div class="line bottom"></div> <div class="line left"></div> <div class="line right"></div>
+
+#+REVEAL_PLUGINS: (notes search zoom highlight)
+# The following variables are non-standard.
+# Do not display TOC-progress on title slide.
+
+#+REVEAL_TITLE_SLIDE_STATE: no-toc-progress
+# Do not display TOC-progress on TOC slide.
+#+REVEAL_TOC_SLIDE_STATE: no-toc-progress
+# Do not include TOC slide in TOC-progress.
+#+REVEAL_TOC_SLIDE_CLASS: no-toc-progress
+# Use different heading for TOC.
+#+REVEAL_TOC_SLIDE_TITLE: Agenda
+
+** External Resources :ignoreheading:ignore:
+# Note that doom-emacs sets this variable
+# https://github.com/hlissner/doom-emacs/blob/develop/modules/lang/org/contrib/present.el
+#+REVEAL_EXTRA_CSS: /home/haozeke/.emacs.d/.local/straight/build/revealjs/plugin/accessibility/helper.css
+#+REVEAL_EXTRA_CSS: /home/haozeke/.emacs.d/.local/straight/build/revealjs/plugin/toc-progress/toc-progress.css
+#+REVEAL_EXTRA_CSS: /home/haozeke/.emacs.d/.local/straight/build/revealjs/dist/theme/toc-style.css
+#+REVEAL_EXTRA_CSS: /home/haozeke/.emacs.d/.local/straight/build/revealjs/dist/theme/fonts/source-sans-pro/source-sans-pro.css
+
+# Allow to selectively hide links.
+#+REVEAL_EXTRA_SCRIPTS: ("/home/haozeke/.emacs.d/.local/straight/build/revealjs/dist/theme/hidelinks.js")
+
+# The following creates an empty footer, for which the css style defines
+# a height that agrees with the TOC-progress footer’s height.
+# In this way, the footer’s height is taken into account by reveal.js’s
+# size calculations.
+#+REVEAL_SLIDE_FOOTER: <br>
+#+OPTIONS: reveal_toc_footer:t
+
+** Macros :ignoreheading:ignore:
+# Set a default bib file.
+
+# Macros to display square brackets (in texts of hyperlinks).
+# Based on: https://emacs.stackexchange.com/questions/7792/can-i-make-links-in-org-mode-that-contain-brackets-or
+# Square Bracket Open [
+#+MACRO: BO @@latex:\char91{}@@@@html:&#91;@@
+# Square Bracket Close ]
+#+MACRO: BC @@latex:\char93{}@@@@html:&#93;@@
+
+# Macro for forced line break, e.g., in titles.
+#+MACRO: BR @@latex:\\@@@@html:<br />@@
+
+# Macro to generate abbr element in HTML.  If a second argument is given, it
+# defines the title attribute.  For LaTeX, output first attribute as is and
+# ignore second one.
+#+MACRO: abbr (eval (concat "@@latex:" Nix From The Dark Ages: Without Root "@@@@html:<abbr" (if (< 0 (length NixCon 2020)) (concat " title=\"" NixCon 2020 "\"") "") ">" Nix From The Dark Ages: Without Root "</abbr>@@"))
+
+# Macros to display code in different colors.
+#+MACRO: blackcode (eval (format "@@html:<code><span style=\"color:black; font-size:smaller;\">%s</span></code>@@ @@latex:\\verb|%s|@@" (org-html-encode-plain-text Nix From The Dark Ages: Without Root) Nix From The Dark Ages: Without Root))
+#+MACRO: redcode (eval (format "@@html:<code><span style=\"color:darkred; font-size:smaller;\">%s</span></code>@@ @@latex:\\rverb|%s|@@" (org-html-encode-plain-text Nix From The Dark Ages: Without Root) Nix From The Dark Ages: Without Root))
+#+MACRO: greencode (eval (format "@@html:<code><span style=\"color:darkgreen; font-size:smaller;\">%s</span></code>@@ @@latex:\\gverb|%s|@@" (org-html-encode-plain-text Nix From The Dark Ages: Without Root) Nix From The Dark Ages: Without Root))
+#+MACRO: bluecode (eval (format "@@html:<code><span style=\"color:darkblue; font-size:smaller;\">%s</span></code>@@ @@latex:\\bverb|%s|@@" (org-html-encode-plain-text Nix From The Dark Ages: Without Root) Nix From The Dark Ages: Without Root))
+
+** LaTeX Options :ignoreheading:ignore:
+# Setup for PDF generation via LaTeX export.
+#+LATEX_CLASS_OPTIONS: [a4paper]
+#+LATEX_HEADER: \usepackage[backend=biber,style=numeric]{biblatex}
+#+LATEX_HEADER: \addbibresource{/home/haozeke/GDrive/zotLib.bib}
+#+LATEX_HEADER: \newenvironment{notes}{\par\footnotesize}{\par}
+#+LATEX_HEADER: \newenvironment{NOTES}{\par\footnotesize}{\par}
+#+LATEX_HEADER: \newenvironment{leftcol}{\begin{minipage}{.49\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol}{\begin{minipage}{.49\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{leftcol30}{\begin{minipage}{.29\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{leftcol40}{\begin{minipage}{.39\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{leftcol60}{\begin{minipage}{.59\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{leftcol70}{\begin{minipage}{.69\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol30}{\begin{minipage}{.29\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol40}{\begin{minipage}{.39\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol60}{\begin{minipage}{.59\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol70}{\begin{minipage}{.69\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \usepackage{newunicodechar}
+#+LATEX_HEADER: \newunicodechar{≈}{$\approx$}
+#+LATEX_HEADER: \newunicodechar{⋮}{\vdots}
+#+LATEX_HEADER: \newunicodechar{ }{~}
+#+LATEX_HEADER: \usepackage{xcolor}
+#+LATEX_HEADER: \definecolor{darkred}{rgb}{0.3, 0.0, 0.0}
+#+LATEX_HEADER: \definecolor{darkgreen}{rgb}{0.0, 0.3, 0.1}
+#+LATEX_HEADER: \definecolor{darkblue}{rgb}{0.0, 0.1, 0.3}
+#+LATEX_HEADER: \definecolor{darkorange}{rgb}{1.0, 0.55, 0.0}
+#+LATEX_HEADER: \definecolor{sienna}{rgb}{0.53, 0.18, 0.09}
+#+LATEX_HEADER: \hypersetup{colorlinks,linkcolor=darkblue,citecolor=darkblue,urlcolor=darkgreen}
+#+LATEX_HEADER: \usepackage{newverbs}
+#+LATEX_HEADER: \newverbcommand{\rverb}{\color{darkred}}{}
+#+LATEX_HEADER: \newverbcommand{\gverb}{\color{darkgreen}}{}
+#+LATEX_HEADER: \newverbcommand{\bverb}{\color{darkblue}}{}
+
+* Start Here :ignoreheading:ignore:
+* Hello NixCon!
+- Find me here: https://rgoswami.me
+- Who?
+  + *Rohit Goswami* MInstP AMIChemE AMIE
+    - Doctoral Researcher, University of Iceland, Faculty of Physical Sciences
+[[file:images/physUoI.png]]
+* Big Picture
+** Academic Clusters
+#+begin_leftcol
+*Woes*
+#+ATTR_REVEAL: :frag (appear)
+- No ~docker~
+  + If lucky, will have ~singularity~
+- No userspace support
+  + No ~proot~
+- Probably runs CentOS or something
+- Has a networked file system
+- Uses a resource queue
+  + Slurm, PBS
+- Might have support for ~lmod~
+#+end_leftcol
+#+begin_rightcol
+#+attr_html: :alt image from GE research image :align right
+[[file:images/HPC/2020-10-17_08-48-31_screenshot.png]]
+
+#+attr_html: :alt sampleoutput image :align right
+[[file:images/High_Performance_Computing_Clusters/2020-10-17_08-50-27_screenshot.png]]
+#+end_rightcol
+
+** Why?
+#+begin_leftcol
+*Necessary Evil*
+#+ATTR_REVEAL: :frag (appear)
+- Users can't be trusted
+- Massive amounts of resources are consumed
+- Resource limits are tracked
+#+end_leftcol
+#+begin_rightcol
+*However*
+#+ATTR_REVEAL: :frag (appear)
+- Users need new software
+- Developers need guarantees of high resources
+  + To test parallelism and more
+#+end_rightcol
+** Where's Nix?
+- *Nix is the solution* cite:dolstraNixSafePolicyFree2004
+  + Used by some scientific software too cite:goswamiDSEAMSDeferredStructural2020
+
+Does no one use it then?
+#+ATTR_REVEAL: :frag (appear)
+- Some clusters have ~nix~ support
+#+ATTR_REVEAL: :frag (appear)
+  + They actually support it though
+  + GRICAD has cite:bzeznikNixHPCPackage2017
+  + The Flatiron Institute and [[https://docs.computecanada.ca/wiki/Using_Nix][Compute Canada]] also support ~nix~
+- What if *no-one cared?*
+#+ATTR_REVEAL: :frag (appear)
+  + _Then you end up here_ ([[https://rgoswami.me/posts/local-nix-no-root/][post]])
+* Where are we?
+** Methodology Review
+#+begin_leftcol
+*Prerequisites*
+- A whole lot of user-installed junk
+  + [[https://rgoswami.me/posts/hpc-dots-lmod/][Listed here]]
+#+DOWNLOADED: screenshot @ 2020-10-17 09:13:27
+[[file:images/Methodology_Review/2020-10-17_09-13-27_screenshot.png]]
+
+#+end_leftcol
+#+begin_rightcol
+*Concept*
+#+ATTR_REVEAL: :frag ( appear )
+- Somehow get ~nix~ to build
+  + Do unholy things to paths
+  + Indiscriminate source pruning
+- Let ~nix~ re-install itself
+  + [[https://rgoswami.me/posts/local-nix-no-root/][Described here]]
+#+end_rightcol
+** Acknowledgements
+*Who worked on it first?*
+- [[https://github.com/jefdaj/nix-no-root][jefdaj/nix-no-root]]
+  + Built upto ~2.0.4~ apparently
+- [[https://github.com/pjotrp/nix-no-root][pjotrp/nix-no-root]]
+  + Seemingly abandoned after 2015
+** Hooray?
+:PROPERTIES:
+:reveal_background: #005ab6
+:END:
+#+ATTR_REVEAL: :frag (appear)
+- *Not quite!*
+** What went wrong?
+- Massive waste of resources
+  + Though they can be traced to the user
+- Effectively builds on the login node (~ *3 hours*)
+  + Can't be helped without integration with a queue
+* What do we need?
+** Better Permission Handling
+- e.g. building ~ruby~ involves:
+#+begin_src bash
+watch -n1 -x chmod 777 -R /tmp/nix-build-ruby-2.6.6.drv-0/source/lib/
+#+end_src
+#+ATTR_REVEAL: :frag (appear)
+- Less gratuitous permissions might be set
+** Better NFS Locks
+- Maybe even build in a temporary directory until the lock is released
+  + Currently one of the "fixes" includes:
+#+begin_src bash
+nix-build
+# something about a .nfs lockfile in some .nix/$HASH-pkg/.nfs0234234
+mv .nix/$HASH-pkg/ .diePKGs/
+nix-build # profit
+#+end_src
+** Bills and Queues
+#+begin_leftcol
+*Builder Provenance*
+- Who built what?
+  + a.k.a. Billing
+- Honestly the only way to make this go mainstream
+#+end_leftcol
+#+begin_rightcol
+*Queue Integration*
+- Can only build on the head node
+  + Need ~slurm~ or PBS to run on the whole cluster
+#+end_rightcol
+* Future Directions
+** Union Mount
+#+ATTR_REVEAL: :frag (appear)
+- [[https://github.com/NixOS/nix/issues/2764][Proposed here]]
+  + by ~catern~
+- Would reduce compilation
+- Currently does not actually replace the global store
+  + [[https://www.reddit.com/r/NixOS/comments/iod7wi/local_nix_without_root_hpc/][Discussion here]]
+** Personal Goals
+#+ATTR_REVEAL: :frag (appear)
+- Native file path test
+  + Hash relative to a prefix
+- Cleaner Setup
+  + Maybe a derivation
+- Return Next Year!
+  + Hopefully with cleaner methods
+* The End
+** Bibliography
+:PROPERTIES:
+:CUSTOM_ID: bibliography
+:END:
+
+printbibliography:/home/haozeke/GDrive/zotLib.bib
+
+** Thanks!
+:PROPERTIES:
+:reveal_background: #005ab6
+:END:
+# Local Variables:
+# indent-tabs-mode: nil
+# org-src-preserve-indentation: t
+# End:
