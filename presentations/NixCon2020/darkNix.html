@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Nix From The Dark Ages: Without Root</title>
+<meta name="author" content="Rohit Goswami"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="/home/haozeke/.emacs.d/.local/straight/build/revealjs/dist/reveal.css"/>
+
+<link rel="stylesheet" href="/home/haozeke/.emacs.d/.local/straight/build/revealjs/dist/theme/white.css" id="theme"/>
+
+<link rel="stylesheet" href="/home/haozeke/.config/doom/revealExtras/robot-lung.css"/>
+
+<link rel="stylesheet" href="/home/haozeke/.config/doom/revealExtras/rlExtras.css"/>
+
+<link rel="stylesheet" href="/home/haozeke/.config/doom/revealExtras/oerFragments.css"/>
+
+<link rel="stylesheet" href="/home/haozeke/.emacs.d/.local/straight/build/revealjs/plugin/accessibility/helper.css"/>
+
+<link rel="stylesheet" href="/home/haozeke/.emacs.d/.local/straight/build/revealjs/plugin/toc-progress/toc-progress.css"/>
+
+<link rel="stylesheet" href="/home/haozeke/.emacs.d/.local/straight/build/revealjs/dist/theme/toc-style.css"/>
+
+<link rel="stylesheet" href="/home/haozeke/.emacs.d/.local/straight/build/revealjs/dist/theme/fonts/source-sans-pro/source-sans-pro.css"/>
+<link rel="stylesheet" href="/home/haozeke/.emacs.d/.local/straight/build/revealjs/plugin/highlight/zenburn.css"/>
+</head>
+<body>
+<div class="line top"></div> <div class="line bottom"></div> <div class="line left"></div> <div class="line right"></div>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide" data-state="no-toc-progress">
+<h1 class="title">Nix From The Dark Ages: Without Root</h1><h2 class="author">Rohit Goswami</h2><p class="date">Created: 2020-10-17 Sat 10:19</p>
+</section>
+
+
+
+
+
+<section>
+<section id="slide-org4b5cb8c">
+<h2 id="org4b5cb8c">Hello NixCon!</h2>
+<ul>
+<li>Find me here: <a href="https://rgoswami.me">https://rgoswami.me</a></li>
+<li>Who?
+<ul>
+<li><b>Rohit Goswami</b> MInstP AMIChemE AMIE
+<ul>
+<li>Doctoral Researcher, University of Iceland, Faculty of Physical Sciences</li>
+
+</ul></li>
+
+</ul></li>
+
+</ul>
+
+<div id="org5086b9c" class="figure">
+<p><img src="images/physUoI.png" alt="physUoI.png" />
+</p>
+</div>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-org402c5f9">
+<h2 id="org402c5f9">Big Picture</h2>
+<div class="outline-text-2" id="text-org402c5f9">
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org022d373">
+<h3 id="org022d373">Academic Clusters</h3>
+<div class="leftcol" id="org64cfdcb">
+<p>
+<b>Woes</b>
+</p>
+<ul>
+<li class="fragment appear">No <code>docker</code>
+<ul>
+<li>If lucky, will have <code>singularity</code></li>
+
+</ul></li>
+<li class="fragment appear">No userspace support
+<ul>
+<li>No <code>proot</code></li>
+
+</ul></li>
+<li class="fragment appear">Probably runs CentOS or something</li>
+<li class="fragment appear">Has a networked file system</li>
+<li class="fragment appear">Uses a resource queue
+<ul>
+<li>Slurm, PBS</li>
+
+</ul></li>
+<li class="fragment appear">Might have support for <code>lmod</code></li>
+
+</ul>
+
+</div>
+<div class="rightcol" id="orge9719df">
+
+<div id="org4c6da74" class="figure">
+<p><img src="images/HPC/2020-10-17_08-48-31_screenshot.png" alt="image from GE research image" align="right" />
+</p>
+</div>
+
+
+<div id="org8eb11f8" class="figure">
+<p><img src="images/High_Performance_Computing_Clusters/2020-10-17_08-50-27_screenshot.png" alt="sampleoutput image" align="right" />
+</p>
+</div>
+
+</div>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org087a101">
+<h3 id="org087a101">Why?</h3>
+<div class="leftcol" id="org7bd26f8">
+<p>
+<b>Necessary Evil</b>
+</p>
+<ul>
+<li class="fragment appear">Users can&rsquo;t be trusted</li>
+<li class="fragment appear">Massive amounts of resources are consumed</li>
+<li class="fragment appear">Resource limits are tracked</li>
+
+</ul>
+
+</div>
+<div class="rightcol" id="orga42eed5">
+<p>
+<b>However</b>
+</p>
+<ul>
+<li class="fragment appear">Users need new software</li>
+<li class="fragment appear">Developers need guarantees of high resources
+<ul>
+<li>To test parallelism and more</li>
+
+</ul></li>
+
+</ul>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgaf6425f">
+<h3 id="orgaf6425f">Where&rsquo;s Nix?</h3>
+<ul>
+<li><b>Nix is the solution</b> <a class="org-ref-reference" href="#/slide-bibliography">[dolstraNixSafePolicyFree2004]</a>
+<ul>
+<li>Used by some scientific software too <a class="org-ref-reference" href="#/slide-bibliography">[goswamiDSEAMSDeferredStructural2020]</a></li>
+
+</ul></li>
+
+</ul>
+
+<p>
+Does no one use it then?
+</p>
+<ul>
+<li class="fragment appear">Some clusters have <code>nix</code> support</li>
+
+</ul>
+<ul>
+<li class="fragment appear">They actually support it though</li>
+<li class="fragment appear">GRICAD has <a class="org-ref-reference" href="#/slide-bibliography">[bzeznikNixHPCPackage2017]</a></li>
+<li class="fragment appear">The Flatiron Institute and <a href="https://docs.computecanada.ca/wiki/Using_Nix">Compute Canada</a> also support <code>nix</code></li>
+
+</ul>
+<ul>
+<li>What if <b>no-one cared?</b></li>
+
+</ul>
+<ul>
+<li class="fragment appear"><span class="underline">Then you end up here</span> (<a href="https://rgoswami.me/posts/local-nix-no-root/">post</a>)</li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-org6de09ee">
+<h2 id="org6de09ee">Where are we?</h2>
+<div class="outline-text-2" id="text-org6de09ee">
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org326c43e">
+<h3 id="org326c43e">Methodology Review</h3>
+<div class="leftcol" id="org5a23224">
+<p>
+<b>Prerequisites</b>
+</p>
+<ul>
+<li>A whole lot of user-installed junk
+<ul>
+<li><a href="https://rgoswami.me/posts/hpc-dots-lmod/">Listed here</a></li>
+
+</ul></li>
+
+</ul>
+
+<div id="org1438393" class="figure">
+<p><img src="images/Methodology_Review/2020-10-17_09-13-27_screenshot.png" alt="2020-10-17_09-13-27_screenshot.png" />
+</p>
+</div>
+
+</div>
+<div class="rightcol" id="orge54c0a2">
+<p>
+<b>Concept</b>
+</p>
+<ul>
+<li class="fragment appear">Somehow get <code>nix</code> to build
+<ul>
+<li>Do unholy things to paths</li>
+<li>Indiscriminate source pruning</li>
+
+</ul></li>
+<li class="fragment appear">Let <code>nix</code> re-install itself
+<ul>
+<li><a href="https://rgoswami.me/posts/local-nix-no-root/">Described here</a></li>
+
+</ul></li>
+
+</ul>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org50634e8">
+<h3 id="org50634e8">Acknowledgements</h3>
+<p>
+<b>Who worked on it first?</b>
+</p>
+<ul>
+<li><a href="https://github.com/jefdaj/nix-no-root">jefdaj/nix-no-root</a>
+<ul>
+<li>Built upto <code>2.0.4</code> apparently</li>
+
+</ul></li>
+<li><a href="https://github.com/pjotrp/nix-no-root">pjotrp/nix-no-root</a>
+<ul>
+<li>Seemingly abandoned after 2015</li>
+
+</ul></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orge2066cb" data-background="#005ab6">
+<h3 id="orge2066cb">Hooray?</h3>
+<ul>
+<li class="fragment appear"><b>Not quite!</b></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orge283242">
+<h3 id="orge283242">What went wrong?</h3>
+<ul>
+<li>Massive waste of resources
+<ul>
+<li>Though they can be traced to the user</li>
+
+</ul></li>
+<li>Effectively builds on the login node (~ <b>3 hours</b>)
+<ul>
+<li>Can&rsquo;t be helped without integration with a queue</li>
+
+</ul></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-org78bbc33">
+<h2 id="org78bbc33">What do we need?</h2>
+<div class="outline-text-2" id="text-org78bbc33">
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgca14bd4">
+<h3 id="orgca14bd4">Better Permission Handling</h3>
+<ul>
+<li>e.g. building <code>ruby</code> involves:</li>
+
+</ul>
+<div class="org-src-container">
+
+<pre><code class="bash" >watch -n1 -x chmod 777 -R /tmp/nix-build-ruby-2.6.6.drv-0/source/lib/
+</code></pre>
+</div>
+<ul>
+<li class="fragment appear">Less gratuitous permissions might be set</li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgda91e9d">
+<h3 id="orgda91e9d">Better NFS Locks</h3>
+<ul>
+<li>Maybe even build in a temporary directory until the lock is released
+<ul>
+<li>Currently one of the &ldquo;fixes&rdquo; includes:</li>
+
+</ul></li>
+
+</ul>
+<div class="org-src-container">
+
+<pre><code class="bash" >nix-build
+# something about a .nfs lockfile in some .nix/$HASH-pkg/.nfs0234234
+mv .nix/$HASH-pkg/ .diePKGs/
+nix-build # profit
+</code></pre>
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org510d1fd">
+<h3 id="org510d1fd">Bills and Queues</h3>
+<div class="leftcol" id="org610d30a">
+<p>
+<b>Builder Provenance</b>
+</p>
+<ul>
+<li>Who built what?
+<ul>
+<li>a.k.a. Billing</li>
+
+</ul></li>
+<li>Honestly the only way to make this go mainstream</li>
+
+</ul>
+
+</div>
+<div class="rightcol" id="orga596da9">
+<p>
+<b>Queue Integration</b>
+</p>
+<ul>
+<li>Can only build on the head node
+<ul>
+<li>Need <code>slurm</code> or PBS to run on the whole cluster</li>
+
+</ul></li>
+
+</ul>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-orgad3bfd5">
+<h2 id="orgad3bfd5">Future Directions</h2>
+<div class="outline-text-2" id="text-orgad3bfd5">
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org88ff4b3">
+<h3 id="org88ff4b3">Union Mount</h3>
+<ul>
+<li class="fragment appear"><a href="https://github.com/NixOS/nix/issues/2764">Proposed here</a>
+<ul>
+<li>by <code>catern</code></li>
+
+</ul></li>
+<li class="fragment appear">Would reduce compilation</li>
+<li class="fragment appear">Currently does not actually replace the global store
+<ul>
+<li><a href="https://www.reddit.com/r/NixOS/comments/iod7wi/local_nix_without_root_hpc/">Discussion here</a></li>
+
+</ul></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org8d0e927">
+<h3 id="org8d0e927">Personal Goals</h3>
+<ul>
+<li class="fragment appear">Native file path test
+<ul>
+<li>Hash relative to a prefix</li>
+
+</ul></li>
+<li class="fragment appear">Cleaner Setup
+<ul>
+<li>Maybe a derivation</li>
+
+</ul></li>
+<li class="fragment appear">Return Next Year!
+<ul>
+<li>Hopefully with cleaner methods</li>
+
+</ul></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-org57a654f">
+<h2 id="org57a654f">The End</h2>
+<div class="outline-text-2" id="text-org57a654f">
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-bibliography">
+<h3 id="bibliography">Bibliography</h3>
+<ul class='org-ref-bib'><li><a id="bzeznikNixHPCPackage2017">[bzeznikNixHPCPackage2017]</a> <a name="bzeznikNixHPCPackage2017"></a>Bzeznik, Henriot, Reis, Richard & Tavard, Nix as HPC Package Management System, 1-6, in in: Proceedings of the Fourth International Workshop on HPC User Support Tools  - HUST'17, edited by ACM Press </li>
+<li><a id="dolstraNixSafePolicyFree2004">[dolstraNixSafePolicyFree2004]</a> <a name="dolstraNixSafePolicyFree2004"></a>Dolstra, family=Jonge & Visser, Nix: A Safe and Policy-Free System for Software Deployment, <i></i>,  15 .</li>
+<li><a id="goswamiDSEAMSDeferredStructural2020">[goswamiDSEAMSDeferredStructural2020]</a> <a name="goswamiDSEAMSDeferredStructural2020"></a>Goswami, Goswami & Singh, D-SEAMS: Deferred Structural Elucidation Analysis for Molecular Simulations, <i>Journal of Chemical Information and Modeling</i>, <b>60(4)</b>, 2169-2177 . <a href="http://dx.doi.org/10.1021/acs.jcim.0c00031">doi</a>.</li>
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org74d948d" data-background="#005ab6">
+<h3 id="org74d948d">Thanks!</h3>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+</div>
+</div>
+<script src="/home/haozeke/.emacs.d/.local/straight/build/revealjs/dist/reveal.js"></script>
+<script src="/home/haozeke/.emacs.d/.local/straight/build/revealjs/plugin/notes/notes.js"></script>
+<script src="/home/haozeke/.emacs.d/.local/straight/build/revealjs/plugin/search/search.js"></script>
+<script src="/home/haozeke/.emacs.d/.local/straight/build/revealjs/plugin/zoom/zoom.js"></script>
+<script src="/home/haozeke/.emacs.d/.local/straight/build/revealjs/plugin/highlight/highlight.js"></script>
+<script src="/home/haozeke/.emacs.d/.local/straight/build/revealjs/dist/theme/hidelinks.js"></script>
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: true,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+mouseWheel: true,
+fragmentInURL: true,
+hashOneBasedIndex: false,
+pdfSeparateFragments: false,
+
+overview: true,
+margin: 0.20,
+
+transition: 'fade',
+transitionSpeed: 'default',
+showNotes: window.location.search.match( /print-pdf/gi ) ? 'separate-page' : false,
+
+// Plugins with reveal.js 4.x
+plugins: [ RevealNotes, RevealSearch, RevealZoom, RevealHighlight ],
+
+// Optional libraries used to extend reveal.js
+dependencies: [
+]
+
+});
+</script>
+</body>
+</html>
