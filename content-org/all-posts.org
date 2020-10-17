@@ -6441,6 +6441,9 @@ Much the same as the rationale behind my [[Talk Supplements for PyCon India 2020
 #+BEGIN_QUOTE
 Short comments from the trenches of High Performance Clusters on working with Nix on kernel locked-in systems without proot support.
 #+END_QUOTE
+**** Linked Posts
+- [[Local Nix without Root][Local Nix without Root]]
+- [[HPC Dotfiles and LMod][HPC Dotfiles and LMod]]
 **** Other Content
 Anything on this site [[https://rgoswami.me/tags/nix/][tagged with Nix]]. Also an introduction to ~nix~ given by me (and Amrita Goswami) at [[https://2020.carpentrycon.org/schedule/#session-10][CarpentryCon2020]] is here:
 - [[https://github.com/HaoZeke/CarpentryCon2020_Nix][CarpentryCon2020 Materials]]
