@@ -44,7 +44,7 @@ let
     ];
   };
 in pkgs.mkShell {
-  buildInputs = with pkgs; [ git glibcLocales which rEnv less ];
+  buildInputs = with pkgs; [ git glibcLocales which ];
   inputsFrom = [ rEnv ];
   shellHook = ''
     mkdir -p "$(pwd)/_libs"
