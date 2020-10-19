@@ -2137,6 +2137,12 @@ Colemak layout:                  |                 QWERTY layout:
  arstd HNEIo'         h   i      |     h   l        asdfg HJKL;'
  zxcvb km,./            n        |       j          zxcvb nm,./
 #+END_SRC
+** Sudoers
+It is important to note that the ~sudo~ command does not automatically pick up on your keyboard layout. It is best to set this explicitly. Use ~visudo~ and un-comment ~Defaults env_keep += "LANG LANGUAGE LINGUAS LC_* _XKB_CHARSET"~, or:
+#+begin_src bash
+su
+echo 'Defaults env_keep += "LANG LANGUAGE LINGUAS LC_* _XKB_CHARSET"' >> /etc/sudoers
+#+end_src
 ** Emacs
 Though I have [[https://github.com/hlissner/doom-emacs/issues/783#issuecomment-535805347][mentioned publicly]], that I was using the regular QWERTY motion
 keys, I realized I had actually started to use the mouse more often, simply
