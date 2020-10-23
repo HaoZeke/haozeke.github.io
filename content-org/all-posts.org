@@ -6259,7 +6259,9 @@ The general form of the solution works in one of two ways:
 - VNC Viewer :: Where the (second-screen) laptop connects to a VNC server on the primary laptop
 - Peripheral Shares :: Where the secondary laptop runs a server to enable proxying mouse and keyboard access from the primary laptop
 ** VNC and Windows
-For laptops running
+For laptops running Windows, I personally just set up [[https://tightvnc.com/][TightVNC]]. The standard settings work well enough for the peripheral share described below.
+*** Comments
+This is best used for working with Windows only stuff like Office.
 ** VNC and Linux
 *** Peripheral Share
 For the secondary laptop we need to run a server (~tigervnc~) without setting an external screen.
@@ -6321,6 +6323,8 @@ Note that it is better to use ~mons~ to work with our newly created virtual scre
 mons -e left
 #+END_SRC
 
+This is still a bit ugly, since the process needs to be repeated with each reboot.
+
 **** VNC Setup
 Now we need prepare our VNC. ~x11vnc~ is recommended at the moment.
 #+BEGIN_SRC bash
@@ -6331,7 +6335,7 @@ For this section, I personally use [[https://play.google.com/store/apps/details?
 *** Comments
 In practice, I use the x86 setup, with the secondary laptop acting as a viewer for a virtual screen, mostly because that way I can tune into multiple Zoom meetings (a bonus).
 ** Conclusion
-The final setup is quite robust to changes. Future posts might go into setting up the kind of local networking tools to help move files, code and more between both machines, to improve on the peripheral share approach.
+The final setup is quite robust to changes. Future posts might go into setting up the kind of local networking tools to help move files, code and more between both machines, to improve on the peripheral share approach. Additionally, there are still some manual steps which can and should be automated. I'm not super pleased with the setup, it takes longer than a wireless sceen
 
 * TODO Haskell with Nix for Hacktoberfest :@programming:tools:nix:workflow:python:
 :PROPERTIES:
