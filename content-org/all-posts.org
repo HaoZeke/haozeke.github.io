@@ -6243,7 +6243,8 @@ I cannot imagine going back to Zoom to record anything local. It is an added bon
 
 [fn:whatthat] Water, Chemicals and more with Computers for Chemistry, a computational chemistry course aimed at middle school students taught with my sister [[http://scholar.google.com/citations?user=mviv92EAAAAJ&hl=en][Amrita Goswami]]
 
-* TODO Old Laptops as Secondary Monitors
+* DONE Old Laptops as Secondary Monitors
+CLOSED: [2020-10-23 Fri 23:22]
 :PROPERTIES:
 :EXPORT_FILE_NAME: laptop-as-second-screens
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
