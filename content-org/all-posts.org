@@ -3978,7 +3978,7 @@ sudo systemctl--user enable autorandr_launcher.service
 #+END_SRC
 
 ** Conclusion
-We now have a setup which ensures that the touch enabled area is constant, without any explicit manual interventions for when devices are added or removed. There isn't much else to say about this workflow here. Separate posts can deal with how exactly I meld Zotero, ~org-roam~ and Xournal++ to wreak havoc on all kinds of documents. So, in-lieu of a conclusion, behold a recent scribble with this setup:
+We now have a setup which ensures that the touch enabled area is constant, without any explicit manual interventions for when devices are added or removed. There isn't much else to say about this workflow here. Additional screens can be [[Old Laptops as Secondary Monitors][configured from older laptops described here]]. Separate posts can deal with how exactly I meld Zotero, ~org-roam~ and Xournal++ to wreak havoc on all kinds of documents. So, in-lieu of a conclusion, behold a recent scribble with this setup:
 
 #+caption: From the planning of [[http://www.wavelf.org/ij6TzydE3kTSF8cwwIUj][this voluntary course]]
 file:images/myXournalScrib.png
