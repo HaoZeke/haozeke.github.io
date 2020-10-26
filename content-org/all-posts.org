@@ -6480,3 +6480,42 @@ The slides are embedded below. The ~orgmode~ source [[https://github.com/HaoZeke
 #+END_EXPORT
 
 [fn:officialsite] One location I am going to be able to keep track of
+
+* TODO Streaming Music with Mopidy :@personal:tools:workflow:
+:PROPERTIES:
+:EXPORT_FILE_NAME: stream-music-mopidy
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+BEGIN_QUOTE
+Short post on multi-device (android devices and laptops) streaming with Mopidy and Icecast.
+#+END_QUOTE
+** Background
+Back home, backed by my ridiculously large local music library, I had an elegant, efficient MPD setup for streaming music throughout the house. Now that I'm constrained to two laptops (one superannuated) and two phones, in a drastically smaller space, I thought I'd do without any streaming setups at all. However, the Spotify desktop application is ridiculous. It is bloated and doesn't minimize well on ~i3~ and is just plain annoying.
+
+** Tools
+We will require, in broad strokes:
+- A music daemon
+  + Should be lightweight (MPD)
+  + Will collate a bunch of sources and provide the ignorant end user with a unified interface (Mopidy)
+- A streaming server
+  + A good streaming server will minimally support multiple listeners (Icecast)
+  + An excellent server will allow for synchronous output (Snapcast)
+- A client for every OS
+  + That's two clients for every OS, and 3 web interfaces [fn:oddname]
+  + Cantata, Sonata, M.A.L.P., MPDroid, RompR, Iris (we'll see them show up later)
+
+*** Mopidy
+I'm still leery of ~python~ projects, though, given that mopidy supports Spotify (with a premium account), I didn't have much of a choice. The idea is to set up the configuration locally first.
+#+begin_src bash
+vim ~/.conf/mopidy/mopidy.conf
+mopidy # Test things
+#+end_src
+**** Spotify
+This setup essentially entails filling in the ~[spotify]~ block in the configuration file. The only thing to really keep in mind is that the client and secret values [[https://mopidy.com/ext/spotify/][are from here]].
+**** Systemd
+Once the configuration works as expected, transfer it to the [[https://docs.mopidy.com/en/latest/running/service/?highlight=systemctl#service-management-with-systemd][system configuration location]]. It is best to manually edit this, instead of over-writing this.
+**** Comments
+At this point, if all that was needed was control over a single PC, then we'd be done. There's no need fo anything more complicated than an MPD client for controlling the running ~mopidy~ server.
+*** Icecast
+
+[fn:oddname] An [[https://en.wikipedia.org/wiki/Two_Cars_in_Every_Garage_and_Three_Eyes_on_Every_Fish][old Simpsons pun]]
