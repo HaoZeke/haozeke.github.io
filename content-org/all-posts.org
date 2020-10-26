@@ -37,7 +37,7 @@ It is difficult to keep this section short and not let it spill
 into an unstructured memoir. For a while I considered trying to consolidate my
 online presences but that turned out to be completely impossible without a
 series of posts and avatars[fn:notrefs]. I did however eventually set up a
-sporadically updated [[Collection of WebLinks][collection of web-links]] involving me.
+sporadically updated [[Collection of WebLinks][collection of web-links]] involving me. There is also, a separate list of quotes, or other things I have something to say about.
 ** Intangible Positions
 This is a set of things which are primarily online and/or voluntary in a
 non-academic sense.
@@ -106,6 +106,19 @@ a personal list of people associated with each city, not a cover letter
 [fn:notpersonal] This is not a replacement for [[https://www.instagram.com/rg0swami/][an Instagram feed]] or a [[https://www.facebook.com/rg0swami][Facebook
 wall]], or even a [[https://www.researchgate.net/profile/Rohit_Goswami2][ResearchGate]] or [[https://publons.com/researcher/2911170/rohit-goswami/][Publons]] or [[https://orcid.org/0000-0002-2393-8056][ORCID]] page; all of which I do sporadically remember I have
 [fn:mountaintapir] Made with the [[https://github.com/tttppp/mountain_tapir][Mountain Tapir Collage Maker]]
+* TODO Collection of Quotes
+From Statistical Rethinking:
+#+begin_quote
+An engineer, a physicist, and a statistician go hunting with a bow and arrow. The physicist underestimates ("let us ignore windspeed") and his arrow falls short. The engineer adds a fudge factor and his shot goes wide. The statistician averages the two and claims they have bagged the animal.
+#+end_quote
+Illustrates the usage of stats.
+
+From some talk by Cederic Villani:
+#+begin_quote
+A mathematician and a statistician see two people go into a building, one comes out. The statistician asserts there is a 50-50 chance of someone coming out, and the mathematician says if one person goes in, no one comes out.
+#+end_quote
+Illustrates the concept of rigor.
+
 * DONE Collection of WebLinks :@personal:ramblings:
 CLOSED: [1995-08-10]
 :PROPERTIES:
