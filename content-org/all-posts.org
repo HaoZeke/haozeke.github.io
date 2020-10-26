@@ -6335,7 +6335,7 @@ For this section, I personally use [[https://play.google.com/store/apps/details?
 *** Comments
 In practice, I use the x86 setup, with the secondary laptop acting as a viewer for a virtual screen, mostly because that way I can tune into multiple Zoom meetings (a bonus).
 ** Conclusion
-The final setup is quite robust to changes. Future posts might go into setting up the kind of local networking tools to help move files, code and more between both machines, to improve on the peripheral share approach. Additionally, there are still some manual steps which can and should be automated. I'm not super pleased with the setup, it takes longer than a wireless sceen
+The final setup is quite robust to changes. Future posts might go into setting up the kind of local networking tools to help move files, code and more between both machines, to improve on the peripheral share approach. Additionally, there are still some manual steps which can and should be automated. I'm not super pleased with the setup, it takes longer than a wireless screen. This post is complimented by the [[Multiple Monitors with Touchscreens][work and setup with touchscreens here]].
 
 * TODO Haskell with Nix for Hacktoberfest :@programming:tools:nix:workflow:python:
 :PROPERTIES:
