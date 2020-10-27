@@ -6592,7 +6592,7 @@ The [[https://ankiweb.net/shared/info/937148547][LaTeX process editor]] can be s
     ]
 }
 #+end_src
-The ~png~ settings can be modified in a similar manner if required, but it is better to generate ~svg~ files, which will set up in the cosmetics section. Note that we pass ~--no-pdf~ to get the ~xdv~ file which has replaces ~dvi~ files for ~xelatex~.
+The ~png~ settings can be modified in a similar manner if required, but it is better to generate ~svg~ files, which will set up in the cosmetics section. Note that we pass ~--no-pdf~ to get the ~xdv~ file which has replaced ~dvi~ files for ~xelatex~.
 *** Cosmetics
 The final aspect of this is to be configured with the GUI. The easiest option is to clone the Basic card type and customize that. ~CTRL+Shift+N~ should bring up the card editor. The relevant styles are[fn:wherevert] (from the ~Cards~ option):
 #+begin_src css
