@@ -6636,14 +6636,10 @@ pretty formatting.
 ** Usage
 For the sample card[fn:lolwut] shown, the markup is dead simple. We also need to
 enable and load ~anki-editor~. Additionally, we shall add a local variable
-section to ensure we load ~anki-editor~.
-#+BEGIN_SRC bash :eval never
-\# Local Variables:
-\# eval: (anki-editor-mode)
-\# End:
-#+END_SRC
-With that, we just need to fire up Anki, and we're off to the races (remove ~\~). The [[https://raw.githubusercontent.com/louietan/anki-editor/master/examples.org][Anki
-editor examples]] file is excellent and the [[https://github.com/louietan/anki-editor/issues/30][issue tracker]] also has a ton of information.
+section to ensure we load ~anki-editor~. This is essentially via ~eval:
+(anki-editor-mode)~ in the Local variables block.  With that, we just need to
+fire up Anki, and we're off to the races (remove ~\~). The [[https://raw.githubusercontent.com/louietan/anki-editor/master/examples.org][Anki editor examples]]
+file is excellent and the [[https://github.com/louietan/anki-editor/issues/30][issue tracker]] also has a ton of information.
 Some final comments:
 - Screenshots and other images linked are automatically synced
 - The TeX is best rendered on the PC first, so run through these at-least once
