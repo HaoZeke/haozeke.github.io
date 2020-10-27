@@ -6642,12 +6642,12 @@ pretty formatting.
 For the sample card[fn:lolwut] shown, the markup is dead simple. We also need to
 enable and load ~anki-editor~. Additionally, we shall add a local variable
 section to ensure we load ~anki-editor~.
-#+BEGIN_SRC org :eval never
-# Local Variables:
-# eval: (anki-editor-mode)
-# End:
+#+BEGIN_SRC bash :eval never
+\# Local Variables:
+\# eval: (anki-editor-mode)
+\# End:
 #+END_SRC
-With that, we just need to fire up Anki, and we're off to the races. The [[https://raw.githubusercontent.com/louietan/anki-editor/master/examples.org][Anki
+With that, we just need to fire up Anki, and we're off to the races (remove ~\~). The [[https://raw.githubusercontent.com/louietan/anki-editor/master/examples.org][Anki
 editor examples]] file is excellent and the [[https://github.com/louietan/anki-editor/issues/30][issue tracker]] also has a ton of information.
 Some final comments:
 - Screenshots and other images linked are automatically synced
