@@ -6520,7 +6520,7 @@ At this point, if all that was needed was control over a single PC, then we'd be
 
 [fn:oddname] An [[https://en.wikipedia.org/wiki/Two_Cars_in_Every_Garage_and_Three_Eyes_on_Every_Fish][old Simpsons pun]]
 
-* DONE Anki Decks with Orgmode :@personal:workflow:projects:tools:
+* DONE Anki Decks with Orgmode :@personal:workflow:projects:tools:emacs:orgmode:
 CLOSED: [2020-10-27 Tue 01:05]
 :PROPERTIES:
 :EXPORT_FILE_NAME: anki-decks-orgmode
