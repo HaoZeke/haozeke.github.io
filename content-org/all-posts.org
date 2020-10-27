@@ -6559,12 +6559,12 @@ To accomplish this, we basically need to have the following:
 - [[https://ankiweb.net/shared/info/937148547][LaTeX process editor]] :: It wouldn't be much better than manually making cards in Anki if we couldn't leverage ~unicode~ characters, so we need to modify the internal Anki build process for TeX
 *** Anki Editor
 As with all ~emacs~ related setup snippets on this site, these should be modified and adapted as needed, for those not using [[https://github.com/hlissner/doom-emacs/][doom-emacs]]. 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no :eval no
 ;; In packages.el or .org
 (package! anki-editor)
 #+END_SRC
 We can now configure this.
-#+BEGIN_SRC emacs-lisp :tangle yes
+#+BEGIN_SRC emacs-lisp :tangle no :eval no
 (use-package! anki-editor
   :after org-noter
   :config
