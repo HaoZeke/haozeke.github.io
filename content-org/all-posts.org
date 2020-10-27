@@ -6558,14 +6558,9 @@ To accomplish this, we basically need to have the following:
 - [[https://github.com/FooSoft/anki-connect][anki-connect]] :: We need a server of sorts set up to allow us to push pull and get errors from the running Anki server, this is an Anki plugin
 - [[https://ankiweb.net/shared/info/937148547][LaTeX process editor]] :: It wouldn't be much better than manually making cards in Anki if we couldn't leverage ~unicode~ characters, so we need to modify the internal Anki build process for TeX
 *** Anki Editor
-As with all ~emacs~ related setup snippets on this site, these should be modified and adapted as needed, for those not using [[https://github.com/hlissner/doom-emacs/][doom-emacs]]. 
-#+BEGIN_SRC emacs-lisp :tangle no :eval no
-;; In packages.el or .org
-(package! anki-editor)
-#+END_SRC
-We can now configure this.
-#+BEGIN_SRC emacs-lisp :tangle no :eval no
-(use-package! anki-editor
+As with all ~emacs~ related setup snippets on this site, these should be modified and adapted as needed, especially for those not using [[https://github.com/hlissner/doom-emacs/][doom-emacs]]. 
+#+BEGIN_SRC emacs-lisp :tangle no :eval never
+(use-package anki-editor
   :after org-noter
   :config
   ; I like making decks
