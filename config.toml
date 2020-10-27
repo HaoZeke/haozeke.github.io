@@ -103,6 +103,9 @@ disableHugoGeneratorInject = false
 # [params.intensedebate]
 # accountID = "03433eb5474ac59759898fb85454590c"
 
+[params.liberapay]
+accountID = "rohit"
+
 [params.graphcomments]
 accountID = "rgoswami"
 
