@@ -6519,3 +6519,148 @@ At this point, if all that was needed was control over a single PC, then we'd be
 *** Icecast
 
 [fn:oddname] An [[https://en.wikipedia.org/wiki/Two_Cars_in_Every_Garage_and_Three_Eyes_on_Every_Fish][old Simpsons pun]]
+
+* DONE Anki Decks with Orgmode :@personal:workflow:projects:tools:
+CLOSED: [2020-10-27 Tue 01:05]
+:PROPERTIES:
+:EXPORT_FILE_NAME: anki-decks-orgmode
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+begin_quote
+Setting up unicode math and ~orgmode~ for painless Anki deck building
+#+end_quote
+
+** Background
+A recent [[https://news.ycombinator.com/item?id=24878171][Hacker News post]] reminded me of [[https://docs.ankiweb.net/#/getting-started][Anki]], and that brought back memories of
+my Anki ~orgmode~ setup. I thought I'd re-create and immortalize it.
+
+The standard way of working with Anki, is with a pretty awkward GUI. There are
+changes to be made here, which make life a little easier, including the setup of
+custom cards, but the inherent concerns of the WYSIWYG editor are basically
+insurmountable.
+
+#+DOWNLOADED: screenshot @ 2020-10-27 00:13:31
+#+caption: Anki GUI
+[[file:images/Background/2020-10-27_00-13-31_screenshot.png]]
+
+
+The goal is to get this a better workflow than manual editing of Anki decks.
+~orgmode~ is perfect for making cards, especially in the larger context of using
+it for storing images and rich ~pdfs~.
+
+#+DOWNLOADED: screenshot @ 2020-10-26 23:53:05
+#+caption: A pleasant way to make anki decks
+[[file:images/Background/2020-10-26_23-53-05_screenshot.png]]
+
+** Methodology
+To accomplish this, we basically need to have the following:
+- [[https://github.com/louietan/anki-editor][anki-editor]]  :: This ~emacs~ plugin will facilitate the conversion from our ~orgmode~ files to the Anki markup
+- [[https://github.com/FooSoft/anki-connect][anki-connect]] :: We need a server of sorts set up to allow us to push pull and get errors from the running Anki server, this is an Anki plugin
+- [[https://ankiweb.net/shared/info/937148547][LaTeX process editor]] :: It wouldn't be much better than manually making cards in Anki if we couldn't leverage ~unicode~ characters, so we need to modify the internal Anki build process for TeX
+*** Anki Editor
+As with all ~emacs~ related setup snippets on this site, these should be modified and adapted as needed, for those not using [[https://github.com/hlissner/doom-emacs/][doom-emacs]]. 
+#+BEGIN_SRC emacs-lisp
+;; In packages.el or .org
+(package! anki-editor)
+#+END_SRC
+We can now configure this.
+#+BEGIN_SRC emacs-lisp :tangle yes
+(use-package! anki-editor
+  :after org-noter
+  :config
+  ; I like making decks
+  (setq anki-editor-create-decks 't))
+#+END_SRC
+Also, my [[https://rgoswami.me/dotdoom/config.html#text-3][full configuration]] has additional non-essential quality of life keybindings amongst other things.
+*** Anki Connect
+~CTRL+Shift+A~ will bring up the addon settings, and Anki has to be restarted after installing the addons. [[https://github.com/FooSoft/anki-connect][Anki Connect]] itself does not need any further configuration, though the ~readme~ is very comprehensive.
+*** TeX Setup
+The [[https://ankiweb.net/shared/info/937148547][LaTeX process editor]] can be set in two stages, wherein we will first ensure that we can use ~xelatex~ and that we can generate an ~svg~.
+#+begin_src json
+{
+    "svgCommands": [
+        [
+            "xelatex",
+            "--no-pdf",
+            "-interaction=nonstopmode",
+            "tmp.tex"
+        ],
+        [
+            "dvisvgm",
+            "--no-fonts",
+            "-Z",
+            "2",
+            "tmp.xdv",
+            "-o",
+            "tmp.svg"
+        ]
+    ]
+}
+#+end_src
+The ~png~ settings can be modified in a similar manner if required, but it is better to generate ~svg~ files, which will set up in the cosmetics section. Note that we pass ~--no-pdf~ to get the ~xdv~ file which has replaces ~dvi~ files for ~xelatex~.
+*** Cosmetics
+The final aspect of this is to be configured with the GUI. The easiest option is to clone the Basic card type and customize that. ~CTRL+Shift+N~ should bring up the card editor. The relevant styles are[fn:wherevert] (from the ~Cards~ option):
+#+begin_src css
+.card {
+ font-family: Literata;
+ font-size: 26px;
+ text-align: center;
+ color: black;
+ background-color: white;
+}
+img {
+max-height:1000px;
+height: auto;
+width: auto;
+}
+img[src*="latex"] {
+  vertical-align: middle;
+}
+#+end_src
+
+Now we need setup our TeX headers as well, and enable the ~Create scalable
+images with dvisvgm~ option. The header needs to have (minimally):
+
+#+begin_src tex
+\documentclass[12pt]{article}
+\special{papersize=3in,5in}
+\usepackage{geometry} 
+\usepackage{unicode-math}
+\usepackage{mathtools}
+\pagestyle{empty}
+\setlength{\parindent}{0in}
+\begin{document}
+#+end_src
+
+While the ~footer~ is simply ~\end{document}~. With this, we have achieved
+pretty formatting.
+
+#+DOWNLOADED: screenshot @ 2020-10-26 23:53:25
+#+caption: Pretty card formatting
+[[file:images/Background/2020-10-26_23-53-25_screenshot.png]]
+** Usage
+For the sample card[fn:lolwut] shown, the markup is dead simple. We also need to
+enable and load ~anki-editor~. Additionally, we shall add a local variable
+section to ensure we load ~anki-editor~.
+#+begin_src org
+# Local Variables:
+# eval: (anki-editor-mode)
+# End:
+#+end_src
+With that, we just need to fire up Anki, and we're off to the races. The [[https://raw.githubusercontent.com/louietan/anki-editor/master/examples.org][Anki
+editor examples]] file is excellent and the [[https://github.com/louietan/anki-editor/issues/30][issue tracker]] also has a ton of information.
+Some final comments:
+- Screenshots and other images linked are automatically synced
+- The TeX is best rendered on the PC first, so run through these at-least once
+** Conclusions
+A missing link in this setup is the ability to use a touch screen and stylus to
+write proofs or skip the TeX setup altogether, but that would require another
+post altogether. Additionally, all the standard bells and whistles of having an
+~orgmode~ document can be applied, including, crucially, the ability to have
+long-form notes as well, a coherent approach to this can also be covered later.
+For an excellent example of how this might look, see the
+~org-drill~[fn:whynotdrill] based [[https://github.com/Anton-Latukha/Fundamental-Haskell][Fundamental Haskell]].
+
+[fn:lolwut] It _is_ a *gag* card, no judgement here
+[fn:whynotdrill] ~org-drill~ doesn't support any kind of mobile synchronization
+[fn:wherevert] The alignment trick is from [[https://clementc.github.io/blog/2018/08/15/anki_setup/][this post]]
