@@ -1,0 +1,29 @@
+* Test Code :code:python:
+:properties:
+:anki_deck: CodeWiki
+:anki_note_type: myTex
+:ANKI_NOTE_ID: 1603891864091
+:end:
+** Front
+What is the definition of an inner product? What are some examples of a code block in Python and R?
+** Back
+This is essentially a *norm* with more structure. The first two properties, positive definiteness and symmetry (conjugate) defines a *norm*.
+$$
+\mathbf{a}=\mathbf{e}₁a₁+\mathbf{e}₂a₂+\mathbf{e}₃a₃=∑ᵢ\mathbf{e}ᵢaᵢ
+$$
+
+#+begin_src python
+def test():
+    x = [1,2,3]
+    for i in x:
+        print(i)
+#+end_src
+
+#+begin_src R
+library("dplyr")
+x = 1
+#+end_src
+
+# Local Variables:
+# eval: (anki-editor-mode)
+# End:
