@@ -212,7 +212,7 @@ These are tech talks, for academic presentations, [[https://github.com/haozeke/c
   - [[https://sachachua.com/blog/2020/05/2020-05-11-emacs-news/][2020-05-11]] :: for [[An Orgmode Note Workflow][An Orgmode Note Workflow]]
   - [[https://sachachua.com/blog/2020/05/2020-05-04-emacs-news/][2020-05-04]] :: for [[Pandoc to Orgmode with Babel][Pandoc to Orgmode with Babel]]
   - [[https://sachachua.com/blog/2020/04/2020-04-27-emacs-news/][2020-04-27]] :: for [[Using Mathematica with Orgmode][Using Mathematica with Orgmode]]
-  - [[https://sachachua.com/blog/2020/04/2020-04-13-emacs-news/][2020-04-13]] :: for [[https://rgoswami.me/dotdoom][my dotDoom doom-emacs configuration]]
+  - [[https://sachachua.com/blog/2020/04/2020-04-13-emacs-news/][2020-04-13]] :: for [[https://dotdoom.rgoswami.me][my dotDoom doom-emacs configuration]]
   - [[https://sachachua.com/blog/2020/04/2020-04-06-emacs-news/][2020-04-06]] :: for [[Replacing Jupyter with Orgmode][Replacing Jupyter with Orgmode]]
 ** Videos
 *** Of Me
@@ -292,11 +292,11 @@ seemed kinda neat.
 - Mostly random thoughts I don't mind people knowing
 - Some tech stuff which isn't coherent enough to be put in any form with
   references
-- Emacs specific workflows which I might want to write about more than [[https://rgoswami.me/dotdoom][short
+- Emacs specific workflows which I might want to write about more than [[https://dotdoom.rgoswami.me/][short
   notes on the config]]
 ** What isn't here
 - Some collections should and will go to my [[https://grimoire.science][grimoire]]
-- My [[https://rgoswami.me/dotdoom][doom-emacs configuration]]
+- My [[https://dotdoom.rgoswami.me/][doom-emacs configuration]]
 - Academic stuff is better tracked on [[https://publons.com/researcher/2911170/rohit-goswami/][Publons]] or [[https://scholar.google.co.in/citations?user=36gIdJMAAAAJ&hl=en][Google Scholar]] or my pages
   hosted by my favorite [[https://femtolab.science/people/rohit][IITK group]] or [[https://www.hi.is/starfsfolk/rog32][UI group]]
 * DONE Taming Github Notifications :@notes:tools:github:workflow:
@@ -847,7 +847,7 @@ it's just that kind of show.
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments false
 :END:
 ** Background
-[[https://rgoswami.me/dotdoom][My doom-emacs configuration]] gets a rather insane number of views every month.
+[[https://dotdoom.rgoswami.me/][My doom-emacs configuration]] gets a rather insane number of views every month.
 Statistically, it accounts for 90% of the traffic to [[https://grimoire.science][my other site]], and that is
 essentially around three times time traffic on the rest of my presences,
 combined. I followed a pretty standard path to finally reach doom-emacs.
@@ -1690,7 +1690,7 @@ The older commenting system was implemented with [[https://utteranc.es][utteranc
 
 [fn:aboutmash] As noted in the comments, it is nicer to rename ~mash.pl~ to ~mash~
 [fn:whydoom] The dark side has cookies
-[fn:fullconf] For reference, my whole config [[https://rgoswami.me/dotdoom][is here]]
+[fn:fullconf] For reference, my whole config [[https://dotdoom.rgoswami.me][is here]]
 * TODO Thoughts on Chemical Engineering :@notes:ramblings:explanations:
 :PROPERTIES:
 :EXPORT_FILE_NAME: cheme-thoughts
@@ -1712,7 +1712,7 @@ is one which lets you keep a bunch of throwaway ideas and also somehow have
 access to them in a coherent manner. This will be a long post, and it is a
 work-in-progress, so, keep that in mind. Since this is mainly me[fn:bojackme]
 work-shopping my technique, the philosophy will come in a later post probably.
-This workflow is documented more sparsely in my [[https://rgoswami.me/dotdoom/config.html#text-3][config file here]], in the
+This workflow is documented more sparsely in my [[https://dotdoom.rgoswami.me/config.html#text-3][config file here]], in the
 ~noteYoda~ section[fn:whoyoda]. Some parts of this post also include mini video
 clips for clarity[fn:howrec].
 
@@ -3783,7 +3783,7 @@ Blah blah document $\sin{x}$ stuff
 This method could be extended to essentially resetting all ~emacs~ variables on a per-file basis (without ~file-local-variables~ and ~dir-local-variables~) or to potentially execute any ~elisp~ to make ~emacs~ do things, though I cannot really think of another realistic use-case. The method presented here is really general enough to work with any arbitrary LaTeX ~.cls~ file or other draconian measures.
 
 [fn:thatsall] Of course there are more issues stemming from this toxic practice, but that's for another rant
-[fn:whatwhy] I use [[https://github.com/hlissner/doom-emacs/][doom-emacs]] with my own [[https://rgoswami.me/dotdoom][literate configuration]]
+[fn:whatwhy] I use [[https://github.com/hlissner/doom-emacs/][doom-emacs]] with my own [[https://dotdoom.rgoswami.me][literate configuration]]
 [fn:fontwhat] Or syntax highlighting for most people
 [fn:halptex] For more on document structure in TeX [[https://en.wikibooks.org/wiki/LaTeX/Document_Structure][read the wikibook]]
 [fn:grantwhat] I haven't seen a grant proposal template I'd like to store for later, *ever*
@@ -6566,7 +6566,7 @@ As with all ~emacs~ related setup snippets on this site, these should be modifie
   ; I like making decks
   (setq anki-editor-create-decks 't))
 #+END_SRC
-Also, my [[https://rgoswami.me/dotdoom/config.html#text-3][full configuration]] has additional non-essential quality of life keybindings amongst other things.
+Also, my [[https://dotdoom.rgoswami.me/config.html#text-3][full configuration]] has additional non-essential quality of life keybindings amongst other things.
 *** Anki Connect
 ~CTRL+Shift+A~ will bring up the addon settings, and Anki has to be restarted after installing the addons. [[https://github.com/FooSoft/anki-connect][Anki Connect]] itself does not need any further configuration, though the ~readme~ is very comprehensive.
 *** TeX Setup
