@@ -11,8 +11,3 @@ This is defined as follows:
 $$
 \mathbf{a}=\mathbf{e}₁a₁+\mathbf{e}₂a₂+\mathbf{e}₃a₃=∑ᵢ\mathbf{e}ᵢaᵢ
 $$
-
-
-# Local Variables:
-# eval: (anki-editor-mode)
-# End:
