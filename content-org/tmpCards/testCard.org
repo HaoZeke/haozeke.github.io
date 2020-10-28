@@ -23,7 +23,3 @@ def test():
 library("dplyr")
 x = 1
 #+end_src
-
-# Local Variables:
-# eval: (anki-editor-mode)
-# End:
