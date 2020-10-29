@@ -23,5 +23,5 @@
   command = "rake hugoBuild"
 
 [build.environment]
-  HUGO_VERSION = "0.72.0"
+  HUGO_VERSION = "0.76.5"
   HUGO_ENV = "production"
