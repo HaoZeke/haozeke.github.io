@@ -10,6 +10,12 @@
   status = 301
   force = true
 
+[[redirects]]
+  from = "/dotdoom"
+  to = "https://dotdoom.rgoswami.me"
+  status = 301
+  force = true
+
 # [[plugins]]
 # package = "netlify-plugin-subfont"
 [build]
