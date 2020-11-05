@@ -9,6 +9,7 @@ PygmentsStyle = "native"
 copyright = "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License." # This message is only used by the RSS template.
 
 googleAnalytics = "UA-109503488-16"
+microsoftClarity = "3z2xvwqu4u"
 # disqusShortname = ""
 
 archetypeDir = "archetypes"
