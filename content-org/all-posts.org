@@ -5716,6 +5716,10 @@ XML_PROGRAMLISTING = NO
 PROJECT_NAME           = "myProject"
 PROJECT_BRIEF          = "Dev docs"
 OUTPUT_DIRECTORY       = "./gen_docs"
+
+# Inputs
+INPUT                  = "./../../projects/symengine/symengine"
+RECURSIVE              = NO
 #+END_SRC
 With this we will now be able to obtain the ~xml~ files for the rest of this setup.
 ** Exhale
@@ -6930,3 +6934,25 @@ long-form notes as well, a coherent approach to this can also be covered later.
 [fn:lolwut] It _is_ a *gag* card, no judgement here
 [fn:whynotdrill] ~org-drill~ doesn't support any kind of mobile synchronization
 [fn:wherevert] The alignment trick is from [[https://clementc.github.io/blog/2018/08/15/anki_setup/][this post]]
+
+* TODO Rediscovering Digital Books :@personal:workflow:tools:
+:PROPERTIES:
+:EXPORT_FILE_NAME: anki-decks-orgmode
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+begin_quote
+A discourse on the greater good embodied by ~k2pdfopt~ and a Kobo Aura HD
+#+end_quote
+
+** Background
+The sharp eyed reader might notice, that unlike the majority of posts on this site, this one is *not* in the ~programming~ category, though there will be code. Essentially this is a bit of an expository rant on the nature of consumerism and the lost days of durable products.
+** Kobo Aura HD
+Many many years ago, my parents let me get an e-ink device. At the time, I spent many hours lurking on the fantastic Mobilread forums. Back in those early days.
+*** Pros
+- KSM menu
+  + It is discontinued now, but seeing as I have no desire to update this further, it works great
+*** Cons
+- The USB connectivity seems to be gone for good
+  + Though it charges
+** Conclusions
+I have no intention of getting a newer e-ink device which does not have an SD-card slot and an active developer community.
