@@ -6937,7 +6937,7 @@ long-form notes as well, a coherent approach to this can also be covered later.
 
 * TODO Rediscovering Digital Books :@personal:workflow:tools:
 :PROPERTIES:
-:EXPORT_FILE_NAME: anki-decks-orgmode
+:EXPORT_FILE_NAME: redis-digi-books
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :END:
 #+begin_quote
