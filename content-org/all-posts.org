@@ -6893,7 +6893,7 @@ Inspired by [[https://yiufung.net/post/anki-org/][this post]], we will also use 
   content: "Rust";
 }
 #+end_src
-However, in the interests of sanity, we will leverage the [[https://ankiweb.net/shared/info/1972239816][Syntax Highlighting Anki plugin]] for managing the actual stylesheets instead of manual edits to each card type.
+However, in the interests of sanity, we will leverage the [[https://ankiweb.net/shared/info/1972239816][Syntax Highlighting Anki plugin]] for managing the actual style-sheets instead of manual edits to each card type.
 #+caption: A screencast from the plugin readme
 https://raw.githubusercontent.com/ijgnd/syntax-highlighting/master/screenshots/demo_config_with_nm_toggle_addon.gif
 
