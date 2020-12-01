@@ -6956,3 +6956,45 @@ Many many years ago, my parents let me get an e-ink device. At the time, I spent
   + Though it charges
 ** Conclusions
 I have no intention of getting a newer e-ink device which does not have an SD-card slot and an active developer community.
+
+* TODO The Decline of Linux Email :@personal:workflow:tools:email:
+:PROPERTIES:
+:EXPORT_FILE_NAME: declining-linux-email
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+begin_quote
+A scathing indictment of Linux Email clients and a methodology to revert to command line oriented workflows.
+#+end_quote
+** Background
+I have loved and used email for over 16 years now. Back in middle school, my dad would travel, and along with my mom and sister, we'd send emails. Of course, over the years, nothing in software has declined so much as email clients.
+
+#+DOWNLOADED: screenshot @ 2020-11-23 08:11:55
+#+caption: Ah yes, another casualty of Mozilla's epic life choices
+[[file:images/Background/2020-11-23_08-11-55_screenshot.png]]
+
+
+In brief order:
+
+- [[https://www.thunderbird.net/en-US/][Thunderbird]] :: This was simply impossible to beat, back in the days of XUL. Infact, Mozilla and the entire "Foundation" should have a special circle reserved for them in hell for what they did to both Firefox (making it a chrome clone) and Thunderbird (stripping it of all the loving crafted extensions)[fn:noreally]. Even after the ridiculous new engine, the community bounced back to make a good set of extensions, some of which [[https://addons.thunderbird.net/en-US/thunderbird/collections/rgoswami/favorites/][are enumerated here]]. Most recently, once again version 78 has broken all addons and made my client unusable again. The *last straw*. Also, of late, Thunderbird needs a paid extension to work well with Exchange accounts.
+- [[https://getmailspring.com/][Mailspring]] :: Always leery of Electron apps, this is a pathetically heavy, plodding mess. Constantly disconnecting and requiring re-authentication, while also being very coy about losing emails. Their "pro" feature set includes a privacy invasive method of figuring out when people read what you send. This has been championed a lot by the Tech media, but it is simply not a working mail client, and the themes are drab anyway. Not to mention the fact that it is *paid*, and *not FOSS*, and had an ugly history with Nylas mail.
+- [[https://www.postbox-inc.com/][Postbox]] :: A fork from Thunderbird, without official Linux support, this [[https://appdb.winehq.org/objectManager.php?sClass=application&iId=9199][runs surprisingly well via Wine]]. That said, it is still annoying to not have a native client, and there are no good extensions.
+- [[https://wiki.gnome.org/Apps/Geary][Geary]] :: The shining hope of the GNOME desktop. Good, but not extensible enough yet. Also lacks a lot of user-facing options, due to the ridiculous design paradigm of GNOME, which appears to be "what if we had no options, people like that right, that's why they use Linux!"
+
+
+Perhaps most importantly, none of these clients are stable. They change at the whims of a shadowy development cabal which has no consideration for users. Many years ago, back when Thunderbird ditched XUL, ~mutt~ presented itself as an alternative. At the time, however, it was
+** Conclusions
+[fn:noreally] A full description would span several posts, and detracts from the main goal
+
+* TODO Reclaiming Email with Astroid :@personal:rant:tools:email:
+:PROPERTIES:
+:EXPORT_FILE_NAME: reclaim-email-astroid
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+begin_quote
+Migrating 23 mail accounts from GUI clients to Astroid
+#+end_quote
+** Background
+Initially, I had planned this post to start with a brief history of the decline of email clients for Linux. That quickly got out of hand, and was therefore [[The Decline of Linux Email][spun out into a post of its own]]. To keep things brief. Thanks to the incredible ineptitude of the Thunderbird steering committee, I ended up requiring a new mail client. Having despaired of the GUI based bloat heavy approaches of most clients, I decided to go the old fashioned route and build one up in a modular manner.
+** The Accounts
+In no order of preference, for a variety of reasons, I have 23 distinct email accounts.
+** Conclusions
