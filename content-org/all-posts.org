@@ -7169,9 +7169,9 @@ As mentioned before, we have to continue mapping relative to QWERTY, so these ma
 
 - Relatively empty, just has a bracket
 
-#+name: fig:extshift
+#+name: fig:altgrlayer
 #+caption: Extend+AltGr layer mapping
-[[file:images/keyboards/extAltGr_hz.jpg]]
+[[file:images/keyboards/extAltGr_hz.png]]
 
 - Includes deletions
 
