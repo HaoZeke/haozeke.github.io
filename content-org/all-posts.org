@@ -6998,3 +6998,220 @@ Initially, I had planned this post to start with a brief history of the decline 
 ** The Accounts
 In no order of preference, for a variety of reasons, I have 23 distinct email accounts.
 ** Conclusions
+* DONE Remapping Keys with XKB and KLFC :@personal:workflow:tools:
+CLOSED: [2020-12-05 Sat 22:05]
+:PROPERTIES:
+:EXPORT_FILE_NAME: remap-keys-xkb-klfc
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+begin_quote
+An introduction to hacking keyboard layouts with X keyboard extension (XKB) and ~klfc~, focused on Colemak and vim bindings
+#+end_quote
+** Background
+Inspite of maximizing ergonomic bindings for most common software (e.g. Vimium, doom-emacs), every operation with the arrow keys still trouble me. Here I will lay out my experiments transitioning to a stable, uniquely defined setup with the X keyboard extension.
+*** Series
+This post is part of a series on Colemak and keyboard management in general.
+1. [[Switching to Colemak][Switching to Colemak]]
+2. [[Refactoring Dotfiles For Colemak][Refactoring Dotfiles For Colemak]] 
+3. *Remapping Keys Globally and Persistently with XKB* <-- You are here!
+** Keyboard Basics
+Some terms to keep in mind for this post are[fn:morespecifics]:
+- Dead Keys :: These don't actually output anything, but modify the next key pressed. Like applying an umlaut on the subsequent letter.
+- Lock Keys :: State modifiers which are toggled, like Caps Lock
+- Compose Key :: A key which interprets a series of subsequent key strokes. A dead key on steroids.
+
+Also the different levels ([[https://fsymbols.com/keyboard/linux/choosers/#:~:text=Shift%20is%20called%20the%20second,on%20your%20usual%20keyboard%20layout.][from here]]) are concisely defined in the following table.
+
+#+caption: Levels for a keyboard
+| *Level* | *Modifier*   | *Keys*                                          |
+|---------+--------------+-------------------------------------------------|
+|       1 | None         | Lowercase letters, numbers other symbols        |
+|       2 | Shift        | Uppercase letters, symbols placed above numbers |
+|       3 | AltGr        | Accented characters, symbols, some dead keys    |
+|       4 | Shift+AltGr  | More dead keys and symbols                      |
+|       5 | Extend       | User-defined                                    |
+|       6 | Shift+Extend | User-defined                                    |
+|---------+--------------+-------------------------------------------------|
+
+** Modification Strategies
+Common approaches to quick remapping of keys involves ~xmodmap~, which does not persist between reboots. Manually recreating or spinning off of XKB configuration files was also not very appealing.
+*** KLFC
+A more elegant approach is by using the excellent [[https://github.com/39aldo39/klfc/][klfc Haskell binary]]. To install this from source:
+#+begin_src bash :eval never
+git clone https://github.com/39aldo39/klfc
+cd klfc
+# Kanged from the AUR https://aur.archlinux.org/packages/klfc/
+cabal v1-sandbox init
+cabal v1-update
+cabal v1-install --only-dependencies --ghc-options=-dynamic --force-reinstalls
+cabal v1-configure --prefix=/usr --ghc-options=-dynamic
+cabal v1-build
+#+end_src
+
+The output binary is in ~./dist/build/klfc/klfc~.
+
+*Note that* the set of keys mapped by the ~json~ files are relative to the QWERTY layout, that is:
+
+#+DOWNLOADED: screenshot @ 2020-12-01 20:38:58
+[[file:images/Modification_Strategies/2020-12-01_20-38-58_screenshot.png]]
+
+This means that we have to ensure that the keys are mapped relative to QWERTY as well, *not* relative to the modified base layout.
+** Remapping
+Some goals were:
+- Programming (particularly in ~python~ and ~lisp~) put a lot of stress on the right hand pinky for Colemak users[fn:whycolemak]
+- VIM keys should be global but toggled with a lock
+My primary use case is currently my ThinkPad X380, which comes with a basic [[http://www.keyboard-layout-editor.com/#/layouts/ae55dc3c6b6c80904d0901d856247486][QWERTY contracted layout]] as shown in Fig. [[fig:qwerty]].
+
+#+name: fig:qwerty
+#+caption: Basic X380 QWERTY
+file:images/keyboards/qwerty_x380.png
+*** Colemak - Layers 1 and 2
+The first mapping is a [[http://www.keyboard-layout-editor.com/#/gists/93c31b6e61608c19c26933b0a212b262][basic Colemak setup]] as shown in Fi. fig:colemak.
+
+#+name: fig:colemak
+#+caption: Basic X380 Colemak
+[[file:images/keyboards/colemak_x380.jpg]]
+
+It wouldn't make much sense to remap the first two layers. We can use the ~json~ from the examples of the ~klfc~ repository.
+#+begin_src json
+// Base Colemak layout
+// https://colemak.com
+{
+  "fullName": "Colemak",
+  "name": "colemak",
+  "localeId": "00000409",
+  "copyright": "Public Domain",
+  "company": "2006-01-01 Shai Coleman",
+  "version": "1.0",
+  "shiftlevels": [ "None", "Shift" ],
+  "singletonKeys": [
+    [ "CapsLock", "Backspace" ]
+  ],
+  "keys": [
+    { "pos": "~", "letters": [ "`", "~" ] },
+    { "pos": "1", "letters": [ "1", "!" ] },
+    { "pos": "2", "letters": [ "2", "@" ] },
+    { "pos": "3", "letters": [ "3", "#" ] },
+    { "pos": "4", "letters": [ "4", "$" ] },
+    { "pos": "5", "letters": [ "5", "%" ] },
+    { "pos": "6", "letters": [ "6", "^" ] },
+    { "pos": "7", "letters": [ "7", "&" ] },
+    { "pos": "8", "letters": [ "8", "*" ] },
+    { "pos": "9", "letters": [ "9", "(" ] },
+    { "pos": "0", "letters": [ "0", ")" ] },
+    { "pos": "-", "letters": [ "-", "_" ] },
+    { "pos": "+", "letters": [ "=", "+" ] },
+    { "pos": "Q", "letters": [ "q", "Q" ] },
+    { "pos": "W", "letters": [ "w", "W" ] },
+    { "pos": "E", "letters": [ "f", "F" ] },
+    { "pos": "R", "letters": [ "p", "P" ] },
+    { "pos": "T", "letters": [ "g", "G" ] },
+    { "pos": "Y", "letters": [ "j", "J" ] },
+    { "pos": "U", "letters": [ "l", "L" ] },
+    { "pos": "I", "letters": [ "u", "U" ] },
+    { "pos": "O", "letters": [ "y", "Y" ] },
+    { "pos": "P", "letters": [ ";", ":" ] },
+    { "pos": "[", "letters": [ "[", "{" ] },
+    { "pos": "]", "letters": [ "]", "}" ] },
+    { "pos": "\\", "letters": [ "\\", "|" ] },
+    { "pos": "A", "letters": [ "a", "A" ] },
+    { "pos": "S", "letters": [ "r", "R" ] },
+    { "pos": "D", "letters": [ "s", "S" ] },
+    { "pos": "F", "letters": [ "t", "T" ] },
+    { "pos": "G", "letters": [ "d", "D" ] },
+    { "pos": "H", "letters": [ "h", "H" ] },
+    { "pos": "J", "letters": [ "n", "N" ] },
+    { "pos": "K", "letters": [ "e", "E" ] },
+    { "pos": "L", "letters": [ "i", "I" ] },
+    { "pos": ";", "letters": [ "o", "O" ] },
+    { "pos": "'", "letters": [ "'", "\"" ] },
+    { "pos": "Z", "letters": [ "z", "Z" ] },
+    { "pos": "X", "letters": [ "x", "X" ] },
+    { "pos": "C", "letters": [ "c", "C" ] },
+    { "pos": "V", "letters": [ "v", "V" ] },
+    { "pos": "B", "letters": [ "b", "B" ] },
+    { "pos": "N", "letters": [ "k", "K" ] },
+    { "pos": "M", "letters": [ "m", "M" ] },
+    { "pos": ",", "letters": [ ",", "<" ] },
+    { "pos": ".", "letters": [ ".", ">" ] },
+    { "pos": "/", "letters": [ "/", "?" ] }
+  ],
+  "variants": [
+    {
+      "name": "mod-dh",
+      "shiftlevels": [ "None", "Shift" ],
+      "keys": [
+        { "pos": "V", "letters": [ "d", "D" ] },
+        { "pos": "B", "letters": [ "v", "V" ] },
+        { "pos": "G", "letters": [ "g", "G" ] },
+        { "pos": "T", "letters": [ "b", "B" ] },
+        { "pos": "H", "letters": [ "k", "K" ] },
+        { "pos": "N", "letters": [ "m", "M" ] },
+        { "pos": "M", "letters": [ "h", "H" ] }
+      ]
+    }
+  ]
+}
+#+end_src
+*** VIM Extensions
+The additions are primarily through the Extend Layer[fn:whyext] (Fig. [[fig:extlayer]]), with a Shift addition (Fig. [[fig:extshift]]) and more keys with AltGr (Fig. [[fig:altgrlayer]]).
+As mentioned before, we have to continue mapping relative to QWERTY, so these mappings can be used by QWERTY users as well. We will essentially use the ~ISO_5~ shift key.
+
+#+name: fig:extlayer
+#+caption: Extend layer mapping
+[[file:images/keyboards/extendLayer_hz.jpg]]
+
+- Maps basic ~vim~ movement
+
+#+name: fig:extshift
+#+caption: Extend+Shift layer mapping
+[[file:images/keyboards/extShift_hz.jpg]]
+
+- Relatively empty, just has a bracket
+
+#+name: fig:extshift
+#+caption: Extend+AltGr layer mapping
+[[file:images/keyboards/extAltGr_hz.jpg]]
+
+- Includes deletions
+
+These are defined in a single ~json~ as shown.
+#+begin_src json
+{
+  "filter": "no klc,keylayout",
+  "singletonKeys": [
+    [ "CapsLock", "Extend" ],
+    [ "Alt_L", "AltGr" ]
+  ],
+  "shiftlevels": [ "Extend", "Shift+Extend", "AltGr+Extend" ],
+  "keys": [
+    { "pos": "H", "letters": [ "Left", "", "Backspace" ] },
+    { "pos": "J", "letters": [ "Down" ] },
+    { "pos": "K", "letters": [ "Up" ] },
+    { "pos": "L", "letters": [ "Right", "", "Delete" ] },
+    { "pos": ";", "letters": [ "Enter" ] },
+    { "pos": "N", "letters": [ "(", "[", "{" ] },
+    { "pos": "V", "letters": [ ")", "]" , "}"] }
+  ]
+}
+#+end_src
+- The key idea is to have the ~AltGr~ keys placed symmetrically
+- One major issue is that ~Backspace~ has gone from a single stroke of ~CapsLock~ to a three-key-combo
+  + This is the least intuitive, and might need to be changed
+- The third level (~Extend+AltGr~) is more accessible than the second in this layout
+*** Usage
+To generate the files needed to load the new layout:
+#+begin_src bash :eval never
+klfc colemak.json extendVIM.json -o coleVIM
+cd coleVIM/xkb
+./run-session.sh    # to try them out
+./install-system.sh && ./scripts/install-xcompose.sh # to install them
+#+end_src
+
+** Conclusions
+The layout takes a bit of time to get used to, but it is a lot more transparent in the end compared to manually remapping to Colemak's NEIO instead of HJKL for movement. It is both persistent and easily extended, though it is likely that more needs to be done. Perhaps some metrics [fn:whatmetrics] might be collected as well.
+
+[fn:whycolemak] Colemak, unlike Dvorak, prioritises finger rolls over alternating hands
+[fn:morespecifics] For more details the [[https://en.wikipedia.org/wiki/Keyboard_layout][Wikipedia article on Keyboard Layouts]] is useful
+[fn:whyext] [[https://forum.colemak.com/topic/2014-extend-extra-extreme/][DreymaR's Extend mappings]] might be good for QWERTY people 
+[fn:whatmetrics] The metric collection of [[https://github.com/mw8/white_keyboard_layout][Michael White]] or the [[http://mkweb.bcgsc.ca/carpalx/][CARPALX metrics]]
