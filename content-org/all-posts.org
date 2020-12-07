@@ -43,9 +43,9 @@ This is a set of things which are primarily online and/or voluntary in a
 non-academic sense.
 - I administer and design a bunch of websites, mostly verified [[https://keybase.io/HaoZeke][on Keybase]]
 - I am a certified Software Carpentries [[https://static.carpentries.org/instructors#HaoZeke][instructor]]
-- I [[https://static.carpentries.org/maintainers/#HaoZeke][officially maintain]], for the Software Carpentries, the lesson on R (r-novice-inflammation)
+- I [[https://carpentries.org/maintainers/#HaoZeke][officially maintain]], for the Software Carpentries, the lesson on R ([[https://github.com/swcarpentry/r-novice-inflammation][r-novice-inflammation]])
 - I [[https://aur.archlinux.org/packages/?SeB=m&K=HaoZeke][also maintain]] some packages on the AUR (ArchLinux User Repository)
-- I hone coursework development and teaching [[https://www.univ.ai/teams/rohit-goswami][with univ.ai]]
+- I hone coursework development and teaching [[https://www.univ.ai/team/rohit-goswami][with univ.ai]]
 - I [[https://forum.xda-developers.com/xperia-z5/orig-development/cm-14-1-lineageos-t3536846][maintain(ed)]] the official LineageOS image for the Xperia Z5 Dual
 ** Historical Places
 What follows is a more informal set of places I am or have been associated with or are of significance to
@@ -620,7 +620,7 @@ nowadays, I personally used:
 - [[https://www.typing.com/][Typing.com]] :: This is short, but a pretty good basic setup. The numbering and
   special characters are a bit much to take in at the level of practice you get
   by completing all the previous exercises, but eventually they make for a good workout.
-- [[https://www.typingclub.com/en-gb/login/][TypingClub]] :: This is what I ended up working my way through. It is
+- [[https://www.typingclub.com/][TypingClub]] :: This is what I ended up working my way through. It is
   comprehensive, beautiful, and fun.
 
 Also, later, I ended up using [[https://www.keybr.com/][keybr]] a lot, simply because typing gibberish is a
@@ -1889,7 +1889,7 @@ A pair of square brackets indicates an optional argument, and RefTeX
 will prompt for the values of these arguments.
 #+END_SRC
 ** Indexing Notes
-This part of the workflow builds on the concepts best known as the [[https://www.zettelkasten.de/][Zettelkasten method]]. More details about the philosophy behind ~org-roam~ is [[https://org-roam.readthedocs.io/en/latest/][here]].
+This part of the workflow builds on the concepts best known as the [[https://www.zettelkasten.de/][Zettelkasten method]]. More details about the philosophy behind ~org-roam~ is [[https://www.orgroam.com/][here]].
 *** Org-Roam
 The first part of this interface is essentially just the ~doom-emacs~
 configuration, adapted for those who don't believe in the dark side below.
@@ -5391,7 +5391,7 @@ cd nix-2.3.7
 
 Before actually configuring and installing from source, we need some patches.
 *** Patches
-I suggest carefully typing out the patches, though leave a comment if you want a repo with these changes (if you must star something in the meantime, [[https://github.com/dseams/seams-core][star this]]).
+I suggest carefully typing out the patches, though leave a comment if you want a repo with these changes (if you must star something in the meantime, [[https://github.com/d-SEAMS/seams-core][star this]]).
 - Start with [[https://github.com/NixOS/nix/pull/1584/files][this patch]]
 - Also [[https://nixos.wiki/wiki/Nix_Installation_Guide][this one]]
 
