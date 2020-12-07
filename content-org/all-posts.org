@@ -42,7 +42,7 @@ sporadically updated [[Collection of WebLinks][collection of web-links]] involvi
 This is a set of things which are primarily online and/or voluntary in a
 non-academic sense.
 - I administer and design a bunch of websites, mostly verified [[https://keybase.io/HaoZeke][on Keybase]]
-- I am a certified Software Carpentries [[https://static.carpentries.org/instructors#HaoZeke][instructor]]
+- I am a certified Software Carpentries [[https://carpentries.org/instructors/#HaoZeke][instructor]]
 - I [[https://carpentries.org/maintainers/#HaoZeke][officially maintain]], for the Software Carpentries, the lesson on R ([[https://github.com/swcarpentry/r-novice-inflammation][r-novice-inflammation]])
 - I [[https://aur.archlinux.org/packages/?SeB=m&K=HaoZeke][also maintain]] some packages on the AUR (ArchLinux User Repository)
 - I hone coursework development and teaching [[https://www.univ.ai/team/rohit-goswami][with univ.ai]]
