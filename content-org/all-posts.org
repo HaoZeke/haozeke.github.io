@@ -7065,6 +7065,52 @@ My primary use case is currently my ThinkPad X380, which comes with a basic [[ht
 #+name: fig:qwerty
 #+caption: Basic X380 QWERTY
 file:images/keyboards/qwerty_x380.png
+*** VIM Extensions
+The additions are primarily through the Extend Layer[fn:whyext] (Fig. [[fig:extlayer]]), with a Shift addition (Fig. [[fig:extshift]]) and more keys with AltGr (Fig. [[fig:altgrlayer]]).
+As mentioned before, we have to continue mapping relative to QWERTY, so these mappings can be used by QWERTY users as well. We will essentially use the ~ISO_5~ shift key.
+
+#+name: fig:extlayer
+#+caption: Extend layer mapping
+[[file:images/keyboards/extendLayer_hz.jpg]]
+
+- Maps basic ~vim~ movement
+
+#+name: fig:extshift
+#+caption: Extend+Shift layer mapping
+[[file:images/keyboards/extShift_hz.jpg]]
+
+- Relatively empty, just has a bracket
+
+#+name: fig:altgrlayer
+#+caption: Extend+AltGr layer mapping
+[[file:images/keyboards/extAltGr_hz.png]]
+
+- Includes deletions
+
+These are defined in a single ~json~ as shown.
+#+begin_src json
+{
+  "filter": "no klc,keylayout",
+  "singletonKeys": [
+    [ "CapsLock", "Extend" ],
+    [ "Alt_L", "AltGr" ]
+  ],
+  "shiftlevels": [ "Extend", "Shift+Extend", "AltGr+Extend" ],
+  "keys": [
+    { "pos": "H", "letters": [ "Left", "", "Backspace" ] },
+    { "pos": "J", "letters": [ "Down" ] },
+    { "pos": "K", "letters": [ "Up" ] },
+    { "pos": "L", "letters": [ "Right", "", "Delete" ] },
+    { "pos": ";", "letters": [ "Enter" ] },
+    { "pos": "N", "letters": [ "(", "[", "{" ] },
+    { "pos": "V", "letters": [ ")", "]" , "}"] }
+  ]
+}
+#+end_src
+- The key idea is to have the ~AltGr~ keys placed symmetrically
+- One major issue is that ~Backspace~ has gone from a single stroke of ~CapsLock~ to a three-key-combo
+  + This is the least intuitive, and might need to be changed
+- The third level (~Extend+AltGr~) is more accessible than the second in this layout
 *** Colemak - Layers 1 and 2
 The first mapping is a [[http://www.keyboard-layout-editor.com/#/gists/93c31b6e61608c19c26933b0a212b262][basic Colemak setup]] as shown in Fi. fig:colemak.
 
@@ -7153,52 +7199,6 @@ It wouldn't make much sense to remap the first two layers. We can use the ~json~
   ]
 }
 #+end_src
-*** VIM Extensions
-The additions are primarily through the Extend Layer[fn:whyext] (Fig. [[fig:extlayer]]), with a Shift addition (Fig. [[fig:extshift]]) and more keys with AltGr (Fig. [[fig:altgrlayer]]).
-As mentioned before, we have to continue mapping relative to QWERTY, so these mappings can be used by QWERTY users as well. We will essentially use the ~ISO_5~ shift key.
-
-#+name: fig:extlayer
-#+caption: Extend layer mapping
-[[file:images/keyboards/extendLayer_hz.jpg]]
-
-- Maps basic ~vim~ movement
-
-#+name: fig:extshift
-#+caption: Extend+Shift layer mapping
-[[file:images/keyboards/extShift_hz.jpg]]
-
-- Relatively empty, just has a bracket
-
-#+name: fig:altgrlayer
-#+caption: Extend+AltGr layer mapping
-[[file:images/keyboards/extAltGr_hz.png]]
-
-- Includes deletions
-
-These are defined in a single ~json~ as shown.
-#+begin_src json
-{
-  "filter": "no klc,keylayout",
-  "singletonKeys": [
-    [ "CapsLock", "Extend" ],
-    [ "Alt_L", "AltGr" ]
-  ],
-  "shiftlevels": [ "Extend", "Shift+Extend", "AltGr+Extend" ],
-  "keys": [
-    { "pos": "H", "letters": [ "Left", "", "Backspace" ] },
-    { "pos": "J", "letters": [ "Down" ] },
-    { "pos": "K", "letters": [ "Up" ] },
-    { "pos": "L", "letters": [ "Right", "", "Delete" ] },
-    { "pos": ";", "letters": [ "Enter" ] },
-    { "pos": "N", "letters": [ "(", "[", "{" ] },
-    { "pos": "V", "letters": [ ")", "]" , "}"] }
-  ]
-}
-#+end_src
-- The key idea is to have the ~AltGr~ keys placed symmetrically
-- One major issue is that ~Backspace~ has gone from a single stroke of ~CapsLock~ to a three-key-combo
-  + This is the least intuitive, and might need to be changed
-- The third level (~Extend+AltGr~) is more accessible than the second in this layout
 *** Usage
 To generate the files needed to load the new layout:
 #+begin_src bash :eval never
