@@ -407,3 +407,5 @@ dist
 # Keys
 deploy_key*
 presentations/**/*.tex
+# Deploys
+result*
