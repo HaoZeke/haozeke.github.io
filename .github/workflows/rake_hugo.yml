@@ -24,11 +24,19 @@ jobs:
           name: rgoswamime
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
 
+      - name: Cache nix output
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-nix
+        with:
+          path: /nix
+          key: ${{ runner.os }}-build-${{ env.cache-name }}
+
       - name: Build
-        run: nix-shell --run "npm install && rake hugoBuild"
+        run: nix-build
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
+          publish_dir: ./result
