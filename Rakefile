@@ -6,6 +6,7 @@ end
 
 oxTmp=Dir.pwd+"/.tmp/ox-hugo-dev"
 oxSetup=Dir.pwd+"/setup"
+rgScripts=Dir.pwd+"/scripts"
 
 # Debug
 # puts ORG_FILES
@@ -41,7 +42,7 @@ end
 desc "Orgmode to markdown with Emacs"
 task :md => ORG_FILES.ext(".md")
 rule ".md" => ->(f){source_for_md(f)} do |t|
-  %x(./scripts/mkMD.sh #{t.source} \
+  %x(#{rgScripts}/mkMD.sh #{t.source} \
                      #{oxSetup} \
                      #{oxTmp}
                      )
