@@ -7215,3 +7215,161 @@ The layout takes a bit of time to get used to, but it is a lot more transparent 
 [fn:morespecifics] For more details the [[https://en.wikipedia.org/wiki/Keyboard_layout][Wikipedia article on Keyboard Layouts]] is useful
 [fn:whyext] [[https://forum.colemak.com/topic/2014-extend-extra-extreme/][DreymaR's Extend mappings]] might be good for QWERTY people 
 [fn:whatmetrics] The metric collection of [[https://github.com/mw8/white_keyboard_layout][Michael White]] or the [[http://mkweb.bcgsc.ca/carpalx/][CARPALX metrics]]
+
+* TODO Private Github Actions without PAT
+:PROPERTIES:
+:EXPORT_FILE_NAME: priv-gh-actions
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+begin_quote
+A workflow for managing private submodules in a private repository without personal access tokens for Github actions
+#+end_quote
+** Background
+Ever since Travis CI decided to drink [[https://blog.travis-ci.com/2020-11-02-travis-ci-new-billing][corporate kool-aid]], the search for a new CI has been brought to the fore again. [[https://github.com/features/actions][Github Actions]] seem uniquely suited for private repositories, since most CIs bill for private repos. However, the basic authentication setup for the [[https://github.com/actions/checkout][checkout action]] involves using one SSH key, effectively a personal access token, for both the [[https://github.com/actions/checkout/issues/116#issuecomment-708092052][main project and all submodules]]. This is untenable for anyone working with a team.
+** Solution
+The fix, as it were, is in two steps. We will first require a deploy key to be set for the private submodule, and then store the private portion in the private repo. We will begin with a concrete setup.
+*** Setup
+Consider a standard C++ build setup:
+#+begin_src yaml
+name: Fake secret project
+
+on:
+  push:
+    branches: [master, development]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      max-parallel: 4
+      matrix:
+        os: [ubuntu-18.04]
+        cpp-version: [g++-7, g++-9, clang++]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: build
+        env:
+          CXX: ${{ matrix.cpp-version }}
+        run: |
+          mkdir build && cd build
+          cmake -DCMAKE_CXX_COMPILER="$CXX" -DCMAKE_CXX_FLAGS="-std=c++11" ../
+          make -j$(nproc)
+      - name: run
+        run: |
+          ./super_secret
+#+end_src
+*** Key Generation
+This section is standard. We will generate a deploy key essentially. Note that it isn't necessary to set a password, using one would only minimally improve security and bring in some annoying script modifications.
+#+begin_src bash
+# Anywhere safe
+ssh-keygen -t rsa -b 4096 -C "Fake Deployment Key" -f 'priv_sub_a' -N ''
+#+end_src
+*** Private Submodule Repo
+We will store the *public portion of the key* as a deploy key in the *private submodule repository*.
+#+begin_src bash
+# Copy contents
+cat priv_sub_a.pub | xclip -selection clipboard
+#+end_src
+
+Note that, as shown in Fig. [[fig:privsub]] we do not need to give write access to this key.
+
+#+name: fig:privsub
+#+DOWNLOADED: screenshot @ 2020-12-23 14:18:40
+[[file:images/Solution/2020-12-23_14-18-40_screenshot.png]]
+
+*** Private Project Repo
+Now we will need the *private portion of the key* as a secret in the *private project repository* (see Fig. [[fig:privprj]]).
+#+begin_src bash
+# Copy contents of private key
+cat priv_sub_a | xclip -selection clipboard
+#+end_src
+
+#+name: fig:privprj
+#+DOWNLOADED: screenshot @ 2020-12-23 14:21:36
+[[file:images/Solution/2020-12-23_14-21-36_screenshot.png]]
+*** Workflow Modifications
+Now we will simply update our workflow [fn:givecredit]. We will simply add the following step:
+#+begin_src yaml
+      - name: get_subm
+        env:
+          SSHK: ${{ secrets.SUB_SSHK_A }}
+        run: |
+          mkdir -p $HOME/.ssh
+          echo "$SSHK" > $HOME/.ssh/ssh.key
+          chmod 600 $HOME/.ssh/ssh.key
+          export GIT_SSH_COMMAND="ssh -i $HOME/.ssh/ssh.key"
+          git submodule update --init --recursive
+#+end_src
+This will work for a single private submodule and multiple public submodules. For multiple private submodules, we would not initialize them recursively, but instead use a separate key for each.
+#+begin_src yaml
+      - name: get_subm_a
+        env:
+          SSHK: ${{ secrets.SUB_SSHK_A }}
+        run: |
+          mkdir -p $HOME/.ssh
+          echo "$SSHK" > $HOME/.ssh/ssh.key
+          chmod 600 $HOME/.ssh/ssh.key
+          export GIT_SSH_COMMAND="ssh -i $HOME/.ssh/ssh.key"
+          git submodule update --init -- <specific relative path to submodule A>
+      - name: get_subm_b
+        env:
+          SSHK: ${{ secrets.SUB_SSHK_B }}
+        run: |
+          mkdir -p $HOME/.ssh
+          echo "$SSHK" > $HOME/.ssh/ssh.key
+          chmod 600 $HOME/.ssh/ssh.key
+          export GIT_SSH_COMMAND="ssh -i $HOME/.ssh/ssh.key"
+          git submodule update --init -- <specific relative path to submodule B>
+#+end_src
+Note that it is not possible to use the same SSH key in multiple submodule repositories, as each deploy key can only be associated with one repository.
+*** Complete Workflow
+Putting the above steps together, for the case of a single private submodule and multiple public submodules, we have:
+#+begin_src yaml
+name: Fake secret project
+
+on:
+  push:
+    branches: [master, development]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      max-parallel: 4
+      matrix:
+        os: [ubuntu-18.04]
+        cpp-version: [g++-7, g++-9, clang++]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: get_subm
+        env:
+          SSHK: ${{ secrets.SUB_SSHK_A }}
+        run: |
+          mkdir -p $HOME/.ssh
+          echo "$SSHK" > $HOME/.ssh/ssh.key
+          chmod 600 $HOME/.ssh/ssh.key
+          export GIT_SSH_COMMAND="ssh -i $HOME/.ssh/ssh.key"
+          git submodule update --init --recursive
+      - name: build
+        env:
+          CXX: ${{ matrix.cpp-version }}
+        run: |
+          mkdir build && cd build
+          cmake -DCMAKE_CXX_COMPILER="$CXX" -DCMAKE_CXX_FLAGS="-std=c++11" ../
+          make -j$(nproc)
+      - name: run
+        run: |
+          ./super_secret
+#+end_src
+** Conclusions
+We have demonstrated a minimally invasive setup for working with a private submodule, which is trivially extensible to multiple such submodules. With this, it appears that GH actions might a viable option (as opposed to say, Wercker), at least for private teams. A more full comparative post might be warranted at a later date.
+
+ [fn:givecredit] [[https://github.com/jwsi/submodule-checkout][submodule-checkout]] uses a similar concept but unfortunately does not extend to multiple submodules and the submodules are checked out as ~root~
