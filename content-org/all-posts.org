@@ -7278,6 +7278,7 @@ cat priv_sub_a.pub | xclip -selection clipboard
 Note that, as shown in Fig. [[fig:privsub]] we do not need to give write access to this key.
 
 #+name: fig:privsub
+#+caption: Deploy key setup in the private submodule
 #+DOWNLOADED: screenshot @ 2020-12-23 14:18:40
 [[file:images/Solution/2020-12-23_14-18-40_screenshot.png]]
 
@@ -7290,6 +7291,7 @@ cat priv_sub_a | xclip -selection clipboard
 
 #+name: fig:privprj
 #+DOWNLOADED: screenshot @ 2020-12-23 14:21:36
+#+caption: Secret setup in the private project
 [[file:images/Solution/2020-12-23_14-21-36_screenshot.png]]
 *** Workflow Modifications
 Now we will simply update our workflow [fn:givecredit]. We will simply add the following step:
