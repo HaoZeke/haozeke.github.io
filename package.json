@@ -18,6 +18,6 @@
   "homepage": "https://github.com/HaoZeke/haozeke.github.io#readme",
   "dependencies": {
     "autoprefixer": "^9.8.0",
-    "postcss-cli": "^7.1.1"
+    "postcss-cli": "^7.1.2"
   }
 }
