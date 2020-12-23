@@ -2,3 +2,8 @@
 - This is a standard landing page and blog for my miscellaneous thoughts and essentially links out to all my other work.
 - The theme is based off this [[https://themes.gohugo.io//theme/hugo-theme-hello-friend-ng/][theme]]
 - The rest of the site is configured to work well with doom-emacs, so it uses ~ox-hugo~
+* Build
+The ~node~ packages are to be generated with:
+#+begin_src bash
+node2nix -c node.nix
+#+end_src
