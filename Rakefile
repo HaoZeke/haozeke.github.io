@@ -6,7 +6,7 @@ end
 
 oxTmp=Dir.pwd+"/.tmp/ox-hugo-dev"
 oxSetup=Dir.pwd+"/setup"
-rgScripts=Dir.pwd+"/scripts"
+rgScripts=File.join(File.dirname(__FILE__), "/scripts")
 
 # Debug
 # puts ORG_FILES
