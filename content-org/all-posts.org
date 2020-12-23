@@ -7376,3 +7376,5 @@ jobs:
 We have demonstrated a minimally invasive setup for working with a private submodule, which is trivially extensible to multiple such submodules. With this, it appears that GH actions might a viable option (as opposed to say, Wercker), at least for private teams. A more full comparative post might be warranted at a later date.
 
  [fn:givecredit] [[https://github.com/jwsi/submodule-checkout][submodule-checkout]] uses a similar concept but unfortunately does not extend to multiple submodules and the submodules are checked out as ~root~
+
+* TODO Nix For Static Site
