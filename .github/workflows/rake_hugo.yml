@@ -8,26 +8,19 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
           submodules: "recursive" # Fetch Hugo themes (true OR recursive)
           fetch-depth: 0 # Fetch all history for .GitInfo and .Lastmod
 
-      - name: update
-        if: startsWith(matrix.os, 'ubuntu')
-        run: |
-          sudo apt-get update
-          sudo apt-get -y install rake nodejs npm
-
-      - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v2
+      - uses: cachix/install-nix-action@v12
         with:
-          hugo-version: "0.79.1"
+          nix_path: nixpkgs=channel:nixos-unstable
 
       - name: Build
-        run: npm install && rake hugoBuild
+        run: nix-shell --run "npm install && rake hugoBuild"
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
