@@ -40,7 +40,7 @@ GEM
     pusher-client (0.6.2)
       json
       websocket (~> 1.0)
-    rake (13.0.1)
+    rake (13.0.3)
     ruby2_keywords (0.0.2)
     thread_safe (0.3.6)
     travis (1.9.1)
@@ -62,7 +62,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  rake (= 13.0.1)
+  rake (= 13.0.3)
   travis (= 1.9.1)
 
 BUNDLED WITH
