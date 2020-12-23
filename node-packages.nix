@@ -292,13 +292,13 @@ let
         sha512 = "WkrWp9GR4KXfKGYzOLmTuGVi1UWFfws377n9cc55/tb6DuqyF6pcQ5AbiHEshaDpY9v6oaSr2XCDidGmMwdzIA==";
       };
     };
-    "electron-to-chromium-1.3.632" = {
+    "electron-to-chromium-1.3.633" = {
       name = "electron-to-chromium";
       packageName = "electron-to-chromium";
-      version = "1.3.632";
+      version = "1.3.633";
       src = fetchurl {
-        url = "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.3.632.tgz";
-        sha512 = "LkaEH9HHr9fodmm3txF4nFMyHN3Yr50HcpD/DBHpLCxzM9doV8AV0er6aBWva4IDs2aA9kGguces0rp+WKL7rg==";
+        url = "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.3.633.tgz";
+        sha512 = "bsVCsONiVX1abkWdH7KtpuDAhsQ3N3bjPYhROSAXE78roJKet0Y5wznA14JE9pzbwSZmSMAW6KiKYf1RvbTJkA==";
       };
     };
     "emoji-regex-8.0.0" = {
@@ -1051,7 +1051,7 @@ let
       sources."decamelize-1.2.0"
       sources."dependency-graph-0.9.0"
       sources."dir-glob-3.0.1"
-      sources."electron-to-chromium-1.3.632"
+      sources."electron-to-chromium-1.3.633"
       sources."emoji-regex-8.0.0"
       sources."error-ex-1.3.2"
       sources."escalade-3.1.1"
@@ -1155,7 +1155,7 @@ let
     };
     production = true;
     bypassCache = true;
-    reconstructLock = true;
+    reconstructLock = false;
   };
 in
 {
