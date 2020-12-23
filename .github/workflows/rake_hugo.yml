@@ -24,24 +24,13 @@ jobs:
           name: rgoswamime
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
 
-      - name: Cache nix output
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-nix
-        with:
-          path: /nix
-          key: ${{ runner.os }}-build-${{ env.cache-name }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-
       - name: Build
         run: nix-build
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          enable_jekyll: true
+          publish_branch: html
           publish_dir: ./result
