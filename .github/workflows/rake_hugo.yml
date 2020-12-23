@@ -19,6 +19,11 @@ jobs:
         with:
           nix_path: nixpkgs=channel:nixos-unstable
 
+      - uses: cachix/cachix-action@v8
+        with:
+          name: rgoswamime
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+
       - name: Build
         run: nix-shell --run "npm install && rake hugoBuild"
 
