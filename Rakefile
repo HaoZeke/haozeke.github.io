@@ -24,7 +24,7 @@ end
 
 desc "Install pandoc"
 task :getPandoc do
-  sh "scripts/getPandocVersion 2.10.1"
+  sh "./scripts/getPandocVersion 2.10.1"
 end
 
 desc "Serve site with Hugo"
@@ -41,7 +41,7 @@ end
 desc "Orgmode to markdown with Emacs"
 task :md => ORG_FILES.ext(".md")
 rule ".md" => ->(f){source_for_md(f)} do |t|
-  %x(scripts/mkMD.sh #{t.source} \
+  %x(./scripts/mkMD.sh #{t.source} \
                      #{oxSetup} \
                      #{oxTmp}
                      )
