@@ -4,9 +4,20 @@ ORG_FILES = Rake::FileList.new("content-org/**/*.*org") do |fl|
   fl.exclude("**/tmp/*")
 end
 
-oxTmp=Dir.pwd+"/.tmp/ox-hugo-dev"
-oxSetup=Dir.pwd+"/setup"
-rgScripts=Dir.pwd+"/scripts"
+# True in GH Actions
+envWk = #{ENV['GITHUB_WORKSPACE']}
+
+if envWk.nil?
+  # Local
+  oxTmp=Dir.pwd+"/.tmp/ox-hugo-dev"
+  oxSetup=Dir.pwd+"/setup"
+  rgScripts=Dir.pwd+"/scripts"
+else
+  # GH Actions
+  oxTmp=envWk+"/.tmp/ox-hugo-dev"
+  oxSetup=envWk+"/setup"
+  rgScripts=envWk+"/scripts"
+end
 
 # Debug
 # puts ORG_FILES
