@@ -1,5 +1,5 @@
 box: nixos/nix
-dev:
+build:
   - internal/shell:
       cmd: /bin/sh #defaults to /bin/bash
       code: |
