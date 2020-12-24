@@ -5,7 +5,7 @@ ORG_FILES = Rake::FileList.new("content-org/**/*.*org") do |fl|
 end
 
 # True in GH Actions
-envWk = #{ENV['GITHUB_WORKSPACE']}
+envWk = #{ENV['ghws']}
 
 if envWk.nil?
   # Local
