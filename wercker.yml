@@ -7,6 +7,11 @@ build:
           nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs
           nix-channel --update
     - script:
+        name: Submodule Checkout
+        code: |
+          nix-env -i git
+          git submodule update --init --recursive
+    - script:
         name: Build Site
         code: |
           nix-build
