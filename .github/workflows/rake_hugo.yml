@@ -25,6 +25,8 @@ jobs:
       #     authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
 
       - name: Build
+        env:
+          ghws: ${{ github.workspace }}
         run: nix-build
 
       - name: Deploy
