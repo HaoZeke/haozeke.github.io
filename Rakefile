@@ -14,6 +14,8 @@ if envWk.nil?
   rgScripts=Dir.pwd+"/scripts"
 else
   # GH Actions
+  puts("#{envWk} is True")
+  raise
   oxTmp=envWk+"/.tmp/ox-hugo-dev"
   oxSetup=envWk+"/setup"
   rgScripts=envWk+"/scripts"
