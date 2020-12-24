@@ -5,7 +5,7 @@ ORG_FILES = Rake::FileList.new("content-org/**/*.*org") do |fl|
 end
 
 # True in GH Actions
-envWk = #{ENV['ghws']}
+envWk = ENV['ghws']
 
 if envWk.nil?
   # Local
@@ -14,8 +14,6 @@ if envWk.nil?
   rgScripts=Dir.pwd+"/scripts"
 else
   # GH Actions
-  puts("#{envWk} is True")
-  raise
   oxTmp=envWk+"/.tmp/ox-hugo-dev"
   oxSetup=envWk+"/setup"
   rgScripts=envWk+"/scripts"
