@@ -26,7 +26,7 @@ jobs:
 
       - name: Build
         env:
-          ghws: ${{ github.workspace }}
+          ghws: ${{ env.GITHUB_WORKSPACE }}
         run: nix-build
 
       - name: Deploy
