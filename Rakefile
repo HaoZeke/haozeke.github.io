@@ -5,9 +5,9 @@ ORG_FILES = Rake::FileList.new("content-org/**/*.*org") do |fl|
 end
 
 # True in GH Actions
-envWk = ENV['ghws']
+envWk = ENV['GITHUB_WORKSPACE']
 
-raise "BUG" if envWk.nil?
+raise "BUG #{envWk} #{ENV['GITHUB_WORKSPACE']}" if envWk.nil?
 
 if envWk.nil?
   # Local
@@ -16,9 +16,9 @@ if envWk.nil?
   rgScripts=Dir.pwd+"/scripts"
 else
   # GH Actions
-  oxTmp=envWk+"/.tmp/ox-hugo-dev"
-  oxSetup=envWk+"/setup"
-  rgScripts=envWk+"/scripts"
+  oxTmp="/home/runner/work/haozeke.github.io/haozeke.github.io/.tmp/ox-hugo-dev"
+  oxSetup="/home/runner/work/haozeke.github.io/haozeke.github.io/setup"
+  rgScripts="/home/runner/work/haozeke.github.io/haozeke.github.io/scripts"
 end
 
 # Debug
