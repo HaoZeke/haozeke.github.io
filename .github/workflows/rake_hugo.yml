@@ -19,18 +19,21 @@ jobs:
         with:
           nix_path: nixpkgs=channel:nixos-unstable
 
-      # - uses: cachix/cachix-action@v8
-      #   with:
-      #     name: rgoswamime
-      #     authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
-
       - name: Build
         run: nix-shell --run "npm install && rake hugoBuild"
+
+      - name: Cache Nix Results
+        env:
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          cachixName: rgoswamime
+        run: |
+          cachix authtoken $authToken
+          nix-store -qR --include-outputs $(nix-instantiate shell.nix) | cachix push $cachixName
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
           enable_jekyll: true
-          publish_branch: html
+          publish_branch: gh-pages
           publish_dir: ./public
