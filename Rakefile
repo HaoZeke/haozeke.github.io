@@ -4,22 +4,9 @@ ORG_FILES = Rake::FileList.new("content-org/**/*.*org") do |fl|
   fl.exclude("**/tmp/*")
 end
 
-# True in GH Actions
-envWk = ENV['GITHUB_WORKSPACE']
-
-raise "BUG we have #{envWk} #{ENV['ghws']} #{ENV['gwhs']}" if envWk.nil?
-
-if envWk.nil?
-  # Local
-  oxTmp=Dir.pwd+"/.tmp/ox-hugo-dev"
-  oxSetup=Dir.pwd+"/setup"
-  rgScripts=Dir.pwd+"/scripts"
-else
-  # GH Actions
-  oxTmp="/home/runner/work/haozeke.github.io/haozeke.github.io/.tmp/ox-hugo-dev"
-  oxSetup="/home/runner/work/haozeke.github.io/haozeke.github.io/setup"
-  rgScripts="/home/runner/work/haozeke.github.io/haozeke.github.io/scripts"
-end
+oxTmp=Dir.pwd+"/.tmp/ox-hugo-dev"
+oxSetup=Dir.pwd+"/setup"
+rgScripts=Dir.pwd+"/scripts"
 
 # Debug
 # puts ORG_FILES
