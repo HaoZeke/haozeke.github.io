@@ -7,7 +7,7 @@ end
 # True in GH Actions
 envWk = ENV['GITHUB_WORKSPACE']
 
-raise "BUG #{envWk} #{ENV['GITHUB_WORKSPACE']}" if envWk.nil?
+raise "BUG we have #{envWk} #{ENV['ghws']} #{ENV['gwhs']}" if envWk.nil?
 
 if envWk.nil?
   # Local
