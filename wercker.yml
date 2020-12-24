@@ -1,10 +1,12 @@
 box: nixos/nix
 build:
-  - internal/shell:
-      cmd: /bin/sh #defaults to /bin/bash
-      code: |
-        # some code to automatically run in your shell session
-        # before you start interacting
-        nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs
-        nix-channel --update
-  - nix-build
+  steps:
+    - script:
+        name: Setup Nix
+        code: |
+          nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs
+          nix-channel --update
+    - script:
+        name: Build Site
+        code: |
+          nix-build
