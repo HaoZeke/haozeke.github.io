@@ -7,6 +7,8 @@ end
 # True in GH Actions
 envWk = ENV['ghws']
 
+raise "BUG" if envWk.nil?
+
 if envWk.nil?
   # Local
   oxTmp=Dir.pwd+"/.tmp/ox-hugo-dev"
