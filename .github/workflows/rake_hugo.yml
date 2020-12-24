@@ -21,6 +21,11 @@ jobs:
         with:
           nix_path: nixpkgs=channel:nixos-unstable
 
+      - name: Get and initialize binary cache
+        run: |
+          nix-env -iA cachix -f https://cachix.org/api/v1/install
+          cachix use rgoswamime
+
       - name: Build
         run: nix-shell --run "npm install && rake hugoBuild"
 
@@ -29,7 +34,6 @@ jobs:
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
           cachixName: rgoswamime
         run: |
-          nix-env -iA cachix -f https://cachix.org/api/v1/install
           cachix authtoken $authToken
           nix-store -qR --include-outputs $(nix-instantiate shell.nix) | cachix push $cachixName
 
