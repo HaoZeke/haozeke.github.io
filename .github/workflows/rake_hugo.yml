@@ -25,7 +25,7 @@ jobs:
       #     authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
 
       - name: Build
-        run: nix-build --pure
+        run: mkdir -p /build/haozeke.github.io/scripts/ && cp -R ./scripts /build/haozeke.github.io/ && nix-build
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
