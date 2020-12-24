@@ -27,6 +27,7 @@ jobs:
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
           cachixName: rgoswamime
         run: |
+          nix-env -iA cachix -f https://cachix.org/api/v1/install
           cachix authtoken $authToken
           nix-store -qR --include-outputs $(nix-instantiate shell.nix) | cachix push $cachixName
 
