@@ -25,9 +25,7 @@ jobs:
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
 
       - name: Build
-        env:
-          ghws: ${{ env.GITHUB_WORKSPACE }}
-        run: nix-build
+        run: export ghws=${{github.workspace}} && nix-build
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
