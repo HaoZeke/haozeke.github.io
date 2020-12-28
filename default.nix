@@ -8,6 +8,10 @@ let
   };
   myHaskellEnv = pkgs.haskellPackages.ghcWithPackages
     (haskellPackages: with haskellPackages; [ pandoc_2_10_1 pandoc-citeproc ]);
+  nodePkgs = (pkgs.callPackage ./node.nix {
+    inherit pkgs;
+    nodejs = pkgs.nodejs-12_x;
+  }).shell.nodeDependencies;
 in pkgs.stdenv.mkDerivation {
   name = "rgoswami.me-0.1";
 
@@ -27,6 +31,8 @@ in pkgs.stdenv.mkDerivation {
     hugo
     git
     curl
+    nodejs
+    postcss-cli
     # Ruby
     myGems
     (lowPrio myGems.wrappedRuby)
@@ -38,6 +44,8 @@ in pkgs.stdenv.mkDerivation {
     mkdir -p "$(pwd)/_libs"
     export R_LIBS_USER="$(pwd)/_libs"
     eval $(egrep ^export ${myHaskellEnv}/bin/ghc)
+    ln -s ${nodePkgs}/lib/node_modules ./node_modules
+    export PATH="${nodePkgs}/bin:$PATH"
   '';
 
   buildPhase = ''
