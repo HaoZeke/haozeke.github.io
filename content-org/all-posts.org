@@ -6997,6 +6997,45 @@ Migrating 23 mail accounts from GUI clients to Astroid
 Initially, I had planned this post to start with a brief history of the decline of email clients for Linux. That quickly got out of hand, and was therefore [[The Decline of Linux Email][spun out into a post of its own]]. To keep things brief. Thanks to the incredible ineptitude of the Thunderbird steering committee, I ended up requiring a new mail client. Having despaired of the GUI based bloat heavy approaches of most clients, I decided to go the old fashioned route and build one up in a modular manner.
 ** The Accounts
 In no order of preference, for a variety of reasons, I have 23 distinct email accounts.
+- Outlook 365 :: A school account, best handled with ~davmail~
+- Gmail :: There are a few of these, two personal, and two institutional
+- Yahoo :: Two standard free accounts
+- Mail.ru :: One
+** InSync
+** Notmuch
+This needs to be set up first.
+** Gmaileer
+The general setup is simply to make
+*** IEEE
+Some issues with tags led to the following changes in the ~.gmaileer.json~ file
+#+begin_src js
+{"replace_slash_with_dot": false, "account": "rgoswami@ieee.org", "timeout": 600, "drop_non_existing_label": false, "ignore_empty_history": false, "ignore_tags": ["TODO","new"], "ignore_remote_labels": ["CATEGORY_SOCIAL", "CATEGORY_FORUMS", "CATEGORY_PROMOTIONS", "CATEGORY_PERSONAL", "CATEGORY_UPDATES"], "remove_local_messages": true, "file_extension": ""}
+#+end_src
+Essentially just the addition of two new ~ignore_tags~.
+** Astroid
+The bulk of this setup is by the numbers, with the exception of the poll script.
+** Poll Script
+Natively only bash appears to be supported. However, with ~nix~, we can use a reproducible python script instead.
+#+begin_src python
+from pathlib import Path
+import sh
+
+GMAIL_IDENTIFIERS = ["gmail", "univ", "ieee"]
+
+path = Path(r"/run/media/haozeke/Storage/.mail/")
+
+for dirs in path.iterdir():
+    if dirs.is_dir():
+        for gmi in GMAIL_IDENTIFIERS:
+            if gmi in dirs.name:
+                print(f"Syncing {dirs.name}")
+                sh.gmi("sync", _cwd=dirs, _bg=False)
+#+end_src
+This needs to be coupled with the standard ~nix~ shebang in the ~poll.sh~ file:
+#+begin_src bash
+#!/usr/bin/env nix-shell
+#!nix-shell -i python3 -p "python38.withPackages(ps: [ ps.numpy ps.sh ])"
+#+end_src
 ** Conclusions
 * DONE Remapping Keys with XKB and KLFC :@personal:workflow:tools:
 CLOSED: [2020-12-05 Sat 22:05]
