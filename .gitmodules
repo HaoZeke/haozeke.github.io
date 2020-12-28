@@ -1,6 +1,7 @@
 [submodule "themes/hello-friend-ng-hz"]
 	path = themes/hello-friend-ng-hz
 	url = https://github.com/HaoZeke/hugo-theme-hello-friend-ng-hz.git
+    branch = main
 [submodule "themes/hugo-search-fuse-js"]
 	path = themes/hugo-search-fuse-js
 	url = https://github.com/kaushalmodi/hugo-search-fuse-js.git
