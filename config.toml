@@ -107,6 +107,10 @@ disableHugoGeneratorInject = false
 [params.liberapay]
 accountID = "rohit"
 
+[params.webmention]
+webmention = "https://webmention.io/rgoswami.me/webmention"
+pingback = "https://webmention.io/rgoswami.me/xmlrpc"
+
 [params.graphcomments]
 accountID = "rgoswami"
 
