@@ -6985,41 +6985,224 @@ Perhaps most importantly, none of these clients are stable. They change at the w
 ** Conclusions
 [fn:noreally] A full description would span several posts, and detracts from the main goal
 
-* TODO Reclaiming Email with Astroid :@personal:rant:tools:email:
+* DONE Reclaiming Email with Astroid :@personal:rant:tools:email:workflow:
+CLOSED: [2020-12-30 Wed 06:37]
 :PROPERTIES:
 :EXPORT_FILE_NAME: reclaim-email-astroid
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :END:
 #+begin_quote
-Migrating 23 mail accounts from GUI clients to Astroid
+Migrating Imap, Gmail and Exchange, mail accounts from GUI clients to [[https://astroidmail.github.io/][Astroid]]
 #+end_quote
 ** Background
 Initially, I had planned this post to start with a brief history of the decline of email clients for Linux. That quickly got out of hand, and was therefore [[The Decline of Linux Email][spun out into a post of its own]]. To keep things brief. Thanks to the incredible ineptitude of the Thunderbird steering committee, I ended up requiring a new mail client. Having despaired of the GUI based bloat heavy approaches of most clients, I decided to go the old fashioned route and build one up in a modular manner.
+*** Series
+This post is part of a series on email.
+1. The Decline of Linux Email (TBD)
+2. *Reclaiming Email with Astroid* <-- You are here!
+3. Improving Astroid (TBD)
+4. Emacs and Email (TBD)
 ** The Accounts
-In no order of preference, for a variety of reasons, I have 23 distinct email accounts.
-- Outlook 365 :: A school account, best handled with ~davmail~
-- Gmail :: There are a few of these, two personal, and two institutional
-- Yahoo :: Two standard free accounts
-- Mail.ru :: One
+In no order of preference, for a variety of reasons, I have 23 distinct email accounts. However, these are actually broken down into a few basic types and associated mail fetching software.
+- Generic IMAP :: Yahoo, Mail.ru and the rest are managed with [[https://isync.sourceforge.io/][isync]]
+- Exchange :: A school account of mine uses Office 365, and will be handled with [[http://davmail.sourceforge.net/][davmail]] in conjunction with ~isync~
+- Gmail :: There are a few of these, two personal, and two institutional, all of which are handled with [[http://lieer.gaute.vetsj.com/][lieer]]
 ** InSync
-** Notmuch
-This needs to be set up first.
+For general IMAP accounts (anything which isn't backed by ~gmail~ or ~outlook~) an ~mbsync~ approach works best. Exhange accounts need ~davmail~ and are described in a separate sub-section. Before we get to the ~poll.sh~ script and ~astroid~, it is a good idea to run each of these as we set them up, especially as the first run can take quite a long time (around an hour for 9205 messages).
+
+#+begin_src bash
+mbsync -V blah
+#+end_src
+
+*** General IMAP
+For a standard IMAP account (anything which isn't Exchange or Gmail) the only thing we need to keep track of is a good way to obfuscate passwords. We will use ~pass~ for this [fn:whatkey].
+
+#+begin_src bash
+pass git init $GPG_KEY # Optional, use a secure private git repo
+pass init $GPG_KEY
+pass add mail/rgoswami.iitk
+#+end_src
+
+With this, we can configure a general IMAP account (an IITK webmail in this instance, but it could be anything).
+
+#+begin_src tcl
+IMAPAccount rgoswami.iitk
+Host qasid.iitk.ac.in
+User rgoswami
+PassCmd "pass show mail/rgoswami.iitk"
+AuthMechs LOGIN
+SSLType IMAPS
+
+IMAPStore rgoswami.iitk-remote
+Account rgoswami.iitk
+
+MaildirStore rgoswami.iitk-local
+SubFolders Verbatim
+Path /run/media/Storage/.mail/rgoswami_iitk/
+INBOX /run/media/Storage/.mail/rgoswami_iitk/Inbox
+Trash trash:///
+
+Channel rgoswami.iitk
+Master :rgoswami.iitk-remote:
+Slave :rgoswami.iitk-local:
+Patterns *
+Create Both
+SyncState *
+#+end_src
+
+*** Exchange Accounts
+For Exchange accounts we need to setup ~davmail~. Thankfully the process is actually excessively simple for a single account. For each account, a ~.properties~ file needs to be generated. The password section is kept blank in this case, since we will authenticate with the ~O365Interactive~ protocol.
+
+#+begin_src bash
+# The default setup
+davmail ~/.davmail.properties
+#+end_src
+
+Use the following properties in the ~.davemail.properties~ file to prevent timeout errors:
+#+begin_src bash
+davmail.folderSizeLimit=50
+davmail.clientSoTimeout=0
+davmail.enableKeepAlive=true
+#+end_src
+
+Further information is available at [[http://davmail.sourceforge.net/faq.html][the official docs]].
+
+#+DOWNLOADED: screenshot @ 2020-12-29 21:54:39
+#+caption: ~davmail~ setup
+[[file:images/InSync/2020-12-29_21-54-39_screenshot.png]]
+
+#+DOWNLOADED: screenshot @ 2020-12-29 21:54:20
+#+caption: Interactive login workflow
+[[file:images/InSync/2020-12-29_21-54-20_screenshot.png]]
+
+Now we can configure the ~.mbsyncrc~ in a manner analogous to the standard IMAP setup, but with the port and host where ~davmail~ is running.
+#+begin_src tcl
+IMAPAccount rog32
+Host localhost
+User rog32@hi.is
+Pass dummy
+Port 1143
+SSLType None
+AuthMechs LOGIN
+
+IMAPStore rog32-remote
+Account rog32
+MaildirStore rog32-local
+SubFolders Verbatim
+Path /run/media/Storage/.mail/rog32/
+Inbox /run/media/Storage/.mail/rog32/Inbox
+
+Channel rog32
+Master :rog32-remote:
+Slave :rog32-local:
+Patterns *
+Create Both
+SyncState *
+#+end_src
+
+The ~SSLType~ and ~AuthMechs~ are important parameters. Note that the ~Pass~ is truly not important since we an OAuth token is stored in the ~properties~ file.
+
+#+DOWNLOADED: screenshot @ 2020-12-29 23:51:10
+#+caption: First run of a large inbox with ~davmail~ and ~isync~
+[[file:images/InSync/2020-12-29_23-51-10_screenshot.png]]
+
 ** Gmaileer
-The general setup is simply to make
+The general setup ~gmi init blah@gmail.com~ works well for personal accounts. However, there was an additional step for the IEEE account.
 *** IEEE
 Some issues with tags led to the following changes in the ~.gmaileer.json~ file
 #+begin_src js
 {"replace_slash_with_dot": false, "account": "rgoswami@ieee.org", "timeout": 600, "drop_non_existing_label": false, "ignore_empty_history": false, "ignore_tags": ["TODO","new"], "ignore_remote_labels": ["CATEGORY_SOCIAL", "CATEGORY_FORUMS", "CATEGORY_PROMOTIONS", "CATEGORY_PERSONAL", "CATEGORY_UPDATES"], "remove_local_messages": true, "file_extension": ""}
 #+end_src
 Essentially just the addition of two new ~ignore_tags~.
+** Notmuch
+At this point, we have all mail synced into local directories, but we have no access to view or interact with them. We will start by setting up ~notmuch~ to search and index our mail. This is pretty basic for now.
+#+begin_src toml
+[database]
+path=/run/media/Storage/.mail/
+[user]
+name=Person
+primary_email=primary@domain.com
+other_email=one@domain.com;two@domain.com
+[new]
+tags=new;unread;inbox;TODO;
+ignore=/.*[.](json|lock|bak)$/
+[search]
+exclude_tags=deleted;spam;
+[maildir]
+synchronize_flags=true
+#+end_src
+
+There are a lot more options which may be configured, but this is enough to get started.
+** Sending Email
+At this stage we need a way to actually send email. A simple configuration can be setup in ~/.config/msmtp/config~ is given below (where we use ~pass~ again):
+#+begin_src tcl
+defaults
+port 587
+tls on
+auth on
+logfile ~/.config/msmtp/.msmtp.log
+tls_trust_file /etc/ssl/certs/ca-certificates.crt
+
+account r95g10
+host smtp.gmail.com
+from r95g10@gmail.com
+user r95g10@gmail.com
+tls_starttls on
+tls on
+auth on
+port 587
+passwordeval pass show mail/r95g10.gmail
+
+account rog32
+host localhost
+from rog32@hi.is
+user rog32@hi.is
+tls_starttls off
+tls off
+auth plain
+port 1025
+password dummy
+#+end_src
+
+Note that the exchange account again uses a dummy password, and the real password will be prompted for on the first run. The permissions of the file above should be ~600~. It is prudent to test at-least the exchange section to login.
+
+#+begin_src bash
+echo "Hello world" | msmtp --account=rog32 r95g10@gmail.com
+#+end_src
 ** Astroid
-The bulk of this setup is by the numbers, with the exception of the poll script.
-** Poll Script
-Natively only bash appears to be supported. However, with ~nix~, we can use a reproducible python script instead.
+The bulk of this setup is [[https://github.com/astroidmail/astroid/wiki/Astroid-setup][by the numbers]], with the exception of the poll script. However, minimally configure ~astroid~ with the location of our ~notmuch~ configuration.
+#+begin_src bash
+astroid --new-config
+vim ~/.config/astroid/config
+#+end_src
+
+The relevant sections are:
+#+begin_src json
+"notmuch_config": "\/home\/whoever\/.notmuch-config",
+#+end_src
+
+The accounts section is fairly self explanatory, but we will need to use the following ~sendmail~ line as well:
+
+#+begin_src json
+            "sendmail": "msmtp --read-envelope-from -i -t",
+#+end_src
+
+
+*** Poll Script
+Natively only bash appears to be supported. However, with ~nix~, we can use a reproducible python script with [[https://amoffat.github.io/sh][the sh library]] to call system functions instead.
 #+begin_src python
 from pathlib import Path
 import sh
 
+# For generic IMAP maildirs
+
+ISYNC_LABELS = ["rgoswami.iitk", "rog32"]
+
+for isync in ISYNC_LABELS:
+    sh.mbsync("-V",isync,_bg=True)
+
+
+# Gmaileer
 GMAIL_IDENTIFIERS = ["gmail", "univ", "ieee"]
 
 path = Path(r"/run/media/haozeke/Storage/.mail/")
@@ -7029,14 +7212,74 @@ for dirs in path.iterdir():
         for gmi in GMAIL_IDENTIFIERS:
             if gmi in dirs.name:
                 print(f"Syncing {dirs.name}")
-                sh.gmi("sync", _cwd=dirs, _bg=False)
+                sh.gmi("sync", _cwd=dirs, _fg=True)
 #+end_src
 This needs to be coupled with the standard ~nix~ shebang in the ~poll.sh~ file:
 #+begin_src bash
 #!/usr/bin/env nix-shell
 #!nix-shell -i python3 -p "python38.withPackages(ps: [ ps.numpy ps.sh ])"
 #+end_src
+*** Navigation
+For working with HTML emails, we need to highlight the notice about potentially sketchy HTML using (defaults) ~j~ or ~k~ and then hit ~enter~ or ~o~.
+
+#+DOWNLOADED: screenshot @ 2020-12-30 01:07:09
+#+caption: Unhelpful default
+[[file:images/Astroid/2020-12-30_01-07-09_screenshot.png]]
+
+
+#+DOWNLOADED: screenshot @ 2020-12-30 01:08:45
+#+attr_html: :width 600
+#+caption: After viewing the sketchy bit
+[[file:images/Astroid/2020-12-30_01-08-45_screenshot.png]]
+
+Note that since most email is actually sent with ~text/html~ it might make more sense to configure the ~thread_view~ in the configuration file.
+
+#+begin_src json :hl_lines 3
+    "thread_view": {
+        "open_html_part_external": "false",
+        "preferred_type": "html",
+        "preferred_html_only": "false",
+        "allow_remote_when_encrypted": "false",
+        "open_external_link": "xdg-open",
+        "default_save_directory": "~",
+        "indent_messages": "false",
+        "gravatar": {
+            "enable": "true"
+        },
+        "mark_unread_delay": "0.5",
+        "expand_flagged": "true"
+    },
+#+end_src
+
+**** Deletion
+There are again, two different approaches to deletion.
+
+- Gmail :: For ~gmail~ accounts it is simple, just adding a ~trash~ tag will do the trick, so we can select multiple emails with ~t~ and then hit ~+~ to add ~trash~ and everything works out
+- Other Accounts :: We can *delete mail* forever (from the server as well), by using a safe-tag and then using ~notmuch~
+
+The generic non-~lieer~ method requires:
+
+#+begin_src bash
+notmuch search --output=files --format=text0 tag:killed | xargs -r0 rm
+#+end_src
+
+A ~pre-new~ hook will work.
+# ** Systemd Integration
+# Albert Weichselbraun has [[https://semanticlab.net/desktop/e-mail/linux/sysadmin/Managing-DavMail-with-systemd-and-preventing-service-timeouts-after-network-reconnects/][an excellent setup]] for working with ~systemd~ and ~davmail~ which we will extend to cover the entire workflow using dispatcher scripts.
+
+**** Composition
+Thankfully, ~astroid~ supports GPG encryption as well as markdown support. This makes for simple integration with any popular editor.
+
+
+#+DOWNLOADED: screenshot @ 2020-12-30 06:27:38
+#+caption: Composition with ~emacs~ and ~astroid~
+[[file:images/Astroid/2020-12-30_06-27-38_screenshot.png]]
+
+
 ** Conclusions
+This is enough to get started for a while, but it isn't yet at the stage where I can replace ~thunderbird~ unfortunately. However, there are several pain points to be addressed, which will be covered in a future post. Some of these are essentially related to network fluctuations, and the awkward deletion setup.
+
+[fn:whatkey] The GPG key itself can be stored with ~keybase~
 * DONE Remapping Keys with XKB and KLFC :@personal:workflow:tools:
 CLOSED: [2020-12-05 Sat 22:05]
 :PROPERTIES:
