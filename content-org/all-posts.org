@@ -7188,7 +7188,7 @@ The accounts section is fairly self explanatory, but we will need to use the fol
 #+end_src
 
 
-*** Poll Script
+*** Nix Python Poll Script
 Natively only bash appears to be supported. However, with ~nix~, we can use a reproducible python script with [[https://amoffat.github.io/sh][the sh library]] to call system functions instead.
 #+begin_src python
 from pathlib import Path
