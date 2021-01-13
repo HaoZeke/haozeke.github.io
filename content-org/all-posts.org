@@ -6213,6 +6213,9 @@ The slides are embedded below. The ~orgmode~ source [[https://github.com/HaoZeke
 #+BEGIN_EXPORT html
 <script async class="speakerdeck-embed" data-id="6db471426fc24d6cbfb433f2464b8146" data-ratio="1.77966101694915" src="//speakerdeck.com/assets/embed.js"></script>
 #+END_EXPORT
+** Video
+
+{{< youtube 2GX9TK4uNfU >}}
 
 [fn:officialsite] One location I am going to be able to keep track of
 
