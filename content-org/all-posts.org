@@ -7003,8 +7003,7 @@ Initially, I had planned this post to start with a brief history of the decline 
 This post is part of a series on email.
 1. The Decline of Linux Email (TBD)
 2. *Reclaiming Email with Astroid* <-- You are here!
-3. Improving Astroid (TBD)
-4. Emacs and Email (TBD)
+3. Emacs and Email (TBD)
 ** The Accounts
 In no order of preference, for a variety of reasons, I have 23 distinct email accounts. However, these are actually broken down into a few basic types and associated mail fetching software.
 - Generic IMAP :: Yahoo, Mail.ru and the rest are managed with [[https://isync.sourceforge.io/][isync]]
@@ -7281,6 +7280,13 @@ Thankfully, ~astroid~ supports GPG encryption as well as markdown support. This 
 
 ** Conclusions
 This is enough to get started for a while, but it isn't yet at the stage where I can replace ~thunderbird~ unfortunately. However, there are several pain points to be addressed, which will be covered in a future post. Some of these are essentially related to network fluctuations, and the awkward deletion setup.
+
+*** Update
+- ~astroid~ appears to be having a [[https://github.com/astroidmail/astroid/issues/669][bit of a development crisis]]
+  + The [[https://github.com/gauteh/ragnarok][sequel (ragnarok)]] unfortunately seems to have gone towards a [[https://github.com/gauteh/ragnarok/tree/master/astroid][browser frontend]], which is quite unacceptable to me
+    - This makes it far too similar to (in principle) Mailspring (though with less problematic connectivity issues)
+    - This means I won't be moving forward with the next set of posts regarding ~astroid~ and will move towards ~emacs~ again
+- [[https://mehl.mx/][Max Mehl]] has a [[https://src.mehl.mx/mxmehl/mail-config/src/branch/master/astroid/scripts][good collection of scripts]] for ~astroid~
 
 [fn:whatkey] The GPG key itself can be stored with ~keybase~
 * DONE Remapping Keys with XKB and KLFC :@personal:workflow:tools:
