@@ -5246,8 +5246,17 @@ let
   inherit (pkgs.lib) optional optionals;
   mach-nix = import (builtins.fetchGit {
     url = "https://github.com/DavHau/mach-nix/";
-    ref = "2.2.2";
-  });
+    ref = "refs/tags/3.1.1";
+  }) {
+    pkgs = pkgs;
+
+    # optionally specify the python version
+    # python = "python38";
+
+    # optionally update pypi data revision from https://github.com/DavHau/pypi-deps-db
+    # pypiDataRev = "some_revision";
+    # pypiDataSha256 = "some_sha256";
+  };
   customPython = mach-nix.mkPython {
     requirements = ''
       copier
@@ -5270,8 +5279,17 @@ let
   inherit (pkgs.lib) optional optionals;
   mach-nix = import (builtins.fetchGit {
     url = "https://github.com/DavHau/mach-nix/";
-    ref = "2.2.2";
-  });
+    ref = "refs/tags/3.1.1";
+  }) {
+    pkgs = pkgs;
+
+    # optionally specify the python version
+    # python = "python38";
+
+    # optionally update pypi data revision from https://github.com/DavHau/pypi-deps-db
+    # pypiDataRev = "some_revision";
+    # pypiDataSha256 = "some_sha256";
+  };
   customPython = mach-nix.mkPython {
     requirements = ''
       copier
