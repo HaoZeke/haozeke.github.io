@@ -7686,4 +7686,29 @@ We have demonstrated a minimally invasive setup for working with a private submo
 
  [fn:givecredit] [[https://github.com/jwsi/submodule-checkout][submodule-checkout]] uses a similar concept but unfortunately does not extend to multiple submodules and the submodules are checked out as ~root~
 
-* TODO Nix For Static Site
+* TODO My Life in E-ink :@personal:workflow:tools:
+:PROPERTIES:
+:EXPORT_FILE_NAME: my-life-in-eink
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+begin_quote
+Collection of odds and ends relating to e-readers
+#+end_quote
+** Background
+I have been reading on my Kobo Aura HD for almost a decade now, ever since its release. A lot of these can be adapted widely to other e-ink readers, and are written as such.
+
+** Zotero Sync
+Calibre provides a handy ZMI plugin which allows for exported papers to be imported into calibre and from then into the e-reader as expected.
+- Best to have a separate library for these
+
+* TODO Nix For Static Sites
+* TODO Improving Astroid :@personal:rant:tools:email:workflow:
+:PROPERTIES:
+:EXPORT_FILE_NAME: improving-astroid
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+begin_quote
+Adding encryption and scripts for better mail management
+#+end_quote
+** Background
+** Conclusions
