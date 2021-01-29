@@ -7712,3 +7712,17 @@ Adding encryption and scripts for better mail management
 #+end_quote
 ** Background
 ** Conclusions
+* TODO Grant Proposals - II :@personal:ramblings:thoughts:academia:
+:PROPERTIES:
+:EXPORT_FILE_NAME: grant-proposals-two
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
+#+BEGIN_QUOTE
+A short post on post-grant application paperwork
+#+END_QUOTE
+** Background
+A while ago, [[Grant Proposals - I][I wrote about my experience applying]] for the Rannís [[https://en.rannis.is/funding/research/icelandic-research-fund/][Icelandic Research Fund]]. I mentioned there that I should not go into great detail without knowing if my process was correct. I have since [[https://en.rannis.is/news/allocation-from-the-icelandic-research-fund-for-the-financial-year-2021-1][been awarded]] the three-year grant for my proposal on "Magnetic interactions of itinerant electrons modeled using Bayesian machine learning". It would make sense then, to go into parts of the process in more depth.
+** The Process
+
+** Conclusion
+I might decide to keep a running tab of grant related posts and activities.
