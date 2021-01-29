@@ -3997,9 +3997,9 @@ Personal recollections of the academic grant writing process.
 #+END_QUOTE
 ** Background
 Of the many types of writing one undertakes in a typical academic career, grant writing stands out as a rather large anomaly. For the purposes of this post, we will note that an academic writing taxonomy would consist of roughly:
-- Coursework and Assignmets :: These are more or less comparitive writing exercises, where the only main thing which is enforced is (or should be) plagiarism checks. In terms of locality in history, these are more or less focused on the past, with little to no original content.
+- Coursework and Assignments :: These are more or less comparative writing exercises, where the only main thing which is enforced is (or should be) plagiarism checks. In terms of locality in history, these are more or less focused on the past, with little to no original content.
 - Peer Reviewed Articles :: Broadly, in this category we can lump society journals, some conference articles, and even reviews to some extent. These are hyper-local in time, with enough historical perspective to make the paper worthwhile for the journal/conference, and originality of content is a key highlight.
-- Grants :: Grants are unique. They are both short (in terms of a prospectus) and also long, in that there are a huge number of auxillary files to be added.
+- Grants :: Grants are unique. They are both short (in terms of a prospectus) and also long, in that there are a huge number of auxiliary files to be added.
 ** Grants
   At some stage, every researcher who doesn't bow out of academia ends up faced with the prospect of proving to a funding agency that they are capable and well-adjusted enough to get money for an extended amount of time.
 *** Lit Surveys
@@ -4008,7 +4008,7 @@ Unlike papers and reviews, though recent papers are important, it is more releva
 This part is fun to write, building towards a goal, is a special kind of write up. It allows one to really flesh out a research plan with realistic goals.
 *** Extras
 - For most applications, there is a budgetary requirement, mostly with a spreadsheet component.
-- A Gantt chartis also often required
+- A Gantt chart is also often required
   - I started with [[https://teamgantt.com][teamgantt]], which was neat
   - Of course I eventually ended up regressing to ~orgmode~ and TeX using [[https://github.com/swillner/org-gantt/blob/master/org-gantt-manual.org][org-gantt]]
     - This actually would need a whole other post, but it is great
