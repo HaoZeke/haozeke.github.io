@@ -7686,6 +7686,190 @@ We have demonstrated a minimally invasive setup for working with a private submo
 
  [fn:givecredit] [[https://github.com/jwsi/submodule-checkout][submodule-checkout]] uses a similar concept but unfortunately does not extend to multiple submodules and the submodules are checked out as ~root~
 
+* DONE Project Specific Expressions from Nixpkgs for Sphinx documentation :@programming:tools:nix:workflow:
+CLOSED: [2021-02-02 Tue 05:09]
+:PROPERTIES:
+:EXPORT_FILE_NAME: nix-prj-spec-doc
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+BEGIN_QUOTE
+Short post on making minimal changes to derivations in ~nixpkgs~ at a project level using ~callPackage()~ along with GH-Actions for deployment of ~sphinx~ documentation.
+#+END_QUOTE
+** Background
+As part of my work on the [[https://symengine.org][Symengine documentation]][fn:whopaid],  I had originally thought of leveraging ~nix~ for reproducible builds for each of the language bindings with GH-Actions. There exists a derivation in the upstream package repository, but it was outdated ([[https://github.com/NixOS/nixpkgs/blob/66e44425c6dfecbea68a5d6dc221ccd56561d4f1/pkgs/development/libraries/symengine/default.nix][v6.0.0]] instead of v6.0.1) [fn:whocares]. Normally this would simply require a PR to be fixed; but since documenting different language bindings requires specific flags and tests were largely not an issue, I needed to make a project level derivation for each repository.
+** Project Layout
+The standard ~niv~ setup, as described in the [[A Tutorial Introduction to Nix][longer tutorial post]] will suffice.
+#+begin_src bash
+niv init -b master
+#+end_src
+Since the bindings were for ~python~, ~mach-nix~ was leveraged for the ~shell.nix~; reasons for which [[Niv and Mach-Nix for Nix Python][have been outlined elsewhere]]. This led to the following expression:
+#+begin_src nix :hl_lines 4
+let
+  sources = import ./nix/sources.nix;
+  pkgs = import sources.nixpkgs { };
+  nsymengine = pkgs.callPackage ./nix/nsymengine.nix { };
+  mach-nix = import (builtins.fetchGit {
+    url = "https://github.com/DavHau/mach-nix/";
+    ref = "refs/tags/3.1.1";
+  }) {
+    pkgs = pkgs;
+  };
+  customPython = mach-nix.mkPython rec {
+    requirements = builtins.readFile ./requirements.txt;
+  };
+in pkgs.mkShell {
+  buildInputs = with pkgs; [
+    customPython
+    cmake
+    nsymengine
+    bashInteractive
+    sage
+    which
+  ];
+}
+#+end_src
+
+The highlighted line calls ~nsymengine.nix~ which is derived from the upstream expression. Since ~callPackage~ is being used from the ~niv~ pinned sources, the expression is completely project-specific and reproducible.
+*** Upstream
+For completion; the upstream expression is reproduced.
+#+begin_src nix
+{ lib, stdenv
+, fetchFromGitHub
+, cmake
+, gmp
+, flint
+, mpfr
+, libmpc
+}:
+
+stdenv.mkDerivation rec {
+  pname = "symengine";
+  version = "0.6.0";
+
+  src = fetchFromGitHub {
+    owner = "symengine";
+    repo = "symengine";
+    rev = "v${version}";
+    sha256 = "129iv9maabmb42ylfdv0l0g94mcbf3y4q3np175008rcqdr8z6h1";
+  };
+
+  nativeBuildInputs = [ cmake ];
+
+  buildInputs = [ gmp flint mpfr libmpc ];
+
+  cmakeFlags = [
+    "-DWITH_FLINT=ON"
+    "-DINTEGER_CLASS=flint"
+    "-DWITH_SYMENGINE_THREAD_SAFE=yes"
+    "-DWITH_MPC=yes"
+    "-DBUILD_FOR_DISTRIBUTION=yes"
+  ];
+
+  doCheck = true;
+
+  checkPhase = ''
+    ctest
+  '';
+
+  meta = with lib; {
+    description = "A fast symbolic manipulation library";
+    homepage = "https://github.com/symengine/symengine";
+    platforms = platforms.unix ++ platforms.windows;
+    license = licenses.bsd3;
+    maintainers = [ maintainers.costrouc ];
+  };
+
+}
+#+end_src
+*** Repo-native
+The truncated expression meant to be bundled with the repo is reproduced below.
+#+begin_src nix
+{ lib, stdenv
+, fetchFromGitHub
+, cmake
+, gmp
+, flint
+, mpfr
+, libmpc
+}:
+
+stdenv.mkDerivation rec {
+  pname = "symengine";
+  name = "symengine";
+  version = "44eb47e3bbfa7e06718f2f65f3f41a0a9d133b70"; # From symengine-version.txt
+
+  src = fetchFromGitHub {
+    owner = "symengine";
+    repo = "symengine";
+    rev = "${version}";
+    sha256 = "137cxk3x8vmr4p5x0knzjplir0slw0gmwhzi277si944i33781hd";
+  };
+
+  nativeBuildInputs = [ cmake ];
+
+  buildInputs = [ gmp flint mpfr libmpc ];
+
+  cmakeFlags = [
+    "-DWITH_FLINT=ON"
+    "-DINTEGER_CLASS=flint"
+    "-DWITH_SYMENGINE_THREAD_SAFE=yes"
+    "-DWITH_MPC=yes"
+    "-DBUILD_TESTS=no"
+    "-DBUILD_FOR_DISTRIBUTION=yes"
+  ];
+
+  doCheck = false;
+
+}
+
+# Derived from the upstream expression : https://github.com/r-ryantm/nixpkgs/blob/34730e0640710636b15338f20836165f29b3df86/pkgs/development/libraries/symengine/default.nix
+#+end_src
+Some project-specific notes:
+-  [[https://github.com/CrossNox/m2r2/][m2r2]] was used to inject the project ~README.md~ into the [[https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html][Sphinx reStructuredText]] index file
+- To prevent ~symengine~ from picking up the system ~python~, a pure shell was required ~nix-shell --pure --run bash~
+- ~symengine-version.txt~ was already being used by the CI setup for cloning the right commit, and though a text file for hash storage is inelegant, it is a valid approach without ~nix~
+** GH-Actions and Deployment
+Having obtained an environment; the penultimate step involved a trivial shell script which uses the fantastic ~nix-shell~:
+#+begin_src bash
+#!/usr/bin/env nix-shell
+#!nix-shell ../shell.nix -i bash
+
+python setup.py build_ext --inplace
+sphinx-build docs/ genDocs/
+#+end_src
+Finally an action definition in ~.github/workflows/mkdocs.yaml~:
+#+begin_src yaml
+on:
+  push:
+    branches:
+      - main
+      - master
+
+name: Make Sphinx API Docs
+
+jobs:
+  mkdocs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: cachix/install-nix-action@v12
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+
+      - name: Build
+        run: ./bin/docbuilder.sh
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./genDocs
+#+end_src
+** Conclusion
+In the end, to ensure easy long-term maintenance by the other maintainers, it was decided that the ~nix~ derivations should be trashed in favor of ~conda~ madness. Though most changes should be contributed upstream, the efficient re-use of upstream expressions is still viable for certain projects, especially those related to documentation.
+[fn:whopaid] Sponsored by the Google Season of Docs initiative
+[fn:whocares] Part of the documentation design worked out involved the [[https://abseil.io/about/philosophy#we-recommend-that-you-choose-to-live-at-head][live at head concept]] (also described in this [[https://cppcon2017.sched.com/event/Bhci/c-as-a-live-at-head-language][CPPCon17 talk]])
 * TODO My Life in E-ink :@personal:workflow:tools:
 :PROPERTIES:
 :EXPORT_FILE_NAME: my-life-in-eink
