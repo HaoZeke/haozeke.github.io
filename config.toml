@@ -93,7 +93,7 @@ disableHugoGeneratorInject = false
   contentTypeName = "posts"
 
   # Default theme "light" or "dark"
-  defaultTheme = "dark"
+  defaultTheme = "light"
 
 # [params.utterances]
 # issue = "pathname"
