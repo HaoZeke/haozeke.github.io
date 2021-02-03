@@ -7522,7 +7522,7 @@ cd coleVIM/xkb
 The layout takes a bit of time to get used to, but it is a lot more transparent in the end compared to manually remapping to Colemak's NEIO instead of HJKL for movement. It is both persistent and easily extended, though it is likely that more needs to be done. Perhaps some metrics [fn:whatmetrics] might be collected as well.
 
 [fn:whycolemak] Colemak, unlike Dvorak, prioritises finger rolls over alternating hands
-[fn:morespecifics] For more details the [[https://en.wikipedia.org/wiki/Keyboard_layout][Wikipedia article on Keyboard Layouts]] is useful
+[fn:morespecifics] For more details the [[https://en.wikipedia.org/wiki/Keyboard_layout][Wikipedia article on Keyboard Layouts]] is useful or this [[https://github.com/tmk/tmk_keyboard/blob/master/tmk_core/doc/keymap.md][file on the tmk keyboard]]
 [fn:whyext] [[https://forum.colemak.com/topic/2014-extend-extra-extreme/][DreymaR's Extend mappings]] might be good for QWERTY people 
 [fn:whatmetrics] The metric collection of [[https://github.com/mw8/white_keyboard_layout][Michael White]] or the [[http://mkweb.bcgsc.ca/carpalx/][CARPALX metrics]]
 
