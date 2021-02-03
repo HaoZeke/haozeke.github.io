@@ -7687,7 +7687,7 @@ We have demonstrated a minimally invasive setup for working with a private submo
  [fn:givecredit] [[https://github.com/jwsi/submodule-checkout][submodule-checkout]] uses a similar concept but unfortunately does not extend to multiple submodules and the submodules are checked out as ~root~
 
 * DONE Project Specific Expressions from Nixpkgs for Sphinx documentation :@programming:documentation:tools:nix:workflow:
-CLOSED: [2021-02-02 Tue 05:09]
+CLOSED: [2020-12-22 Tue 05:09]
 :PROPERTIES:
 :EXPORT_FILE_NAME: nix-prj-spec-doc
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
