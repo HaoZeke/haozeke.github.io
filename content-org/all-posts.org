@@ -7734,7 +7734,7 @@ The highlighted line calls ~nsymengine.nix~ which is derived from the upstream e
 *** Upstream
 For completion; the upstream expression is reproduced. We will actually grab this directly with ~show-derivation~:
 #+begin_src bash
-nix show-derivation -f "<nixpkgs>" symengine >> nsymengine.nix
+nix show-derivation -f "<nixpkgs>" symengine > nix/nsymengine.nix
 #+end_src
 Which gives us:
 #+begin_src nix
