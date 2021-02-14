@@ -87,7 +87,7 @@ disableHugoGeneratorInject = false
   summary = "Homepage and blog by Rohit Goswami (HaoZeke), focused on the physical sciences and code. Opinions may also creep in."
   homeSubtitle = "Reminisces and reflections of the digital entity defined here and below"
   keywords = "homepage, blog, science, development, programming"
-  images = [""]
+  images = ["/images/home.png"]
 
   # Directory name of your blog content (default is `content/posts`)
   contentTypeName = "posts"
