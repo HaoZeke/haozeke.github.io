@@ -17,8 +17,8 @@
   :END:
 
 All the questions are as per the
-[[https://faculty.marshall.usc.edu/gareth-james/ISL/][ISL seventh
-printing]].
+[[https://www.statlearning.com/][ISL seventh
+printing of the First edition]][fn:1].
 
 ** Common
    :PROPERTIES:
@@ -1366,3 +1366,7 @@ This is pretty good model, all told.
   ## ---
   ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 #+END_EXAMPLE
+
+[fn:1] James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). An
+       Introduction to Statistical Learning: with Applications in R.
+       Berlin, Germany: Springer Science & Business Media.

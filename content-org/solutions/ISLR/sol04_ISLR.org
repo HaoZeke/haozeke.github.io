@@ -17,8 +17,8 @@
   :END:
 
 All the questions are as per the
-[[https://faculty.marshall.usc.edu/gareth-james/ISL/][ISL seventh
-printing]][fn:1].
+[[https://www.statlearning.com/][ISL seventh
+printing of the First edition]][fn:1].
 
 ** Common
    :PROPERTIES:
