@@ -200,6 +200,7 @@ These are tech talks, for academic presentations, [[https://github.com/haozeke/c
 - [[https://wc3m.github.io/][Water, Chemicals and more with Computers for Chemistry (WC3m)]] :: July 28-August 28, 2020 (co-lead)
 - [[https://coderefinery.github.io/2020-05-25-online/][2020 MegaCodeRefinery]] (helper)
 ***** Carpentries
+- [[https://ucsbcarpentry.github.io/2021-02-18-ucsb-online/][Data Analysis and Visualization in Python for Ecologists]] :: February 18-19, 2020 (instructor)
 - [[https://flatironinstitute.github.io/sciware-swc-2020-09-git/][Sciware: Git and GitHub at the Flatiron Institute]] :: September 24 and October 1, 2020 (instructor)
 - [[https://nairps.github.io/2020-09-08-ggc-SBDH-online/][Data Carpentry Workshop for Social Sciences Georgia Gwinnett College]] :: September 8-11, 2020 (instructor)
 - [[https://smcclatchy.github.io/2020-06-22-biotechPartners-pm/][Data Carpentry Ecology for Biotech Partners]] :: June 22-July 2, 2020 (instructor)
@@ -8001,7 +8002,7 @@ Koreader is probably the best thing to happen to e-ink devices since sliced brea
 
 It is probably worth noting that the in-built re-flow options do tend to cause major artifacts on older hardware, and is best avoided. Almost equivalently, and at a far lower cost in terms of performance, page contents can be fit to width and zoomed in automatically, which is almost as good as working with ~k2pdfopt~ in some special cases.
 ** Conclusions
-Given my unfortunate separation from my library back home; it is likely that my e-ink devices will continue to be my primary source of reading material. Plus the long retarded color e-ink market finally seems to be moving out of its stupor. The only possible addendum to this methodology would probably involve integrating ~orgmode~ and the reMarkable 2 sometime. E-ink is here to stay. This setup would probably need revisions involving ~rclone~ or ~syncthing~ if I ever gave up and opted for a "modern" device without an SD slot.
+Given my unfortunate separation from my library back home; it is likely that my e-ink devices will continue to be my primary source of reading material. Plus the long retarded color e-ink market finally seems to be moving out of its stupor ([[https://www.youtube.com/watch?v=OlnzrxaZViU][YT video]]). The only possible addendum to this methodology would probably involve integrating ~orgmode~ and the reMarkable 2 sometime. E-ink is here to stay. This setup would probably need revisions involving ~rclone~ or ~syncthing~ if I ever gave up and opted for a "modern" device without an SD slot.
 
 [fn:whypost] On an unrelated note, this represents a stylistic departure from older normal posts, with much more of a rambling narrative
 [fn:whynotes] These are annotated [[An Orgmode Note Workflow][in Emacs with org-mode]] when necessary
