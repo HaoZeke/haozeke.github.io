@@ -7893,7 +7893,7 @@ Personally, I never use Nickel (the default Kobo interface), and it would probab
 ** Software
 Broadly speaking; the main parts of the software pipeline from digital book to brain are simply the syncing mechanism and the UI/UX/OS of the device in question; though it is often best to consider pre-processing books for devices too. These are covered in the order used.
 *** k2pdfopt
-The thought of reflowing text for an optimal reading experience, especially given the slightly limited processing power of my primary reading device. [[https://www.willus.com/k2pdfopt/][K2pdfopt or the Kindle 2 PDF Optimizer]] is as criminally underrated as it is fantastic. An approach which works well for my device involves setting up [[https://github.com/HaoZeke/Dotfiles/blob/master/dotfiles/common/.local/bin/fileHelpers/docK2pdf][a simple shell script]] (part [[https://github.com/HaoZeke/Dotfiles][of my Dotfiles]]) for optimizing files on the fly before sending them through ~calibre~.
+The thought of reflowing text for an optimal reading experience, especially given the slightly limited processing power of my primary reading device is an enticing prospect. [[https://www.willus.com/k2pdfopt/][K2pdfopt or the Kindle 2 PDF Optimizer]] is as criminally underrated as it is fantastic. An approach which works well for my device involves setting up [[https://github.com/HaoZeke/Dotfiles/blob/master/dotfiles/common/.local/bin/fileHelpers/docK2pdf][a simple shell script]] (part [[https://github.com/HaoZeke/Dotfiles][of my Dotfiles]]) for optimizing files on the fly before sending them through ~calibre~.
 #+begin_src bash
 #!/usr/bin/env bash
 # Get a filename
