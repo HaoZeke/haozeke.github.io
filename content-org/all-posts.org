@@ -6957,28 +6957,6 @@ long-form notes as well, a coherent approach to this can also be covered later.
 [fn:whynotdrill] ~org-drill~ doesn't support any kind of mobile synchronization
 [fn:wherevert] The alignment trick is from [[https://clementc.github.io/blog/2018/08/15/anki_setup/][this post]]
 
-* TODO Rediscovering Digital Books :@personal:workflow:tools:
-:PROPERTIES:
-:EXPORT_FILE_NAME: redis-digi-books
-:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
-:END:
-#+begin_quote
-A discourse on the greater good embodied by ~k2pdfopt~ and a Kobo Aura HD
-#+end_quote
-
-** Background
-The sharp eyed reader might notice, that unlike the majority of posts on this site, this one is *not* in the ~programming~ category, though there will be code. Essentially this is a bit of an expository rant on the nature of consumerism and the lost days of durable products.
-** Kobo Aura HD
-Many many years ago, my parents let me get an e-ink device. At the time, I spent many hours lurking on the fantastic Mobilread forums. Back in those early days.
-*** Pros
-- KSM menu
-  + It is discontinued now, but seeing as I have no desire to update this further, it works great
-*** Cons
-- The USB connectivity seems to be gone for good
-  + Though it charges
-** Conclusions
-I have no intention of getting a newer e-ink device which does not have an SD-card slot and an active developer community.
-
 * TODO The Decline of Linux Email :@personal:workflow:tools:email:
 :PROPERTIES:
 :EXPORT_FILE_NAME: declining-linux-email
@@ -7875,21 +7853,164 @@ jobs:
 In the end, to ensure easy long-term maintenance by the other maintainers, it was decided that the ~nix~ derivations should be trashed in favor of ~conda~ madness. Though most changes should be contributed upstream, the efficient re-use of upstream expressions is still viable for certain projects, especially those related to documentation.
 [fn:whopaid] Sponsored by the Google Season of Docs initiative
 [fn:whocares] Part of the documentation design worked out involved the [[https://abseil.io/about/philosophy#we-recommend-that-you-choose-to-live-at-head][live at head concept]] (also described in this [[https://cppcon2017.sched.com/event/Bhci/c-as-a-live-at-head-language][CPPCon17 talk]])
-* TODO My Life in E-ink :@personal:workflow:tools:
+* DONE My Life in E-ink :@personal:workflow:tools:ramblings:
+CLOSED: [2021-02-20 Sat 01:41]
 :PROPERTIES:
 :EXPORT_FILE_NAME: my-life-in-eink
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :END:
 #+begin_quote
-Collection of odds and ends relating to e-readers
+Collection of odds and ends relating to e-readers including personal reminisces
 #+end_quote
 ** Background
-I have been reading on my Kobo Aura HD for almost a decade now, ever since its release. A lot of these can be adapted widely to other e-ink readers, and are written as such.
+Reading has been a huge part of my life. The written word has had arguably more of an impact on my life than anything I have experienced in person. As a kid back in early 2000's; this meant a lot of library trips and saving for paperbacks. I also caught the first wave of the e-ink revolution. Nothing beats a real book, in terms of textures and scents; but e-ink devices and the fantastic tools outlined here should make reading digital books much more palpable [fn:watelse].
 
-** Zotero Sync
-Calibre provides a handy ZMI plugin which allows for exported papers to be imported into calibre and from then into the e-reader as expected.
-- Best to have a separate library for these
+I have been reading on my [[https://en.wikipedia.org/wiki/Kobo_Aura_HD][Kobo Aura HD]] for almost a decade now, ever since its release. This means my setup is about as stable as its going to get in the near future. As good a time as any to collect my thoughts [fn:whypost]. The focus is on e-ink devices and auxiliary tools; not on all digital content; so there are no mentions of syncing or reading on the go (with a phone) or of monitors which are good for reading on.
+*** The Content
+In general; my e-ink reading habits can be broadly broken into the following categories:
+- Light Reading :: Practically this includes [[https://www.goodreads.com/user/show/33462912-rohit-goswami][anything I review on Goodreads]]; these are not often re-read; nor read very deeply; since they are read for pleasure. They are however, rarely deleted
+- Required Reading :: Anything which typically requires me to take notes or practice / write out proofs; these are most often considered to be either coursework (for someone somewhere) or research monographs. These are typically large (in size) and unwieldy (in that they often lack TOCs) and are read multiple times; with a focus on highlights and notes
+- Active Research :: These are the most ephemeral of my reading habits; and also the most numerous; I do not typically store these on my e-reader; and rarely need to make notes on the reader [fn:whynotes]. These are often tiny; but require special work due to the metadata involved
 
+| Content Type     | Software Stack   | Deletion Rate |
+| Light Reading    | Calibre          | Rare          |
+| Required Reading | Calibre          | Never         |
+| Active Research  | Calibre + Zotero | Frequent      |
+
+Though I am a huge proponent of RSS feeds (with [[https://gitlab.com/news-flash/news_flash_gtk][Newsflash]]) and read online content voraciously with both a [[https://app.getpocket.com/][Pocket]] and [[https://www.diigo.com/user/rgoswami][Diigo]] subscription[fn:whytwo]; I sincerely do not believe blog stuff or anything tailored for the web should have a presence on an e-ink device; so there shall be no mention of those parts of my reading habits[fn:whatelsebloggy].
+** Hardware
+My primary e-reader is still my [[https://www.kobo.com/koboaurahd?___store=au&style=onestore][Kobo Aura HD]] (complete with a snazzy [[https://www.amazon.com/Cover-Up-eReader-Natural-Cover-Function/dp/B00DZJ5VM0][hemp sleep-cover]]), and has been my go to for almost a decade now since its release. Recently I have augmented my workflow with the [[https://remarkable.com/store/remarkable-2][reMarkable 2]]; though I have yet to break it in very well; mostly because I tend to gravitate towards typing out my thoughts [fn:whytype] instead of writing.
+
+The Kobo Aura HD is still the pinnacle of reading technology to me; mostly because the firmware is easy to bypass; and there is a vibrant community of developers on the [[https://www.mobileread.com/forums/showthread.php?t=210800][MobileRead Forums]]. Display and spec aside; the biggest reason for never replacing it has been been the simple fact that most modern e-readers no longer support SD cards; and much of my workflow depends on storing insane amounts of material offline [fn:alsobattery].
+
+
+#+DOWNLOADED: screenshot @ 2021-02-20 01:39:20
+#+caption: Primary reading device with Koreader
+[[file:images/Hardware/2021-02-20_01-39-20_screenshot.png]]
+
+
+Personally, I never use Nickel (the default Kobo interface), and it would probably choke trying to scan my 200 GB of content; so I haven't updated the firmware in forever. My interactions are almost always in [[https://koreader.rocks][Koreader]]; and my launching poison of choice is the now no longer developed [[https://www.mobileread.com/forums/showthread.php?t=293804][Kobo start menu]] [fn:notrecco].
+** Software
+Broadly speaking; the main parts of the software pipeline from digital book to brain are simply the syncing mechanism and the UI/UX/OS of the device in question; though it is often best to consider pre-processing books for devices too. These are covered in the order used.
+*** k2pdfopt
+The thought of reflowing text for an optimal reading experience, especially given the slightly limited processing power of my primary reading device. [[https://www.willus.com/k2pdfopt/][K2pdfopt or the Kindle 2 PDF Optimizer]] is as criminally underrated as it is fantastic. An approach which works well for my device involves setting up [[https://github.com/HaoZeke/Dotfiles/blob/master/dotfiles/common/.local/bin/fileHelpers/docK2pdf][a simple shell script]] (part [[https://github.com/HaoZeke/Dotfiles][of my Dotfiles]]) for optimizing files on the fly before sending them through ~calibre~.
+#+begin_src bash
+#!/usr/bin/env bash
+# Get a filename
+case "$#" in
+0)
+	echo "No arguments, so enter the filename, WITH the extension"
+	read -p 'Document: ' docfile
+	;;
+1)
+	echo "OK, using the filename"
+	docfile="$1"
+	;;
+*)
+	echo "Illegal number of parameters"
+	exit
+	;;
+esac
+# Get basename
+basename="${docfile%.*}"
+ext="${docfile##*\.}"
+echo "Basename ${basename} with $ext from $docfile"
+echo "Making a local store for the outputs"
+mkdir -p "$HOME/auraHDopt"
+
+case "$ext" in
+"djvu")
+	echo "Converting djvu to pdf via ps and running k2pdfopt"
+	djvups "${basename}.djvu" "${basename}.ps"
+	ps2pdf "${basename}.ps" "${basename}.pdf"
+	# The newline is for simulating the Enter key
+	echo | k2pdfopt "${basename}.pdf" -wrap -hy -ws -0.2 -dev kbhd -x
+	echo "Cleaning up"
+	mv "${basename}_k2opt.pdf" "$HOME/auraHDopt"
+	rm -rf "${basename}.{ps,pdf}"
+	;;
+"pdf")
+	echo "Converting pdf with gs and running k2pdfopt"
+	gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen \
+		-dNOPAUSE -dQUIET -dBATCH -sOutputFile="${basename}gs.pdf" "${basename}.pdf"
+	echo | k2pdfopt "${basename}gs.pdf" -wrap -hy -ws -0.2 -dev kbhd -x
+	echo "Cleaning up"
+	rm "${basename}gs.pdf" -rf
+	mv "${basename}gs_k2opt.pdf" "$HOME/auraHDopt"
+	;;
+*)
+	echo "Illegal file type"
+	exit
+	;;
+esac
+
+#+end_src
+The outputs can also be further processed with an [[https://github.com/HaoZeke/Dotfiles/blob/master/dotfiles/common/.local/bin/fileHelpers/isOcr][OCR (Optical Character Recognition) script]] if required, and then edited in [[https://code-industry.net/masterpdfeditor/][Master PDF Editor]] or something similar to add the table of contents interactively as well.
+#+begin_src bash
+#!/bin/bash
+# Use as  find . -type f -name "*.pdf" -exec isOcr '{}' \;
+
+# Shamelessly kanged from here:
+# https://stackoverflow.com/questions/7997399/bash-script-to-check-pdfs-are-ocrd
+# Only searches for text on the first 5 pages
+# Modified to have red text. Also to possibly ocr the thing.
+
+# -*- mode: shell-script-mode -*-
+
+MYFONTS=$(pdffonts -l 15 "$1" | tail -n +3 | cut -d' ' -f1 | sort | uniq)
+if [ "$MYFONTS" = '' ] || [ "$MYFONTS" = '[none]' ]; then
+    echo "$(tput setaf 1)NOT OCR'ed: $1"
+    if [[ -x "$(which ocrmypdf)" ]]; then
+        echo "$(tput setaf 4)"
+        echo "Converting to ${1%.*}_ocr.pdf with ocrmypdf"
+        echo "$(tput setaf 7)"
+        ocrmypdf --deskew --clean --rotate-pages \
+            --jobs 4 -v --output-type pdfa "$1" "${1%.*}_ocr.pdf"
+    elif [[ -x "$(which pypdfocr)" ]]; then
+        echo "$(tput setaf 2) Looking for config files at $XDG_CONFIG_HOME/pypdfocr/config.yml"
+        echo "$(tput setaf 3)"
+        if [[ -e $XDG_CONFIG_HOME/pypdfocr/config.yml ]]; then
+            echo "Using configuration settings"
+            echo "$(tput setaf 4)"
+            pypdfocr -c $XDG_CONFIG_HOME/pypdfocr/config.yml "$1"
+        else
+            echo "Using default settings"
+            echo "$(tput setaf 4)"
+            pypdfocr "$1"
+        fi
+        echo "$(tput setaf 2) You might want to get pypdfocr"
+    fi
+else
+    echo "$1 is OCR'ed."
+fi
+#+end_src
+The end result is:
+- A directory with perfectly ~pdf~ files re-flowed text
+  + Possibly OCR'ed for string searches
+TOC editing is still rather janky; but this is also because the OCR process is still rather spotty.
+*** Calibre
+[[https://calibre-ebook.com/][Calibre]] is an excellent library software, and there are very few alternatives which offer all the salient features:
+- Syncing :: Apart from working well with a plethora of official devices, Koreader is also pretty well supported, and mounting folders allows for easy management of a secret library (e.g. ~.Library~) on an SD card to prevent Nickel from reading and choking on large libraries
+- Multiple Libraries :: I personally keep one for fiction, one for non-fiction, and one (transiently populated) one for papers
+- Good metadata collection :: Nothing beats rich metadata, and with third party plugins, all the best content providers can be leveraged for blurbs; plus most purchased books come with metadata which ~calibre~ can read
+It isn't perfect, there are far better [[https://opds.io/][OPDS (Open Publication Distribution System)]] servers like the fantastic [[https://github.com/seblucas/cops][COPS (Calibre OPDS)]] project, and there have been [[https://anarc.at/software/desktop/calibre/][some security concerns in the past]], but it is really usable and is [[https://github.com/kovidgoyal/calibre][under active development]]; plus it has a [[https://kovidgoyal.net/][fun developer]]. I also personally find the file conversion lacking, compared to ~k2pdfopt~, but as a library management system it is really good.
+*** Zotero Sync
+Calibre provides a handy [[https://www.mobileread.com/forums/showthread.php?p=3339191#poststop][ZMI (Zotero Metadata Importer) plugin]] which allows for exported papers to be imported into ~calibre~ and from then into the e-reader as expected. Combined with the folder mounts facilitated by ~calibre~ this allows for a painless way to ensure a quick export; optimize; sync; read and delete workflow.
+*** Koreader
+Koreader is probably the best thing to happen to e-ink devices since sliced bread. It replaces the need to use any cables with an e-reader; since newer versions have a nice SSH server, and can also update itself. Since this is mostly used as is; and all the information required is on the [[https://github.com/koreader/koreader/wiki][Github Wiki]], there's not much else to say here.
+
+It is probably worth noting that the in-built re-flow options do tend to cause major artifacts on older hardware, and is best avoided. Almost equivalently, and at a far lower cost in terms of performance, page contents can be fit to width and zoomed in automatically, which is almost as good as working with ~k2pdfopt~ in some special cases.
+** Conclusions
+Given my unfortunate separation from my library back home; it is likely that my e-ink devices will continue to be my primary source of reading material. Plus the long retarded color e-ink market finally seems to be moving out of its stupor. The only possible addendum to this methodology would probably involve integrating ~orgmode~ and the reMarkable 2 sometime. E-ink is here to stay. This setup would probably need revisions involving ~rclone~ or ~syncthing~ if I ever gave up and opted for a "modern" device without an SD slot.
+
+[fn:whypost] On an unrelated note, this represents a stylistic departure from older normal posts, with much more of a rambling narrative
+[fn:whynotes] These are annotated [[An Orgmode Note Workflow][in Emacs with org-mode]] when necessary
+[fn:whytype] For which I have been perfecting a rather [[Switching to Colemak][personalized workflow with Colemak]]
+[fn:whatelsebloggy] The same can be said of Wikipedia content and tweets; spending time on the written word does not automatically worth putting on an e-reader
+[fn:alsobattery] Also why the battery lasts for days without any strain
+[fn:whytwo] Diigo is great for saving storing sites forever and Pocket is just cheaper Instapaper
+[fn:notrecco] [[https://pgaskin.net/NickelMenu/][NickelMenu]] seems to be recommended for newer devices
+[fn:watelse] They're also more convenient than holding a torch in bed with a paperback
 * TODO Nix For Static Sites
 * TODO Improving Astroid :@personal:rant:tools:email:workflow:
 :PROPERTIES:
