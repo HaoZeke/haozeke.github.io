@@ -1017,8 +1017,8 @@ The actual installation steps basically tracks [[https://github.com/HaoZeke/Dotf
 #+BEGIN_SRC bash
 git clone https://github.com/kobus-v-schoor/dotgit.git
 mkdir -p ~/.bin
-cp -r dotgit/bin/dotgit* ~/.bin
-cat dotgit/bin/bash_completion >> ~/.bash_completion
+cp -r dotgit/old/bin/dotgit* ~/.bin
+cat dotgit/old/bin/bash_completion >> ~/.bash_completion
 rm -rf dotgit
 # echo 'export PATH="$PATH:$HOME/.bin"' >> ~/.bashrc
 echo 'export PATH="$PATH:$HOME/.bin"' >> ~/.zshrc
@@ -4210,8 +4210,8 @@ These are reproduced from the repo for completeness.
 #+BEGIN_SRC bash
 git clone https://github.com/kobus-v-schoor/dotgit.git
 mkdir -p ~/.local/bin
-cp -r dotgit/bin/dotgit* ~/.local/bin
-cat dotgit/bin/bash_completion >> ~/.bash_completion
+cp -r dotgit/old/bin/dotgit* ~/.local/bin
+cat dotgit/old/bin/bash_completion >> ~/.bash_completion
 rm -rf dotgit
 #+END_SRC
 I actually strongly suggest using a target from [[https://github.com/HaoZeke/Dotfiles][my Dotfiles]] in conjunction with this, but it isn't really required, so:
@@ -5720,7 +5720,9 @@ doxygen -g
 # Easier to edit
 mv Doxyfile Doxyfile.cfg
 #+END_SRC
-Now we can modify some basic settings in a separate file
+Since ~Doxyfile~ should be updated by subsequent versions of ~doxygen~, it is
+best to separate the project settings. We will therefore modify some basic
+settings in a separate file
 #+BEGIN_SRC bash
 touch Doxyfile-prj.cfg
 vim Doxyfile-prj.cfg # or whatever
