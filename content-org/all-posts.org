@@ -175,6 +175,7 @@ the rest[fn:whereswaldo].
 - Hackernoon article on [[https://hackernoon.com/locking-and-encrypting-apps-with-encfs-c1484e77f479][Locking and Encrypting Apps with Encfs]]
 - The Water, Chemicals and more with Computers for Chemistry (WC3m) [[https://wc3m.github.io/][course website]]
 - A collaborative post on [[https://carpentries.org/blog/2020/08/r-4-migration/][migrating to R 4.0 for The Carpentries]]
+- My [[https://github.com/symengine/symengine/wiki/GSoD-2020-Report-Rohit-Goswami:-SymEngine][GSoD 2020 completion report]] for SymEngine
 **** Tech Conferences
 These are tech talks, for academic presentations, [[https://github.com/haozeke/cv][my CV is a better guide]].
 - Reproducible Scalable Workflows with Nix, Papermill and Renku at [[https://in.pycon.org/2020/][PyCon India 2020]]
@@ -200,7 +201,9 @@ These are tech talks, for academic presentations, [[https://github.com/haozeke/c
 - [[https://wc3m.github.io/][Water, Chemicals and more with Computers for Chemistry (WC3m)]] :: July 28-August 28, 2020 (co-lead)
 - [[https://coderefinery.github.io/2020-05-25-online/][2020 MegaCodeRefinery]] (helper)
 ***** Carpentries
-- [[https://ucsbcarpentry.github.io/2021-02-18-ucsb-online/][Data Analysis and Visualization in Python for Ecologists]] :: February 18-19, 2020 (instructor)
+- [[https://haozeke.github.io/2021-03-16-utah-online/][Network of the National Library of Medicine (NNLM) LC Workshop]] :: March 16-19, 2021 (instructor)
+- [[https://4turesearchdata-carpentries.github.io/2021-03-16-tudelft-online/][SWC workshop at the Eindhoven University of Technology (TU/e)]] :: March 16-17, 23-24, 2021 (instructor)
+- [[https://ucsbcarpentry.github.io/2021-02-18-ucsb-online/][Data Analysis and Visualization in Python for Ecologists]] :: February 18-19, 2021 (instructor)
 - [[https://flatironinstitute.github.io/sciware-swc-2020-09-git/][Sciware: Git and GitHub at the Flatiron Institute]] :: September 24 and October 1, 2020 (instructor)
 - [[https://nairps.github.io/2020-09-08-ggc-SBDH-online/][Data Carpentry Workshop for Social Sciences Georgia Gwinnett College]] :: September 8-11, 2020 (instructor)
 - [[https://smcclatchy.github.io/2020-06-22-biotechPartners-pm/][Data Carpentry Ecology for Biotech Partners]] :: June 22-July 2, 2020 (instructor)
