@@ -175,7 +175,7 @@ the rest[fn:whereswaldo].
 - Hackernoon article on [[https://hackernoon.com/locking-and-encrypting-apps-with-encfs-c1484e77f479][Locking and Encrypting Apps with Encfs]]
 - The Water, Chemicals and more with Computers for Chemistry (WC3m) [[https://wc3m.github.io/][course website]]
 - A collaborative post on [[https://carpentries.org/blog/2020/08/r-4-migration/][migrating to R 4.0 for The Carpentries]]
-- My [[https://github.com/symengine/symengine/wiki/GSoD-2020-Report-Rohit-Goswami:-SymEngine][GSoD 2020 completion report]] for SymEngine
+- My [[https://github.com/symengine/symengine/wiki/GSoD-2020-Report-Rohit-Goswami:-SymEngine][GSoD (Google Season of Docs) 2020 completion report]] for SymEngine
 **** Tech Conferences
 These are tech talks, for academic presentations, [[https://github.com/haozeke/cv][my CV is a better guide]].
 - Reproducible Scalable Workflows with Nix, Papermill and Renku at [[https://in.pycon.org/2020/][PyCon India 2020]]
@@ -184,6 +184,7 @@ These are tech talks, for academic presentations, [[https://github.com/haozeke/c
 - Nix from the dark ages (without Root) at [[https://2020.nixcon.org/][NixCon 2020]]
 *** Mentioning Me
 **** Lists
+- [[https://developers.google.com/season-of-docs/docs/2020/participants][2020 GSoD (Google Season of Docs) list of successful projects]]
 - [[https://sites.google.com/view/2020crt/home?authuser=0][2020 Categorifications in Representation Theory]] ([[https://sites.google.com/view/2020crt/registered-participants?authuser=0][participant]])
 - [[https://web-eur.cvent.com/event/16fae83c-5b72-4690-a368-829688f0d14b/summary][Heilbronn Annual Conference 2020]] ([[https://web-eur.cvent.com/event/16fae83c-5b72-4690-a368-829688f0d14b/websitePage:1faf08a0-dcdd-4a2c-b4b8-d9d445202377?RefId=HIMR][participant]])
 - [[https://www.cirm-math.fr/Listes/liste_pre_verif.php?id_renc=2255&num_semaine=0][CIRM - Jean-Morlet Chair - Quasi-Monte Carlo Methods and Applications]] ([[https://www.chairejeanmorlet.com/2255.html][info]]) [participant]
