@@ -151,6 +151,12 @@ the rest[fn:whereswaldo].
   - [[http://tug.org/tug2020/][TUG 2020 Conference Committee member]]
   - TUG Zulip Admin
 - [[https://developers.google.com/season-of-docs/docs/participants/project-sympy-rohitgoswami][Google Summer of Docs 2020 Symengine]]
+- Maintainer for packages on:
+  - ArchLinux (the [[https://aur.archlinux.org/account/HaoZeke][Arch User Repository]] (AUR))
+  - [[https://github.com/NixOS/nixpkgs/search?q=haozeke][Nixpkgs]]
+  - [[https://github.com/spack/spack/pulls?q=is%3Apr+author%3AHaoZeke][Spack]]
+  - [[https://melpa.org/#/?q=HaoZeke][MELPA]]
+  - [[https://pypi.org/user/rgoswami/][PyPI]]
 *** Academic
 - [[https://publons.com/researcher/2911170/rohit-goswami/][Publons]]
 - [[https://peerj.com/rgoswami/][PeerJ]]
