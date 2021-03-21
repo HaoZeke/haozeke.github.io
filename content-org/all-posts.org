@@ -164,6 +164,8 @@ the rest[fn:whereswaldo].
 - [[https://orcid.org/0000-0002-2393-8056][OrCiD]]
 - [[https://loop.frontiersin.org/people/829611/overview][Loop]]
 - [[https://osf.io/c47v3/][OSF]]
+**** Software
+I am particularly proud of my contributions to t
 *** Societies
 - [[https://engage.aiche.org/network/community-directory/profile?UserKey=8f135c8b-747d-4f79-95fd-84975458e3bd][American Institute of Chemical Engineers]]
 - [[https://ieeexplore.ieee.org/author/37086865956][IEEE]]
@@ -8050,3 +8052,35 @@ A while ago, [[Grant Proposals - I][I wrote about my experience applying]] for t
 
 ** Conclusion
 I might decide to keep a running tab of grant related posts and activities.
+
+* TODO SymEngine and the Season of Docs :@personal:ramblings:thoughts:
+:PROPERTIES:
+:EXPORT_FILE_NAME: symengine-gsod20
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+BEGIN_QUOTE
+An overview of documentation complexity and an analysis of incentives.
+#+END_QUOTE
+** Background
+As mentioned [[https://rgoswami.me/search/?q=symengine][a few times before]], last year [[https://developers.google.com/season-of-docs/docs/2020/participants/project-sympy-rohitgoswami?hl=en][a proposal]] of mine to improve the documentation for the [[https://github.com/symengine/][SymEngine]] organization was accepted under the Google Season of Docs 2020 initiative. This is a more personal and expanded discussion on the report submitted on the SymEngine Wiki regarding the goals and completion metrics.
+** Documentation and  Me
+I have been a huge proponent of documentation throughtout my decade long dabbling in FOSS projects. Quite bluntly, my memory is not great, and writing things down in a manner tailored to my own needs helps me reduce the amount of time it takes to do similar tasks. In many cases, the problem is not even the lack of existing documentation; it is just good to have a representation which encourages the minimum cognitive load for me.
+** SymEngine and Me
+The SymEngine repository will turn 10 next year. There are few, if any, contenders in the field of C++ symbolic mathematics libraries; the [[http://viennamath.sourceforge.net/][Vienna math]] project seems to have stalled and does not support matrices.
+** Meeting the Mentors
+** Timelines and Deliverable Goals
+** Conclusions
+It is difficult to gauge the effect of financial incentives on the quality of code. That analysis and possible rant I'll save for another post. Projects like SymEngine attract very good proposals during incentivized development bursts like the Google Summer of Code; but these contributions tend to rot over time; which makes them of dubious use.
+
+[fn:whydoc] I have a very bad memory, and writing things down mean that I n
+
+* TODO LFortran Intrinsics with C :@programming:workflow:projects:tools:
+* TODO Rewriting Dotfiles :@personal:tools:workflow:
+:PROPERTIES:
+:EXPORT_FILE_NAME: rewrite-dotfiles
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+BEGIN_QUOTE
+Notes on migrating from ~dotgit~ to
+#+END_QUOTE
+** Background
