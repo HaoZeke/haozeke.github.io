@@ -8053,26 +8053,94 @@ A while ago, [[Grant Proposals - I][I wrote about my experience applying]] for t
 ** Conclusion
 I might decide to keep a running tab of grant related posts and activities.
 
-* TODO SymEngine and the Season of Docs :@personal:ramblings:thoughts:
+* DONE SymEngine and the Season of Docs :@personal:ramblings:thoughts:
+CLOSED: [2021-03-25 Thu 21:18]
 :PROPERTIES:
 :EXPORT_FILE_NAME: symengine-gsod20
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_BIBLIOGRAPHY: biblio/refs.bib
+:EXPORT_HUGO_PANDOC_CITATIONS: t
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :link-citations true
 :END:
 #+BEGIN_QUOTE
 An overview of documentation complexity and an analysis of incentives.
 #+END_QUOTE
 ** Background
-As mentioned [[https://rgoswami.me/search/?q=symengine][a few times before]], last year [[https://developers.google.com/season-of-docs/docs/2020/participants/project-sympy-rohitgoswami?hl=en][a proposal]] of mine to improve the documentation for the [[https://github.com/symengine/][SymEngine]] organization was accepted under the Google Season of Docs 2020 initiative. This is a more personal and expanded discussion on the report submitted on the SymEngine Wiki regarding the goals and completion metrics.
-** Documentation and  Me
-I have been a huge proponent of documentation throughtout my decade long dabbling in FOSS projects. Quite bluntly, my memory is not great, and writing things down in a manner tailored to my own needs helps me reduce the amount of time it takes to do similar tasks. In many cases, the problem is not even the lack of existing documentation; it is just good to have a representation which encourages the minimum cognitive load for me.
+As mentioned [[https://rgoswami.me/search/?q=symengine][a few times before]], last year [[https://developers.google.com/season-of-docs/docs/2020/participants/project-sympy-rohitgoswami?hl=en][a proposal]] of mine to improve the documentation for the [[https://github.com/symengine/][SymEngine]] organization was accepted under the Google Season of Docs 2020 initiative. This is a more personal and expanded discussion on the [[https://github.com/symengine/symengine/wiki/GSoD-2020-Report-Rohit-Goswami:-SymEngine][report submitted on the SymEngine Wiki]] regarding the goals and completion metrics.
+
+#+DOWNLOADED: screenshot @ 2021-03-25 20:26:32
+#+caption: Promotional image Google seemed to strongly suggest
+[[file:images/Background/2021-03-25_20-26-32_screenshot.png]]
+
+** Documentation and Me
+I have been a huge proponent of documentation throughout my decade long dabbling in FOSS projects. Quite bluntly, my memory is not great, and writing things down in a manner tailored to my own needs helps me reduce the amount of time it takes to do similar tasks. In many cases, the problem is not even the lack of existing documentation; it is just good to have a representation which encourages the minimum cognitive load for me.
 ** SymEngine and Me
 The SymEngine repository will turn 10 next year. There are few, if any, contenders in the field of C++ symbolic mathematics libraries; the [[http://viennamath.sourceforge.net/][Vienna math]] project seems to have stalled and does not support matrices.
-** Meeting the Mentors
-** Timelines and Deliverable Goals
-** Conclusions
-It is difficult to gauge the effect of financial incentives on the quality of code. That analysis and possible rant I'll save for another post. Projects like SymEngine attract very good proposals during incentivized development bursts like the Google Summer of Code; but these contributions tend to rot over time; which makes them of dubious use.
 
-[fn:whydoc] I have a very bad memory, and writing things down mean that I n
+Symbolic math is one of those fields I feel should be used a lot more in the applied sciences, but somehow gets overlooked. Part of this is undoubtedly because of Mathematica, Maple and other proprietary players, which stifle innovation and FOSS development, but also the documentation and technical debt incurred is pretty large.
+** Meeting the Mentors
+Originally, the meeting with my mentoring group was rather anxiety inducing; this was mostly due to my own unfamiliarity with symbolic algebra. Over time though, the meetings quickly became something I started to look forward to; and we were able to collectively come up with a unique; yet sustainable documentation workflow. I was also able to gain insights into the logic underlying the code which would have ordinarily taken longer to process on my own. I also ended up going over some references like @cohencomputer2003 and @cohencomputer2002.
+** Timelines and Deliverable Assets
+One of the early issues I faced was restricting myself to documentation; with such a vibrant and fast-growing project, there were several avenues I wanted to explore and enhance, not all of which were technically under the ambit of documentation. This was an impulse which I eventually had to ignore; though the team were kind enough to strongly suggest submitting PRs in other directions after the documentation project concluded.
+*** Doxygen Alternatives
+Initially I had hoped to have an all-Sphinx documentation site, with all language bindings parsed into Sphinx. For this I explored [[https://github.com/svenevs/exhale][exhale]], as well as the more flexible [[https://github.com/vovkos/doxyrest][doxyrest]]. None of these could match the flexibility or rich output of Doxygen for C++; so eventually I did the more rational thing and developed a nice theme for Doxygen instead, [[https://github.com/HaoZeke/doxyYoda][doxyYoda]].
+**** Base Doxygen
+#+DOWNLOADED: screenshot @ 2021-03-25 20:46:50
+#+caption: Base Doxygen
+[[file:images/Timelines_and_Deliverable_Assets/2021-03-25_20-46-50_screenshot.png]]
+
+- Is ugly
+
+Other than that, there were no standards for consistent documentation originally.
+**** Exhale Documentation
+
+#+DOWNLOADED: screenshot @ 2021-03-25 20:48:42
+#+caption: Exhale example
+[[file:images/Timelines_and_Deliverable_Assets/2021-03-25_20-48-42_screenshot.png]]
+
+- Cannot include source code
+
+That is a deal breaker, since the algorithms are often described step by step.
+**** Doxyrest Documentation
+
+#+DOWNLOADED: screenshot @ 2021-03-25 20:48:59
+#+caption: Doxyrest
+[[file:images/Timelines_and_Deliverable_Assets/2021-03-25_20-48-59_screenshot.png]]
+
+- Includes more structure than exhale
+- Can be extended to other source languages
+- Has a rather complicated setup
+**** Doxygen with DoxyYoda
+#+DOWNLOADED: screenshot @ 2021-03-25 20:47:09
+#+caption: Doxygen with doxyYoda
+[[file:images/Timelines_and_Deliverable_Assets/2021-03-25_20-47-09_screenshot.png]]
+
+- All the goodness of Doxygen
+  - Includes hierarchies
+- Also is now pretty
+*** Tooling Decisions
+This is more of a technically specification; but after rooting around, it was decided to throw consistency of design to the wind and use native tools for each language binding as shown in Table [[tbl:langtool]].
+
+#+name: tbl:langtool
+#+caption: Language bindings and tools
+| Language         | Package                  |
+| [[https://symengine.org/symengine.R][R]]                | [[https://pkgdown.r-lib.org/][pkgdown]]                  |
+| [[https://symengine.org/symengine.py][Python]]           | [[https://www.sphinx-doc.org/][Sphinx]]                   |
+| [[https://symengine.org/symengine][C++]]              | [[https://www.doxygen.nl/index.html][Doxygen]] + [[https://github.com/HaoZeke/doxyYoda][doxyYoda]]       |
+| [[https://symengine.org/SymEngine.jl/][Julia]]            | [[https://juliadocs.github.io/Documenter.jl/stable/man/guide/][Documenter.jl]]            |
+| [[https://symengine.org/#api-documentation][Notebooks / MyST]] | [[https://www.sphinx-doc.org/][Sphinx]] + [[https://myst-nb.readthedocs.io/en/latest/][myst]] + [[https://jupytext.readthedocs.io/en/latest/install.html][jupytext]] |
+
+*** Notebooks and Documentation
+*I do not like* Jupyter Notebooks. This is because, to me, a rabid ~org-mode~ fanatic [fn:soyousay], it seems pretty odd that they are essentially monstrous ~json~ nightmares instead of plain text. Thankfully [[https://jupytext.readthedocs.io/][jupytext]] and [[https://myst-nb.readthedocs.io/en/latest/][MyST-NB]] solve this problem admirably. There are still some use-cases for having pure notebooks, especially since GitHub now renders them; so a CI (Github Actions) generates a "notebooks" branch for the entrenched as well.
+*** Cell-Tags and Disappointment
+One of the major disappointments faced during the project had to do with the way cell tags work; or rather, do not work. It was planned to have notebooks executed with ~papermill~ and switch between development and stable packages based on cell-tags; however, cell-tags apparently cannot be used for meta-injection; which means they are absolutely useless. A workaround of course might be using macro expansions; however, ~papermill~ did not really seem up to the challenge of injecting non-python variables either so this was abandoned.
+** Future Plans
+Personally, I will not be participating in further rounds in the foreseeable future, mostly because I intend to continue working on SymEngine until it is compliant with the standards I championed, and the addition of more projects to the portfolio I consider to be part of my moral responsibilities is not a good idea right now.
+** Conclusions
+It is difficult to gauge the effect of financial incentives on the quality of code. That analysis and possible rant I'll save for another post. Projects like SymEngine attract very good proposals during high incentive development bursts like the Google Summer of Code and Season of Documentation; but these contributions tend to rot over time; which makes them of dubious use. That said, my own experience involving SymEngine was personally enriching, and I look forward to working on the project further. I believe the most useful aspect of the program is the ability to meet with the rest of the development team regularly, none of the other projects I work on have regular meetings, and it is a model I intend to carry forward in some of my projects.
+
+[fn:whydoc] I have a very bad memory, and writing things down means that I am less likely to repeat tasks
+[fn:soyousay] This site is [[https://github.com/HaoZeke/haozeke.github.io/][written in org-mode]], my ~doom-emacs~ configuration is also [[https://dotdoom.rgoswami.me][extensive and online]]
 
 * TODO LFortran Intrinsics with C :@programming:workflow:projects:tools:
 * TODO Rewriting Dotfiles :@personal:tools:workflow:
