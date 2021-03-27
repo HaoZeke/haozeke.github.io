@@ -8152,3 +8152,29 @@ It is difficult to gauge the effect of financial incentives on the quality of co
 Notes on migrating from ~dotgit~ to
 #+END_QUOTE
 ** Background
+* DONE Free Software and Me :@personal:rant:
+CLOSED: [2021-03-27 Sat 21:28]
+:PROPERTIES:
+:EXPORT_FILE_NAME: fsf-me-stallman
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments false
+:END:
+#+BEGIN_QUOTE
+Thoughts about the FSF, toxicity, and Stallman
+#+END_QUOTE
+First a disclaimer. Comments are *not enabled* for this post. This is very personal, and it is in my online space so I reserve the right to not talk about this. This is not a conversation. It is a protracted comment on recent, disappointing, news about the "tech community". It is unlike anything I have normally published; and is hopefully the last time I will publish something like this. In general there is always something to be outraged about; and that is what Twitter is for. Most of these things are not relevant enough to me personally to write a post about.
+
+I do not write about my personal life and I try not to have one [fn:seriously]. [[https://www.covid.is/english][COVID-19]], [[https://www.ruv.is/frett/2021/03/03/over-14000-earthquakes][earthquakes]] and even [[https://www.ruv.is/frett/2021/03/20/live-feed-from-iceland-volcano][a volcano]]; have all been treated with utter and complete indifference. None of those things have defined any part of me; and will never do so. The FSF and [[https://www.redhat.com/en/blog/red-hat-statement-about-richard-stallmans-return-free-software-foundation-board][its flip flopping]] with respect to Richard Stallman; does affect me in a way. It embarrasses me. I cannot imagine why people need to hero worship someone who has contributed nothing to the community for many years now, other than propagation of a toxic subculture. Even Emacs, which he "wrote" several decades ago; is being championed more by the fantastic [[https://github.com/hlissner][Henrik Lissner]] and his [[https://github.com/hlissner/doom-emacs][doom-emacs project]]; proof again that the "holy wars" were pointless and toxic[fn:moreleader].
+
+I got into programming over ten years ago; when I was in the tenth grade I tried to submit something silly to a mailing list. I was (rightly) shot down. That annoyed me; and I clawed my way through reams of books and eventually turned out to be a passable programmer in my own right. I joke about the way I was "guided" into open source now when I teach more inclusive introductory workshops; but in some sense the sting of that initial set of interactions has never really dulled. Nonetheless, programming remains the most open of disciplines [fn:reallyprog], which many wrongly ascribe to Richard Stallman.
+
+I am not here to vilify Richard Stallman; I have never met the guy. For those interested, and from people with more of a stake in the matter [[https://gcc.gnu.org/pipermail/gcc/2021-March/235091.html][Nathan Sidwell's take]] is pretty solid [fn:whystake]. I simply do not like that I can no longer vouch for my many GPL'd projects anymore. Many will point out (have pointed out actually), that Stallman was always there; and this late stage cancel culture means nothing or is pointless posturing. I reject that stance. I have not always been a stellar human being in my personal interactions; but I strive to both make amends (personally) and also to maintain an image of a better human being. Me, online, is simply a projection of the person I wish to be. This mindset grew from a time back when it was common to have multiple online personas, before the line between one's online identity and real identity was not so blurry. Over time; I hope to be the sort of person who can be both erudite and welcoming; inspite of the fact that it is difficult to not throw diva tantrums (which are often socially acceptable as well). This is also a stance (i.e. iterative improvement) which Stallman clearly does not share. This lack of willingness to change with the times is enough of a reason for this post.
+
+My own data consisting of me and other people I have ranted to in person does not meaningfully represent a community [fn:wherecomm]; but it felt necessary to take a stand. Active rejection of the herd mentality which leads to elevating one person above the rest; and goes on to assert "proportional" justice does not involve removing such a toxic person from leadership roles is important to me. I would like to continue to be proud of my work (such as it is) and of my projects (such as they are) without having to tacitly agree with the views of Stallman or the FSF. I would prefer to wipe the names of all "icons" and "founders" from the record and deal only in terms of the concrete work they have generated. This would prevent sheeple from hero-worshiping and idolizing people (this goes for "good" and "bad" people). In my opinion; Stallman should be removed for failing to be a decent human being. So many stories are told about how "unrelenting" and "passionate" this person is about free software. It is sad then; that he feels the need to be listed so prominently. Society as a whole should reject the sort of repugnant behavior he has displayed; and he should not let that prevent him from contributing to FOSS.
+
+That's the end of this rant.
+
+[fn:seriously] Thankfully this bothers no one, me least of all.
+[fn:reallyprog] I dare you to find open resources which teach you chemical engineering.
+[fn:wherecomm] There is a [[https://rms-open-letter.github.io/][letter against his reinstatement]]; and a [[https://rms-support-letter.github.io/][grovelling one in support]] of his reinstatement.
+[fn:moreleader] This [[https://news.ycombinator.com/item?id=26535789][HN post describes other leadership failures]] under Stallman
+[fn:whystake] He, unlike the "supporters" is an active contributor to projects which sheeple believe exist only because of Stallman
