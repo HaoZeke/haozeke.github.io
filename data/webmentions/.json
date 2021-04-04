@@ -1,0 +1,20 @@
+[
+  {
+    "type": "entry",
+    "author": {
+      "type": "card",
+      "name": "James Little",
+      "photo": "https://webmention.io/avatar/pbs.twimg.com/eb345447d733172d04d1033f587455dcc137bc72d426b963f7f6f2d016c46cb1.jpg",
+      "url": "https://twitter.com/jameslittle230"
+    },
+    "url": "https://twitter.com/rg0swami/status/1343616907195412481#favorited-by-2798914670",
+    "published": null,
+    "wm-received": "2020-12-28T20:45:41Z",
+    "wm-id": 967265,
+    "wm-source": "https://brid-gy.appspot.com/like/twitter/rg0swami/1343616907195412481/2798914670",
+    "wm-target": "https://rgoswami.me/",
+    "like-of": "https://rgoswami.me/",
+    "wm-property": "like-of",
+    "wm-private": false
+  }
+]
