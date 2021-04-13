@@ -1,6 +1,10 @@
 let
   sources = import ./nix/sources.nix;
   pkgs = import sources.nixpkgs { };
+  nodePkgs = (pkgs.callPackage ./node.nix {
+    inherit pkgs;
+    nodejs = pkgs.nodejs-12_x;
+  }).shell.nodeDependencies;
   stdenv = pkgs.stdenv;
   myGems = pkgs.bundlerEnv {
     name = "gems-for-some-project";
@@ -12,6 +16,8 @@ let
     mkdir -p "$(pwd)/_libs"
     export R_LIBS_USER="$(pwd)/_libs"
     eval $(egrep ^export ${myHaskellEnv}/bin/ghc)
+    ln -s ${nodePkgs}/lib/node_modules ./node_modules
+    export PATH="${nodePkgs}/bin:$PATH"
   '';
 in pkgs.mkShell {
   buildInputs = with pkgs; [
