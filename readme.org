@@ -2,8 +2,47 @@
 - This is a standard landing page and blog for my miscellaneous thoughts and essentially links out to all my other work.
 - The theme is based off this [[https://themes.gohugo.io//theme/hugo-theme-hello-friend-ng/][theme]]
 - The rest of the site is configured to work well with doom-emacs, so it uses ~ox-hugo~
-* Build
-The ~node~ packages are to be generated with:
+* Running Locally
+After the dependencies are set up below the site can be built and served with ~rake~ tasks. [[https://gohugo.io/getting-started/installing/][Hugo]] is also expected.
 #+begin_src bash
-node2nix -c node.nix
+$ rake --tasks
+rake clean            # Clean the generated content
+rake getPandoc        # Install pandoc
+rake hugoBuild        # Build site with Hugo
+rake hugoServe[port]  # Serve site with Hugo
+rake md               # Orgmode to markdown with Emacs
+#+end_src
+** With Nix
+Enter the shell with ~nix-shell~ and use a ~rake~ task!
+*** Updating Expressions
+This typically involves the following:
+#+begin_src conf
+# Optional, in ~/.config/nix/nix.conf or darwin-configuration.nix
+  nix.package = pkgs.nixUnstable;
+  nix.extraOptions = ''
+    experimental-features = nix-command flakes
+  '';
+#+end_src
+Updating the ruby packages:
+#+begin_src bash
+nix shell nixpkgs#bundix -c bundix -l
+#+end_src
+Similarly, the ~node~ packages are to be generated with:
+#+begin_src bash
+nix shell nixpkgs#nodePackages.node2nix -c node2nix -c node.nix
+#+end_src
+** Without Nix
+*** Ruby
+Track the ruby dependencies with ~rbenv~ and ~ruby-build~:
+#+begin_src bash
+git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+cd ~/.rbenv && src/configure && make -C src
+echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.zshrc
+#+end_src
+Then use them:
+#+begin_src bash
+rbenv install 2.6.2
+eval "$(rbenv init -)"
+gem install bundler
+bundle
 #+end_src
