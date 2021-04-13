@@ -6515,7 +6515,9 @@ Anything on this site [[https://rgoswami.me/tags/nix/][tagged with Nix]]. Also a
 - [[https://github.com/HaoZeke/CarpentryCon2020_Nix][CarpentryCon2020 Materials]]
 - [[https://rgoswami.me/posts/ccon-tut-nix/][A tutorial introduction to Nix and Python]]
 ** Slides
-The slides are embedded below. The ~orgmode~ source [[https://github.com/HaoZeke/haozeke.github.io/blob/src/presentations/NixCon2020/darkNix.org][is here on the site's GH repo]].
+- [[file:/revealjs/NixCon2020/darkNix.html][Best viewed here]] using a browser (in a new tab)
+- A ~pdf~ copy of the slides are embedded below
+- The ~orgmode~ source [[https://github.com/HaoZeke/haozeke.github.io/blob/src/presentations/NixCon2020/darkNix.org][is here on the site's GH repo]].
 #+BEGIN_EXPORT html
 <script async class="speakerdeck-embed" data-id="2cc4e5d0cca445be95e1e77827ea782c" data-ratio="1.37081659973226" src="//speakerdeck.com/assets/embed.js"></script>
 #+END_EXPORT
