@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<!-- saved from url=(0122)file:///Users/rohitgoswami/Git/Github/WebDev/Mine/haozeke.github.io/presentations/NixCon2020/darkNix.html#/sec-title-slide -->
+<html lang="en" class="reveal-full-page"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>Nix From The Dark Ages: Without Root</title>
+<meta name="author" content="Rohit Goswami">
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="./darkNix_files/reveal.css">
+
+<link rel="stylesheet" href="./darkNix_files/white.css" id="theme">
+
+<link rel="stylesheet" href="./darkNix_files/robot-lung.css">
+
+<link rel="stylesheet" href="./darkNix_files/rlExtras.css">
+
+<link rel="stylesheet" href="./darkNix_files/oerFragments.css">
+
+<link rel="stylesheet" href="file:///Users/rohitgoswami/.emacs.d/.local/straight/build/revealjs/plugin/accessibility/helper.css">
+
+<link rel="stylesheet" href="file:///Users/rohitgoswami/.emacs.d/.local/straight/build/revealjs/plugin/toc-progress/toc-progress.css">
+
+<link rel="stylesheet" href="file:///Users/rohitgoswami/.emacs.d/.local/straight/build/revealjs/dist/theme/toc-style.css">
+
+<link rel="stylesheet" href="file:///Users/rohitgoswami/.emacs.d/.local/straight/build/revealjs/dist/theme/fonts/source-sans-pro/source-sans-pro.css">
+<link rel="stylesheet" href="./darkNix_files/zenburn.css">
+<style type="text/css">.hljs-ln{border-collapse:collapse}.hljs-ln td{padding:0}.hljs-ln-n:before{content:attr(data-line-number)}</style></head>
+<body class="reveal-viewport no-toc-progress" style="transition: -webkit-transform 0.8s ease 0s; --slide-width:960px; --slide-height:700px;">
+<div class="line top"></div> <div class="line bottom"></div> <div class="line left"></div> <div class="line right"></div>
+<div class="reveal fade center focused has-vertical-slides has-horizontal-slides ready" role="application" data-transition-speed="default" data-background-transition="fade" style="">
+<div class="slides" style="width: 960px; height: 700px; inset: 50% auto auto 50%; transform: translate(-50%, -50%) scale(1.072);">
+<section id="sec-title-slide" data-state="no-toc-progress" style="top: 168px; display: block;" class="present">
+<h1 class="title">Nix From The Dark Ages: Without Root</h1><h2 class="author">Rohit Goswami</h2><p class="date">Created: 2021-04-13 Tue 23:17</p>
+</section>
+
+
+
+
+
+<section style="top: 0px; display: block;" class="stack future" data-previous-indexv="0" hidden="" aria-hidden="true">
+<section id="slide-orgc067d04" style="top: 70.5px; display: block;" class="" aria-hidden="true">
+<h2 id="orgc067d04">Hello NixCon!</h2>
+<ul>
+<li>Find me here: <a href="https://rgoswami.me/">https://rgoswami.me</a></li>
+<li>Who?
+<ul>
+<li><b>Rohit Goswami</b> MInstP AMIChemE AMIE
+<ul>
+<li>Doctoral Researcher, University of Iceland, Faculty of Physical Sciences</li>
+
+</ul></li>
+
+</ul></li>
+
+</ul>
+
+<div id="org93ff97a" class="figure">
+<p><img src="./darkNix_files/physUoI.png" alt="physUoI.png">
+</p>
+</div>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section style="top: 0px; display: block;" class="stack future" data-previous-indexv="0" hidden="" aria-hidden="true">
+<section id="slide-orgf4b794b" style="top: 300.5px; display: block;" class="" aria-hidden="true">
+<h2 id="orgf4b794b">Big Picture</h2>
+<div class="outline-text-2" id="text-orgf4b794b">
+</div>
+</section>
+<section id="slide-org1d5d19f" class="future" style="top: 14.5px; display: none;" data-fragment="-1" hidden="" aria-hidden="true">
+<h3 id="org1d5d19f">Academic Clusters</h3>
+<div class="leftcol" id="org06ddd1e">
+<p>
+<b>Woes</b>
+</p>
+<ul>
+<li class="fragment appear" data-fragment-index="0">No <code>docker</code>
+<ul>
+<li>If lucky, will have <code>singularity</code></li>
+
+</ul></li>
+<li class="fragment appear" data-fragment-index="1">No userspace support
+<ul>
+<li>No <code>proot</code></li>
+
+</ul></li>
+<li class="fragment appear" data-fragment-index="2">Probably runs CentOS or something</li>
+<li class="fragment appear" data-fragment-index="3">Has a networked file system</li>
+<li class="fragment appear" data-fragment-index="4">Uses a resource queue
+<ul>
+<li>Slurm, PBS</li>
+
+</ul></li>
+<li class="fragment appear" data-fragment-index="5">Might have support for <code>lmod</code></li>
+
+</ul>
+
+</div>
+<div class="rightcol" id="orgfdf5ebf">
+
+<div id="org47d6eed" class="figure">
+<p><img src="./darkNix_files/2020-10-17_08-48-31_screenshot.png" alt="image from GE research image" align="right">
+</p>
+</div>
+
+
+<div id="orgaadae9d" class="figure">
+<p><img src="./darkNix_files/2020-10-17_08-50-27_screenshot.png" alt="sampleoutput image" align="right">
+</p>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-org2ed93ab" class="future" style="top: 153px; display: none;" data-fragment="-1" hidden="" aria-hidden="true">
+<h3 id="org2ed93ab">Why?</h3>
+<div class="leftcol" id="org4fa2e45">
+<p>
+<b>Necessary Evil</b>
+</p>
+<ul>
+<li class="fragment appear" data-fragment-index="0">Users can’t be trusted</li>
+<li class="fragment appear" data-fragment-index="1">Massive amounts of resources are consumed</li>
+<li class="fragment appear" data-fragment-index="2">Resource limits are tracked</li>
+
+</ul>
+
+</div>
+<div class="rightcol" id="org121f0ea">
+<p>
+<b>However</b>
+</p>
+<ul>
+<li class="fragment appear" data-fragment-index="3">Users need new software</li>
+<li class="fragment appear" data-fragment-index="4">Developers need guarantees of high resources
+<ul>
+<li>To test parallelism and more</li>
+
+</ul></li>
+
+</ul>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org50d13ed" class="future" style="top: 93.5px; display: none;" data-fragment="-1" hidden="" aria-hidden="true">
+<h3 id="org50d13ed">Where’s Nix?</h3>
+<ul>
+<li><b>Nix is the solution</b> <a class="org-ref-reference" href="file:///Users/rohitgoswami/Git/Github/WebDev/Mine/haozeke.github.io/presentations/NixCon2020/darkNix.html#/slide-bibliography">[dolstraNixSafePolicyFree2004]</a>
+<ul>
+<li>Used by some scientific software too <a class="org-ref-reference" href="file:///Users/rohitgoswami/Git/Github/WebDev/Mine/haozeke.github.io/presentations/NixCon2020/darkNix.html#/slide-bibliography">[goswamiDSEAMSDeferredStructural2020]</a></li>
+
+</ul></li>
+
+</ul>
+
+<p>
+Does no one use it then?
+</p>
+<ul>
+<li class="fragment appear" data-fragment-index="0">Some clusters have <code>nix</code> support</li>
+
+</ul>
+<ul>
+<li class="fragment appear" data-fragment-index="1">They actually support it though</li>
+<li class="fragment appear" data-fragment-index="2">GRICAD has <a class="org-ref-reference" href="file:///Users/rohitgoswami/Git/Github/WebDev/Mine/haozeke.github.io/presentations/NixCon2020/darkNix.html#/slide-bibliography">[bzeznikNixHPCPackage2017]</a></li>
+<li class="fragment appear" data-fragment-index="3">The Flatiron Institute and <a href="https://docs.computecanada.ca/wiki/Using_Nix">Compute Canada</a> also support <code>nix</code></li>
+
+</ul>
+<ul>
+<li>What if <b>no-one cared?</b></li>
+
+</ul>
+<ul>
+<li class="fragment appear" data-fragment-index="4"><span class="underline">Then you end up here</span> (<a href="https://rgoswami.me/posts/local-nix-no-root/">post</a>)</li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section style="top: 0px; display: none;" class="stack future" data-previous-indexv="0" hidden="" aria-hidden="true">
+<section id="slide-orgba1e151" style="top: 300.5px; display: none;" class="" aria-hidden="true">
+<h2 id="orgba1e151">Where are we?</h2>
+<div class="outline-text-2" id="text-orgba1e151">
+</div>
+</section>
+<section id="slide-org87f619b" class="future" style="top: 60px; display: none;" data-fragment="-1" hidden="" aria-hidden="true">
+<h3 id="org87f619b">Methodology Review</h3>
+<div class="leftcol" id="orgfab4453">
+<p>
+<b>Prerequisites</b>
+</p>
+<ul>
+<li>A whole lot of user-installed junk
+<ul>
+<li><a href="https://rgoswami.me/posts/hpc-dots-lmod/">Listed here</a></li>
+
+</ul></li>
+
+</ul>
+
+<div id="orgc73afc0" class="figure">
+<p><img src="./darkNix_files/2020-10-17_09-13-27_screenshot.png" alt="2020-10-17_09-13-27_screenshot.png">
+</p>
+</div>
+
+</div>
+<div class="rightcol" id="orgb96b6ff">
+<p>
+<b>Concept</b>
+</p>
+<ul>
+<li class="fragment appear" data-fragment-index="0">Somehow get <code>nix</code> to build
+<ul>
+<li>Do unholy things to paths</li>
+<li>Indiscriminate source pruning</li>
+
+</ul></li>
+<li class="fragment appear" data-fragment-index="1">Let <code>nix</code> re-install itself
+<ul>
+<li><a href="https://rgoswami.me/posts/local-nix-no-root/">Described here</a></li>
+
+</ul></li>
+
+</ul>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgb8e2eef" class="future" style="top: 182px; display: none;" hidden="" aria-hidden="true">
+<h3 id="orgb8e2eef">Acknowledgements</h3>
+<p>
+<b>Who worked on it first?</b>
+</p>
+<ul>
+<li><a href="https://github.com/jefdaj/nix-no-root">jefdaj/nix-no-root</a>
+<ul>
+<li>Built upto <code>2.0.4</code> apparently</li>
+
+</ul></li>
+<li><a href="https://github.com/pjotrp/nix-no-root">pjotrp/nix-no-root</a>
+<ul>
+<li>Seemingly abandoned after 2015</li>
+
+</ul></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org206d812" data-background="#005ab6" class="has-dark-background future" style="top: 270.5px; display: none;" data-fragment="-1" hidden="" aria-hidden="true">
+<h3 id="org206d812">Hooray?</h3>
+<ul>
+<li class="fragment appear" data-fragment-index="0"><b>Not quite!</b></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org732b073" class="future" style="top: 212px; display: none;" hidden="" aria-hidden="true">
+<h3 id="org732b073">What went wrong?</h3>
+<ul>
+<li>Massive waste of resources
+<ul>
+<li>Though they can be traced to the user</li>
+
+</ul></li>
+<li>Effectively builds on the login node (~ <b>3 hours</b>)
+<ul>
+<li>Can’t be helped without integration with a queue</li>
+
+</ul></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section style="top: 0px; display: none;" class="stack future" data-previous-indexv="0" hidden="" aria-hidden="true">
+<section id="slide-org9a849ee" style="top: 300.5px; display: none;" class="" aria-hidden="true">
+<h2 id="org9a849ee">What do we need?</h2>
+<div class="outline-text-2" id="text-org9a849ee">
+</div>
+</section>
+<section id="slide-org971f346" class="future" style="top: 216px; display: none;" data-fragment="-1" hidden="" aria-hidden="true">
+<h3 id="org971f346">Better Permission Handling</h3>
+<ul>
+<li>e.g. building <code>ruby</code> involves:</li>
+
+</ul>
+<div class="org-src-container">
+
+<pre><code class="bash hljs">watch -n1 -x chmod 777 -R /tmp/nix-build-ruby-2.6.6.drv-0/<span class="hljs-built_in">source</span>/lib/
+</code></pre>
+</div>
+<ul>
+<li class="fragment appear" data-fragment-index="0">Less gratuitous permissions might be set</li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org71beae3" class="future" style="top: 168.5px; display: none;" hidden="" aria-hidden="true">
+<h3 id="org71beae3">Better NFS Locks</h3>
+<ul>
+<li>Maybe even build in a temporary directory until the lock is released
+<ul>
+<li>Currently one of the “fixes” includes:</li>
+
+</ul></li>
+
+</ul>
+<div class="org-src-container">
+
+<pre><code class="bash hljs">nix-build
+<span class="hljs-comment"># something about a .nfs lockfile in some .nix/$HASH-pkg/.nfs0234234</span>
+mv .nix/<span class="hljs-variable">$HASH</span>-pkg/ .diePKGs/
+nix-build <span class="hljs-comment"># profit</span>
+</code></pre>
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org76555ba" class="future" style="top: 172px; display: none;" hidden="" aria-hidden="true">
+<h3 id="org76555ba">Bills and Queues</h3>
+<div class="leftcol" id="org2f712b2">
+<p>
+<b>Builder Provenance</b>
+</p>
+<ul>
+<li>Who built what?
+<ul>
+<li>a.k.a. Billing</li>
+
+</ul></li>
+<li>Honestly the only way to make this go mainstream</li>
+
+</ul>
+
+</div>
+<div class="rightcol" id="org7533efa">
+<p>
+<b>Queue Integration</b>
+</p>
+<ul>
+<li>Can only build on the head node
+<ul>
+<li>Need <code>slurm</code> or PBS to run on the whole cluster</li>
+
+</ul></li>
+
+</ul>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section style="top: 0px; display: none;" class="stack future" data-previous-indexv="0" hidden="" aria-hidden="true">
+<section id="slide-orgd80c377" style="top: 300.5px; display: none;" class="" aria-hidden="true">
+<h2 id="orgd80c377">Future Directions</h2>
+<div class="outline-text-2" id="text-orgd80c377">
+</div>
+</section>
+<section id="slide-orgc819119" class="future" style="top: 192px; display: none;" data-fragment="-1" hidden="" aria-hidden="true">
+<h3 id="orgc819119">Union Mount</h3>
+<ul>
+<li class="fragment appear" data-fragment-index="0"><a href="https://github.com/NixOS/nix/issues/2764">Proposed here</a>
+<ul>
+<li>by <code>catern</code></li>
+
+</ul></li>
+<li class="fragment appear" data-fragment-index="1">Would reduce compilation</li>
+<li class="fragment appear" data-fragment-index="2">Currently does not actually replace the global store
+<ul>
+<li><a href="https://www.reddit.com/r/NixOS/comments/iod7wi/local_nix_without_root_hpc/">Discussion here</a></li>
+
+</ul></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org6669f50" class="future" style="top: 173px; display: none;" data-fragment="-1" hidden="" aria-hidden="true">
+<h3 id="org6669f50">Personal Goals</h3>
+<ul>
+<li class="fragment appear" data-fragment-index="0">Native file path test
+<ul>
+<li>Hash relative to a prefix</li>
+
+</ul></li>
+<li class="fragment appear" data-fragment-index="1">Cleaner Setup
+<ul>
+<li>Maybe a derivation</li>
+
+</ul></li>
+<li class="fragment appear" data-fragment-index="2">Return Next Year!
+<ul>
+<li>Hopefully with cleaner methods</li>
+
+</ul></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section style="top: 0px; display: none;" class="stack future" data-previous-indexv="0" hidden="" aria-hidden="true">
+<section id="slide-orgca414ec" style="top: 300.5px; display: none;" class="" aria-hidden="true">
+<h2 id="orgca414ec">The End</h2>
+<div class="outline-text-2" id="text-orgca414ec">
+</div>
+</section>
+<section id="slide-bibliography" class="future" style="top: 75.5px; display: none;" hidden="" aria-hidden="true">
+<h3 id="bibliography">Bibliography</h3>
+<ul class="org-ref-bib"><li><a id="bzeznikNixHPCPackage2017">[bzeznikNixHPCPackage2017]</a> <a name="bzeznikNixHPCPackage2017"></a>Bzeznik, Henriot, Reis, Richard &amp; Tavard, Nix as HPC Package Management System, 1-6, in in: Proceedings of the Fourth International Workshop on HPC User Support Tools  - HUST'17, edited by ACM Press </li>
+<li><a id="dolstraNixSafePolicyFree2004">[dolstraNixSafePolicyFree2004]</a> <a name="dolstraNixSafePolicyFree2004"></a>Dolstra, de Jonge &amp; Visser, Nix: A Safe and Policy-Free System for Software Deployment, <i></i>,  15 .</li>
+<li><a id="goswamiDSEAMSDeferredStructural2020">[goswamiDSEAMSDeferredStructural2020]</a> <a name="goswamiDSEAMSDeferredStructural2020"></a>Goswami, Goswami &amp; Singh, D-SEAMS: Deferred Structural Elucidation Analysis for Molecular Simulations, <i>Journal of Chemical Information and Modeling</i>, <b>60(4)</b>, 2169-2177 . <a href="http://dx.doi.org/10.1021/acs.jcim.0c00031">doi</a>.</li>
+</ul>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-orgb7b8d81" data-background="#005ab6" class="has-dark-background future" style="top: 290px; display: none;" hidden="" aria-hidden="true">
+<h3 id="orgb7b8d81">Thanks!</h3>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+</div>
+<div class="backgrounds"><div class="slide-background present" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background stack future" data-loaded="true" style="display: block;"><div class="slide-background-content"></div><div class="slide-background present" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div></div><div class="slide-background stack future" data-loaded="true" style="display: block;"><div class="slide-background-content"></div><div class="slide-background present" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div></div><div class="slide-background stack future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div><div class="slide-background present" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background future" data-background-hash="#005ab6nullnullnullnullnullnullnullnullnull" style="background: rgb(0, 90, 182); display: none;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div></div><div class="slide-background stack future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div><div class="slide-background present" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div></div><div class="slide-background stack future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div><div class="slide-background present" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div></div><div class="slide-background stack future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div><div class="slide-background present" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background future" data-background-hash="#005ab6nullnullnullnullnullnullnullnullnull" style="background: rgb(0, 90, 182); display: none;" data-loaded="true"><div class="slide-background-content"></div></div></div></div><div class="slide-number" style="display: block;"><a href="file:///Users/rohitgoswami/Git/Github/WebDev/Mine/haozeke.github.io/presentations/NixCon2020/darkNix.html#/sec-title-slide">
+					<span class="slide-number-a">1</span>
+					</a></div><aside class="controls" data-controls-layout="bottom-right" data-controls-back-arrows="faded" style="display: block;"><button class="navigate-left" aria-label="previous slide" disabled="disabled"><div class="controls-arrow"></div></button>
+			<button class="navigate-right enabled" aria-label="next slide"><div class="controls-arrow"></div></button>
+			<button class="navigate-up" aria-label="above slide" disabled="disabled"><div class="controls-arrow"></div></button>
+			<button class="navigate-down" aria-label="below slide" disabled="disabled"><div class="controls-arrow"></div></button></aside><div class="progress" style="display: block;"><span style="transform: scaleX(0);"></span></div><div class="speaker-notes" data-prevent-swipe="" tabindex="0"></div><div class="pause-overlay"><button class="resume-button">Resume presentation</button></div><div class="aria-status" aria-live="polite" aria-atomic="true" style="position: absolute; height: 1px; width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px);">Nix From The Dark Ages: Without Root Rohit Goswami Created: 2021-04-13 Tue 23:17 </div></div>
+<script src="./darkNix_files/reveal.js"></script>
+<script src="./darkNix_files/notes.js"></script>
+<script src="./darkNix_files/search.js"></script>
+<script src="./darkNix_files/zoom.js"></script>
+<script src="./darkNix_files/highlight.js"></script>
+<script src="file:///Users/rohitgoswami/.emacs.d/.local/straight/build/revealjs/dist/theme/hidelinks.js"></script>
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: true,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+mouseWheel: true,
+fragmentInURL: true,
+hashOneBasedIndex: false,
+pdfSeparateFragments: false,
+
+overview: true,
+margin: 0.20,
+
+transition: 'fade',
+transitionSpeed: 'default',
+showNotes: window.location.search.match( /print-pdf/gi ) ? 'separate-page' : false,
+
+// Plugins with reveal.js 4.x
+plugins: [ RevealNotes, RevealSearch, RevealZoom, RevealHighlight ],
+
+// Optional libraries used to extend reveal.js
+dependencies: [
+]
+
+});
+</script>
+
+
+</body></html>
