@@ -192,6 +192,7 @@ These are tech talks, for academic presentations, [[https://github.com/haozeke/c
 - Nix from the dark ages (without Root) at [[https://2020.nixcon.org/][NixCon 2020]]
 *** Mentioning Me
 **** Lists
+- [[https://en.rannis.is/news/allocation-from-the-icelandic-research-fund-for-the-financial-year-2021-1][2021 List of projects funded by the Icelandic Research Fund]]
 - [[https://developers.google.com/season-of-docs/docs/2020/participants][2020 GSoD (Google Season of Docs) list of successful projects]]
 - [[https://sites.google.com/view/2020crt/home?authuser=0][2020 Categorifications in Representation Theory]] ([[https://sites.google.com/view/2020crt/registered-participants?authuser=0][participant]])
 - [[https://web-eur.cvent.com/event/16fae83c-5b72-4690-a368-829688f0d14b/summary][Heilbronn Annual Conference 2020]] ([[https://web-eur.cvent.com/event/16fae83c-5b72-4690-a368-829688f0d14b/websitePage:1faf08a0-dcdd-4a2c-b4b8-d9d445202377?RefId=HIMR][participant]])
@@ -206,17 +207,25 @@ These are tech talks, for academic presentations, [[https://github.com/haozeke/c
 - CECAM Participant for:
   - [[https://www.cecam.org/workshop-details/26#participant_tab][CECAM-DE-SMSM: (Machine) learning how to coarse-grain]]
   - [[https://www.cecam.org/workshop-details/28#participant_tab][CECAM-DE-SMSM: ESPResSo and Python: Versatile Tools for Soft Matter Research]]
+- Fortran Newsletter Mentions:
+  - [[https://fortran-lang.org/newsletter/2021/04/01/Fortran-Newsletter-April-2021/][April 2021]] :: LFortran contributor
+  - [[https://fortran-lang.org/newsletter/2021/03/01/Fortran-Newsletter-March-2021/][March 2021]] :: LFortran contributor
 **** Teaching
+- [[https://www.iopconferences.org/iop/frontend/reg/thome.csp?pageID=1032921&eventID=1664][IOP Workshop on C++ II - Libraries and Simulations]] :: April 13, 2020 (instructor) ([[Talk Supplements for IOP's C++ Workshop][materials]])
 - [[https://wc3m.github.io/][Water, Chemicals and more with Computers for Chemistry (WC3m)]] :: July 28-August 28, 2020 (co-lead)
 - [[https://coderefinery.github.io/2020-05-25-online/][2020 MegaCodeRefinery]] (helper)
 ***** Carpentries
+- [[https://annajiat.github.io/2021-03-29-cmu-online/][Data Carpentry Ecology Social Sciences with R at CMU]] :: March 29-31, 2021 (instructor)
 - [[https://haozeke.github.io/2021-03-16-utah-online/][Network of the National Library of Medicine (NNLM) LC Workshop]] :: March 16-19, 2021 (instructor)
 - [[https://4turesearchdata-carpentries.github.io/2021-03-16-tudelft-online/][SWC workshop at the Eindhoven University of Technology (TU/e)]] :: March 16-17, 23-24, 2021 (instructor)
-- [[https://ucsbcarpentry.github.io/2021-02-18-ucsb-online/][Data Analysis and Visualization in Python for Ecologists]] :: February 18-19, 2021 (instructor)
+- [[https://ucsbcarpentry.github.io/2021-02-18-ucsb-online/][Data Analysis and Visualization in Python for Ecologists at UCSB]] :: February 18-19, 2021 (instructor)
+- [[https://bkmgit.github.io/2020-12-01-TRLN-NNLM-online/][Triangle Research Library Network Library Carpentry Workshop]] :: December 1-4, 2020 (instructor)
+- [[https://sichongp.github.io/2020-11-11-cmu-online/][Data Carpentry Ecology with R at CMU]] :: November 11-13, 2020 (instructor)
+- [[https://marwahaha.github.io/2020-11-04-ITEP-online/][Data Carpentry Workshop at ITEP]] :: November 9-10, 2020 (instructor)
 - [[https://flatironinstitute.github.io/sciware-swc-2020-09-git/][Sciware: Git and GitHub at the Flatiron Institute]] :: September 24 and October 1, 2020 (instructor)
 - [[https://nairps.github.io/2020-09-08-ggc-SBDH-online/][Data Carpentry Workshop for Social Sciences Georgia Gwinnett College]] :: September 8-11, 2020 (instructor)
-- [[https://smcclatchy.github.io/2020-06-22-biotechPartners-pm/][Data Carpentry Ecology for Biotech Partners]] :: June 22-July 2, 2020 (instructor)
 - [[https://sadilar.github.io/2020-06-29-SA-ONLINE/][Online Data Carpentry Workshop SADiLaR, South Africa]] :: 29 June - 3 July, 2020 (instructor)
+- [[https://smcclatchy.github.io/2020-06-22-biotechPartners-pm/][Data Carpentry Ecology for Biotech Partners]] :: June 22-July 2, 2020 (instructor)
 **** Quotes
 - Quoted in a [[https://www.stanforddaily.com/2020/06/08/code-in-place-makes-cs-accessible-to-thousands-worldwide/][Stanford Daily Article on CS106A Code in Place]]
 - [[https://fortran-lang.org/newsletter/2020/06/01/Fortran-Newsletter-June-2020/][Fortran Monthly Newsletter (June 2020)]]
