@@ -27,7 +27,7 @@ jobs:
           cachix use rgoswamime
 
       - name: Build
-        run: nix-shell --run "npm install && rake hugoBuild"
+        run: nix-shell --run "rake hugoBuild"
 
       - name: Cache Nix Results
         env:
