@@ -8187,7 +8187,7 @@ Thankfully, my stance has been shared by sections of society which actually do c
 [fn:moreleader] This [[https://news.ycombinator.com/item?id=26535789][HN post describes other leadership failures]] under Stallman
 [fn:whystake] He, unlike the "supporters" is an active contributor to projects which sheeple believe exist only because of Stallman
 
-* DONE Talk Supplements for IOP's C++ Workshop :@conferences:presentations:ramblings:nix:hpc:
+* DONE Talk Supplements for IOP's C++ Workshop :@conferences:presentations:ramblings:python:cpp:
 CLOSED: [2021-04-14 Wed 01:17]
 :PROPERTIES:
 :EXPORT_FILE_NAME: iop-cpp-2021-meta
