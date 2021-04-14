@@ -15,13 +15,3 @@
   to = "https://dotdoom.rgoswami.me"
   status = 301
   force = true
-
-# [[plugins]]
-# package = "netlify-plugin-subfont"
-[build]
-  publish = "public"
-  command = "rake hugoBuild"
-
-[build.environment]
-  HUGO_VERSION = "0.76.5"
-  HUGO_ENV = "production"
