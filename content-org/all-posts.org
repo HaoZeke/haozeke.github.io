@@ -5518,6 +5518,16 @@ ml purge
 ml load nix/bootstrapped
 ml save
 #+END_SRC
+*** Flakes and DevShells
+I prefer to live life on the edge:
+#+begin_src bash
+nix-env -iA nixpkgs.nixUnstable -f $HOME/Git/Github/nixpkgs -j$(nproc) --keep-going --show-trace --cores 4 2>&1 | tee nix-install-base.log
+#+end_src
+Now we can activate flakes and other features like ~nix shell~ (note the space!).
+#+begin_src conf
+# ~/.config/nix/nix.conf
+experimental-features = nix-command flakes
+#+end_src
 *** Basic Packages
 Now we can get some basic stuff too.
 #+BEGIN_SRC bash
