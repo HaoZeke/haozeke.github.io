@@ -182,8 +182,10 @@ I am particularly proud of my contributions to t
 - [[https://www.aiche.org/community/sites/committees/young-professionals/blog/fundamental-research-chemical-engineering-undergrad][Write-up on research with a ChemE undergraduate degree]] for the American Institute of Chemical Engineers (AIChE) Young Professionals Committee (YPC)
 - Hackernoon article on [[https://hackernoon.com/locking-and-encrypting-apps-with-encfs-c1484e77f479][Locking and Encrypting Apps with Encfs]]
 - The Water, Chemicals and more with Computers for Chemistry (WC3m) [[https://wc3m.github.io/][course website]]
-- A collaborative post on [[https://carpentries.org/blog/2020/08/r-4-migration/][migrating to R 4.0 for The Carpentries]]
 - My [[https://github.com/symengine/symengine/wiki/GSoD-2020-Report-Rohit-Goswami:-SymEngine][GSoD (Google Season of Docs) 2020 completion report]] for SymEngine
+**** Collaborative Carpentries Posts
+- A collaborative post on [[https://carpentries.org/blog/2020/08/r-4-migration/][migrating to R 4.0 for The
+Carpentries]]
 **** Tech Conferences
 These are tech talks, for academic presentations, [[https://github.com/haozeke/cv][my CV is a better guide]].
 - Reproducible Scalable Workflows with Nix, Papermill and Renku at [[https://in.pycon.org/2020/][PyCon India 2020]]
