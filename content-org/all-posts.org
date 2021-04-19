@@ -8254,3 +8254,306 @@ Anything on this site [[https://rgoswami.me/tags/nix/][tagged with Nix]] or [[ht
   + Might expand these
 
 [fn:officialsite] One location I am going to be able to keep track of
+
+* TODO HPC Configuration 2021 :@programming:workflow:projects:hpc:
+:PROPERTIES:
+:EXPORT_FILE_NAME: hpc-conf-2021
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc tre :comments true
+:END:
+
+#+begin_quote
+A post on configuring a user account for heavy interactive HPC usage with Spack, Nix and self-hosted applications.
+#+end_quote
+
+** Background
+I have in the past written a few posts about configuring my HPC setup. Since the [[https://www.rhnet.is/][Research and University Network of Iceland hf. (RHnet)]] recently recieved funding for a new machine, called Elja [fn:whyname], I decided to jot down my notes from my setup as part of the user interaction team. Without abusing the ability to bend the ear of the system administrators, I decided to document a user-facing workflow. All the commands here assume an interactive session (example in ~slurm~):
+#+begin_src bash
+# 26 should be the number of processors on a node
+srun -n 26 --pty /bin/bash
+#+end_src
+** Rust and Utilities
+~rustup~ is a fantastic way to get ~cargo~ up and running and immediately allows for the installation of many relevant command line utilities.
+
+#+begin_src bash
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+source $HOME/.cargo/env
+#+end_src
+
+The ones I use mostly are enumerated in Table [[tbl:rustalternates]].
+
+#+name: tbl:rustalternates
+#+caption: Language bindings and tools
+| Utility | Rust Alternative | Rationale                            |
+| ~cat~   | [[https://github.com/sharkdp/bat][bat]]              | File reader with syntax highlighting |
+| ~top~   | [[https://github.com/clementtsang/bottom][bottom]]           | Process management                   |
+| ~ls~    | [[https://github.com/ogham/exa][exa]]              | Listing things with colors           |
+| ~grep~  | [[https://github.com/BurntSushi/ripgrep][ripgrep]]          | Search recursively                   |
+| ~find~  | [[https://github.com/sharkdp/fd][fd]]               | Find things                          |
+| ~time~  | [[https://github.com/sharkdp/hyperfine][hyperfine]]        | Better benchmarking with stats       |
+| ~man~   | [[https://github.com/dbrgn/tealdeer][tealdeer]]         | A fast ~tldr~ page viewer            |
+| ~fzf~   | [[https://github.com/lotabout/skim][skim]]             | A fuzy finder                        |
+| --      | [[https://github.com/denisidoro/navi][navi]]             | Personalized cheatsheets             |
+
+These are trivial to obtain:
+#+begin_src bash
+cargo install bottom, ripgrep, hyperfine, navi, skim
+# The following need some system libraries (OpenSSL) and shall be dealt with later
+# bat, exa, fd, tealdeer
+#+end_src
+*** MicroMamba
+We will set up a ~micromamba~ installation to get ~git~ and other base utilities.
+#+begin_src bash
+mkdir -p ~/.local/bin
+export PATH=$HOME/.local/bin:$PATH
+wget -qO- https://micromamba.snakepit.net/api/micromamba/linux-64/latest | tar -xvj bin/micromamba
+mv bin/micromamba ~/.local/bin
+rm -rf bin
+micromamba shell init -s bash -p $HOME/micromamba
+. ~/.bashrc
+#+end_src
+Now we can use ~mamba~ to get a temporary interactive environment.
+#+begin_src bash
+# Spack requirements
+PKGS="git patch curl make tar gzip unzip bzip2 xz zstd subversion lsof"
+mkdir ~/.mamba_venvs
+micromamba create -p ~/.mamba_venvs/intBase $PKGS
+micromamba activate ~/.mamba_venvs/intBase
+#+end_src
+**** Configuration
+A simple ~.condarc~ will suffice for the above.
+#+begin_src yaml
+channels:
+  - conda-forge
+  - defaults
+channel_priority: disabled
+#+end_src
+*** GitHub Client
+We can grab the [[https://github.com/cli/cli/][GitHub client binary]] for interacting with GitHub for now. Configuring and using this spares the necessity of explaining SSH authentication.
+#+begin_src bash
+ghcliVer=1.9.1
+DST=~/.local
+wget https://github.com/cli/cli/releases/download/v${ghcliVer}/gh_${ghcliVer}_linux_amd64.tar.gz
+tar xf "gh_${ghcliVer}_linux_amd64.tar.gz"
+mkdir -p ~/.local/
+cd "gh_${ghcliVer}_linux_amd64"
+# Merges directories
+# From: https://unix.stackexchange.com/a/603209/246530
+find -type d -exec mkdir -vp "$DST"/{} \; -or -exec mv -nv {} "$DST"/{} \;
+cd ../
+rm -rf "gh_${ghcliVer}_linux_amd64" "gh_${ghcliVer}_linux_amd64.tar.gz"
+#+end_src
+Now we can set this up.
+#+begin_src bash
+gh auth login # Follow the instructions
+#+end_src
+The rest of the post assumes ~gh~ is present.
+** Dotfiles
+Some of this post is simplified by using [[https://github.com/HaoZeke/Dotfiles][my Dotfiles]] with ~bombadil~:
+#+begin_src bash
+cargo install toml-bombadil
+mkdir -p $HOME/Git/Github
+cd ~/Git/Github
+gh repo clone HaoZeke/Dotfiles
+cd Dotfiles
+git checkout bombadil
+bombadil install -c bombadil.toml
+#+end_src
+We will need to make some directories since ~bombadil~ does not currently handle this. Make changes to the variables as required and then link them.
+#+begin_src bash
+mkdir -p ~/.config/nvim ~/.config/alacritty/ \
+    ~/.spack/
+bombadil link -p hpc elja # Combining profiles (variables)
+#+end_src
+** Spack
+For setting multi compiler workflows on the HPC, [[https://spack.io/][spack]] is a great tool. It is also well documented and easy to add to. Rather than setting up a hierarchical [[https://lmod.readthedocs.io/en/latest/010_user.html][Lmod]] structure, we shall use a [[https://spack.readthedocs.io/en/latest/environments.html][spack environment]]. Although we have already a ~micromamba~ environment, ~spack~ configurations are more suited to the HPC workflow; since they are more easily customized.
+#+begin_src bash
+# Install
+cd $HOME
+gh repo clone spack/spack
+#+end_src
+Now we can start by getting a new compiler.
+#+begin_src bash
+. ~/spack/share/spack/setup-env.sh
+spack install gcc@9.3.0
+spack compiler add $(spack location -i gcc@9.3.0)
+spack install gcc@10.2.0 %gcc@9.3.0
+spack compiler add $(spack location -i gcc@10.2.0)
+spacktivate interactive # After setting the environment
+#+end_src
+*** Environments
+This step is not required if one uses the ~dotfiles~.
+#+begin_src yaml
+# $SPACK_HOME//var/spack/environments/interactive/spack.yaml
+spack:
+  definitions:
+    - compilers: ['gcc@10.2.0']
+    - packages: [
+      'zsh', 'tmux', 'git',
+      'openssl', 'gmp', 'mpfr',
+      'mpc', 'perl', 'boost', 'subversion',
+      'zlib', 'cmake', 'bison', 'bdw-gc',
+      'flex', 'pcre', 'jq', 'patch',
+      'bzip2', 'sqlite', 'editline',
+      'ncurses', 'texinfo', 'brotli'
+      ]
+  specs:
+    - $compilers
+    - 'subversion%gcc@9.3.0'
+    - matrix:
+       - [$packages]
+       - [$%compilers]
+  view: true
+#+end_src
+Note that ~subversion~ depends on ~serf~ which currently does not build with ~gcc@10.x.x~.
+#+begin_src bash
+spacktivate interactive
+spack install
+#+end_src
+*** Cleaning Modules
+This step is not required if one uses the ~dotfiles~.
+#+begin_src yaml
+modules:
+  enable::
+    - lmod
+  lmod:
+    core_compilers:
+      - 'gcc@10.2.0'
+    hierarchy:
+      - mpi
+    hash_length: 0
+    whitelist:
+      - gcc
+    blacklist:
+      - '%gcc@10.2.0'
+    all:
+      filter:
+        environment_blacklist:
+          - "C_INCLUDE_PATH"
+          - "CPLUS_INCLUDE_PATH"
+          - "LIBRARY_PATH"
+      environment:
+        set:
+          '{name}_ROOT': '{prefix}'
+    openmpi:
+      environment:
+        set:
+          SLURM_MPI_TYPE: pmi2
+          OMPI_MCA_btl_openib_warn_default_gid_prefix: '0'
+    projections:
+      all:          '{name}/{version}'
+      ^lapack:      '{name}/{version}-{^lapack.name}'
+#+end_src
+We can then rebuild the setup.
+#+begin_src bash
+spack module lmod refresh --delete-tree -y
+#+end_src
+
+** Nix
+*** Portable
+[[https://github.com/DavHau/nix-portable][nix-portable]] is one of the best projects for working with local ~nix~ installations. Where it works, it works very simply:
+#+begin_src bash
+wget https://github.com/DavHau/nix-portable/releases/download/v006/nix-portable
+chmod +x nix-portable
+mv nix-portable ~/.local/bin
+#+end_src
+*** Mamba
+#+begin_src bash
+# Spack requirements
+PKGS="git patch curl make tar gzip bzip2 xz zstd brotli openssl sqlite bdw-gc nlohmann_json editline libxml2 libxslt libseccomp bison flex lsof libarchive automake pkg-config"
+micromamba create -p ~/.mamba_venvs/nixIns $PKGS
+micromamba activate ~/.mamba_venvs/nixIns
+#+end_src
+It is best to have a clean, maximal ~boost~.
+#+begin_src bash
+git clone --recursive https://github.com/boostorg/boost.git
+cd boost
+git checkout tags/boost-1.73.0
+./bootstrap.sh
+./b2 headers
+./b2
+./b2 install --prefix=$HOME/.hpc/boost/boost-1.73.0
+ml load boost/boost-1.73.0
+#+end_src
+Now we can try to compile a patched older ~nix~.
+#+begin_src bash
+export myprefix=$HOME/.hpc/nix/nix-boot
+export nixdir=$HOME/.nix
+./configure  --enable-gc --prefix=$myprefix \
+--with-store-dir=$nixdir/store --localstatedir=$nixdir/var \
+\
+--disable-seccomp-sandboxing --disable-doc-gen \
+CPPFLAGS="-I$HOME/.mamba_venvs/nixIns/include" LDFLAGS="-L$HOME/.mamba_venvs/nixIns/lib -Wl,-R$HOME/.mamba_venvs/nixIns/lib"
+make -j $(nproc)
+make install
+#+end_src
+*** Spack
+When the existing methods don't work, we can fall back to a more rustic method. We need some additional packages, which are not part of ~spack~ yet.
+#+begin_src bash
+spack create https://github.com/anrieff/libcpuid/releases/download/v0.5.1/libcpuid-0.5.1.tar.gz
+spack install libcpuid
+#+end_src
+
+#+begin_src bash
+mkdir -m 0755 ~/.nix
+spack install nix storedir=$nixdir/store statedir=$nixdir/var doc=False sandboxing=False nfs=True
+spack load nix
+# Basic setup
+mkdir -p  ~/.nix/var/nix/profiles
+nix-env --switch-profile .nix/var/nix/profiles/default
+#+end_src
+
+Now we can install this natively with ~spack~.
+
+#+begin_src bash
+mkdir -p $HOME/Git/Github
+gh repo clone nixos/nixpkgs
+cd nixpkgs
+export NIX_PATH=$(pwd)
+export nixdir=$HOME/.nix
+export PATH=$(spack location -i nix)/bin/:$PATH:$nixdir/bin
+export INCLUDE=$(spack location -i nix)/include/:$INCLUDE
+export LD_LIBRARY_PATH=$(spack location -i nix)/lib:$LD_LIBRARY_PATH
+export PKG_CONFIG_PATH=$(spack location -i nix)/lib/pkgconfig/:$PKG_CONFIG_PATH
+nix-env -i nix -f $HOME/Git/Github/nixpkgs -j$(nproc) --keep-going --show-trace -v --cores $(nproc) 2>&1 | tee nix-no-root.log
+#+end_src
+
+#+BEGIN_SRC bash
+export BOOST_ROOT=$(spack location -i boost)
+./configure --enable-gc \
+ --prefix=$myprefix \
+ --with-store-dir=$nixdir/store \
+ --localstatedir=$nixdir/var \
+ --with-boost=$BOOST_ROOT \
+ --disable-seccomp-sandboxing \
+ --disable-doc-gen \
+ --includedir="$(spack location -i bdw-gc)" \
+ --includedir="$(spack location -i bzip2)" \
+ --includedir="$(spack location -i nlohmann-json)" \
+ --libdir="$(spack location -i bzip2)" \
+ --libdir="$(spack location -i bdw-gc)" \
+ PKG_CONFIG=$(spack location -i pkg-config)/bin/pkg-config \
+ OPENSSL_CFLAGS=-I$(spack location -i openssl)/include \
+ OPENSSL_LIBS=-L$(spack location -i openssl)/lib \
+ CPPFLAGS="-I$(spack location -i nlohmann-json)/include"
+make -j $(nproc)
+make install
+ml load nix/user # Hooray!
+#+END_SRC
+** Self hosted binaries
+*** Code Server
+The first of the selfhosted set is the [[https://github.com/cdr/code-server/][browser based IDE]] inspired by Visual Studio Code.
+#+begin_src bash
+mkdir -p ~/.local/lib ~/.local/bin
+curl -fL https://github.com/cdr/code-server/releases/download/v3.9.3/code-server-3.9.3-linux-amd64.tar.gz \
+  | tar -C ~/.local/lib -xz
+mv ~/.local/lib/code-server-3.9.3-linux-amd64 ~/.local/lib/code-server-3.9.3
+ln -s ~/.local/lib/code-server-3.9.3/bin/code-server ~/.local/bin/code-server
+PATH="~/.local/bin:$PATH"
+#+end_src
+
+This has the advantage of not needing any port forwarding (with ~--link~):
+#+begin_src bash
+code-server --link
+#+end_src
+
+[fn:whyname] A step in the right direction in terms of female representation amongst the university servers
