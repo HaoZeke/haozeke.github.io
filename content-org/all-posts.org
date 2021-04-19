@@ -4258,9 +4258,10 @@ tar xfv gmp-6.2.0.tar.xz
 cd gmp-6.2.0
 ./configure --prefix=$myprefix    \
             --enable-cxx     \
-            --docdir=$myprefix/doc/gmp-6.1.2
+            --docdir=$myprefix/doc/gmp-6.2.0
 make -j$(nproc)
 make install
+ml load gcc/gmp/6.2.0
 #+END_SRC
 *** MPFR
 #+BEGIN_SRC bash
@@ -4275,6 +4276,7 @@ cd mpfr-4.1.0
             --docdir=$myprefix/doc/mpfr-4.1.0
 make -j$(nproc)
 make install
+ml load gcc/mpfr/4.1.0
 #+END_SRC
 *** MPC
 #+BEGIN_SRC bash
@@ -4289,6 +4291,7 @@ cd mpc-1.2.0
             --docdir=$myprefix/doc/mpc-1.2.0
 make -j$(nproc)
 make install
+ml load gcc/mpc/1.2.0
 #+END_SRC
 *** GCC 9.2.0
 #+BEGIN_SRC bash :noeval :tangle codeSnips/lmod-help/getGCC920.sh :eval never
