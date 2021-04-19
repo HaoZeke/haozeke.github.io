@@ -4243,6 +4243,41 @@ I actually strongly suggest using a target from [[https://github.com/HaoZeke/Dot
 #+END_SRC
 Note that because of the suggested separation, I have not opted to setup a shell or even ensure that there are scripts here to help keep ~module~ in your path. Those are in [[https://github.com/HaoZeke/Dotfiles][my Dotfiles]].
 If, you *opt to not use* these ~dotfiles~, then *do not* run the ~ml load~ commands.
+** Basic Setup
+We will first load an environment with basic packages (~autotools~). This is a stop-gap solution.
+*** MicroMamba
+We will set up a ~micromamba~ installation to get ~git~ and other base utilities.
+#+begin_src bash
+mkdir -p ~/.local/bin
+export PATH=$HOME/.local/bin:$PATH
+wget -qO- https://micromamba.snakepit.net/api/micromamba/linux-64/latest | tar -xvj bin/micromamba
+mv bin/micromamba ~/.local/bin
+rm -rf bin
+micromamba shell init -s bash -p $HOME/micromamba
+. ~/.bashrc
+#+end_src
+Now we can use ~mamba~ to get a temporary interactive environment.
+#+begin_src bash
+# Spack requirements
+PKGS="git patch curl make tar gzip unzip bzip2 xz zstd subversion lsof m4"
+mkdir ~/.mamba_venvs
+micromamba create -p ~/.mamba_venvs/intBase $PKGS
+micromamba activate ~/.mamba_venvs/intBase
+#+end_src
+For subsequent logins we can simply run:
+#+begin_src bash
+export PATH=$HOME/.local/bin:$PATH
+. ~/.bashrc
+micromamba activate ~/.mamba_venvs/intBase
+#+end_src
+**** Configuration
+A simple ~.condarc~ will suffice for the above.
+#+begin_src yaml
+channels:
+  - conda-forge
+  - defaults
+channel_priority: disabled
+#+end_src
 ** LMod Libraries
 #+BEGIN_QUOTE
 *Note that*: [[http://ihpc.is/garpur/][garpur]] already has ~lmod~ and a module for GNU ~gcc~ 9.2.0
@@ -4295,11 +4330,9 @@ ml load gcc/mpc/1.2.0
 #+END_SRC
 *** GCC 9.2.0
 #+BEGIN_SRC bash :noeval :tangle codeSnips/lmod-help/getGCC920.sh :eval never
-mkdir -p ~/tmpHPC
-cd $HOME/tmpHPC
+mkdir -p ~/tmphpc
+cd $HOME/tmphpc
 myprefix=$HOME/.hpc/gcc/9.2.0
-export PATH
-export LIBRARY_PATH=/usr/lib64/:$LIBRARY_PATH
 wget https://ftp.gnu.org/gnu/gcc/gcc-9.2.0/gcc-9.2.0.tar.xz
 tar xfv gcc-9.2.0.tar.xz
 cd gcc-9.2.0
@@ -4321,14 +4354,18 @@ SED=sed                               \
              --with-mpc=$HOME/.hpc/gcc/mpc/1.2.0 \
              --disable-bootstrap      \
              --with-system-zlib
+export PATH
+unset LIBRARY_PATH
+export LIBRARY_PATH=/usr/lib64/
+mkdir -p -- .deps
 make -j$(nproc)
 ml load gcc/9.2.0
 #+END_SRC
 *** Autotools
 Following the standard approach outlined in the [[https://www.gnu.org/software/automake/faq/autotools-faq.html#How-can-I-install-software-below-my-home-directory_003f][GNU Autotools FAQ]]:
 #+BEGIN_SRC bash :noeval :tangle codeSnips/lmod-help/getAutotools.sh :eval never
-mkdir -p ~/tmpHPC
-cd $HOME/tmpHPC
+mkdir -p ~/tmphpc
+cd $HOME/tmphpc
 myprefix=$HOME/.hpc/autotools
 export PATH
 wget http://ftp.gnu.org/gnu/m4/m4-1.4.18.tar.gz
@@ -4353,7 +4390,6 @@ We also need the archive.
 #+BEGIN_SRC bash
 myprefix=$HOME/.hpc/autotools
 git clone git://git.sv.gnu.org/autoconf-archive.git
-cd autoconf-archive
 #+END_SRC
 Combined with the [[https://lmod.readthedocs.io/en/latest/020_advanced.html][lmod manual]] gives rise to the following definiton (roughly the same for each one):
 #+BEGIN_SRC bash
@@ -4364,54 +4400,6 @@ local pkg     = pathJoin(home,".hpc",pkgName,version,"bin")
 prepend_path("PATH", pkg)
 #+END_SRC
 We will no longer bother with the module definitions for the rest of this post, as they are handled and documented in the repo.
-*** Perl
-This is essentially the setup from the [[https://learn.perl.org/installing/unix_linux.html][main docs]].
-#+BEGIN_SRC bash :noeval :tangle codeSnips/lmod-help/getPerl.sh :eval never
-# Get Perl
-curl -L http://xrl.us/installperlnix | bash
-# Use Perl
-ml use perl/5.28.0
-cpanm ExtUtils::MakeMaker # For git
-ml load perl/5.28.0
-#+END_SRC
-*** Git
-This is very similar to the previous approach. However, since by default the system ~perl~ was being picked up, some slight changes have been made.
-#+BEGIN_SRC bash
-myprefix=$HOME/.hpc/git/2.9.5
-PATH=$myprefix/bin:$PATH
-export PATH
-wget https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.9.5.tar.gz
-gzip -dc git-2.9.5.tar.gz | tar xvf -
-cd git-2.9.5
-./configure --with-perl=$(which perl) -C --prefix=$myprefix
-make -j $(nproc)
-make install
-ml load git/2.9.5
-#+END_SRC
-**** Caveat
-Also, for TRAMP, we would prefer having a more constant path, so we can set up a symlink:
-#+BEGIN_SRC bash
-mkdir ~/.hpc/bin
-ln ~/.hpc/git/2.9.5/bin/git ~/.hpc/bin/git
-#+END_SRC
-*** Boost
-The [[https://www.boost.org/][boost website]] is utterly incomprehensible. As is the documentation. Also, fun fact, the move from ~svn~ makes things worse. Thankfully, a quick dive into the slightly [[https://github.com/boostorg/wiki/wiki/Getting-Started%3A-Overview][better Github wiki]] led to this nugget:
-
-#+BEGIN_SRC bash
-git clone --recursive https://github.com/boostorg/boost.git
-cd boost
-git checkout tags/boost-1.73.0 # or whatever branch you want to use
-./bootstrap.sh
-./b2 headers
-#+END_SRC
-
-This means we're almost done!
-
-#+BEGIN_SRC bash
-./b2
-./b2 install --prefix=$HOME/.hpc/boost/boost-1.73.0
-ml load boost/boost-1.73.0
-#+END_SRC
 *** Pkg-Config
 #+BEGIN_SRC bash
 myprefix=$HOME/.hpc/pkg-config/0.29.2
@@ -4456,6 +4444,69 @@ cd openssl-1.1.1d
 make -j $(nproc)
 make install
 ml load openssl/1.1.1d
+#+END_SRC
+*** cURL
+#+BEGIN_SRC bash
+myprefix=$HOME/.hpc/curl/7.76.0
+wget https://curl.haxx.se/download/curl-7.76.0.tar.xz
+tar xfv  curl-7.76.0.tar.xz
+cd curl-7.76.0
+./configure --prefix=$myprefix \
+    --disable-static \
+    --enable-threaded-resolver \
+    --with-ca-path=/etc/ssl/certs \
+    --with-ssl
+make -j $(nproc)
+make install
+ml load libcurl/7.76.0
+#+END_SRC
+*** Perl
+This is essentially the setup from the [[https://learn.perl.org/installing/unix_linux.html][main docs]].
+#+BEGIN_SRC bash :noeval :tangle codeSnips/lmod-help/getPerl.sh :eval never
+# Get Perl
+curl -L http://xrl.us/installperlnix | bash
+# Use Perl
+ml use perl/5.28.0
+cpanm ExtUtils::MakeMaker # For git
+ml load perl/5.28.0
+#+END_SRC
+*** Git
+This is very similar to the previous approach. However, since by default the system ~perl~ was being picked up, some slight changes have been made.
+#+BEGIN_SRC bash
+myprefix=$HOME/.hpc/git/2.9.5
+PATH=$myprefix/bin:$PATH
+export PATH
+wget https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.9.5.tar.gz
+gzip -dc git-2.9.5.tar.gz | tar xvf -
+cd git-2.9.5
+./configure --with-perl=$(which perl) --with-curl=$(which curl) -C --prefix=$myprefix
+make -j $(nproc)
+make install
+ml load git/2.9.5
+#+END_SRC
+**** Caveat
+Also, for TRAMP, we would prefer having a more constant path, so we can set up a symlink:
+#+BEGIN_SRC bash
+mkdir ~/.hpc/bin
+ln ~/.hpc/git/2.9.5/bin/git ~/.hpc/bin/git
+#+END_SRC
+*** Boost
+The [[https://www.boost.org/][boost website]] is utterly incomprehensible. As is the documentation. Also, fun fact, the move from ~svn~ makes things worse. Thankfully, a quick dive into the slightly [[https://github.com/boostorg/wiki/wiki/Getting-Started%3A-Overview][better Github wiki]] led to this nugget:
+
+#+BEGIN_SRC bash
+git clone --recursive https://github.com/boostorg/boost.git
+cd boost
+git checkout tags/boost-1.73.0 # or whatever branch you want to use
+./bootstrap.sh
+./b2 headers
+#+END_SRC
+
+This means we're almost done!
+
+#+BEGIN_SRC bash
+./b2
+./b2 install --prefix=$HOME/.hpc/boost/boost-1.73.0
+ml load boost/boost-1.73.0
 #+END_SRC
 *** Cmake
 #+BEGIN_SRC bash
@@ -8317,7 +8368,7 @@ micromamba shell init -s bash -p $HOME/micromamba
 Now we can use ~mamba~ to get a temporary interactive environment.
 #+begin_src bash
 # Spack requirements
-PKGS="git patch curl make tar gzip unzip bzip2 xz zstd subversion lsof"
+PKGS="git patch curl make tar gzip unzip bzip2 xz zstd subversion lsof m4"
 mkdir ~/.mamba_venvs
 micromamba create -p ~/.mamba_venvs/intBase $PKGS
 micromamba activate ~/.mamba_venvs/intBase
