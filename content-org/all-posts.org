@@ -6064,7 +6064,6 @@ watch -n1 -x chmod 777 -R /tmp/nix-build-ruby-2.6.6.drv-0/source/lib/
 #+END_SRC
 
 Naturally this must be run in a separate window.
-
 *** Dotfiles
 Feel free to set up ~dotfiles~ ([[https://github.com/HaoZeke/Dotfiles][mine]], perhaps) to profit even further. We will consider the process of obtaining my set below.
 Minimally, we will want to obtain ~tmux~ and ~zsh~.
@@ -8811,6 +8810,7 @@ The ones I use mostly are enumerated in Table [[tbl:rustalternates]].
 | ~ls~    | [[https://github.com/ogham/exa][exa]]              | Listing things with colors           |
 | ~grep~  | [[https://github.com/BurntSushi/ripgrep][ripgrep]]          | Search recursively                   |
 | ~find~  | [[https://github.com/sharkdp/fd][fd]]               | Find things                          |
+| ~sed~   | [[https://github.com/chmln/sd][sd]]               | Search and replace things            |
 | ~time~  | [[https://github.com/sharkdp/hyperfine][hyperfine]]        | Better benchmarking with stats       |
 | ~man~   | [[https://github.com/dbrgn/tealdeer][tealdeer]]         | A fast ~tldr~ page viewer            |
 | ~fzf~   | [[https://github.com/lotabout/skim][skim]]             | A fuzy finder                        |
@@ -8820,7 +8820,7 @@ These are trivial to obtain:
 #+begin_src bash
 cargo install bottom ripgrep hyperfine navi skim
 # The following need some system libraries (OpenSSL) and shall be dealt with later
-# bat exa fd tealdeer starship
+# bat exa fd tealdeer starship sd
 #+end_src
 *** MicroMamba
 We will set up a ~micromamba~ installation to get ~git~ and other base utilities.
