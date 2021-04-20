@@ -4256,7 +4256,7 @@ rm -rf bin
 micromamba shell init -s bash -p $HOME/micromamba
 . ~/.bashrc
 #+end_src
-Now we can use ~mamba~ to get a temporary interactive environment.
+Now we can use ~mamba~ to get a temporary interactive environment, including ~gcc 9.3.0~.
 #+begin_src bash
 # Spack requirements
 PKGS="git patch curl make tar gzip unzip bzip2 xz zstd subversion lsof m4"
@@ -4278,14 +4278,257 @@ channels:
   - defaults
 channel_priority: disabled
 #+end_src
+*** Warning
+Note that once the base packages have been installed...
+#+begin_quote
+We must *unload* our micromamba environment!!
+#+end_quote
+#+begin_src bash
+micromamba deactivate
+#+end_src
+It is recommended to use a minimal set of ~micromamba~ packages.
 ** LMod Libraries
 #+BEGIN_QUOTE
-*Note that*: [[http://ihpc.is/garpur/][garpur]] already has ~lmod~ and a module for GNU ~gcc~ 9.2.0
+*Note that*: [[http://ihpc.is/garpur/][garpur]] and elja already has ~lmod~
 #+END_QUOTE
 
-The scripts in this post will also be part of the [[https://github.com/HaoZeke/haozeke.github.io/][repo]], but keep in mind that these are not meant to be robust ways to install anything, and every command should be run by hand because things will probably break badly.
+The scripts in this post will also be part of the [[https://github.com/HaoZeke/haozeke.github.io/][repo]], but keep in mind that these are not meant to be robust ways to install anything, and every command should be run by hand because things will probably break badly. We keep all sources in ~$HOME/tmphpc~ and install everything relative to ~$HOME/.hpc~. Paths are managed by the ~lmod~ system.
+#+begin_src bash
+export hpcroot=$HOME/tmphpc
+mkdir -p $hpcroot
+#+end_src
+Combining our paths with the [[https://lmod.readthedocs.io/en/latest/020_advanced.html][lmod manual]] gives rise to the following definiton (roughly the same for each one):
+#+BEGIN_SRC bash
+local home    = os.getenv("HOME")
+local version = myModuleVersion()
+local pkgName = myModuleName()
+local pkg     = pathJoin(home,".hpc",pkgName,version,"bin")
+prepend_path("PATH", pkg)
+#+END_SRC
+We will no longer bother with the module definitions for the rest of this post, as they are handled and documented [[https://github.com/HaoZeke/hzHPC_lmod/tree/master/dotfiles][in the repo]].
+#+begin_src bash
+# Setting up hzhpc modules
+cd tmphpc
+git clone https://github.com/kobus-v-schoor/dotgit.git
+mkdir -p ~/.local/bin
+cp -r dotgit/old/bin/dotgit* ~/.local/bin
+cat dotgit/bin/bash_completion >> ~/.bash_completion
+rm -rf dotgit
+~/.local/bin/dotgit restore hzhpc
+#+end_src
+*** Patch
+This is a basic utility we need before getting to anything else.
+#+begin_src bash
+cd $hpcroot
+myprefix=$HOME/.hpc/patch/2.7.2
+wget http://ftp.gnu.org/gnu/patch/patch-2.7.2.tar.gz
+gzip -dc patch-2.7.2.tar.gz | tar xvf -
+cd patch-2.7.2
+./configure --prefix=$myprefix
+make -j$(nproc) && make install
+ml load patch
+#+end_src
+*** Help2man
+#+begin_src bash
+cd $hpcroot
+myprefix=$HOME/.hpc/help2man/1.48.3
+wget https://gnuftp.uib.no/help2man/help2man-1.48.3.tar.xz
+tar xfv help2man-1.48.3.tar.xz
+cd help2man-1.48.3
+./configure --prefix=$myprefix   
+make -j$(nproc)
+make install
+ml load help2man/1.48.3
+#+end_src
+*** Perl
+This is essentially the setup from the [[https://learn.perl.org/installing/unix_linux.html][main docs]].
+#+BEGIN_SRC bash :noeval :tangle codeSnips/lmod-help/getPerl.sh :eval never
+# Get Perl
+curl -L http://xrl.us/installperlnix | bash
+cpanm --local-lib=~/perl5 local::lib && eval $(perl -I ~/perl5/lib/perl5/ -Mlocal::lib)
+cpanm ExtUtils::MakeMaker --force # For git
+cpanm Thread::Queue # For automake
+ml load perl/5.28.0
+#+END_SRC
+*** Autotools
+**** M4
+This requires special considerations for ~glibc~ greater than ~2.28~ (true for compilers like ~gcc8~ and above).
+#+begin_src bash
+cd $HOME/tmphpc
+myprefix=$HOME/.hpc/autotools
+wget http://ftp.gnu.org/gnu/m4/m4-1.4.18.tar.gz
+gzip -dc m4-1.4.18.tar.gz | tar xvf -
+cd m4-1.4.18
+# From http://git.openembedded.org/openembedded-core/commit/meta/recipes-devtools/m4/m4/m4-1.4.18-glibc-change-work-around.patch
+# From https://askubuntu.com/a/1112101/690387
+wget http://git.openembedded.org/openembedded-core/plain/meta/recipes-devtools/m4/m4/m4-1.4.18-glibc-change-work-around.patch
+patch  -p 1  < m4-1.4.18-glibc-change-work-around.patch
+./configure -C --prefix=$myprefix/m4/1.4.18 && make -j$(nproc) && make install
+#+end_src
+***** Patch contents
+The patch is needed since ~glibc 2.28~ and above have   changed the nesting levels. The patch is effectively backported from the upstream repositories. Some more context [[https://github.com/buildroot/buildroot/commit/c48f8a64626c60bd1b46804b7cf1a699ff53cdf3#diff-0d8a48b477da9bfd28490aad8b4acd5efb319779f29bbdf56e2fb026bb0fbe52][is here]].
+#+begin_src cpp
+update for glibc libio.h removal in 2.28+
+
+see
+https://src.fedoraproject.org/rpms/m4/c/814d592134fad36df757f9a61422d164ea2c6c9b?branch=master
+
+Upstream-Status: Backport [https://git.savannah.gnu.org/cgit/gnulib.git/commit/?id=4af4a4a718]
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+
+Index: m4-1.4.18/lib/fflush.c
+===================================================================
+--- m4-1.4.18.orig/lib/fflush.c
++++ m4-1.4.18/lib/fflush.c
+@@ -33,7 +33,7 @@
+ #undef fflush
+
+
+-#if defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
++#if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
+
+ /* Clear the stream's ungetc buffer, preserving the value of ftello (fp).  */
+ static void
+@@ -72,7 +72,7 @@ clear_ungetc_buffer (FILE *fp)
+
+ #endif
+
+-#if ! (defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */)
++#if ! (defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */)
+
+ # if (defined __sferror || defined __DragonFly__ || defined __ANDROID__) && defined __SNPT
+ /* FreeBSD, NetBSD, OpenBSD, DragonFly, Mac OS X, Cygwin, Android */
+@@ -148,7 +148,7 @@ rpl_fflush (FILE *stream)
+   if (stream == NULL || ! freading (stream))
+     return fflush (stream);
+
+-#if defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
++#if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
+
+   clear_ungetc_buffer_preserving_position (stream);
+
+Index: m4-1.4.18/lib/fpending.c
+===================================================================
+--- m4-1.4.18.orig/lib/fpending.c
++++ m4-1.4.18/lib/fpending.c
+@@ -32,7 +32,7 @@ __fpending (FILE *fp)
+   /* Most systems provide FILE as a struct and the necessary bitmask in
+      <stdio.h>, because they need it for implementing getc() and putc() as
+      fast macros.  */
+-#if defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
++#if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
+   return fp->_IO_write_ptr - fp->_IO_write_base;
+ #elif defined __sferror || defined __DragonFly__ || defined __ANDROID__
+   /* FreeBSD, NetBSD, OpenBSD, DragonFly, Mac OS X, Cygwin, Android */
+Index: m4-1.4.18/lib/fpurge.c
+===================================================================
+--- m4-1.4.18.orig/lib/fpurge.c
++++ m4-1.4.18/lib/fpurge.c
+@@ -62,7 +62,7 @@ fpurge (FILE *fp)
+   /* Most systems provide FILE as a struct and the necessary bitmask in
+      <stdio.h>, because they need it for implementing getc() and putc() as
+      fast macros.  */
+-# if defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
++# if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
+   fp->_IO_read_end = fp->_IO_read_ptr;
+   fp->_IO_write_ptr = fp->_IO_write_base;
+   /* Avoid memory leak when there is an active ungetc buffer.  */
+Index: m4-1.4.18/lib/freadahead.c
+===================================================================
+--- m4-1.4.18.orig/lib/freadahead.c
++++ m4-1.4.18/lib/freadahead.c
+@@ -25,7 +25,7 @@
+ size_t
+ freadahead (FILE *fp)
+ {
+-#if defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
++#if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
+   if (fp->_IO_write_ptr > fp->_IO_write_base)
+     return 0;
+   return (fp->_IO_read_end - fp->_IO_read_ptr)
+Index: m4-1.4.18/lib/freading.c
+===================================================================
+--- m4-1.4.18.orig/lib/freading.c
++++ m4-1.4.18/lib/freading.c
+@@ -31,7 +31,7 @@ freading (FILE *fp)
+   /* Most systems provide FILE as a struct and the necessary bitmask in
+      <stdio.h>, because they need it for implementing getc() and putc() as
+      fast macros.  */
+-# if defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
++# if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
+   return ((fp->_flags & _IO_NO_WRITES) != 0
+           || ((fp->_flags & (_IO_NO_READS | _IO_CURRENTLY_PUTTING)) == 0
+               && fp->_IO_read_base != NULL));
+Index: m4-1.4.18/lib/fseeko.c
+===================================================================
+--- m4-1.4.18.orig/lib/fseeko.c
++++ m4-1.4.18/lib/fseeko.c
+@@ -47,7 +47,7 @@ fseeko (FILE *fp, off_t offset, int when
+ #endif
+
+   /* These tests are based on fpurge.c.  */
+-#if defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
++#if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
+   if (fp->_IO_read_end == fp->_IO_read_ptr
+       && fp->_IO_write_ptr == fp->_IO_write_base
+       && fp->_IO_save_base == NULL)
+@@ -123,7 +123,7 @@ fseeko (FILE *fp, off_t offset, int when
+           return -1;
+         }
+
+-#if defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
++#if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
+       fp->_flags &= ~_IO_EOF_SEEN;
+       fp->_offset = pos;
+ #elif defined __sferror || defined __DragonFly__ || defined __ANDROID__
+Index: m4-1.4.18/lib/stdio-impl.h
+===================================================================
+--- m4-1.4.18.orig/lib/stdio-impl.h
++++ m4-1.4.18/lib/stdio-impl.h
+@@ -18,6 +18,12 @@
+    the same implementation of stdio extension API, except that some fields
+    have different naming conventions, or their access requires some casts.  */
+
++/* Glibc 2.28 made _IO_IN_BACKUP private.  For now, work around this
++   problem by defining it ourselves.  FIXME: Do not rely on glibc
++   internals.  */
++#if !defined _IO_IN_BACKUP && defined _IO_EOF_SEEN
++# define _IO_IN_BACKUP 0x100
++#endif
+
+ /* BSD stdio derived implementations.  */
+#+end_src
+**** Auto{Conf,Make} and Libtool
+This follows the standard approach outlined in the [[https://www.gnu.org/software/automake/faq/autotools-faq.html#How-can-I-install-software-below-my-home-directory_003f][GNU Autotools FAQ]]:
+#+BEGIN_SRC bash :noeval :tangle codeSnips/lmod-help/getAutotools.sh :eval never
+cd $hpcroot
+myprefix=$HOME/.hpc/autotools
+export PATH
+wget http://ftp.gnu.org/gnu/autoconf/autoconf-2.69.tar.gz
+wget http://ftp.gnu.org/gnu/automake/automake-1.16.2.tar.gz
+wget http://ftp.gnu.org/gnu/libtool/libtool-2.4.6.tar.gz
+wget http://ftp.gnu.org/gnu/gettext/gettext-0.20.tar.gz
+wget https://gnuftp.uib.no/autoconf-archive/autoconf-archive-2021.02.19.tar.xz
+tar xfv autoconf-archive-2021.02.19.tar.xz
+gzip -dc autoconf-2.69.tar.gz | tar xvf -
+gzip -dc automake-1.16.2.tar.gz | tar xvf -
+gzip -dc libtool-2.4.6.tar.gz | tar xvf -
+gzip -dc gettext-0.20.tar.gz | tar xvf -
+cd autoconf-2.69
+./configure -C --prefix=$myprefix/autoconf/2.69 && make -j$(nproc) && make install
+cd ../automake-1.16.2
+./configure -C --prefix=$myprefix/automake/1.16.2 --docdir=$myprefix/automake/1.16.2/share/doc/automake-1.16.2 && make -j$(nproc) && make install
+cd ../autoconf-archive-2021.02.19
+./configure -C --prefix=$myprefix/automake/1.16.2
+cd ../libtool-2.4.6
+./configure -C --disable-static --prefix=$myprefix/libtool/2.4.6 && make -j$(nproc) && make install
+cd ../gettext-0.20
+./configure -C --prefix=$myprefix/gettext/0.20 && make -j$(nproc) && make install
+ml load autotools/autotools
+#+END_SRC
 *** GMP
 #+BEGIN_SRC bash
+cd $hpcroot
 myprefix=$HOME/.hpc/gcc/gmp/6.2.0
 export PATH
 wget https://gmplib.org/download/gmp/gmp-6.2.0.tar.xz
@@ -4300,6 +4543,7 @@ ml load gcc/gmp/6.2.0
 #+END_SRC
 *** MPFR
 #+BEGIN_SRC bash
+cd $hpcroot
 myprefix=$HOME/.hpc/gcc/mpfr/4.1.0
 export PATH
 wget https://www.mpfr.org/mpfr-current/mpfr-4.1.0.tar.xz
@@ -4315,6 +4559,7 @@ ml load gcc/mpfr/4.1.0
 #+END_SRC
 *** MPC
 #+BEGIN_SRC bash
+cd $hpcroot
 myprefix=$HOME/.hpc/gcc/mpc/1.2.0
 export PATH
 wget https://ftp.gnu.org/gnu/mpc/mpc-1.2.0.tar.gz
@@ -4330,8 +4575,8 @@ ml load gcc/mpc/1.2.0
 #+END_SRC
 *** GCC 9.2.0
 #+BEGIN_SRC bash :noeval :tangle codeSnips/lmod-help/getGCC920.sh :eval never
-mkdir -p ~/tmphpc
-cd $HOME/tmphpc
+cd $hpcroot
+ml load gcc/gmp gcc/mpfr gcc/mpc
 myprefix=$HOME/.hpc/gcc/9.2.0
 wget https://ftp.gnu.org/gnu/gcc/gcc-9.2.0/gcc-9.2.0.tar.xz
 tar xfv gcc-9.2.0.tar.xz
@@ -4359,49 +4604,12 @@ unset LIBRARY_PATH
 export LIBRARY_PATH=/usr/lib64/
 mkdir -p -- .deps
 make -j$(nproc)
+make install
 ml load gcc/9.2.0
 #+END_SRC
-*** Autotools
-Following the standard approach outlined in the [[https://www.gnu.org/software/automake/faq/autotools-faq.html#How-can-I-install-software-below-my-home-directory_003f][GNU Autotools FAQ]]:
-#+BEGIN_SRC bash :noeval :tangle codeSnips/lmod-help/getAutotools.sh :eval never
-mkdir -p ~/tmphpc
-cd $HOME/tmphpc
-myprefix=$HOME/.hpc/autotools
-export PATH
-wget http://ftp.gnu.org/gnu/m4/m4-1.4.18.tar.gz
-wget http://ftp.gnu.org/gnu/autoconf/autoconf-2.69.tar.gz
-wget http://ftp.gnu.org/gnu/automake/automake-1.16.2.tar.gz
-wget http://ftp.gnu.org/gnu/libtool/libtool-2.4.6.tar.gz
-gzip -dc m4-1.4.18.tar.gz | tar xvf -
-gzip -dc autoconf-2.69.tar.gz | tar xvf -
-gzip -dc automake-1.16.2.tar.gz | tar xvf -
-gzip -dc libtool-2.4.6.tar.gz | tar xvf -
-cd m4-1.4.18
-./configure -C --prefix=$myprefix/m4/1.4.18 && make -j$(nproc) && make install
-cd ../autoconf-2.69
-./configure -C --prefix=$myprefix/autoconf/2.69 && make -j$(nproc) && make install
-cd ../automake-1.16.2
-./configure -C --prefix=$myprefix/automake/1.16.2 && make -j$(nproc) && make install
-cd ../libtool-2.4.6
-./configure -C --prefix=$myprefix/libtool/2.4.6 && make -j$(nproc) && make install
-ml load autotools/autotools
-#+END_SRC
-We also need the archive.
-#+BEGIN_SRC bash
-myprefix=$HOME/.hpc/autotools
-git clone git://git.sv.gnu.org/autoconf-archive.git
-#+END_SRC
-Combined with the [[https://lmod.readthedocs.io/en/latest/020_advanced.html][lmod manual]] gives rise to the following definiton (roughly the same for each one):
-#+BEGIN_SRC bash
-local home    = os.getenv("HOME")
-local version = myModuleVersion()
-local pkgName = myModuleName()
-local pkg     = pathJoin(home,".hpc",pkgName,version,"bin")
-prepend_path("PATH", pkg)
-#+END_SRC
-We will no longer bother with the module definitions for the rest of this post, as they are handled and documented in the repo.
 *** Pkg-Config
 #+BEGIN_SRC bash
+cd $hpcroot
 myprefix=$HOME/.hpc/pkg-config/0.29.2
 wget https://pkg-config.freedesktop.org/releases/pkg-config-0.29.2.tar.gz
 gzip -dc pkg-config-0.29.2.tar.gz | tar xvf -
@@ -4414,6 +4622,7 @@ ml load pkg-config/0.29.2
 #+END_SRC
 *** Zlib
 #+BEGIN_SRC bash
+cd $hpcroot
 myprefix=$HOME/.hpc/zlib/1.2.11
 wget http://zlib.net/zlib-1.2.11.tar.gz
 gzip -dc zlib-1.2.11.tar.gz | tar xvf -
@@ -4425,6 +4634,7 @@ ml load zlib/1.2.11
 #+END_SRC
 *** XZ Utils
 #+BEGIN_SRC bash
+cd $hpcroot
 myprefix=$HOME/.hpc/xz/5.2.5
 wget https://tukaani.org/xz/xz-5.2.5.tar.gz
 gzip -dc xz-5.2.5.tar.gz | tar xvf -
@@ -4436,6 +4646,7 @@ ml load xz/5.2.5
 #+END_SRC
 *** OpenSSL
 #+BEGIN_SRC bash
+cd $hpcroot
 myprefix=$HOME/.hpc/openssl/1.1.1d
 wget https://www.openssl.org/source/openssl-1.1.1d.tar.gz
 gzip -dc openssl-1.1.1d.tar.gz | tar xvf -
@@ -4447,6 +4658,7 @@ ml load openssl/1.1.1d
 #+END_SRC
 *** cURL
 #+BEGIN_SRC bash
+cd $hpcroot
 myprefix=$HOME/.hpc/curl/7.76.0
 wget https://curl.haxx.se/download/curl-7.76.0.tar.xz
 tar xfv  curl-7.76.0.tar.xz
@@ -4454,25 +4666,15 @@ cd curl-7.76.0
 ./configure --prefix=$myprefix \
     --disable-static \
     --enable-threaded-resolver \
-    --with-ca-path=/etc/ssl/certs \
-    --with-ssl
+    --with-openssl
 make -j $(nproc)
 make install
-ml load libcurl/7.76.0
-#+END_SRC
-*** Perl
-This is essentially the setup from the [[https://learn.perl.org/installing/unix_linux.html][main docs]].
-#+BEGIN_SRC bash :noeval :tangle codeSnips/lmod-help/getPerl.sh :eval never
-# Get Perl
-curl -L http://xrl.us/installperlnix | bash
-# Use Perl
-ml use perl/5.28.0
-cpanm ExtUtils::MakeMaker # For git
-ml load perl/5.28.0
+ml load curl/7.76.0
 #+END_SRC
 *** Git
 This is very similar to the previous approach. However, since by default the system ~perl~ was being picked up, some slight changes have been made.
 #+BEGIN_SRC bash
+cd $hpcroot
 myprefix=$HOME/.hpc/git/2.9.5
 PATH=$myprefix/bin:$PATH
 export PATH
@@ -4483,6 +4685,8 @@ cd git-2.9.5
 make -j $(nproc)
 make install
 ml load git/2.9.5
+ml unload openssl # System will suffice
+ml unload curl # System will suffice
 #+END_SRC
 **** Caveat
 Also, for TRAMP, we would prefer having a more constant path, so we can set up a symlink:
@@ -4491,12 +4695,13 @@ mkdir ~/.hpc/bin
 ln ~/.hpc/git/2.9.5/bin/git ~/.hpc/bin/git
 #+END_SRC
 *** Boost
-The [[https://www.boost.org/][boost website]] is utterly incomprehensible. As is the documentation. Also, fun fact, the move from ~svn~ makes things worse. Thankfully, a quick dive into the slightly [[https://github.com/boostorg/wiki/wiki/Getting-Started%3A-Overview][better Github wiki]] led to this nugget:
+The [[https://www.boost.org/][boost website]] is utterly incomprehensible. As is the documentation. Also, fun fact, the move from ~svn~ makes things worse. This is best installed with the standard compiler present, since the B2 engine detection seems to be very hit and miss. Thankfully, a quick dive into the slightly [[https://github.com/boostorg/wiki/wiki/Getting-Started%3A-Overview][better Github wiki]] led to this nugget:
 
 #+BEGIN_SRC bash
+cd $hpcroot
 git clone --recursive https://github.com/boostorg/boost.git
 cd boost
-git checkout tags/boost-1.73.0 # or whatever branch you want to use
+git checkout tags/boost-1.76.0 # or whatever branch you want to use
 ./bootstrap.sh
 ./b2 headers
 #+END_SRC
@@ -4505,22 +4710,24 @@ This means we're almost done!
 
 #+BEGIN_SRC bash
 ./b2
-./b2 install --prefix=$HOME/.hpc/boost/boost-1.73.0
-ml load boost/boost-1.73.0
+./b2 install --prefix=$HOME/.hpc/boost/boost-1.76.0
+ml load boost/boost-1.76.0
 #+END_SRC
 *** Cmake
 #+BEGIN_SRC bash
-myprefix=$HOME/.hpc/cmake/3.18.1
-wget https://github.com/Kitware/CMake/releases/download/v3.18.1/cmake-3.18.1.tar.gz
-gzip -dc cmake-3.18.1.tar.gz | tar xvf -
-cd cmake-3.18.1
-./bootstrap --prefix=$myprefix
+cd $hpcroot
+myprefix=$HOME/.hpc/cmake/3.20.1
+wget https://github.com/Kitware/CMake/releases/download/v3.20.1/cmake-3.20.1.tar.gz
+gzip -dc cmake-3.20.1.tar.gz | tar xvf -
+cd cmake-3.20.1
+CXXFLAGS="-std=c++11" CC=$(which gcc) CXX=$(which g++) ./bootstrap --prefix=$myprefix --system-libs
 make -j $(nproc)
 make install
-ml load cmake/3.18.1
+ml load cmake/3.20.1
 #+END_SRC
 *** GNU-Make
 #+BEGIN_SRC bash
+cd $hpcroot
 myprefix=$HOME/.hpc/make/4.3
 wget http://ftp.gnu.org/gnu/make/make-4.3.tar.gz
 gzip -dc make-4.3.tar.gz | tar xvf -
@@ -4532,9 +4739,13 @@ ml load make/4.3
 #+END_SRC
 *** Brotli
 #+BEGIN_SRC bash
+cd $hpcroot
 myprefix=$HOME/.hpc/brotli/1.0.1
 git clone https://github.com/bagder/libbrotli
 cd libbrotli
+libtoolize
+aclocal
+autoheader
 ./autogen.sh
 ./configure --prefix=$myprefix
 make -j $(nproc)
@@ -4544,6 +4755,7 @@ ml load brotli/1.0.1
 *** ncurses
 We will need to manually ensure the paths for ~pkg-config~ are in a feasible location.
 #+BEGIN_SRC bash
+cd $hpcroot
 myprefix=$HOME/.hpc/ncurses/6.2
 wget https://invisible-mirror.net/archives/ncurses/ncurses-6.2.tar.gz
 gzip -dc ncurses-6.2.tar.gz | tar xvf -
@@ -4558,6 +4770,7 @@ ml load ncurses/6.2
 #+END_SRC
 *** texinfo
 #+BEGIN_SRC bash
+cd $hpcroot
 myprefix=$HOME/.hpc/texinfo/6.7
 wget http://ftp.gnu.org/gnu/texinfo/texinfo-6.7.tar.gz
 gzip -dc texinfo-6.7.tar.gz | tar xvf -
@@ -4569,6 +4782,7 @@ ml load texinfo/6.7
 #+END_SRC
 *** gperf
 #+BEGIN_SRC bash
+cd $hpcroot
 myprefix=$HOME/.hpc/gperf/3.1
 wget http://ftp.gnu.org/gnu/gperf/gperf-3.1.tar.gz
 gzip -dc gperf-3.1.tar.gz | tar xvf -
@@ -4581,6 +4795,7 @@ ml load gperf/3.1
 *** libseccomp
 There is a bug, which requires modifying ~src/system.c~ to change ~__NR_seccomp~ to ~_nr_seccomp~.
 #+BEGIN_SRC bash
+cd $hpcroot
 myprefix=$HOME/.hpc/libseccomp/2.5.0
 git clone https://github.com/seccomp/libseccomp
 cd libseccomp
@@ -4593,6 +4808,7 @@ ml load libseccomp/2.5.0
 #+END_SRC
 Alternatively, it is easier to work with an older version.
 #+BEGIN_SRC bash
+cd $hpcroot
 myprefix=$HOME/.hpc/libseccomp/2.4.4
 wget https://github.com/seccomp/libseccomp/releases/download/v2.4.4/libseccomp-2.4.4.tar.gz
 tar xfv libseccomp-2.4.4.tar.gz
@@ -4604,6 +4820,7 @@ ml load libseccomp/2.4.4
 #+END_SRC
 *** BDWGC
 #+BEGIN_SRC bash
+cd $hpcroot
 myprefix=$HOME/.hpc/bdwgc/8.0.4
 wget https://github.com/ivmai/bdwgc/releases/download/v8.0.4/gc-8.0.4.tar.gz
 gzip -dc gc-8.0.4.tar.gz | tar xvf -
@@ -4615,7 +4832,8 @@ ml load bdwgc/8.0.4
 #+END_SRC
 *** pcre
 We will prep both ~pcre2~ and ~pcre~.
-#+BEGIN_QUOTE
+#+BEGIN_SRC bash
+cd $hpcroot
 myprefix=$HOME/.hpc/pcre2/10.35
 wget https://ftp.pcre.org/pub/pcre/pcre2-10.35.tar.gz
 gzip -dc pcre2-10.35.tar.gz | tar xvf -
@@ -4627,9 +4845,10 @@ cd pcre2-10.35
 make -j $(nproc)
 make install
 ml load pcre2/10.35
-#+END_QUOTE
+#+END_SRC
 
-#+BEGIN_QUOTE
+#+BEGIN_SRC bash
+cd $hpcroot
 myprefix=$HOME/.hpc/pcre/8.44
 wget https://ftp.pcre.org/pub/pcre/pcre-8.44.tar.gz
 gzip -dc pcre-8.44.tar.gz | tar xvf -
@@ -4641,9 +4860,10 @@ cd pcre-8.44
 make -j $(nproc)
 make install
 ml load pcre/8.44
-#+END_QUOTE
+#+END_SRC
 *** bison
 #+BEGIN_SRC bash
+cd $hpcroot
 myprefix=$HOME/.hpc/bison/3.7.1
 wget http://ftp.gnu.org/gnu/bison/bison-3.7.1.tar.gz
 gzip -dc bison-3.7.1.tar.gz | tar xvf -
@@ -4655,6 +4875,7 @@ ml load bison/3.7.1
 #+END_SRC
 *** flex
 #+BEGIN_SRC bash
+cd $hpcroot
 myprefix=$HOME/.hpc/flex/2.6.4
 wget https://github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz
 gzip -dc flex-2.6.4.tar.gz | tar xvf -
@@ -4665,21 +4886,31 @@ make install
 ml load flex/2.6.4
 #+END_SRC
 *** jq
-#+BEGIN_SRC bash
-myprefix=$HOME/.hpc/jq/1.6
-git clone https://github.com/stedolan/jq.git
-cd jq
-git submodule update --init
-git checkout tags/jq-1.6
-autoreconf -fi
-./configure --prefix=$myprefix --with-oniguruma=builtin
+We first need the ~oniguruma~ [[https://github.com/kkos/oniguruma][regular expression library]].
+#+begin_src bash
+cd $hpcroot
+myprefix=$HOME/.hpc/oniguruma/6.9.7.1
+git clone git@github.com:kkos/oniguruma.git
+cd oniguruma
+git checkout tags/v6.9.7.1
+libtoolize
+autoreconf -i
+./configure --prefix=$myprefix
 make -j $(nproc)
 make install
-ml load jq/1.6
+ml load oniguruma/6.9.7.1
+#+end_src
+We will actually use the binary.
+#+BEGIN_SRC bash
+cd $HOME/.local/bin
+wget https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
+chmod +x jq-linux64
+mv jq-linux64 jq
 #+END_SRC
 *** bzip2
 Needed to manually configure it as shown [[https://github.com/samtools/htslib/issues/696#issuecomment-387405020][here]]
 #+BEGIN_SRC bash
+cd $hpcroot
 myprefix=$HOME/.hpc/bzip2/1.0.8
 wget https://www.sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz
 gzip -dc bzip2-1.0.8.tar.gz | tar xvf -
@@ -4693,9 +4924,9 @@ cp -avf libbz2.so* $myprefix/lib
 make install PREFIX=$myprefix
 ml load bzip2/1.0.8
 #+END_SRC
-
 *** sqlite
 #+BEGIN_SRC bash
+cd $hpcroot
 myprefix=$HOME/.hpc/sqlite/3.32.3
 wget https://www.sqlite.org/2020/sqlite-autoconf-3320300.tar.gz
 gzip -dc sqlite-autoconf-3320300.tar.gz | tar xvf -
@@ -4707,6 +4938,7 @@ ml load sqlite/3.32.3
 #+END_SRC
 *** editline
 #+BEGIN_SRC bash
+cd $hpcroot
 myprefix=$HOME/.hpc/editline/1.17.1
 wget https://github.com/troglobit/editline/releases/download/1.17.1/editline-1.17.1.tar.gz
 gzip -dc editline-1.17.1.tar.gz | tar xvf -
@@ -4732,6 +4964,7 @@ Libraries and ~git~ aside, there are some tools we might want to have.
 *** ag
 The silver searcher, along with ~rg~ is very useful to have.
 #+BEGIN_SRC bash
+cd $hpcroot
 myprefix=$HOME/.hpc/the_silver_searcher/2.2.0
 wget https://geoff.greer.fm/ag/releases/the_silver_searcher-2.2.0.tar.gz
 gzip -dc the_silver_searcher-2.2.0.tar.gz | tar xvf -
@@ -4743,6 +4976,7 @@ ml load the_silver_searcher/2.2.0
 #+END_SRC
 *** Neovim
 #+BEGIN_SRC bash
+cd $hpcroot
 myprefix=$HOME/.hpc/nvim/0.5.0
 wget https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
 chmod +x nvim.appimage
@@ -4753,6 +4987,7 @@ ml load nvim/0.5.0
 #+END_SRC
 *** Tmux
 #+BEGIN_SRC bash
+cd $hpcroot
 myprefix=$HOME/.hpc/tmux/3.1b
 wget https://github.com/tmux/tmux/releases/download/3.1b/tmux-3.1b-x86_64.AppImage
 chmod +x tmux-3.1b-x86_64.AppImage
@@ -4762,14 +4997,15 @@ mkdir -p $myprefix
 mv squashfs-root/usr/bin squashfs-root/usr/lib squashfs-root/usr/share $myprefix
 ml load tmux/3.1b
 #+END_SRC
-
 *** Zsh
 More of an update than a requirement.
 #+BEGIN_SRC bash
+cd $hpcroot
 myprefix=$HOME/.hpc/zsh/5.8
 wget https://github.com/zsh-users/zsh/archive/zsh-5.8.tar.gz
 gzip -dc zsh-5.8.tar.gz | tar xvf -
 cd zsh-zsh-5.8
+autoreconf -fiv
 ./configure --prefix=$myprefix
 make -j $(nproc)
 make install
