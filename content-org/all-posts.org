@@ -5738,7 +5738,8 @@ ml load brotli/1.0.1
 ml load libseccomp/2.4.4
 ml load bdwgc/8.0.4
 ml load bzip2/1.0.8
-ml load openssl sqlite
+ml load sqlite
+ml load patch xz
 wget http://nixos.org/releases/nix/nix-${nix_version}/nix-${nix_version}.tar.bz2
 tar xfv nix-2.3.7.tar.bz2
 cd nix-2.3.7
@@ -5748,6 +5749,10 @@ Before actually configuring and installing from source, we need some patches.
 *** Patches
 I suggest carefully typing out the patches, though leave a comment if you want a repo with these changes (if you must star something in the meantime, [[https://github.com/d-SEAMS/seams-core][star this]]).
 - Start with [[https://github.com/NixOS/nix/pull/1584/files][this patch]]
+#+begin_src bash
+wget https://github.com/NixOS/nix/commit/8d3cb66d22f348341d7afa626acfa53b40584fdd.patch
+git apply 8d3cb66d22f348341d7afa626acfa53b40584fdd.patch
+#+end_src
 - Also [[https://nixos.wiki/wiki/Nix_Installation_Guide][this one]]
 
 Remove the following ~ifdef~ stuff from  ~src/libutil/compression.cc~, leaving only the contents of the ~else~ statement.
@@ -5783,14 +5788,15 @@ Finally, you will need edit ~nixpkgs~.
     sha256 = "05n6mxc8n4zsli4dijrr2x5c9ggwi223i5za4n0xwhgd4lkhqymw";
   };
 #+END_SRC
-
 *** User Build
 We can now complete the build.
 #+BEGIN_SRC bash
-./configure  --enable-gc --prefix=$myprefix --with-store-dir=$nixdir/store --localstatedir=$nixdir/var --with-boost=$BOOST_ROOT --disable-seccomp-sandboxing --disable-doc-gen CPPFLAGS="-I$HOME/.hpc/bzip2/1.0.8/include" LDFLAGS="-L$HOME/.hpc/bzip2/1.0.8/lib -Wl,-R$HOME/.hpc/bzip2/1.0.8/lib"
+ml load openssl curl
+./configure  --enable-gc --prefix=$myprefix --with-store-dir=$nixdir/store --localstatedir=$nixdir/var --with-boost=$BOOST_ROOT --disable-seccomp-sandboxing --disable-doc-gen --with-sandbox-shell=/usr/bin/sh CPPFLAGS="-I$HOME/.hpc/bzip2/1.0.8/include" LDFLAGS="-L$HOME/.hpc/bzip2/1.0.8/lib -Wl,-R$HOME/.hpc/bzip2/1.0.8/lib"
 make -j $(nproc)
 make install
 ml load nix/user # Hooray!
+ml unload openssl curl
 #+END_SRC
 
 Now we still need to set a profile. Inspect  ~.hpc/nix/nix-boot/etc/profile.d/nix.sh~ and check the value of ~NIX_PROFILES~
@@ -5802,6 +5808,19 @@ chmod +x .hpc/nix/nix-boot/etc/profile.d/nix.sh
 nix-env --switch-profile .nix/var/nix/profiles/default
 mkdir -p  ~/.nix/var/nix/profiles
 #+END_SRC
+
+We also need to kill the sandbox for now, as also seen in the [[https://aur.archlinux.org/packages/nix/?O=10&PP=10][AUR package]] (and [[https://github.com/NixOS/nix/issues/3337#issuecomment-579363583][here]]).
+#+begin_src conf
+# ~/.config/nix/nix.conf
+sandbox = false
+substituters = https://cache.nixos.org https://all-hies.cachix.org
+trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= all-hies.cachix.org-1:JjrzAOEUsD9ZMt8fdFbzo3jNAyEWlPAwdVuHw4RD43k=
+#+end_src
+Now we can test this before moving forward:
+#+begin_src bash
+nix-channel --update
+nix-shell -p hello
+#+end_src
 ** Rebuilding Natively
 The astute reader will have noticed that we glibly monkeyed around with the ~nix~ source in the previous section, but all will be made well since we can rebuild to use ~nix~ with itself. Do *replace the variable with the corresponding path*:
 #+BEGIN_SRC nix
@@ -5809,6 +5828,55 @@ storeDir = "$HOME/.nix/store";
 stateDir = "$HOME/.nix/var";
 confDif = "$HOME/.nix/etc";
 #+END_SRC
+
+Essentially, the ~$HOME/.config/nixpkgs/config.nix~ should look like (incorporating both the patches and also the full directory we will be using):
+#+begin_src nix
+{
+  packageOverrides = pkgs:
+    with pkgs; {
+      autogen = autogen.overrideAttrs (oldAttrs: {
+        postInstall = ''
+          mkdir -p $dev/bin
+          mv $bin/bin/autoopts-config $dev/bin
+          for f in $lib/lib/autogen/tpl-config.tlib $out/share/autogen/tpl-config.tlib; do
+            sed -e "s|$dev/include|/no-such-autogen-include-path|" -i $f
+            sed -e "s|$bin/bin|/no-such-autogen-bin-path|" -i $f
+            sed -e "s|$lib/lib|/no-such-autogen-lib-path|" -i $f
+          done
+          # remove /tmp/** from RPATHs
+          for f in "$bin"/bin/*; do
+            local nrp="$(patchelf --print-rpath "$f" | sed -E 's@(:|^)/tmp/[^:]*:@\1@g')"
+            patchelf --set-rpath "$nrp" "$f"
+          done
+        '' + stdenv.lib.optionalString (!stdenv.hostPlatform.isDarwin) ''
+          # remove /build/** from RPATHs
+          for f in "$bin"/bin/*; do
+            local nrp="$(patchelf --print-rpath "$f" | sed -E 's@(:|^)/build/[^:]*:@\1@g')"
+            patchelf --set-rpath "$nrp" "$f"
+          done
+        '';
+      });
+      nix = nix.overrideAttrs (oldAttrs: {
+        storeDir = "/users/home/jdoe/.nix/store";
+        stateDir = "/users/home/jdoe/.nix/var";
+        confDif = "/users/home/jdoe/.nix/etc";
+        doCheck = false;
+        doInstallCheck = false;
+        prePatch = ''
+          substituteInPlace src/libstore/local-store.cc \
+            --replace '(eaName == "security.selinux")' \
+                      '(eaName == "security.selinux" || eaName == "system.nfs4_acl")'
+          substituteInPlace src/libstore/gc.cc \
+            --replace 'auto mapLines =' \
+                      'continue; auto mapLines ='
+          substituteInPlace src/libstore/sqlite.cc \
+            --replace 'SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, 0) != SQLITE_OK)' \
+                      'SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, "unix-dotfile") != SQLITE_OK)'
+        '';
+      });
+    };
+}
+#+end_src
 
 We can "speed up" our build by disabling all tests. Go to the copy of ~nixpkgs~ and run:
 
