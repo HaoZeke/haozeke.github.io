@@ -5892,6 +5892,31 @@ ml load nix/bootstrapped
 #+END_SRC
 
 This will still take a couple of hours at least. Around 3-4 hours. Try to set this up on a lazy weekend to evade sysadmins.
+
+If ~curl 429~ rate limits are encountered for ~musl~ sources, the solution is to replace the source (put the following in a file, say ~no429.patch~):
+#+begin_src nix
+diff --git a/pkgs/os-specific/linux/musl/default.nix b/pkgs/os-specific/linux/musl/default.nix
+index ae175a3..1a6f6c7 100644
+--- a/pkgs/os-specific/linux/musl/default.nix
++++ b/pkgs/os-specific/linux/musl/default.nix
+@@ -4,12 +4,12 @@
+ }:
+ let
+   cdefs_h = fetchurl {
+-    url = "http://git.alpinelinux.org/cgit/aports/plain/main/libc-dev/sys-cdefs.h";
++    url = "https://raw.githubusercontent.com/akadata/aports/master/main/libc-dev/sys-cdefs.h";
+     sha256 = "16l3dqnfq0f20rzbkhc38v74nqcsh9n3f343bpczqq8b1rz6vfrh";
+   };
+   queue_h = fetchurl {
+-    url = "http://git.alpinelinux.org/cgit/aports/plain/main/libc-dev/sys-queue.h";
+-    sha256 = "12qm82id7zys92a1qh2l1qf2wqgq6jr4qlbjmqyfffz3s3nhfd61";
++    url = "https://raw.githubusercontent.com/akadata/aports/master/main/libc-dev/sys-queue.h";
++    sha256 = "049pd547ckrsky72s18a649mz660yph14wdrlw9gnbk903skdnz4";
+   };
+   tree_h = fetchurl {
+     url = "http://git.alpinelinux.org/cgit/aports/plain/main/libc-dev/sys-tree.h";
+#+end_src
+This can be applied with ~git apply~.
 ** Usage
 We have finally obtained a bootstrapped ~nix~ which is bound to our set of ~nixpkgs~. To ensure its use:
 #+BEGIN_SRC bash
@@ -5901,14 +5926,120 @@ ml load nix/bootstrapped
 ml save
 #+END_SRC
 *** Flakes and DevShells
-I prefer to live life on the edge:
-#+begin_src bash
-nix-env -iA nixpkgs.nixUnstable -f $HOME/Git/Github/nixpkgs -j$(nproc) --keep-going --show-trace --cores 4 2>&1 | tee nix-install-base.log
+Newer versions of ~nix~ depend on ~mdbook~ which is meant for generating the documentation. Unfortunately, the ~cargo256~ hashes are path dependent. A quick fix is to remove the dependency on ~mdbook~ and disable documentation generation with the following ugly patch:
+#+begin_src nix
+diff --git a/pkgs/tools/package-management/nix/default.nix b/pkgs/tools/package-management/nix/default.nix
+index 7eda5ae..91bf1b8 100644
+--- a/pkgs/tools/package-management/nix/default.nix
++++ b/pkgs/tools/package-management/nix/default.nix
+@@ -14,7 +14,7 @@ common =
+   , pkg-config, boehmgc, libsodium, brotli, boost, editline, nlohmann_json
+   , autoreconfHook, autoconf-archive, bison, flex
+   , jq, libarchive, libcpuid
+-  , lowdown, mdbook
++  , lowdown
+   # Used by tests
+   , gtest
+   , busybox-sandbox-shell
+@@ -36,7 +36,7 @@ common =
+
+       VERSION_SUFFIX = suffix;
+
+-      outputs = [ "out" "dev" "man" "doc" ];
++      outputs = [ "out" "dev" ];
+
+       nativeBuildInputs =
+         [ pkg-config ]
+@@ -45,7 +45,6 @@ common =
+           [ autoreconfHook
+             autoconf-archive
+             bison flex
+-            (lib.getBin lowdown) mdbook
+             jq
+            ];
+
+@@ -119,8 +118,8 @@ common =
+         [ "--with-store-dir=${storeDir}"
+           "--localstatedir=${stateDir}"
+           "--sysconfdir=${confDir}"
+-          "--disable-init-state"
+           "--enable-gc"
++          "--disable-doc-gen"
+         ]
+         ++ lib.optionals stdenv.isLinux [
+           "--with-sandbox-shell=${sh}/bin/busybox"
+@@ -136,7 +135,8 @@ common =
+
+       installFlags = [ "sysconfdir=$(out)/etc" ];
+
+-      doInstallCheck = true; # not cross
++      doInstallCheck = false; # not cross
++      doCheck = false;
+
+       # socket path becomes too long otherwise
+       preInstallCheck = lib.optionalString stdenv.isDarwin ''
+@@ -160,7 +160,7 @@ common =
+         license = lib.licenses.lgpl2Plus;
+         maintainers = [ lib.maintainers.eelco ];
+         platforms = lib.platforms.unix;
+-        outputsToInstall = [ "out" "man" ];
++        outputsToInstall = [ "out" ];
+       };
+
+       passthru = {
 #+end_src
-Now we can activate flakes and other features like ~nix shell~ (note the space!).
+We also need to update our ~config.nix~:
+#+begin_src nix
+nixUnstable = nixUnstable.overrideAttrs (oldAttrs: {
+    storeDir = "/users/home/rog32/.nix/store";
+    stateDir = "/users/home/rog32/.nix/var";
+    confDif = "/users/home/rog32/.nix/etc";
+    doCheck = false;
+    doInstallCheck = false;
+    prePatch = ''
+      substituteInPlace src/libstore/local-store.cc \
+        --replace '(eaName == "security.selinux")' \
+                  '(eaName == "security.selinux" || eaName == "system.nfs4_acl")'
+      substituteInPlace src/libstore/gc.cc \
+        --replace 'auto mapLines =' \
+                  'continue; auto mapLines ='
+     '';
+   });
+#+end_src
+Now we can finally get to the installation of a newer version. I prefer to live life on the edge:
+#+begin_src bash
+nix-env -iA nixUnstable -f $HOME/Git/Github/nixpkgs -j$(nproc) --keep-going --show-trace --cores 4 2>&1 | tee nix-install-base.log
+#+end_src
+We are now able activate flakes and other features like ~nix shell~ (note the space!).
 #+begin_src conf
 # ~/.config/nix/nix.conf
 experimental-features = nix-command flakes
+#+end_src
+**** Bonus: Fixing Documentation
+In order to get the original derivation working, we need to essentially modify the ~cargo256~ hashes. Thankfully the ~nix~ build log is rather verbose.
+#+begin_src bash
+installing
+error: hash mismatch in fixed-output derivation '/users/home/jdoen/.nix/sto$
+e/n71nkimlbazmq1vpyyavqcxzg9c86brs-mdbook-0.4.7-vendor.tar.gz.drv':
+         specified: sha256-2kBJcImytsSd7Q0kj1bsP/NXxyy2Pr8gHb8iNf6h3/4=
+            got:    sha256-4bYLrmyI7cPUes6DYREiIB9gDze0KO2jMP/jPzvWbwQ=
+error: 1 dependencies of derivation '/users/home/jdoen/.nix/store/wr31pgva8a
+zn9jvvpa4bshykv80xf5qi-mdbook-0.4.7.drv' failed to build
+error: 1 dependencies of derivation '/users/home/jdoen/.nix/store/y8pkc0hhgz
+rvxgrj7c00mmsy50plya6p-nix-2.4pre20210326_dd77f71.drv' failed to build
+#+end_src
+We need to modify ~pkgs/tools/text/mdbook/default.nix~ to update the hash; and then:
+#+begin_src bash
+nix-env -iA nixUnstable -f $HOME/Git/Github/nixpkgs -j$(nproc) --keep-going --show-trace --cores 4 2>&1 | tee nix-install-base.log
+ml load nix/bootstrapped
+nix-shell --help # Works
+nix-shell -p hello # Also works
+#+end_src
+**** Channels
+We would like to move away from having to constantly pass our cloned set of packages.
+#+begin_src bash
+nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs
+nix-channel --update
 #+end_src
 *** Basic Packages
 Now we can get some basic stuff too.
@@ -5916,6 +6047,10 @@ Now we can get some basic stuff too.
 nix-env -i tmux zsh lsof pv git -f $HOME/Git/Github/nixpkgs -j$(nproc) --keep-going --show-trace --cores 4 2>&1 | tee nix-install-base.log
 #+END_SRC
 *** Ruby Caveats
+#+begin_quote
+No longer relevant as of April 2020
+#+end_quote
+
 While installing packages which depend on ~ruby~, there will be permission errors inside the build folder. These can be "fixed" by setting very permissive controls on the *build-directory* in question. *Do not* set permissions directly on the ~.nix/store/$HASH~ folder, as doing so will make ~nix~ reject the build artifact.
 #+BEGIN_SRC bash
 # neovim depends on ruby
@@ -5958,6 +6093,13 @@ nix-build
 mv .nix/$HASH-pkg/ .diePKGs/
 nix-build # profit
 #+END_SRC
+The right way to deal with this is of course:
+#+begin_src bash
+nix-build
+lsof +D .nix/$HASH-pkg/.nfs0234234
+kill $whatever_blocks
+nix-build # profit
+#+end_src
 ** Conclusions
 Though this is slow and seems like an inefficient use of cluster resources, the benefits of reproducible environments typically outweighs the cost. Also it is much more pleasant to have a proper package manager which can work with Dotfiles.
 
