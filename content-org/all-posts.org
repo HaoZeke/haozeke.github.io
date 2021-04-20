@@ -4256,7 +4256,7 @@ rm -rf bin
 micromamba shell init -s bash -p $HOME/micromamba
 . ~/.bashrc
 #+end_src
-Now we can use ~mamba~ to get a temporary interactive environment, including ~gcc 9.3.0~.
+Now we can use ~mamba~ to get a temporary interactive environment
 #+begin_src bash
 # Spack requirements
 PKGS="git patch curl make tar gzip unzip bzip2 xz zstd subversion lsof m4"
@@ -4924,6 +4924,28 @@ cp -avf libbz2.so* $myprefix/lib
 make install PREFIX=$myprefix
 ml load bzip2/1.0.8
 #+END_SRC
+Actually [[https://github.com/libimobiledevice/sbmanager/issues/1#issuecomment-575051418][there are a set of patches]] for ~1.0.6~ which include ~pkg-config~ support so we will use those as well.
+#+begin_src bash
+cd $hpcroot
+myprefix=$HOME/.hpc/bzip2/1.0.6
+wget ftp://sourceware.org/pub/bzip2/bzip2-1.0.6.tar.gz
+tar xfz bzip2-1.0.6.tar.gz
+cd bzip2-1.0.6
+# patches.list: https://gist.github.com/steakknife/0ee85c93495ab9f9cff5e21ee12fb25b
+wget https://gist.githubusercontent.com/steakknife/946f6ee331512a269145b293cbe898cc/raw/bzip2-1.0.6-install_docs-1.patch
+wget https://gist.githubusercontent.com/steakknife/eceda09cae0cdb4900bcd9e479bab9be/raw/bzip2recover-CVE-2016-3189.patch
+wget https://gist.githubusercontent.com/steakknife/42feaa223adb4dd7c5c85f288794973c/raw/bzip2-man-page-location.patch
+wget https://gist.githubusercontent.com/steakknife/94f8aa4bfa79a3f896a660bf4e973f72/raw/bzip2-shared-make-install.patch
+wget https://gist.githubusercontent.com/steakknife/4faee8a657db9402cbeb579279156e84/raw/bzip2-pkg-config.patch
+patch -u < bzip2-1.0.6-install_docs-1.patch
+patch -u < bzip2recover-CVE-2016-3189.patch
+patch -u < bzip2-man-page-location.patch
+patch -u < bzip2-shared-make-install.patch
+patch -u < bzip2-pkg-config.patch
+make
+make install PREFIX=$myprefix
+ml load bzip2/1.0.6
+#+end_src
 *** sqlite
 #+BEGIN_SRC bash
 cd $hpcroot
