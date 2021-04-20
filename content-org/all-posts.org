@@ -5891,7 +5891,6 @@ ml load nix/bootstrapped
 #+END_SRC
 
 This will still take a couple of hours at least. Around 3-4 hours. Try to set this up on a lazy weekend to evade sysadmins.
-
 ** Usage
 We have finally obtained a bootstrapped ~nix~ which is bound to our set of ~nixpkgs~. To ensure its use:
 #+BEGIN_SRC bash
@@ -8676,9 +8675,9 @@ The ones I use mostly are enumerated in Table [[tbl:rustalternates]].
 
 These are trivial to obtain:
 #+begin_src bash
-cargo install bottom, ripgrep, hyperfine, navi, skim
+cargo install bottom ripgrep hyperfine navi skim
 # The following need some system libraries (OpenSSL) and shall be dealt with later
-# bat, exa, fd, tealdeer
+# bat exa fd tealdeer starship
 #+end_src
 *** MicroMamba
 We will set up a ~micromamba~ installation to get ~git~ and other base utilities.
