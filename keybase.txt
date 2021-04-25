@@ -1,0 +1,56 @@
+==================================================================
+https://keybase.io/haozeke
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://haozeke.github.io
+  * I am haozeke (https://keybase.io/haozeke) on keybase.
+  * I have a public key ASDJBSggRM3ULlRxF6frLPpKThNc8MT52yfYLMIqAL62Owo
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "01208ed13a74c208e57451702e57550c266f31f877ea9d2786b13e00769e447447d00a",
+      "host": "keybase.io",
+      "kid": "0120c905282044cdd42e547117a7eb2cfa4a4e135cf0c4f9db27d82cc22a00beb63b0a",
+      "uid": "8ca27cf24cf6c9de4076b171e8004019",
+      "username": "haozeke"
+    },
+    "merkle_root": {
+      "ctime": 1581508156,
+      "hash": "492ea17fccb77927981d3287b8e35673791a59cb10d76deccaad903bfb1c83875cfe75876d87e12b942b55d032f7cc8f2de4c432d1e2570256c7c0e20df47c06",
+      "hash_meta": "f18f219880b7981f43fe025b33da0d06003fde3818ad7ce232636aab1bb933a6",
+      "seqno": 14578534
+    },
+    "service": {
+      "entropy": "/a9khzJ4n/X035LyBJEFagQI",
+      "hostname": "haozeke.github.io",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 2
+  },
+  "client": {
+    "name": "keybase.io go client",
+    "version": "5.2.0"
+  },
+  "ctime": 1581508167,
+  "expire_in": 504576000,
+  "prev": "e5bd8780e1f655c172141b6001464fbd71cf15d527dbbba61af9ef5a1820d63c",
+  "seqno": 99,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+hKRib2R5hqhkZXRhY2hlZMOpaGFzaF90eXBlCqNrZXnEIwEgyQUoIETN1C5UcRen6yz6Sk4TXPDE+dsn2CzCKgC+tjsKp3BheWxvYWTESpcCY8Qg5b2HgOH2VcFyFBtgAUZPvXHPFdUn27umGvnvWhgg1jzEIJbBrmB5alOEXWJ2bvBOWdEB9i0KMYJ8QCGRxgJaTcl/AgHCo3NpZ8RAt9nvIiJeDLt0hsV4QkI4ThC5iBsks4dW+Frtm12RAte3pRdOSnXfm9fOpmIfWqfElQS3aoLa5i49U09KuLJiCahzaWdfdHlwZSCkaGFzaIKkdHlwZQildmFsdWXEIHXfMvcuVp7BluPe0b/8mZaAer4Iws1W9lBGYZjWlwRMo3RhZ80CAqd2ZXJzaW9uAQ==
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/haozeke
+
+==================================================================
