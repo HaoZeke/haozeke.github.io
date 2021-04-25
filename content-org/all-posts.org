@@ -8831,6 +8831,7 @@ The ones I use mostly are enumerated in Table [[tbl:rustalternates]].
 | ~cat~   | [[https://github.com/sharkdp/bat][bat]]              | File reader with syntax highlighting |
 | ~top~   | [[https://github.com/clementtsang/bottom][bottom]]           | Process management                   |
 | ~ls~    | [[https://github.com/ogham/exa][exa]]              | Listing things with colors           |
+| ~ps~    | [[https://github.com/dalance/procs][procs]]            | Better looking process lists         |
 | ~grep~  | [[https://github.com/BurntSushi/ripgrep][ripgrep]]          | Search recursively                   |
 | ~find~  | [[https://github.com/sharkdp/fd][fd]]               | Find things                          |
 | ~sed~   | [[https://github.com/chmln/sd][sd]]               | Search and replace things            |
@@ -8843,7 +8844,7 @@ These are trivial to obtain:
 #+begin_src bash
 cargo install bottom ripgrep hyperfine navi skim
 # The following need some system libraries (OpenSSL) and shall be dealt with later
-# bat exa fd tealdeer starship sd
+# bat exa fd tealdeer starship sd procs
 #+end_src
 *** MicroMamba
 We will set up a ~micromamba~ installation to get ~git~ and other base utilities.
@@ -9102,3 +9103,7 @@ code-server --link
 #+end_src
 
 [fn:whyname] A step in the right direction in terms of female representation amongst the university servers
+
+* TODO Dotfiles from dotgit to bombadil
+* TODO Integrating with Starship
+* TODO Keybindings and MacOS
