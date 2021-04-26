@@ -194,6 +194,9 @@ These are tech talks, for academic presentations, [[https://github.com/haozeke/c
 **** Lightning Talks
 - Nix from the dark ages (without Root) at [[https://2020.nixcon.org/][NixCon 2020]]
 *** Mentioning Me
+**** Volunteering
+- [[https://www.tug.org/TUGboat/Contents/contents41-2.html][TUGBOAT issue for TUG 2020]] proceedings
+  - Several mentions as a conference organizer
 **** Lists
 - [[https://en.rannis.is/news/allocation-from-the-icelandic-research-fund-for-the-financial-year-2021-1][2021 List of projects funded by the Icelandic Research Fund]]
 - [[https://developers.google.com/season-of-docs/docs/2020/participants][2020 GSoD (Google Season of Docs) list of successful projects]]
