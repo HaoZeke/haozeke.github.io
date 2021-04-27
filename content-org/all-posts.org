@@ -8793,6 +8793,9 @@ Anything on this site [[https://rgoswami.me/tags/nix/][tagged with Nix]] or [[ht
 #+BEGIN_EXPORT html
 <script async class="speakerdeck-embed" data-id="9e85011c15ff4d07beca4faf84e49039" data-ratio="1.37081659973226" src="//speakerdeck.com/assets/embed.js"></script>
 #+END_EXPORT
+** Video
+
+{{< youtube jyA13tw3VKg >}}
 ** Thoughts
 - Using the SHA commit IDs worked really well
   + Perfect for demonstrating refactors
