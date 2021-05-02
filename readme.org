@@ -25,7 +25,10 @@ This typically involves the following:
 #+end_src
 Updating the ruby packages:
 #+begin_src bash
+# Wit nix shell (v2.4 and up)
 nix shell nixpkgs#bundix -c bundix -l
+# Without
+nix-shell -p bundix --run "bundix -l"
 #+end_src
 Similarly, the ~node~ packages are to be generated with:
 #+begin_src bash
