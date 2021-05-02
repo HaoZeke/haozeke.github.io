@@ -2400,6 +2400,21 @@ mapkey L I
 mapkey j e
 mapkey J E
 #+END_SRC
+** Tridactyl
+I still use the [[https://github.com/tridactyl/tridactyl/][fantastic tridactyl]] for Firefox when I can. However, the bindings are slightly more involved, since there is no equivalent for the ~mapkey~ which ~Vimium~ has.
+#+begin_src conf
+" Rebinds for colemak
+" hjkl --> hnei
+bind h scrollpx -50
+bind n scrollline 10
+bind e scrollline -10
+bind i scrollpx 50
+" HJKL --> HNEI
+bind H back
+bind N tabprev
+bind E tabnext
+bind I forward
+#+end_src
 ** Vim
 For a lot of terminal edits, ~vim~ is still my editor of choice, and [[https://github.com/jooize/vim-colemak][vim-colemak]] works without any trouble [[https://github.com/HaoZeke/Dotfiles/commit/d6df2743822e6fcf4761d569600a8e9a802a7af4][in my configuration]].
 ** Zsh
