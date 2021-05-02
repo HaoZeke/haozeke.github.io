@@ -8728,15 +8728,6 @@ It is difficult to gauge the effect of financial incentives on the quality of co
 [fn:soyousay] This site is [[https://github.com/HaoZeke/haozeke.github.io/][written in org-mode]], my ~doom-emacs~ configuration is also [[https://dotdoom.rgoswami.me][extensive and online]]
 
 * TODO LFortran Intrinsics with C :@programming:workflow:projects:tools:
-* TODO Rewriting Dotfiles :@personal:tools:workflow:
-:PROPERTIES:
-:EXPORT_FILE_NAME: rewrite-dotfiles
-:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
-:END:
-#+BEGIN_QUOTE
-Notes on migrating from ~dotgit~ to
-#+END_QUOTE
-** Background
 * DONE Free Software and Me :@personal:rant:
 CLOSED: [2021-03-27 Sat 21:28]
 :PROPERTIES:
@@ -8897,7 +8888,7 @@ channel_priority: disabled
 *** GitHub Client
 We can grab the [[https://github.com/cli/cli/][GitHub client binary]] for interacting with GitHub for now. Configuring and using this spares the necessity of explaining SSH authentication.
 #+begin_src bash
-ghcliVer=1.9.1
+ghcliVer=1.9.2
 DST=~/.local
 wget https://github.com/cli/cli/releases/download/v${ghcliVer}/gh_${ghcliVer}_linux_amd64.tar.gz
 tar xf "gh_${ghcliVer}_linux_amd64.tar.gz"
@@ -9125,6 +9116,463 @@ code-server --link
 
 [fn:whyname] A step in the right direction in terms of female representation amongst the university servers
 
-* TODO Dotfiles from dotgit to bombadil
-* TODO Integrating with Starship
+* TODO Nix Shells for Ruby Projects :@programming:tools:nix:workflow:ruby:
+:PROPERTIES:
+:EXPORT_FILE_NAME: nix-shell-ruby
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_PANDOC_CITATIONS: t
+:END:
+#+begin_quote
+Using ~bundix~ for managing ~ruby~ projects, with a concrete ~jekyll~ example
+#+end_quote
+** Background
+In the same spirit as my similar post on [[Nix Shells for Node Projects][Nix Shells for Node Projects]]. As a prelude to writing up the details of how this site is generated, I realized I should write up a ~nix~ oriented workflow for ~ruby~ packages managed with ~bundle~. This site (which is in ~hugo~), I also manage many beautiful sites built with ~jekyll~. This should serve as a useful reminder.
+** Tooling and Idea
+The basic concepts are:
+- Use ~npm~ to generate a ~package-lock.json~ file
+- Use ~node2nix~ in a shell to generate a set of ~nix~ derivations
+- Enter a shell environment with the ~nix~ inputs
+- Profit
+
+However, the nuances of this are a bit annoying at first.
+** Packaging Requirements
+We will use the standard ~npm~ installation method at first, but since we shouldn't keep installing and removing things, so we need a way to modify ~package.json~ without running ~npm~ and will therefore add ~add-dependency~.
+#+BEGIN_SRC bash
+npm install add-dependency
+#+END_SRC
+** Setting up Node2Nix
+We will first clean the directory of what we do not need.
+
+#+BEGIN_SRC bash
+rm -rf default.nix node-env.nix node-packages.nix node_modules
+#+END_SRC
+
+Now we can enter a shell with ~node2nix~ and generate files for the node packages.
+
+#+BEGIN_SRC bash
+nix-shell -p 'nodePackages.node2nix'
+node2nix -l package-lock.json
+#+END_SRC
+
+** A Nix Environment
+
+We will use the standard setup described in [[A Tutorial Introduction to Nix][the tutorial post]]:
+#+BEGIN_SRC bash
+nix-env -i niv lorri
+niv init
+niv update nixpkgs -b nixpkgs-unstable
+#+END_SRC
+
+This is to be in conjunction with the following ~shell.nix~ file [fn:whythis].
+
+#+BEGIN_SRC nix
+{ sources ? import ./nix/sources.nix }:
+let
+  pkgs = import sources.nixpkgs { };
+  nodeEnv = pkgs.callPackage ./node-env.nix { };
+  nodePackages = pkgs.callPackage ./node-packages.nix {
+    globalBuildInputs = with pkgs; [ zsh ];
+    inherit nodeEnv;
+  };
+in nodePackages.shell
+#+END_SRC
+
+Note that we have overridden the ~nodePackages~ shell which is defined in the files created by ~node2nix~.
+
+We can now enter the environment and setup ~node_modules~[fn:whatlorri].
+#+BEGIN_SRC bash
+nix-shell
+ln -s $NODE_PATH node_modules
+#+END_SRC
+
+** Updates
+Unfortunately, this setup is a little fragile to updates. We will need to exit and re-create the setup. Note that we are removing the lock file now as well.
+
+#+BEGIN_SRC bash
+# In the nix-shell
+add-dependencies babel-loader @babel/core @babel/preset-env core-js @babel/plugin-transform-regenerator
+# Do not run in nix-shell
+rm -rf default.nix node-env.nix node-packages.nix node_modules package-lock.json
+# Update in a line
+nix-shell -p 'nodePackages.node2nix' --run 'node2nix package.json'
+#+END_SRC
+
+The single line update mechanism can be run in the ~nix-shell~ itself, making things marginally less painful.
+** Conclusions
+This has been a short introduction to working with the ~nix-shell~ ecosystem. It isn't as fast as working with the normal setup, and it is a pretty annoying workflow. Given that most CI setups have good support for caching ~npm~ dependencies, it doesn't seem worthwhile at the moment.
+
+[fn:whatlorri] We can't use ~lorri~ yet since we need to selectively add and remove the symbolic link to ~node_modules~
+[fn:whythis] There might be a better approach defined in [[https://github.com/svanderburg/node2nix/issues/175][this issue]] later
+
+* DONE Dotfiles from dotgit to bombadil :@personal:ramblings:tools:workflow:
+CLOSED: [2021-05-02 Sun 23:12]
+:PROPERTIES:
+:EXPORT_FILE_NAME: dotfiles-dotgit-bombadil
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+begin_quote
+Discussion on dotfile management, a meandering path to my current setup from ~dotgit~ to ~bombadil~.
+#+end_quote
+** Background
+No one gets very far working with stock one-size fits all tools in any discipline but it is especially true of working with computers. The right set of ~dotfiles~ have been compared to priming spells for invocation later, and this is probably true. More than anything else, ~dotfiles~ offer familiarity where there is none, be it from ~cowsay~ or a fancy shell prompt [fn:saywhatshell].
+#+begin_src bash
+$ cowsay Welcome home $USER
+  ___________________________
+< Welcome home rohitgoswami >
+ ---------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+#+end_src
+
+#+RESULTS:
+
+*** Why Now?
+#+DOWNLOADED: screenshot @ 2021-04-29 20:34:18
+#+name: fig:fighomelocal
+#+caption: Home is where the ~dotfiles~ are
+[[file:images/Background/2021-04-29_20-34-18_screenshot.png]]
+
+Well more prosaically, I have recently had to partially retire my beloved [[https://www.lenovo.com/us/en/laptops/thinkpad/thinkpad-x/ThinkPad-X380-Yoga/p/22TP2TXX380][ThinkPad X380 Yoga]] [fn:whatwhypart] for a new [[https://support.apple.com/kb/SP809?locale=en_US][MacBook Pro 2019 (Intel)]] [fn:whyapple]. This is the single largest test of my ~Dotfile~ management system, since I now have configurations which are no longer scoped to just a Linux distribution (e.g. ArchLinux and CentOS 6), but are fundamentally not interchangeable.
+
+Complicating matters further, ~dotgit~ sunset the ~bash~ version I have grown to love in favor of a new ~python~ version ([[https://dotgit.readthedocs.io/en/latest/migration_v1.html#reasons-for-rewriting][explained here]]). I also have to manage profiles on more HPC systems than before. The time seemed ripe for a re-haul.
+
+I'll try to justify the Figure [[fig:fighomelocal]] as I dissect and rebuild my ~Dotfiles~ as I switch from ~dotgit~ to ~bombadil~.
+** Desiderata
+What makes a good ~dotfile~ management system? Some things which are common to most/all good systems:
+
+- *targets* :: These are configurations which are scoped to either machines or operating systems; e.g. ~archlinux~, ~colemak~ etc.
+- *profiles* :: The concept of a profile is essentially a set of targets used together; e.g. ~mylaptop~, ~hzhpc~
+- *symlinks* :: Most management systems use symlinks to modularly swap configurations in and out; ~ln -sf ....~
+- *secrets* :: Commonly implemented (with varying levels of help) in the form of a ~gpg~ encrypted file/files
+
+All of these features are exemplefied by the fantastic ~dotgit~ and no doubt [[https://dotgit.readthedocs.io/en/latest/][its python iteration]] is just as brilliant. However, I am wary of using ~python~ for my ~dotfile~ management, since I tend to use transient ~virtualenvs~ a lot and detest having a system ~python~ for anything.
+
+Over the years, I've come to also value:
+
+- *simplicity* :: Especially true of installation proceedures, I simply need to get started quickly too often
+- *template expansion* :: A rare feature to need, but one I've been addicted to since ~lazybones~, ~pandoc~ and even ~orgmode~ brought a million snippets
+
+On a probably technically unrelated note, I have recently been splurging on the "modern" (prettier) ~rust~ versions of standard command line tools; so I normally have ~cargo~ everywhere.
+** Starting out with Bombadil
+Since [[https://github.com/oknozor/toml-bombadil][toml-bombadil]] is:
+- Written in Rust
+  -  installs with ~cargo~ as a single binary
+- Supports encryption
+- Supports profiles
+- Has template expansion
+
+It was the obvious choice.
+#+begin_src bash
+# Get Cargo
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+source $HOME/.cargo/env
+# Get toml-bombadil
+cargo install toml-bombadil
+#+end_src
+
+For the rest of this post I'll assume everyone is working with a set of ~dots~ [[https://github.com/HaoZeke/Dotfiles/tree/bombadil][like my own]].
+#+begin_src bash
+# Get my set
+export mydots="$HOME/Git/Github/Dotfiles"
+mkdir -p $mydots
+git clone git@github.com/HaoZeke/Dotfiles $mydots
+bombadil install -c "$mydots/bombadil.toml"
+#+end_src
+
+Now we can start defining profiles in our ~toml~ file and link them.
+#+begin_src bash
+# Get colemak and mac profiles
+bombail link -p macos colemac
+#+end_src
+
+This isn't really meant to be a tutorial about ~bombadil-toml~, but it might include some pointers. The remainder of the post will focus on the layout and logic of my own usage.
+** Shells
+Shells form the core of most computing environments, and typically we would like to have basic support for at least ~bash~ and one additional shell. The secondary shell (~zsh~ for me) is the most preferred, but often might not be avaliable [fn:shellwhysec].
+*** Current Logic
+Since many shells are somewhat compatible with each other (especially within the [[https://wiki.archlinux.org/title/Command-line_shell][POSIX family]]); my current setup looked a bit like:
+#+begin_src bash
+. ~/.shellrc # With standard agnostic commands
+#+end_src
+
+Which in turn loaded a bunch of conditionally symlinked files from profiles.
+#+begin_src bash
+# Platform
+#############
+
+if [ -f ~/.shellPlatform ]; then
+	. ~/.shellPlatform
+fi
+
+# Specifics
+#############
+
+if [ -f ~/.shellSpecifics ]; then
+	. ~/.shellSpecifics
+fi
+
+# Wayland
+#############
+
+if [ -f ~/.waylandEnv ]; then
+	. ~/.waylandEnv
+fi
+
+# XKB
+######
+
+if [ -f ~/.xkbEnv ]; then
+	. ~/.xkbEnv
+fi
+
+# Nix
+######
+
+if [ -f ~/.nixEnv ]; then
+	. ~/.nixEnv
+fi
+#+end_src
+
+*** Current Approach
+The problem with the older approach is that it isn't always clear where different divisions should be drawn and it isn't really flexible enough to add things arbitrarily. Basically, here there were only a few entry points. A more rational method is to emulate the work of ~init.d~ [fn:whereinit] scripts; where a set of files in a directory are all loaded if they exist [fn:adaptionnote].
+
+This allows the previous setup to be instead refactored into the following folder setup (under ~$HOME/.config/shellrc~):
+- ~.login.d~ which has machine specific files
+  - ~Spack~ and ~Lmod~ modulefiles on various HPC nodes
+  - Also just things which normally run only once per login (like system diagnostics)
+  - MacOS considers every terminal to be a login shell for some odd reason
+- ~.shell.d~ which contains POSIX compliant snippets
+  - This is by far the longest section
+- ~.bash.d~ for snippets which need ~bashisms~
+  - Array operations
+- ~.zsh.d~ for snippets which are specific to ~zsh~
+  - Plugin management
+
+This then flows very nicely into a smaller set of core ~rc~ files for scripts.
+#+begin_src bash
+# .bashrc / .zshrc
+## Bashism (only for .bashrc)
+if [[ $- != *i* ]]; then
+	# shell is non-interactive. Do nothing and return
+	return
+fi
+## Zshism (only for .zshrc)
+if [[ -o interactive ]]; then
+	# non-interactive, return
+	return
+fi
+
+export shellHome=$HOME/.config/shellrc
+
+# Load all files from the shell.d directory
+if [ -d $shellHome/shell.d ]; then
+	for file in $shellHome/shell.d/*.sh; do
+		source $file
+	done
+fi
+
+# Load all files from the bashrc.d directory
+if [ -d $shellHome/bash.d ]; then
+	for file in $shellHome/bash.d/*.bash; do
+		source $file
+	done
+fi
+#+end_src
+
+Similarly, we can define our ~zshrc~. For profiles (~.zlogin~ and ~.bash_profile~), we source the ~rc~ files along with the ~login.d~ scripts.
+*** Practicalities
+This method isn't really very exciting at the offset. Each target has a series of scripts which are loaded in order.
+#+begin_src bash
+tree .
+.
+├── bash
+│   └── bashrc
+├── posix
+│   ├── 00_warnings.sh
+│   ├── 01_alias_def.sh
+│   ├── 02_func_def.sh
+│   ├── 03_exports.sh
+│   ├── 04_sources.sh
+│   ├── 05_paths.sh
+│   └── 06_prog_conf.sh
+├── tmux
+└── zsh
+
+4 directories, 8 files
+#+end_src
+This is correspondingly linked via the following snippet in ~bombadil.toml~.
+#+begin_src toml
+# Shells #
+# POSIX
+posix_warn = { source = "common/shell/posix/00_warnings.sh", target = ".config/shellrc/shell.d/00_warnings.sh" }
+posix_alias = { source = "common/shell/posix/01_alias_def.sh", target = ".config/shellrc/shell.d/01_alias_def.sh" }
+posix_func = { source = "common/shell/posix/02_func_def.sh", target = ".config/shellrc/shell.d/02_func_def.sh" }
+posix_exports = { source = "common/shell/posix/03_exports.sh", target = ".config/shellrc/shell.d/03_exports.sh" }
+posix_sources = { source = "common/shell/posix/04_sources.sh", target = ".config/shellrc/shell.d/04_sources.sh" }
+posix_paths = { source = "common/shell/posix/05_paths.sh", target = ".config/shellrc/shell.d/05_paths.sh" }
+posix_prog_conf = { source = "common/shell/posix/06_prog_conf.sh", target = ".config/shellrc/shell.d/06_prog_conf.sh" }
+# Bash
+bashrc =  { source = "common/shell/bash/bashrc", target = ".bashrc" }
+#+end_src
+The same concept (folder structure) is used for specific machines as well (e.g. ~archlinux~).
+#+begin_src toml
+[profiles.archlinux.dots]
+archlinux_warn = { source = "archlinux/shell/posix/07_00_warnings.sh", target = ".config/shellrc/shell.d/07_00_warnings.sh" }
+archlinux_alias = { source = "archlinux/shell/posix/07_01_alias_def.sh", target = ".config/shellrc/shell.d/07_01_alias_def.sh" }
+archlinux_func = { source = "archlinux/shell/posix/07_02_func_def.sh", target = ".config/shellrc/shell.d/07_02_func_def.sh" }
+archlinux_exports = { source = "archlinux/shell/posix/07_03_exports.sh", target = ".config/shellrc/shell.d/07_03_exports.sh" }
+archlinux_sources = { source = "archlinux/shell/posix/07_04_sources.sh", target = ".config/shellrc/shell.d/07_04_sources.sh" }
+archlinux_paths = { source = "archlinux/shell/posix/07_05_paths.sh", target = ".config/shellrc/shell.d/07_05_paths.sh" }
+archlinux_prog_conf = { source = "archlinux/shell/posix/07_06_prog_conf.sh", target = ".config/shellrc/shell.d/07_06_prog_conf.sh" }
+#+end_src
+Note the way in which the files are saved to ensure the correct loading order. For ~zsh~ the list is a little different:
+#+begin_src toml
+zshrc = { source = "common/shell/zshrc.zsh", target = ".zshrc" }
+zshenv = { source = "common/shell/zsh/zshenv.zsh", target = ".zshenv" }
+zsh_keys = { source = "common/shell/zsh/01_keys.zsh", target = ".config/shellrc/zsh.d/01_keys.zsh" }
+zsh_func = { source = "common/shell/zsh/02_func_def.zsh", target = ".config/shellrc/zsh.d/02_func_def.zsh" }
+zsh_plugins = { source = "common/shell/zsh/03_plugins.zsh", target = ".config/shellrc/zsh.d/03_plugins.zsh" }
+zsh_sources = { source = "common/shell/zsh/04_sources.zsh", target = ".config/shellrc/zsh.d/04_sources.zsh" }
+zsh_theme = { source = "common/shell/zsh/04a_theme.zsh", target = ".config/shellrc/zsh.d/04a_theme.zsh" }
+#+end_src
+** Text Editors
+A long time ago I switched from VIM and Sublime to Emacs. I still retain in my ~dotfiles~ enough syntactical sugar and targets to make ~vim~ and Sublime easier to use; mostly using [[https://github.com/junegunn/vim-plug][vim-plug]]. Emacs has a rather complicated set of configurations which are independently managed via ~doom-emacs~ and have their own [[https://dotdoom.rgoswami.me][self documenting site]].
+** Conclusions
+Though the ~shell.d~ setup is still overly verbose and not as flexible as I had initially hoped, this is still a few steps ahead of my previous setup. No part of this focused on the configurations themselves (more interesting examples, of [[Refactoring Dotfiles For Colemak][switching to Colemak are here]]) Will be fleshing this out more with auxilliary posts on my configuration (browsers, etc.) and its management perhaps.
+* TODO Unifying UX with Starship
+In the absence of administrative controls, it makes sense to have our customizations work at the lowest common abstraction. Thankfully, projects like [[https://starship.rs/guide/#%F0%9F%9A%80-installation][starship]] have stepped up to provide a unified experience across shells. It will form the core of the new setup.
+* TODO Browser Wars
+Though most browsers (Firefox and Chrome come to mind) have plenty of cloud synchronization services. There are still things which read off local configurations. For me, Firefox is better mainly due to [[https://addons.mozilla.org/en-US/firefox/addon/tree-style-tab/][tree style tabs]] and [[https://github.com/tridactyl/tridactyl/][Tridactyl]] which are superior to Chrome options, but Chrome supports translations *a lot more* than Firefox, so I do end up using both [fn:whatlang].
+
+| *Feature*          | *Chrome*           | *Firefox*                 | *Comments*                                         |
+| Tree Tabs          | [[https://chrome.google.com/webstore/detail/tabs-outliner/eggkanocgddhmamlbiijnphhppkpkmkl][Tabs Outliner]]      | [[https://addons.mozilla.org/en-US/firefox/addon/tree-style-tab/][Tree style tabs (TST)]] [★] | Painfully underdeveloped and unfree in Chrome      |
+| New Tab Vocabulary | [[https://chrome.google.com/webstore/detail/magoosh-vocabulary/oooelhhaglnggehlocjjmgngfknfclak][Magoosh Vocabulary]] | [[https://addons.mozilla.org/en-US/firefox/addon/new-tab-vocab/?utm_source=addons.mozilla.org&utm_medium=referral&utm_content=search][New Tab Vocab]]  [★]        | Both good, but cleaner in FF (has a [[https://github.com/ezekg/chrome-new-tab-vocab/tree/e0d6d45b9eecb7bbb32a045b6f55d423da9a3724][Chrome port]])   |
+| VIM Navigation     | [[https://chrome.google.com/webstore/detail/vimium/dbepggeogbaibhgnhhndojpepiihcmeb][Vimium]]             | [[https://github.com/tridactyl/tridactyl][Tridactyl]]  [★]            | Both usable, but Tridactyl is closer to Vimperator |
+
+Naturally, this is not meant to discuss each and every one of my addon choices, those are found [[Chrome Extensions][here for Chrome]]; and [[https://addons.mozilla.org/en-US/firefox/collections/13625553/rgff/?page=1&collection_sort=-added][here for Firefox]]. From a ~dotfiles~ perspective, addon configuration files like ~.tridactylrc~ are unified in a ~browsers~ target while the standard account sync is leveraged to keep track of installations (profile symlinking is no longer recommended as a viable method).
+
+** Appendix
+*** Chrome Extensions
+Generated [[https://chrome.google.com/webstore/detail/export-links-of-all-exten/cmeckkgeamghjhkepejgjockldoblhcb/related][with this extension]].
+**** Enabled
+   :PROPERTIES:
+   :CUSTOM_ID: enabled
+   :CLASS: enabled
+   :END:
+1.  [[https://chrome.google.com/webstore/detail/cmedhionkhpnakcndndgjdbohmhepckk][Adblock
+    for Youtube™]]
+3.  [[https://chrome.google.com/webstore/detail/jfnlkegibnoaagfdabjkchhocdhnoofk][Arxiv
+    Vanity Plugin]]
+4.  [[https://chrome.google.com/webstore/detail/hkhggnncdpfibdhinjiegagmopldibha][Checker
+    Plus for Google Calendar™]]
+5.  [[https://chrome.google.com/webstore/detail/jlhmfgmfgeifomenelglieieghnjghma][Cisco
+    Webex Extension]]
+6.  [[https://chrome.google.com/webstore/detail/aohghmighlieiainnegkcijnfilokake][Docs]]
+7.  [[https://chrome.google.com/webstore/detail/fngmhnnpilhplaeedifhccceomclgfbg][EditThisCookie]]
+8.  [[https://chrome.google.com/webstore/detail/kmcfomidfpdkfieipokbalgegidffkal][Enpass
+    extension (requires desktop app)]]
+9.  [[https://chrome.google.com/webstore/detail/cmeckkgeamghjhkepejgjockldoblhcb][Export
+    links of all extensions]]
+10. [[https://chrome.google.com/webstore/detail/kjacjjdnoddnpbbcjilcajfhhbdhkpgk][Forest:
+    stay focused, be present]]
+11. [[https://chrome.google.com/webstore/detail/pjkljhegncpnkpknbcohdijeoejaedia][Gmail]]
+12. [[https://chrome.google.com/webstore/detail/ghbmnnjooekpmoecnnnilnnbdlolhkhi][Google
+    Docs Offline]]
+13. [[https://chrome.google.com/webstore/detail/apdfllckaahabafndbhieahigkjlhalf][Google
+    Drive]]
+14. [[https://chrome.google.com/webstore/detail/cmplbmppmfboedgkkelpkfgaakabpicn][Gridman -
+    CSS Grid inspector. Ultra Fast!]]
+15. [[https://chrome.google.com/webstore/detail/cchaceegbflphbdpfocjalgjhjoahiia][HN
+    Special - An addition to Hacker News]]
+16. [[https://chrome.google.com/webstore/detail/bjfhmglciegochdpefhhlphglcehbmek][Hypothesis -
+    Web & PDF Annotation]]
+17. [[https://chrome.google.com/webstore/detail/kglhbbefdnlheedjiejgomgmfplipfeb][Jitsi
+    Meetings]]
+18. [[https://chrome.google.com/webstore/detail/aghfnjkcakhmadgdomlmlhhaocbkloab][Just
+    Black]]
+19. [[https://chrome.google.com/webstore/detail/pncfaijgefbolbapchmpkfkjpgjelclh][Last.fm
+    Scrobbler YouTube Canary]]
+20. [[https://chrome.google.com/webstore/detail/ddoflfjcbemgfgpgbnlmaedfkpkfffbm][Librarian
+    for arXiv | Fermat's Library]]
+21. [[https://chrome.google.com/webstore/detail/liecbddmkiiihnedobmlmillhodjkdmb][Loom
+    for Chrome]]
+22. [[https://chrome.google.com/webstore/detail/oocalimimngaihdkbihfgmpkcpnmlaoa][Netflix
+    Party is now Teleparty]]
+23. [[https://chrome.google.com/webstore/detail/bpconcjcammlapcogcnnelfmaeghhagj][Nimbus
+    Screenshot & Screen Video Recorder]]
+24. [[https://chrome.google.com/webstore/detail/lcilaoigfgceebdljpanjenhmnoijmal][Octopatcher]]
+25. [[https://chrome.google.com/webstore/detail/chphlpgkkbolifaimnlloiipkdnihall][OneTab]]
+26. [[https://chrome.google.com/webstore/detail/kkkjlfejijcjgjllecmnejhogpbcigdc][Org
+    Capture]]
+27. [[https://chrome.google.com/webstore/detail/jplfopfpninjjpilebidfeboioagafjf][Pulse
+    SMS]]
+28. [[https://chrome.google.com/webstore/detail/ldgfbffkinooeloadekpmfoklnobpien][Raindrop.io]]
+29. [[https://chrome.google.com/webstore/detail/bfhkfdnddlhfippjbflipboognpdpoeh][Read
+    on reMarkable]]
+30. [[https://chrome.google.com/webstore/detail/odpdkefpnfejbfnmdilmfhephfffmfoh][Readlang
+    Web Reader]]
+31. [[https://chrome.google.com/webstore/detail/bdakmnplckeopfghnlpocafcepegjeap][RescueTime
+    for Chrome and Chrome OS]]
+32. [[https://chrome.google.com/webstore/detail/niloccemoadcdkdjlinkgdfekeahmflj][Save
+    to Pocket]]
+33. [[https://chrome.google.com/webstore/detail/lkhjgdkpibcepflmlgahofcmeagjmecc][Scener
+    -- Virtual Movie Theater]]
+34. [[https://chrome.google.com/webstore/detail/mmeijimgabbpbgpdklnllpncmdofkcpn][Screencastify -
+    Screen Video Recorder]]
+35. [[https://chrome.google.com/webstore/detail/edacconmaakjimmfgnblocblbcdcpbko][Session
+    Buddy]]
+36. [[https://chrome.google.com/webstore/detail/felcaaldnbdncclmgdcncolpebgiejap][Sheets]]
+37. [[https://chrome.google.com/webstore/detail/aapocclcgogkmnckokdopfmhonfmgoek][Slides]]
+38. [[https://chrome.google.com/webstore/detail/ipikiaejjblmdopojhpejjmbedhlibno][SwiftRead -
+    read faster, learn faster]]
+39. [[https://chrome.google.com/webstore/detail/eggkanocgddhmamlbiijnphhppkpkmkl][Tabs
+    Outliner]]
+40. [[https://chrome.google.com/webstore/detail/cbimabofgmfdkicghcadidpemeenbffn][TeX
+    All the Things]]
+41. [[https://chrome.google.com/webstore/detail/plhnjpnbkmdmooideifhkonobdkgbbof][Time
+    Zone Converter - Savvy Time]]
+42. [[https://chrome.google.com/webstore/detail/hddnkoipeenegfoeaoibdmnaalmgkpip][Toby
+    for Chrome]]
+43. [[https://chrome.google.com/webstore/detail/twoseven-extension/cjdnfmjmdligcpfcekfmenlhiopehjkd][TwoSeven Extension]]
+44. [[https://chrome.google.com/webstore/detail/jgeocpdicgmkeemopbanhokmhcgcflmi][Twitter]]
+45. [[https://chrome.google.com/webstore/detail/djkbihbnjhkjahbhjaadbepppbpoedaa][Typio
+    Form Recovery]]
+46. [[https://chrome.google.com/webstore/detail/cjpalhdlnbpafiamejdnhcphjbkeiagm][uBlock
+    Origin]]
+47. [[https://chrome.google.com/webstore/detail/dbepggeogbaibhgnhhndojpepiihcmeb][Vimium]]
+48. [[https://chrome.google.com/webstore/detail/bppamachkoflopbagkdoflbgfjflfnfl][WebRTC
+    Leak Shield]]
+49. [[https://chrome.google.com/webstore/detail/hnmpcagpplmpfojmgmnngilcnanddlhb][Windscribe -
+    Free Proxy and Ad Blocker]]
+50. [[https://chrome.google.com/webstore/detail/fiombgjlkfpdpkbhfioofeeinbehmajg][Word
+    Online]]
+51. [[https://chrome.google.com/webstore/detail/blpcfgokakmgnkcojhhkbfbldkacnbeo][YouTube]]
+52. [[https://chrome.google.com/webstore/detail/ekhagklcjbdpajgpjgmbionohlpdbjgc][Zotero
+    Connector]]
+
+**** Disabled
+   :PROPERTIES:
+   :CUSTOM_ID: disabled
+   :CLASS: disabled
+   :END:
+1. [[https://chrome.google.com/webstore/detail/pnhplgjpclknigjpccbcnmicgcieojbh][Diigo
+   Web Collector - Capture and Annotate]]
+2. [[https://chrome.google.com/webstore/detail/aapbdbdomjkkjkaonfhkkikfgjllcleb][Google
+   Translate]]
+3. [[https://chrome.google.com/webstore/detail/oooelhhaglnggehlocjjmgngfknfclak][Magoosh
+   Vocabulary]]
+4. [[https://chrome.google.com/webstore/detail/nbdfpcokndmapcollfpjdpjlabnibjdi][Saka]]
+5. [[https://chrome.google.com/webstore/detail/hhhpdkekipnbloiiiiaokibebpdpakdp][Saka
+   Key]]
+6. [[https://chrome.google.com/webstore/detail/iomokcfebnfiflpgcpcijfkfmafgkjgh][Wakelet]]
+
+[fn:whatlang] I don't speak Icelandic
+[fn:adaptionnote] A little bit of googling around showed that [[https://chr4.org/posts/2014-09-10-conf-dot-d-like-directories-for-zsh-slash-bash-dotfiles/][chris or chr4]] had worked the idea trough to its logical conclusion before, so I essentially adapted it
+[fn:whereinit] Perhaps better known in the context of ~udev.d~ [[https://wiki.archlinux.org/title/Udev][startup scripts]]
+[fn:shellwhysec] Even more true if one wants something ~elvish~ (details [[https://elv.sh/][here]]) or [[https://wiki.archlinux.org/title/Command-line_shell][other shells]]
+[fn:saywhatshell] ~bash~ defaults are particularly egregious
+[fn:whatwhypart] Water damage means I can't type on it anymore, works as a great tablet now
+[fn:whyapple] A gift, and therefore cherished inspite of the vagrancies of Apple ~clang~
 * TODO Keybindings and MacOS
