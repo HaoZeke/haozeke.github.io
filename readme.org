@@ -34,6 +34,11 @@ Similarly, the ~node~ packages are to be generated with:
 #+begin_src bash
 nix shell nixpkgs#nodePackages.node2nix -c node2nix -c node.nix
 #+end_src
+With the updates done globally:
+#+begin_src bash
+npm install -g npm-check-updates
+ncu -u # Might break!
+#+end_src
 ** Without Nix
 *** Ruby
 Track the ruby dependencies with ~rbenv~ and ~ruby-build~:
