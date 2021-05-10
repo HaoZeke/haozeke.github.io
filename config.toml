@@ -1,6 +1,6 @@
 baseurl = "https://rgoswami.me/"
 languageCode = "en-us"
-theme = ["hugo-search-fuse-js","hello-friend-ng-hz"]
+theme = ["hello-friend-ng-hz"]
 
 PygmentsCodeFences = true
 PygmentsStyle = "native"
@@ -32,8 +32,12 @@ disableSitemap = false
 disable404     = false
 disableHugoGeneratorInject = false
 
+[outputFormats]
+[outputFormats.TOML]
+mediaType = "application/toml"
+
 [outputs]
-  home = ["HTML", "RSS", "JSON"]
+  home = ["HTML", "RSS", "TOML", "JSON"]
 
 [blackfriday]
   hrefTargetBlank = true
@@ -42,6 +46,7 @@ disableHugoGeneratorInject = false
   author   = "author"
   tag      = "tags"
   category = "categories"
+  search   = "search"
 
 [author]
   name = "Rohit Goswami (HaoZeke)"
@@ -75,7 +80,6 @@ disableHugoGeneratorInject = false
   goatCounter = "rgoswami"
   microsoftClarity = "3z2xvwqu4u"
   clicky = "101265002"
-  search = true
   prism = false
   codefold = true
 
@@ -94,6 +98,10 @@ disableHugoGeneratorInject = false
 
   # Default theme "light" or "dark"
   defaultTheme = "light"
+
+[params.search]
+  enable = true
+  backend = "fuse" # can be stork or fuse
 
 # [params.utterances]
 # issue = "pathname"
