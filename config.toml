@@ -82,6 +82,7 @@ mediaType = "application/toml"
   clicky = "101265002"
   prism = false
   codefold = true
+  praiseNetlify = true
 
   # Set disableReadOtherPosts to true in order to hide the links to other posts.
   disableReadOtherPosts = false
