@@ -38,7 +38,7 @@ jobs:
           nix-store -qR --include-outputs $(nix-instantiate shell.nix) | cachix push $cachixName
 
       - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v3.8.0
         with:
           deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
           enable_jekyll: true
