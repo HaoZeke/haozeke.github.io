@@ -1,0 +1,37 @@
+# Borrowed from https://github.com/fission-suite/fission/blob/main/.github/workflows/cachix.yaml
+name: Cachix
+on:
+  pull_request:
+  push:
+    branches: [src]
+jobs:
+  cachix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📤 Checkout
+        uses: actions/checkout@v2.3.4
+        with:
+          submodules: "recursive" # Fetch Hugo themes (true OR recursive)
+          fetch-depth: 0 # Fetch all history for .GitInfo and .Lastmod
+        if: github.event.ref == 'refs/heads/src'
+
+      - name: ❄ Set up Nix
+        uses: cachix/install-nix-action@v13
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+
+      - name: Get and initialize binary cache
+        run: |
+          nix-env -iA cachix -f https://cachix.org/api/v1/install
+          cachix use rgoswamime
+
+      - name: Build
+        run: nix-shell --run "rake hugoBuild"
+
+      - name: Cache Nix Results
+        env:
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          cachixName: rgoswamime
+        run: |
+          cachix authtoken $authToken
+          nix-store -qR --include-outputs $(nix-instantiate shell.nix) | cachix push $cachixName
