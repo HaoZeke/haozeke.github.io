@@ -116,12 +116,15 @@ mediaType = "application/toml"
 [params.liberapay]
 accountID = "rohit"
 
-[params.webmention]
-webmention = "https://webmention.io/rgoswami.me/webmention"
-pingback = "https://webmention.io/rgoswami.me/xmlrpc"
+# [params.webmention]
+# webmention = "https://webmention.io/rgoswami.me/webmention"
+# pingback = "https://webmention.io/rgoswami.me/xmlrpc"
 
-[params.graphcomments]
-accountID = "rgoswami"
+# [params.graphcomments]
+# accountID = "rgoswami"
+
+[params.remarkbox]
+accountID = "8e660759-e7e6-11ea-9711-040140774501"
 
 # [params.commentbox]
 # accountID = "5662446949761024-proj"
