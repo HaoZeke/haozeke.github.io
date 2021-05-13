@@ -1335,10 +1335,6 @@ cannot be formatted in Hugo-compatible format."
                           (org-entry-get (point) "SCHEDULED"))
                      ;; Get the date from the "SCHEDULED" property.
                      (org-entry-get (point) "SCHEDULED"))
-                    ((and (equal date-key :hugo-expirydate)
-                          (org-entry-get (point) "DEADLINE"))
-                     ;; Get the date from the "DEADLINE" property.
-                     (org-entry-get (point) "DEADLINE"))
                     (t ;:hugo-lastmod, :hugo-publishdate, :hugo-expirydate
                      (org-string-nw-p (plist-get info date-key)))))
          (date-nocolon (cond
@@ -2820,13 +2816,13 @@ INFO is a plist holding export options."
   ;; text i.e. "_" would have been converted to "\_".
   ;; We need to undo that underscore escaping in Emoji codes for those
   ;; to work.
-  ;; Example: Convert ":raised\_hands:" back to ":raised_hands:".
+  ;; Example: Convert ":raised\_hands:" back to ":raised_hands:",
+  ;;                  ":white\_check\_mark:" back to ":white_check_mark:".
   ;; More Emoji codes: https://www.emoji.codes/
   ;; (Requires setting "enableEmoji = true" in config.toml.)
-  (setq body (replace-regexp-in-string
-              "\\(:[a-z0-9]+\\)[\\]\\(_[a-z0-9]+:\\)"
-              "\\1\\2"
-              body))
+  (let ((rgx "\\(:[a-z0-9_]+\\)[\\]\\(_[a-z0-9\\_]+:\\)"))
+    (while (string-match-p rgx body)
+      (setq body (replace-regexp-in-string rgx "\\1\\2" body))))
 
   (when (and (org-hugo--plist-get-true-p info :hugo-delete-trailing-ws)
              (not (org-hugo--plist-get-true-p info :preserve-breaks)))
@@ -3126,7 +3122,11 @@ For example, \"some__thing\" would get converted to \"some
 thing\"."
   ;; It is safe to assume that no one would want leading/trailing
   ;; spaces in `str'.. so not checking for "__a" or "a__" cases.
-  (replace-regexp-in-string "\\([^_]\\)__\\([^_]\\)" "\\1 \\2" str)) ;"a__b"  -> "a b"
+  (let ((ret str)
+        (rgx "\\([^_]\\)__\\([^_]\\)"))
+    (while (string-match-p rgx ret)
+      (setq ret (replace-regexp-in-string rgx "\\1 \\2" ret))) ;"a__b"  -> "a b"
+    ret))
 
 (defun org-hugo--tag-processing-fn-replace-with-spaces-maybe (tag-list info)
   "Replace double underscores in TAG-LIST elements with single spaces.
