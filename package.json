@@ -18,8 +18,8 @@
   "homepage": "https://github.com/HaoZeke/haozeke.github.io#readme",
   "dependencies": {
     "autoprefixer": "^10.2.5",
-    "npm-check-updates": "^11.5.10",
-    "postcss": "^8.2.14",
+    "npm-check-updates": "^11.5.11",
+    "postcss": "^8.2.15",
     "postcss-cli": "^8.3.1"
   }
 }
