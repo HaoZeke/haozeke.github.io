@@ -1372,7 +1372,7 @@ the first place.
 - I used to go online to be an idea, an embodiment of an idea
 Nowadays we bring our selves to the internet and I don't think that is as
 liberating as the older format.
-* DONE Analytics: Google to Goat :@notes:tools:rationale:workflow:ideas:
+* DONE Analytics: Google to Goat :@notes:tools:rationale:workflow:webdev:
 CLOSED: [2020-04-09 Thu 17:17]
 :PROPERTIES:
 :EXPORT_FILE_NAME: goat-google
@@ -3882,7 +3882,7 @@ Have a great day!
 ** Conclusion
 This was completely unexpected, and really made my day. In reterospect this seems like something which should be made more explicit, more often.
 
-* DONE Analytics II: Goat to Clicky :@notes:tools:rationale:workflow:ideas:
+* DONE Analytics II: Goat to Clicky :@notes:tools:rationale:workflow:webdev:
 CLOSED: [2020-07-06 Mon 23:09]
 :PROPERTIES:
 :EXPORT_FILE_NAME: goat-clicky
@@ -9570,3 +9570,21 @@ Generated [[https://chrome.google.com/webstore/detail/export-links-of-all-exten/
 [fn:whatwhypart] Water damage means I can't type on it anymore, works as a great tablet now
 [fn:whyapple] A gift, and therefore cherished inspite of the vagrancies of Apple ~clang~
 * TODO Keybindings and MacOS
+* TODO Comments: Graphcomment to Remarkbox :@notes:tools:rationale:webdev:
+* TODO Fortran and Doxygen
+#+begin_quote
+An exploration of ~fortran~ and ~doxygen~
+#+end_quote
+** Background
+Fortran has a perfectly capable documentation tool, the [[https://github.com/Fortran-FOSS-Programmers/ford][FORtran Documenter (FORD)]], however, I have a slight personal preference for [[https://doxygen.org][Doxygen]], especially since I am the author of [[https://github.com/HaoZeke/doxyYoda][doxyYoda]], a nice ~doxygen~ theme, it seemed to be a good time to revisit Doxygen's FORtran support.
+
+Note that the ~doxygen~ documentation makes no mention of FORtran other than to mention that it is supported.
+*** Licensing
+Both ~ford~ and ~doxygen~ are licensed under the GPL (v3 and v2 respectively), however, they include the following disclaimers on the project pages:
+#+begin_quote
+Documents produced by FORD are derivative works derived from the input used in their production; they are not affected by this license.
+
+Documents produced by doxygen are derivative works derived from the input used in their production; they are not affected by this license.
+#+end_quote
+** Modules
+~@file~ does not seem to be supported.
