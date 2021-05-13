@@ -463,13 +463,13 @@ let
         sha512 = "c7wVvbw3f37nuobQNtgsgG9POC9qMbNuMQmTCqZv23b6MIz0fcYpBiOlv9gEN/hdLdnZTDQhg6e9Dq5M1vKvfg==";
       };
     };
-    "caniuse-lite-1.0.30001223" = {
+    "caniuse-lite-1.0.30001228" = {
       name = "caniuse-lite";
       packageName = "caniuse-lite";
-      version = "1.0.30001223";
+      version = "1.0.30001228";
       src = fetchurl {
-        url = "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001223.tgz";
-        sha512 = "k/RYs6zc/fjbxTjaWZemeSmOjO0JJV+KguOBA3NwPup8uzxM1cMhR2BD9XmO86GuqaqTCO8CgkgH9Rz//vdDiA==";
+        url = "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001228.tgz";
+        sha512 = "QQmLOGJ3DEgokHbMSA8cj2a+geXqmnpyOFT0lhQV6P3/YOJvGDEwoedcwxEQ30gJIwIIunHIicunJ2rzK5gB2A==";
       };
     };
     "caseless-0.12.0" = {
@@ -2092,13 +2092,13 @@ let
         sha512 = "sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==";
       };
     };
-    "nanoid-3.1.22" = {
+    "nanoid-3.1.23" = {
       name = "nanoid";
       packageName = "nanoid";
-      version = "3.1.22";
+      version = "3.1.23";
       src = fetchurl {
-        url = "https://registry.npmjs.org/nanoid/-/nanoid-3.1.22.tgz";
-        sha512 = "/2ZUaJX2ANuLtTvqTlgqBQNJoQO398KyJgZloL0PZkC0dpysjncRUPsFe3DUPzz/y3h+u7C46np8RMuvF3jsSQ==";
+        url = "https://registry.npmjs.org/nanoid/-/nanoid-3.1.23.tgz";
+        sha512 = "FiB0kzdP0FFVGDKlRLEQ1BgDzU87dy5NnzjeW9YZNt+/c3+q82EQDUwniSAUxp/F0gFNI1ZhKU1FqYsMuqZVnw==";
       };
     };
     "node-gyp-7.1.2" = {
@@ -2164,13 +2164,13 @@ let
         sha512 = "x5DHup0SuyQcmL3s7Rx/YQ8sbw/Hzg0rj48eN0dV7hf5cmQq5PXIeioroH3raV1QC1yh3uTYuMThvEQF3iKgGQ==";
       };
     };
-    "npm-check-updates-11.5.10" = {
+    "npm-check-updates-11.5.11" = {
       name = "npm-check-updates";
       packageName = "npm-check-updates";
-      version = "11.5.10";
+      version = "11.5.11";
       src = fetchurl {
-        url = "https://registry.npmjs.org/npm-check-updates/-/npm-check-updates-11.5.10.tgz";
-        sha512 = "+nKrlBaDglNQWEV5+bx6ZMJAc6VA/aKbqtKs+fr6ewcedF2hfMxHMZe5b8mW9SUu+bjtt/SrPHxkoAiepZIFpA==";
+        url = "https://registry.npmjs.org/npm-check-updates/-/npm-check-updates-11.5.11.tgz";
+        sha512 = "tVd7bH96aBr6FDeUMeQbXkzbSGAq7CP6jQmX/pp1pkfjOHhcYKFqXpe56sRJkjMuZ1zkBC8hetaT7gPu9q776w==";
       };
     };
     "npm-install-checks-4.0.0" = {
@@ -2452,13 +2452,13 @@ let
         sha1 = "ed141a6ac043a849ea588498e7dca8b15330e90c";
       };
     };
-    "postcss-8.2.14" = {
+    "postcss-8.2.15" = {
       name = "postcss";
       packageName = "postcss";
-      version = "8.2.14";
+      version = "8.2.15";
       src = fetchurl {
-        url = "https://registry.npmjs.org/postcss/-/postcss-8.2.14.tgz";
-        sha512 = "+jD0ZijcvyCqPQo/m/CW0UcARpdFylq04of+Q7RKX6f/Tu+dvpUI/9Sp81+i6/vJThnOBX09Quw0ZLOVwpzX3w==";
+        url = "https://registry.npmjs.org/postcss/-/postcss-8.2.15.tgz";
+        sha512 = "2zO3b26eJD/8rb106Qu2o7Qgg52ND5HPjcyQiK2B98O388h43A448LCslC0dI2P97wCAQRJsFvwTRcXxTKds+Q==";
       };
     };
     "postcss-cli-8.3.1" = {
@@ -3400,7 +3400,7 @@ let
       })
       sources."callsites-3.1.0"
       sources."camelcase-6.2.0"
-      sources."caniuse-lite-1.0.30001223"
+      sources."caniuse-lite-1.0.30001228"
       sources."caseless-0.12.0"
       sources."chalk-4.1.1"
       sources."chokidar-3.5.1"
@@ -3597,7 +3597,7 @@ let
       sources."minizlib-2.1.2"
       sources."mkdirp-1.0.4"
       sources."ms-2.1.2"
-      sources."nanoid-3.1.22"
+      sources."nanoid-3.1.23"
       sources."node-gyp-7.1.2"
       sources."node-releases-1.1.71"
       sources."nopt-5.0.0"
@@ -3605,7 +3605,7 @@ let
       sources."normalize-range-0.1.2"
       sources."normalize-url-4.5.0"
       sources."npm-bundled-1.1.2"
-      sources."npm-check-updates-11.5.10"
+      sources."npm-check-updates-11.5.11"
       sources."npm-install-checks-4.0.0"
       sources."npm-normalize-package-bin-1.0.1"
       sources."npm-package-arg-8.1.2"
@@ -3638,7 +3638,7 @@ let
       sources."performance-now-2.1.0"
       sources."picomatch-2.2.3"
       sources."pify-2.3.0"
-      sources."postcss-8.2.14"
+      sources."postcss-8.2.15"
       sources."postcss-cli-8.3.1"
       sources."postcss-load-config-3.0.1"
       sources."postcss-reporter-7.0.2"
