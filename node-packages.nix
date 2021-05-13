@@ -1048,13 +1048,13 @@ let
         sha512 = "wJaE62fLaB3jCYvY2ZHjZvmKK2iiLiiehX38rz5QZxtdN8fVPJDeZUiVvJrHStdTc+23LHlyZuSEKgFc0pxi2g==";
       };
     };
-    "fraction.js-4.0.13" = {
+    "fraction.js-4.1.0" = {
       name = "fraction.js";
       packageName = "fraction.js";
-      version = "4.0.13";
+      version = "4.1.0";
       src = fetchurl {
-        url = "https://registry.npmjs.org/fraction.js/-/fraction.js-4.0.13.tgz";
-        sha512 = "E1fz2Xs9ltlUp+qbiyx9wmt2n9dRzPsS11Jtdb8D2o+cC7wr9xkkKsVKJuBX0ST+LVS+LhLO+SbLJNtfWcJvXA==";
+        url = "https://registry.npmjs.org/fraction.js/-/fraction.js-4.1.0.tgz";
+        sha512 = "o9lSKpK0TDqDwTL24Hxqi6I99s942l6TYkfl6WvGWgLOIFz/YonSGKfiSeMadoiNvTfqnfOa9mjb5SGVbBK9/w==";
       };
     };
     "fs-extra-9.1.0" = {
@@ -3468,7 +3468,7 @@ let
       sources."forever-agent-0.6.1"
       sources."form-data-2.3.3"
       sources."fp-and-or-0.1.3"
-      sources."fraction.js-4.0.13"
+      sources."fraction.js-4.1.0"
       sources."fs-extra-9.1.0"
       sources."fs-minipass-2.1.0"
       sources."fs.realpath-1.0.0"
