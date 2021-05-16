@@ -9588,3 +9588,14 @@ Documents produced by doxygen are derivative works derived from the input used i
 #+end_quote
 ** Modules
 ~@file~ does not seem to be supported.
+
+* TODO Page and Tree Bundles with ox-hugo :@notes:tools:rationale:webdev:
+:PROPERTIES:
+:EXPORT_FILE_NAME: page-tree-ox-hugo-bundles
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+begin_quote
+A discussion and demonstration of the restructuring of my ox-hugo site to use page and tree bundles
+#+end_quote
+** Background
+I have been running this site of mine for over a year now, and in that time certain collections of articles have arisen. This marks an additional layer of existing categorization. I use ~tags~ and ~categories~ at the moment; but the concept of a collection allows for an introduction followed by a set of articles. This logical structure is facilitated in ~hugo~ with the usage of tree and leaf bundles.
