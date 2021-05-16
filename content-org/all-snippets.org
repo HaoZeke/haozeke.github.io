@@ -1,10 +1,9 @@
 #+author: Rohit Goswami
-
 #+hugo_base_dir: ../
 #+hugo_front_matter_format: yaml
+#+hugo_weight: nil
 #+hugo_front_matter_key_replace: description>summary
 #+bibliography: biblio/refs.bib
-#+hugo_section: ./snippets
 
 #+seq_todo: TODO DRAFT DONE
 #+seq_todo: TEST__TODO | TEST__DONE
@@ -13,9 +12,19 @@
 
 #+startup: logdone indent overview inlineimages
 
-* Overwriting Attributes :@code:nix:
+#+hugo_section: ./snippets
+
+* Snippets
 :PROPERTIES:
-:EXPORT_FILE_NAME: nix-collection-overwrite-attrs
+:EXPORT_FILE_NAME: _index
+:END:
+This collection consists of a series of snippets which are not particularly long enough or interesting enough to be a post. However, they are frequently used by me, and thus deserve a spot somewhere.
+* Code :@code:
+** DONE Overwriting Attributes :nix:
+CLOSED: [2021-05-16 Sun 03:47]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: nix-collection-overwrite-attrs
+:EXPORT_FILE_NAME: index
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
 :END:
 #+begin_src nix
@@ -31,9 +40,11 @@
   });
 #+end_src
 
-* Forwarding Multiple Local Ports :@code:ssh:
+** DONE Forwarding Multiple Local Ports :ssh:
+CLOSED: [2021-05-16 Sun 03:47]
 :PROPERTIES:
-:EXPORT_FILE_NAME: forward-multiport
+:EXPORT_HUGO_BUNDLE: forward-multiport
+:EXPORT_FILE_NAME: index
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
 :END:
 Most often it makes more sense to map the same ports on every intermediate machine.
