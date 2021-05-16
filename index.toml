@@ -6,6 +6,16 @@ url = "https://rgoswami.me/search/"
 title = "Search"
 
 [[input.files]]
+path = "./snippets/forward-multiport/index.html"
+url = "https://rgoswami.me/snippets/forward-multiport/"
+title = "Forwarding Multiple Local Ports"
+
+[[input.files]]
+path = "./snippets/nix-collection-overwrite-attrs/index.html"
+url = "https://rgoswami.me/snippets/nix-collection-overwrite-attrs/"
+title = "Overwriting Attributes"
+
+[[input.files]]
 path = "./posts/dotfiles-dotgit-bombadil/index.html"
 url = "https://rgoswami.me/posts/dotfiles-dotgit-bombadil/"
 title = "Dotfiles from dotgit to bombadil"
@@ -329,14 +339,4 @@ title = "About"
 path = "./posts/rg-collection-weblinks/index.html"
 url = "https://rgoswami.me/posts/rg-collection-weblinks/"
 title = "Collection of WebLinks"
-
-[[input.files]]
-path = "./snippets/forward-multiport/index.html"
-url = "https://rgoswami.me/snippets/forward-multiport/"
-title = "Forwarding Multiple Local Ports"
-
-[[input.files]]
-path = "./snippets/nix-collection-overwrite-attrs/index.html"
-url = "https://rgoswami.me/snippets/nix-collection-overwrite-attrs/"
-title = "Overwriting Attributes"
 
