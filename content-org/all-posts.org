@@ -151,7 +151,6 @@ the rest[fn:whereswaldo].
 - TeX Users Group
   - [[http://tug.org/tug2020/][TUG 2020 Conference Committee member]]
   - TUG Zulip Admin
-- [[https://developers.google.com/season-of-docs/docs/participants/project-sympy-rohitgoswami][Google Summer of Docs 2020 Symengine]]
 - Maintainer for packages on:
   - ArchLinux (the [[https://aur.archlinux.org/account/HaoZeke][Arch User Repository]] (AUR))
   - [[https://github.com/NixOS/nixpkgs/search?q=haozeke][Nixpkgs]]
@@ -165,8 +164,9 @@ the rest[fn:whereswaldo].
 - [[https://orcid.org/0000-0002-2393-8056][OrCiD]]
 - [[https://loop.frontiersin.org/people/829611/overview][Loop]]
 - [[https://osf.io/c47v3/][OSF]]
-**** Software
-I am particularly proud of my contributions to t
+# **** Software
+# I am particularly proud of my contributions to to:
+# - d-SEAMS
 *** Societies
 - [[https://engage.aiche.org/network/community-directory/profile?UserKey=8f135c8b-747d-4f79-95fd-84975458e3bd][American Institute of Chemical Engineers]]
 - [[https://ieeexplore.ieee.org/author/37086865956][IEEE]]
@@ -198,8 +198,10 @@ These are tech talks, for academic presentations, [[https://github.com/haozeke/c
 - [[https://www.tug.org/TUGboat/Contents/contents41-2.html][TUGBOAT issue for TUG 2020]] proceedings
   - Several mentions as a conference organizer
 **** Lists
+- [[https://summerofcode.withgoogle.com/projects/#5790375215628288][Google Summer of Code (GSoC) 2021 - LFortran and Computational Chemistry]]
 - [[https://en.rannis.is/news/allocation-from-the-icelandic-research-fund-for-the-financial-year-2021-1][2021 List of projects funded by the Icelandic Research Fund]]
-- [[https://developers.google.com/season-of-docs/docs/2020/participants][2020 GSoD (Google Season of Docs) list of successful projects]]
+- [[https://developers.google.com/season-of-docs/docs/participants/project-sympy-rohitgoswami][Google Season of Docs (GSoD) 2020 - Symengine]]
+- Spring 2021 [[http://www.ipam.ucla.edu/programs/long-programs/tensor-methods-and-emerging-applications-to-the-physical-and-data-sciences/?tab=participant-list][Institute of Pure and Applied Mathematics (IPAM) Fellow]] for “Tensor Methods and Emerging Applications to the Physical and Data Sciences”
 - [[https://sites.google.com/view/2020crt/home?authuser=0][2020 Categorifications in Representation Theory]] ([[https://sites.google.com/view/2020crt/registered-participants?authuser=0][participant]])
 - [[https://web-eur.cvent.com/event/16fae83c-5b72-4690-a368-829688f0d14b/summary][Heilbronn Annual Conference 2020]] ([[https://web-eur.cvent.com/event/16fae83c-5b72-4690-a368-829688f0d14b/websitePage:1faf08a0-dcdd-4a2c-b4b8-d9d445202377?RefId=HIMR][participant]])
 - [[https://www.cirm-math.fr/Listes/liste_pre_verif.php?id_renc=2255&num_semaine=0][CIRM - Jean-Morlet Chair - Quasi-Monte Carlo Methods and Applications]] ([[https://www.chairejeanmorlet.com/2255.html][info]]) [participant]
