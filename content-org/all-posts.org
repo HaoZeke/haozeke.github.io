@@ -218,6 +218,7 @@ These are tech talks, for academic presentations, [[https://github.com/haozeke/c
 - Fortran Newsletter Mentions:
   - [[https://fortran-lang.org/newsletter/2021/04/01/Fortran-Newsletter-April-2021/][April 2021]] :: LFortran contributor
   - [[https://fortran-lang.org/newsletter/2021/03/01/Fortran-Newsletter-March-2021/][March 2021]] :: LFortran contributor
+  - [[https://fortran-lang.org/newsletter/2021/05/18/Welcome-GSoC-students/][May 2021]] :: GSoC acceptance
 **** Teaching
 - [[https://www.iopconferences.org/iop/frontend/reg/thome.csp?pageID=1032921&eventID=1664][IOP Workshop on C++ II - Libraries and Simulations]] :: April 13, 2020 (instructor) ([[Talk Supplements for IOP's C++ Workshop][materials]])
 - [[https://wc3m.github.io/][Water, Chemicals and more with Computers for Chemistry (WC3m)]] :: July 28-August 28, 2020 (co-lead)
@@ -9601,3 +9602,5 @@ A discussion and demonstration of the restructuring of my ox-hugo site to use pa
 #+end_quote
 ** Background
 I have been running this site of mine for over a year now, and in that time certain collections of articles have arisen. This marks an additional layer of existing categorization. I use ~tags~ and ~categories~ at the moment; but the concept of a collection allows for an introduction followed by a set of articles. This logical structure is facilitated in ~hugo~ with the usage of tree and leaf bundles.
+
+* TODO LFortran and GSoC
