@@ -6,6 +6,11 @@ url = "https://rgoswami.me/search/"
 title = "Search"
 
 [[input.files]]
+path = "./posts/cip2021-fin/index.html"
+url = "https://rgoswami.me/posts/cip2021-fin/"
+title = "Code in Place 2021"
+
+[[input.files]]
 path = "./snippets/forward-multiport/index.html"
 url = "https://rgoswami.me/snippets/forward-multiport/"
 title = "Forwarding Multiple Local Ports"
@@ -339,4 +344,9 @@ title = "About"
 path = "./posts/rg-collection-weblinks/index.html"
 url = "https://rgoswami.me/posts/rg-collection-weblinks/"
 title = "Collection of WebLinks"
+
+[[input.files]]
+path = "./snippets/mamba-colab-usage/index.html"
+url = "https://rgoswami.me/snippets/mamba-colab-usage/"
+title = "Mamba and Colab"
 
