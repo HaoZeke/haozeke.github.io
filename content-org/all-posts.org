@@ -9604,7 +9604,7 @@ A discussion and demonstration of the restructuring of my ox-hugo site to use pa
 ** Background
 I have been running this site of mine for over a year now, and in that time certain collections of articles have arisen. This marks an additional layer of existing categorization. I use ~tags~ and ~categories~ at the moment; but the concept of a collection allows for an introduction followed by a set of articles. This logical structure is facilitated in ~hugo~ with the usage of tree and leaf bundles.
 
-* DONE Fortran, GSoC and Me
+* DONE Fortran, GSoC21 and Me
 CLOSED: [2021-05-21 Fri 05:17]
 :PROPERTIES:
 :EXPORT_FILE_NAME: fortran-gsoc-me
@@ -9613,7 +9613,7 @@ CLOSED: [2021-05-21 Fri 05:17]
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
 :END:
 #+begin_quote
-Reminisces and prophesying brought upon by [[https://lfortran.org/][LFortran]] and [[https://summerofcode.withgoogle.com/projects/#5790375215628288][GSoC 2021]]
+Reminisces and prophecies brought upon by [[https://lfortran.org/][LFortran]] and [[https://summerofcode.withgoogle.com/projects/#5790375215628288][GSoC 2021]]
 #+end_quote
 ** Background
 #+begin_quote
@@ -9632,7 +9632,7 @@ As I grew older, my interest in crass physical things waned and my interest in t
 
 I *almost* came into contact with Fortran when I mistakenly stumbled onto [[http://www.quantum-espresso.org/][Quantum Espresso]] in the course of my first summer undergraduate research project under Prof. Rajarshi Chakrabarti at IIT Bombay back in 2014....
 
-Almost, but not quite, for I was hunting models for soft matter (eventually found them too cite:theeyancheriTranslationalRotationalDynamics2020), and [[https://espressomd.org/wordpress/about/features/][EsPReSSO MD]] *is not* Quantum Espresso.
+Almost, but not quite, for I was hunting models for soft matter (eventually found them too @theeyancheriTranslationalRotationalDynamics2020 ), and [[https://espressomd.org/wordpress/about/features/][EsPReSSO MD]] *is not* Quantum Espresso.
 ** First Encounter
 I finally stumbled upon FORTRAN in all its free form ~f90~ glory in the form of [[https://bigdft.org/][BigDFT]] during my stint in the 2015 Students-Undergraduate Research Graduate Excellence (SURGE) program of IIT Kanpur. A mere six years ago.
 
@@ -9640,15 +9640,15 @@ By then I had been programming, as perhaps many do, largely on the largess of th
 
 The only ray of sunshine in a mess of poor content was Ondřej Čertík's [[https://www.fortran90.org/][fortran90.org]]. I knew better than to write off Fortran though, I knew even then its pedigree (impossible to configure [[https://github.com/lammps/lammps][LAMMPS]] without touching upon [[http://www.netlib.org/blas/][BLAS]] and [[http://performance.netlib.org/lapack/][LAPACK]]...) [fn:whyelse].
 
-I was not a chemist, and my dealings with elegant EsPReSSo and LAMMPS in no way prepared me for the horrific mess which was (and is) the codes of ab-initio chemistry. I was however, introduced to cite:redwineUpgradingFortran901995.
+I was not a chemist, and my dealings with elegant EsPReSSo and LAMMPS in no way prepared me for the horrific mess which was (and is) the codes of ab-initio chemistry. I was however, introduced to @redwineUpgradingFortran901995 .
 ** Fortran the stable
-During my third year, I attempted to submit a project written in Julia. I spent the next couple of months convincing the instructor of the fact that Julia was a legitimate language and not a figment of my imagination. Little wonder then, when the time came to submit an undergraduate thesis, much of the computations were was inspired by the venerable Fortran codes of cite:kayodeFortranProgramsChemical1995.
+During my third year, I attempted to submit a project written in Julia. I spent the next couple of months convincing the instructor of the fact that Julia was a legitimate language and not a figment of my imagination. Little wonder then, when the time came to submit an undergraduate thesis, much of the computations were was inspired by the venerable Fortran codes of @kayodeFortranProgramsChemical1995 .
 ** Ice, Fire and Fortran
-The fortunate circumstances behind my position here in Iceland, are best left to other posts. One of my tasks, was the migration of existing code for the Single Center Multipole Expansion water model cite:wikfeldtTransferableH2OInteraction2013 from Fortran (free form, but not modern) to ~C++~ or at-least to write ~ISO_C_BINDING~ wrappers for incorporation into existing ~C++~ libraries (with an eye towards LAMMPS integration). At the time, given my projects in ~C++~ (cite:goswamiDSEAMSDeferredStructural2020) and passable familiarity with Fortran, this seemed like an optimal use of time.
+The fortunate circumstances behind my position here in Iceland, are best left to other posts. One of my tasks, was the migration of existing code for the Single Center Multipole Expansion water model @wikfeldtTransferableH2OInteraction2013 from Fortran (free form, but not modern) to ~C++~ or at-least to write ~ISO_C_BINDING~ wrappers for incorporation into existing ~C++~ libraries (with an eye towards LAMMPS integration). At the time, given my projects in ~C++~ [@goswamiDSEAMSDeferredStructural2020] and passable familiarity with Fortran, this seemed like an optimal use of time.
 
-However, the force-field was and remains to be heavily under development cite:jonssonTransferablePotentialFunction2020,jonssonPolarizableEmbeddingTransferable2019, which made anything less than a hard fork unfeasible. Still on the books however, *another Fortran project* to look forward to!
+However, the force-field was and remains to be heavily under development @jonssonTransferablePotentialFunction2020, @jonssonPolarizableEmbeddingTransferable2019, which made anything less than a hard fork unfeasible. Still on the books however, *another Fortran project* to look forward to!
 ** Quantum Chemistry and Fortran
-With collaborators at SURFSara I was involved in the port from MATLAB to C++, Gaussian Process Regression models cite:koistinenNudgedElasticBand2019,koistinenNudgedElasticBand2017,koistinenMinimumModeSaddle2020,koistinenAlgorithmsFindingSaddle2019  for accelerating saddle searches and coupling said methodologies to EON cite:chillEONSoftwareLong2014 for long time scales. This was under my brilliant advisor's [[https://www.reaxpro.eu/][ReaxPro project]] who also guided and encouraged me towards applying for a fellowship. As befitting a multiscale modeling project, this lead to an NDA and tweaks towards efficient workflows using potentials from the [[https://www.scm.com/][Amsterdam Modeling Suite]], which naturally, is *written in Fortran*.
+With collaborators at SURFSara I was involved in the port from MATLAB to C++, Gaussian Process Regression models @koistinenNudgedElasticBand2019, @koistinenNudgedElasticBand2017, @koistinenMinimumModeSaddle2020, @koistinenAlgorithmsFindingSaddle2019  for accelerating saddle searches and coupling said methodologies to EON @chillEONSoftwareLong2014 for long time scales. This was under my brilliant advisor's [[https://www.reaxpro.eu/][ReaxPro project]] who also guided and encouraged me towards applying for a fellowship. As befitting a multiscale modeling project, this lead to an NDA and tweaks towards efficient workflows using potentials from the [[https://www.scm.com/][Amsterdam Modeling Suite]], which naturally, is *written in Fortran*.
 ** Tensors, IPAM and Fortran
 Much [[https://fortran-lang.discourse.group/t/why-abandon-fortran-for-linear-algebra/1191/6?u=rgoswami][has been said]] about [[https://www.nwchem-sw.org][NWChem]]'s [[https://www.hpcwire.com/2021/04/29/nwchemex-computational-chemistry-code-for-the-exascale-era/][pivot towards]] ~C++~. However, this has quite a bit to do with [[https://github.com/pnnl/HiParTI][HiParTI]] (a tensor library) being in ~C++~. To throw away Fortran simply because Tensors are as yet easier to implement in other languages is treating a symptom, not fixing the cause. In any case, over the course of an [[http://www.ipam.ucla.edu/programs/long-programs/tensor-methods-and-emerging-applications-to-the-physical-and-data-sciences/?tab=participant-list][IPAM fellowship]] (supported by my advisor) I was able to gain a broad overview of the underlying numerical complaints driving the schism; and there are already fantastic libraries which can be leveraged for multilinear algebra. Fortran is still one of the only language to have standardized parallel programming paradigms, and in the long run there is no way that won't count in its favor.
 ** Fortran Lang and LFortran
@@ -9656,7 +9656,7 @@ Around the same time frame, I was lucky enough to be involved in the documentati
 
 The Google Summer of Code project blends both my deep rooted interest in language semantics and flexible implementations; while also whetting my academic appetite by being so closely tied to the topics I love. Working on ~dftatom~ (and related quantum chemistry codes) while gaining familiarity with the LLVM based LFortran is fantastic. Being able to work closely with the [[https://fortran-lang.org/newsletter/2021/05/18/Welcome-GSoC-students/][rest of the team behind Fortran lang]] to bring about an "age of Fortran, as promised twenty years ago" is one of the most exciting premises I can imagine.
 ** Conclusions
-The picture painted here, like all nostalgic reminisces, is colored and deeply biased. My love for modern ~C++~ and elegant ~R~, my forays into other languages, none of these are mentioned. It is true, that my work, has more often involved production level ~C++~ over Fortran, however, given everything, I can be certain of one thing:
+The picture painted here, like all nostalgic reminisces, is colored and deeply biased. My love for modern ~C++~ and elegant ~R~, my forays into other languages, none of these are mentioned. The sheer *joy* of using modern Fortran, of projects with ~fpm~; is lost in translation. It is true, that my work, has more often involved production level ~C++~ over Fortran, however, given everything, I can be certain of one thing:
 #+begin_quote
 The future is Fortran!
 (Or at-least involves a lot of Fortran)
