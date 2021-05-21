@@ -9613,7 +9613,7 @@ CLOSED: [2021-05-21 Fri 05:17]
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
 :END:
 #+begin_quote
-Reminisces and prophesying brought upon by [[https://lfortran.org/][LFortran]] and [[https://summerofcode.withgoogle.com/projects/#5790375215628288][GSoC 2021]]
+Reminisces and prophecies brought upon by [[https://lfortran.org/][LFortran]] and [[https://summerofcode.withgoogle.com/projects/#5790375215628288][GSoC 2021]]
 #+end_quote
 ** Background
 #+begin_quote
@@ -9656,7 +9656,7 @@ Around the same time frame, I was lucky enough to be involved in the documentati
 
 The Google Summer of Code project blends both my deep rooted interest in language semantics and flexible implementations; while also whetting my academic appetite by being so closely tied to the topics I love. Working on ~dftatom~ (and related quantum chemistry codes) while gaining familiarity with the LLVM based LFortran is fantastic. Being able to work closely with the [[https://fortran-lang.org/newsletter/2021/05/18/Welcome-GSoC-students/][rest of the team behind Fortran lang]] to bring about an "age of Fortran, as promised twenty years ago" is one of the most exciting premises I can imagine.
 ** Conclusions
-The picture painted here, like all nostalgic reminisces, is colored and deeply biased. My love for modern ~C++~ and elegant ~R~, my forays into other languages, none of these are mentioned. It is true, that my work, has more often involved production level ~C++~ over Fortran, however, given everything, I can be certain of one thing:
+The picture painted here, like all nostalgic reminisces, is colored and deeply biased. My love for modern ~C++~ and elegant ~R~, my forays into other languages, none of these are mentioned. The sheer *joy* of using modern Fortran, of projects with ~fpm~; is lost in translation. It is true, that my work, has more often involved production level ~C++~ over Fortran, however, given everything, I can be certain of one thing:
 #+begin_quote
 The future is Fortran!
 (Or at-least involves a lot of Fortran)
