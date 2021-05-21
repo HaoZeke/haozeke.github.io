@@ -8,7 +8,7 @@ title = "Search"
 [[input.files]]
 path = "./posts/fortran-gsoc-me/index.html"
 url = "https://rgoswami.me/posts/fortran-gsoc-me/"
-title = "Fortran, GSoC and Me"
+title = "Fortran, GSoC21 and Me"
 
 [[input.files]]
 path = "./posts/cip2021-fin/index.html"
