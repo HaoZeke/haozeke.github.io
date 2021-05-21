@@ -6,6 +6,11 @@ url = "https://rgoswami.me/search/"
 title = "Search"
 
 [[input.files]]
+path = "./posts/fortran-gsoc-me/index.html"
+url = "https://rgoswami.me/posts/fortran-gsoc-me/"
+title = "Fortran, GSoC and Me"
+
+[[input.files]]
 path = "./posts/cip2021-fin/index.html"
 url = "https://rgoswami.me/posts/cip2021-fin/"
 title = "Code in Place 2021"
