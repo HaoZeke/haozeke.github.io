@@ -53,6 +53,7 @@ What follows is a more informal set of places I am or have been associated with 
 me[fn:growingUp].
 *** Reykjavík
 - As of 2021, I have been awarded a three year doctoral fellowship [[https://en.rannis.is/news/allocation-from-the-icelandic-research-fund-for-the-financial-year-2021-1][from the Icelandic Research Fund (Rannís)]] for my project on "Magnetic interactions of itinerant electrons modeled using Bayesian machine learning" tenable at the Science Institute with [[https://notendur.hi.is//~hj/indexE.html][Prof. Hannes Jónsson]] as my supervisor and [[https://english.hi.is/staff/birgirhr][Prof. Birgir Hrafnkelsson]] as my co-supervisor
+- I am a Fellow at the Institute for Pure and Applied Mathematics (IPAM) for its Spring 2021 program on “[[http://www.ipam.ucla.edu/programs/long-programs/tensor-methods-and-emerging-applications-to-the-physical-and-data-sciences/?tab=participant-list][Tensor Methods and Emerging Applications to the Physical and Data Sciences]]”
 - I [[https://english.hi.is/staff/rog32][am associated]] with the [[https://notendur.hi.is/hj/researchgroup.html][reputed Jonsson group]] of the [[http://raunvisindastofnun.hi.is/the_science_institute][Science Institute]] at the
   [[https://english.hi.is/school_of_engineering_and_natural_sciences][University of Iceland]], where I benefit from the
   guidance of the erudite and inspiring [[https://notendur.hi.is/hj/indexE.html][Prof. Hannes Jonsson]]
