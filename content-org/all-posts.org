@@ -9603,4 +9603,72 @@ A discussion and demonstration of the restructuring of my ox-hugo site to use pa
 ** Background
 I have been running this site of mine for over a year now, and in that time certain collections of articles have arisen. This marks an additional layer of existing categorization. I use ~tags~ and ~categories~ at the moment; but the concept of a collection allows for an introduction followed by a set of articles. This logical structure is facilitated in ~hugo~ with the usage of tree and leaf bundles.
 
-* TODO LFortran and GSoC
+* TODO LFortran and Google Colaboratory
+:PROPERTIES:
+:EXPORT_FILE_NAME: lfortran-gsoc-intro
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+begin_quote
+Manipulating Google resources for the greater good
+#+end_quote
+** Background
+** Mamba
+* DONE Code in Place 2021 :@notes:ideas:teaching:cs106a:
+CLOSED: [2021-05-21 Fri 02:29]
+:PROPERTIES:
+:EXPORT_FILE_NAME: cip2021-fin
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+begin_quote
+Short recollections of the second iteration of CIP; the course with the largest teaching (and voluntary) staff bringing the joy of programming to thousands
+#+end_quote
+** Background
+Last year in 2020, as a section leader for the Stanford Code in Place initiative (which generated a series of posts), I was able to hone my teaching skills and bask in the reflected glory of many talented students who were in my Code in Place section. This year I was honored to return not only to lead a section, but also to act as a teaching mentor to a group of first time section leaders.
+
+#+DOWNLOADED: screenshot @ 2021-05-21 01:48:21
+#+name: fig:sectionleaders
+#+caption: 1,100 wonderful teachers across the world...
+[[file:images/Background/2021-05-21_01-48-21_screenshot.png]]
+
+There are still the student projects to look forward to, and like last year, there shall be some workshops, which I might also keep track of. This is then a slightly premature post, however, I just signed off on my final session (optional presentation aside) and had a chat with some returning staff, so now is a good nostalgic moment to capture.
+
+Once again (Fig. [[fig:sectionleaders]]) I had the dubious pleasure of being the only member of the teaching team (and student body) located in Iceland. This year we did also have a student on a fishing boat in Antarctica, so that was fascinating. There was a pretty fantastic age distribution (Fig. [[fig:agedist][fig:agedist]]) as well.
+
+
+#+DOWNLOADED: screenshot @ 2021-05-21 02:22:16
+#+name: fig:agedist
+#+caption: Learner distribution
+[[file:images/Background/2021-05-21_02-22-16_screenshot.png]]
+
+** Teaching Mentorship
+I was assigned a fantastic co-mentor, who turned out to be from the same undergraduate college I was at! (not during the same time period of course). Mentorship (training and delivery) was a lot of fun. Me and my co-mentor met a few times before and after to work on projects of mutual interest as well. All the section leaders had stars in their eyes and were super interactive. The sessions were packed to the gills and our Ed forum saw our shared camaraderie grow throughout the 5 week long course. I was also able to reconnect with some of the other stalwart section leaders who returned as teaching mentors.
+
+- This [[https://docs.google.com/document/d/13RZzvY_9WTR_sjo_Y4oBNchsAWAv_z6kSJ9395snANU/preview][CC-BY-NC-SA 4.0 licensed document]] sums up the goals instilled in the new section leaders.
+- I also often plug Greg Wilson's [[http://teachtogether.tech/en/index.html][Teaching Tech Together]]
+** Differences
+- As section leaders, we were allowed to nominate up to three students who would join the program
+- No video recordings of the section were allowed
+  - A contentious decision at first, which may have contributed to an apparent dip in student participation
+  - Students gave permission for anonymized recordings of the OhYay sessions to allow for data mining
+- Instead of asking the section leaders to manage video platforms, the team set up OhYay instances (managed by Julie)
+  - The OhYay instance for the teacher lounge was particularly enjoyable
+
+#+DOWNLOADED: screenshot @ 2021-05-21 02:05:43
+#+caption: Scenes from the teacher lounge and watch party
+[[file:images/Differences/2021-05-21_02-06-31_screenshot.png]]
+[[file:images/Differences/2021-05-21_02-05-43_screenshot.png]]
+** Tools
+This year, coming at the tail end of an intensive year of online teaching experiences, helped me zero in on a series of tools I used throughout:
+- [[https://dateful.com/eventlink][Starts at (now Dateful)]] for timezone agnostic links
+- [[https://www.strawpoll.com/][Straw Poll]] for engagement
+- [[https://jamboard.google.com/][Jamboard]] for persistent communal scribbles
+- [[http://hackmd.io/][HackMD]] for collaorative notes and pseudocode
+- [[https://www.jitbit.com/screensharing][JitBit]] for sharing screen
+  - Didn't get around to needing this, there was an early bug in OhYay which was ironed out
+** Surprises
+- This year's set seemed to go by very quickly. Perhaps this can be partially attributed to the fact that the material was no longer new to me; however I did take on additional responsibilities. I can only conjecture that last year Zoom meetings were a novelty.
+- There was a slightly grimmer tone throughout some of the forums, but the team (Chris, Mehran, Kylie, Julie, Brahm and everyone else) were as upbeat and inspiring as ever
+** Conclusions
+Last year's Code in place mattered a lot to me. It was absolutely fantastic to see and interact with such a vibrant community again; there were some odd hiccups, including some in-sensitivities and incivilities, but nothing major. This year in fact, the program meant even more to me; my mother, who has long been (like the rest of my family) an inspiration and friend, joined and was absolutely incredibly dedicated, hardworking and creative throughout.
+
+I cannot speak to the future, but I know I shall probably once again have the CIP calendar sit unused till the next year, hoping to be called back to partake in the joys of teaching motivated students with brilliant colleagues.
