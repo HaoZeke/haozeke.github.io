@@ -3834,14 +3834,14 @@ The entire file would look something like this (the ~elisp~ can be anywhere in t
 ;; #+END_SRC
 #+END_SRC
 #+BEGIN_SRC org :exports code
-,#+TITLE: Something
-,#+AUTHOR: Rohit Goswami
-,#+OPTIONS: toc:nil \n:nil
-,#+STARTUP: fninline
-,#+LATEX_COMPILER: xelatex
-,#+LATEX_CLASS: foo
-,#+LATEX_HEADER: \setlength\parindent{0pt}
-,#+LATEX_HEADER: \addbibresource{whatever.bib}
+#+TITLE: Something
+#+AUTHOR: Rohit Goswami
+#+OPTIONS: toc:nil \n:nil
+#+STARTUP: fninline
+#+LATEX_COMPILER: xelatex
+#+LATEX_CLASS: foo
+#+LATEX_HEADER: \setlength\parindent{0pt}
+#+LATEX_HEADER: \addbibresource{./biblio/refs.bib}
 
 Blah blah document $\sin{x}$ stuff
 
