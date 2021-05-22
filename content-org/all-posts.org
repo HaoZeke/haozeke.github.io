@@ -9664,7 +9664,7 @@ The future is Fortran!
 
 [fn:whyelse] Also a mentor and inspiration of mine (within my family) used Fortran for graduate research...
 [fn:whatcomp] I am after-all, actually secretly a computational chemist, whatever my degrees and blog posts might imply..
-* DONE Code in Place 2021 :@notes:ideas:teaching:cs106a:
+* DONE Wrapping Up Code in Place 2021 :@notes:ideas:teaching:cs106a:
 CLOSED: [2021-05-21 Fri 02:29]
 :PROPERTIES:
 :EXPORT_FILE_NAME: cip2021-fin
