@@ -13,7 +13,7 @@ title = "Fortran, GSoC21 and Me"
 [[input.files]]
 path = "./posts/cip2021-fin/index.html"
 url = "https://rgoswami.me/posts/cip2021-fin/"
-title = "Code in Place 2021"
+title = "Wrapping Up Code in Place 2021"
 
 [[input.files]]
 path = "./snippets/forward-multiport/index.html"
