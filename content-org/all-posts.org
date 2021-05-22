@@ -9604,7 +9604,7 @@ A discussion and demonstration of the restructuring of my ox-hugo site to use pa
 ** Background
 I have been running this site of mine for over a year now, and in that time certain collections of articles have arisen. This marks an additional layer of existing categorization. I use ~tags~ and ~categories~ at the moment; but the concept of a collection allows for an introduction followed by a set of articles. This logical structure is facilitated in ~hugo~ with the usage of tree and leaf bundles.
 
-* DONE Fortran, GSoC21 and Me
+* DONE Fortran, GSoC21 and Me :@personal:history:ramblings:workflow:fortran:
 CLOSED: [2021-05-21 Fri 05:17]
 :PROPERTIES:
 :EXPORT_FILE_NAME: fortran-gsoc-me
