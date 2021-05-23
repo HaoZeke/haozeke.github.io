@@ -6,6 +6,11 @@ url = "https://rgoswami.me/search/"
 title = "Search"
 
 [[input.files]]
+path = "./posts/zotero-biblatex-bibtex/index.html"
+url = "https://rgoswami.me/posts/zotero-biblatex-bibtex/"
+title = "Biblatex to Bibtex for Sphinx"
+
+[[input.files]]
 path = "./posts/fortran-gsoc-me/index.html"
 url = "https://rgoswami.me/posts/fortran-gsoc-me/"
 title = "Fortran, GSoC21 and Me"
@@ -349,9 +354,4 @@ title = "About"
 path = "./posts/rg-collection-weblinks/index.html"
 url = "https://rgoswami.me/posts/rg-collection-weblinks/"
 title = "Collection of WebLinks"
-
-[[input.files]]
-path = "./snippets/mamba-colab-usage/index.html"
-url = "https://rgoswami.me/snippets/mamba-colab-usage/"
-title = "Mamba and Colab"
 
