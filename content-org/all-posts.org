@@ -9723,3 +9723,303 @@ This year, coming at the tail end of an intensive year of online teaching experi
 Last year's Code in place mattered a lot to me. It was absolutely fantastic to see and interact with such a vibrant community again; there were some odd hiccups, including some in-sensitivities and incivilities, but nothing major. This year in fact, the program meant even more to me; my mother, who has long been (like the rest of my family) an inspiration and friend, joined and was absolutely incredibly dedicated, hardworking and creative throughout.
 
 I cannot speak to the future, but I know I shall probably once again have the CIP calendar sit unused till the next year, hoping to be called back to partake in the joys of teaching motivated students with brilliant colleagues.
+
+* DONE Biblatex to Bibtex for Sphinx :@notes:tools:workflow:tex:documentation:
+CLOSED: [2021-05-23 Sun 05:37]
+:PROPERTIES:
+:EXPORT_FILE_NAME: zotero-biblatex-bibtex
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+*** Background
+#+begin_quote
+Transitioning from ~biblatex~ to ~bibtex~ with ~biber~ for ~sphinx~
+#+end_quote
+
+I recently started a [[https://ipam21.netlify.app/][set of notes]] using ~jupyter-book~. However, in the process I ran into a horrific bibliography related SNAFU. ~sphinx~ in its infinite wisdom only accepts a rather odd subset of ~bibtex~.
+
+I have been happily exporting my giant bibliography with [[https://www.zotero.org/][Zotero]] (and [[https://retorque.re/zotero-better-bibtex/][better bibtex]]) exporting my references as ~biblatex~ while ~sphinx~ started choking dreadfully. This post describes attempts to reconcile the ~biblatex~ sources without manual intervention.
+*** Input
+The input file was an innocuous looking tiny neat ~biblatex~ file:
+#+begin_src bibtex
+@online{grasedyckParameterdependentSmootherMultigrid2020,
+  title = {A Parameter-Dependent Smoother for the Multigrid Method},
+  author = {Grasedyck, Lars and Klever, Maren and Löbbert, Christian and Werthmann, Tim A.},
+  date = {2020-08-03},
+  url = {http://arxiv.org/abs/2008.00927},
+  urldate = {2021-05-22},
+  archiveprefix = {arXiv},
+  eprint = {2008.00927},
+  eprinttype = {arxiv},
+  keywords = {65N55; 15A69,Mathematics - Numerical Analysis},
+  primaryclass = {cs, math}
+}
+
+@article{grasedyckDistributedHierarchicalSVD2018,
+  title = {Distributed Hierarchical {{SVD}} in the {{Hierarchical Tucker}} Format},
+  author = {Grasedyck, Lars and Löbbert, Christian},
+  date = {2018},
+  journaltitle = {Numerical Linear Algebra with Applications},
+  volume = {25},
+  pages = {e2174},
+  issn = {1099-1506},
+  doi = {10.1002/nla.2174},
+  url = {https://onlinelibrary.wiley.com/doi/abs/10.1002/nla.2174},
+  urldate = {2021-05-22},
+  annotation = {\_eprint: https://onlinelibrary.wiley.com/doi/pdf/10.1002/nla.2174},
+  keywords = {Hierarchical Tucker,HT,multigrid,parallel algorithms,SVD,tensor arithmetic},
+  langid = {english},
+  number = {6}
+}
+
+@article{grasedyckHierarchicalSingularValue2010,
+  title = {Hierarchical {{Singular Value Decomposition}} of {{Tensors}}},
+  author = {Grasedyck, Lars},
+  date = {2010-01-01},
+  journaltitle = {SIAM Journal on Matrix Analysis and Applications},
+  shortjournal = {SIAM J. Matrix Anal. Appl.},
+  volume = {31},
+  pages = {2029--2054},
+  publisher = {{Society for Industrial and Applied Mathematics}},
+  issn = {0895-4798},
+  doi = {10.1137/090764189},
+  url = {https://epubs.siam.org/doi/abs/10.1137/090764189},
+  urldate = {2021-05-22},
+  number = {4}
+}
+#+end_src
+*** Manual cleaning
+The first attempt was with ~bibutils~.
+#+begin_src bash
+biblatex2xml references.bib | xml2bib | tee  refs.bib
+#+end_src
+~sphinx~ does not support ~electronic~ and demands ~misc~ instead.
+#+begin_src bash
+biblatex2xml references.bib | xml2bib | sed -e "s/Electronic{/misc{/g" | tee  refs.bib
+#+end_src
+
+This brought us to:
+
+#+begin_src bibtex
+@misc{grasedyckParameterdependentSmootherMultigrid2020,
+author="Grasedyck, Lars
+and Klever, Maren
+and L{\"o}bbert, Christian
+and Werthmann, Tim A.",
+title="A Parameter-Dependent Smoother for the Multigrid Method",
+year="2020",
+month="Aug",
+day="03",
+archivePrefix="arXiv",
+eprint="2008.00927",
+url="http://arxiv.org/abs/2008.00927"
+}
+
+@Article{grasedyckDistributedHierarchicalSVD2018,
+author="Grasedyck, Lars
+and L{\"o}bbert, Christian",
+title="Distributed Hierarchical SVD in the Hierarchical Tucker Format",
+journal="Numerical Linear Algebra with Applications",
+year="2018",
+volume="25",
+number="6",
+pages="e2174",
+issn="1099-1506",
+doi="10.1002/nla.2174",
+url="https://onlinelibrary.wiley.com/doi/abs/10.1002/nla.2174",
+url="https://doi.org/10.1002/nla.2174"
+}
+
+@Article{grasedyckHierarchicalSingularValue2010,
+author="Grasedyck, Lars",
+title="Hierarchical Singular Value Decomposition of Tensors",
+journal="SIAM Journal on Matrix Analysis and Applications",
+year="2010",
+month="Jan",
+day="01",
+volume="31",
+number="4",
+pages="2029--2054",
+issn="0895-4798",
+doi="10.1137/090764189",
+url="https://epubs.siam.org/doi/abs/10.1137/090764189",
+url="https://doi.org/10.1137/090764189"
+}
+#+end_src
+
+Unfortunately this also generated multiple ~url~ lines, which choke ~sphinx~ of course. Additionally, the workflow is rather fickle e.g. not starting the file with a blank line causes the first reference to be silently skipped.
+*** Biber
+The key concept here is that ~biber~ can take a configuration file to process the ~bib~ file and is also able to copy the formatted file over with ~tool~. So our solution will boil down to writing a configuration file and then using it.
+
+First we get the location of the ~configuration~ (also check the ~version~).
+#+begin_src bash
+biber --tool-config
+biber --version
+#+end_src
+
+#+RESULTS:
+| /tmp/par-726f686974676f7377616d69/cache-bc6986241d41958a757fc1df8a704e6d22b2f953/inc/lib/Biber/biber-tool.conf |          |      |
+| biber                                                                                                          | version: | 2.16 |
+
+Then we inspect it and extract relevant entries to a configuration file of our own, with some modifications.
+- We need to reverse each entry as [[https://tex.stackexchange.com/a/114803/130845][described here]]
+  - However in practice we can get away with a minimal mapping and some command line options..
+- We would also like to be mindful of the mapping from ~online~ to ~misc~
+#+begin_src xml
+<?xml version="1.0" encoding= "utf-8"?>
+<config>
+  <sourcemap>
+    <maps datatype="bibtex">
+      <!-- Easy type conversions -->
+      <map>
+        <map_step map_type_source="report" map_type_target="techreport"/>
+        <map_step map_type_source="online" map_type_target="misc"/>
+      </map>
+    </maps>
+  </sourcemap>
+</config>
+#+end_src
+At this stage, we are partially done, but the resulting file is rather ugly, and *most importantly* dates have not yet been transformed. This [[https://tex.stackexchange.com/a/299338/130845][SE answer]] provided a hint, as did [[https://gist.githubusercontent.com/mkouhia/f00fea7fc8d4effd9dfd/raw/500e9dbc6aa43a47e39c45ba230738ff4544709f/biblatex-to-bibtex.conf][this gist]]. Effectively, we need to overwrite part of the map.
+#+begin_src xml
+      <!-- Date to year, month -->
+      <map>
+        <map_step map_field_source="date"
+        map_field_target="year" />
+      </map>
+      <map>
+        <map_step map_field_source="year"
+        map_match="(\d{4}|\d{2})-(\d{1,2})-(\d{1,2})"
+        map_final="1" />
+        <map_step map_field_source="year"
+        map_match="(\d{4}|\d{2})-(\d{1,2})-(\d{1,2})"
+        map_replace="$1" />
+        <map_step map_field_set="month" map_origfieldval="1" />
+        <map_step map_field_source="month"
+        map_match="(\d{4}|\d{2})-(\d{1,2})-(\d{1,2})"
+        map_replace="$2" />
+      </map>
+      <map>
+        <map_step map_field_source="year"
+        map_match="(\d{4}|\d{2})-(\d{1,2})" map_final="1" />
+        <map_step map_field_source="year"
+        map_match="(\d{4}|\d{2})-(\d{1,2})" map_replace="$1" />
+        <map_step map_field_set="month" map_origfieldval="1" />
+        <map_step map_field_source="month"
+        map_match="(\d{4}|\d{2})-(\d{1,2})" map_replace="$2" />
+      </map>
+#+end_src
+
+Now we can also add some pretty printing (before the ~sourcemap~):
+#+begin_src xml
+  <output_fieldcase>lower</output_fieldcase>
+  <output_resolve>1</output_resolve>
+  <output_safechars>1</output_safechars>
+  <output_format>bibtex</output_format>
+#+end_src
+
+Putting it all together:
+#+begin_src xml
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Got the date from https://gist.githubusercontent.com/mkouhia/f00fea7fc8d4effd9dfd/raw/500e9dbc6aa43a47e39c45ba230738ff4544709f/biblatex-to-bibtex.conf -->
+<config>
+  <output_fieldcase>lower</output_fieldcase>
+  <output_resolve>1</output_resolve>
+  <output_safechars>1</output_safechars>
+  <output_format>bibtex</output_format>
+  <sourcemap>
+    <maps datatype="bibtex">
+      <!-- Easy type conversions -->
+      <map>
+        <map_step map_type_source="report" map_type_target="techreport"/>
+        <map_step map_type_source="online" map_type_target="misc"/>
+      </map>
+      <!-- Date to year, month -->
+      <map>
+        <map_step map_field_source="date"
+        map_field_target="year" />
+      </map>
+      <map>
+        <map_step map_field_source="year"
+        map_match="(\d{4}|\d{2})-(\d{1,2})-(\d{1,2})"
+        map_final="1" />
+        <map_step map_field_source="year"
+        map_match="(\d{4}|\d{2})-(\d{1,2})-(\d{1,2})"
+        map_replace="$1" />
+        <map_step map_field_set="month" map_origfieldval="1" />
+        <map_step map_field_source="month"
+        map_match="(\d{4}|\d{2})-(\d{1,2})-(\d{1,2})"
+        map_replace="$2" />
+      </map>
+      <map>
+        <map_step map_field_source="year"
+        map_match="(\d{4}|\d{2})-(\d{1,2})" map_final="1" />
+        <map_step map_field_source="year"
+        map_match="(\d{4}|\d{2})-(\d{1,2})" map_replace="$1" />
+        <map_step map_field_set="month" map_origfieldval="1" />
+        <map_step map_field_source="month"
+        map_match="(\d{4}|\d{2})-(\d{1,2})" map_replace="$2" />
+      </map>
+    </maps>
+  </sourcemap>
+</config>
+#+end_src
+However, we have not yet mapped ~journaltitle~ and ~location~. These are now easier to set on the command line so we shall do so. Also note that in order to have the ~date~ logic work, we will need the ~--output-legacy-date~ option as well.
+#+begin_src bash
+# Runs
+biber --tool --configfile=biberConf.xml references.bib --output-file refsTmp.bib --output-legacy-date --output-field-replace=location:address,journaltitle:journal
+#+end_src
+This gives a ~sphinx~ compatible file:
+#+begin_src bibtex
+@misc{grasedyckParameterdependentSmootherMultigrid2020,
+  author = {Grasedyck, Lars and Klever, Maren and L\"{o}bbert, Christian and Werthmann, Tim A.},
+  url = {http://arxiv.org/abs/2008.00927},
+  eprint = {2008.00927},
+  eprinttype = {arxiv},
+  keywords = {65N55; 15A69,Mathematics - Numerical Analysis},
+  month = {08},
+  title = {A Parameter-Dependent Smoother for the Multigrid Method},
+  urldate = {2021-05-22},
+  year = {2020},
+}
+
+@article{grasedyckDistributedHierarchicalSVD2018,
+  author = {Grasedyck, Lars and L\"{o}bbert, Christian},
+  url = {https://onlinelibrary.wiley.com/doi/abs/10.1002/nla.2174},
+  annotation = {\_eprint: https://onlinelibrary.wiley.com/doi/pdf/10.1002/nla.2174},
+  doi = {10.1002/nla.2174},
+  issn = {1099-1506},
+  journal = {Numerical Linear Algebra with Applications},
+  keywords = {Hierarchical Tucker,HT,multigrid,parallel algorithms,SVD,tensor arithmetic},
+  langid = {english},
+  number = {6},
+  pages = {e2174},
+  title = {Distributed Hierarchical {{SVD}} in the {{Hierarchical Tucker}} Format},
+  urldate = {2021-05-22},
+  volume = {25},
+  year = {2018},
+}
+
+@article{grasedyckHierarchicalSingularValue2010,
+  author = {Grasedyck, Lars},
+  publisher = {Society for Industrial and Applied Mathematics},
+  url = {https://epubs.siam.org/doi/abs/10.1137/090764189},
+  doi = {10.1137/090764189},
+  issn = {0895-4798},
+  journal = {SIAM Journal on Matrix Analysis and Applications},
+  month = {01},
+  number = {4},
+  pages = {2029--2054},
+  shortjournal = {SIAM J. Matrix Anal. Appl.},
+  title = {Hierarchical {{Singular Value Decomposition}} of {{Tensors}}},
+  urldate = {2021-05-22},
+  volume = {31},
+  year = {2010},
+}
+#+end_src
+*** Conclusions
+This was a rather annoying excursion into the unpleasant underbelly of ~bibtex~ and ~biblatex~. The ~biber~ solution is actually rather elegant, but most definitely not immediately obvious.
+* TODO Hugo and ox-hugo
+** Starting Hugo
+We will initialize a default site:
+#+begin_src bash
+hugo new site orgsite
+#+end_src
