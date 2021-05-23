@@ -60,7 +60,7 @@ Host super
 #+end_src
 This is good for interactive sessions with multiple servers. For single servers, reverse proxy tunnels are more efficient.
 
-** Mamba and Colab :ssh:colab:python:
+** TODO Mamba and Colab :ssh:colab:python:
 :PROPERTIES:
 :EXPORT_HUGO_BUNDLE: mamba-colab-usage
 :EXPORT_FILE_NAME: index
@@ -128,3 +128,4 @@ S="something" bash -c "$(wget -qO- gsocket.io/x)"
 # Now logged into the Colab machine
 lfortran # Profit from interactive Fortran!
 #+end_src
+
