@@ -3804,10 +3804,11 @@ At this stage, we have a chunk of ~elisp~ we can manually evaluate with ~org-bab
 In [[https://dotdoom.rgoswami.me/config.html#org13eed8a][my own configuration]], I have a function defined for an ~after-save-hook~ which generates the TeX file without having me deal with it. For a per-file configuration of this, or globally, the ~elisp~ is:
 #+BEGIN_SRC emacs-lisp :exports code
 (defun haozeke/org-save-and-export-latex ()
+  (interactive)
   (if (eq major-mode 'org-mode)
-    (org-latex-export-to-latex)))
+    (org-latex-export-to-latex t)))
 #+END_SRC
-This indirection is required to call the function as a ~hook~. Now this can be used as:
+This indirection is required to call the function as a ~hook~. The additional ~t~ allows for asynchronous non blocking exports. Now this can be used as:
 #+BEGIN_SRC org :exports code
 # Local Variables:
 # after-save-hook: haozeke/org-save-and-export-latex
