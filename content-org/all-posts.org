@@ -10045,7 +10045,7 @@ Blurb verbatim from the [[https://docs.google.com/spreadsheets/d/1IEtF-fU9d57ddF
 Docker. Virtual Machines. Pipenv. Virtualenv. The struggle to isolate development environments and pin package versions (both system and project) has been a defining feature of modern programming. Python packaging is a nightmare in and of itself, moving from eggs to wheels, collecting system requirements with distutils (PEP 518)... The horror never ends. Indeed every language level packaging system still falls short of collecting system dependencies (MKL, LAPACK etc). This workshop will introduce the Nix ecosystem for working with Python (and system dependencies) in a lightweight, reproducible manner. We shall work through generating pure shells for development, and clean builds for PyPI. We'll see how to package arbitrary Python code and what level of nix expression language proficiency is required for the same (spoiler: not much!).
 #+end_quote
 **** Other Content
-Anything on this site [[https://rgoswami.me/tags/nix/][tagged with Nix]] or [[https://rgoswami.me/tags/cpp/][tagged with C++]]. Also an introduction to ~nix~ given by me (and Amrita Goswami) at [[https://2020.carpentrycon.org/schedule/#session-10][CarpentryCon2020]] is here:
+Anything on this site [[https://rgoswami.me/tags/nix/][tagged with Nix]] or [[https://rgoswami.me/tags/python][tagged with Python]]. Also an introduction to ~nix~ given by me (and Amrita Goswami) at [[https://2020.carpentrycon.org/schedule/#session-10][CarpentryCon2020]] is here:
 - [[https://github.com/HaoZeke/CarpentryCon2020_Nix][CarpentryCon2020 Materials]]
 - [[https://rgoswami.me/posts/ccon-tut-nix/][A tutorial introduction to Nix and Python]]
 ** Slides
