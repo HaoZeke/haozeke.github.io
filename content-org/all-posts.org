@@ -10049,7 +10049,7 @@ Anything on this site [[https://rgoswami.me/tags/nix/][tagged with Nix]] or [[ht
 - [[https://github.com/HaoZeke/CarpentryCon2020_Nix][CarpentryCon2020 Materials]]
 - [[https://rgoswami.me/posts/ccon-tut-nix/][A tutorial introduction to Nix and Python]]
 ** Slides
-- [[file:/revealjs/iop_april_2021/introcpp2.html][Best viewed here]] using a browser (in a new tab)
+- [[file:/revealjs/cip2021_nixpy/wrangpynix.html][Best viewed here]] using a browser (in a new tab)
 - A ~pdf~ copy of the slides are embedded below
 - The ~orgmode~ source [[https://raw.githubusercontent.com/HaoZeke/2021_April_IOP_IntroductionToCpp_Part2/main/docs/pres/iopRevealjs.org][is here on the site's GH repo]]
 #+BEGIN_EXPORT html
