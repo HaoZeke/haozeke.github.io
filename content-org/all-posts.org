@@ -10026,7 +10026,7 @@ hugo new site orgsite
 #+end_src
 
 * DONE Talk Supplements for Code In Place 2021 SL Workshop :@conferences:presentations:ramblings:python:
-CLOSED: [2021-04-14 Wed 01:17]
+CLOSED: [2021-05-29 Sat 07:07]
 :PROPERTIES:
 :EXPORT_FILE_NAME: cip-2021-slw-meta
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
@@ -10053,8 +10053,8 @@ Anything on this site [[https://rgoswami.me/tags/nix/][tagged with Nix]] or [[ht
 - A ~pdf~ copy of the slides are embedded below
 - The ~orgmode~ source [[https://raw.githubusercontent.com/HaoZeke/2021_April_IOP_IntroductionToCpp_Part2/main/docs/pres/iopRevealjs.org][is here on the site's GH repo]]
 #+BEGIN_EXPORT html
-<script async class="speakerdeck-embed" data-id="9e85011c15ff4d07beca4faf84e49039" data-ratio="1.37081659973226" src="//speakerdeck.com/assets/embed.js"></script>
+<script async class="speakerdeck-embed" data-id="4f19dd9e758448aeb44f20cd286afe9a" data-ratio="1.37081659973226" src="//speakerdeck.com/assets/embed.js"></script>
 #+END_EXPORT
-** TODO Thoughts
+** LATER Thoughts
 
 [fn:officialsite] One location I am going to be able to keep track of
