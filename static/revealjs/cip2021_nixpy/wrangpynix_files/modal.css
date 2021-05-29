@@ -1,0 +1,48 @@
+.twoseven-ext-tab-media-modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 2147483638; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.twoseven-ext-tab-media-modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    margin-top: 100px;
+    padding: 20px;
+    border: 1px solid #888;
+    /* width: 50%; */
+    height: 75%;
+    max-width: 60%;
+    min-width: 560px;
+}
+
+/* The Close Button */
+.twoseven-ext-tab-media-modal-content .close {
+    position: relative;
+    color: #aaaaaa !important;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.twoseven-ext-tab-media-modal-content .close:hover,
+.twoseven-ext-tab-media-modal-content .close:focus {
+    color: #000 !important;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#twoseven-ext-tab-media-iframe {
+  position: relative;
+  height: 95%;
+  width: 100%;
+  border: none;
+}
