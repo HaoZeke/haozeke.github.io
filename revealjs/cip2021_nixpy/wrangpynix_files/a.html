@@ -1,0 +1,57 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><link href="a_data/sidebar.css" type="text/css" rel="stylesheet"><style>/* you can use devtools to find other CSS attributes you can tweak */
+
+/* tweak sidebar position/size/style */
+#promnesia-sidebar {
+    /* you can also use
+       --left/--top/--bottom
+       to change the sidebar position */
+    --right: 1;
+
+    --size: 30%;
+
+    /* you can also use any other valid CSS
+       easiest is to experiment in devtools first */
+    background-color: rgba(236, 236, 236, 0.8);
+}
+
+/* tweak elements within the sidebar */
+#promnesia-sidebar .src {
+    font-weight: bold;
+}
+
+
+/* tweak 'visited' marks: specify hex color here */
+:root {
+  --promnesia-src-sourcename-color: #ff00ff;
+  /* e.g.
+  --promnesia-src-reddit-color: #ff0000;
+  or
+  --promnesia-src-twitter-color: #0000ff;
+   */
+}
+
+
+/* uncomment to override/tweak 'visited' marks */
+/*
+.promnesia-visited {
+    border: dashed green;
+}
+
+.promnesia-visited:after {
+    content: "" !important;
+}
+*/
+
+/* uncomment to override/tweak highlights */
+/*
+.promnesia-highlight {
+   background-color: green !important;
+}
+
+.promnesia-highlight-reference {
+   color: red !important;
+}
+*/</style><!-- base --></head><body class="promnesia" id="promnesia-sidebar"><button title="Mark visited links on the current page with dots">Mark visited</button><button>Search</button><button>Close</button><div id="promnesia-sidebar-container"><div class="src-filter">filter: <span class="src all">all (0)</span></div><ul id="visits"><li class="error"><code>Error: NetworkError when attempting to fetch resource.
+while requesting http://localhost:13131/visits
+check extension options, make sure you set backend or disable it (set to empty string)</code></li><li data-sources="firefox"><div><span id="relative_indicator"><a href="file:///Users/rohitgoswami/Git/Github/WebDev/Mine/haozeke.github.io/presentations/nixCIP2021/null">➤➤</a></span><span><span class="index" title="index (for easier match against highlights)"></span><span class="src firefox">firefox</span></span><span class="datetime" title="search around"><span class="time">01:56</span><span class="date">29 May 2021</span></span></div></li><li data-sources="firefox"><div><span id="relative_indicator"><a href="file:///Users/rohitgoswami/Git/Github/WebDev/Mine/haozeke.github.io/presentations/nixCIP2021/null">➤➤</a></span><span><span class="index" title="index (for easier match against highlights)"></span><span class="src firefox">firefox</span></span><span class="datetime" title="search around"><span class="time">00:54-01:07</span><span class="date">29 May 2021</span></span></div></li></ul></div></body></html>

@@ -36,6 +36,11 @@ url = "https://rgoswami.me/posts/dotfiles-dotgit-bombadil/"
 title = "Dotfiles from dotgit to bombadil"
 
 [[input.files]]
+path = "./posts/cip-2021-slw-meta/index.html"
+url = "https://rgoswami.me/posts/cip-2021-slw-meta/"
+title = "Talk Supplements for Code In Place 2021 SL Workshop"
+
+[[input.files]]
 path = "./posts/iop-cpp-2021-meta/index.html"
 url = "https://rgoswami.me/posts/iop-cpp-2021-meta/"
 title = "Talk Supplements for IOP&#39;s C&#43;&#43; Workshop"

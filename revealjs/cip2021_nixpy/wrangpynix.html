@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html class="TridactylThemeBase16-onedark reveal-full-page" lang="en"><div style="display: none !important; position: static !important; top: 0px !important; left: 0px !important; width: 0px !important; height: 0px !important;" id="twoseven-scripts" data-info="Scripts added by TwoSeven extension"><script type="text/javascript" id="__tmpScript-857220290" data-added-by-two-seven="1">(function() {
+      window.twoseven = {};
+    })();</script><script type="text/javascript" id="__tmpScript-316708528" data-added-by-two-seven="1">(function() {
+      window.twoseven.waitForDOMNode = async function waitForDOMNode(e,t=document){e=e||{};const{type:n,value:o}=e;if(!n||!o)throw new Error("Must specify identifier");let s=o;switch(n){case"tag":s=o.toUpperCase()}if("check"!==n){const e=await i({type:"selector",value:s},[],t);if(e)return new Promise(t=>t(e))}async function i({type:e,value:t},n,o){let s;switch(e){case"tag":s=n.find(e=>e.tagName===t);break;case"selector":s=o.querySelector(t);break;case"check":for(const e of n){if(await t(e))return e}}return s}return new Promise((e,o)=>{const r=new MutationObserver(async o=>{for(const a of o)if("childList"===a.type){const o=Array.from(a.addedNodes),c=await i({type:n,value:s},o,t);if(c)return r.disconnect(),e(c)}});r.observe(t,{childList:!0,subtree:!0})})};
+    })();</script><script type="text/javascript" id="__tmpScript-478738754" data-added-by-two-seven="1">(function() {
+      
+  window.twoseven.reportError = function reportError(e,t,n){"string"==typeof(n=n||{})&&(n={message:n});const{message:o,stack:s}=t;Object.assign(n,{tag:e,error:{message:o,stack:s}}),window.tsExtGetPostToParent()({name:name,tag:e,action:"report-error",json:n}),console.error(JSON.stringify(n.error))}
+;
+    })();</script><script type="text/javascript" id="__tmpScript-473939241" data-added-by-two-seven="1">(function() {
+      
+  window.twosevenHmsToSecondsOnly = function(str) {
+      var p = str.split(':'),
+          s = 0, m = 1;
+
+      while (p.length > 0) {
+          s += m * parseInt(p.pop(), 10);
+          m *= 60;
+      }
+
+      return s;
+  }
+;
+    })();</script><script type="text/javascript" id="__tmpScript-196380305" data-added-by-two-seven="1">(function() {
+      window.twosevenExtLog = function twosevenExtLog(e,o,c){o||(o=e,e=void 0);let n=c||"black";if(c)switch(c){case"success":n="Green";break;case"info":n="DodgerBlue";break;case"error":n="Red";break;case"warning":n="Orange";break;default:n=c}e?console.log("%c"+e+": "+o,`color:${n}`):console.log("%c"+o,`color:${n}`)};
+    })();</script><script type="text/javascript" id="__tmpScript-246734430" data-added-by-two-seven="1">(function() {
+      
+  document.twosevenGET = function(url, callback) {
+    var xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.onreadystatechange = function() {
+      if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
+        if (xmlhttp.status == 200) {
+          callback(null, xmlhttp.responseText);
+        } else {
+          callback('something else other than 200 was returned', '');
+        }
+      }
+    };
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+  };
+;
+    })();</script><script type="text/javascript" id="__tmpScript-650902787" data-added-by-two-seven="1">(function() {
+      
+  window.triggerEvent = function(e,t,n,o=!1){let s;o?(n&&"string"!=typeof n&&(n=JSON.stringify(n)),s=n):s={data:n},window.twosevenScriptsDiv&&n&&"object"==typeof n&&(console.warn(`WARNING: Attempting to send an object via event.detail from CS->Page does not work on Firefox: ${JSON.stringify(n)}`),console.error((new Error).stack));var i=new CustomEvent(t,{bubbles:!0,composed:!0,detail:s});e.dispatchEvent(i)}
+;
+    })();</script><script type="text/javascript" id="__tmpScript-940294412" data-added-by-two-seven="1">(function() {
+      window.twoseven.postTo = async function postTo(e,t,n=!1){let o;return t.name=t.name||name,o=n?new Promise(e=>{const n=`ack-${t.action}-${1e9*Math.random()|0}`;t.ack={event:n};window.debug&&["play","pause","currentTime"].some(e=>t.action.includes(e)),window.addEventListener("message",function t({data:o={}}){o.action===n&&(window.removeEventListener("message",t),e(o.json))})}):new Promise(e=>e()),e.postMessage(t,"*"),o};
+    })();</script><script type="text/javascript" id="__tmpScript-699641517" data-added-by-two-seven="1">(function() {
+      window.tsExtGetPostTo = function tsExtGetPostTo(){return window.twoseven&&window.twoseven.postTo||window.postTo};
+    })();</script><script type="text/javascript" id="__tmpScript-494547025" data-added-by-two-seven="1">(function() {
+      window.tsExtGetPostToParent = function tsExtGetPostToParent(){return window.twoseven&&window.twoseven.postToParent||window.postToParent};
+    })();</script><script type="text/javascript" id="__tmpScript-364107893" data-added-by-two-seven="1">(function() {
+      window.twoseven.postResponse = async function postResponse(e,t){const{source:n,data:{ack:{event:o}}}=e;window.tsExtGetPostTo()(n,{action:o,json:t})};
+    })();</script><script type="text/javascript" id="__tmpScript-995118850" data-added-by-two-seven="1">(function() {
+      window.twoseven.postToParent = async function postToParent(e,t=!1){return window.tsExtGetPostTo()(window.parent,e,t)};
+    })();</script><script type="text/javascript" id="__tmpScript-236694810" data-added-by-two-seven="1">(function() {
+      window.twoseven.postToTop = async function postToTop(e,t=!1){return window.tsExtGetPostTo()(window.top,e,t)};
+    })();</script><script type="text/javascript" id="__tmpScript-312279160" data-added-by-two-seven="1">(function() {
+      
+  window.twoseven.getFromStorage = e=>new Promise((t,n)=>{const o="get-from-storage-"+(1e9*Math.random()|0);window.addEventListener(o,e=>{window.removeEventListener(o,this);const{detail:{data:{value:n}}}=e;t(n)}),triggerEvent(window,"get-from-storage",{key:e,evt:o})})
+  window.twoseven.saveToStorage = e=>{triggerEvent(window,"save-to-storage",e)}
+;
+    })();</script><script type="text/javascript" id="__tmpScript-91780879" data-added-by-two-seven="1">(function() {
+      
+  function attachHistoryListeners(){var e=history.pushState;history.pushState=function(t,n,o){return"function"==typeof history.onpushstate&&history.onpushstate({state:t}),triggerEvent(window,"pushstate",{uri:o}),e.apply(history,arguments)};var t=history.replaceState;history.replaceState=function(e){return"function"==typeof history.onreplacestate&&history.onreplacestate({state:e}),t.apply(history,arguments)}}
+  attachHistoryListeners()
+;
+    })();</script><script type="text/javascript" id="__tmpScript-254440023" data-added-by-two-seven="1">(function() {
+      window.twoseven.once = function once(e,t,n){e.addEventListener(t,function o(s){e.removeEventListener(t,o),n(s)})};
+    })();</script><script type="text/javascript" id="__tmpScript-355842148" data-added-by-two-seven="1">(function() {
+      
+  window.twoseven.isOnTwoSevenTab = async () => {
+    const result = await window.twoseven.postTo(window, { action: 'is-on-twoseven-tab' }, true)
+    return result
+  }
+;
+    })();</script><script type="text/javascript" id="__tmpScript-742407593" data-added-by-two-seven="1">(function() {
+      
+  window.twoseven.isPaused = async () => {
+    const result = await window.twoseven.postTo(window, { action: 'twoseven:pause-state' }, true)
+    return result
+  }
+;
+    })();</script><script type="text/javascript" id="__tmpScript-35878608" data-added-by-two-seven="1">(function() {
+      
+      const modal = document.querySelector('.twoseven-ext-tab-media-modal')
+      const modalCloseBtn = modal.querySelector('.close')
+      function closeModal () {
+        modal.style.display = 'none'
+        const frame = document.querySelector('#twoseven-ext-tab-media-iframe').contentWindow
+        frame.postMessage({
+          __evt_name: 'modal-hide'
+        }, '*')
+      }
+      modalCloseBtn.onclick = closeModal
+
+      window.onmessage = function (e) {
+        if (e.data.__evt_name === 'modal-hide') {
+          closeModal()
+        }
+      }
+
+      window.twoseven.closeTabMediaModal = closeModal
+
+      window.onclick = function (e) {
+        if (e.target.id === 'twoseven-ext-tab-media-modal' && modal.style.display === 'block') {
+            closeModal()
+        }
+      }
+    ;
+    })();</script></div><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<title>Wrangling Pythons with Nix for Reproducible Purity</title>
+<meta name="author" content="Rohit Goswami MInstP">
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="wrangpynix_files/reveal.css">
+
+<link rel="stylesheet" href="wrangpynix_files/white.css" id="theme">
+
+<link rel="stylesheet" href="wrangpynix_files/robot-lung.css">
+
+<link rel="stylesheet" href="wrangpynix_files/oerFragments.css">
+
+<link rel="stylesheet" href="wrangpynix_files/rlExtras.css">
+
+<link rel="stylesheet" href="wrangpynix_files/noImgBoxes.css">
+
+<link rel="stylesheet" href="wrangpynix_files/moreCode.css">
+
+<link rel="stylesheet" href="wrangpynix_files/helper.css">
+
+<link rel="stylesheet" href="wrangpynix_files/toc-progress.css">
+
+<link rel="stylesheet" href="wrangpynix_files/toc-style.css">
+
+<link rel="stylesheet" href="wrangpynix_files/source-sans-pro.css">
+<style type="text/css">@media print {
+        .TridactylStatusIndicator {
+            display: none !important;
+        }
+    }</style><link href="wrangpynix_files/modal.css" rel="stylesheet" id="__tmpStyle"></head>
+<body style="transition: transform 0.8s ease 0s; --slide-width:960px; --slide-height:700px;" class="reveal-viewport no-toc-progress">
+<div class="line top"></div> <div class="line bottom"></div> <div class="line left"></div> <div class="line right"></div>
+<div class="reveal fade center focused has-vertical-slides has-horizontal-slides ready" role="application" data-transition-speed="default" data-background-transition="fade" style="cursor: none;">
+<div class="slides" style="width: 960px; height: 700px; inset: 50% auto auto 50%; transform: translate(-50%, -50%) scale(1.18057);">
+<section id="sec-title-slide" data-state="no-toc-progress" style="top: 120.5px; display: block;" class="present">
+<h1 class="title">Wrangling Pythons with Nix for Reproducible Purity</h1><h2 class="author">Rohit Goswami MInstP</h2><p class="date">Created: 2021-05-29 Sat 06:49</p>
+</section>
+
+
+
+
+
+<section style="top: 0px; display: block;" aria-hidden="true" class="stack future" hidden="">
+<section id="slide-3" style="top: 300.5px; display: block;">
+<h2 id="3"><span class="section-number-2">1</span> Brief Introduction</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+</section>
+<section id="slide-3-1" class="future" aria-hidden="true" style="top: 0px; display: block;">
+<h3 id="3-1"><span class="section-number-3">1.1</span> Hello!</h3>
+<ul>
+<li>Find me here: <a href="https://rgoswami.me/">https://rgoswami.me</a></li>
+<li>Who?
+<ul>
+<li><b>Rohit Goswami</b> MInstP
+<ul>
+<li>Doctoral Researcher, University of Iceland, Faculty of Physical Sciences</li>
+
+</ul></li>
+
+</ul></li>
+
+</ul>
+<div class="leftcol" id="orge5b20fe">
+<p>
+<img src="wrangpynix_files/physUoI.png" alt="physUoI.png">
+<img src="wrangpynix_files/cipLogo.png" alt="cipLogo.png">
+</p>
+
+</div>
+<div class="rightcol" id="orga8b76c4">
+
+<div id="org11a0506" class="figure">
+<p><img src="wrangpynix_files/rannisLogo.png" alt="rannisLogo.png">
+</p>
+</div>
+
+<div id="org02f90d7" class="figure">
+<p><img src="wrangpynix_files/2021-04-13_02-55-57_screenshot.png" alt="2021-04-13_02-55-57_screenshot.png" width="70%" height="70%">
+</p>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-3-2" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="3-2"><span class="section-number-3">1.2</span> About work..</h3>
+<div class="leftcol" id="org45a09a8">
+
+<div id="org2f1b875" class="figure">
+<p><img src="wrangpynix_files/volcano.png" alt="volcano.png">
+</p>
+</div>
+
+</div>
+<div class="rightcol" id="org0068877">
+
+<div id="org3990a32" class="figure">
+<p><img src="wrangpynix_files/ice7.png" alt="ice7.png" class="fragment appear" data-fragment-index="0">
+</p>
+</div>
+<ul class="fragment appear" data-fragment-index="1">
+<li>A good place to work on Water!!
+<ul>
+<li>Image from (<a href="#/slide-org3be0749" class="forwardlink">Goswami, Goswami, and Singh, n.d.</a>)</li>
+
+</ul></li>
+
+</ul>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-3-3" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="3-3"><span class="section-number-3">1.3</span> Logistics</h3>
+<ul class="fragment appear" data-fragment-index="0">
+<li>All contents are <a href="https://github.com/HaoZeke/haozeke.github.io/tree/src/presentations/nixCIP2021">hosted on GitHub</a></li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="1">
+<li>Questions are welcome after / during the lecture
+<ul>
+<li>Email me</li>
+<li>Post on the Ed</li>
+<li>Leave a comment on my site</li>
+
+</ul></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section style="top: 0px; display: block;" aria-hidden="true" class="stack future" hidden="">
+<section id="slide-4" style="top: 300.5px; display: block;">
+<h2 id="4"><span class="section-number-2">2</span> Local Project Layouts</h2>
+<div class="outline-text-2" id="text-4">
+</div>
+</section>
+<section id="slide-4-1" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="4-1"><span class="section-number-3">2.1</span> Language Agnostic Beginnings</h3>
+<div class="fragment appear leftcol" id="org23a8824" data-fragment-index="0">
+<dl>
+<dt class="fragment appear" data-fragment-index="1"><code>Readme.{md,org}</code></dt><dd class="fragment appear" data-fragment-index="2">Motivation, rationale, license, installation instructions</dd>
+<dt class="fragment appear" data-fragment-index="3"><code>LICENSE</code></dt><dd class="fragment appear" data-fragment-index="4">Plain text, and preferably an open license
+<ul>
+<li><a href="https://github.com/azu/license-generator">license-generator</a> is pretty handy for this</li>
+
+</ul></dd>
+<dt class="fragment appear" data-fragment-index="5"><code>.gitignore</code></dt><dd class="fragment appear" data-fragment-index="6">Lists files which do not need to be committed; typically generated files
+<ul>
+<li><a href="https://github.com/simonwhitaker/gibo">gibo</a> can be used to generate these</li>
+
+</ul></dd>
+
+</dl>
+
+</div>
+<div class="rightcol" id="org2276abf">
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="7">$ <span style="color: #f0c674;">git</span> init <span style="color: #5a5b5a;"># </span><span style="color: #5a5b5a;">Inside project</span>
+$ gibo macOS Windows Xcode Emacs <span style="color: #b5bd68;">\</span>
+    Vim Python C++ <span style="color: #b5bd68;">\</span>
+    CMake TeX &gt; .gitignore
+$ <span style="color: #f0c674;">touch</span> readme.md
+$ license-generator MIT <span style="color: #b5bd68;">\</span>
+    --author <span style="color: #b5bd68;">"Person"</span>
+$ tree -L <span style="color: #de935f; font-weight: bold;">2</span>
+.
+├── LICENSE
+├── docs
+│&nbsp;&nbsp; └── pres
+└── readme.org
+
+<span style="color: #de935f; font-weight: bold;">2</span> directories, <span style="color: #de935f; font-weight: bold;">2</span> files
+</pre>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-4-2" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="4-2"><span class="section-number-3">2.2</span> Python PyPI Standard</h3>
+<div class="fragment appear leftcol" id="org9877bc8" data-fragment-index="0">
+<ul>
+<li class="fragment appear" data-fragment-index="1">Write functions/objects
+<ul>
+<li>Refactor into modules</li>
+
+</ul></li>
+<li class="fragment appear" data-fragment-index="2">Tests
+<ul>
+<li>Fuzzy (property based, <code>hypothesis</code>)</li>
+<li>Unit / Integration (<code>pytest</code>)</li>
+
+</ul></li>
+<li class="fragment appear" data-fragment-index="3">Documentation</li>
+<li class="fragment appear" data-fragment-index="4">Push to PyPI</li>
+
+</ul>
+
+</div>
+<div class="rightcol" id="orgc5dba56">
+
+<div id="org1b8019c" class="figure">
+<p><img src="wrangpynix_files/2020-09-20_04-19-58_screenshot.png" alt="2020-09-20_04-19-58_screenshot.png" class="fragment appear" data-fragment-index="5">
+</p>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-4-2-1" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h4 id="4-2-1"><span class="section-number-4">2.2.1</span> Example: Wailord</h4>
+<p>
+<a href="https://wailord.xyz/">https://wailord.xyz</a>
+</p>
+<div class="leftcol" id="orgadb59b0">
+
+<div id="orgaf702dd" class="figure">
+<p><img src="wrangpynix_files/2020-11-19_04-21-52_screenshot.png" alt="2020-11-19_04-21-52_screenshot.png" class="fragment appear" data-fragment-index="0" align="left">
+</p>
+</div>
+
+</div>
+
+<div class="rightcol" id="org7b1bfc5">
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="1">$ tree -L <span style="color: #de935f; font-weight: bold;">1</span>
+.
+├── AUTHORS.rst
+├── CODEOWNERS
+├── CONTRIBUTING.rst
+├── HISTORY.rst
+├── LICENSE
+├── MANIFEST.in
+├── Makefile
+├── README.rst
+├── docs
+├── poetry.lock
+├── pyproject.toml
+├── tests
+├── wailord
+└── wailord_templates
+
+<span style="color: #de935f; font-weight: bold;">5</span> directories, <span style="color: #de935f; font-weight: bold;">15</span> files
+</pre>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section style="top: 350px; display: none;" aria-hidden="true" class="stack future" hidden="">
+<section id="slide-5" style="top: 350px; display: none;">
+<h2 id="5"><span class="section-number-2">3</span> Packaging</h2>
+<div class="outline-text-2" id="text-5">
+</div>
+</section>
+<section id="slide-5-1" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="5-1"><span class="section-number-3">3.1</span> Python Modules</h3>
+<div class="leftcol" id="orgcb42327">
+<ul class="fragment appear" data-fragment-index="0">
+<li>A <code>.py</code> file is a <b>module</b></li>
+<li>It is <b>standalone</b> if it only imports from the standard library</li>
+
+</ul>
+
+</div>
+<div class="rightcol" id="org729ab92">
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="1"><span style="color: #b294bb;">from</span> collections <span style="color: #b294bb;">import</span> namedtuple
+<span style="color: #cc6666;">point_xy</span> = namedtuple(<span style="color: #b5bd68;">'point_xy'</span>,
+                      (<span style="color: #b5bd68;">'x'</span>, <span style="color: #b5bd68;">'y'</span>))
+</pre>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-5-2" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="5-2"><span class="section-number-3">3.2</span> Pure Python Packages</h3>
+<div class="leftcol" id="org6232d80">
+<ul class="fragment appear" data-fragment-index="0">
+<li>A directory with <code>__init__.py</code> in it is a <b>package</b></li>
+<li>Use <code>pip</code></li>
+
+</ul>
+
+</div>
+<div class="rightcol" id="org6177701">
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="1"><span style="color: #717171;">"""Top-level package for Wailord."""</span>
+
+<span style="color: #cc6666;">__author__</span> = <span style="color: #b5bd68;">"""Rohit Goswami"""</span>
+<span style="color: #cc6666;">__email__</span> = <span style="color: #b5bd68;">"rog32@hi.is"</span>
+<span style="color: #cc6666;">__version__</span> = <span style="color: #b5bd68;">"0.0.2"</span>
+</pre>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-5-3" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="5-3"><span class="section-number-3">3.3</span> Distributions</h3>
+<div class="leftcol" id="orgfb3df59">
+<p>
+<b>Standard</b>
+</p>
+<ul class="fragment appear" data-fragment-index="0">
+<li>Built by <code>setuptools</code> with <code>setup.py</code></li>
+<li>Simple source only <code>.tar.gz</code></li>
+
+</ul>
+
+</div>
+<div class="rightcol" id="orgdab7c72">
+<p>
+<b>Binary</b>
+</p>
+<ul class="fragment appear" data-fragment-index="1">
+<li><code>wheel</code></li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="2">
+<li>For interoperable needs (sometimes!)</li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="3">
+<li>Includes static libraries</li>
+
+</ul>
+
+</div>
+<ul class="fragment appear" data-fragment-index="4">
+<li>Distributions have zero or more packages</li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-5-4" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="5-4"><span class="section-number-3">3.4</span> The Python Gradient</h3>
+<ul>
+<li>From <a href="https://www.youtube.com/watch?v=iLVNWfPWAC8">Mahmoud Hashemi’s PyBay’17 talk</a>:</li>
+
+</ul>
+
+<div id="orgb4cad56" class="figure">
+<p><img src="wrangpynix_files/2020-05-22_23-00-30_screenshot.png" alt="2020-05-22_23-00-30_screenshot.png">
+</p>
+</div>
+<ul class="fragment appear" data-fragment-index="0">
+<li>Libraries and Dev tools are all we get (from PyPI)</li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-5-5" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="5-5"><span class="section-number-3">3.5</span> Pip Requirements</h3>
+<ul class="fragment appear" data-fragment-index="0">
+<li>Python</li>
+<li>System libraries</li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="1">
+<li>Build tools</li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="2">
+<li>Wheels don’t work for arbitrary distributions</li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section style="top: 350px; display: none;" aria-hidden="true" class="stack future" hidden="">
+<section id="slide-6" style="top: 350px; display: none;">
+<h2 id="6"><span class="section-number-2">4</span> Dependency Resolution</h2>
+<div class="leftcol" id="orge78f4c8">
+<ul class="fragment appear" data-fragment-index="0">
+<li><code>requirements.txt</code> (pip)</li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="1">
+<li>Poetry (pretty)</li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="2">
+<li><code>pyproject.toml</code></li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="3">
+<li><code>poetry.lock</code></li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="4">
+<li>Pipenv (older)</li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="5">
+<li><code>Pipfile</code> + lockfile</li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="6">
+<li>Pipx (<code>pip</code> but for applications)</li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="7">
+<li>Pyenv and friends</li>
+
+</ul>
+
+</div>
+<div class="rightcol" id="orgb636e39">
+
+<div id="org3c13dce" class="figure">
+<p><img src="wrangpynix_files/2020-09-20_05-09-56_screenshot.png" alt="2020-09-20_05-09-56_screenshot.png" class="fragment appear" data-fragment-index="8">
+</p>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-6-1" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="6-1"><span class="section-number-3">4.1</span> System Dependencies</h3>
+<div class="leftcol" id="orgfe16121">
+<ul class="fragment appear" data-fragment-index="0">
+<li>Appimages</li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="1">
+<li>Containers</li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="2">
+<li><code>docker</code>, <code>flatpak</code>, <code>snapcraft</code></li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="3">
+<li>Impure filesystems</li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="4">
+<li>Anaconda</li>
+
+</ul>
+
+</div>
+<div class="rightcol" id="org777a0f0">
+
+<div id="org5cc7654" class="figure">
+<p><img src="wrangpynix_files/2020-09-20_05-23-11_screenshot.png" alt="2020-09-20_05-23-11_screenshot.png">
+</p>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section style="top: 350px; display: none;" aria-hidden="true" class="stack future" hidden="">
+<section id="slide-7" style="top: 350px; display: none;">
+<h2 id="7"><span class="section-number-2">5</span> Nix</h2>
+<div class="outline-text-2" id="text-7">
+</div>
+</section>
+<section id="slide-7-1" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="7-1"><span class="section-number-3">5.1</span> Current Scenario Summary</h3>
+<div class="leftcol" id="orgd7da403">
+<p class="fragment appear" data-fragment-index="0">
+<img src="wrangpynix_files/python_xkcd.png" alt="python_xkcd.png" class="fragment appear" data-fragment-index="1">
+<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>
+</p>
+
+</div>
+<div class="rightcol" id="org5933bb2">
+<dl class="fragment appear" data-fragment-index="2">
+<dt><code>Python</code></dt><dd><code>poetry</code>, <code>pipenv</code>, <code>pyenv</code></dd>
+<dt><code>C++</code></dt><dd><code>conan</code>, <code>vcpkg</code>, <code>cpm</code></dd>
+
+</dl>
+
+<div id="org853486c" class="figure">
+<p><img src="wrangpynix_files/2021-05-29_06-47-00_screenshot.png" alt="2021-05-29_06-47-00_screenshot.png">
+</p>
+</div>
+
+</div>
+<ul class="fragment appear" data-fragment-index="3">
+<li><b>Nix is the answer!!</b></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-7-2" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="7-2"><span class="section-number-3">5.2</span> General Workflow</h3>
+
+<div id="org2328bf6" class="figure">
+<p><img src="wrangpynix_files/2020-05-22_23-04-53_screenshot.png" alt="2020-05-22_23-04-53_screenshot.png">
+</p>
+</div>
+<ul>
+<li>From <a href="https://brianmckenna.org/files/presentations/rootconf19-nix.pdf">here</a></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-7-3" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="7-3"><span class="section-number-3">5.3</span> Details</h3>
+<p class="forwardlink forwardlink">
+(<a href="#/slide-orgd963377" class="forwardlink">Dolstra, Jonge, and Visser, n.d.</a>; <a href="#/slide-org6329ccb" class="forwardlink">Dolstra, Löh, and Pierron, n.d.</a>)
+</p>
+
+
+<div id="org6fbc9f4" class="figure">
+<p><img src="wrangpynix_files/2020-05-22_23-15-22_screenshot.png" alt="2020-05-22_23-15-22_screenshot.png" width="80%" height="80%">
+</p>
+</div>
+<ul>
+<li>User environments (from <a href="https://nixos.org/nix/manual/#ch-basic-package-mgmt">the manual</a>)</li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-7-4" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="7-4"><span class="section-number-3">5.4</span> Rationale</h3>
+<div class="leftcol" id="org1e4db25">
+<blockquote class="fragment appear" data-fragment-index="0">
+<p>
+Protects against self harm
+</p>
+</blockquote>
+<blockquote class="fragment appear" data-fragment-index="1">
+<p>
+Exposes things taken for granted
+</p>
+</blockquote>
+<blockquote class="fragment appear" data-fragment-index="2">
+<p>
+Enforces consistency
+</p>
+</blockquote>
+
+</div>
+<div class="rightcol" id="org24b1960">
+<dl class="fragment appear" data-fragment-index="3">
+<dt>Reliable</dt><dd>Purely functional, no broken dependencies</dd>
+
+</dl>
+<dl class="fragment appear" data-fragment-index="4">
+<dt>Reproducible</dt><dd>Each package is in isolation</dd>
+
+</dl>
+<dl class="fragment appear" data-fragment-index="5">
+<dt>How?</dt><dd>store + hash + name + version</dd>
+
+</dl>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section style="top: 350px; display: none;" aria-hidden="true" class="stack future" hidden="">
+<section id="slide-8" style="top: 350px; display: none;">
+<h2 id="8"><span class="section-number-2">6</span> Using Nix</h2>
+<div class="outline-text-2" id="text-8">
+</div>
+</section>
+<section id="slide-8-1" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="8-1"><span class="section-number-3">6.1</span> Installation (Multi-User)</h3>
+<div class="org-src-container">
+
+<pre class="src src-bash">sh &lt;<span style="color: #b294bb;">(</span><span style="color: #f0c674;">curl</span> https://nixos.org/nix/install<span style="color: #b294bb;">)</span> --daemon
+</pre>
+</div>
+
+<ul class="fragment appear" data-fragment-index="0">
+<li>Needs <code>sudo</code> but should not be run as root</li>
+<li>Will make build users with IDs between 30001 and 30032 along with a group ID 30000</li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-8-2" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="8-2"><span class="section-number-3">6.2</span> Nix Python - Trial I</h3>
+<div class="org-src-container">
+
+<pre class="src src-bash">nix-shell -p <span style="color: #b5bd68;">'python38.withPackages(ps: with ps; [ numpy toolz ])'</span>
+</pre>
+</div>
+
+<ul class="fragment appear" data-fragment-index="0">
+<li>Check which <code>python</code> is loaded</li>
+<li>Check which modules are present</li>
+<li>Check if passing <code>-p</code> multiple times is allowed</li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-8-3" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="8-3"><span class="section-number-3">6.3</span> Nix with Scripts</h3>
+<div class="org-src-container">
+
+<pre class="src src-bash"><span style="color: #5a5b5a;">#</span><span style="color: #5a5b5a;">! /usr/bin/</span><span style="color: #b294bb;">env</span><span style="color: #5a5b5a;"> nix-shell</span>
+<span style="color: #5a5b5a;">#</span><span style="color: #5a5b5a;">! nix-shell -i python3 -p "python3.withPackages(ps: [ps.numpy])"</span>
+
+import numpy
+
+<span style="color: #81a2be;">print</span><span style="color: #b294bb;">(</span>numpy.__version__<span style="color: #b294bb;">)</span>
+</pre>
+</div>
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="0"><span style="color: #f0c674;">chmod</span> +x nixnp.sh
+./nixnp.sh
+</pre>
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-8-3-1" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h4 id="8-3-1"><span class="section-number-4">6.3.1</span> Example: Astroid Poll</h4>
+<div class="org-src-container">
+
+<pre class="src src-bash"><span style="color: #5a5b5a;">#</span><span style="color: #5a5b5a;">!/usr/bin/</span><span style="color: #b294bb;">env</span><span style="color: #5a5b5a;"> nix-shell</span>
+<span style="color: #5a5b5a;">#</span><span style="color: #5a5b5a;">!nix-shell -i python3 -p "python38.withPackages(ps: [ ps.sh ])" -p lieer</span>
+
+from pathlib import Path
+import sh
+<span style="color: #5a5b5a;"># </span><span style="color: #5a5b5a;">For generic IMAP maildirs</span>
+<span style="color: #cc6666;">ISYNC_LABELS</span> = <span style="color: #b294bb;">[</span><span style="color: #b5bd68;">"rog32"</span><span style="color: #b294bb;">]</span>
+<span style="color: #b294bb;">for</span> isync<span style="color: #b294bb;"> in</span> ISYNC_LABELS:
+    sh.mbsync<span style="color: #b294bb;">(</span><span style="color: #b5bd68;">"-V"</span>,isync,<span style="color: #cc6666;">_bg</span>=True<span style="color: #b294bb;">)</span>
+<span style="color: #5a5b5a;"># </span><span style="color: #5a5b5a;">Gmaileer</span>
+<span style="color: #cc6666;">GMAIL_IDENTIFIERS</span> = <span style="color: #b294bb;">[</span><span style="color: #b5bd68;">"gmail"</span>, <span style="color: #b5bd68;">"ieee"</span><span style="color: #b294bb;">]</span>
+<span style="color: #cc6666;">path</span> = Path<span style="color: #b294bb;">(</span><span style="color: #81a2be;">r</span><span style="color: #b5bd68;">"/mail/"</span><span style="color: #b294bb;">)</span>
+<span style="color: #b294bb;">for </span><span style="color: #81a2be;">dirs</span><span style="color: #b294bb;"> in</span> path.iterdir<span style="color: #b294bb;">()</span>:
+    <span style="color: #b294bb;">if</span> dirs.is_dir<span style="color: #b294bb;">()</span>:
+        <span style="color: #b294bb;">for</span> gmi<span style="color: #b294bb;"> in</span> GMAIL_IDENTIFIERS:
+            <span style="color: #b294bb;">if</span> gmi<span style="color: #b294bb;"> in</span> dirs.name:
+                <span style="color: #81a2be;">print</span><span style="color: #b294bb;">(</span>f<span style="color: #b5bd68;">"Syncing {dirs.name}"</span><span style="color: #b294bb;">)</span>
+                sh.gmi<span style="color: #b294bb;">(</span><span style="color: #b5bd68;">"sync"</span>, <span style="color: #cc6666;">_cwd</span>=dirs, <span style="color: #cc6666;">_fg</span>=True<span style="color: #b294bb;">)</span>
+</pre>
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-8-4" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="8-4"><span class="section-number-3">6.4</span> Purity</h3>
+<div class="leftcol" id="orgb916bab">
+<div class="org-src-container">
+
+<pre class="src src-bash">nix-shell -p python36 --pure
+</pre>
+</div>
+
+<ul class="fragment appear" data-fragment-index="0">
+<li>Why?</li>
+<li>What do we solve with this?</li>
+
+</ul>
+
+</div>
+<div class="rightcol" id="orgb9a2944">
+
+<div id="org3e209af" class="figure">
+<p><img src="wrangpynix_files/2020-05-22_23-57-17_screenshot.png" alt="2020-05-22_23-57-17_screenshot.png">
+</p>
+<p><span class="figure-number">Figure 13: </span>Stateless builds from <a href="https://slides.com/garbas/mozilla-all-hands-london-2016#/7/0/3">https://slides.com/garbas/mozilla-all-hands-london-2016#/7/0/3</a></p>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-8-5" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="8-5"><span class="section-number-3">6.5</span> Shell in a File</h3>
+<div class="leftcol" id="org5bc1b79">
+<div class="org-src-container">
+
+<pre class="src src-nix"><span style="color: #b294bb;">with</span> <span style="color: #81a2be;">import</span> <span style="color: #de935f;">&lt;nixpkgs&gt;</span> {};
+
+<span style="color: #b294bb;">let</span>
+  <span style="color: #cc6666;">pythonEnv</span> = python35.withPackages (ps: [
+    ps.numpy
+    ps.toolz
+  ]);
+<span style="color: #b294bb;">in</span> mkShell {
+  <span style="color: #cc6666;">buildInputs</span> = [
+    pythonEnv
+    which
+  ];}
+</pre>
+</div>
+
+</div>
+<div class="rightcol" id="orgb38d2b2">
+<ul class="fragment appear" data-fragment-index="0">
+<li>What <b>tools</b> are we adding?</li>
+<li>What <b>environment</b> are we using?</li>
+
+</ul>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-8-6" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="8-6"><span class="section-number-3">6.6</span> Nix Python Expressions I</h3>
+<div class="leftcol" id="orgf35835c">
+<div class="org-src-container">
+
+<pre class="src src-nix"><span style="color: #cc6666;">f90wrap</span> = self.buildPythonPackage <span style="color: #b294bb;">rec</span> {
+  <span style="color: #cc6666;">pname</span> = <span style="color: #b5bd68;">"f90wrap"</span>;
+  <span style="color: #cc6666;">version</span> = <span style="color: #b5bd68;">"0.2.3"</span>;
+  <span style="color: #cc6666;">src</span> = pkgs.fetchFromGitHub {
+    <span style="color: #cc6666;">owner</span> = <span style="color: #b5bd68;">"jameskermode"</span>;
+    <span style="color: #cc6666;">repo</span> = <span style="color: #b5bd68;">"f90wrap"</span>;
+    <span style="color: #cc6666;">rev</span> = <span style="color: #b5bd68;">"master"</span>;
+    <span style="color: #cc6666;">sha256</span> = <span style="color: #b5bd68;">"0d06nal4xzg8vv6sjdbmg2n88a8h8df5ajam72445mhzk08yin23"</span>;
+  };
+  <span style="color: #cc6666;">buildInputs</span> = <span style="color: #b294bb;">with</span> pkgs; [ gfortran stdenv ];
+</pre>
+</div>
+
+</div>
+<div class="rightcol" id="orgc812437">
+
+</div>
+<ul class="fragment appear" data-fragment-index="0">
+<li>The self portion is from overriding the python environment</li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="1">
+<li>We will dispense with this later</li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-8-7" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="8-7"><span class="section-number-3">6.7</span> Nix Python Expressions II</h3>
+<div class="leftcol" id="orgcce26e5">
+<div class="org-src-container">
+
+<pre class="src src-nix">  <span style="color: #cc6666;">propagatedBuildInputs</span> = <span style="color: #b294bb;">with</span> self; [
+    setuptools
+    setuptools-git
+    wheel
+    numpy
+  ];
+  <span style="color: #cc6666;">preConfigure</span> = <span style="color: #b5bd68;">''</span>
+<span style="color: #b5bd68;">    export F90=</span><span style="color: #c5c8c6; font-weight: bold;">${</span>pkgs.gfortran<span style="color: #c5c8c6; font-weight: bold;">}</span><span style="color: #b5bd68;">/bin/gfortran</span>
+<span style="color: #b5bd68;">  ''</span>;
+  <span style="color: #cc6666;">doCheck</span> = <span style="color: #81a2be;">false</span>;
+  <span style="color: #cc6666;">doInstallCheck</span> = <span style="color: #81a2be;">false</span>;
+};
+</pre>
+</div>
+
+</div>
+<div class="rightcol" id="orgd06ed82">
+
+</div>
+<ul class="fragment appear" data-fragment-index="0">
+<li>More details here: <a href="https://rgoswami.me/posts/ccon-tut-nix/">https://rgoswami.me/posts/ccon-tut-nix/</a></li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="1">
+<li><code>propagatedBuildInputs</code> are for the python packages</li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-8-8" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="8-8"><span class="section-number-3">6.8</span> Friendly Nix</h3>
+<div class="leftcol" id="orgd84f512">
+<div class="org-src-container">
+
+<pre class="src src-bash">nix-env -i nox
+nox lieer
+</pre>
+</div>
+
+
+<div id="orgacd8cbe" class="figure">
+<p><img src="wrangpynix_files/2021-05-29_05-59-23_screenshot.png" alt="2021-05-29_05-59-23_screenshot.png">
+</p>
+</div>
+
+</div>
+<div class="rightcol" id="org6c757ec">
+<dl class="fragment appear" data-fragment-index="0">
+<dt>Niv</dt><dd>For pinning packages</dd>
+
+</dl>
+<dl class="fragment appear" data-fragment-index="1">
+<dt>Nox</dt><dd>Interactive package management</dd>
+
+</dl>
+<dl class="fragment appear" data-fragment-index="2">
+<dt><a href="https://github.com/target/lorri/">Lorri</a></dt><dd>For automatically reloading environments</dd>
+
+</dl>
+<dl class="fragment appear" data-fragment-index="3">
+<dt>Mach-Nix</dt><dd>For working with Python</dd>
+
+</dl>
+
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-8-9" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="8-9"><span class="section-number-3">6.9</span> Pinning Nixpkgs</h3>
+<div class="org-src-container">
+
+<pre class="src src-bash">niv init
+</pre>
+</div>
+<div class="org-src-container">
+
+<pre class="src src-json">{
+    <span style="color: #b294bb;">"nixpkgs"</span>: {
+        <span style="color: #b294bb;">"branch"</span>: "release-<span style="color: #de935f; font-weight: bold;">20.03</span>",
+        <span style="color: #b294bb;">"description"</span>: <span style="color: #b5bd68;">"Nix Packages collection"</span>,
+        <span style="color: #b294bb;">"homepage"</span>: <span style="color: #b5bd68;">""</span>,
+        <span style="color: #b294bb;">"owner"</span>: <span style="color: #b5bd68;">"NixOS"</span>,
+        <span style="color: #b294bb;">"repo"</span>: <span style="color: #b5bd68;">"nixpkgs"</span>,
+        <span style="color: #b294bb;">"rev"</span>: <span style="color: #b5bd68;">"1db42b7fe3878f3f5f7a4f2dc210772fd080e205"</span>,
+        <span style="color: #b294bb;">"sha256"</span>: <span style="color: #b5bd68;">"05k9y9ki6jhaqdhycnidnk5zrdzsdammbk5lsmsbz249hjhhgcgh"</span>,
+        <span style="color: #b294bb;">"type"</span>: <span style="color: #b5bd68;">"tarball"</span>,
+        <span style="color: #b294bb;">"url"</span>: <span style="color: #b5bd68;">"https://github.com/NixOS/nixpkgs/archive/.tar.gz"</span>,
+        <span style="color: #b294bb;">"url_template"</span>: <span style="color: #b5bd68;">"https://github.com/&lt;owner&gt;/&lt;repo&gt;/archive/&lt;rev&gt;.tar.gz"</span>
+    }
+}
+</pre>
+</div>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section style="top: 350px; display: none;" aria-hidden="true" class="stack future" hidden="">
+<section id="slide-9" style="top: 350px; display: none;">
+<h2 id="9"><span class="section-number-2">7</span> Replacing Conda</h2>
+<div class="outline-text-2" id="text-9">
+</div>
+</section>
+<section id="slide-9-1" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="9-1"><span class="section-number-3">7.1</span> I: Variables</h3>
+<div class="leftcol" id="org99764ce">
+<div class="org-src-container">
+
+<pre class="src src-nix"><span style="color: #b294bb;">let</span>
+  <span style="color: #cc6666;">sources</span> = <span style="color: #81a2be;">import</span> <span style="color: #de935f;">./nix/sources.nix</span>;
+  <span style="color: #cc6666;">pkgs</span> = <span style="color: #81a2be;">import</span> sources.nixpkgs { };
+  <span style="color: #cc6666;">mach-nix</span> = <span style="color: #81a2be;">import</span> (builtins.fetchGit {
+    <span style="color: #cc6666;">url</span> = <span style="color: #b5bd68;">"https://github.com/DavHau/mach-nix/"</span>;
+    <span style="color: #cc6666;">ref</span> = <span style="color: #b5bd68;">"refs/tags/3.3.0"</span>;
+  }) {
+    <span style="color: #5a5b5a;"># optionally bring your own nixpkgs</span>
+    <span style="color: #cc6666;">pkgs</span> = pkgs;
+    <span style="color: #5a5b5a;"># optionally specify the python version</span>
+    <span style="color: #cc6666;">python</span> = <span style="color: #b5bd68;">"python38"</span>;
+  };
+</pre>
+</div>
+
+</div>
+<div class="rightcol" id="org555a85e">
+
+</div>
+<ul class="fragment appear" data-fragment-index="0">
+<li>Note our definition of <code>mach-nix</code></li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="1">
+<li>Best practices involve <code>niv</code> pinned sources</li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-9-2" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="9-2"><span class="section-number-3">7.2</span> II: Customizing Python</h3>
+<div class="org-src-container">
+
+<pre class="src src-nix">  <span style="color: #cc6666;">customPython</span> = mach-nix.mkPython {
+    <span style="color: #cc6666;">requirements</span> = builtins.readFile <span style="color: #de935f;">./requirements.txt</span>;
+    <span style="color: #cc6666;">providers</span> = {
+      _<span style="color: #cc6666;">default</span> = <span style="color: #b5bd68;">"nixpkgs,wheel,sdist"</span>;
+      <span style="color: #cc6666;">pytest</span> = <span style="color: #b5bd68;">"nixpkgs"</span>;
+    };
+    <span style="color: #cc6666;">pkgs</span> = pkgs;
+  };
+<span style="color: #b294bb;">in</span> pkgs.mkShell { <span style="color: #cc6666;">buildInputs</span> = <span style="color: #b294bb;">with</span> pkgs; [ customPython ]; }
+</pre>
+</div>
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="0">    <span style="color: #cc6666;">overrides_pre</span> = [
+      (pythonSelf: pythonSuper: {
+        <span style="color: #cc6666;">pytest</span> = pythonSuper.pytest.overrideAttrs (oldAttrs: {
+          <span style="color: #cc6666;">doCheck</span> = <span style="color: #81a2be;">false</span>;
+        });
+        <span style="color: #cc6666;">f90wrap</span> = pythonSelf.buildPythonPackage <span style="color: #b294bb;">rec</span> {...};
+      })
+    ];
+</pre>
+</div>
+<ul class="fragment appear" data-fragment-index="1">
+<li>More details here: <a href="https://rgoswami.me/posts/mach-nix-niv-python/">https://rgoswami.me/posts/mach-nix-niv-python/</a></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section style="top: 350px; display: none;" aria-hidden="true" class="stack future" hidden="">
+<section id="slide-10" style="top: 350px; display: none;">
+<h2 id="10"><span class="section-number-2">8</span> Testing and Continuous Integration</h2>
+<div class="outline-text-2" id="text-10">
+</div>
+</section>
+<section id="slide-10-1" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="10-1"><span class="section-number-3">8.1</span> Testing Frameworks</h3>
+<div class="leftcol" id="orgac332ad">
+<ul class="fragment appear" data-fragment-index="0">
+<li><code>Python</code> has great testing frameworks
+<ul>
+<li><code>pytest</code>, <code>hypothesis</code>, etc.</li>
+
+</ul></li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="1">
+<li><b>Unit tests</b> are the first layer
+<ul>
+<li>Ensure each function outputs as expected</li>
+
+</ul></li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="2">
+<li><b>Integration tests</b> are for workflows
+<ul>
+<li>Ensure each series of tasks connect correctly</li>
+
+</ul></li>
+
+</ul>
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="3">[tool.poetry.dev-dependencies]
+check-manifest = "*"
+pytest = "^4.6"
+pytest-datadir = "^1.3.1"
+</pre>
+</div>
+
+</div>
+<div class="rightcol" id="org0077ad2">
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="4"><span style="color: #f0c674;">@pytest.fixture</span>(scope=<span style="color: #b5bd68;">"session"</span>)
+<span style="color: #b294bb;">def</span> <span style="color: #81a2be;">mult_xyz</span>(tmpdir_factory):
+    <span style="color: #717171;">"""Copies folders and fixes input file paths"""</span>
+    <span style="color: #cc6666;">dat</span> = tmpdir_factory.mktemp(<span style="color: #b5bd68;">"data"</span>)
+    shutil.copytree(DATADIR, dat,
+                    dirs_exist_ok=<span style="color: #de935f;">True</span>)
+    <span style="color: #b294bb;">with</span> <span style="color: #81a2be;">open</span>(f<span style="color: #b5bd68;">"{dat}/orcaMultxyz.yml"</span>) <span style="color: #b294bb;">as</span> mxyz:
+        <span style="color: #cc6666;">t</span> = yaml.full_load(mxyz)
+        <span style="color: #cc6666;">t</span>[<span style="color: #b5bd68;">"xyz"</span>] = f<span style="color: #b5bd68;">"{dat}/{t['xyz']}"</span>
+        <span style="color: #cc6666;">fn</span> = Path(dat / <span style="color: #b5bd68;">"omult.yml"</span>)
+        fn.write_text(yaml.dump(t))
+    <span style="color: #b294bb;">return</span> fn
+</pre>
+</div>
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="5">. tree -L <span style="color: #de935f; font-weight: bold;">2</span> .
+├── basejob.sh
+├── expmult.yml
+├── orcaMultxyz.yml
+└── xyzdat
+    ├── ch3.xyz
+    ├── ch3oh_dimer.xyz
+    ├── ch3oh_single.xyz
+    └── h2inp.xyz
+<span style="color: #de935f; font-weight: bold;">1</span> directory, <span style="color: #de935f; font-weight: bold;">7</span> files
+</pre>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-10-2" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="10-2"><span class="section-number-3">8.2</span> Continuous Integration</h3>
+<ul class="fragment appear" data-fragment-index="0">
+<li>No one likes switching computers to test
+<ul>
+<li>MacOS, Windows (WSL often), Many Linux distributions</li>
+
+</ul></li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="1">
+<li>Some tests run for a long time
+<ul>
+<li>Less attractive locally
+<ul>
+<li><code>nixpkgs</code> can take over a day!</li>
+
+</ul></li>
+
+</ul></li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="2">
+<li>There are far too many options nowadays
+<ul>
+<li>Wercker, <del>Travis CI</del>, Shippable, GitLab CI, <span class="underline">Github Actions</span></li>
+
+</ul></li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="3">
+<li>Mostly transient <code>docker</code> or <code>nix</code> based systems
+<ul>
+<li>Setup can be annoying without <code>nix</code></li>
+
+</ul></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-10-3" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="10-3"><span class="section-number-3">8.3</span> Github Actions</h3>
+<div class="leftcol" id="orgeecfe42">
+<ul class="fragment appear" data-fragment-index="0">
+<li><a href="https://github.com/nektos/act#installation">act allows</a> local tests</li>
+
+</ul>
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="1"><span style="color: #cc6666;">name</span>: Test theme
+<span style="color: #cc6666;">on</span>:
+  <span style="color: #cc6666;">push</span>:
+    <span style="color: #cc6666;">branches</span>: [src]
+  <span style="color: #cc6666;">pull_request</span>:
+    <span style="color: #cc6666;">branches</span>: [src]
+<span style="color: #5a5b5a;"># </span><span style="color: #5a5b5a;">every day https://crontab.guru/</span>
+  <span style="color: #cc6666;">schedule</span>:
+    - <span style="color: #cc6666;">cron</span>: <span style="color: #b5bd68;">"0 0 * * *"</span>
+<span style="color: #cc6666;">jobs</span>:
+  <span style="color: #cc6666;">deploy</span>:
+    <span style="color: #cc6666;">runs-on</span>: ubuntu-latest
+</pre>
+</div>
+
+</div>
+<div class="rightcol" id="org764d41a">
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="2"><span style="color: #cc6666;">steps</span>:
+- <span style="color: #cc6666;">uses</span>: actions/checkout@v2
+- <span style="color: #cc6666;">uses</span>: cachix/install-nix-action@v12
+  <span style="color: #cc6666;">with</span>:
+  <span style="color: #cc6666;">nix_path</span>: nixpkgs=channel:nixos-unstable
+- <span style="color: #cc6666;">name</span>: Get and initialize binary cache
+  <span style="color: #cc6666;">run</span>: |
+   <span style="color: #b5bd68;">nix-env -iA cachix -f \</span>
+<span style="color: #b5bd68;">   https://cachix.org/api/v1/install</span>
+<span style="color: #b5bd68;">   cachix use hello-friend-ng-hz</span>
+- <span style="color: #cc6666;">name</span>: Test Build
+  <span style="color: #cc6666;">run</span>: nix-shell --run \
+  <span style="color: #b5bd68;">"hugo -s exampleSite --themesDir=../.."</span>
+- <span style="color: #cc6666;">name</span>: Cache Nix Results
+  <span style="color: #cc6666;">env</span>:
+  <span style="color: #cc6666;">authToken</span>: ${{ secrets.CACHIX_AUTH_TOKEN }}
+  <span style="color: #cc6666;">cachixName</span>: hello-friend-ng-hz
+  <span style="color: #cc6666;">run</span>: |
+    <span style="color: #b5bd68;">cachix authtoken $authToken</span>
+<span style="color: #b5bd68;">    nix-store -qR \</span>
+<span style="color: #b5bd68;">    --include-outputs $(nix-instantiate shell.nix) \</span>
+<span style="color: #b5bd68;">    | cachix push $cachixName</span>
+</pre>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section style="top: 350px; display: none;" aria-hidden="true" class="stack future" hidden="">
+<section id="slide-11" style="top: 350px; display: none;">
+<h2 id="11"><span class="section-number-2">9</span> Conclusions</h2>
+<div class="outline-text-2" id="text-11">
+</div>
+</section>
+<section id="slide-11-1" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="11-1"><span class="section-number-3">9.1</span> Omitted Topics</h3>
+<dl class="fragment appear" data-fragment-index="0">
+<dt>NUR</dt><dd>Nix user repository for custom packages</dd>
+
+</dl>
+<dl class="fragment appear" data-fragment-index="1">
+<dt>Nix and HPC systems</dt><dd><code>socat</code> madness</dd>
+
+</dl>
+<dl class="fragment appear" data-fragment-index="2">
+<dt>Nix Flakes</dt><dd>Standardizing <code>niv</code></dd>
+
+</dl>
+
+<div id="org6e42fee" class="figure">
+<p><img src="wrangpynix_files/2020-05-22_23-55-07_screenshot.png" alt="2020-05-22_23-55-07_screenshot.png" class="fragment appear" data-fragment-index="3" width="60%" height="60%">
+</p>
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-11-2" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="11-2"><span class="section-number-3">9.2</span> Further Resources</h3>
+<dl class="fragment appear" data-fragment-index="0">
+<dt><a href="https://rgoswami.me/tags/nix/">My Nix Posts</a></dt><dd>I write about <code>nix</code> pretty often
+<ul>
+<li>For websites</li>
+<li>For documentation</li>
+<li>For languages</li>
+
+</ul></dd>
+
+</dl>
+<dl class="fragment appear" data-fragment-index="1">
+<dt><a href="https://nixos.org/nixos/nix-pills/why-you-should-give-it-a-try.html">Nix Pills</a></dt><dd>An introduction to the expression language</dd>
+
+</dl>
+<dl class="fragment appear" data-fragment-index="2">
+<dt><a href="https://www.tweag.io/blog/2020-05-25-flakes/">Introductory Flakes</a></dt><dd>The future of standard <code>nixpkgs</code></dd>
+
+</dl>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section style="top: 350px; display: none;" aria-hidden="true" class="stack future" hidden="">
+<section id="slide-12" style="top: 350px; display: none;">
+<h2 id="12"><span class="section-number-2">10</span> The End</h2>
+<div class="outline-text-2" id="text-12">
+</div>
+</section>
+<section id="slide-12-1" data-background="#005ab6" class="future has-dark-background" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="12-1"><span class="section-number-3">10.1</span> Thanks!</h3>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section style="top: 350px; display: none;" aria-hidden="true" class="stack future" hidden="">
+<section id="slide-13" style="top: 350px; display: none;">
+<h2 id="13"><span class="section-number-2">11</span> References</h2>
+<p>
+<a id="orgd963377"></a>Dolstra, Eelco, Merijn de Jonge, and Eelco Visser. n.d. “Nix: A Safe and Policy-Free System for Software Deployment,” 15.
+</p>
+
+<p>
+<a id="org6329ccb"></a>Dolstra, Eelco, Andres Löh, and Nicolas Pierron. n.d. “NixOS: A Purely Functional Linux Distribution” 20 (5-6):577–615.
+</p>
+
+<p>
+<a id="org3be0749"></a>Goswami, Rohit, Amrita Goswami, and Jayant K. 
+Singh. n.d. “D-SEAMS: Deferred Structural Elucidation Analysis for 
+Molecular Simulations” 60 (4):2169–77.
+</p>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+</div>
+<div class="backgrounds"><div class="slide-background present" style="display: block;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background stack future" style="display: block;" data-loaded="true"><div class="slide-background-content"></div><div class="slide-background present" style="display: block;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: block;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-background stack future" style="display: block;" data-loaded="true"><div class="slide-background-content"></div><div class="slide-background present" style="display: block;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-background stack future" style="display: none;"><div class="slide-background-content"></div><div class="slide-background present" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-background stack future" style="display: none;"><div class="slide-background-content"></div><div class="slide-background present" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-background stack future" style="display: none;"><div class="slide-background-content"></div><div class="slide-background present" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-background stack future" style="display: none;"><div class="slide-background-content"></div><div class="slide-background present" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-background stack future" style="display: none;"><div class="slide-background-content"></div><div class="slide-background present" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-background stack future" style="display: none;"><div class="slide-background-content"></div><div class="slide-background present" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-background stack future" style="display: none;"><div class="slide-background-content"></div><div class="slide-background present" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-background stack future" style="display: none;"><div class="slide-background-content"></div><div class="slide-background present" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="background: rgb(0, 90, 182) none repeat scroll 0% 0%; display: none;" data-background-hash="#005ab6nullnullnullnullnullnullnullnullnull"><div class="slide-background-content"></div></div></div><div class="slide-background stack future" style="display: none;"><div class="slide-background-content"></div><div class="slide-background present" style="display: none;"><div class="slide-background-content"></div></div></div></div><div class="slide-number" style="display: block;"><a href="#/sec-title-slide">
+					<span class="slide-number-a">1</span>
+					</a></div><aside class="controls" style="display: block;" data-controls-layout="bottom-right" data-controls-back-arrows="faded"><button class="navigate-left" aria-label="previous slide" disabled="disabled"><div class="controls-arrow"></div></button>
+			<button class="navigate-right enabled highlight" aria-label="next slide"><div class="controls-arrow"></div></button>
+			<button class="navigate-up" aria-label="above slide" disabled="disabled"><div class="controls-arrow"></div></button>
+			<button class="navigate-down" aria-label="below slide" disabled="disabled"><div class="controls-arrow"></div></button></aside><div class="progress" style="display: block;"><span style="transform: scaleX(0);"></span></div><div class="speaker-notes" data-prevent-swipe="" tabindex="0"></div><div class="pause-overlay"><button class="resume-button">Resume presentation</button></div><div style="position: absolute; height: 1px; width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px);" class="aria-status" aria-live="polite" aria-atomic="true">Wrangling Pythons with Nix for Reproducible Purity Rohit Goswami MInstP Created: 2021-05-29 Sat 06:49 </div></div>
+<script src="wrangpynix_files/reveal.js"></script><span class="cleanslate TridactylStatusIndicator  TridactylModenormal">normal</span>
+<script src="wrangpynix_files/notes.js"></script>
+<script src="wrangpynix_files/search.js"></script>
+<script src="wrangpynix_files/zoom.js"></script>
+<script src="wrangpynix_files/hidelinks.js"></script>
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: true,
+center: true,
+slideNumber: 't',
+rollingLinks: false,
+keyboard: true,
+mouseWheel: true,
+fragmentInURL: true,
+hashOneBasedIndex: false,
+pdfSeparateFragments: false,
+
+overview: true,
+margin: 0.20,
+
+transition: 'fade',
+transitionSpeed: 'default',
+showNotes: window.location.search.match( /print-pdf/gi ) ? 'separate-page' : false,
+
+// Plugins with reveal.js 4.x
+plugins: [ RevealNotes, RevealSearch, RevealZoom ],
+
+// Optional libraries used to extend reveal.js
+dependencies: [
+]
+
+});
+</script>
+
+
+<div>
+    <div id="twoseven-ext-tab-media-modal" class="twoseven-ext-tab-media-modal" style="display: none;">
+      <!-- Modal content -->
+      <div class="twoseven-ext-tab-media-modal-content">
+        <div class="iframe-container" style="height: 100%; width: 100%;">
+          <span class="close">×</span>
+        </div>
+      </div>
+    </div></div><div id="diigo-video-capture" style="display: none;"><div id="diigo-video-capture-container"><div id="diigo-video-capture-logo"></div>Capture</div></div><div id="diigo-video-capture-wrapper"><div id="diigo-video-capture-wrapper-tip">Drag to outliner or <span id="diigo-video-capture-upload">Upload</span></div><div id="diigo-video-capture-wrapper-close">Close</div></div><div id="diigo-chrome-installed" style="display: none;"></div><iframe src="" id="promnesia-sidebar" class="promnesia"></iframe></body><iframe class="cleanslate hidden" src="wrangpynix_files/commandline.html" id="cmdline_iframe" loading="lazy" style="height: 0px !important;"></iframe></html>
