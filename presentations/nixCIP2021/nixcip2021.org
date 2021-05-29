@@ -1,0 +1,775 @@
+#+TITLE: Wrangling Pythons with Nix for Reproducible Purity
+#+SUBTITLE: A Code in Place 2021 SL Learning Week Workshop
+#+AUTHOR: Rohit Goswami MInstP
+# I need the footnotes to be inlined
+#+STARTUP: fninline
+#+EXCLUDE_TAGS: noexport
+
+#+BEGIN_SRC emacs-lisp :exports none :eval always
+(require 'ox-extra)
+(ox-extras-activate '(ignore-headlines))
+#+END_SRC
+
+#+RESULTS:
+
+* Configuration :ignoreheading:ignore:
+:PROPERTIES:
+:VISIBILITY: folded
+:END:
+
+# Kanged from https://gitlab.com/oer/oer-reveal/blob/master/org/config.org
+# Also https://gitlab.com/oer/emacs-reveal-howto/-/blob/master/howto.org
+** General Options :ignoreheading:ignore:
+# No Table of contents, no section numbers
+#+OPTIONS: toc:nil num:t
+
+# Enable smart quotes
+#+OPTIONS: ':t
+** RevealJS Options :ignoreheading:ignore:
+
+# Enable: browser history, slide numbers, fragment IDs in URLs, mouse wheel, links between presentations
+#+OPTIONS: reveal_history:t reveal_slide_number:t reveal_fragmentinurl:t
+#+OPTIONS: reveal_mousewheel:t reveal_inter_presentation_links:t
+
+# Disable separate PDF pages for each fragment.  Just use one per slide.
+#+OPTIONS: reveal_pdfseparatefragments:nil
+
+# Display notes on separate page for PDF export.
+#+REVEAL_EXPORT_NOTES_TO_PDF: separate-page
+
+# Transition styles: none/fade/slide/convex/concave/zoom/cube
+#+REVEAL_TRANS: fade
+# Set a base theme, then override
+#+REVEAL_THEME: white
+#+REVEAL_EXTRA_CSS: /Users/rohitgoswami/.config/doom/revealExtras/robot-lung.css
+#+REVEAL_EXTRA_CSS: /Users/rohitgoswami/.config/doom/revealExtras/oerFragments.css
+#+REVEAL_EXTRA_CSS: /Users/rohitgoswami/.config/doom/revealExtras/rlExtras.css
+#+REVEAL_EXTRA_CSS: /Users/rohitgoswami/.config/doom/revealExtras/noImgBoxes.css
+#+REVEAL_EXTRA_CSS: /Users/rohitgoswami/.config/doom/revealExtras/moreCode.css
+#+REVEAL_MARGIN: 0.2
+#+REVEAL_PREAMBLE: <div class="line top"></div> <div class="line bottom"></div> <div class="line left"></div> <div class="line right"></div>
+
+#+REVEAL_PLUGINS: (notes search zoom)
+# The following variables are non-standard.
+# Do not display TOC-progress on title slide.
+
+#+REVEAL_TITLE_SLIDE_STATE: no-toc-progress
+# Do not display TOC-progress on TOC slide.
+#+REVEAL_TOC_SLIDE_STATE: no-toc-progress
+# Do not include TOC slide in TOC-progress.
+#+REVEAL_TOC_SLIDE_CLASS: no-toc-progress
+# Use different heading for TOC.
+#+REVEAL_TOC_SLIDE_TITLE: Agenda
+
+** External Resources :ignoreheading:ignore:
+# Note that doom-emacs sets this variable
+# https://github.com/hlissner/doom-emacs/blob/develop/modules/lang/org/contrib/present.el
+#+REVEAL_EXTRA_CSS: /Users/rohitgoswami/.emacs.d/.local/straight/build-27.2/revealjs/plugin/accessibility/helper.css
+#+REVEAL_EXTRA_CSS: /Users/rohitgoswami/.emacs.d/.local/straight/build-27.2/revealjs/plugin/toc-progress/toc-progress.css
+#+REVEAL_EXTRA_CSS: /Users/rohitgoswami/.emacs.d/.local/straight/build-27.2/revealjs/dist/theme/toc-style.css
+#+REVEAL_EXTRA_CSS: /Users/rohitgoswami/.emacs.d/.local/straight/build-27.2/revealjs/dist/theme/fonts/source-sans-pro/source-sans-pro.css
+
+# Allow to selectively hide links.
+#+REVEAL_EXTRA_SCRIPTS: ("/Users/rohitgoswami/.emacs.d/.local/straight/build-27.2/revealjs/dist/theme/hidelinks.js")
+
+# The following creates an empty footer, for which the css style defines
+# a height that agrees with the TOC-progress footer’s height.
+# In this way, the footer’s height is taken into account by reveal.js’s
+# size calculations.
+#+REVEAL_SLIDE_FOOTER: <br>
+#+OPTIONS: reveal_toc_footer:t
+
+** Macros :ignoreheading:ignore:
+# Set a default bib file.
+
+# Macros to display square brackets (in texts of hyperlinks).
+# Based on: https://emacs.stackexchange.com/questions/7792/can-i-make-links-in-org-mode-that-contain-brackets-or
+# Square Bracket Open [
+#+MACRO: BO @@latex:\char91{}@@@@html:&#91;@@
+# Square Bracket Close ]
+#+MACRO: BC @@latex:\char93{}@@@@html:&#93;@@
+
+# Macro for forced line break, e.g., in titles.
+#+MACRO: BR @@latex:\\@@@@html:<br />@@
+
+# Macro to generate abbr element in HTML.  If a second argument is given, it
+# defines the title attribute.  For LaTeX, output first attribute as is and
+# ignore second one.
+#+MACRO: abbr (eval (concat "@@latex:" Introduction to C++ Part II "@@@@html:<abbr" (if (< 0 (length An IOP Student Organized Workshop)) (concat " title=\"" An IOP Student Organized Workshop "\"") "") ">" Introduction to C++ Part II "</abbr>@@"))
+
+# Macros to display code in different colors.
+#+MACRO: blackcode (eval (format "@@html:<code><span style=\"color:black; font-size:smaller;\">%s</span></code>@@ @@latex:\\verb|%s|@@" (org-html-encode-plain-text Introduction to C++ Part II) Introduction to C++ Part II))
+#+MACRO: redcode (eval (format "@@html:<code><span style=\"color:darkred; font-size:smaller;\">%s</span></code>@@ @@latex:\\rverb|%s|@@" (org-html-encode-plain-text Introduction to C++ Part II) Introduction to C++ Part II))
+#+MACRO: greencode (eval (format "@@html:<code><span style=\"color:darkgreen; font-size:smaller;\">%s</span></code>@@ @@latex:\\gverb|%s|@@" (org-html-encode-plain-text Introduction to C++ Part II) Introduction to C++ Part II))
+#+MACRO: bluecode (eval (format "@@html:<code><span style=\"color:darkblue; font-size:smaller;\">%s</span></code>@@ @@latex:\\bverb|%s|@@" (org-html-encode-plain-text Introduction to C++ Part II) Introduction to C++ Part II))
+
+** LaTeX Options :ignoreheading:ignore:
+# Setup for PDF generation via LaTeX export.
+#+LATEX_CLASS_OPTIONS: [a4paper]
+#+LATEX_HEADER: \usepackage[backend=biber,style=alphabetic]{biblatex}
+#+LATEX_HEADER: \addbibresource{~/GDrive/zotLib.bib}
+#+LATEX_HEADER: \newenvironment{notes}{\par\footnotesize}{\par}
+#+LATEX_HEADER: \newenvironment{NOTES}{\par\footnotesize}{\par}
+#+LATEX_HEADER: \newenvironment{leftcol}{\begin{minipage}{.49\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol}{\begin{minipage}{.49\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{leftcol30}{\begin{minipage}{.29\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{leftcol40}{\begin{minipage}{.39\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{leftcol60}{\begin{minipage}{.59\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{leftcol70}{\begin{minipage}{.69\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol30}{\begin{minipage}{.29\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol40}{\begin{minipage}{.39\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol60}{\begin{minipage}{.59\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol70}{\begin{minipage}{.69\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \usepackage{newunicodechar}
+#+LATEX_HEADER: \newunicodechar{≈}{$\approx$}
+#+LATEX_HEADER: \newunicodechar{⋮}{\vdots}
+#+LATEX_HEADER: \newunicodechar{ }{~}
+#+LATEX_HEADER: \usepackage{xcolor}
+#+LATEX_HEADER: \definecolor{darkred}{rgb}{0.3, 0.0, 0.0}
+#+LATEX_HEADER: \definecolor{darkgreen}{rgb}{0.0, 0.3, 0.1}
+#+LATEX_HEADER: \definecolor{darkblue}{rgb}{0.0, 0.1, 0.3}
+#+LATEX_HEADER: \definecolor{darkorange}{rgb}{1.0, 0.55, 0.0}
+#+LATEX_HEADER: \definecolor{sienna}{rgb}{0.53, 0.18, 0.09}
+#+LATEX_HEADER: \hypersetup{colorlinks,linkcolor=darkblue,citecolor=darkblue,urlcolor=darkgreen}
+#+LATEX_HEADER: \usepackage{newverbs}
+#+LATEX_HEADER: \newverbcommand{\rverb}{\color{darkred}}{}
+#+LATEX_HEADER: \newverbcommand{\gverb}{\color{darkgreen}}{}
+#+LATEX_HEADER: \newverbcommand{\bverb}{\color{darkblue}}{}
+
+* Start Here :ignoreheading:ignore:
+* Brief Introduction
+** Hello!
+- Find me here: https://rgoswami.me
+- Who?
+  + *Rohit Goswami* MInstP
+    - Doctoral Researcher, University of Iceland, Faculty of Physical Sciences
+#+begin_leftcol
+[[file:images/physUoI.png]]
+[[file:images/cipLogo.png]]
+#+end_leftcol
+#+begin_rightcol
+file:images/rannisLogo.png
+#+DOWNLOADED: screenshot @ 2021-04-13 02:55:57
+#+ATTR_HTML: :width 70% :height 70%
+[[file:images/Hello!/2021-04-13_02-55-57_screenshot.png]]
+#+end_rightcol
+** About work..
+#+begin_leftcol
+file:images/stuff/volcano.png
+#+end_leftcol
+#+begin_rightcol
+#+ATTR_REVEAL: :frag appear
+file:images/collages/ice7.png
+#+ATTR_REVEAL: :frag appear
+- A good place to work on Water!!
+ + Image from textcite:goswamiDSEAMSDeferredStructural2020
+#+end_rightcol
+** Logistics
+#+ATTR_REVEAL: :frag appear
+- All contents are [[https://github.com/HaoZeke/haozeke.github.io/tree/src/presentations/nixCIP2021][hosted on GitHub]]
+#+ATTR_REVEAL: :frag appear
+- Questions are welcome after / during the lecture
+  + Email me
+  + Post on the Ed
+  + Leave a comment on my site
+* Local Project Layouts
+** Language Agnostic Beginnings
+#+ATTR_REVEAL: :frag appear
+#+BEGIN_leftcol
+#+ATTR_REVEAL: :frag (appear)
+- ~Readme.{md,org}~ :: Motivation, rationale, license, installation instructions
+- ~LICENSE~ :: Plain text, and preferably an open license
+  - [[https://github.com/azu/license-generator][license-generator]] is pretty handy for this
+- ~.gitignore~ :: Lists files which do not need to be committed; typically generated files
+  - [[https://github.com/simonwhitaker/gibo][gibo]] can be used to generate these
+#+END_leftcol
+#+BEGIN_rightcol
+#+ATTR_REVEAL: :frag appear
+#+begin_src bash
+$ git init # Inside project
+$ gibo macOS Windows Xcode Emacs \
+    Vim Python C++ \
+    CMake TeX > .gitignore
+$ touch readme.md
+$ license-generator MIT \
+    --author "Person"
+$ tree -L 2
+.
+├── LICENSE
+├── docs
+│   └── pres
+└── readme.org
+
+2 directories, 2 files
+#+end_src
+
+#+END_rightcol
+** Python PyPI Standard
+#+ATTR_REVEAL: :frag appear
+#+BEGIN_leftcol
+#+ATTR_REVEAL: :frag (appear)
+- Write functions/objects
+  + Refactor into modules
+- Tests
+  + Fuzzy (property based, ~hypothesis~)
+  + Unit / Integration (~pytest~)
+- Documentation
+- Push to PyPI
+#+END_leftcol
+#+BEGIN_rightcol
+#+DOWNLOADED: screenshot @ 2021-04-12 21:03:39
+#+ATTR_REVEAL: :frag appear
+[[file:images/Standard_Approach/2020-09-20_04-19-58_screenshot.png]]
+
+#+END_rightcol
+*** Example: Wailord
+https://wailord.xyz
+#+begin_leftcol
+#+ATTR_REVEAL: :frag appear
+#+attr_html: :align left
+[[file:images/Wailord/2020-11-19_04-21-52_screenshot.png]]
+#+end_leftcol
+
+#+BEGIN_rightcol
+#+ATTR_REVEAL: :frag appear
+#+begin_src bash
+$ tree -L 1
+.
+├── AUTHORS.rst
+├── CODEOWNERS
+├── CONTRIBUTING.rst
+├── HISTORY.rst
+├── LICENSE
+├── MANIFEST.in
+├── Makefile
+├── README.rst
+├── docs
+├── poetry.lock
+├── pyproject.toml
+├── tests
+├── wailord
+└── wailord_templates
+
+5 directories, 15 files
+#+end_src
+
+#+END_rightcol
+* Packaging
+** Python Modules
+#+begin_leftcol
+#+ATTR_REVEAL: :frag appear
+- A ~.py~ file is a *module*
+- It is *standalone* if it only imports from the standard library
+#+end_leftcol
+#+begin_rightcol
+#+ATTR_REVEAL: :frag appear
+#+begin_src python
+from collections import namedtuple
+point_xy = namedtuple('point_xy',
+                      ('x', 'y'))
+#+end_src
+#+end_rightcol
+** Pure Python Packages
+#+begin_leftcol
+#+ATTR_REVEAL: :frag appear
+- A directory with ~__init__.py~ in it is a *package*
+- Use ~pip~
+#+end_leftcol
+#+begin_rightcol
+#+ATTR_REVEAL: :frag appear
+#+begin_src python
+"""Top-level package for Wailord."""
+
+__author__ = """Rohit Goswami"""
+__email__ = "rog32@hi.is"
+__version__ = "0.0.2"
+#+end_src
+#+end_rightcol
+** Distributions
+#+begin_leftcol
+*Standard*
+#+ATTR_REVEAL: :frag appear
+- Built by ~setuptools~ with ~setup.py~
+- Simple source only ~.tar.gz~
+#+end_leftcol
+#+begin_rightcol
+*Binary*
+#+ATTR_REVEAL: :frag appear
+- ~wheel~
+#+ATTR_REVEAL: :frag appear
+  + For interoperable needs (sometimes!)
+#+ATTR_REVEAL: :frag appear
+  + Includes static libraries
+#+end_rightcol
+#+ATTR_REVEAL: :frag appear
+- Distributions have zero or more packages
+** The Python Gradient
+- From [[https://www.youtube.com/watch?v=iLVNWfPWAC8][Mahmoud Hashemi's PyBay'17 talk]]:
+[[file:images/The_Python_Gradient/2020-05-22_23-00-30_screenshot.png]]
+#+ATTR_REVEAL: :frag appear
+- Libraries and Dev tools are all we get (from PyPI)
+** Pip Requirements
+#+ATTR_REVEAL: :frag appear
+- Python
+- System libraries
+#+ATTR_REVEAL: :frag appear
+- Build tools
+#+ATTR_REVEAL: :frag appear
+  - Wheels don't work for arbitrary distributions
+* Dependency Resolution
+#+begin_leftcol
+#+ATTR_REVEAL: :frag appear
+- ~requirements.txt~ (pip)
+#+ATTR_REVEAL: :frag appear
+- Poetry (pretty)
+#+ATTR_REVEAL: :frag appear
+  + ~pyproject.toml~
+#+ATTR_REVEAL: :frag appear
+  + ~poetry.lock~
+#+ATTR_REVEAL: :frag appear
+- Pipenv (older)
+#+ATTR_REVEAL: :frag appear
+  + ~Pipfile~ + lockfile
+#+ATTR_REVEAL: :frag appear
+- Pipx (~pip~ but for applications)
+#+ATTR_REVEAL: :frag appear
+- Pyenv and friends
+#+end_leftcol
+#+begin_rightcol
+#+ATTR_REVEAL: :frag appear
+[[file:images/Dependency_Resolution/2020-09-20_05-09-56_screenshot.png]]
+#+end_rightcol
+** System Dependencies
+#+begin_leftcol
+#+ATTR_REVEAL: :frag appear
+- Appimages
+#+ATTR_REVEAL: :frag appear
+- Containers
+#+ATTR_REVEAL: :frag appear
+  + ~docker~, ~flatpak~, ~snapcraft~
+#+ATTR_REVEAL: :frag appear
+- Impure filesystems
+#+ATTR_REVEAL: :frag appear
+  + Anaconda
+#+end_leftcol
+#+begin_rightcol
+[[file:images/System_Dependencies/2020-09-20_05-23-11_screenshot.png]]
+#+end_rightcol
+* Nix
+** Current Scenario Summary
+#+begin_leftcol
+#+ATTR_REVEAL: :frag appear
+file:images/xkcd/python_xkcd.png
+[fn:: Comic [[https://xkcd.com/353/][from here]]]
+#+end_leftcol
+#+begin_rightcol
+#+ATTR_REVEAL: :frag appear
+- ~Python~ :: ~poetry~, ~pipenv~, ~pyenv~
+- ~C++~ :: ~conan~, ~vcpkg~, ~cpm~
+#+ATTR_REVEAL: :frag appear
+
+#+DOWNLOADED: screenshot @ 2021-05-29 06:47:00
+[[file:images/Current_Scenario_Summary/2021-05-29_06-47-00_screenshot.png]]
+
+#+end_rightcol
+#+ATTR_REVEAL: :frag appear
+- *Nix is the answer!!*
+** General Workflow
+[[file:images/General_Workflow/2020-05-22_23-04-53_screenshot.png]]
+- From [[https://brianmckenna.org/files/presentations/rootconf19-nix.pdf][here]]
+** Details
+fullcite:dolstraNixSafePolicyFree2004,dolstraNixOSPurelyFunctional2010
+
+#+ATTR_HTML: :width 80% :height 80%
+[[file:images/A_screenshot/2020-05-22_23-15-22_screenshot.png]]
+- User environments (from [[https://nixos.org/nix/manual/#ch-basic-package-mgmt][the manual]])
+** Rationale
+#+begin_leftcol
+#+ATTR_REVEAL: :frag appear
+#+BEGIN_QUOTE
+Protects against self harm
+#+END_QUOTE
+#+ATTR_REVEAL: :frag appear
+#+BEGIN_QUOTE
+Exposes things taken for granted
+#+END_QUOTE
+#+ATTR_REVEAL: :frag appear
+#+BEGIN_QUOTE
+Enforces consistency
+#+END_QUOTE
+#+end_leftcol
+#+begin_rightcol
+#+ATTR_REVEAL: :frag appear
+- Reliable :: Purely functional, no broken dependencies
+#+ATTR_REVEAL: :frag appear
+- Reproducible :: Each package is in isolation
+#+ATTR_REVEAL: :frag appear
+- How? :: store + hash + name + version
+#+end_rightcol
+* Using Nix
+** Installation (Multi-User)
+#+BEGIN_SRC bash :eval never
+sh <(curl https://nixos.org/nix/install) --daemon
+#+END_SRC
+
+#+RESULTS:
+
+#+ATTR_REVEAL: :frag appear
+- Needs ~sudo~ but should not be run as root
+- Will make build users with IDs between 30001 and 30032 along with a group ID 30000
+** Nix Python - Trial I
+#+BEGIN_SRC bash :eval never
+nix-shell -p 'python38.withPackages(ps: with ps; [ numpy toolz ])'
+#+END_SRC
+
+#+ATTR_REVEAL: :frag appear
+- Check which ~python~ is loaded
+- Check which modules are present
+- Check if passing ~-p~ multiple times is allowed
+** Nix with Scripts
+#+BEGIN_SRC bash :eval never
+#! /usr/bin/env nix-shell
+#! nix-shell -i python3 -p "python3.withPackages(ps: [ps.numpy])"
+
+import numpy
+
+print(numpy.__version__)
+#+END_SRC
+#+ATTR_REVEAL: :frag appear
+#+begin_src bash
+chmod +x nixnp.sh
+./nixnp.sh
+#+end_src
+*** Example: Astroid Poll
+#+begin_src bash
+#!/usr/bin/env nix-shell
+#!nix-shell -i python3 -p "python38.withPackages(ps: [ ps.sh ])" -p lieer
+
+from pathlib import Path
+import sh
+# For generic IMAP maildirs
+ISYNC_LABELS = ["rog32"]
+for isync in ISYNC_LABELS:
+    sh.mbsync("-V",isync,_bg=True)
+# Gmaileer
+GMAIL_IDENTIFIERS = ["gmail", "ieee"]
+path = Path(r"/mail/")
+for dirs in path.iterdir():
+    if dirs.is_dir():
+        for gmi in GMAIL_IDENTIFIERS:
+            if gmi in dirs.name:
+                print(f"Syncing {dirs.name}")
+                sh.gmi("sync", _cwd=dirs, _fg=True)
+#+end_src
+** Purity
+#+begin_leftcol
+#+BEGIN_SRC bash :eval never
+nix-shell -p python36 --pure
+#+END_SRC
+
+#+ATTR_REVEAL: :frag appear
+- Why?
+- What do we solve with this?
+#+end_leftcol
+#+begin_rightcol
+#+caption: Stateless builds from https://slides.com/garbas/mozilla-all-hands-london-2016#/7/0/3
+[[file:images/A_screenshot/2020-05-22_23-57-17_screenshot.png]]
+#+end_rightcol
+** Shell in a File
+#+begin_leftcol
+#+BEGIN_SRC nix :tangle $HOME/testNix/shell.nix
+with import <nixpkgs> {};
+
+let
+  pythonEnv = python35.withPackages (ps: [
+    ps.numpy
+    ps.toolz
+  ]);
+in mkShell {
+  buildInputs = [
+    pythonEnv
+    which
+  ];}
+#+END_SRC
+#+end_leftcol
+#+begin_rightcol
+#+ATTR_REVEAL: :frag appear
+- What *tools* are we adding?
+- What *environment* are we using?
+#+end_rightcol
+** Nix Python Expressions I
+#+begin_leftcol
+#+BEGIN_SRC nix :eval never
+f90wrap = self.buildPythonPackage rec {
+  pname = "f90wrap";
+  version = "0.2.3";
+  src = pkgs.fetchFromGitHub {
+    owner = "jameskermode";
+    repo = "f90wrap";
+    rev = "master";
+    sha256 = "0d06nal4xzg8vv6sjdbmg2n88a8h8df5ajam72445mhzk08yin23";
+  };
+  buildInputs = with pkgs; [ gfortran stdenv ];
+#+END_SRC
+#+end_leftcol
+#+begin_rightcol
+#+end_rightcol
+#+ATTR_REVEAL: :frag appear
+- The self portion is from overriding the python environment
+#+ATTR_REVEAL: :frag appear
+- We will dispense with this later
+** Nix Python Expressions II
+#+begin_leftcol
+#+BEGIN_SRC nix :eval never
+  propagatedBuildInputs = with self; [
+    setuptools
+    setuptools-git
+    wheel
+    numpy
+  ];
+  preConfigure = ''
+    export F90=${pkgs.gfortran}/bin/gfortran
+  '';
+  doCheck = false;
+  doInstallCheck = false;
+};
+#+END_SRC
+#+end_leftcol
+#+begin_rightcol
+#+end_rightcol
+#+ATTR_REVEAL: :frag appear
+- More details here: https://rgoswami.me/posts/ccon-tut-nix/
+#+ATTR_REVEAL: :frag appear
+- ~propagatedBuildInputs~ are for the python packages
+** Friendly Nix
+#+begin_leftcol
+#+BEGIN_SRC bash
+nix-env -i nox
+nox lieer
+#+END_SRC
+
+#+DOWNLOADED: screenshot @ 2021-05-29 05:59:23
+[[file:images/Friendly_Nix/2021-05-29_05-59-23_screenshot.png]]
+#+end_leftcol
+#+begin_rightcol
+#+ATTR_REVEAL: :frag appear
+- Niv :: For pinning packages
+#+ATTR_REVEAL: :frag appear
+- Nox :: Interactive package management
+#+ATTR_REVEAL: :frag appear
+- [[https://github.com/target/lorri/][Lorri]] :: For automatically reloading environments
+#+ATTR_REVEAL: :frag appear
+- Mach-Nix :: For working with Python
+#+end_rightcol
+
+** Pinning Nixpkgs
+#+begin_src bash
+niv init
+#+end_src
+#+begin_src json
+{
+    "nixpkgs": {
+        "branch": "release-20.03",
+        "description": "Nix Packages collection",
+        "homepage": "",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "1db42b7fe3878f3f5f7a4f2dc210772fd080e205",
+        "sha256": "05k9y9ki6jhaqdhycnidnk5zrdzsdammbk5lsmsbz249hjhhgcgh",
+        "type": "tarball",
+        "url": "https://github.com/NixOS/nixpkgs/archive/.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    }
+}
+#+end_src
+* Replacing Conda
+** I: Variables
+#+begin_leftcol
+#+begin_src nix
+let
+  sources = import ./nix/sources.nix;
+  pkgs = import sources.nixpkgs { };
+  mach-nix = import (builtins.fetchGit {
+    url = "https://github.com/DavHau/mach-nix/";
+    ref = "refs/tags/3.3.0";
+  }) {
+    # optionally bring your own nixpkgs
+    pkgs = pkgs;
+    # optionally specify the python version
+    python = "python38";
+  };
+#+end_src
+#+end_leftcol
+#+begin_rightcol
+#+end_rightcol
+#+ATTR_REVEAL: :frag appear
+- Note our definition of ~mach-nix~
+#+ATTR_REVEAL: :frag appear
+- Best practices involve ~niv~ pinned sources
+** II: Customizing Python
+#+begin_src nix
+  customPython = mach-nix.mkPython {
+    requirements = builtins.readFile ./requirements.txt;
+    providers = {
+      _default = "nixpkgs,wheel,sdist";
+      pytest = "nixpkgs";
+    };
+    pkgs = pkgs;
+  };
+in pkgs.mkShell { buildInputs = with pkgs; [ customPython ]; }
+#+end_src
+#+ATTR_REVEAL: :frag appear
+#+begin_src nix
+    overrides_pre = [
+      (pythonSelf: pythonSuper: {
+        pytest = pythonSuper.pytest.overrideAttrs (oldAttrs: {
+          doCheck = false;
+        });
+        f90wrap = pythonSelf.buildPythonPackage rec {...};
+      })
+    ];
+#+end_src
+#+ATTR_REVEAL: :frag appear
+- More details here: https://rgoswami.me/posts/mach-nix-niv-python/
+* Testing and Continuous Integration
+** Testing Frameworks
+#+begin_leftcol
+#+ATTR_REVEAL: :frag appear
+- ~Python~ has great testing frameworks
+  + ~pytest~, ~hypothesis~, etc.
+#+ATTR_REVEAL: :frag appear
+- *Unit tests* are the first layer
+  + Ensure each function outputs as expected
+#+ATTR_REVEAL: :frag appear
+- *Integration tests* are for workflows
+  + Ensure each series of tasks connect correctly
+#+ATTR_REVEAL: :frag appear
+#+begin_src ini
+[tool.poetry.dev-dependencies]
+check-manifest = "*"
+pytest = "^4.6"
+pytest-datadir = "^1.3.1"
+#+end_src
+#+end_leftcol
+#+begin_rightcol
+#+ATTR_REVEAL: :frag appear
+#+begin_src python
+@pytest.fixture(scope="session")
+def mult_xyz(tmpdir_factory):
+    """Copies folders and fixes input file paths"""
+    dat = tmpdir_factory.mktemp("data")
+    shutil.copytree(DATADIR, dat,
+                    dirs_exist_ok=True)
+    with open(f"{dat}/orcaMultxyz.yml") as mxyz:
+        t = yaml.full_load(mxyz)
+        t["xyz"] = f"{dat}/{t['xyz']}"
+        fn = Path(dat / "omult.yml")
+        fn.write_text(yaml.dump(t))
+    return fn
+#+end_src
+#+ATTR_REVEAL: :frag appear
+#+begin_src bash
+. tree -L 2 .
+├── basejob.sh
+├── expmult.yml
+├── orcaMultxyz.yml
+└── xyzdat
+    ├── ch3.xyz
+    ├── ch3oh_dimer.xyz
+    ├── ch3oh_single.xyz
+    └── h2inp.xyz
+1 directory, 7 files
+#+end_src
+#+end_rightcol
+** Continuous Integration
+#+ATTR_REVEAL: :frag appear
+- No one likes switching computers to test
+  + MacOS, Windows (WSL often), Many Linux distributions
+#+ATTR_REVEAL: :frag appear
+- Some tests run for a long time
+  + Less attractive locally
+    - ~nixpkgs~ can take over a day!
+#+ATTR_REVEAL: :frag appear
+- There are far too many options nowadays
+  + Wercker, +Travis CI+, Shippable, GitLab CI, _Github Actions_
+#+ATTR_REVEAL: :frag appear
+- Mostly transient ~docker~ or ~nix~ based systems
+  + Setup can be annoying without ~nix~
+** Github Actions
+#+begin_leftcol
+#+ATTR_REVEAL: :frag appear
+- [[https://github.com/nektos/act#installation][act allows]] local tests
+#+ATTR_REVEAL: :frag appear
+#+begin_src yaml
+name: Test theme
+on:
+  push:
+    branches: [src]
+  pull_request:
+    branches: [src]
+# every day https://crontab.guru/
+  schedule:
+    - cron: "0 0 * * *"
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+#+end_src
+#+end_leftcol
+#+begin_rightcol
+#+ATTR_REVEAL: :frag appear
+#+begin_src yaml
+steps:
+- uses: actions/checkout@v2
+- uses: cachix/install-nix-action@v12
+  with:
+  nix_path: nixpkgs=channel:nixos-unstable
+- name: Get and initialize binary cache
+  run: |
+   nix-env -iA cachix -f \
+   https://cachix.org/api/v1/install
+   cachix use hello-friend-ng-hz
+- name: Test Build
+  run: nix-shell --run \
+  "hugo -s exampleSite --themesDir=../.."
+- name: Cache Nix Results
+  env:
+  authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+  cachixName: hello-friend-ng-hz
+  run: |
+    cachix authtoken $authToken
+    nix-store -qR \
+    --include-outputs $(nix-instantiate shell.nix) \
+    | cachix push $cachixName
+#+end_src
+#+end_rightcol
+* Conclusions
+** Omitted Topics
+#+ATTR_REVEAL: :frag appear
+- NUR :: Nix user repository for custom packages
+#+ATTR_REVEAL: :frag appear
+- Nix and HPC systems :: ~socat~ madness
+#+ATTR_REVEAL: :frag appear
+- Nix Flakes :: Standardizing ~niv~
+#+ATTR_REVEAL: :frag appear
+#+ATTR_HTML: :width 60% :height 60%
+[[file:images/A_screenshot/2020-05-22_23-55-07_screenshot.png]]
+** Further Resources
+#+ATTR_REVEAL: :frag appear
+- [[https://rgoswami.me/tags/nix/][My Nix Posts]] :: I write about ~nix~ pretty often
+  + For websites
+  + For documentation
+  + For languages
+#+ATTR_REVEAL: :frag appear
+- [[https://nixos.org/nixos/nix-pills/why-you-should-give-it-a-try.html][Nix Pills]] :: An introduction to the expression language
+#+ATTR_REVEAL: :frag appear
+- [[https://www.tweag.io/blog/2020-05-25-flakes/][Introductory Flakes]] :: The future of standard ~nixpkgs~
+* The End
+** Thanks!
+:PROPERTIES:
+:reveal_background: #005ab6
+:END:
+
+# Local Variables:
+# indent-tabs-mode: nil
+# org-src-preserve-indentation: t
+# End:
