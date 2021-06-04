@@ -3779,6 +3779,7 @@ Since we want to stick to an external template defined in ~foo~ *and no other pa
 #+BEGIN_SRC emacs-lisp :exports code  :results none :eval never
 ;; #+BEGIN_SRC emacs-lisp :exports none  :results none :eval always
 (setq org-latex-packages-alist 'nil)
+(setq org-latex-minted-options 'nil) ;; Separately nullify minted
 ;; #+END_SRC
 #+END_SRC
 *** Pretty Packages
