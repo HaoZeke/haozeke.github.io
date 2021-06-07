@@ -9279,6 +9279,8 @@ For the rest of this post I'll assume everyone is working with a set of ~dots~ [
 export mydots="$HOME/Git/Github/Dotfiles"
 mkdir -p $mydots
 git clone git@github.com/HaoZeke/Dotfiles $mydots
+cd $mydots
+git checkout bombadil
 bombadil install -c "$mydots/bombadil.toml"
 #+end_src
 
