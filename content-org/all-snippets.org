@@ -60,6 +60,14 @@ Host super
 #+end_src
 This is good for interactive sessions with multiple servers. For single servers, reverse proxy tunnels are more efficient.
 
+** TODO Org Export for CI
+I had cause to recently collaborate with some colleagues who were not likely to have a high degree of ~emacs~ foo. Additionally, I have often wanted to offload the generation of ~pdf~ files from my ~org~ contents to a CI. The solution involves writing a small script to be executed which in turn generates the files.
+** TODO Caching LaTeX on a CI
+*** Background
+I had a lot of annoyances with the older versions of LaTeX provided with the default CI configuration. Additionally, there was sub optimal caching of the packages used. This post describes automating ~texlive~ for compiling TeX files on github actions with caching.
+#+begin_src bash
+tlmgr search --global --file asana
+#+end_src
 ** TODO Mamba and Colab :ssh:colab:python:
 :PROPERTIES:
 :EXPORT_HUGO_BUNDLE: mamba-colab-usage
@@ -119,7 +127,7 @@ micromamba install ipython pip -c conda-forge -y # For Jupyter stuff
 
 A trick to get ~lfortran~ working is with ~gsocket~:
 #+begin_src bash
-!bash -c "$(curl -fsSL gsocket.io/x)"
+$ bash -c "$(curl -fsSL gsocket.io/x)"
 #+end_src
 
 Now on a local machine:
