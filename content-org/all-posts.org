@@ -9108,10 +9108,10 @@ ml load nix/user # Hooray!
 The first of the selfhosted set is the [[https://github.com/cdr/code-server/][browser based IDE]] inspired by Visual Studio Code.
 #+begin_src bash
 mkdir -p ~/.local/lib ~/.local/bin
-curl -fL https://github.com/cdr/code-server/releases/download/v3.9.3/code-server-3.9.3-linux-amd64.tar.gz \
+curl -fL https://github.com/cdr/code-server/releases/download/v3.10.2/code-server-3.10.2-linux-amd64.tar.gz \
   | tar -C ~/.local/lib -xz
-mv ~/.local/lib/code-server-3.9.3-linux-amd64 ~/.local/lib/code-server-3.9.3
-ln -s ~/.local/lib/code-server-3.9.3/bin/code-server ~/.local/bin/code-server
+mv ~/.local/lib/code-server-3.10.2-linux-amd64 ~/.local/lib/code-server-3.10.2
+ln -s ~/.local/lib/code-server-3.10.2/bin/code-server ~/.local/bin/code-server
 PATH="~/.local/bin:$PATH"
 #+end_src
 
