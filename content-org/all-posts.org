@@ -10058,6 +10058,21 @@ Anything on this site [[https://rgoswami.me/tags/nix/][tagged with Nix]] or [[ht
 #+BEGIN_EXPORT html
 <script async class="speakerdeck-embed" data-id="4f19dd9e758448aeb44f20cd286afe9a" data-ratio="1.37081659973226" src="//speakerdeck.com/assets/embed.js"></script>
 #+END_EXPORT
-** LATER Thoughts
+** Thoughts
+I gave the workshop twice and it was rather well attended both times. The speaker presentation room in Oh Yay was very enjoyable and improved the interactivity a lot.
 
 [fn:officialsite] One location I am going to be able to keep track of
+* TODO Niv and Overlays
+#+begin_quote
+Pinning overlays without flakes using ~ bombadil~ for Darwin
+#+end_quote
+** Background
+~emacs~ on Big Sur, both the Macport version and the standard version flicker a lot. This is my attempt to add a patchy fix. Much of this is a straightforward adaptation of [[https://github.com/twlz0ne/nix-gccemacs-darwin][this repository]] and [[https://dnr.im/tech/nix-overlays/][this blog post]].
+** Setting Overlays
+** Building Emacs
+We will obtain the sources using ~niv~.
+#+begin_src bash
+niv init -b master # nixpkgs
+niv add emacs-mirror/emacs -b feature/native-comp-macos-fixes -n emacs-nativecomp # emacs fixes
+niv add nix-community/emacs-overlay -b master -n emacs-overlay # upstream builder
+#+end_src
