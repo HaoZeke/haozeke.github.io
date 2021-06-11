@@ -19,7 +19,7 @@
   "dependencies": {
     "autoprefixer": "^10.2.5",
     "npm-check-updates": "^11.5.11",
-    "postcss": "^8.2.15",
+    "postcss": "^8.3.2",
     "postcss-cli": "^8.3.1"
   }
 }
