@@ -569,3 +569,22 @@
   langid = {english},
   number = {5}
 }
+
+@article{certikDftatomRobustGeneral2013,
+  title = {Dftatom: {{A}} Robust and General {{Schrödinger}} and {{Dirac}} Solver for Atomic Structure Calculations},
+  shorttitle = {Dftatom},
+  author = {Čertík, Ondřej and Pask, John E. and Vackář, Jiří},
+  date = {2013-07-01},
+  journaltitle = {Computer Physics Communications},
+  shortjournal = {Computer Physics Communications},
+  volume = {184},
+  pages = {1777--1791},
+  issn = {0010-4655},
+  doi = {10.1016/j.cpc.2013.02.014},
+  url = {https://www.sciencedirect.com/science/article/pii/S0010465513000714},
+  urldate = {2021-04-26},
+  abstract = {A robust and general solver for the radial Schrödinger, Dirac, and Kohn–Sham equations is presented. The formulation admits general potentials and meshes: uniform, exponential, or other defined by nodal distribution and derivative functions. For a given mesh type, convergence can be controlled systematically by increasing the number of grid points. Radial integrations are carried out using a combination of asymptotic forms, Runge–Kutta, and implicit Adams methods. Eigenfunctions are determined by a combination of bisection and perturbation methods for robustness and speed. An outward Poisson integration is employed to increase accuracy in the core region, allowing absolute accuracies of 10−8 Hartree to be attained for total energies of heavy atoms such as uranium. Detailed convergence studies are presented and computational parameters are provided to achieve accuracies commonly required in practice. Comparisons to analytic and current-benchmark density-functional results for atomic number Z=1–92 are presented, verifying and providing a refinement to current benchmarks. An efficient, modular Fortran 95 implementation, dftatom, is provided as open source, including examples, tests, and wrappers for interface to other languages; wherein particular emphasis is placed on the independence (no global variables), reusability, and generality of the individual routines. Program summary Program title:dftatom Catalogue identifier: AEPA\_v1\_0 Program summary URL:http://cpc.cs.qub.ac.uk/summaries/AEPA\_v1\_0.html Program obtainable from: CPC Program Library, Queen’s University, Belfast, N. Ireland Licensing provisions: MIT license No. of lines in distributed program, including test data, etc.: 14122 No. of bytes in distributed program, including test data, etc.: 157453 Distribution format: tar.gz Programming language: Fortran 95 with interfaces to Python and C. Computer: Any computer with a Fortran 95 compiler. Operating system: Any OS with a Fortran 95 compiler. RAM: 500~MB Classification: 2.1. External routines: Numpy (http://www.numpy.org/) and Cython (http://cython.org/) Nature of problem: Solution of the Schrödinger, Dirac, and Kohn–Sham equations of Density Functional Theory for isolated atoms. Solution method: Radial integrations are carried out using a combination of asymptotic forms, Runge–Kutta, and implicit Adams methods. Eigenfunctions are determined by a combination of bisection and perturbation methods. An outward Poisson integration is employed to increase accuracy in the core region. Self-consistent field equations are solved by adaptive linear mixing. Restrictions: Spherical symmetry Unusual features: Radial integrators work for general potentials and meshes. No restriction to Coulombic or self-consistent potentials; no restriction to uniform or exponential meshes. Outward Poisson integration. Fallback to bisection for robustness. Running time: For uranium, non-relativistic density functional calculation execution time is around 0.6~s for 10−6 a.u. accuracy in total energy on an Intel Core i7 1.46~GHz processor.},
+  keywords = {Atomic structure,Density functional theory,Dirac equation,Electronic structure,Fortran 95,Kohn–Sham equations,Schrödinger equation,Shooting method},
+  langid = {english},
+  number = {7}
+}

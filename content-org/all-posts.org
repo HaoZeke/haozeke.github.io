@@ -10076,3 +10076,149 @@ niv init -b master # nixpkgs
 niv add emacs-mirror/emacs -b feature/native-comp-macos-fixes -n emacs-nativecomp # emacs fixes
 niv add nix-community/emacs-overlay -b master -n emacs-overlay # upstream builder
 #+end_src
+
+* DONE GSoC21 W1: LFortran Kickoff :@notes:gsoc21:fortran:rambling:
+CLOSED: [2021-06-12 Sat 00:57]
+:PROPERTIES:
+:EXPORT_FILE_NAME: gsoc21-w1
+:EXPORT_HUGO_PANDOC_CITATIONS: t
+:EXPORT_BIBLIOGRAPHY: biblio/refs.bib
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
+:END:
+#+begin_quote
+Charting paths towards concrete ~lfortran~ usage
+#+end_quote
+** Background
+As mentioned in [[Fortran, GSoC21 and Me][an earlier post]], I have had the immense pleasure of continuing
+development of the disruptive ~lfortran~ compiler under the aegis of the [[https://fortran-lang.org/][Fortran
+Lang organization]], financed by the [[https://summerofcode.withgoogle.com/projects/#5790375215628288][Google Summer of Code]] and mentored ably by
+[[https://ondrejcertik.com/][Ondrej Certik]]. A rather interesting consequence of this is that we are strongly
+encouraged to write a precis of our activities each week. This is mine, given
+that the clock starting winding down ([[https://developers.google.com/open-source/gsoc/timeline][full timeline]]) last Monday.
+
+I will workshop a few styles of getting maximal information into the post while
+ensuring the bulk of the technical details and other related notes makes its way
+into the appropriate channels, that is, into the ~lfortran~ [[https://gitlab.com/lfortran/lfortran][project repository]]
+and [[https://docs.lfortran.org/][documentation]].
+** Logistics
+- I met with Ondrej on Thursday, though our standing arrangement is for Tuesday
+  + Meeting earlier in the week helps reduce chances of veering off course
+  + Though an equitable distribution of work is assumed, weekends tend to be
+    more conductive to bursts of effort
+- We decided to release progress reports every Friday night for community oversight and approval
+  + Slight discontinuity here, in that the weekend remains, but the idea is to take community suggestions per week as well
+- We discussed the work completed by my fellow GSoC student developers over the community bonding period
+- Discussed the current [[https://gitlab.com/lfortran/lfortran/-/issues/313][minimum viable project issue]] relating to SNAP [fn:whatsnap], the [[https://github.com/lanl/SNAP][SN (Discrete Ordinates) Application Proxy]] from LANL
+  + Also looked into starting work on [[https://gitlab.com/lfortran/lfortran/-/issues/319][the issue]] relating to ~dftatom~ which forms the crux of my project
+- Determined approaches towards the final goal
+  + Discussed the possibility of making a first pass in the ~C++~ backend instead of the ~LLVM~ one
+    - Con :: Is not very fast
+    - Pro :: Is very easy
+- Notably discussed adding generic types, e.g. ~type(*)~ to *internal* routines for the compiler
+  + Saves a lot of boilerplate code
+  + Could start with a simple ~fypp~ based approach (similar to ~fpm~)
+  + Should be fine as long as users do not start using them
+
+As per my initial project plan, the goal for the week (in progress) is the
+*Enumeration of language features used in the dftatoms project and cross
+correlating it with implemented features in LFortran*. To this, we decided that
+as the AST works well enough, it would be better to follow in the footsteps of
+the SNAP issue and determine the dependency tree, before working through it
+steadily.
+** Setting up LFortran and dftatom
+One approach to doing this was naturally, to compile everything by hand,
+painstakingly using the logical dependency graph which comes with the
+repository. Note that for completion (and to add unnecessary gravitas to this
+post), we include *once* the setup details for ~lfortran~ and ~dftatom~ which
+have been included verbatim from the documentation [fn:nixissue].
+**** LFortran
+On Linux systems, I use ~nix~ (naturally). On a Mac, ~nix~ has unresolved issues
+upstream, so it is easier to use ~micromamba~ ([[https://mamba.readthedocs.io/en/latest/micromamba.html][here]]) or some other ~anaconda~ helper.
+#+begin_src bash
+# Linux
+git clone git@gitlab.com:lfortran/lfortran
+cd lfortran
+nix-shell ci/shell.nix
+./build0.sh
+./build1.sh
+export PATH=$(pwd)/inst/bin/:$PATH
+./test_lfortran_cmdline
+./run_tests.py
+# MacOS
+micromamba create -p ./tmp llvmdev=11.0.1 bison=3.4 re2c python cmake make toml -c conda-forge
+micromamba activate tmp
+./build0.sh
+cmake -DCMAKE_BUILD_TYPE=Debug -DWITH_LLVM=yes -DCMAKE_INSTALL_PREFIX=`pwd`/inst .
+make -j$(nproc)
+ctest
+./run_tests.py
+#+end_src
+**** dftatom
+Another post can go over why ~dftatom~ was chosen as a benchmark code, but to
+keep things short, it is well written, has a great ~cython~ wrapper, is fast,
+and is useful cite:certikDftatomRobustGeneral2013. Rather than write a ~nix~
+shell for it though, I opted to get started with the ~anaconda~ set of
+instructions to test with.
+#+begin_src bash
+git clone git@github.com:certik/dftatom
+cd dftatom
+micromamba create -p ./tmp cython numpy python=3.8 pytest hypothesis -c conda-forge
+cmake -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX -DCMAKE_PREFIX_PATH=$PREFIX -DWITH_PYTHON=yes .
+make
+make install
+PYTHONPATH=. python examples/atom_U.py
+#+end_src
+Later in the week (over the weekend) I might add some quality of life commits like a ~nix~ environment.
+** Testing the AST
+The logic behind the AST test is that if we can parse each file with ~lfortran~
+and write it back out into the ~f90~ files which can then be compiled by
+~gfortran~ and then subsequently pass our tests; then the AST is roughly
+alright.
+
+Naturally this still [[file:][strips comments]] and therefore ~openmp~ directives, of which
+~dftatom~ thankfully has none.
+
+Now it so happens that this is fairly trivial with ~lfortran~ and ~bash~.
+#+begin_src bash
+cd $DFTATM/src # src under dftatom repo
+find . -name "*.f90" -exec lfortran fmt -i {} \;
+# Rebuild and test with gfortran
+#+end_src
+
+This worked well. No glaring errors yet. Which brings us to the ASR representation [fn:whatastasr].
+** Testing the ASR
+To start testing the ASR with ~lfortran -c fname.f90 -o fname.o~ and variations thereof, a good starting point is to set up a dependency graph. A logical one is provided in the repository itself as seen in Fig. [[dftatomgit]].
+
+#+name: dftatomgit
+#+caption: ~dftatom~ logical layout
+file:images/dftatom_depgraph_git.png
+
+However, this is not exactly the order in which things are built. Thankfully,
+the fantastic ~fortdepend~ tool [[https://github.com/ZedThree/fort_depend.py][from Peter Hill]] can speed things up
+considerably.
+
+#+begin_src bash
+# in the conda environment
+pip install fortdepend
+cd $DFTATM/src
+fortdepend -o Makefile.dep
+#+end_src
+
+This can and was then manually inspected and marshalled by order of dependencies
+into [[https://gitlab.com/lfortran/lfortran/-/issues/319][the issue]]. Here we will conclude with the visual details instead of dumping
+the entire dependency tree.
+
+#+name: dftatomgit
+#+caption: ~dftatom~ compilation dependency graph
+file:images/dftatom_depgraph_fdep.svg
+
+** Conclusions
+That leads us to the end of this week's effectively mid-week update. For the
+remainder of the week, until the meeting with Ondrej I shall work through parts
+of the dependency graph and write some more about ~dftatom~ and the ~lfortran~
+terminology which will be used for the remaider of the project.
+
+
+[fn:nixissue] Part of which [[https://gitlab.com/lfortran/lfortran/-/merge_requests/694][I added earlier]] and [[https://gitlab.com/lfortran/lfortran/-/merge_requests/975][fixed a typo]] in now
+[fn:whatsnap] *Not* the Spectral Neighbor Analysis Potential implemented in LAMMPS
+[fn:whatastasr] Should also add a post on standard terminology which will come up a lot
