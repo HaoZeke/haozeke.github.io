@@ -10156,7 +10156,7 @@ ctest
 **** dftatom
 Another post can go over why ~dftatom~ was chosen as a benchmark code, but to
 keep things short, it is well written, has a great ~cython~ wrapper, is fast,
-and is useful cite:certikDftatomRobustGeneral2013. Rather than write a ~nix~
+and is useful @certikDftatomRobustGeneral2013. Rather than write a ~nix~
 shell for it though, I opted to get started with the ~anaconda~ set of
 instructions to test with.
 #+begin_src bash
