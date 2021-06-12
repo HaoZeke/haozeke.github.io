@@ -26,14 +26,6 @@ jobs:
           nix-env -iA cachix -f https://cachix.org/api/v1/install
           cachix use rgoswamime
 
-      - name: GitHub native caching
-        uses: actions/cache@v2
-        with:
-          path: |
-            /nix/store
-            /tmp/nix/store
-          key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
-
       - name: Build
         run: nix-shell --run "rake hugoBuild"
 
