@@ -31,7 +31,7 @@ jobs:
           path: |
             /nix/store
             /tmp/nix/store
-          key: ${{ runner.os }}-${{ hashFiles('shell.nix', 'nix')}}
+          key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
 
       - name: Build
         run: nix-shell --run "rake hugoBuild"
