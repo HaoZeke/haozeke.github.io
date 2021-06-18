@@ -10216,9 +10216,194 @@ file:images/dftatom_depgraph_fdep.svg
 That leads us to the end of this week's effectively mid-week update. For the
 remainder of the week, until the meeting with Ondrej I shall work through parts
 of the dependency graph and write some more about ~dftatom~ and the ~lfortran~
-terminology which will be used for the remaider of the project.
+terminology which will be used for the remainder of the project.
 
 
 [fn:nixissue] Part of which [[https://gitlab.com/lfortran/lfortran/-/merge_requests/694][I added earlier]] and [[https://gitlab.com/lfortran/lfortran/-/merge_requests/975][fixed a typo]] in now
 [fn:whatsnap] *Not* the Spectral Neighbor Analysis Potential implemented in LAMMPS
 [fn:whatastasr] Should also add a post on standard terminology which will come up a lot
+
+* DONE GSoC21 W2: LFortran Unraveling :@notes:gsoc21:fortran:rambling:
+CLOSED: [2021-06-18 Fri 18:59]
+:PROPERTIES:
+:EXPORT_FILE_NAME: gsoc21-w2
+:EXPORT_HUGO_PANDOC_CITATIONS: t
+:EXPORT_BIBLIOGRAPHY: biblio/refs.bib
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
+:END:
+#+begin_quote
+Delving into language standards and back-ends for ~lfortran~
+#+end_quote
+** Background
+As discussed in a previous post in this series, I have been spending roughly
+half of each working day with LFortran as part of the [[https://summerofcode.withgoogle.com/projects/#5790375215628288][2021 Google Summer of Code]]
+under the [[https://fortran-lang.org/][fortran-lang organization]], mentored by [[https://ondrejcertik.com/][Ondrej Certik]].
+*** Series
+This post is the second in a series based around my weekly GSoC21 project check-ins.
+1. [[GSoC21 W1: LFortran Kickoff][GSoC21 W1: LFortran Kickoff]]
+2. *GSoC21 W2: LFortran Unraveling* <-- You are here!
+** Logistics
+Some of the meeting points are to be expanded on below.
+- Met with Ondrej on Tuesday, as discussed previously
+  + Talked about language server implementations
+    - Looked into ~rtags~ and generating a [[https://clang.llvm.org/docs/JSONCompilationDatabase.html][compilation-database]]
+    - Discussed how the C++ concept of having file based units makes this simpler than the Fortran form, which recognizes no file based program units
+- Talked about the status of the different back-ends
+- Discussed [[https://mlir.llvm.org/][LLVM]] and [[https://mlir.llvm.org/][MLIR]], in the context of Flang (the ~f18~ compiler)
+  + Also briefly touched upon ~legacy-flang~ and historical issues
+- Discussed standardization of the mod-files
+  + Decided this is not a good idea, because a lot of build systems expect Fortran compilers to generate ~.mod~ files, even if they are completely incompatible
+  + The standard does not specify what should be contained in a ~mod~ file
+  + Every ~mod~ file of every compiler is unique and needs to be handled separately
+  + The goal (of this project too) is to handle at the very least conversion of ~gfortran~ module files to ~lfortran~ module files
+** Overview
+For the second week of my project on getting ~lfortran~ to compile ~dftatom~ and
+in general form a usable compiler ecosystem to facilitate greater adoption in
+the community, I opted to take a bit of a step back and delve into the
+historical evolution of both the Fortran standard itself @lyonUsingAnsFortran1980 and also the compiler
+ecosystem. This was also in no small part due to the fact that I ended up moving
+during this week, which forced me to spend a lot of time cleaning and playing
+with adult LEGO [fn:whatlego]. This naturally left me with plenty of time to
+both participate [fn:silently] in the [[https://www.youtube.com/channel/UCTYRAlVmMCGGcrMkKxQLurw][monthly Fortran-lang call]] (which was rather
+explosive [fn:whatexplosive]) and also contemplate the overall ecosystem of the
+standards committee and compilers. Many more issues were set up and will be
+completed over the weekend.
+*** Merge Requests
+- [[https://gitlab.com/lfortran/lfortran/-/merge_requests/985][Minor installation bug (985)]] :: Fixed a small issue with the ~cmake~ files
+*** Assigned Issues
+- [[https://gitlab.com/lfortran/lfortran/-/issues/357][Handling ~kind~ in the ASR (357)]] :: A straightforward correction to make the ASR handle more common, but non-standard use cases
+- [[https://gitlab.com/lfortran/lfortran/-/issues/355][GFortran Module v15 support (355)]] :: Currently only supports v14
+- [[https://gitlab.com/lfortran/lfortran/-/issues/354][Runtime Math and the CPP back-end (354)]] :: Might take a little longer, does not compile at the moment
+*** Additional Tasks
+I intend to write more about the Fortran standard and go through more of the
+compiler code I can get my hands on, since that should give me a better handle
+on the different way the standards have been implemented (and augmented!). As
+part of this, I'll probably handle some of [[https://gitlab.com/lfortran/lfortran/-/issues/350][issue 350]]; regarding the main
+~lfortran.org~ site.
+** LFortran and Back-ends
+*** LLVM
+This is the default, and the most performance oriented. It is however, slightly
+more complicated to extend due to the intricacies of the LLVM syntax.
+*** C++
+This is an older back-end, and can be selected by passing the ~--backend=cpp~
+flag to ~lfortran~ (e.g. with ~FFLAGS~). This is easier to work with in that
+many features boil down to ~stdlib~ calls. However, this back-end requires
+KOKKOS. It also has uglier error handling as shown in Fig. [[fig:llvmcpp]].
+
+It is however, still fairly straightforward to work with.
+#+begin_src bash
+cd $LFROOT # LFortran root
+export LFORTRAN_KOKKOS_DIR=$LFROOT/ext/kokkos
+mkdir extsrc && cd extsrc
+gh repo clone kokkos/kokkos
+cd kokkos && mkdir build && cd build
+cmake -DCMAKE_INSTALL_PREFIX=$LFORTRAN_KOKKOS_DIR -DKokkos_ARCH_HSW=On ..
+make -j$(nproc)
+make install
+cd $LFORTRAN_KOKKOS_DIR # Need to make a symlink
+ln -sf lib64/ lib
+cd ../../examples/project1
+FC=lfortran FFLAGS="--backend=cpp" cmake .
+make
+./project1 # Profit
+#+end_src
+
+#+DOWNLOADED: screenshot @ 2021-06-16 20:01:03
+#+name: fig:llvmcpp
+#+caption: Contrasting backends
+[[file:images/C++/2021-06-16_20-01-03_screenshot.png]]
+- GFortran Module version 15 support
+- Extend the handling of constant integers to handle more than just logical
+- Flang was first a summer project, then in 2017 the so called legacy flag was published, which was so bad Ondrej decided to start LFortran
+- Intel doesn't really care
+- Currently LFortran shadows things
+** Inspecting intermediates
+The module files cannot currently be read or queried from ~lfortran~, however a
+representation of what gets compressed into these files can be obtained with the
+~--show-asr~ flag. Additionally, a very ~python~ inspired ~--show-stacktrace~ is
+implemented to help narrow down areas which need to be augmented.
+*** gfortran
+#+begin_src bash
+cd $DFTATM/src
+gfortran -c types.f90
+# Read gfortran module
+zcat types.mod
+# Output
+GFORTRAN module version '15' created from types.f90
+(() () () () () () () () () () () () () () () () () () () () () () () ()
+() () ())
+
+()
+
+()
+
+()
+
+()
+
+()
+
+(2 'dp' 'types' '' 1 ((PARAMETER UNKNOWN-INTENT UNKNOWN-PROC UNKNOWN
+IMPLICIT-SAVE 0 0) () (INTEGER 4 0 0 0 INTEGER ()) 0 0 () (CONSTANT (
+INTEGER 4 0 0 0 INTEGER ()) 0 '8' ()) () 0 () () () 0 0)
+)
+
+('dp' 0 2)
+#+end_src
+*** lfortran
+#+begin_src bash
+cd $DFTATM/src
+lfortran --show-asr -c types.f90
+# Output
+(TranslationUnit (SymbolTable 1 {lfortran_intrinsic_kind: (Module (SymbolTable 4 {dkind: (Function (SymbolTable 5 {r: (Variable 5 r ReturnVar () Default (Integer 4 []) Source Public), x: (Variable 5 x In () Default (Real 8 []) Source Public)}) dkind [(Var 5 x)] [(= (Var 5 r) (ConstantInteger 8 (Integer 4 [])))] (Var 5 r) Intrinsic Public Implementation), kind: (Function (SymbolTable 6 {r: (Variable 6 r ReturnVar () Default (Integer 4 []) Source Public), x: (Variable 6 x In () Default (Logical 4 []) Source Public)}) kind [(Var 6 x)] [(= (Var 6 r) (ConstantInteger 4 (Integer 4 [])))] (Var 6 r) Intrinsic Public Implementation), lkind: (Function (SymbolTable 7 {r: (Variable 7 r ReturnVar () Default (Integer 4 []) Source Public), x: (Variable 7 x In () Default (Logical 4 []) Source Public)}) lkind [(Var 7 x)] [(= (Var 7 r) (ConstantInteger 4 (Integer 4 [])))] (Var 7 r) Intrinsic Public Implementation), selected_int_kind: (Function (SymbolTable 8 {R: (Variable 8 R In () Default (Integer 4 []) Source Public), res: (Variable 8 res ReturnVar () Default (Integer 4 []) Source Public)}) selected_int_kind [(Var 8 R)] [(If (Compare (Var 8 R) Lt (ConstantInteger 10 (Integer 4 [])) (Logical 4 [])) [(= (Var 8 res) (ConstantInteger 4 (Integer 4 [])))] [(= (Var 8 res) (ConstantInteger 8 (Integer 4 [])))])] (Var 8 res) Intrinsic Public Implementation), selected_real_kind: (Function (SymbolTable 9 {R: (Variable 9 R In () Default (Integer 4 []) Source Public), res: (Variable 9 res ReturnVar () Default (Integer 4 []) Source Public)}) selected_real_kind [(Var 9 R)] [(If (Compare (Var 9 R) Lt (ConstantInteger 7 (Integer 4 [])) (Logical 4 [])) [(= (Var 9 res) (ConstantInteger 4 (Integer 4 [])))] [(= (Var 9 res) (ConstantInteger 8 (Integer 4 [])))])] (Var 9 res) Intrinsic Public Implementation), skind: (Function (SymbolTable 10 {r: (Variable 10 r ReturnVar () Default (Integer 4 []) Source Public), x: (Variable 10 x In () Default (Real 4 []) Source Public)}) skind [(Var 10 x)] [(= (Var 10 r) (ConstantInteger 4 (Integer 4 [])))] (Var 10 r) Intrinsic Public Implementation)}) lfortran_intrinsic_kind [] .true.), types: (Module (SymbolTable 2 {dp: (Variable 2 dp Local (FunctionCall 2 kind () [(ConstantReal "0.d0" (Real 4 []))] [] (Integer 4 [])) Parameter (Integer 4 []) Source Public), kind: (ExternalSymbol 2 kind 4 kind lfortran_intrinsic_kind kind Private)}) types [lfortran_intrinsic_kind] .false.)}) [])
+#+end_src
+Note that, ~lfortran~ is expected to eventually interoperate with existing ~mod~ files from compilers like ~gfortran~.
+#+begin_src bash
+lfortran mod --show-asr types.mod
+# Output
+Traceback (most recent call last):
+  File "/build/glibc-2.32/csu/../sysdeps/x86_64/start.S", line 120, in _start()
+  Binary file "/nix/store/hp8wcylqr14hrrpqap4wdrwzq092wfln-glibc-2.32-37/lib/libc.so.6", in __libc_start_main()
+  File "$HOME/Git/Github/Fortran/mylf/src/bin/lfortran.cpp", line 1076, in ??
+    asr = LFortran::mod_to_asr(al, arg_mod_file);
+  File "$HOME/Git/Github/Fortran/mylf/src/lfortran/mod_to_asr.cpp", line 361, in LFortran::mod_to_asr(Allocator&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)
+    return parse_gfortran_mod_file(al, s);
+LFortranException: Only GFortran module version 14 is implemented so far
+#+end_src
+Which is the source of an issue assigned to me.
+** Conclusions
+As I cross my fingers and hope my tenuously tethered wifi is equal to the task of
+uploading this post; I can only hope that the installation of my WiFi on Monday
+goes smoothly enough to be restored to full working capacity for the next week.
+Until then, I shall trawl the code-bases and standards for an inkling of what
+makes compiler design the art form as described in @cooperEngineeringCompiler2011a.
+
+[fn:whatlego] I am convinced the concept behind IKEA and its Icelandic counterpart Rumfatalagerinn is that some people enjoy assembling their furniture the same way kids enjoy LEGO
+[fn:whatexplosive] There were some interesting allegations of the standards committee being far too conservative, though many of the concerns reflect on the dearth of community efforts compared to other languages; Fortran is not after-all coupled to a compiler unlike modern languages like Rust and Julia
+[fn:silently] Owing to the lack of a stable internet I was reduced to text-only participation
+* TODO Compiler Design
+True, from some perspective, it is a race to the end goal of flipping some
+switches at the hardware level (a massive over simplification) but it is in the
+implementation, that poetry can be formulated. Compiler design is like no other
+project I have undertaken. The standard, despite its forbidding length, leaves
+even more unsaid than said. Compilers and their authors, which in this
+happenstance include in some form, me and my fellow GSoC contributors, have the
+unique opportunity to find elegant patterns within the constraints of the
+standard. Like writing a haiku or solving a puzzle, elegance is a core tenet of
+the process. It is not merely enough to brute force a feature into compliance
+with the standard, it must be finessed and provide transparent insights into the
+mind of the programmer. The standards themselves have a symbiotic relationship
+to the compilers, with the committee actively considering extensions introduced
+by compilers for inclusion into future standards.
+
+* TODO A Tourist's Guide to the Fortran Standard :@programming:standards:fortran:
+:PROPERTIES:
+:EXPORT_FILE_NAME: tourist-fortran
+:EXPORT_HUGO_PANDOC_CITATIONS: t
+:EXPORT_BIBLIOGRAPHY: biblio/refs.bib
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
+:END:
+#+begin_quote
+A meandering path through the history of Fortran
+#+end_quote
+** Background
