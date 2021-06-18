@@ -10316,11 +10316,6 @@ make
 #+name: fig:llvmcpp
 #+caption: Contrasting backends
 [[file:images/C++/2021-06-16_20-01-03_screenshot.png]]
-- GFortran Module version 15 support
-- Extend the handling of constant integers to handle more than just logical
-- Flang was first a summer project, then in 2017 the so called legacy flag was published, which was so bad Ondrej decided to start LFortran
-- Intel doesn't really care
-- Currently LFortran shadows things
 ** Inspecting intermediates
 The module files cannot currently be read or queried from ~lfortran~, however a
 representation of what gets compressed into these files can be obtained with the
@@ -10400,6 +10395,11 @@ mind of the programmer. The standards themselves have a symbiotic relationship
 to the compilers, with the committee actively considering extensions introduced
 by compilers for inclusion into future standards.
 
+- GFortran Module version 15 support
+- Extend the handling of constant integers to handle more than just logical
+- Flang was first a summer project, then in 2017 the so called legacy flag was published, which was so bad Ondrej decided to start LFortran
+- Intel doesn't really care
+- Currently LFortran shadows things
 * TODO A Tourist's Guide to the Fortran Standard :@programming:standards:fortran:
 :PROPERTIES:
 :EXPORT_FILE_NAME: tourist-fortran
