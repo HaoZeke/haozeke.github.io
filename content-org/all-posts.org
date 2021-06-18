@@ -10289,10 +10289,12 @@ part of this, I'll probably handle some of [[https://gitlab.com/lfortran/lfortra
 This is the default, and the most performance oriented. It is however, slightly
 more complicated to extend due to the intricacies of the LLVM syntax.
 *** C++
-This is an older back-end, and can be selected by passing the ~--backend=cpp~
-flag to ~lfortran~ (e.g. with ~FFLAGS~). This is easier to work with in that
-many features boil down to ~stdlib~ calls. However, this back-end requires
-KOKKOS. It also has uglier error handling as shown in Fig. [[fig:llvmcpp]].
+This is a newer back-end, perfect for rapid prototyping; and can be selected by
+passing the ~--backend=cpp~ flag to ~lfortran~ (e.g. with ~FFLAGS~). This is
+easier to work with in that many features boil down to ~stdlib~ calls. However,
+this back-end requires KOKKOS. It also has uglier error handling as shown in
+Fig. [[fig:llvmcpp]]. Since this is more attractive as a candidate for the math
+intrinsics as a first approximation, it is of considerable interest to me.
 
 It is however, still fairly straightforward to work with.
 #+begin_src bash
