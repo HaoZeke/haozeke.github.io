@@ -10100,6 +10100,10 @@ I will workshop a few styles of getting maximal information into the post while
 ensuring the bulk of the technical details and other related notes makes its way
 into the appropriate channels, that is, into the ~lfortran~ [[https://gitlab.com/lfortran/lfortran][project repository]]
 and [[https://docs.lfortran.org/][documentation]].
+*** Series
+This post is the first in a series based around my weekly GSoC21 project check-ins.
+1. *GSoC21 W1: LFortran Kickoff* <-- You are here!
+2. [[GSoC21 W2: LFortran Unraveling][GSoC21 W2: LFortran Unraveling]]
 ** Logistics
 - I met with Ondrej on Thursday, though our standing arrangement is for Tuesday
   + Meeting earlier in the week helps reduce chances of veering off course
