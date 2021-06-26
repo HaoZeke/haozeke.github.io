@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Web Development for Physicists</title>
+<meta name="author" content="Rohit Goswami MInstP"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="/Users/rohitgoswami/.config/doom/reveal/rjs/dist/reveal.css"/>
+
+<link rel="stylesheet" href="/Users/rohitgoswami/.config/doom/reveal/rjs/dist/theme/sunblind.css" id="theme"/>
+
+<link rel="stylesheet" href="/Users/rohitgoswami/.config/doom/reveal/extras/oerFragments.css"/>
+
+<link rel="stylesheet" href="/Users/rohitgoswami/.config/doom/reveal/extras/noImgBoxes.css"/>
+
+<link rel="stylesheet" href="/Users/rohitgoswami/.config/doom/reveal/extras/moreCode.css"/>
+
+<link rel="stylesheet" href="/Users/rohitgoswami/.config/doom/reveal/rjs/plugin/accessibility/helper.css"/>
+
+<link rel="stylesheet" href="/Users/rohitgoswami/.config/doom/reveal/rjs/plugin/toc-progress/toc-progress.css"/>
+
+<link rel="stylesheet" href="/Users/rohitgoswami/.config/doom/reveal/rjs/dist/theme/toc-style.css"/>
+
+<link rel="stylesheet" href="/Users/rohitgoswami/.config/doom/reveal/rjs/dist/theme/fonts/source-sans-pro/source-sans-pro.css"/>
+</head>
+<body>
+<div class="line top"></div> <div class="line bottom"></div> <div class="line left"></div> <div class="line right"></div>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide" data-state="no-toc-progress">
+<h1 class="title">Web Development for Physicists</h1><h2 class="author">Rohit Goswami MInstP</h2><p class="date">Created: 2021-06-26 Sat 09:42</p>
+</section>
+
+
+
+
+
+<section>
+<section id="slide-org23a252a" class="first-slide">
+<h2 id="org23a252a">Brief Introduction</h2>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orga05c977">
+<h3 id="orga05c977">Hello!</h3>
+<ul>
+<li>Find me here: <a href="https://rgoswami.me">https://rgoswami.me</a></li>
+<li>Who?
+<ul>
+<li><b>Rohit Goswami</b> MInstP
+<ul>
+<li>Doctoral Researcher, University of Iceland, Faculty of Physical Sciences</li>
+
+</ul></li>
+
+</ul></li>
+
+</ul>
+<div class="leftcol" id="org73c4e5b">
+<p>
+<img src="images/physUoI.png" alt="physUoI.png" />
+<img src="images/IOP-MasterLogo.png" alt="IOP-MasterLogo.png" />
+</p>
+
+</div>
+<div class="rightcol" id="org3dba655">
+
+<div id="org5f81326" class="figure">
+<p><img src="images/rannisLogo.png" alt="rannisLogo.png" />
+</p>
+</div>
+
+<div id="org8ae98d1" class="figure">
+<p><img src="images/Hello!/2021-04-13_02-55-57_screenshot.png" alt="2021-04-13_02-55-57_screenshot.png" width="70%" height="70%" />
+</p>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org5fc8a51">
+<h3 id="org5fc8a51">Logistics</h3>
+<ul class="fragment appear">
+<li>All contents are <a href="https://github.com/HaoZeke/haozeke.github.io">hosted on GitHub</a>
+<ul>
+<li>Generated from <a href="https://github.com/HaoZeke/haozeke.github.io/tree/src/presentations/iopWEBDEV2021">orgmode</a> sources</li>
+<li>Companion <a href="https://rgoswami.me/posts/iop-caps-webdev-2021-meta">post here</a></li>
+
+</ul></li>
+
+</ul>
+<ul class="fragment appear">
+<li>Slides have screenshots of existing sites
+<ul>
+<li>These will be discussion topics</li>
+
+</ul></li>
+
+</ul>
+<ul class="fragment appear">
+<li>Questions are welcome after / during the lecture</li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-orge18c69e">
+<h2 id="orge18c69e">Getting on the Web</h2>
+<p>
+Now easier than ever!
+</p>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org232eb89">
+<h3 id="org232eb89">Static sites</h3>
+<div class="outline-text-3" id="text-org232eb89">
+</div>
+</section>
+<section id="slide-orgf558cf3">
+<h4 id="orgf558cf3">Hugo</h4>
+<div class="leftcol" id="orgd0740de">
+
+<div id="orgd786db7" class="figure">
+<p><object type="image/svg+xml" data="images/down/hugo-logo-wide.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+<ul>
+<li><a href="https://gohugo.io/getting-started/installing">Installation instructions</a></li>
+<li><a href="https://gohugo.io/getting-started/quick-start/">Quick start</a></li>
+
+</ul>
+<div class="org-src-container">
+
+<pre class="fragment appear">hugo new site quickstart
+<span style="color: #f0c674;">cd</span> quickstart
+<span style="color: #f0c674;">git</span> init
+<span style="color: #f0c674;">cd</span> themes
+gh repo clone haozeke/hugo-theme-hello-friend-ng-hz
+<span style="color: #f0c674;">cd</span> ../
+<span style="color: #f0c674;">echo</span> <span style="color: #cc6666;">theme</span> = <span style="color: #b5bd68;">\"</span>hugo-theme-hello-friend-ng-hz<span style="color: #b5bd68;">\"</span> &gt;&gt; config.toml
+hugo new posts/my-first-post.md
+nvm use node
+npm install postcss-cli autoprefixer
+hugo server -D
+</pre>
+</div>
+
+</div>
+<div class="rightcol" id="orgc002942">
+<p>
+
+</p>
+
+
+<div id="orgad4a9b9" class="figure">
+<p><img src="images/Static_sites/2021-06-26_07-51-51_screenshot.png" alt="2021-06-26_07-51-51_screenshot.png" width="70%" height="70%" class="fragment appear" />
+</p>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orga6840a6">
+<h4 id="orga6840a6">Jekyll</h4>
+<div class="fragment appear leftcol" id="org532f75b">
+
+<div id="org6837e30" class="figure">
+<p><img src="images/down/jekyll.png" alt="jekyll.png" />
+</p>
+</div>
+<ul>
+<li><a href="https://jekyllrb.com/docs/">Quickstart</a></li>
+
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-bash">rbenv shell 3.0.1
+gem install jekyll bundler
+jekyll new myblog
+<span style="color: #f0c674;">cd</span> myblog
+<span style="color: #f0c674;">echo</span> <span style="color: #b5bd68;">"gem \"webrick\""</span> &gt;&gt; Gemfile
+bundle exec jekeyll serve <span style="color: #5a5b5a;"># </span><span style="color: #5a5b5a;">--livereload</span>
+</pre>
+</div>
+
+</div>
+<div class="rightcol" id="org4ece1f9">
+<p>
+
+</p>
+
+
+<div id="orga1cdb11" class="figure">
+<p><img src="images/Static_sites/2021-06-26_08-00-10_screenshot.png" alt="2021-06-26_08-00-10_screenshot.png" width="70%" height="70%" class="fragment appear" />
+</p>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgb83640d">
+<h4 id="orgb83640d">Hexo</h4>
+<div class="leftcol" id="org454c33a">
+<ul>
+<li><a href="https://hexo.io/docs/">Quickstart</a></li>
+
+</ul>
+<div class="org-src-container">
+
+<pre class="fragment appear">nvm use node
+npm install hexo-cli -g
+hexo init blog
+<span style="color: #f0c674;">cd</span> blog
+npm install
+hexo server
+</pre>
+</div>
+
+</div>
+<div class="rightcol" id="orgf630a52">
+
+<div id="org67726b2" class="figure">
+<p><img src="images/Static_sites/2021-06-26_08-02-23_screenshot.png" alt="2021-06-26_08-02-23_screenshot.png" class="fragment appear" />
+</p>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org2e79245">
+<h4 id="org2e79245">Gatsby</h4>
+<ul>
+<li><a href="https://www.gatsbyjs.com/docs/how-to/local-development/">Docs</a></li>
+
+</ul>
+
+
+<div id="org20e0531" class="figure">
+<p><img src="images/Static_sites/2021-06-26_08-13-16_screenshot.png" alt="2021-06-26_08-13-16_screenshot.png" class="fragment appear" />
+</p>
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-org93181f8">
+<h4 id="org93181f8">Deploying</h4>
+<ul>
+<li>{<a href="https://pages.github.com/">Github</a>, <a href="https://docs.gitlab.com/ee/user/project/pages/">Gitlab</a>, <a href="https://support.atlassian.com/bitbucket-cloud/docs/publishing-a-website-on-bitbucket-cloud/">Bitbucket</a>} Pages</li>
+<li><a href="http://app.netlify.com/">Netlify</a>
+<ul>
+<li>With one click button!!!</li>
+
+</ul></li>
+
+</ul>
+
+
+<div id="org89e3dae" class="figure">
+<p><img src="images/Static_sites/2021-06-26_08-09-22_screenshot.png" alt="2021-06-26_08-09-22_screenshot.png" width="70%" height="70%" class="fragment appear" />
+</p>
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-org0ca57df">
+<h3 id="org0ca57df">Content Management Systems</h3>
+<div class="outline-text-3" id="text-org0ca57df">
+</div>
+</section>
+<section id="slide-orga680c33">
+<h4 id="orga680c33">Wordpress</h4>
+<div class="leftcol" id="org6afb169">
+<p>
+
+</p>
+
+
+<div id="org0277f06" class="figure">
+<p><img src="images/Content_Management_Systems/2021-06-26_08-05-23_screenshot.png" alt="2021-06-26_08-05-23_screenshot.png" class="fragment appear" />
+</p>
+</div>
+
+</div>
+<div class="rightcol" id="orgda178ab">
+<blockquote class="fragment appear">
+<p>
+Got $$$ ?
+</p>
+</blockquote>
+<ul class="fragment appear">
+<li>Similar to Ghost, can be self-hosted</li>
+
+</ul>
+<dl class="fragment appear">
+<dt>Self hosted</dt><dd>Pay for a server and web space</dd>
+
+</dl>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org51e2a09" data-background="#f6f195">
+<h3 id="org51e2a09">Done!</h3>
+<p>
+TL;DR go watch the <b>keynote</b>!!
+</p>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-orgd6de4bd">
+<h2 id="orgd6de4bd">Wait</h2>
+<p>
+Still here?
+</p>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-org3027a2d">
+<h2 id="org3027a2d">From the Top</h2>
+<p>
+But.. getting online is easy!
+</p>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgcf1fb28">
+<h3 id="orgcf1fb28">Why be online?</h3>
+<p>
+Cat pictures, communication, online shopping&#x2026;
+</p>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org4f2ae28">
+<h4 id="org4f2ae28">Profiles and Platforms</h4>
+<p>
+<b>Where</b> will people find you?
+</p>
+<div class="leftcol" id="org9344fa4">
+<dl class="fragment appear">
+<dt>LinkedIn</dt><dd>Recruiters, possibly peers</dd>
+
+</dl>
+<dl class="fragment appear">
+<dt>Facebook</dt><dd>Talking to people?</dd>
+
+</dl>
+<dl class="fragment appear">
+<dt>Twitter</dt><dd>Rage tweeting, shower thoughts</dd>
+
+</dl>
+<dl class="fragment appear">
+<dt>Tiktok</dt><dd>Nihilistic people burning server time for eyeballs?</dd>
+
+</dl>
+<dl class="fragment appear">
+<dt>Orkut</dt><dd>????</dd>
+
+</dl>
+<dl class="fragment appear">
+<dt>Foursquare</dt><dd>???</dd>
+
+</dl>
+<dl class="fragment appear">
+<dt>Misc ???</dt><dd>Google scholar, Yahoo answers, Quora, Tinder</dd>
+
+</dl>
+
+</div>
+<div class="rightcol" id="org2288080">
+
+<div id="org6704aa4" class="figure">
+<p><img src="images/simpsons/getOnline.jpg" alt="getOnline.jpg" class="fragment appear" />
+</p>
+</div>
+<blockquote class="fragment appear">
+<p>
+You <b>are the product</b>, so you <b>conform</b> to the platform
+</p>
+</blockquote>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgbb0ba3d">
+<h3 id="orgbb0ba3d">Why have a <span class="underline">website</span>?</h3>
+<dl class="fragment appear">
+<dt>Narrative control</dt><dd>Freedom from being flooded by chaff and trolls</dd>
+
+</dl>
+<dl class="fragment appear">
+<dt>Constant scratchpad</dt><dd>Well designed posts can act as notes and mind-dumps</dd>
+
+</dl>
+<dl class="fragment appear">
+<dt>Content prioritization</dt><dd>Allows content to be grouped by your needs</dd>
+
+</dl>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-orgff7f347">
+<h2 id="orgff7f347">The Internet</h2>
+<p>
+What it is and why we care.
+</p>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orge2bf23f">
+<h3 id="orge2bf23f">First Approximation</h3>
+<ul>
+<li>Set of networked devices</li>
+
+</ul>
+
+<div id="orgbfc7016" class="figure">
+<p><img src="images/down/network.jpeg" alt="network.jpeg" />
+</p>
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org0354003">
+<h3 id="org0354003">Finding a Site</h3>
+<div class="org-src-container">
+
+<pre class="src src-bash">ping -c <span style="color: #de935f; font-weight: bold;">5</span> rgoswami.me
+</pre>
+</div>
+
+
+<div id="org28caf21" class="figure">
+<p><img src="images/Finding_a_Site/2021-06-26_07-06-41_screenshot.png" alt="2021-06-26_07-06-41_screenshot.png" class="fragment appear" />
+</p>
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org9489564">
+<h3 id="org9489564">Basic Browsing Anatomy</h3>
+<blockquote>
+<p>
+Networking without a terminal
+</p>
+</blockquote>
+
+<dl class="fragment appear">
+<dt>Uniform resource locator (URL)</dt><dd>essentially performs a lookup at DNS nameserver</dd>
+
+</dl>
+<dl class="fragment appear">
+<dt>Server</dt><dd>Something transmitting information across a network, commonly <b>html</b>, <b>css</b>, <b>js</b>, but also <b>json</b> or tabular data</dd>
+
+</dl>
+<dl class="fragment appear">
+<dt>Browser</dt><dd>User facing application to communicate with servers</dd>
+
+</dl>
+<blockquote class="fragment appear">
+<p>
+To get on the internet&#x2026;&#x2026;
+</p>
+</blockquote>
+<p class="fragment appear">
+<b>We need to control a <span class="underline">URL</span></b>
+</p>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org96bcd90">
+<h3 id="org96bcd90">What gets rendered</h3>
+
+<div id="org0c79608" class="figure">
+<p><img src="images/gen/structure.png" alt="structure.png" width="80%" height="80%" />
+</p>
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org994ecb9">
+<h4 id="org994ecb9">Hypertext Markup Language</h4>
+<p>
+Or HTML for <b>structure</b>
+</p>
+<div class="slide-footer"><br></div>
+<ul class="org-ul">
+<li><a id="org809e6e9"></a>Circumventing HTML<br />
+<div class="leftcol" id="orga2d51ab">
+<div class="org-src-container">
+
+<pre class="src src-html">&lt;<span style="color: #b294bb;">!DOCTYPE</span> html&gt;
+&lt;<span style="color: #81a2be;">html</span>&gt;
+&lt;<span style="color: #81a2be;">head</span>&gt;
+  &lt;<span style="color: #81a2be;">meta</span> <span style="color: #cc6666;">charset</span>=<span style="color: #b5bd68;">"utf-8"</span> /&gt;
+&lt;/<span style="color: #81a2be;">head</span>&gt;
+&lt;<span style="color: #81a2be;">body</span>&gt;
+&lt;<span style="color: #81a2be;">h1</span> <span style="color: #cc6666;">id</span>=<span style="color: #b5bd68;">"heading-1"</span>&gt;<span style="font-weight: bold; text-decoration: underline;">Heading 1</span>&lt;/<span style="color: #81a2be;">h1</span>&gt;
+&lt;<span style="color: #81a2be;">p</span>&gt;Some text&lt;/<span style="color: #81a2be;">p</span>&gt;
+&lt;<span style="color: #81a2be;">blockquote</span>&gt;
+&lt;<span style="color: #81a2be;">p</span>&gt;A quote&lt;/<span style="color: #81a2be;">p</span>&gt;
+&lt;/<span style="color: #81a2be;">blockquote</span>&gt;
+&lt;/<span style="color: #81a2be;">body</span>&gt;
+&lt;/<span style="color: #81a2be;">html</span>&gt;
+</pre>
+</div>
+
+</div>
+<div class="rightcol" id="org078170f">
+<ul>
+<li>Markdown simplifies HTML
+<ul>
+<li><a href="https://rmarkdown.rstudio.com/authoring_pandoc_markdown.html%23raw-tex">Pandoc</a> is the best variant</li>
+<li>Extends to code with <a href="https://rmarkdown.rstudio.com/">RMarkdown</a> or <a href="https://myst-nb.readthedocs.io/en/latest/use/markdown.html">MyST</a></li>
+
+</ul></li>
+
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-markdown"><span style="color: #81a2be; font-weight: bold;"># </span><span style="color: #81a2be; font-weight: bold;">Heading 1</span>
+Some text
+
+<span style="color: #c5c8c6; font-style: italic;">&gt;</span><span style="color: #717171; font-style: italic;"> A quote</span>
+</pre>
+</div>
+
+</div>
+<ul>
+<li>Also <a href="https://textile-lang.com/">Textile</a>, <a href="https://orgmode.org/">Orgmode</a></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</li>
+</ul>
+</section>
+<section id="slide-org7dc6a05">
+<h4 id="org7dc6a05">Cascading Style Sheets</h4>
+<p>
+Or CSS, for <b>presentation</b>
+</p>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org9f6a398">
+<h4 id="org9f6a398">Javascript</h4>
+<p>
+Or JS, for <b>executing</b> requests
+</p>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orga6573d9" data-background="#f6f195">
+<h4 id="orga6573d9">WAIT!</h4>
+<p>
+<b>I don&rsquo;t want to be a web developer</b>
+&#x2013;&gt; We use <span class="underline">themes</span> to keep HTML, CSS and JS away from us
+</p>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-org5194d0c">
+<h2 id="org5194d0c">Static Site Generators</h2>
+<p>
+Stolen from <a href="https://netlify.app/jamstack/">https://netlify.app/jamstack/</a>
+</p>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orga251f32">
+<h3 id="orga251f32">User Workflow</h3>
+
+<div id="orga455b7a" class="figure">
+<p><img src="images/down/ssg-host-flow.png" alt="ssg-host-flow.png" />
+</p>
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org067bd96">
+<h3 id="org067bd96">JamStack</h3>
+
+<div id="orgff58d14" class="figure">
+<p><object type="image/svg+xml" data="images/down/jamstack.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+<ul class="fragment appear">
+<li>Augmented by APIs</li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-orgaebd388">
+<h2 id="orgaebd388">Content Considerations</h2>
+<div class="outline-text-2" id="text-orgaebd388">
+</div>
+</section>
+<section id="slide-org6adfe3a">
+<h3 id="org6adfe3a">Illustrative example</h3>
+<ul>
+<li>Content from <a href="https://frinkiac.com/">https://frinkiac.com/</a></li>
+
+</ul>
+<div class="leftcol" id="org3f7e070">
+
+<div id="org24faed9" class="figure">
+<p><img src="images/simpsons/siteContent.jpeg" alt="siteContent.jpeg" class="fragment appear" />
+</p>
+</div>
+
+</div>
+<div class="rightcol" id="org728a4c6">
+<p class="fragment appear">
+<img src="https://frinkiac.com/gif/S12E06/312979/315482.gif?b64lines" alt="315482.gif?b64lines" class="fragment appear" />=
+</p>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgff4498c">
+<h3 id="orgff4498c">Basic Guidelines</h3>
+<ul class="fragment appear">
+<li><b>Do not</b> post a lot of gripes</li>
+
+</ul>
+<ul class="fragment appear">
+<li>Keep a diary instead</li>
+
+</ul>
+<ul class="fragment appear">
+<li>Or twitter or something</li>
+
+</ul>
+<ul class="fragment appear">
+<li><b>Do not</b> make it hard to navigate</li>
+
+</ul>
+<ul class="fragment appear">
+<li><b>Do not</b> lie</li>
+
+</ul>
+<ul class="fragment appear">
+<li><b>Never</b> use pop-ups</li>
+
+</ul>
+<ul class="fragment appear">
+<li>Multiple images go in a <b>gallery</b></li>
+
+</ul>
+<ul class="fragment appear">
+<li>If its a single image and snark, go for Instagram / Twitter</li>
+
+</ul>
+<ul class="fragment appear">
+<li>Be wary of <b>frameworks</b></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-orga9e4c6f">
+<h2 id="orga9e4c6f">Practicalities</h2>
+<p>
+Using JS and other ugly truths
+</p>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgc5b8aaf">
+<h3 id="orgc5b8aaf">Math</h3>
+<div class="leftcol" id="org66d6b03">
+<ul>
+<li>KaTeX and MathJax
+<ul>
+<li>Compared <a href="https://grimoire.science/metalsmith-math/">here (2016)</a></li>
+
+</ul></li>
+
+</ul>
+
+</div>
+
+<div class="rightcol" id="orgd2264bc">
+
+<div id="org3b0e78c" class="figure">
+<p><img src="images/Math/2021-06-26_08-26-25_screenshot.png" alt="2021-06-26_08-26-25_screenshot.png" class="fragment appear" />
+</p>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-org8ed484a">
+<h3 id="org8ed484a">Syntax Highlighting</h3>
+<div class="leftcol" id="org4a92e43">
+<ul>
+<li><a href="https://highlightjs.org/">Highlight.js</a> or <span class="underline"><a href="https://prismjs.com/">Prism.js</a></span></li>
+<li>Might be native methods too
+<ul>
+<li>Hugo has <a href="https://gohugo.io/content-management/syntax-highlighting/">highlight</a></li>
+<li>Org has <a href="https://www.emacswiki.org/emacs/Htmlize">htmlize.el</a></li>
+
+</ul></li>
+<li>Pick a theme which works across backgrounds
+<ul>
+<li>Or use <a href="https://carbon.now.sh/">carbon</a></li>
+
+</ul></li>
+
+</ul>
+
+</div>
+
+<div class="rightcol" id="org9b139b5">
+
+<div id="org988bd0b" class="figure">
+<p><img src="images/Syntax_Highlighting/2021-06-26_08-39-18_screenshot.png" alt="2021-06-26_08-39-18_screenshot.png" />
+</p>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-org325d9e8">
+<h3 id="org325d9e8">References</h3>
+<ul>
+<li>No real standard
+<ul>
+<li>Pandoc markdown has native support</li>
+
+</ul></li>
+<li>Can consider using <a href="https://www.zotero.org/support/reports">Zotero reports</a> and embedding</li>
+
+</ul>
+
+<table id="org6ae3f69" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">Jekyll</td>
+<td class="org-left"><a href="https://github.com/inukshuk/jekyll-scholar">jekyll-scholar</a></td>
+</tr>
+
+<tr>
+<td class="org-left">Hugo</td>
+<td class="org-left"><a href="https://github.com/loup-brun/hugo-cite">hugo-cite</a> (WIP)</td>
+</tr>
+
+<tr>
+<td class="org-left">Pandoc</td>
+<td class="org-left">inbuilt</td>
+</tr>
+</tbody>
+</table>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-orgd5837f6">
+<h3 id="orgd5837f6">Hosting and Domains</h3>
+<ul>
+<li>Namecheap is cheap, works well enough
+<ul>
+<li><a href="https://www.namecheap.com/">Account demo</a></li>
+
+</ul></li>
+<li>Netlify is very generous
+<ul>
+<li><a href="https://app.netlify.com/teams/haozeke/overview">Account demo</a></li>
+
+</ul></li>
+<li>SSGs can be built on a CI before pushing to Netlify
+<ul>
+<li><a href="https://github.com/HaoZeke/haozeke.github.io/actions">GH Actions explanation</a></li>
+
+</ul></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-orgf7ffdb1">
+<h2 id="orgf7ffdb1">Design Discussions</h2>
+<div class="outline-text-2" id="text-orgf7ffdb1">
+</div>
+</section>
+<section id="slide-org0d3acf6">
+<h3 id="org0d3acf6">Math and Typography</h3>
+<div class="outline-text-3" id="text-org0d3acf6">
+</div>
+</section>
+<section id="slide-org101ccc7">
+<h4 id="org101ccc7">Wikipedia</h4>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Heat_equation">Heat equation</a></li>
+
+</ul>
+
+
+<div id="org46d898e" class="figure">
+<p><img src="images/Math_and_Typography/2021-06-26_09-26-43_screenshot.png" alt="2021-06-26_09-26-43_screenshot.png" />
+</p>
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-org2535286">
+<h4 id="org2535286">No equations</h4>
+<ul>
+<li><a href="https://math3ma.com">https://math3ma.com</a>
+<ul>
+<li><p>
+<a href="https://www.math3ma.com/blog/matrices-as-tensor-network-diagrams">Matrices as Tensor Network Diagrams</a>
+</p>
+
+<div id="org9e417b9" class="figure">
+<p><img src="images/Math_and_Typography/2021-06-26_09-27-16_screenshot.png" alt="2021-06-26_09-27-16_screenshot.png" />
+</p>
+</div></li>
+
+</ul></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-org22ebe0d">
+<h4 id="org22ebe0d">Formula list</h4>
+<ul>
+<li><a href="https://grimoire.science">https://grimoire.science</a>
+<ul>
+<li><a href="https://grimoire.science/pms-basics-hbtu/">Formula list</a></li>
+
+</ul></li>
+
+</ul>
+
+
+<div id="orged8c368" class="figure">
+<p><img src="images/Math_and_Typography/2021-06-26_09-27-48_screenshot.png" alt="2021-06-26_09-27-48_screenshot.png" />
+</p>
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-orgb103964">
+<h4 id="orgb103964">Long-form with references</h4>
+<ul>
+<li><a href="https://rgoswami.me">https://rgoswami.me</a>
+<ul>
+<li><a href="https://rgoswami.me/posts/trees-and-bags/">Trees and Bags</a></li>
+
+</ul></li>
+
+</ul>
+
+
+<div id="org0595f18" class="figure">
+<p><img src="images/Math_and_Typography/2021-06-26_09-31-03_screenshot.png" alt="2021-06-26_09-31-03_screenshot.png" />
+</p>
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-orgf4ed6ce">
+<h3 id="orgf4ed6ce">Code and Text</h3>
+<div class="outline-text-3" id="text-orgf4ed6ce">
+</div>
+</section>
+<section id="slide-org07ee6dc">
+<h4 id="org07ee6dc">Tensorflow</h4>
+<ul>
+<li><a href="https://www.tensorflow.org/quantum/tutorials/mnist">MNIST QComp tutorial</a></li>
+
+</ul>
+
+<div id="org33893bb" class="figure">
+<p><img src="images/Code_and_Text/2021-06-26_09-30-28_screenshot.png" alt="2021-06-26_09-30-28_screenshot.png" />
+</p>
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-org789e7e9">
+<h4 id="org789e7e9">SSG and Syntax Highlighting</h4>
+<ul>
+<li><a href="https://rgoswami.me/posts/ccon-tut-nix/">A tutorial introduction to Nix</a></li>
+
+</ul>
+
+
+<div id="org231e382" class="figure">
+<p><img src="images/Code_and_Text/2021-06-26_09-32-12_screenshot.png" alt="2021-06-26_09-32-12_screenshot.png" />
+</p>
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-orgcb4d0ee">
+<h3 id="orgcb4d0ee">Referencing</h3>
+<div class="outline-text-3" id="text-orgcb4d0ee">
+</div>
+</section>
+<section id="slide-org427dcc4">
+<h4 id="org427dcc4">Group Publications</h4>
+<ul>
+<li>(<a href="https://femtolab.science/publications/">Femtolab list of publications</a>) Jekyll based, with metadata</li>
+
+</ul>
+
+
+<div id="orgef5b78f" class="figure">
+<p><img src="images/Referencing/2021-06-26_09-36-18_screenshot.png" alt="2021-06-26_09-36-18_screenshot.png" />
+</p>
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-org94e569a">
+<h4 id="org94e569a">Referencing in-posts</h4>
+<div class="leftcol" id="org1dd791d">
+<ul>
+<li><a href="https://rgoswami.me">https://rgoswami.me</a>
+<ul>
+<li>Post on <a href="https://rgoswami.me/posts/gsoc21-w3/">fortran with references</a></li>
+
+</ul></li>
+
+</ul>
+
+
+
+<div id="orgb5e09ea" class="figure">
+<p><img src="images/Referencing/2021-06-26_09-33-56_screenshot.png" alt="2021-06-26_09-33-56_screenshot.png" />
+</p>
+</div>
+
+</div>
+<div class="rightcol" id="org1e10a19">
+<ul>
+<li><a href="https://grimoire.science">https://grimoire.science</a>
+<ul>
+<li>Post on <a href="https://grimoire.science/mathematical-preliminaries/">basic statistics</a></li>
+
+</ul></li>
+
+</ul>
+
+
+<div id="orgc0fe97e" class="figure">
+<p><img src="images/Referencing/2021-06-26_09-34-25_screenshot.png" alt="2021-06-26_09-34-25_screenshot.png" />
+</p>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org2b220bd">
+<h3 id="org2b220bd">Documentation Examples</h3>
+<div class="outline-text-3" id="text-org2b220bd">
+</div>
+</section>
+<section id="slide-orgc0fc6b8">
+<h4 id="orgc0fc6b8">Chapel Language Documentation</h4>
+<ul>
+<li>Single source design</li>
+<li><a href="https://chapel-lang.org/learning.html">Link</a></li>
+
+</ul>
+
+
+<div id="org79f69ca" class="figure">
+<p><img src="images/Documentation_Examples/2021-06-26_08-51-06_screenshot.png" alt="2021-06-26_08-51-06_screenshot.png" />
+</p>
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org78fc986">
+<h4 id="org78fc986">d-SEAMS documentation</h4>
+<ul>
+<li>Has a split design (<a href="https://dseams.info/">homepage</a>, <a href="https://wiki.dseams.info/">wiki</a>, <a href="https://docs.dseams.info/">doxygen</a>)</li>
+
+</ul>
+
+<div id="orgd1c6674" class="figure">
+<p><img src="images/Documentation_Examples/2021-06-26_08-52-53_screenshot.png" alt="2021-06-26_08-52-53_screenshot.png" width="80%" height="80%" />
+</p>
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-org34d37cd">
+<h4 id="org34d37cd">IRHPC documentation</h4>
+<ul>
+<li>Uses docusaurus, <a href="https://irhpc.github.io/">link here</a></li>
+
+</ul>
+
+
+<div id="org10969d5" class="figure">
+<p><img src="images/Documentation_Examples/2021-06-26_09-00-11_screenshot.png" alt="2021-06-26_09-00-11_screenshot.png" />
+</p>
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+</section>
+<section>
+<section id="slide-orgbc4c62d">
+<h2 id="orgbc4c62d">Conclusions</h2>
+<p>
+The world is your oyster.
+</p>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org5d54bdf">
+<h3 id="org5d54bdf">Not Covered</h3>
+<dl>
+<dt>Search Engine Optimization</dt><dd>Making people find you by accident better</dd>
+<dt>RSS Feeds</dt><dd>Retaining an audience and random marketing things</dd>
+<dt>Writing</dt><dd>No style can be universally approved</dd>
+<dt>Workflows</dt><dd>Paucity of time, surfeit of generality</dd>
+
+</dl>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-orge084f6b" data-background="#f6f195">
+<h2 id="orge084f6b">Thanks!</h2>
+<p>
+<b>Questions?</b>
+</p>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+</div>
+</div>
+<script src="/Users/rohitgoswami/.config/doom/reveal/rjs/dist/reveal.js"></script>
+<script src="/Users/rohitgoswami/.config/doom/reveal/rjs/plugin/notes/notes.js"></script>
+<script src="/Users/rohitgoswami/.config/doom/reveal/rjs/plugin/search/search.js"></script>
+<script src="/Users/rohitgoswami/.config/doom/reveal/rjs/plugin/zoom/zoom.js"></script>
+<script src="/Users/rohitgoswami/.config/doom/reveal/rjs/dist/theme/hidelinks.js"></script>
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: true,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+mouseWheel: true,
+fragmentInURL: true,
+hashOneBasedIndex: false,
+pdfSeparateFragments: false,
+
+overview: true,
+margin: 0.20,
+
+transition: 'fade',
+transitionSpeed: 'default',
+showNotes: window.location.search.match( /print-pdf/gi ) ? 'separate-page' : false,
+
+// Plugins with reveal.js 4.x
+plugins: [ RevealNotes, RevealSearch, RevealZoom ],
+
+// Optional libraries used to extend reveal.js
+dependencies: [
+]
+
+});
+</script>
+</body>
+</html>

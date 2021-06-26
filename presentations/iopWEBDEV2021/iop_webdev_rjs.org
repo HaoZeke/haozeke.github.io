@@ -1,0 +1,601 @@
+#+TITLE: Web Development for Physicists
+#+SUBTITLE: At IOP CAPS'21
+#+AUTHOR: Rohit Goswami MInstP
+# I need the footnotes to be inlined
+#+STARTUP: fninline
+#+EXCLUDE_TAGS: noexport
+
+#+BEGIN_SRC emacs-lisp :exports none :eval always
+(require 'ox-extra)
+(ox-extras-activate '(ignore-headlines))
+(setq org-re-reveal-highlight-css "tomorrow")
+#+END_SRC
+
+#+RESULTS:
+: tomorrow
+
+* Configuration :ignoreheading:ignore:
+:PROPERTIES:
+:VISIBILITY: folded
+:END:
+
+# Kanged from https://gitlab.com/oer/oer-reveal/blob/master/org/config.org
+# Also https://gitlab.com/oer/emacs-reveal-howto/-/blob/master/howto.org
+** General Options :ignoreheading:ignore:
+# No Table of contents, no section numbers
+#+OPTIONS: toc:nil num:nil
+
+# Enable smart quotes
+#+OPTIONS: ':t
+** RevealJS Options :ignoreheading:ignore:
+#+REVEAL_TALK_URL: https://oer.gitlab.io/org-re-reveal/test-cases/test-title-slide.html
+
+# Enable: browser history, fragment IDs in URLs, mouse wheel, links between presentations
+#+OPTIONS: reveal_history:t reveal_fragmentinurl:t
+#+OPTIONS: reveal_mousewheel:t reveal_inter_presentation_links:t
+
+# # Disable title slide
+# #+OPTIONS: org-re-reveal-title-slide:nil
+
+# Disable separate PDF pages for each fragment.  Just use one per slide.
+#+OPTIONS: reveal_pdfseparatefragments:nil
+
+# Display notes on separate page for PDF export.
+#+REVEAL_EXPORT_NOTES_TO_PDF: separate-page
+
+# Transition styles: none/fade/slide/convex/concave/zoom/cube
+#+REVEAL_TRANS: fade
+# Set a base theme, then override
+#+REVEAL_THEME: sunblind
+# #+REVEAL_EXTRA_CSS: /Users/rohitgoswami/.config/doom/reveal/sfeir-school-theme/dist/css/sfeir-school-theme.css
+# #+REVEAL_EXTRA_CSS: /Users/rohitgoswami/.config/doom/reveal/extras/rlExtras.css
+#+REVEAL_EXTRA_CSS: /Users/rohitgoswami/.config/doom/reveal/extras/oerFragments.css
+#+REVEAL_EXTRA_CSS: /Users/rohitgoswami/.config/doom/reveal/extras/noImgBoxes.css
+#+REVEAL_EXTRA_CSS: /Users/rohitgoswami/.config/doom/reveal/extras/moreCode.css
+
+#+REVEAL_MARGIN: 0.2
+#+REVEAL_PREAMBLE: <div class="line top"></div> <div class="line bottom"></div> <div class="line left"></div> <div class="line right"></div>
+
+#+REVEAL_PLUGINS: (notes search zoom)
+# The following variables are non-standard.
+# Do not display TOC-progress on title slide.
+
+#+REVEAL_TITLE_SLIDE_STATE: no-toc-progress
+# Do not display TOC-progress on TOC slide.
+#+REVEAL_TOC_SLIDE_STATE: no-toc-progress
+# Do not include TOC slide in TOC-progress.
+#+REVEAL_TOC_SLIDE_CLASS: no-toc-progress
+# Use different heading for TOC.
+#+REVEAL_TOC_SLIDE_TITLE: Agenda
+
+** External Resources :ignoreheading:ignore:
+# Note that doom-emacs sets this variable
+# https://github.com/hlissner/doom-emacs/blob/develop/modules/lang/org/contrib/present.el
+#+REVEAL_EXTRA_CSS: /Users/rohitgoswami/.config/doom/reveal/rjs/plugin/accessibility/helper.css
+#+REVEAL_EXTRA_CSS: /Users/rohitgoswami/.config/doom/reveal/rjs/plugin/toc-progress/toc-progress.css
+#+REVEAL_EXTRA_CSS: /Users/rohitgoswami/.config/doom/reveal/rjs/dist/theme/toc-style.css
+#+REVEAL_EXTRA_CSS: /Users/rohitgoswami/.config/doom/reveal/rjs/dist/theme/fonts/source-sans-pro/source-sans-pro.css
+
+# Allow to selectively hide links, use sfeir
+#+REVEAL_EXTRA_SCRIPTS: ("/Users/rohitgoswami/.config/doom/reveal/rjs/dist/theme/hidelinks.js")
+# #+REVEAL_EXTRA_SCRIPTS: ("/Users/rohitgoswami/.config/doom/reveal/rjs/dist/theme/hidelinks.js" "/Users/rohitgoswami/.config/doom/reveal/sfeir-school-theme/dist/js/sfeir-theme.js")
+
+# The following creates an empty footer, for which the css style defines
+# a height that agrees with the TOC-progress footer’s height.
+# In this way, the footer’s height is taken into account by reveal.js’s
+# size calculations.
+#+REVEAL_SLIDE_FOOTER: <br>
+#+OPTIONS: reveal_toc_footer:t
+
+** Macros :ignoreheading:ignore:
+# Set a default bib file.
+
+# Macros to display square brackets (in texts of hyperlinks).
+# Based on: https://emacs.stackexchange.com/questions/7792/can-i-make-links-in-org-mode-that-contain-brackets-or
+# Square Bracket Open [
+#+MACRO: BO @@latex:\char91{}@@@@html:&#91;@@
+# Square Bracket Close ]
+#+MACRO: BC @@latex:\char93{}@@@@html:&#93;@@
+
+# Macro for forced line break, e.g., in titles.
+#+MACRO: BR @@latex:\\@@@@html:<br />@@
+
+# Macro to generate abbr element in HTML.  If a second argument is given, it
+# defines the title attribute.  For LaTeX, output first attribute as is and
+# ignore second one.
+#+MACRO: abbr (eval (concat "@@latex:" Web Development for Physicists "@@@@html:<abbr" (if (< 0 (length At IOP CAPS'21)) (concat " title=\"" At IOP CAPS'21 "\"") "") ">" Web Development for Physicists "</abbr>@@"))
+
+# Macros to display code in different colors.
+#+MACRO: blackcode (eval (format "@@html:<code><span style=\"color:black; font-size:smaller;\">%s</span></code>@@ @@latex:\\verb|%s|@@" (org-html-encode-plain-text Web Development for Physicists) Web Development for Physicists))
+#+MACRO: redcode (eval (format "@@html:<code><span style=\"color:darkred; font-size:smaller;\">%s</span></code>@@ @@latex:\\rverb|%s|@@" (org-html-encode-plain-text Web Development for Physicists) Web Development for Physicists))
+#+MACRO: greencode (eval (format "@@html:<code><span style=\"color:darkgreen; font-size:smaller;\">%s</span></code>@@ @@latex:\\gverb|%s|@@" (org-html-encode-plain-text Web Development for Physicists) Web Development for Physicists))
+#+MACRO: bluecode (eval (format "@@html:<code><span style=\"color:darkblue; font-size:smaller;\">%s</span></code>@@ @@latex:\\bverb|%s|@@" (org-html-encode-plain-text Web Development for Physicists) Web Development for Physicists))
+
+** LaTeX Options :ignoreheading:ignore:
+# Setup for PDF generation via LaTeX export.
+#+LATEX_CLASS_OPTIONS: [a4paper]
+#+LATEX_HEADER: \usepackage[backend=biber,style=alphabetic]{biblatex}
+#+LATEX_HEADER: \addbibresource{/Users/rohitgoswami/GDrive/zotLib.bib}
+#+LATEX_HEADER: \newenvironment{notes}{\par\footnotesize}{\par}
+#+LATEX_HEADER: \newenvironment{NOTES}{\par\footnotesize}{\par}
+#+LATEX_HEADER: \newenvironment{leftcol}{\begin{minipage}{.49\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol}{\begin{minipage}{.49\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{leftcol30}{\begin{minipage}{.29\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{leftcol40}{\begin{minipage}{.39\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{leftcol60}{\begin{minipage}{.59\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{leftcol70}{\begin{minipage}{.69\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol30}{\begin{minipage}{.29\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol40}{\begin{minipage}{.39\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol60}{\begin{minipage}{.59\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol70}{\begin{minipage}{.69\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \usepackage{newunicodechar}
+#+LATEX_HEADER: \newunicodechar{≈}{$\approx$}
+#+LATEX_HEADER: \newunicodechar{⋮}{\vdots}
+#+LATEX_HEADER: \newunicodechar{ }{~}
+#+LATEX_HEADER: \usepackage{xcolor}
+#+LATEX_HEADER: \definecolor{darkred}{rgb}{0.3, 0.0, 0.0}
+#+LATEX_HEADER: \definecolor{darkgreen}{rgb}{0.0, 0.3, 0.1}
+#+LATEX_HEADER: \definecolor{darkblue}{rgb}{0.0, 0.1, 0.3}
+#+LATEX_HEADER: \definecolor{darkorange}{rgb}{1.0, 0.55, 0.0}
+#+LATEX_HEADER: \definecolor{sienna}{rgb}{0.53, 0.18, 0.09}
+#+LATEX_HEADER: \hypersetup{colorlinks,linkcolor=darkblue,citecolor=darkblue,urlcolor=darkgreen}
+#+LATEX_HEADER: \usepackage{newverbs}
+#+LATEX_HEADER: \newverbcommand{\rverb}{\color{darkred}}{}
+#+LATEX_HEADER: \newverbcommand{\gverb}{\color{darkgreen}}{}
+#+LATEX_HEADER: \newverbcommand{\bverb}{\color{darkblue}}{}
+
+* Start Here :ignoreheading:ignore:
+# Set up the title slide.
+# #+REVEAL_TITLE_SLIDE: <h1>%t</h1><h2>%s</h2><h3>%A %a</h3><p>View online: <a href="%u">%u</a></p><p>This could be the file name in the <code>src</code> attribute of an <code>img</code> element for a QR code: %q Created On\: %u
+* Brief Introduction
+:PROPERTIES:
+:reveal_extra_attr: class="first-slide"
+:END:
+** Hello!
+- Find me here: https://rgoswami.me
+- Who?
+  + *Rohit Goswami* MInstP
+    - Doctoral Researcher, University of Iceland, Faculty of Physical Sciences
+#+begin_leftcol
+[[file:images/physUoI.png]]
+file:images/IOP-MasterLogo.png
+#+end_leftcol
+#+begin_rightcol
+file:images/rannisLogo.png
+#+DOWNLOADED: screenshot @ 2021-04-13 02:55:57
+#+ATTR_HTML: :width 70% :height 70%
+[[file:images/Hello!/2021-04-13_02-55-57_screenshot.png]]
+#+end_rightcol
+# ** What I Do
+# #+begin_leftcol
+# file:images/stuff/volcano.png
+# #+end_leftcol
+# #+begin_rightcol
+# #+ATTR_REVEAL: :frag appear
+# - A good place to work on Water!!
+# file:images/collages/ice7.png
+# #+end_rightcol
+** Logistics
+#+ATTR_REVEAL: :frag appear
+- All contents are [[https://github.com/HaoZeke/haozeke.github.io][hosted on GitHub]]
+  + Generated from [[https://github.com/HaoZeke/haozeke.github.io/tree/src/presentations/iopWEBDEV2021][orgmode]] sources
+  + Companion [[https://rgoswami.me/posts/iop-caps-webdev-2021-meta][post here]]
+#+ATTR_REVEAL: :frag appear
+- Slides have screenshots of existing sites
+  + These will be discussion topics
+#+ATTR_REVEAL: :frag appear
+- Questions are welcome after / during the lecture
+* Getting on the Web
+Now easier than ever!
+** Static sites
+*** Hugo
+#+begin_leftcol
+file:images/down/hugo-logo-wide.svg
+- [[https://gohugo.io/getting-started/installing][Installation instructions]]
+- [[https://gohugo.io/getting-started/quick-start/][Quick start]]
+#+ATTR_REVEAL: :frag appear
+#+begin_src bash
+hugo new site quickstart
+cd quickstart
+git init
+cd themes
+gh repo clone haozeke/hugo-theme-hello-friend-ng-hz
+cd ../
+echo theme = \"hugo-theme-hello-friend-ng-hz\" >> config.toml
+hugo new posts/my-first-post.md
+nvm use node
+npm install postcss-cli autoprefixer
+hugo server -D
+#+end_src
+#+end_leftcol
+#+begin_rightcol
+
+#+DOWNLOADED: screenshot @ 2021-06-26 07:51:51
+#+ATTR_REVEAL: :frag appear
+#+ATTR_HTML: :width 70% :height 70%
+[[file:images/Static_sites/2021-06-26_07-51-51_screenshot.png]]
+#+end_rightcol
+*** Jekyll
+#+ATTR_REVEAL: :frag appear
+#+begin_leftcol
+file:images/down/jekyll.png
+- [[https://jekyllrb.com/docs/][Quickstart]]
+#+begin_src bash
+rbenv shell 3.0.1
+gem install jekyll bundler
+jekyll new myblog
+cd myblog
+echo "gem \"webrick\"" >> Gemfile
+bundle exec jekeyll serve # --livereload
+#+end_src
+#+end_leftcol
+#+begin_rightcol
+
+#+DOWNLOADED: screenshot @ 2021-06-26 08:00:10
+#+ATTR_REVEAL: :frag appear
+#+ATTR_HTML: :width 70% :height 70%
+[[file:images/Static_sites/2021-06-26_08-00-10_screenshot.png]]
+#+end_rightcol
+*** Hexo
+#+begin_leftcol
+- [[https://hexo.io/docs/][Quickstart]]
+#+ATTR_REVEAL: :frag appear
+#+begin_src bash
+nvm use node
+npm install hexo-cli -g
+hexo init blog
+cd blog
+npm install
+hexo server
+#+end_src
+#+end_leftcol
+#+begin_rightcol
+#+ATTR_REVEAL: :frag appear
+[[file:images/Static_sites/2021-06-26_08-02-23_screenshot.png]]
+#+end_rightcol
+*** Gatsby
+- [[https://www.gatsbyjs.com/docs/how-to/local-development/][Docs]]
+
+#+DOWNLOADED: screenshot @ 2021-06-26 08:13:16
+#+ATTR_REVEAL: :frag appear
+[[file:images/Static_sites/2021-06-26_08-13-16_screenshot.png]]
+
+*** Deploying
+- {[[https://pages.github.com/][Github]], [[https://docs.gitlab.com/ee/user/project/pages/][Gitlab]], [[https://support.atlassian.com/bitbucket-cloud/docs/publishing-a-website-on-bitbucket-cloud/][Bitbucket]]} Pages
+- [[http://app.netlify.com/][Netlify]]
+  - With one click button!!!
+
+#+DOWNLOADED: screenshot @ 2021-06-26 08:09:22
+#+ATTR_REVEAL: :frag appear
+#+ATTR_HTML: :width 70% :height 70%
+[[file:images/Static_sites/2021-06-26_08-09-22_screenshot.png]]
+
+** Content Management Systems
+*** Wordpress
+#+begin_leftcol
+
+#+DOWNLOADED: screenshot @ 2021-06-26 08:05:23
+#+ATTR_REVEAL: :frag appear
+[[file:images/Content_Management_Systems/2021-06-26_08-05-23_screenshot.png]]
+
+#+end_leftcol
+#+begin_rightcol
+#+ATTR_REVEAL: :frag appear
+#+begin_quote
+Got $$$ ?
+#+end_quote
+#+ATTR_REVEAL: :frag appear
+- Similar to Ghost, can be self-hosted
+#+ATTR_REVEAL: :frag appear
+- Self hosted :: Pay for a server and web space
+#+end_rightcol
+** Done!
+:PROPERTIES:
+:reveal_background: #f6f195
+:END:
+TL;DR go watch the *keynote*!!
+* Wait
+Still here?
+* From the Top
+But.. getting online is easy!
+** Why be online?
+Cat pictures, communication, online shopping...
+*** Profiles and Platforms
+*Where* will people find you?
+#+begin_leftcol
+#+ATTR_REVEAL: :frag appear
+- LinkedIn :: Recruiters, possibly peers
+#+ATTR_REVEAL: :frag appear
+- Facebook :: Talking to people?
+#+ATTR_REVEAL: :frag appear
+- Twitter :: Rage tweeting, shower thoughts
+#+ATTR_REVEAL: :frag appear
+- Tiktok :: Nihilistic people burning server time for eyeballs?
+#+ATTR_REVEAL: :frag appear
+- Orkut :: ????
+#+ATTR_REVEAL: :frag appear
+- Foursquare :: ???
+#+ATTR_REVEAL: :frag appear
+- Misc ??? :: Google scholar, Yahoo answers, Quora, Tinder
+#+end_leftcol
+#+begin_rightcol
+#+ATTR_REVEAL: :frag appear
+file:images/simpsons/getOnline.jpg
+#+ATTR_REVEAL: :frag appear
+#+begin_quote
+You *are the product*, so you *conform* to the platform
+#+end_quote
+
+#+end_rightcol
+** Why have a _website_?
+#+ATTR_REVEAL: :frag appear
+- Narrative control :: Freedom from being flooded by chaff and trolls
+#+ATTR_REVEAL: :frag appear
+- Constant scratchpad :: Well designed posts can act as notes and mind-dumps
+#+ATTR_REVEAL: :frag appear
+- Content prioritization :: Allows content to be grouped by your needs
+* The Internet
+What it is and why we care.
+** First Approximation
+- Set of networked devices
+file:images/down/network.jpeg
+** Finding a Site
+#+begin_src bash
+ping -c 5 rgoswami.me
+#+end_src
+
+#+DOWNLOADED: screenshot @ 2021-06-26 07:06:41
+#+ATTR_REVEAL: :frag appear
+[[file:images/Finding_a_Site/2021-06-26_07-06-41_screenshot.png]]
+** Basic Browsing Anatomy
+#+begin_quote
+Networking without a terminal
+#+end_quote
+
+#+ATTR_REVEAL: :frag appear
+- Uniform resource locator (URL) :: essentially performs a lookup at DNS nameserver
+#+ATTR_REVEAL: :frag appear
+- Server :: Something transmitting information across a network, commonly *html*, *css*, *js*, but also *json* or tabular data
+#+ATTR_REVEAL: :frag appear
+- Browser :: User facing application to communicate with servers
+#+ATTR_REVEAL: :frag appear
+#+begin_quote
+To get on the internet......
+#+end_quote
+#+ATTR_REVEAL: :frag appear
+*We need to control a _URL_*
+** What gets rendered
+#+ATTR_HTML: :width 80% :height 80%
+file:images/gen/structure.png
+*** Hypertext Markup Language
+Or HTML for *structure*
+**** Circumventing HTML
+#+begin_leftcol
+#+begin_src html
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+</head>
+<body>
+<h1 id="heading-1">Heading 1</h1>
+<p>Some text</p>
+<blockquote>
+<p>A quote</p>
+</blockquote>
+</body>
+</html>
+#+end_src
+#+end_leftcol
+#+begin_rightcol
+- Markdown simplifies HTML
+  + [[https://rmarkdown.rstudio.com/authoring_pandoc_markdown.html%23raw-tex][Pandoc]] is the best variant
+  + Extends to code with [[https://rmarkdown.rstudio.com/][RMarkdown]] or [[https://myst-nb.readthedocs.io/en/latest/use/markdown.html][MyST]]
+#+begin_src markdown
+# Heading 1
+Some text
+
+> A quote
+#+end_src
+#+end_rightcol
+- Also [[https://textile-lang.com/][Textile]], [[https://orgmode.org/][Orgmode]]
+*** Cascading Style Sheets
+Or CSS, for *presentation*
+*** Javascript
+Or JS, for *executing* requests
+*** WAIT!
+:PROPERTIES:
+:reveal_background: #f6f195
+:END:
+*I don't want to be a web developer*
+--> We use _themes_ to keep HTML, CSS and JS away from us
+* Static Site Generators
+Stolen from https://netlify.app/jamstack/
+** User Workflow
+file:images/down/ssg-host-flow.png
+** JamStack
+file:images/down/jamstack.svg
+#+ATTR_REVEAL: :frag appear
+- Augmented by APIs
+* Content Considerations
+** Illustrative example
+- Content from https://frinkiac.com/
+#+begin_leftcol
+#+ATTR_REVEAL: :frag appear
+file:images/simpsons/siteContent.jpeg
+#+end_leftcol
+#+begin_rightcol
+#+ATTR_REVEAL: :frag appear
+https://frinkiac.com/gif/S12E06/312979/315482.gif?b64lines=
+#+end_rightcol
+** Basic Guidelines
+#+ATTR_REVEAL: :frag appear
+- *Do not* post a lot of gripes
+#+ATTR_REVEAL: :frag appear
+  + Keep a diary instead
+#+ATTR_REVEAL: :frag appear
+  + Or twitter or something
+#+ATTR_REVEAL: :frag appear
+- *Do not* make it hard to navigate
+#+ATTR_REVEAL: :frag appear
+- *Do not* lie
+#+ATTR_REVEAL: :frag appear
+- *Never* use pop-ups
+#+ATTR_REVEAL: :frag appear
+- Multiple images go in a *gallery*
+#+ATTR_REVEAL: :frag appear
+  + If its a single image and snark, go for Instagram / Twitter
+#+ATTR_REVEAL: :frag appear
+- Be wary of *frameworks*
+* Practicalities
+Using JS and other ugly truths
+** Math
+#+begin_leftcol
+- KaTeX and MathJax
+  + Compared [[https://grimoire.science/metalsmith-math/][here (2016)]]
+#+end_leftcol
+
+#+begin_rightcol
+#+DOWNLOADED: screenshot @ 2021-06-26 08:26:25
+#+ATTR_REVEAL: :frag appear
+[[file:images/Math/2021-06-26_08-26-25_screenshot.png]]
+#+end_rightcol
+
+** Syntax Highlighting
+#+begin_leftcol
+- [[https://highlightjs.org/][Highlight.js]] or _[[https://prismjs.com/][Prism.js]]_
+- Might be native methods too
+  + Hugo has [[https://gohugo.io/content-management/syntax-highlighting/][highlight]]
+  + Org has [[https://www.emacswiki.org/emacs/Htmlize][htmlize.el]]
+- Pick a theme which works across backgrounds
+  + Or use [[https://carbon.now.sh/][carbon]]
+#+end_leftcol
+
+#+begin_rightcol
+[[file:images/Syntax_Highlighting/2021-06-26_08-39-18_screenshot.png]]
+#+end_rightcol
+
+** References
+- No real standard
+  + Pandoc markdown has native support
+- Can consider using [[https://www.zotero.org/support/reports][Zotero reports]] and embedding
+
+#+name: Tabulating support
+| Jekyll | [[https://github.com/inukshuk/jekyll-scholar][jekyll-scholar]]  |
+| Hugo   | [[https://github.com/loup-brun/hugo-cite][hugo-cite]] (WIP) |
+| Pandoc | inbuilt         |
+
+** Hosting and Domains
+- Namecheap is cheap, works well enough
+  + [[https://www.namecheap.com/][Account demo]]
+- Netlify is very generous
+  + [[https://app.netlify.com/teams/haozeke/overview][Account demo]]
+- SSGs can be built on a CI before pushing to Netlify
+  + [[https://github.com/HaoZeke/haozeke.github.io/actions][GH Actions explanation]]
+* Design Discussions
+** Math and Typography
+*** Wikipedia
+- [[https://en.wikipedia.org/wiki/Heat_equation][Heat equation]]
+
+#+DOWNLOADED: screenshot @ 2021-06-26 09:26:43
+[[file:images/Math_and_Typography/2021-06-26_09-26-43_screenshot.png]]
+
+*** No equations
+- https://math3ma.com
+  + [[https://www.math3ma.com/blog/matrices-as-tensor-network-diagrams][Matrices as Tensor Network Diagrams]]
+   #+DOWNLOADED: screenshot @ 2021-06-26 09:27:16
+   [[file:images/Math_and_Typography/2021-06-26_09-27-16_screenshot.png]]
+
+*** Formula list
+- https://grimoire.science
+  + [[https://grimoire.science/pms-basics-hbtu/][Formula list]]
+
+#+DOWNLOADED: screenshot @ 2021-06-26 09:27:48
+[[file:images/Math_and_Typography/2021-06-26_09-27-48_screenshot.png]]
+
+*** Long-form with references
+- https://rgoswami.me
+  + [[https://rgoswami.me/posts/trees-and-bags/][Trees and Bags]]
+
+#+DOWNLOADED: screenshot @ 2021-06-26 09:31:03
+[[file:images/Math_and_Typography/2021-06-26_09-31-03_screenshot.png]]
+
+** Code and Text
+*** Tensorflow
+- [[https://www.tensorflow.org/quantum/tutorials/mnist][MNIST QComp tutorial]]
+#+DOWNLOADED: screenshot @ 2021-06-26 09:30:28
+[[file:images/Code_and_Text/2021-06-26_09-30-28_screenshot.png]]
+
+*** SSG and Syntax Highlighting
+  - [[https://rgoswami.me/posts/ccon-tut-nix/][A tutorial introduction to Nix]]
+
+#+DOWNLOADED: screenshot @ 2021-06-26 09:32:12
+[[file:images/Code_and_Text/2021-06-26_09-32-12_screenshot.png]]
+
+** Referencing
+*** Group Publications
+- ([[https://femtolab.science/publications/][Femtolab list of publications]]) Jekyll based, with metadata
+
+#+DOWNLOADED: screenshot @ 2021-06-26 09:36:18
+[[file:images/Referencing/2021-06-26_09-36-18_screenshot.png]]
+
+*** Referencing in-posts
+#+begin_leftcol
+- https://rgoswami.me
+  + Post on [[https://rgoswami.me/posts/gsoc21-w3/][fortran with references]]
+
+
+#+DOWNLOADED: screenshot @ 2021-06-26 09:33:56
+[[file:images/Referencing/2021-06-26_09-33-56_screenshot.png]]
+
+#+end_leftcol
+#+begin_rightcol
+- https://grimoire.science
+  + Post on [[https://grimoire.science/mathematical-preliminaries/][basic statistics]]
+
+#+DOWNLOADED: screenshot @ 2021-06-26 09:34:25
+[[file:images/Referencing/2021-06-26_09-34-25_screenshot.png]]
+
+#+end_rightcol
+** Documentation Examples
+*** Chapel Language Documentation
+- Single source design
+- [[https://chapel-lang.org/learning.html][Link]]
+
+#+DOWNLOADED: screenshot @ 2021-06-26 08:51:06
+[[file:images/Documentation_Examples/2021-06-26_08-51-06_screenshot.png]]
+*** d-SEAMS documentation
+- Has a split design ([[https://dseams.info/][homepage]], [[https://wiki.dseams.info/][wiki]], [[https://docs.dseams.info/][doxygen]])
+#+DOWNLOADED: screenshot @ 2021-06-26 08:52:53
+#+ATTR_HTML: :width 80% :height 80%
+[[file:images/Documentation_Examples/2021-06-26_08-52-53_screenshot.png]]
+
+*** IRHPC documentation
+- Uses docusaurus, [[https://irhpc.github.io/][link here]]
+
+#+DOWNLOADED: screenshot @ 2021-06-26 09:00:11
+[[file:images/Documentation_Examples/2021-06-26_09-00-11_screenshot.png]]
+
+* Conclusions
+The world is your oyster.
+** Not Covered
+- Search Engine Optimization :: Making people find you by accident better
+- RSS Feeds :: Retaining an audience and random marketing things
+- Writing :: No style can be universally approved
+- Workflows :: Paucity of time, surfeit of generality
+* Thanks!
+:PROPERTIES:
+:reveal_background: #f6f195
+:END:
+*Questions?*
+# ** Bibliography
+# :PROPERTIES:
+# :CUSTOM_ID: bibliography
+# :END:
+
+# \printbibliography[heading=none]
+
+# Local Variables:
+# indent-tabs-mode: nil
+# org-src-preserve-indentation: t
+# End:
