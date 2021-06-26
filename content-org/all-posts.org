@@ -10574,5 +10574,8 @@ Social media might be here to stay, however, it is a poor medium to share expert
 #+BEGIN_EXPORT html
 <script async class="speakerdeck-embed" data-id="ff53a01f882847d49f04f2818adddff6" data-ratio="1.37081659973226" src="//speakerdeck.com/assets/embed.js"></script>
 #+END_EXPORT
+** Video
+
+{{< youtube _YmYbkGA2oc >}}
 
 [fn:officialsite] One location I am going to be able to keep track of
