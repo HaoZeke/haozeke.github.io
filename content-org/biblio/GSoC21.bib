@@ -1,0 +1,123 @@
+
+@book{adamsFortran90Handbook1992,
+  title = {Fortran 90 Handbook: Complete {{ANSI ISO}} Reference},
+  shorttitle = {Fortran 90 Handbook},
+  editor = {Adams, Jeanne C.},
+  date = {1992},
+  publisher = {{Intertext Publ. [u.a.]}},
+  location = {{New York, NY}},
+  annotation = {OCLC: 246553971},
+  isbn = {978-0-07-000406-1},
+  langid = {english},
+  pagetotal = {740}
+}
+
+@article{backusHistoryFortranII1998,
+  title = {The History of {{Fortran I}}, {{II}}, and {{III}}},
+  author = {Backus, J.},
+  date = {1998-10},
+  journaltitle = {IEEE Annals of the History of Computing},
+  volume = {20},
+  pages = {68--78},
+  issn = {1934-1547},
+  doi = {10.1109/85.728232},
+  abstract = {The article discusses attitudes about "automatic programming", the economics of programming, and existing programming systems, all in the early 1950s. It describes the formation of the Fortran group, its knowledge of existing systems, its plans for Fortran, and the development of the language in 1954. It describes the development of the optimizing compiler for Fortran I, of various language manuals, and of Fortran II and III. It concludes with remarks about later developments and the impact of Fortran and its successors on programming today.},
+  eventtitle = {{{IEEE Annals}} of the {{History}} of {{Computing}}},
+  keywords = {Algorithms,Automatic programming,Computer aided instruction,Computer languages,Decision support systems,Environmental economics,History,Optimizing compilers,Program processors,Programming profession},
+  number = {4}
+}
+
+@inproceedings{benediktssonFORTRANIIFirst2009,
+  title = {{{FORTRAN II}} – {{The First Computer Language Used}} at the {{University}} of {{Iceland}}},
+  booktitle = {History of {{Nordic Computing}} 2},
+  author = {Benediktsson, Oddur},
+  editor = {Impagliazzo, John and Järvi, Timo and Paju, Petri},
+  date = {2009},
+  pages = {149--155},
+  publisher = {{Springer}},
+  location = {{Berlin, Heidelberg}},
+  doi = {10.1007/978-3-642-03757-3_16},
+  abstract = {At the end of World War II, people considered Iceland an underdeveloped country. The use of IBM punched card systems started in 1949. The first computers appeared in 1964. Then the University of Iceland acquired an IBM 1620 “scientific” computer. The first computer language used to instruct engineers and scientists was FORTRAN II. The subsequent development gives an interesting picture of the advance of computer technology in Iceland.},
+  isbn = {978-3-642-03757-3},
+  keywords = {FORTRAN II,IBM 1620,programming education},
+  langid = {english},
+  series = {{{IFIP Advances}} in {{Information}} and {{Communication Technology}}}
+}
+
+@article{certikDftatomRobustGeneral2013,
+  title = {Dftatom: {{A}} Robust and General {{Schrödinger}} and {{Dirac}} Solver for Atomic Structure Calculations},
+  shorttitle = {Dftatom},
+  author = {Čertík, Ondřej and Pask, John E. and Vackář, Jiří},
+  date = {2013-07-01},
+  journaltitle = {Computer Physics Communications},
+  shortjournal = {Computer Physics Communications},
+  volume = {184},
+  pages = {1777--1791},
+  issn = {0010-4655},
+  doi = {10.1016/j.cpc.2013.02.014},
+  url = {https://www.sciencedirect.com/science/article/pii/S0010465513000714},
+  urldate = {2021-04-26},
+  abstract = {A robust and general solver for the radial Schrödinger, Dirac, and Kohn–Sham equations is presented. The formulation admits general potentials and meshes: uniform, exponential, or other defined by nodal distribution and derivative functions. For a given mesh type, convergence can be controlled systematically by increasing the number of grid points. Radial integrations are carried out using a combination of asymptotic forms, Runge–Kutta, and implicit Adams methods. Eigenfunctions are determined by a combination of bisection and perturbation methods for robustness and speed. An outward Poisson integration is employed to increase accuracy in the core region, allowing absolute accuracies of 10−8 Hartree to be attained for total energies of heavy atoms such as uranium. Detailed convergence studies are presented and computational parameters are provided to achieve accuracies commonly required in practice. Comparisons to analytic and current-benchmark density-functional results for atomic number Z=1–92 are presented, verifying and providing a refinement to current benchmarks. An efficient, modular Fortran 95 implementation, dftatom, is provided as open source, including examples, tests, and wrappers for interface to other languages; wherein particular emphasis is placed on the independence (no global variables), reusability, and generality of the individual routines. Program summary Program title:dftatom Catalogue identifier: AEPA\_v1\_0 Program summary URL:http://cpc.cs.qub.ac.uk/summaries/AEPA\_v1\_0.html Program obtainable from: CPC Program Library, Queen’s University, Belfast, N. Ireland Licensing provisions: MIT license No. of lines in distributed program, including test data, etc.: 14122 No. of bytes in distributed program, including test data, etc.: 157453 Distribution format: tar.gz Programming language: Fortran 95 with interfaces to Python and C. Computer: Any computer with a Fortran 95 compiler. Operating system: Any OS with a Fortran 95 compiler. RAM: 500~MB Classification: 2.1. External routines: Numpy (http://www.numpy.org/) and Cython (http://cython.org/) Nature of problem: Solution of the Schrödinger, Dirac, and Kohn–Sham equations of Density Functional Theory for isolated atoms. Solution method: Radial integrations are carried out using a combination of asymptotic forms, Runge–Kutta, and implicit Adams methods. Eigenfunctions are determined by a combination of bisection and perturbation methods. An outward Poisson integration is employed to increase accuracy in the core region. Self-consistent field equations are solved by adaptive linear mixing. Restrictions: Spherical symmetry Unusual features: Radial integrators work for general potentials and meshes. No restriction to Coulombic or self-consistent potentials; no restriction to uniform or exponential meshes. Outward Poisson integration. Fallback to bisection for robustness. Running time: For uranium, non-relativistic density functional calculation execution time is around 0.6~s for 10−6 a.u. accuracy in total energy on an Intel Core i7 1.46~GHz processor.},
+  keywords = {Atomic structure,Density functional theory,Dirac equation,Electronic structure,Fortran 95,Kohn–Sham equations,Schrödinger equation,Shooting method},
+  langid = {english},
+  number = {7}
+}
+
+@article{cipraBest20thCentury,
+  title = {The {{Best}} of the 20th {{Century}}: {{Editors Name Top}} 10 {{Algorithms}}},
+  author = {Cipra, Barry A},
+  pages = {2},
+  langid = {english}
+}
+
+@book{clermanModernFortranStyle2012,
+  title = {Modern {{Fortran}}: Style and Usage},
+  shorttitle = {Modern {{Fortran}}},
+  author = {Clerman, Norman S. and Spector, Walter},
+  date = {2012},
+  publisher = {{Cambridge University Press}},
+  location = {{New York}},
+  annotation = {OCLC: ocn743298762},
+  isbn = {978-0-521-51453-8 978-0-521-73052-5},
+  keywords = {FORTRAN (Computer program language)},
+  pagetotal = {334}
+}
+
+@book{cooperEngineeringCompiler2011a,
+  title = {Engineering a {{Compiler}}},
+  author = {Cooper, Keith and Torczon, Linda},
+  date = {2011-01-18},
+  publisher = {{Elsevier}},
+  abstract = {This entirely revised second edition of Engineering a Compiler is full of technical updates and new material covering the latest developments in compiler technology. In this comprehensive text you will learn important techniques for constructing a modern compiler. Leading educators and researchers Keith Cooper and Linda Torczon combine basic principles with pragmatic insights from their experience building state-of-the-art compilers. They will help you fully understand important techniques such as compilation of imperative and object-oriented languages, construction of static single assignment forms, instruction scheduling, and graph-coloring register allocation.In-depth treatment of algorithms and techniques used in the front end of a modern compilerFocus on code optimization and code generation, the primary areas of recent research and developmentImprovements in presentation including conceptual overviews for each chapter, summaries and review questions for sections, and prominent placement of definitions for new termsExamples drawn from several different programming languages},
+  eprint = {_tgh4bgQ6PAC},
+  eprinttype = {googlebooks},
+  isbn = {978-0-08-091661-3},
+  keywords = {Computers / Computer Architecture,Computers / Computer Engineering,Computers / General,Computers / Languages / General,Computers / Operating Systems / General,Computers / Programming / Compilers,Computers / Software Development & Engineering / General},
+  langid = {english},
+  pagetotal = {825}
+}
+
+@book{levineLinkersLoaders2000,
+  title = {Linkers and Loaders},
+  author = {Levine, John R.},
+  date = {2000},
+  publisher = {{Morgan Kaufmann}},
+  location = {{San Francisco}},
+  isbn = {978-1-55860-496-4},
+  keywords = {Assembling (Electronic computers),Linkers (Computer programs),Loaders (Computer programs)},
+  pagetotal = {256}
+}
+
+@book{lyonUsingAnsFortran1980,
+  title = {Using {{Ans Fortran}}},
+  author = {Lyon, G. E.},
+  date = {1980},
+  publisher = {{National Bureau of Standards}},
+  abstract = {This FORTRAN volume presents, in order: a set of quick and clear reference charts for ANS FORTRAN 66 syntax; observations on using only standard FORTRAN 65 features; instructions on circumventing and extending FORTRAN 66 with the least harm; an appraisal of the new FORTRAN 77 in terms of FORTRAN 65 constructs. Although the chapters comprise much material that has appeared in other technical memoranda or published articles, heavily recast sections have been re-refereed. The four chapters address programmers concerned with FORTRAN transportability, managers engaged in programming standards, and other practitioners interested in system influences upon languages. Since the text touches upon several general programming aspects (input/output, storage allocation, storage lifetimes and protection, control structures), the volume's appeal will extend beyond the immediate FORTRAN community.},
+  eprint = {8ymHAQAACAAJ},
+  eprinttype = {googlebooks},
+  langid = {english},
+  pagetotal = {109}
+}
+
+
