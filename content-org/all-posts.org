@@ -10546,3 +10546,33 @@ by compilers for inclusion into future standards.
 A meandering path through the history of Fortran
 #+end_quote
 ** Background
+* DONE Talk Supplements for IOP CAPS'21 Webdev Workshop :@conferences:presentations:ramblings:webdev:
+CLOSED: [2021-06-26 Sat 10:05]
+:PROPERTIES:
+:EXPORT_FILE_NAME: iop-caps-webdev-2021-meta
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+BEGIN_QUOTE
+A meta-post on the workshop I held for the IOP CAPS'21 student conference on Web Development for Physicists
+#+END_QUOTE
+** Background
+Much the same as the rationale behind my other presentation [[https://rgoswami.me/tags/presentations/][meta-posts]], that is:
+- I would like to preserve questions
+- I would like to collect the video, slides and other miscellaneous stuff in one location [fn:officialsite]
+- It would be nice to have my own thoughts here afterwards
+*** Details
+- Workshop listing on [[https://www.iopconferences.org/CAPS21][conference site]]
+Blurb:
+#+begin_quote
+Social media might be here to stay, however, it is a poor medium to share expert content. In particular, short sound bites aside, two main cornerstones of scientific work in the 21st century, programming and mathematics, are ill suited to most commercial platforms. We will journey into the depths of web development, skimming for the most part for the components needed to develop a well designed platform from which non-peer reviewed content can be disseminated, and expertise can be proven. We will also discuss the types of content and how to decide between multiple possible content outlets.
+#+end_quote
+
+** Slides
+- [[file:/revealjs/iop_caps21/caps21webdev.html][Best viewed here]] using a browser (in a new tab)
+- A ~pdf~ copy of the slides are embedded below
+- The ~orgmode~ source is here on the [[https://github.com/HaoZeke/haozeke.github.io/tree/src/presentations/iopWEBDEV2021][site's GH repo]]
+#+BEGIN_EXPORT html
+<script async class="speakerdeck-embed" data-id="ff53a01f882847d49f04f2818adddff6" data-ratio="1.37081659973226" src="//speakerdeck.com/assets/embed.js"></script>
+#+END_EXPORT
+
+[fn:officialsite] One location I am going to be able to keep track of
