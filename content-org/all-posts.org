@@ -10382,6 +10382,129 @@ makes compiler design the art form as described in @cooperEngineeringCompiler201
 [fn:whatlego] I am convinced the concept behind IKEA and its Icelandic counterpart Rumfatalagerinn is that some people enjoy assembling their furniture the same way kids enjoy LEGO
 [fn:whatexplosive] There were some interesting allegations of the standards committee being far too conservative, though many of the concerns reflect on the dearth of community efforts compared to other languages; Fortran is not after-all coupled to a compiler unlike modern languages like Rust and Julia
 [fn:silently] Owing to the lack of a stable internet I was reduced to text-only participation
+* TODO GSoC21 W3: Kind, Characters, and Standards :@notes:gsoc21:fortran:rambling:
+:PROPERTIES:
+:EXPORT_FILE_NAME: gsoc21-w3
+:EXPORT_HUGO_PANDOC_CITATIONS: t
+:EXPORT_BIBLIOGRAPHY: biblio/GSoC21.bib
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
+:END:
+#+begin_quote
+Standard practice pragmatic approaches to ~kind~ for ~dftatom~
+#+end_quote
+** Background
+Serialized update for the [[https://summerofcode.withgoogle.com/projects/#5790375215628288][2021 Google Summer of Code]] under the [[https://fortran-lang.org/][fortran-lang
+organization]], mentored by [[https://ondrejcertik.com/][Ondrej Certik]].
+*** Series
+This post is the second in a series based around my weekly GSoC21 project check-ins.
+1. [[GSoC21 W1: LFortran Kickoff][GSoC21 W1: LFortran Kickoff]]
+2. [[GSoC21 W2: LFortran Unraveling][GSoC21 W2: LFortran Unraveling]] <-- You are here!
+3. *GSoC21 W3: Kind and Characters* <-- You are here!
+** Logistics
+- Met with Ondrej on Tuesday
+  + Went over my ~kind~ implementation
+  + Merged older approved MRs
+  + Worked on generating tests
+- Talked about the test methodology in general
+  + Most of the tests are better off in their integration form (discussed below)
+  + Some aspects of the passes may be tested using the ~doctest~ setup
+- Set an additional time to discuss the implementation of *assumed length* character declarations
+  + These are not actually used in any ~dftatom~ routines but they are very common for utility functions
+- Met with Ondrej on Thursday
+  + Discussed repercussions of backends
+    - Better, more explicit ASR rules can stem from not relying on the CPP backend
+- Talked about the number of passes (SRC->AST->ASR->LLVM)
+- Started working on getting the right thing happen when faced with ~character(len=*)~
+** Overview
+This week also saw an increase in community activities on the [[https://fortran-lang.discourse.group/][Fortran discourse]],
+since the J3 meeting is now underway and user polling [fn:whatpoll] is in full swing.
+
+*** New Merge Requests
+- [[https://gitlab.com/lfortran/lfortran/-/merge_requests/997/diffs][Implement more kind() (997)]] :: Added tests and code to the AST->ASR pass for ~kind~ calls relevant to ~dftatom~
+- [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1000][Draft: Implement assumed length (1000)]] :: More of a trailer for the next week; also happens to be the 1000th MR (which is neat)
+*** Freshly Assigned Issues
+- [[https://gitlab.com/lfortran/lfortran/-/issues/373][Some more Kind considerations (373)]] :: More of a speculative issue about standards compliance, led to the more concrete and general [[https://gitlab.com/lfortran/lfortran/-/issues/375][375]]
+*** Additional Tasks
+Still unofficially planning to take a stab at [[https://gitlab.com/lfortran/lfortran/-/issues/350][issue 350]]; regarding the main ~lfortran.org~ site.
+** Kinds
+The standard allows for any constant to be used in a ~kind~ function call. Some commonly seen variants in the wild are:
+
+#+begin_src fortran
+integer, parameter :: dp=kind(0.d0), &             ! double precision
+                      hp=selected_real_kind(15), & ! high precision
+                      qp=selected_real_kind(32), & ! quadruple precision
+                      sp = kind(0.)                ! single precision
+#+end_src
+
+Most commonly; ~kind(0.d0)~ is seen in the wild. Currently the ~lfortran~ ASR defines: ~ConstantInteger, ConstantReal, ConstantComplex, ConstantLogical~ of which only ~ConstantLogical~ is implemented.
+
+The idea is that ~0.~ is single precision; while ~1._dp~, ~1.d0~ or ~0.d0~ are double precision. Essentially then the solution presented itself naturally; to check if ~d~ is present; assign double precision if true, otherwise stick to single precision. At the moment, ~lfortran~ considers either ~4~ for single or ~8~ for double.
+
+More generally, it might be useful to make the single and double precision values managed by a pre-processor. For the other kinds of precision, some more thought is required.
+
+At this stage, it compiles with the LLVM backend.
+#+begin_src bash
+lfortran -v -c --show-asr --show-stacktrace lapack.f90
+lfortran -v -c --backend=llvm --show-stacktrace lapack.f90
+#+end_src
+** Tests
+While implementing I used the simplest of debugging concepts, that of making manual changes and writing out results. However, no compiler can survive without rigorous unit tests, and ~lfortran~ is no different.
+*** Fortran Integration Tests
+So called because these are run by a ~python~ driver and store verbatim the ~stdout~ in files. Note that this form of testing, though convenient, does require the user to be certain of the test before writing it; due to the update process it is possible to store the wrong result and consistently get it wrong.
+#+begin_src bash
+./run_tests.py -u # Update
+#+end_src
+*** Unit Tests for Passes
+These are not favored, as any change in any of the passes causes a large amount of test metadata to be invalidated. There are some tests of this nature, and the framework used is ~doctest~.
+** Towards Assumed Lengths
+The first step towards implementing assumed lengths was to isolate the problem,
+which was done through the age-old comment recompile and test methodology. The offending function is a rather innocuous looking helper function:
+#+begin_src fortran
+function upcase(s) result(t)
+! Returns string 's' in uppercase
+character(*), intent(in) :: s
+character(len(s)) :: t
+integer :: i, diff
+t = s; diff = ichar('A')-ichar('a')
+do i = 1, len(t)
+    if (ichar(t(i:i)) >= ichar('a') .and. ichar(t(i:i)) <= ichar('z')) then
+        ! if lowercase, make uppercase
+        t(i:i) = char(ichar(t(i:i)) + diff)
+    end if
+end do
+end function
+#+end_src
+
+Having zeroed in on a prototypical failure point within ~dftatom~, in the ~utils.f90~ file, the next steps are documented in the relevant issue and PR.
+
+The AST representation of the code is :
+#+begin_src bash
+(TranslationUnit [(Module utils [] [(ImplicitNone [])] [(Declaration () [(SimpleAttribute AttrPrivate)] []) (Declaration () [(SimpleAttribute AttrPublic)] [(upcase [] [] () None ())])] [(Function upcase [(s)] [] t () [] [] [] [(Declaration (AttrType TypeCharacter [(len () Star)] ()) [(AttrIntent In)] [(s [] [] () None ())]) (Declaration (AttrType TypeCharacter [(() 20 Value)] ()) [] [(t [] [] () None ())])] [] [])])])
+#+end_src
+No simplifications can be expected to occur from the AST representation to the ASR for this situation so the first order of business is to let the ASR accept the AST representation and pass it through to the backend.
+
+Early on, I considered managing this particular feature in the ~cpp~ backend, but Ondrej pointed out that the ease-of-use features and guarantees of the ~cpp~ compiler would lead to a more sloppy ASR implementation.
+** Conclusions
+This third week led me down the rabbit hole with regards to the standard,
+and a statement comes to mind from @clermanModernFortranStyle2012:
+#+begin_quote
+The standard is the contract between the compiler writer and the application developer.
+#+end_quote
+For most of my life I've been the latter, but now, the intricate legalese of the
+standard haunts much of my day.
+
+This attempt at standards level rigor in particular, for ~kind~ ([[https://gitlab.com/lfortran/lfortran/-/issues/373][#373]]) lead to the discussion on the best way to work with constant expressions at compile time ([[https://gitlab.com/lfortran/lfortran/-/issues/375][#375]]).
+
+My vaccination with the single shot Janssen vaccine and subsequent side effects,
+have had a deliberating effect. However, the additional meeting with Ondrej more
+than made up for it in terms of project productivity.
+
+I also satiated mostly my interest in the historical development of "automatic coding" or compiling as we would now call it in the context of Fortran largely due to @cipraBest20thCentury, @backusHistoryFortranII1998 and @benediktssonFORTRANIIFirst2009 [fn:forumhist]. It is very liberating to be able to keep a public record of my reading habits and fancies, however 20 hours of text and code consumed along with ruminative thoughts is rather too much for a single weekly post, might need to eventually step it up. Other interesting things which just haven't made the cut for this post include finally going through the ~gfortran~ implementation in some more detail and looking into the linking and loading process via @levineLinkersLoaders2000.
+
+The primary goal for next week shall remain implementing assumed length character arrays and then continuing with the laundry list of ~dftatom~ tests.
+
+[fn:whatpoll] For example, this [[https://fortran-lang.discourse.group/t/poll-fortran-202x-conditional-expressions-syntax/1425/31][poll on conditional expressions]]
+[fn:forumhist] The community discourse has [[https://fortran-lang.discourse.group/t/intel-releases-oneapi-toolkit-free-fortran-2018/471/14?u=rgoswami][historical records]] too
 * TODO Compiler Design
 True, from some perspective, it is a race to the end goal of flipping some
 switches at the hardware level (a massive over simplification) but it is in the
