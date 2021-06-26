@@ -582,6 +582,9 @@ The world is your oyster.
 - Search Engine Optimization :: Making people find you by accident better
 - RSS Feeds :: Retaining an audience and random marketing things
 - Writing :: No style can be universally approved
+- Comments :: Engagement with filters ([[https://utteranc.es/][Utteranc.es]], [[https://graphcomment.com/][GraphComment]], [[https://my.remarkbox.com/][Remarkbox]], anything but Disqus)
+- Search :: Static searches can be complicated, [[https://fusejs.io/][Fuse.js]] and [[https://stork-search.net/][Stork]] are neat
+- Analytics :: Spying on those who spy on you
 - Workflows :: Paucity of time, surfeit of generality
 * Thanks!
 :PROPERTIES:
