@@ -10383,7 +10383,8 @@ makes compiler design the art form as described in @cooperEngineeringCompiler201
 [fn:whatlego] I am convinced the concept behind IKEA and its Icelandic counterpart Rumfatalagerinn is that some people enjoy assembling their furniture the same way kids enjoy LEGO
 [fn:whatexplosive] There were some interesting allegations of the standards committee being far too conservative, though many of the concerns reflect on the dearth of community efforts compared to other languages; Fortran is not after-all coupled to a compiler unlike modern languages like Rust and Julia
 [fn:silently] Owing to the lack of a stable internet I was reduced to text-only participation
-* TODO GSoC21 W3: Kind, Characters, and Standards :@notes:gsoc21:fortran:rambling:
+* DONE GSoC21 W3: Kind, Characters, and Standards :@notes:gsoc21:fortran:rambling:
+CLOSED: [2021-06-26 Sat 00:28]
 :PROPERTIES:
 :EXPORT_FILE_NAME: gsoc21-w3
 :EXPORT_HUGO_PANDOC_CITATIONS: t
