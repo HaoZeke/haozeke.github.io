@@ -10400,8 +10400,8 @@ organization]], mentored by [[https://ondrejcertik.com/][Ondrej Certik]].
 *** Series
 This post is the second in a series based around my weekly GSoC21 project check-ins.
 1. [[GSoC21 W1: LFortran Kickoff][GSoC21 W1: LFortran Kickoff]]
-2. [[GSoC21 W2: LFortran Unraveling][GSoC21 W2: LFortran Unraveling]] <-- You are here!
-3. *GSoC21 W3: Kind and Characters* <-- You are here!
+2. [[GSoC21 W2: LFortran Unraveling][GSoC21 W2: LFortran Unraveling]]
+3. *GSoC21 W3: Kind, Characters, and Standards* <-- You are here!
 ** Logistics
 - Met with Ondrej on Tuesday
   + Went over my ~kind~ implementation
