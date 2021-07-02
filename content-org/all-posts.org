@@ -10559,7 +10559,7 @@ I'd like to make some time to continue exploring the LLVM, not to mention famili
 Now that I am a few weeks in, the workflow has roughly stabilized enough to warrant documentation.
 Typically for each feature implementation issue, I add a screenshot from the relevant draft and also link to the ~pdf~. This is currently either @J321007Draft or @J318007r1F2018 as and when appropriate.
 ** Linking Troubles
-Sometime down the line of modules and the roadmap to ~dftatom~ described in the [[https://gitlab.com/lfortran/lfortran/-/issues/319][master issue here]], I ran into an odd linker error. These seem to show up with both ~miniconda~ and ~nix~, however, it is unclear to me at the moment if it warrants an issue until I check on a native ArchLinux machine.
+Sometime down the line of modules and the roadmap to ~dftatom~ described in the [[https://gitlab.com/lfortran/lfortran/-/issues/319][master issue here]], I ran into an odd linker error. These seem to show up with both ~miniconda~ and ~nix~, however, it is unclear to me at the moment if it warrants an issue until I check on a native ArchLinux machine. Another natural fix might be to actually bring in and compile ~llvm~; then use the ~lld~ linker instead of the ~bfd~.
 #+begin_src bash
 lfortran mod types.mod --show-asr
 Traceback (most recent call last):
