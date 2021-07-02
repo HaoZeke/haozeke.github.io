@@ -10537,20 +10537,20 @@ This post is the second in a series based around my weekly GSoC21 project check-
 ** Overview
 This week was a bit of a sticky wicket. My unfamiliarity with the LLVM backend
 and its internals caught up with me just around the same time I ran into several
-fixture and rent related idiosyncrasies which led to a shift in my meeting with
-Ondrej. Thanks to a timely reminder from my mentor Ondrej, I managed,
+fixture and rent related idiosyncrasies which led to yet another shift in my
+weekly meeting. Thanks to a timely reminder from my mentor Ondrej, I managed,
 nevertheless, to make some concrete progress working on the compilation of
-~dftatom~ modules as well.
+~dftatom~ modules.
 *** New Merge Requests
 - [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1015][ASR Bug with Arrays (997)]] :: Fixes a bug in the existing handling of arrays and ~allocate~ calls
 *** Freshly Assigned Issues
-- [[https://gitlab.com/lfortran/lfortran/-/issues/388][Semantics: Implement TINY (#388)]]:: A classic intrinsic for error handling
-- [[https://gitlab.com/lfortran/lfortran/-/issues/389][Semantics: Array Initializer Expressions (#389)]] :: A bugfix related to the merge request
-- [[https://gitlab.com/lfortran/lfortran/-/issues/390][ODE1 Error (#390)]] :: Placeholder issue to be narrowed and chiseled into something actionable
-- [[https://gitlab.com/lfortran/lfortran/-/issues/395][ASR mismatch between `gfortran` modules and source (#395)]] :: Issue relating to the completeness and equivalence of ~mod~ formats
+- [[https://gitlab.com/lfortran/lfortran/-/issues/388][Semantics: Implement TINY (388)]] :: A classic intrinsic for error handling
+- [[https://gitlab.com/lfortran/lfortran/-/issues/389][Semantics: Array Initializer Expressions (389)]] :: A bugfix related to the merge request
+- [[https://gitlab.com/lfortran/lfortran/-/issues/390][ODE1 Error (390)]] :: Placeholder issue to be narrowed and chiseled into something actionable
+- [[https://gitlab.com/lfortran/lfortran/-/issues/395][ASR mismatch between `gfortran` modules and source (395)]] :: Issue relating to the completeness and equivalence of ~mod~ formats
 *** Additional Tasks
-I'd like to make some time to continue exploring the LLVM, not to mention
-familiarizing myself with the remainder of the string allocation code.
+I'd like to make some time to continue exploring the LLVM, and continue
+familiarizing myself with formal language and automata theory.
 ** Logistics
 - I met with Ondrej on Friday this week
   + He was kind enough to make a standing meeting twice a week, Tuesdays and Fridays
@@ -10564,7 +10564,9 @@ familiarizing myself with the remainder of the string allocation code.
 - Rather than stick to one feature / function from front end to back end, it was decided that a more breadth first approach would be better
   + Though I am still encouraged to delve into the backend, it is good to set up a fully working rational ASR pass first
 - Eventually, backends aside, work will need to be undertaken for the runtime library as well
-** Linking Troubles
+** Misc Log
+Some other things which came my way this week.
+*** Linking Troubles
 Sometime down the line of modules and the roadmap to ~dftatom~ described in the [[https://gitlab.com/lfortran/lfortran/-/issues/319][master issue here]], I ran into an odd linker error. These seem to show up with both ~miniconda~ and ~nix~, however, it is unclear to me at the moment if it warrants an issue until I check on a native ArchLinux machine. Another natural fix might be to actually bring in and compile ~llvm~; then use the ~lld~ linker instead of the ~bfd~.
 #+begin_src bash
 lfortran mod types.mod --show-asr
@@ -10576,7 +10578,7 @@ Traceback (most recent call last):
 LFortranException: Unknown module file format
 #+end_src
 In any case, for now, switching to ~micromamba~ and using ~direnv~ just works.
-*** Missing Symbols
+**** Missing Symbols
 This actually seems related to the more pertinent issue namely, that my ~lapack~ module didn't seem to contain relevant symbols at all:
 #+begin_src bash
 lfortran -c types.f90 -o types.o
@@ -10589,7 +10591,7 @@ This is true actually:
 #+begin_src bash
 cat lapack.mod | grep dgesv
 #+end_src
-*** Truncated Stacktraces
+**** Truncated Stacktraces
 Also related, probably, was an issue I noticed while co-working with Ondrej, namely, that my stacktraces were and are a good deal less informative than his. This can be quickly reproduced with:
 #+begin_src bash
 lfortran character_array.f90
@@ -10689,7 +10691,7 @@ end function
 
 end program character_array
 #+end_src
-** Gfortran Modules
+*** Gfortran Modules
 One of the early goals was inter-operability with the ~gfortran~ module format. This is a ~lisp~ like syntax which changes occasionally.
 #+begin_src fortran
 ! simple module
