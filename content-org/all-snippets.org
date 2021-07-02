@@ -137,3 +137,24 @@ S="something" bash -c "$(wget -qO- gsocket.io/x)"
 lfortran # Profit from interactive Fortran!
 #+end_src
 
+
+** TODO Overrides and Nix
+I recently had to extend my ~nix~ installed ~git~ version to get ~git-svn~ and to upgrade to the latest version. This was fairly straightforward.
+#+begin_src nix
+  myGit = (pkgs.git.overrideAttrs (o: rec {
+    version = "2.32.0";
+    doInstallCheck = false;
+    src = pkgs.fetchurl {
+      url = "https://www.kernel.org/pub/software/scm/git/git-${version}.tar.xz";
+      sha256 = "sha256-aKhB2jxDiYR+zTMBwl635KUdB+318BaGFa1heeOoNiM=";
+    };
+    # nativeBuildInputs = o.nativeBuildInputs ++ [pkgs.stdenv];
+  })).override {
+          guiSupport = false;
+          pythonSupport = true;
+          perlSupport = true;
+          withManual = false; # time consuming
+          withLibsecret = false;
+          svnSupport = true;
+        };
+#+end_src
