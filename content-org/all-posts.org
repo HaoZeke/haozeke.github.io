@@ -10152,6 +10152,7 @@ export PATH=$(pwd)/inst/bin/:$PATH
 # MacOS
 micromamba create -p ./tmp llvmdev=11.0.1 bison=3.4 re2c python cmake make toml -c conda-forge
 micromamba activate tmp
+export PATH=$(pwd)/tmp/bin:$PATH
 ./build0.sh
 cmake -DCMAKE_BUILD_TYPE=Debug -DWITH_LLVM=yes -DCMAKE_INSTALL_PREFIX=`pwd`/inst .
 make -j$(nproc)
@@ -10516,6 +10517,179 @@ The primary goal for next week shall remain implementing assumed length characte
 
 [fn:whatpoll] For example, this [[https://fortran-lang.discourse.group/t/poll-fortran-202x-conditional-expressions-syntax/1425/31][poll on conditional expressions]]
 [fn:forumhist] The community discourse has [[https://fortran-lang.discourse.group/t/intel-releases-oneapi-toolkit-free-fortran-2018/471/14?u=rgoswami][historical records]] too
+* TODO GSoC21 W4: LFortran, Assumed length, and LLVM :@notes:gsoc21:fortran:rambling:
+:PROPERTIES:
+:EXPORT_FILE_NAME: gsoc21-w4
+:EXPORT_HUGO_PANDOC_CITATIONS: t
+:EXPORT_BIBLIOGRAPHY: biblio/GSoC21.bib
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
+:END:
+#+begin_quote
+Implementing ~assumed length~ in the LLVM backend and hacking away at ~dftatom~
+#+end_quote
+** Background
+Serialized update for the [[https://summerofcode.withgoogle.com/projects/#5790375215628288][2021 Google Summer of Code]] under the [[https://fortran-lang.org/][fortran-lang
+organization]], mentored by [[https://ondrejcertik.com/][Ondrej Certik]].
+*** Series
+This post is the second in a series based around my weekly GSoC21 project check-ins.
+1. [[GSoC21 W1: LFortran Kickoff][GSoC21 W1: LFortran Kickoff]]
+2. [[GSoC21 W2: LFortran Unraveling][GSoC21 W2: LFortran Unraveling]]
+3. [[GSoC21 W3: Kind, Characters, and Standards][GSoC21 W3: Kind, Characters, and Standards]]
+4. *GSoC21 W4: LFortran, Assumed length, and, LLVM* <-- You are here!
+** Overview
+This week was a bit of a sticky wicket. My unfamiliarity with the LLVM backend
+and its internals caught up with me just around the same time I ran into several
+fixture and rent related idiosyncrasies which led to a shift in my meeting with
+Ondrej. In any case, though Ondrej knows exactly how I should implement the
+assumed length, I decided it was time to dive into the LLVM infrastructure
+itself, at least insofar as it concerns the ~lfortran~ project. This therefore,
+is the first in a series on *Dragons and Automated Coding for
+FormulaTranslation* [fn:notaname].
+
+Thanks to a timely reminder from my mentor Ondrej, I managed, nevertheless, to make some concrete progress working on the compilation of ~dftatom~ modules as well.
+*** New Merge Requests
+*** Freshly Assigned Issues
+- [[https://gitlab.com/lfortran/lfortran/-/issues/388][Semantics: Implement TINY (#388)]]:: A classic intrinsic for error handling
+- [[https://gitlab.com/lfortran/lfortran/-/issues/389][Semantics: Array Initializer Expressions (#389)]] :: Probably throwing a misleading error, as ~gfortran~ does not complain
+- [[https://gitlab.com/lfortran/lfortran/-/issues/390][ODE1 Error]] :: Placeholder issue to be narrowed and chiseled into something actionable
+*** Additional Tasks
+I'd like to make some time to continue exploring the LLVM, not to mention familiarizing myself with the remainder of the string allocation code.
+** Logistics
+** Workflow Description
+Now that I am a few weeks in, the workflow has roughly stabilized enough to warrant documentation.
+Typically for each feature implementation issue, I add a screenshot from the relevant draft and also link to the ~pdf~. This is currently either @J321007Draft or @J318007r1F2018 as and when appropriate.
+** Linking Troubles
+Sometime down the line of modules and the roadmap to ~dftatom~ described in the [[https://gitlab.com/lfortran/lfortran/-/issues/319][master issue here]], I ran into an odd linker error. These seem to show up with both ~miniconda~ and ~nix~, however, it is unclear to me at the moment if it warrants an issue until I check on a native ArchLinux machine.
+#+begin_src bash
+lfortran mod types.mod --show-asr
+Traceback (most recent call last):
+  File "/build/glibc-2.32/csu/../sysdeps/x86_64/start.S", line 120, in _start()
+  Binary file "/nix/store/hp8wcylqr14hrrpqap4wdrwzq092wfln-glibc-2.32-37/lib/libc.so.6", in __libc_start_main()
+  File "/users/home/rog32/Git/Github/Fortran/mylf/src/bin/lfortran.cpp", line 1086, in ??
+    asr = LFortran::mod_to_asr(al, arg_mod_file);
+LFortranException: Unknown module file format
+#+end_src
+*** Missing Symbols
+This actually seems related to the more pertinent issue namely, that my ~lapack~ module didn't seem to contain relevant symbols at all:
+#+begin_src bash
+lfortran -c types.f90 -o types.o
+lfortran -c lapack.f90 -o lapack.o
+lfortran -c constants.f90 -o constants.o
+lfortran -c interpolation.f90 -o interpolation.o
+Semantic error: The symbol 'dgesv' not found in the module 'lapack'
+#+end_src
+This is true actually:
+#+begin_src bash
+cat lapack.mod | grep dgesv
+#+end_src
+*** Truncated Stacktraces
+Also related, probably, was an issue I noticed while co-working with Ondrej, namely, that my stacktraces were and are a good deal less informative than his. This can be quickly reproduced with:
+#+begin_src bash
+lfortran character_array.f90
+BFD: DWARF error: could not find variable specification at offset 2722f
+BFD: DWARF error: could not find variable specification at offset 2723e
+BFD: DWARF error: could not find variable specification at offset 2736f
+BFD: DWARF error: could not find variable specification at offset 2722f
+BFD: DWARF error: could not find variable specification at offset 2723e
+BFD: DWARF error: could not find variable specification at offset 2736f
+BFD: DWARF error: could not find variable specification at offset 2722f
+BFD: DWARF error: could not find variable specification at offset 2723e
+BFD: DWARF error: could not find variable specification at offset 2736f
+BFD: DWARF error: could not find variable specification at offset 2722f
+BFD: DWARF error: could not find variable specification at offset 2723e
+BFD: DWARF error: could not find variable specification at offset 2736f
+BFD: DWARF error: could not find variable specification at offset 2722f
+BFD: DWARF error: could not find variable specification at offset 2723e
+BFD: DWARF error: could not find variable specification at offset 2736f
+BFD: DWARF error: could not find variable specification at offset 2722f
+BFD: DWARF error: could not find variable specification at offset 2723e
+BFD: DWARF error: could not find variable specification at offset 2736f
+BFD: DWARF error: could not find variable specification at offset 615b9
+Traceback (most recent call last):
+  File "/build/glibc-2.32/csu/../sysdeps/x86_64/start.S", line 120, in _start()
+  Binary file "/nix/store/hp8wcylqr14hrrpqap4wdrwzq092wfln-glibc-2.32-37/lib/libc.so.6", in __libc_start_main()
+  File "/users/home/rog32/Git/Github/Fortran/mylf/src/bin/lfortran.cpp", line 1250, in ??
+    err = compile_to_object_file(arg_file, tmp_o, false,
+  File "/users/home/rog32/Git/Github/Fortran/mylf/src/bin/lfortran.cpp", line 601, in (anonymous namespace)::compile_to_object_file(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, bool, bool) [clone .isra.0]
+    result = fe.get_asr2(input);
+  File "/users/home/rog32/Git/Github/Fortran/mylf/src/lfortran/codegen/evaluator.cpp", line 469, in LFortran::FortranEvaluator::get_asr2(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+    asr = ast_to_asr(al, *ast, symbol_table);
+  File "/users/home/rog32/Git/Github/Fortran/mylf/src/lfortran/semantics/ast_to_asr.cpp", line 3091, in LFortran::ast_to_asr(Allocator&, LFortran::AST::TranslationUnit_t&, LFortran::SymbolTable*)
+    v.visit_TranslationUnit(ast);
+  File "/users/home/rog32/Git/Github/Fortran/mylf/src/lfortran/ast.h", line 3235, in LFortran::SymbolTableVisitor::visit_TranslationUnit(LFortran::AST::TranslationUnit_t const&)
+    case modType::Program: { v.visit_Program((const Program_t &)x); return; }
+  File "/users/home/rog32/Git/Github/Fortran/mylf/src/lfortran/ast.h", line 3555, in LFortran::AST::BaseVisitor<LFortran::SymbolTableVisitor>::visit_program_unit(LFortran::AST::program_unit_t const&)
+    void visit_program_unit(const program_unit_t &b) { visit_program_unit_t(b, self()); }
+  File "/users/home/rog32/Git/Github/Fortran/mylf/src/lfortran/ast.h", line 3561, in LFortran::AST::BaseVisitor<LFortran::SymbolTableVisitor>::visit_unit_decl2(LFortran::AST::unit_decl2_t const&)
+    void visit_unit_decl2(const unit_decl2_t &b) { visit_unit_decl2_t(b, self()); }
+  File "/users/home/rog32/Git/Github/Fortran/mylf/src/lfortran/ast.h", line 3624, in LFortran::AST::BaseVisitor<LFortran::SymbolTableVisitor>::visit_expr(LFortran::AST::expr_t const&)
+    void visit_expr(const expr_t &b) { visit_expr_t(b, self()); }
+  File "/users/home/rog32/Git/Github/Fortran/mylf/src/lfortran/ast.h", line 3369, in void LFortran::AST::visit_expr_t<LFortran::SymbolTableVisitor>(LFortran::AST::expr_t const&, LFortran::SymbolTableVisitor&)
+    static void visit_expr_t(const expr_t &x, Visitor &v) {
+  Binary file "/nix/store/hp8wcylqr14hrrpqap4wdrwzq092wfln-glibc-2.32-37/lib/libc.so.6", in killpg()
+Segfault: Signal SIGSEGV (segmentation fault) received
+#+end_src
+With a rather simple test problem I was using for my ~allocatable length~ character feature.
+#+begin_src fortran
+! character_array.f90
+program character_array
+  implicit none
+
+  character(15) :: something
+  something = "sUpErWeiRdCaSe"
+
+  call upcase(something)
+
+  something = upcase_func(something)
+
+  contains
+
+subroutine upcase(s)
+! Returns string 's' in uppercase
+character(*), intent(in) :: s
+character(len(s)) :: t
+integer :: i, diff
+t = s; diff = ichar('A')-ichar('a')
+do i = 1, len(t)
+    if (ichar(t(i:i)) >= ichar('a') .and. ichar(t(i:i)) <= ichar('z')) then
+        ! if lowercase, make uppercase
+        t(i:i) = char(ichar(t(i:i)) + diff)
+    end if
+end do
+print*, "Subroutine"
+print*, "Length of arg is ", len(s)
+print*, "Converted " // s // " to " // t
+
+end subroutine
+
+function upcase_func(s) result(t)
+! Returns string 's' in uppercase
+character(*), intent(in) :: s
+character(len(s)) :: t
+integer :: i, diff
+t = s; diff = ichar('A')-ichar('a')
+do i = 1, len(t)
+    if (ichar(t(i:i)) >= ichar('a') .and. ichar(t(i:i)) <= ichar('z')) then
+        ! if lowercase, make uppercase
+        t(i:i) = char(ichar(t(i:i)) + diff)
+    end if
+end do
+! print*,  new_line('c')
+print*, "Function"
+print*, "Length of arg is ", len(s)
+print*, "Converted " // s // " to " // t
+end function
+
+end program character_array
+#+end_src
+** Visualizing the IR
+The first problem I ran into is that ~lfortran~ has representations for the
+~AST~ and the ~ASR~, but I haven't covered yet how to output the LLVM
+intermediate representation (IR) itself.
+** Conclusions
+For the next week, I shall be finalizing work on the allocatable character lengths and moving on to some more semantics and intrinsics. Naturally as these are completed there will be more progress down the ~dftatom~ module listing.
+
+[fn:notaname] This is (not yet) a formal series, but might be
 * TODO Compiler Design
 True, from some perspective, it is a race to the end goal of flipping some
 switches at the hardware level (a massive over simplification) but it is in the
