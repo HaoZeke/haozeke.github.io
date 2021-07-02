@@ -10421,7 +10421,6 @@ This post is the second in a series based around my weekly GSoC21 project check-
 ** Overview
 This week also saw an increase in community activities on the [[https://fortran-lang.discourse.group/][Fortran discourse]],
 since the J3 meeting is now underway and user polling [fn:whatpoll] is in full swing.
-
 *** New Merge Requests
 - [[https://gitlab.com/lfortran/lfortran/-/merge_requests/997/diffs][Implement more kind() (997)]] :: Added tests and code to the AST->ASR pass for ~kind~ calls relevant to ~dftatom~
 - [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1000][Draft: Implement assumed length (1000)]] :: More of a trailer for the next week; also happens to be the 1000th MR (which is neat)
@@ -10517,15 +10516,14 @@ The primary goal for next week shall remain implementing assumed length characte
 
 [fn:whatpoll] For example, this [[https://fortran-lang.discourse.group/t/poll-fortran-202x-conditional-expressions-syntax/1425/31][poll on conditional expressions]]
 [fn:forumhist] The community discourse has [[https://fortran-lang.discourse.group/t/intel-releases-oneapi-toolkit-free-fortran-2018/471/14?u=rgoswami][historical records]] too
-* TODO GSoC21 W4: LFortran, Assumed length, and LLVM :@notes:gsoc21:fortran:rambling:
+* DONE GSoC21 W4: LFortran, Backends and Bugs :@notes:gsoc21:fortran:rambling:
+CLOSED: [2021-07-02 Fri 23:26]
 :PROPERTIES:
 :EXPORT_FILE_NAME: gsoc21-w4
-:EXPORT_HUGO_PANDOC_CITATIONS: t
-:EXPORT_BIBLIOGRAPHY: biblio/GSoC21.bib
-:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :END:
 #+begin_quote
-Implementing ~assumed length~ in the LLVM backend and hacking away at ~dftatom~
+Towards the mid-summer evaluation and redirecting efforts
 #+end_quote
 ** Background
 Serialized update for the [[https://summerofcode.withgoogle.com/projects/#5790375215628288][2021 Google Summer of Code]] under the [[https://fortran-lang.org/][fortran-lang
@@ -10535,29 +10533,37 @@ This post is the second in a series based around my weekly GSoC21 project check-
 1. [[GSoC21 W1: LFortran Kickoff][GSoC21 W1: LFortran Kickoff]]
 2. [[GSoC21 W2: LFortran Unraveling][GSoC21 W2: LFortran Unraveling]]
 3. [[GSoC21 W3: Kind, Characters, and Standards][GSoC21 W3: Kind, Characters, and Standards]]
-4. *GSoC21 W4: LFortran, Assumed length, and, LLVM* <-- You are here!
+4. *GSoC21 W4: LFortran, Backends and Bugs* <-- You are here!
 ** Overview
 This week was a bit of a sticky wicket. My unfamiliarity with the LLVM backend
 and its internals caught up with me just around the same time I ran into several
 fixture and rent related idiosyncrasies which led to a shift in my meeting with
-Ondrej. In any case, though Ondrej knows exactly how I should implement the
-assumed length, I decided it was time to dive into the LLVM infrastructure
-itself, at least insofar as it concerns the ~lfortran~ project. This therefore,
-is the first in a series on *Dragons and Automated Coding for
-FormulaTranslation* [fn:notaname].
-
-Thanks to a timely reminder from my mentor Ondrej, I managed, nevertheless, to make some concrete progress working on the compilation of ~dftatom~ modules as well.
+Ondrej. Thanks to a timely reminder from my mentor Ondrej, I managed,
+nevertheless, to make some concrete progress working on the compilation of
+~dftatom~ modules as well.
 *** New Merge Requests
+- [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1015][ASR Bug with Arrays (997)]] :: Fixes a bug in the existing handling of arrays and ~allocate~ calls
 *** Freshly Assigned Issues
 - [[https://gitlab.com/lfortran/lfortran/-/issues/388][Semantics: Implement TINY (#388)]]:: A classic intrinsic for error handling
-- [[https://gitlab.com/lfortran/lfortran/-/issues/389][Semantics: Array Initializer Expressions (#389)]] :: Probably throwing a misleading error, as ~gfortran~ does not complain
-- [[https://gitlab.com/lfortran/lfortran/-/issues/390][ODE1 Error]] :: Placeholder issue to be narrowed and chiseled into something actionable
+- [[https://gitlab.com/lfortran/lfortran/-/issues/389][Semantics: Array Initializer Expressions (#389)]] :: A bugfix related to the merge request
+- [[https://gitlab.com/lfortran/lfortran/-/issues/390][ODE1 Error (#390)]] :: Placeholder issue to be narrowed and chiseled into something actionable
+- [[https://gitlab.com/lfortran/lfortran/-/issues/395][ASR mismatch between `gfortran` modules and source (#395)]] :: Issue relating to the completeness and equivalence of ~mod~ formats
 *** Additional Tasks
-I'd like to make some time to continue exploring the LLVM, not to mention familiarizing myself with the remainder of the string allocation code.
+I'd like to make some time to continue exploring the LLVM, not to mention
+familiarizing myself with the remainder of the string allocation code.
 ** Logistics
-** Workflow Description
-Now that I am a few weeks in, the workflow has roughly stabilized enough to warrant documentation.
-Typically for each feature implementation issue, I add a screenshot from the relevant draft and also link to the ~pdf~. This is currently either @J321007Draft or @J318007r1F2018 as and when appropriate.
+- I met with Ondrej on Friday this week
+  + He was kind enough to make a standing meeting twice a week, Tuesdays and Fridays
+  + This was done to ensure concrete progress is made beyond intangibles
+- Discussed the possibility of extending the ~lfortran mod~ interface
+  + Currently this has a copy of the ASR
+  + In principle then, later modules are larger since they have relevant code
+  + While ~gfortran~ does not bother with having a concrete representation in the ~mod~ file
+- Discussed forming a functional subset of the ~dftatom~ code for now
+  + This is related to the slight change in direction which is being considered
+- Rather than stick to one feature / function from front end to back end, it was decided that a more breadth first approach would be better
+  + Though I am still encouraged to delve into the backend, it is good to set up a fully working rational ASR pass first
+- Eventually, backends aside, work will need to be undertaken for the runtime library as well
 ** Linking Troubles
 Sometime down the line of modules and the roadmap to ~dftatom~ described in the [[https://gitlab.com/lfortran/lfortran/-/issues/319][master issue here]], I ran into an odd linker error. These seem to show up with both ~miniconda~ and ~nix~, however, it is unclear to me at the moment if it warrants an issue until I check on a native ArchLinux machine. Another natural fix might be to actually bring in and compile ~llvm~; then use the ~lld~ linker instead of the ~bfd~.
 #+begin_src bash
@@ -10569,6 +10575,7 @@ Traceback (most recent call last):
     asr = LFortran::mod_to_asr(al, arg_mod_file);
 LFortranException: Unknown module file format
 #+end_src
+In any case, for now, switching to ~micromamba~ and using ~direnv~ just works.
 *** Missing Symbols
 This actually seems related to the more pertinent issue namely, that my ~lapack~ module didn't seem to contain relevant symbols at all:
 #+begin_src bash
@@ -10682,15 +10689,45 @@ end function
 
 end program character_array
 #+end_src
-** Visualizing the IR
-The first problem I ran into is that ~lfortran~ has representations for the
-~AST~ and the ~ASR~, but I haven't covered yet how to output the LLVM
-intermediate representation (IR) itself.
-** Conclusions
-For the next week, I shall be finalizing work on the allocatable character lengths and moving on to some more semantics and intrinsics. Naturally as these are completed there will be more progress down the ~dftatom~ module listing.
+** Gfortran Modules
+One of the early goals was inter-operability with the ~gfortran~ module format. This is a ~lisp~ like syntax which changes occasionally.
+#+begin_src fortran
+! simple module
+module b
+implicit none
+private
+public g
+contains
+integer function g()
+g = 5
+end function
+end module
+#+end_src
+The corresponding ~asr~ is given by:
+#+begin_src bash
+(TranslationUnit (SymbolTable 1 {b: (Module (SymbolTable 2 {g: (Function (SymbolTable 3 {g: (Variable 3 g ReturnVar () Default (Integer 4 []) Source Public Required)}) g [] [(= (Var 3 g) (ConstantInteger 5 (Integer 4 [])))] (Var 3 g) Source Public Implementation)}) b [] .false.)}) [])
+#+end_src
+For the currently supported ~gfortran~ module (v14) we get:
+#+begin_src bash
+lfortran mod b14.mod --show-asr
+(TranslationUnit (SymbolTable 1 {g: (Subroutine (SymbolTable 2 {}) g [] [] GFortranModule Public Interface)}) [])
+#+end_src
+Which is contains a lower amount of information.
+The differences between the module versions are not major:
 
-[fn:notaname] This is (not yet) a formal series, but might be
+#+DOWNLOADED: screenshot @ 2021-07-02 18:41:23
+[[file:images/Gfortran_Modules/2021-07-02_18-41-23_screenshot.png]]
+
+More importantly however, the module versions correspond to being compressed and this needs to be eventually handled as well.
+** Conclusions
+For the next week, I shall be finalizing work on the allocatable character lengths and moving on to some more semantics and intrinsics. Naturally as these are completed there will be more progress down the ~dftatom~ module listing. The main takeaway from this week for me was the retargeting of efforts. I do wish to continue struggling with the backend simply because I feel it is exciting and fun, but I shall endeavor to be more productive by applying a breadth first approach by contributing more concrete code every week. I have high hopes for being able to power through the intended project goals by the end of the program, and can always clean up / document afterwards.
 * TODO Compiler Design
+In any case, though Ondrej knows exactly how I should implement the
+assumed length, I decided it was time to dive into the LLVM infrastructure
+itself, at least insofar as it concerns the ~lfortran~ project. This therefore,
+is the first in a series on *Dragons and Automated Coding for
+FormulaTranslation* [fn:notaname].
+
 True, from some perspective, it is a race to the end goal of flipping some
 switches at the hardware level (a massive over simplification) but it is in the
 implementation, that poetry can be formulated. Compiler design is like no other
@@ -10709,6 +10746,19 @@ by compilers for inclusion into future standards.
 - Extend the handling of constant integers to handle more than just logical
 - Flang was first a summer project, then in 2017 the so called legacy flag was published, which around the same time Ondrej decided to start LFortran
 - Currently LFortran shadows things which is part of a deprecated workflow
+
+** Workflow Description
+Now that I am a few weeks in, the workflow has roughly stabilized enough to
+warrant documentation.  Typically for each feature implementation issue, I add a
+screenshot from the relevant draft and also link to the ~pdf~. This is currently
+either @J321007Draft or @J318007r1F2018 or even @J397007R295 as and when
+appropriate. These
+** Visualizing the IR
+The first problem I ran into is that ~lfortran~ has representations for the
+~AST~ and the ~ASR~, but I haven't covered yet how to output the LLVM
+intermediate representation (IR) itself.
+
+[fn:notaname] This is (not yet) a formal series, but might be
 * TODO A Tourist's Guide to the Fortran Standard :@programming:standards:fortran:
 :PROPERTIES:
 :EXPORT_FILE_NAME: tourist-fortran
