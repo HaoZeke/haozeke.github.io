@@ -10743,7 +10743,7 @@ This post is part of a series based around my weekly GSoC21 project check-ins.
 2. [[GSoC21 W2: LFortran Unraveling][GSoC21 W2: LFortran Unraveling]]
 3. [[GSoC21 W3: Kind, Characters, and Standards][GSoC21 W3: Kind, Characters, and Standards]]
 4. [[GSoC21 W4: LFortran, Backends and Bugs][GSoC21 W4: LFortran, Backends and Bugs]]
-5. *GSoC21 W5: LFortran and ~minidftatom~* <-- You are here!
+5. *GSoC21 W5: LFortran Design Details and ~minidftatom~* <-- You are here!
 ** Logistics
 - Met with Ondrej on Tuesday, Wednesday and Thursday
   + Discussed the AST, ASR and backends in more detail
