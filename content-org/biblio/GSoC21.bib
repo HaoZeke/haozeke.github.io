@@ -97,6 +97,20 @@
   pagetotal = {825}
 }
 
+@online{hansonEarlyExperienceASDL1998,
+  title = {Early {{Experience}} with {{ASDL}} in Lcc},
+  author = {Hanson, David R.},
+  date = {1998-10-13},
+  url = {http://arxiv.org/abs/cs/9810013},
+  urldate = {2021-07-05},
+  abstract = {The Abstract Syntax Description Language (ASDL) is a language for specifying the tree data structures often found in compiler intermediate representations. The ASDL generator reads an ASDL specification and generates code to construct, read, and write instances of the trees specified. Using ASDL permits a compiler to be decomposed into semi-independent components that communicate by reading and writing trees. Each component can be written in a different language, because the ASDL generator can emit code in several languages, and the files written by ASDL-generated code are machine- and language-independent. ASDL is part of the National Compiler Infrastructure project, which seeks to reduce dramatically the overhead of computer systems research by making it much easier to build highquality compilers. This paper describes dividing lcc, a widely used retargetable C compiler, into two components that communicate via trees defined in ASDL. As the first use of ASDL in a ‘real’ compiler, this experience reveals much about the effort required to retrofit an existing compiler to use ASDL, the overheads involved, and the strengths and weaknesses of ASDL itself and, secondarily, of lcc.},
+  archiveprefix = {arXiv},
+  eprint = {cs/9810013},
+  eprinttype = {arxiv},
+  keywords = {Computer Science - Programming Languages,Computer Science - Software Engineering,D.3.4},
+  langid = {english}
+}
+
 @report{J318007r1F2018,
   title = {J3/18-007r1 ({{F2018 Interpretation Document}})},
   url = {https://j3-fortran.org/doc/year/18/18-007r1.pdf},
@@ -116,6 +130,30 @@
   url = {https://j3-fortran.org/doc/year/18/18-007r1.pdf},
   urldate = {2021-06-28},
   abstract = {October 21, 1997 12:28 pm}
+}
+
+@article{khedkerGCCTranslationSequence,
+  title = {{{GCC Translation Sequence}} and {{Gimple IR}}},
+  author = {Khedker, Uday},
+  pages = {70},
+  langid = {english}
+}
+
+@article{klintEngineeringDisciplineGrammarware2005,
+  title = {Toward an Engineering Discipline for Grammarware},
+  author = {Klint, Paul and Lämmel, Ralf and Verhoef, Chris},
+  date = {2005-07-01},
+  journaltitle = {ACM Transactions on Software Engineering and Methodology},
+  shortjournal = {ACM Trans. Softw. Eng. Methodol.},
+  volume = {14},
+  pages = {331--380},
+  issn = {1049-331X},
+  doi = {10.1145/1072997.1073000},
+  url = {https://doi.org/10.1145/1072997.1073000},
+  urldate = {2021-07-05},
+  abstract = {Grammarware comprises grammars and all grammar-dependent software. The term grammar is meant here in the sense of all established grammar formalisms and grammar notations including context-free grammars, class dictionaries, and XML schemas as well as some forms of tree and graph grammars. The term grammar-dependent software refers to all software that involves grammar knowledge in an essential manner. Archetypal examples of grammar-dependent software are parsers, program converters, and XML document processors. Despite the pervasive role of grammars in software systems, the engineering aspects of grammarware are insufficiently understood. We lay out an agenda that is meant to promote research on increasing the productivity of grammarware development and on improving the quality of grammarware. To this end, we identify the problems with the current grammarware practices, the barriers that currently hamper research, and the promises of an engineering discipline for grammarware, its principles, and the research challenges that have to be addressed.},
+  keywords = {automated software engineering,best practices,generic language technology,grammar-dependent software,grammars,Grammarware,language processing,metamodeling,model-driven development,parsers,software evolution,software transformation},
+  number = {3}
 }
 
 @book{levineLinkersLoaders2000,
@@ -139,6 +177,61 @@
   eprinttype = {googlebooks},
   langid = {english},
   pagetotal = {109}
+}
+
+@article{merrillGENERICGIMPLENew,
+  title = {{{GENERIC}} and {{GIMPLE}}: {{A New Tree Representation}} for {{Entire Functions}}},
+  author = {Merrill, Jason},
+  pages = {10},
+  langid = {english}
+}
+
+@article{papaevripidesExploitingMixedBinaries2021,
+  title = {Exploiting {{Mixed Binaries}}},
+  author = {Papaevripides, Michalis and Athanasopoulos, Elias},
+  date = {2021-02},
+  journaltitle = {ACM Transactions on Privacy and Security},
+  shortjournal = {ACM Trans. Priv. Secur.},
+  volume = {24},
+  pages = {1--29},
+  issn = {2471-2566, 2471-2574},
+  doi = {10.1145/3418898},
+  url = {https://dl.acm.org/doi/10.1145/3418898},
+  urldate = {2021-07-07},
+  abstract = {Unsafe programming systems are still very popular, despite the shortcomings due to several published memory-corruption vulnerabilities. Toward defending memory corruption, compilers have started to employ advanced software hardening such as Control-flow Integrity (CFI) and SafeStack. However, there is a broad interest for realizing compilers that impose memory safety with no heavy runtime support (e.g., garbage collection). Representative examples of this category are Rust and Go, which enforce memory safety primarily statically at compile time.                            Software hardening and Rust/Go are promising directions for defending memory corruption, albeit combining the two is questionable. In this article, we consider hardened               mixed               binaries, i.e., machine code that has been produced from different compilers and, in particular, from               hardened               C/C++ and Rust/Go (e.g., Mozilla Firefox, Dropbox, npm, and Docker). Our analysis is focused on Mozilla Firefox, which outsources significant code to Rust and is open source with known public vulnerabilities (with assigned CVE). Furthermore, we extend our analysis in mixed binaries that leverage Go, and we derive similar results.                                         The attacks explored in this article               do not               exploit Rust or Go binaries that depend on some legacy (vulnerable) C/C++ code. In contrast, we explore how Rust/Go compiled code can stand as a vehicle for bypassing hardening in C/C++ code. In particular, we discuss CFI and SafeStack, which are available in the latest Clang. Our assessment concludes that CFI can be completely nullified through Rust or Go code by constructing much simpler attacks than state-of-the-art CFI bypasses.},
+  langid = {english},
+  number = {2}
+}
+
+@online{UsingASDLDescribe,
+  title = {Using {{ASDL}} to Describe {{ASTs}} in Compilers - {{Eli Bendersky}}'s Website},
+  url = {https://eli.thegreenplace.net/2014/06/04/using-asdl-to-describe-asts-in-compilers/},
+  urldate = {2021-07-05}
+}
+
+@article{wangZephyrAbstractSyntax,
+  title = {The {{Zephyr Abstract Syntax Description Language}}},
+  author = {Wang, Daniel C and Appel, Andrew W and Korn, Jeff L and Serra, Christopher S},
+  pages = {16},
+  abstract = {The Zephyr1 Abstract Syntax Description Language (ASDL) describes the abstract syntax of compiler intermediate representations (IRs) and other tree-like data structures. Just as the lexical and syntactic structures of programming languages are described with regular expressions and context free grammars, ASDL provides a concise notation for describing the abstract syntax of programming languages. Tools can convert ASDL descriptions into the appropriate data-structure definitions and functions to convert the data-structures to or from a standard flattened representation. This makes it easier to build compiler components that interoperate.},
+  langid = {english}
+}
+
+@article{zhouEmpiricalStudyOptimization2021,
+  title = {An Empirical Study of Optimization Bugs in {{GCC}} and {{LLVM}}},
+  author = {Zhou, Zhide and Ren, Zhilei and Gao, Guojun and Jiang, He},
+  date = {2021-04-01},
+  journaltitle = {Journal of Systems and Software},
+  shortjournal = {Journal of Systems and Software},
+  volume = {174},
+  pages = {110884},
+  issn = {0164-1212},
+  doi = {10.1016/j.jss.2020.110884},
+  url = {https://www.sciencedirect.com/science/article/pii/S0164121220302740},
+  urldate = {2021-07-09},
+  abstract = {Optimizations are the fundamental component of compilers. Bugs in optimizations have significant impacts, and can cause unintended application behavior and disasters, especially for safety-critical domains. Thus, an in-depth analysis of optimization bugs should be conducted to help developers understand and test the optimizations in compilers. To this end, we conduct an empirical study to investigate the characteristics of optimization bugs in two mainstream compilers, GCC and LLVM. We collect about 57K and 22K bugs of GCC and LLVM, and then exhaustively examine 8,771 and 1,564 optimization bugs of the two compilers, respectively. The results reveal the following five characteristics of optimization bugs: (1) Optimizations are the buggiest component in both compilers except for the C++ component; (2) the value range propagation optimization and the instruction combine optimization are the buggiest optimizations in GCC and LLVM, respectively; the loop optimizations in both GCC and LLVM are more bug-prone than other optimizations; (3) most of the optimization bugs in both GCC and LLVM are misoptimization bugs, accounting for 57.21\% and 61.38\% respectively; (4) on average, the optimization bugs live over five months, and developers take 11.16 months for GCC and 13.55 months for LLVM to fix an optimization bug; in both GCC and LLVM, many confirmed optimization bugs have lived for a long time; (5) the bug fixes of optimization bugs involve no more than two files and three functions on average in both compilers, and around 99\% of them modify no more than 100 lines of code, while 90\% less than 50 lines of code. Our study provides a deep understanding of optimization bugs for developers and researchers. This could provide useful guidance for the developers and researchers to better design the optimizations in compilers. In addition, the analysis results suggest that we need more effective techniques and tools to test compiler optimizations. Moreover, our findings are also useful to the research of automatic debugging techniques for compilers, such as automatic compiler bug isolation techniques.},
+  keywords = {Bug characteristics,Compiler optimization bugs,Compiler reliability,Compiler testing,Empirical study},
+  langid = {english}
 }
 
 
