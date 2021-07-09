@@ -10723,6 +10723,109 @@ The differences between the module versions are not major:
 More importantly however, the module versions correspond to being compressed and this needs to be eventually handled as well.
 ** Conclusions
 For the next week, I shall be finalizing work on the allocatable character lengths and moving on to some more semantics and intrinsics. Naturally as these are completed there will be more progress down the ~dftatom~ module listing. The main takeaway from this week for me was the retargeting of efforts. I do wish to continue struggling with the backend simply because I feel it is exciting and fun, but I shall endeavor to be more productive by applying a breadth first approach by contributing more concrete code every week. I have high hopes for being able to power through the intended project goals by the end of the program, and can always clean up / document afterwards.
+* DONE GSoC21 W5: LFortran Design Details and ~minidftatom~
+CLOSED: [2021-07-09 Fri 19:23]
+:PROPERTIES:
+:EXPORT_FILE_NAME: gsoc21-w5
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+begin_quote
+Project scaffolding and compiler design
+#+end_quote
+** Background
+Serialized update for the [[https://summerofcode.withgoogle.com/projects/#5790375215628288][2021 Google Summer of Code]] under the [[https://fortran-lang.org/][fortran-lang
+organization]], mentored by [[https://ondrejcertik.com/][Ondrej Certik]].
+*** Series
+This post is part of a series based around my weekly GSoC21 project check-ins.
+1. [[GSoC21 W1: LFortran Kickoff][GSoC21 W1: LFortran Kickoff]]
+2. [[GSoC21 W2: LFortran Unraveling][GSoC21 W2: LFortran Unraveling]]
+3. [[GSoC21 W3: Kind, Characters, and Standards][GSoC21 W3: Kind, Characters, and Standards]]
+4. [[GSoC21 W4: LFortran, Backends and Bugs][GSoC21 W4: LFortran, Backends and Bugs]]
+5. *GSoC21 W5: LFortran and ~minidftatom~* <-- You are here!
+** Logistics
+- Met with Ondrej on Tuesday, Wednesday and Thursday
+  + Discussed the AST, ASR and backends in more detail
+- Zeroed in on several alternate designs [[https://gitlab.com/lfortran/lfortran/-/wikis/Intrinsic-Functions][implementations of intrinsic functions]]
+  + We have prototype calls for the two kinds of compile evaluation
+  + My ~sin~ implementation ([[https://gitlab.com/lfortran/lfortran/-/merge_requests/717][pre-GSoC21]]) is pretty unwieldy and a cleaner method which we elected to pursue is the ~minval~ strategy
+- Discussed concrete methods of working
+- Talked about the runtime library
+  + This is a late stage issue, after the ASR generation
+** Overview
+This week focused around a subset of ~dftatom~ which Ondrej prepared. In fact the main highlight was working through possible code design directions and iterating on these with Ondrej (and Gagandeep asynchrously) to come up with the [[https://gitlab.com/lfortran/lfortran/-/wikis/Intrinsic-Functions][intrinsic function design]] methods and the compile time evaluation of expressions plan issue (discussed below in issue 420).
+*** New Merge Requests
+- [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1024][Restructuring of the ASR (1024)]] :: A code cleanup task, to reduce code smell from ~using~ statements and to refactor into more logical file structures
+- [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1037][Grammar modifications (1037)]] :: Name changes to keep a consistent clear implementation structure
+*** Freshly Assigned Issues
+- [[https://gitlab.com/lfortran/lfortran/-/issues/401][minidftatom Roadmap (401)]] :: A clone of the ~SNAP~ and ~dftatom~ issues
+- [[https://gitlab.com/lfortran/lfortran/-/issues/416][size() not handled correctly for arrays (416)]] :: This is an ASR bug, with a fix which should not be too difficult to track down
+- [[https://gitlab.com/lfortran/lfortran/-/issues/420][Compile time evaluation of expressions (420)]] :: This is an internal implementation design specification document, which essentially introduces a ~value~ option for the ASR
+*** Additional Tasks
+Continue down the road for ~401~ and also consider perhaps, more runtime library logic.
+** Misc Logs
+Since running on a new project is roughly similar, I will only briefly go over the steps.
+#+begin_src bash
+git clone git@gitlab.com:lfortran/examples/minidftatom.git
+cd minidftatom
+FC=gfortran cmake .
+make -j$(nproc)
+./F_atom_U
+#+end_src
+Which generates:
+#+begin_src bash
+ Z=          92 N=        5500
+E_tot=     -25658.417889
+ state    E            occupancy
+1s       -3689.355140    2.000
+2s        -639.778728    2.000
+2p        -619.108550    6.000
+3s        -161.118073    2.000
+3p        -150.978980    6.000
+3d        -131.977358   10.000
+4s         -40.528084    2.000
+4p         -35.853321    6.000
+4d         -27.123212   10.000
+4f         -15.027460   14.000
+5s          -8.824089    2.000
+5p          -7.018092    6.000
+5d          -3.866175   10.000
+5f          -0.366543    3.000
+6s          -1.325976    2.000
+6p          -0.822538    6.000
+6d          -0.143190    1.000
+7s          -0.130948    2.000
+ Print the first 10 values of the 1st and 2nd orbitals:
+   1753.2892641883584        1753.2812175211841        1753.2731512531607        1753.2650645481160        1753.2569495840532        1753.2488203554758        1753.2406710770906        1753.2325014795395        1753.2243110250588        1753.2160993495806
+   587.50702296395195        587.50432661503442        587.50162369317059        587.49891391928361        587.49619467268258        587.49347064291044        587.49073989144335        587.48800232804547        587.48525777252200        587.48250610287175
+#+end_src
+*** Parsing and AST Generation
+The test for the parser is essentially to check if the output before and after formatting with ~lfortran~ still compiles to the same result.
+Note that because of the nature of this, we need to ensure ~-ffree-line-length-none~ is passed when working with the ~gfortran~ compiler.
+#+begin_src bash
+cd minidftatom
+# -i --> Inplace modification
+for file in *.f90; do lfortran fmt -i $file; done
+make clean
+FC=gfortran cmake .
+make -j$(nproc)
+./F_atom_U
+#+end_src
+*** Dependency Tree
+Before going on to the ASR, a dependency tree is required. As before, it is reproduced in excruciating detail in the issue, and represented by a pretty picture shown in Fig. [[mdftatom][mdftatomgit]] for this post.
+#+begin_src bash
+pip install fortdepend
+cd minidftatom/src
+fortdepend -g -c
+#+end_src
+
+#+name: mdftatomgit
+#+caption: ~minidftatom~ compilation dependency graph
+file:images/minidftatom_depgraph.svg
+
+*** ASR Generation
+I found a new favorite command, which I should have remembered while it was being implemented (by Thirumalai Shaktivel in [[https://gitlab.com/lfortran/lfortran/-/merge_requests/765][765]]); namely the  ~--indent~ option which makes for a much more readable ASR output. Apart from that ~git diff --color-words~ works well enough as well.
+** Conclusions
+The main work plan outcomes for the week were the [[https://gitlab.com/lfortran/lfortran/-/issues/420][new design specifications for the compile time evaluation of expressions]]. It is always an enriching experience to work with Ondrej directly (even over the ether) and this week felt more productive than most. I hope to keep the same momentum going. This will allow faster progress on the main issue of getting ASR generated for ~minidftatom~.
 * TODO Compiler Design
 In any case, though Ondrej knows exactly how I should implement the
 assumed length, I decided it was time to dive into the LLVM infrastructure
