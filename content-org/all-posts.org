@@ -10813,7 +10813,7 @@ make -j$(nproc)
 ./F_atom_U
 #+end_src
 *** Dependency Tree
-Before going on to the ASR, a dependency tree is required. As before, it is reproduced in excruciating detail in the issue, and represented by a pretty picture shown in Fig. [[mdftatom][mdftatomgit]] for this post.
+Before going on to the ASR, a dependency tree is required. As before, it is reproduced in excruciating detail in the issue, and represented by a pretty picture shown in Fig. [[mdftatomgit][mdftatomgit]] for this post.
 #+begin_src bash
 pip install fortdepend
 cd minidftatom/src
