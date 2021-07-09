@@ -8858,12 +8858,14 @@ The ones I use mostly are enumerated in Table [[tbl:rustalternates]].
 | ~fzf~    | [[https://github.com/lotabout/skim][skim]]             | A fuzy finder                        |
 | --       | [[https://github.com/denisidoro/navi][navi]]             | Personalized cheatsheets             |
 | ~cd / z~ | [[https://github.com/ajeetdsouza/zoxide][zoxide]]           | Directory jumping aid                |
+| ~gibo~   | bliss            | ~gitignore~ generation utility       |
+| ~diff~   | delta            | Nicer diffs                          |
 
 These are trivial to obtain:
 #+begin_src bash
 cargo install bottom ripgrep hyperfine navi skim
 # The following need some system libraries (OpenSSL) and shall be dealt with later
-# bat exa fd tealdeer starship sd procs zoxide
+# bat exa fd tealdeer starship sd procs zoxide bliss
 #+end_src
 *** MicroMamba
 We will set up a ~micromamba~ installation to get ~git~ and other base utilities.
@@ -10399,7 +10401,7 @@ Standard practice pragmatic approaches to ~kind~ for ~dftatom~
 Serialized update for the [[https://summerofcode.withgoogle.com/projects/#5790375215628288][2021 Google Summer of Code]] under the [[https://fortran-lang.org/][fortran-lang
 organization]], mentored by [[https://ondrejcertik.com/][Ondrej Certik]].
 *** Series
-This post is the second in a series based around my weekly GSoC21 project check-ins.
+This post is the third in a series based around my weekly GSoC21 project check-ins.
 1. [[GSoC21 W1: LFortran Kickoff][GSoC21 W1: LFortran Kickoff]]
 2. [[GSoC21 W2: LFortran Unraveling][GSoC21 W2: LFortran Unraveling]]
 3. *GSoC21 W3: Kind, Characters, and Standards* <-- You are here!
@@ -10529,7 +10531,7 @@ Towards the mid-summer evaluation and redirecting efforts
 Serialized update for the [[https://summerofcode.withgoogle.com/projects/#5790375215628288][2021 Google Summer of Code]] under the [[https://fortran-lang.org/][fortran-lang
 organization]], mentored by [[https://ondrejcertik.com/][Ondrej Certik]].
 *** Series
-This post is the second in a series based around my weekly GSoC21 project check-ins.
+This post is one in a series based around my weekly GSoC21 project check-ins.
 1. [[GSoC21 W1: LFortran Kickoff][GSoC21 W1: LFortran Kickoff]]
 2. [[GSoC21 W2: LFortran Unraveling][GSoC21 W2: LFortran Unraveling]]
 3. [[GSoC21 W3: Kind, Characters, and Standards][GSoC21 W3: Kind, Characters, and Standards]]
