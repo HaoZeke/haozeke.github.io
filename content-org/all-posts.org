@@ -10725,7 +10725,7 @@ The differences between the module versions are not major:
 More importantly however, the module versions correspond to being compressed and this needs to be eventually handled as well.
 ** Conclusions
 For the next week, I shall be finalizing work on the allocatable character lengths and moving on to some more semantics and intrinsics. Naturally as these are completed there will be more progress down the ~dftatom~ module listing. The main takeaway from this week for me was the retargeting of efforts. I do wish to continue struggling with the backend simply because I feel it is exciting and fun, but I shall endeavor to be more productive by applying a breadth first approach by contributing more concrete code every week. I have high hopes for being able to power through the intended project goals by the end of the program, and can always clean up / document afterwards.
-* DONE GSoC21 W5: LFortran Design Details and ~minidftatom~
+* DONE GSoC21 W5: LFortran Design Details and ~minidftatom~  :@notes:gsoc21:fortran:rambling:
 CLOSED: [2021-07-09 Fri 19:23]
 :PROPERTIES:
 :EXPORT_FILE_NAME: gsoc21-w5
