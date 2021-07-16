@@ -10917,6 +10917,105 @@ intermediate representation (IR) itself.
 A meandering path through the history of Fortran
 #+end_quote
 ** Background
+* TODO Nix Flakes :@programming:tools:nix:workflow:
+:PROPERTIES:
+:EXPORT_FILE_NAME: gsoc21-w4
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+begin_quote
+Upgrading to the bleeding edge of ~nix~ development.
+#+end_quote
+** Background
+I shall be mentoring a fantastic group at for the inaugural [[http://summer.nixos.org/][Summer of Nix]]. The effort will be focused around the ~flake~ workflow, which is something I have been planning to look into for quite some time. Rather than have a post for each major language workflow, I'll just go over replacing all my existing workflows to use ~flakes~.
+For a reminder, though I won't go into any real details here in this post, my preferred approach to ~nix~ in production is a combination of ~niv~ (which is brilliant) and throwaway ~nix-shell~ expressions, described in great detail in other posts on this blog, like [[Statistical Rethinking and Nix][this one]] or this [[A Tutorial Introduction to Nix][introductory post]].
+** Getting Started
+A couple of caveats about this post and using development features in general, this post might become outdated rather quickly. Anyway, the version used is:
+#+begin_src bash
+nix --version
+#+end_src
+
+#+RESULTS:
+: nix (Nix) 2.4pre20210601_5985b8b
+
+To enable ~flakes~ we need some things set up:
+- In ~$HOME/.config/nix/nix.conf~:
+#+begin_src toml
+# Nix Flakes
+experimental-features = nix-command flakes
+#+end_src
+- We also need an unstable version for ~nix~:
+#+begin_src nix
+nix-env -f '<nixpkgs>' -iA nixUnstable
+#+end_src
+** Replacing Niv
+Typically one of the key issues with ~nix~ is that impurities can sneak in in terms of the system's ~nix-channel~, along with other environment variables (like ~$NIX_PATH~). However, recent indications suggest that ~niv~ will [[https://www.reddit.com/r/NixOS/comments/ogy8vf/niv_naersk_napalm_moving_on/][not be supported as much]] in the near future.
+*** A First Flake
+The replacement is fairly straightforward. We can start with the ~niv~ equivalent:
+#+begin_src bash
+mkdir testFlakes && cd testFlakes
+nix flake init
+#+end_src
+
+#+RESULTS:
+
+This creates a single ~flake.nix~ file, shown below, and running ~nix flake lock~ to get ~lockfile~ with all the details.
+#+begin_src nix
+{
+  description = "A very basic flake";
+
+  outputs = { self, nixpkgs }: {
+
+    packages.x86_64-linux.hello = nixpkgs.legacyPackages.x86_64-linux.hello;
+
+    defaultPackage.x86_64-linux = self.packages.x86_64-linux.hello;
+
+  };
+}
+#+end_src
+The ~flake.lock~ file generated can be used to get reproducible builds across machines. This is a simple first approximation of getting reproducibility across machines, but it is still a bit too magical. We still haven't pinned which version of ~nixpkgs~ we are using explicitly.
+What we'd like to do is actually pin to a particular commit / branch. This is pretty straightforward as well, and we will need to modify the input section.
+#+begin_src nix
+{
+  inputs = {
+    nixpkgs = { url = "github:NixOS/nixpkgs/21.05"; flake = true; }
+  };
+  outputs = {
+  self,
+  nixpkgs
+  }: {
+
+    packages.x86_64-linux.hello = nixpkgs.legacyPackages.x86_64-linux.hello;
+
+    defaultPackage.x86_64-linux = self.packages.x86_64-linux.hello;
+  }
+}
+#+end_src
+
+Note that we don't actually need to specify ~flake = true;~ since that is the default.
+*** Beyond ~nix-shell~
+One of the nicer aspects of ~nix develop~ is that any of the phases defined in the ~default.nix~ file can be run; for example:
+#+begin_src bash
+cd testFlakes
+nix develop
+unpackPhase
+configurePhase
+buildPhase
+installPhase
+#+end_src
+
+This makes it easier to debug as well.
+** Python
+To work with ~python~ I typically use ~mach-nix~ as [[Niv and Mach-Nix for Nix Python][described here]]. However, with a ~flake~.
+** Resources
+Some other great starting resources are:
+- The ~nix flake~ [[https://nixos.org/manual/nix/unstable/command-ref/new-cli/nix3-flake.html][manpage]]
+- A fantastic series by Tweag
+  + Nix Flakes, Part 1: [[https://www.tweag.io/blog/2020-05-25-flakes/][An introduction and tutorial]]
+  + Nix Flakes, Part 2: [[https://www.tweag.io/blog/2020-06-25-eval-cache/][Evaluation caching]]
+  + Nix Flakes, Part 3: [[https://www.tweag.io/blog/2020-07-31-nixos-flakes/][Managing NixOS systems]]
+- NixOS [[https://nixos.wiki/wiki/Flakes][Wiki]]
+- Zimbatm has a [[https://zimbatm.com/NixFlakes/][nice source]] with more resources
+** Conclusions
 * DONE Talk Supplements for IOP CAPS'21 Webdev Workshop :@conferences:presentations:ramblings:webdev:
 CLOSED: [2021-06-26 Sat 10:05]
 :PROPERTIES:
