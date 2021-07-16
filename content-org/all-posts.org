@@ -10828,6 +10828,46 @@ file:images/minidftatom_depgraph.svg
 I found a new favorite command, which I should have remembered while it was being implemented (by Thirumalai Shaktivel in [[https://gitlab.com/lfortran/lfortran/-/merge_requests/765][765]]); namely the  ~--indent~ option which makes for a much more readable ASR output. Apart from that ~git diff --color-words~ works well enough as well.
 ** Conclusions
 The main work plan outcomes for the week were the [[https://gitlab.com/lfortran/lfortran/-/issues/420][new design specifications for the compile time evaluation of expressions]]. It is always an enriching experience to work with Ondrej directly (even over the ether) and this week felt more productive than most. I hope to keep the same momentum going. This will allow faster progress on the main issue of getting ASR generated for ~minidftatom~.
+* DONE GSoC21 W6: LFortran ASR and Values :@notes:gsoc21:fortran:rambling:
+CLOSED: [2021-07-16 Fri 17:19]
+:PROPERTIES:
+:EXPORT_FILE_NAME: gsoc21-w6
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+begin_quote
+Enriching ASR nodes at compile time
+#+end_quote
+** Background
+Serialized update for the [[https://summerofcode.withgoogle.com/projects/#5790375215628288][2021 Google Summer of Code]] under the [[https://fortran-lang.org/][fortran-lang
+organization]], mentored by [[https://ondrejcertik.com/][Ondrej Certik]].
+*** Series
+This post is part of a series based around my weekly GSoC21 project check-ins.
+1. [[GSoC21 W1: LFortran Kickoff][GSoC21 W1: LFortran Kickoff]]
+2. [[GSoC21 W2: LFortran Unraveling][GSoC21 W2: LFortran Unraveling]]
+3. [[GSoC21 W3: Kind, Characters, and Standards][GSoC21 W3: Kind, Characters, and Standards]]
+4. [[GSoC21 W4: LFortran, Backends and Bugs][GSoC21 W4: LFortran, Backends and Bugs]]
+5. [[GSoC21 W5: LFortran Design Details and ~minidftatom~][GSoC21 W5: LFortran Design Details and ~minidftatom~]]
+6. *GSoC21 W6: LFortran ASR and Values* <-- You are here!
+** Logistics
+- Met with Ondrej on Monday and Wednesday
+  + Discussed the design choices w.r.t. class hierarchies (and the lack thereof)
+** Overview
+Note that the title is rather misleading, this post has nothing to do with the values of the LFortran project (which are by the way, fantastic), but instead is about adding more detail to the ASR nodes.
+*** New Merge Requests
+- [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1045/][Implement expr values for Integer Binops (1045)]] :: First example of using value-enriched nodes for operating during the ~ast2asr~ pass
+** Misc Logs
+*** False Starts
+Coming from a "throw it in a debugger" mindset, the ASR codebase and design of LFortran can be a bit disconcerting. This is because it is by design implemented mostly in terms of C structs which are cast explicitly throughout the code. Ondrej mentioned that the overhead of having a virtual function table for each instance of ~LFortran::ASR~ was prohibitive.
+
+- Why bother with such speed at the cost of the C++ guarantees? :: Well for one thing, we are building a compiler, and one with an interactive kernel at that, the overhead must be kept low. No one wants to grab a coffee everytime they execute a ~Python~ jupyter cell and the goal should be the same for LFortran too.
+- Why not just add ~value~ to the ~expr_t~ structure? :: This was a bit of a head scratcher to me, especially my debugger (~lldb~) offered no information on the value stored even in ~Constant*~ structures. The real solution, which required more of an understanding of the code (offered freely and kindly by my mentor) involves casting with ~down_cast~.
+
+Essentially, as far as the code base goes, we have a class based hierarchy, which we manipulate with ~casts~.
+
+Nevertheless, the design was also not lauded by Gagandeep, and Ondrej knew at
+the onset that this plan is less than ideal. A better design might have been needed, except that the code duplication issue is a non-squinter, only ~integer~ and ~real~ have similar implementations, and Ondrej pointed out that over-engineering a design simply because two ~if-esle~ branches are similar is effectively yak shaving.
+** Conclusions
+With ~real~ (implemented by Ondrej) and ~integer~ in, I can focus on getting started on ~functions~ which will have the added benefit of easily adding functionality to the backend (since the ~LLVM~ backend can choose to simply use ~value~).
 * TODO Compiler Design
 In any case, though Ondrej knows exactly how I should implement the
 assumed length, I decided it was time to dive into the LLVM infrastructure
