@@ -36,6 +36,6 @@ in pkgs.mkShell {
   ];
   shellHook = hook;
   GIT_SSL_CAINFO = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
-  LOCALE_ARCHIVE = stdenv.lib.optionalString stdenv.isLinux
+  LOCALE_ARCHIVE = pkgs.lib.optionalString stdenv.isLinux
     "${pkgs.glibcLocales}/lib/locale/locale-archive";
 }
