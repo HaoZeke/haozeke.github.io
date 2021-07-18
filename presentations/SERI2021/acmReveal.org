@@ -1,0 +1,677 @@
+#+TITLE: Modern Documentation across languages
+#+SUBTITLE: Linguistic and Programmatic Variants
+#+AUTHOR: Rohit Goswami
+# I need the footnotes to be inlined
+#+STARTUP: fninline
+#+EXCLUDE_TAGS: noexport
+
+#+BEGIN_SRC emacs-lisp :exports none :eval always
+(require 'ox-extra)
+(ox-extras-activate '(ignore-headlines))
+(eval unpackaged/org-export-html-with-useful-ids-mode)
+;; Stop using citeproc-org by default
+(setq org-export-before-parsing-hook '(org-ref-acronyms-before-parsing org-ref-glossary-before-parsing org-attach-expand-links))
+#+END_SRC
+
+* Configuration :ignoreheading:ignore:
+:PROPERTIES:
+:VISIBILITY: folded
+:END:
+
+# Kanged from https://gitlab.com/oer/oer-reveal/blob/master/org/config.org
+# Also https://gitlab.com/oer/emacs-reveal-howto/-/blob/master/howto.org
+** General Options :ignoreheading:ignore:
+# No Table of contents, no section numbers
+#+OPTIONS: toc:nil num:nil
+
+# Enable smart quotes
+#+OPTIONS: ':t
+** RevealJS Options :ignoreheading:ignore:
+
+# Enable: browser history, fragment IDs in URLs, mouse wheel, links between presentations
+#+OPTIONS: reveal_history:t reveal_fragmentinurl:t
+#+OPTIONS: reveal_mousewheel:t reveal_inter_presentation_links:t
+
+# Disable separate PDF pages for each fragment.  Just use one per slide.
+#+OPTIONS: reveal_pdfseparatefragments:nil
+
+# Display notes on separate page for PDF export.
+#+REVEAL_EXPORT_NOTES_TO_PDF: separate-page
+
+# Transition styles: none/fade/slide/convex/concave/zoom/cube
+#+REVEAL_TRANS: fade
+# Set a base theme, then override
+#+REVEAL_THEME: robot-lung
+#+REVEAL_EXTRA_CSS: /Users/rohitgoswami/.config/doom/reveal/extras/rlExtras.css
+#+REVEAL_EXTRA_CSS: /Users/rohitgoswami/.config/doom/reveal/extras/oerFragments.css
+#+REVEAL_EXTRA_CSS: /Users/rohitgoswami/.config/doom/reveal/extras/noImgBoxes.css
+#+REVEAL_EXTRA_CSS: /Users/rohitgoswami/.config/doom/reveal/extras/betterCite.css
+#+REVEAL_EXTRA_CSS: /Users/rohitgoswami/.config/doom/reveal/extras/moreCode.css
+#+REVEAL_MARGIN: 0.2
+#+REVEAL_PREAMBLE: <div class="line top"></div> <div class="line bottom"></div> <div class="line left"></div> <div class="line right"></div>
+
+#+REVEAL_PLUGINS: (notes search zoom)
+# The following variables are non-standard.
+# Do not display TOC-progress on title slide.
+
+#+REVEAL_TITLE_SLIDE_STATE: no-toc-progress
+# Do not display TOC-progress on TOC slide.
+#+REVEAL_TOC_SLIDE_STATE: no-toc-progress
+# Do not include TOC slide in TOC-progress.
+#+REVEAL_TOC_SLIDE_CLASS: no-toc-progress
+# Use different heading for TOC.
+#+REVEAL_TOC_SLIDE_TITLE: Agenda
+
+** External Resources :ignoreheading:ignore:
+# Note that doom-emacs sets this variable
+# https://github.com/hlissner/doom-emacs/blob/develop/modules/lang/org/contrib/present.el
+#+REVEAL_EXTRA_CSS: /Users/rohitgoswami/.config/doom/reveal/rjs/plugin/accessibility/helper.css
+#+REVEAL_EXTRA_CSS: /Users/rohitgoswami/.config/doom/reveal/rjs/plugin/toc-progress/toc-progress.css
+#+REVEAL_EXTRA_CSS: /Users/rohitgoswami/.config/doom/reveal/rjs/dist/theme/toc-style.css
+#+REVEAL_EXTRA_CSS: /Users/rohitgoswami/.config/doom/reveal/rjs/dist/theme/fonts/source-sans-pro/source-sans-pro.css
+
+# Allow to selectively hide links.
+# #+REVEAL_EXTRA_SCRIPTS: ("/Users/rohitgoswami/.config/doom/reveal/rjs/dist/theme/hidelinks.js")
+#+REVEAL_EXTRA_SCRIPTS: ("/Users/rohitgoswami/.config/doom/reveal/rjs/dist/theme/hidelinks.js" "/Users/rohitgoswami/.config/doom/reveal/sfeir-school-theme/dist/js/sfeir-theme.js")
+
+# The following creates an empty footer, for which the css style defines
+# a height that agrees with the TOC-progress footer’s height.
+# In this way, the footer’s height is taken into account by reveal.js’s
+# size calculations.
+#+REVEAL_SLIDE_FOOTER: <br>
+#+OPTIONS: reveal_toc_footer:t
+
+** Macros :ignoreheading:ignore:
+# Set a default bib file.
+
+# Macros to display square brackets (in texts of hyperlinks).
+# Based on: https://emacs.stackexchange.com/questions/7792/can-i-make-links-in-org-mode-that-contain-brackets-or
+# Square Bracket Open [
+#+MACRO: BO @@latex:\char91{}@@@@html:&#91;@@
+# Square Bracket Close ]
+#+MACRO: BC @@latex:\char93{}@@@@html:&#93;@@
+
+# Macro for forced line break, e.g., in titles.
+#+MACRO: BR @@latex:\\@@@@html:<br />@@
+
+# Macro to generate abbr element in HTML.  If a second argument is given, it
+# defines the title attribute.  For LaTeX, output first attribute as is and
+# ignore second one.
+#+MACRO: abbr (eval (concat "@@latex:" Modern Documentation across languages "@@@@html:<abbr" (if (< 0 (length Linguistic and Programmatic Variants)) (concat " title=\"" Linguistic and Programmatic Variants "\"") "") ">" Modern Documentation across languages "</abbr>@@"))
+
+# Macros to display code in different colors.
+#+MACRO: blackcode (eval (format "@@html:<code><span style=\"color:black; font-size:smaller;\">%s</span></code>@@ @@latex:\\verb|%s|@@" (org-html-encode-plain-text Modern Documentation across languages) Modern Documentation across languages))
+#+MACRO: redcode (eval (format "@@html:<code><span style=\"color:darkred; font-size:smaller;\">%s</span></code>@@ @@latex:\\rverb|%s|@@" (org-html-encode-plain-text Modern Documentation across languages) Modern Documentation across languages))
+#+MACRO: greencode (eval (format "@@html:<code><span style=\"color:darkgreen; font-size:smaller;\">%s</span></code>@@ @@latex:\\gverb|%s|@@" (org-html-encode-plain-text Modern Documentation across languages) Modern Documentation across languages))
+#+MACRO: bluecode (eval (format "@@html:<code><span style=\"color:darkblue; font-size:smaller;\">%s</span></code>@@ @@latex:\\bverb|%s|@@" (org-html-encode-plain-text Modern Documentation across languages) Modern Documentation across languages))
+
+** LaTeX Options :ignoreheading:ignore:
+# Setup for PDF generation via LaTeX export.
+#+LATEX_CLASS_OPTIONS: [a4paper]
+#+LATEX_HEADER: \usepackage[backend=biber,style=alphabetic]{biblatex}
+#+LATEX_HEADER: \addbibresource{./refs.bib}
+#+LATEX_HEADER: \newenvironment{notes}{\par\footnotesize}{\par}
+#+LATEX_HEADER: \newenvironment{NOTES}{\par\footnotesize}{\par}
+#+LATEX_HEADER: \newenvironment{leftcol}{\begin{minipage}{.49\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol}{\begin{minipage}{.49\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{leftcol30}{\begin{minipage}{.29\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{leftcol40}{\begin{minipage}{.39\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{leftcol60}{\begin{minipage}{.59\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{leftcol70}{\begin{minipage}{.69\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol30}{\begin{minipage}{.29\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol40}{\begin{minipage}{.39\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol60}{\begin{minipage}{.59\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol70}{\begin{minipage}{.69\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \usepackage{newunicodechar}
+#+LATEX_HEADER: \newunicodechar{≈}{$\approx$}
+#+LATEX_HEADER: \newunicodechar{⋮}{\vdots}
+#+LATEX_HEADER: \newunicodechar{ }{~}
+#+LATEX_HEADER: \usepackage{xcolor}
+#+LATEX_HEADER: \definecolor{darkred}{rgb}{0.3, 0.0, 0.0}
+#+LATEX_HEADER: \definecolor{darkgreen}{rgb}{0.0, 0.3, 0.1}
+#+LATEX_HEADER: \definecolor{darkblue}{rgb}{0.0, 0.1, 0.3}
+#+LATEX_HEADER: \definecolor{darkorange}{rgb}{1.0, 0.55, 0.0}
+#+LATEX_HEADER: \definecolor{sienna}{rgb}{0.53, 0.18, 0.09}
+#+LATEX_HEADER: \hypersetup{colorlinks,linkcolor=darkblue,citecolor=darkblue,urlcolor=darkgreen}
+#+LATEX_HEADER: \usepackage{newverbs}
+#+LATEX_HEADER: \newverbcommand{\rverb}{\color{darkred}}{}
+#+LATEX_HEADER: \newverbcommand{\gverb}{\color{darkgreen}}{}
+#+LATEX_HEADER: \newverbcommand{\bverb}{\color{darkblue}}{}
+
+* Start Here :ignoreheading:ignore:
+* Brief Introduction
+** Hello!
+- Find me here: https://rgoswami.me
+- Who?
+  + *Rohit Goswami* MInstP
+    - Doctoral Researcher, University of Iceland, Faculty of Physical Sciences
+#+begin_leftcol
+[[file:images/physUoI.png]]
+#+ATTR_HTML: :width 40% :height 40%
+file:images/seriLogo.png
+#+end_leftcol
+#+begin_rightcol
+file:images/rannisLogo.png
+#+DOWNLOADED: screenshot @ 2021-04-13 02:55:57
+#+ATTR_HTML: :width 70% :height 70%
+[[file:images/ccLogo.png]]
+#+end_rightcol
+** Logistics
+#+ATTR_REVEAL: :frag appear
+- All contents are [[https://github.com/HaoZeke/haozeke.github.io][hosted on GitHub]]
+  + Slides are in ~presentations/SERI2021~
+#+ATTR_REVEAL: :frag appear
+- Questions are welcome *after* the talk
+* The Rationale
+** Reading Code I
+#+begin_leftcol
+#+ATTR_REVEAL: :frag appear
+#+begin_src asm
+main:
+push    rbp
+mov     rbp, rsp
+mov     DWORD PTR [rbp-4], 3
+mov     eax, 0
+pop     rbp
+ret
+__static_initialization_
+    and_destruction_0(int, int):
+push    rbp
+mov     rbp, rsp
+sub     rsp, 16
+mov     DWORD PTR [rbp-4], edi
+mov     DWORD PTR [rbp-8], esi
+cmp     DWORD PTR [rbp-4], 1
+jne     .L5
+cmp     DWORD PTR [rbp-8], 65535
+jne     .L5
+mov     edi, OFFSET FLAT:_ZStL8
+    __ioinit
+#+end_src
+#+end_leftcol
+
+#+begin_rightcol
+#+ATTR_REVEAL: :frag appear
+#+begin_src asm
+call    std::ios_base::Init::Init()
+    [complete object constructor]
+mov     edx, OFFSET FLAT:__dso_handle
+mov     esi, OFFSET FLAT:_ZStL8__ioinit
+mov     edi, OFFSET FLAT:_ZNSt8ios_base4InitD1Ev
+call    __cxa_atexit
+.L5:
+nop
+leave
+ret
+_GLOBAL__sub_I_main:
+push    rbp
+mov     rbp, rsp
+mov     esi, 65535
+mov     edi, 1
+call    __static_initialization_
+    and_destruction_0(int, int)
+pop     rbp
+ret
+#+end_src
+#+end_rightcol
+#+ATTR_REVEAL: :frag appear
+- But who *writes _assembly_* anyway?
+** Reading Code II
+#+begin_leftcol
+#+ATTR_REVEAL: :frag appear
+#+begin_src cpp
+int main ()
+{
+  int D.48918;
+  {
+    int a;
+    a = 3;
+    D.48918 = 0;
+    return D.48918;
+  }
+  D.48918 = 0;
+  return D.48918;
+}
+
+void _GLOBAL__sub_I_main.cpp ()
+{
+  __static_initialization_
+      and_destruction_0 (1, 65535);
+}
+#+end_src
+#+end_leftcol
+
+#+begin_rightcol
+#+ATTR_REVEAL: :frag appear
+#+begin_src cpp
+void __static_initialization_
+and_destruction_0 (int __initialize_p,
+    int __priority)
+{
+  if (__initialize_p == 1) goto <D.48920>;
+  else goto <D.48921>;
+  <D.48920>:
+  if (__priority == 65535) goto <D.48922>;
+  else goto <D.48923>;
+  <D.48922>:
+  std::ios_base::Init::Init (&__ioinit);
+  __cxxabiv1::__cxa_atexit (__dt_comp ,
+                 &__ioinit, &__dso_handle);
+  goto <D.48924>;
+  <D.48923>:
+  <D.48924>:
+  goto <D.48925>;
+  <D.48921>:
+  <D.48925>:
+}
+#+end_src
+#+end_rightcol
+#+ATTR_REVEAL: :frag appear
+- GIMPLE is an *internal* ~gcc~ representation...
+
+** Reading Code III
+#+begin_leftcol
+#+ATTR_REVEAL: :frag appear
+#+begin_src cpp
+#include<iostream>
+
+int main() {
+    int a=3;
+    return 0;
+}
+#+end_src
+#+ATTR_REVEAL: :frag appear
+- Better for most people, still a bit lacking for novices
+#+end_leftcol
+
+#+ATTR_REVEAL: :frag appear
+#+begin_rightcol
+- *Assigning an integer*
+#+begin_src bash
+g++ main.cpp -o file
+#+end_src
+- Produces a ~file~ binary which can be run as:
+#+begin_src bash
+./file
+#+end_src
+- Output :: There is *no* output, but an assignment of an integer with value 3 takes place
+#+end_rightcol
+
+#+ATTR_REVEAL: :frag appear
+- What about _different languages_?
+
+** Reading Code IV
+#+begin_leftcol
+#+ATTR_REVEAL: :frag appear
+- Maybe ~gcc~ is just an ugly compiler...
+#+ATTR_REVEAL: :frag appear
+#+begin_src fortran
+program main
+  integer :: x = 3 + 6
+  print *, x
+end program
+#+end_src
+#+ATTR_REVEAL: :frag appear
+- ~lfortran~ has a nicer intermediate structure
+#+ATTR_REVEAL: :frag appear
+#+begin_src bash
+conda create -n lf
+conda activate lf
+conda install lfortran \
+    -c conda-forge
+lfortran --show-asr consint.f90
+#+end_src
+#+end_leftcol
+
+#+begin_rightcol
+
+#+DOWNLOADED: screenshot @ 2021-07-16 16:18:43
+#+ATTR_REVEAL: :frag appear
+[[file:images/Reading_Code_IV/2021-07-16_16-18-43_screenshot.png]]
+
+#+end_rightcol
+
+* Project Layouts
+** Language Agnostic Beginnings
+#+ATTR_REVEAL: :frag appear
+#+BEGIN_leftcol
+#+ATTR_REVEAL: :frag (appear)
+- ~Readme.{md,org}~ :: Motivation, rationale, license, installation instructions
+- ~LICENSE~ :: Plain text, and preferably an open license
+  - [[https://github.com/azu/license-generator][license-generator]] is pretty handy for this
+- ~.gitignore~ :: Lists files which do not need to be committed; typically generated files
+  - [[https://github.com/simonwhitaker/gibo][gibo]] can be used to generate these
+#+END_leftcol
+#+BEGIN_rightcol
+#+ATTR_REVEAL: :frag appear
+#+begin_src bash
+$ git init # Inside project
+$ gibo macOS Windows Xcode Emacs \
+    Vim Python C++ \
+    CMake TeX > .gitignore
+$ touch readme.md
+$ license-generator MIT \
+    --author "Person"
+$ tree -L 2
+.
+├── LICENSE
+├── docs
+│   └── pres
+└── readme.org
+
+2 directories, 2 files
+#+end_src
+
+#+END_rightcol
+** Large Project Structure
+#+begin_leftcol
+#+ATTR_REVEAL: :frag appear
+- Has a *core*
+#+ATTR_REVEAL: :frag appear
+- With *bindings*
+  + For other languages
+#+ATTR_REVEAL: :frag appear
+- Needs *api* documentation
+  + Also *user* documentation
+#+end_leftcol
+
+#+begin_rightcol
+#+ATTR_REVEAL: :frag appear
+#+begin_src bash
+.
+├── api-docs
+├── dependencies
+├── python-symengine-feedstock
+├── symengine
+├── symengine-bench
+├── SymEngineBuilder
+├── symengine.f90
+├── symengine-feedstock
+├── symengine.github.io
+├── symengine.hs
+├── SymEngine.jl
+├── symengine-paper
+├── symengine.py
+├── symengine.R
+├── symengine.rb
+├── symengine.spkg
+└── symengine-wheels
+#+end_src
+#+end_rightcol
+
+* Documentation Dissemination
+** Man Pages
+#+ATTR_REVEAL: :frag appear
+- Great for terminal programs
+- Not great for APIs
+#+DOWNLOADED: screenshot @ 2021-07-16 21:32:03
+#+ATTR_REVEAL: :frag appear
+[[file:images/Man_Pages/2021-07-16_21-32-03_screenshot.png]]
+
+** User Manuals
+#+ATTR_REVEAL: :frag appear
+- Can be hard to manipulate
+  + C++ standard is ≈1800 pages
+
+#+DOWNLOADED: screenshot @ 2021-07-17 17:45:18
+#+ATTR_REVEAL: :frag appear
+[[file:images/User_Manuals/2021-07-17_17-45-18_screenshot.png]]
+
+** Websites
+#+ATTR_REVEAL: :frag appear
+- How many?
+- Must provide metadata about the code
+- Community building aspects
+
+#+DOWNLOADED: screenshot @ 2021-07-17 17:45:46
+#+ATTR_REVEAL: :frag appear
+[[file:images/Websites/2021-07-17_17-45-46_screenshot.png]]
+
+* Documentation Insertion Points
+
+#+DOWNLOADED: screenshot @ 2021-07-17 18:00:13
+[[file:images/Documentation_Insertion_Points/2021-07-17_18-00-13_screenshot.png]]
+
+** User Perspective
+#+ATTR_REVEAL: :frag appear
+- Tutorials
+  + Code-along
+** Developer Perspective
+#+ATTR_REVEAL: :frag appear
+- API documentation
+- Code contribution guidelines
+* Languages
+| Language         | Package                  |
+| [[https://symengine.org/symengine.R][R]]                | [[https://pkgdown.r-lib.org/][pkgdown]]                  |
+| [[https://symengine.org/symengine.py][Python]]           | [[https://www.sphinx-doc.org/][Sphinx]]                   |
+| [[https://symengine.org/symengine][C++]]              | [[https://www.doxygen.nl/index.html][Doxygen]] + [[https://github.com/HaoZeke/doxyYoda][doxyYoda]]       |
+| [[https://symengine.org/SymEngine.jl/][Julia]]            | [[https://juliadocs.github.io/Documenter.jl/stable/man/guide/][Documenter.jl]]            |
+| [[https://symengine.org/#api-documentation][Notebooks / MyST]] | [[https://www.sphinx-doc.org/][Sphinx]] + [[https://myst-nb.readthedocs.io/en/latest/][myst]] + [[https://jupytext.readthedocs.io/en/latest/install.html][jupytext]] |
+
+** R
+#+DOWNLOADED: screenshot @ 2021-07-17 17:54:40
+[[file:images/R/2021-07-17_17-54-40_screenshot.png]]
+
+** Julia
+#+begin_leftcol
+
+#+DOWNLOADED: screenshot @ 2021-07-17 17:53:54
+#+ATTR_REVEAL: :frag appear
+[[file:images/Julia/2021-07-17_17-53-54_screenshot.png]]
+
+#+end_leftcol
+
+#+begin_rightcol
+
+#+DOWNLOADED: screenshot @ 2021-07-17 17:54:10
+#+ATTR_REVEAL: :frag appear
+[[file:images/Julia/2021-07-17_17-54-10_screenshot.png]]
+
+#+DOWNLOADED: screenshot @ 2021-07-17 17:54:20
+#+ATTR_REVEAL: :frag appear
+[[file:images/Julia/2021-07-17_17-54-20_screenshot.png]]
+
+#+end_rightcol
+
+** Python
+#+begin_leftcol
+#+DOWNLOADED: screenshot @ 2021-07-17 17:52:46
+#+ATTR_REVEAL: :frag appear
+[[file:images/Python/2021-07-17_17-52-46_screenshot.png]]
+#+end_leftcol
+
+#+begin_rightcol
+
+#+DOWNLOADED: screenshot @ 2021-07-17 17:53:09
+#+ATTR_REVEAL: :frag appear
+[[file:images/Python/2021-07-17_17-53-09_screenshot.png]]
+#+end_rightcol
+
+
+** Generic
+- ~sphinx~ is reasonably good for code documentation
+  + Static sites can be leveraged for user-documentation
+
+#+DOWNLOADED: screenshot @ 2021-07-17 17:51:47
+#+ATTR_REVEAL: :frag appear
+[[file:images/Generic/2021-07-17_17-51-47_screenshot.png]]
+
+** C++
+*** Project Files
+#+ATTR_REVEAL: :frag appear
+#+begin_src cpp
+/**
+ *  @file   add.h
+ *  @author SymEngine Developers
+ *  @date   2021-02-25
+ *  @brief  Classes and functions relating to the binary operation of addition
+ *
+ *  Created on: 2012-07-11
+ *
+ *  This file contains the basic binary operations defined for symbolic enties.
+ *   In particular the @ref Add class for representing addition is
+ *   @b declared here, along with the `add` and `substract` functions.
+ */
+
+#ifndef SYMENGINE_ADD_H
+#define SYMENGINE_ADD_H
+#+end_src
+*** Header Files
+#+ATTR_REVEAL: :frag appear
+#+begin_src cpp
+    /**
+     *  @brief Create an appropriate instance from dictionary quickly.
+     *  @pre The dictionary must be in canonical form.
+     *  @see `Mul` for how `Pow` gets returned.
+     *  @see `Basic` for the guarantees and expectations.
+     *  @param coef the numeric coefficient.
+     *  @param d the dictionary of the expression without the coefficient.
+     *  @return `coef` if the dictionary is empty (size 0).
+     *  @return `Mul` if the dictionary has one element which is a `Mul`.
+     *  @return `Integer` if the dictionary has one element which is a
+     *   `Integer`.
+     *  @return `Symbol` if the dictionary has one element which is a `Symbol`.
+     *  @return `Pow` if the dictionary has one element which is a `Pow`.
+     *  @return `Add` if the size of the dictionary is greater than 1.
+     */
+    static RCP<const Basic> from_dict(const RCP<const Number> &coef,
+                                      umap_basic_num &&d);
+#+end_src
+
+*** Source Files
+#+begin_src cpp
+/**
+ *  @details This function ensures that each term in *dict* is in canonical
+ *   form. The implementation in the form of a exclusion list (defaults to
+ *   true).
+ *
+ *  @note **Canonical form** requires the existance of both `coef` and
+ *   `dict`, so `null` coefficients and purely numerical (empty dictionaries)
+ *   are also not considered to be in canonical form. Also, the ordering is
+ *   important, it must be `(coeff, dict)` and **not** `(dict, coeff)`.
+ *
+ *  Some **non-cannonical** forms are:
+ *   - @f$0 + x@f$.
+ *   - @f$0 + 2x@f$.
+ *   - @f$ 2 \times 3 @f$.
+ *   - @f$ x \times 0 @f$.
+ *   - @f$ 1 \times x @f$ has the wrong order.
+ *   - @f$ 3x \times 2 @f$ is actually just @f$6x@f$.
+ */
+bool Add::is_canonical(const RCP<const Number> &coef,
+                       const umap_basic_num &dict) const
+#+end_src
+*** Base Doxygen
+#+ATTR_REVEAL: :frag appear
+[[file:../../content-org/images/Timelines_and_Deliverable_Assets/2021-03-25_20-46-50_screenshot.png]]
+#+ATTR_REVEAL: :frag appear
+- Is ugly
+  + Not mobile friendly
+*** Exhale
+#+begin_leftcol
+#+ATTR_REVEAL: :frag appear
+#+ATTR_HTML: :width 60% :height 60%
+[[file:../../content-org/images/Timelines_and_Deliverable_Assets/2021-03-25_20-48-42_screenshot.png]]
+#+end_leftcol
+
+#+begin_rightcol
+#+ATTR_REVEAL: :frag appear
+- Cannot include source code
+#+end_rightcol
+*** Doxyrest
+#+begin_leftcol
+#+ATTR_REVEAL: :frag appear
+[[file:../../content-org/images/Timelines_and_Deliverable_Assets/2021-03-25_20-48-59_screenshot.png]]
+#+end_leftcol
+
+#+begin_rightcol
+#+ATTR_REVEAL: :frag appear
+- Includes more structure than exhale
+#+ATTR_REVEAL: :frag appear
+- Can be extended to other source languages
+#+ATTR_REVEAL: :frag appear
+- Has a rather complicated setup
+#+end_rightcol
+*** DoxyYoda
+#+ATTR_REVEAL: :frag appear
+[[file:../../content-org/images/Timelines_and_Deliverable_Assets/2021-03-25_20-47-09_screenshot.png]]
+* Translations
+- At the user level, e.g. with ~docusaurus~
+#+begin_src bash
+cat irhpc.github.io/i18n/is/docusaurus-plugin-content-docs/current/intro.md
+#+end_src
+#+DOWNLOADED: screenshot @ 2021-07-17 17:56:17
+#+ATTR_REVEAL: :frag appear
+[[file:images/Translations/2021-07-17_17-56-17_screenshot.png]]
+
+* Reviewing Documentation
+** Documented Fallacies
+#+ATTR_REVEAL: :frag appear
+#+begin_src python
+"""
+This function adds two numbers
+"""
+def sum(a,b):
+    return a*b
+#+end_src
+** Invalidate Often
+#+ATTR_REVEAL: :frag appear
+- Documentation cannot typically be tested
+  + ~julia~ aside
+
+#+DOWNLOADED: screenshot @ 2021-07-17 17:48:14
+#+ATTR_REVEAL: :frag appear
+#+ATTR_HTML: :width 60% :height 60%
+[[file:images/Invalidate_Often/2021-07-17_17-48-14_screenshot.png]]
+
+* Conclusions
+** Omitted Topics
+#+ATTR_REVEAL: :frag appear
+- Web development and design :: Including frameworks and UX
+#+ATTR_REVEAL: :frag appear
+- Continuous integration :: How to ensure documentation is coupled to working code
+#+ATTR_REVEAL: :frag appear
+- Benchmarking :: Demonstrating code superiority
+#+ATTR_REVEAL: :frag appear
+- Code Review Practices :: Scrum and teamwork
+#+ATTR_REVEAL: :frag appear
+- Multi-language API :: Where code from different languages are called together
+** Further Resources
+- [[https://rgoswami.me/posts/symengine-gsod20/][SymEngine and the Season of Docs]] :: Describes the present SOTA for documentation practices in the context of a large multi-language project
+- [[https://dseams.info][d-SEAMS]] :: A large scientific code cite:goswamiDSEAMSDeferredStructural2020 project designed with a user-wiki,
+** Key Takeaways
+#+begin_leftcol
+#+ATTR_REVEAL: :frag appear
+- Document at every level
+#+ATTR_REVEAL: :frag appear
+- Use the best tools for the job
+#+ATTR_REVEAL: :frag appear
+- Internationalize only where necessary
+  + User level
+#+end_leftcol
+
+#+begin_rightcol
+#+ATTR_REVEAL: :frag appear
+- Ensure documentation expires
+  + Keep provenance
+#+ATTR_REVEAL: :frag appear
+- Ensure a documentation style guide is present
+#+ATTR_REVEAL: :frag appear
+- Lint automatically
+#+end_rightcol
+* The End
+** Bibliography
+:PROPERTIES:
+:CUSTOM_ID: bibliography
+:END:
+
+printbibliography:refs.bib
+
+** Thanks!
+:PROPERTIES:
+:reveal_background: #005ab6
+:END:
+# Local Variables:
+# indent-tabs-mode: nil
+# org-src-preserve-indentation: t
+# End:
