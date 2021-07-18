@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<!-- saved from url=(0122)file:///Users/rohitgoswami/Git/Github/WebDev/Mine/haozeke.github.io/presentations/SERI2021/acmReveal.html#/sec-title-slide -->
+<html lang="en" class="reveal-full-page"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>Modern Documentation across languages</title>
+<meta name="author" content="Rohit Goswami">
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="./docuSeri_files/reveal.css">
+
+<link rel="stylesheet" href="./docuSeri_files/robot-lung.css" id="theme">
+
+<link rel="stylesheet" href="./docuSeri_files/rlExtras.css">
+
+<link rel="stylesheet" href="./docuSeri_files/oerFragments.css">
+
+<link rel="stylesheet" href="./docuSeri_files/noImgBoxes.css">
+
+<link rel="stylesheet" href="./docuSeri_files/betterCite.css">
+
+<link rel="stylesheet" href="./docuSeri_files/moreCode.css">
+
+<link rel="stylesheet" href="file:///Users/rohitgoswami/.config/doom/reveal/rjs/plugin/accessibility/helper.css">
+
+<link rel="stylesheet" href="file:///Users/rohitgoswami/.config/doom/reveal/rjs/plugin/toc-progress/toc-progress.css">
+
+<link rel="stylesheet" href="file:///Users/rohitgoswami/.config/doom/reveal/rjs/dist/theme/toc-style.css">
+
+<link rel="stylesheet" href="./docuSeri_files/source-sans-pro.css">
+<link type="image/x-icon" rel="shortcut icon" sizes="16x16" href="file:///Users/rohitgoswami/.config/doom/reveal/sfeir-school-theme/dist/images/favicon-16x16.png"><link type="image/x-icon" rel="shortcut icon" sizes="32x32" href="file:///Users/rohitgoswami/.config/doom/reveal/sfeir-school-theme/dist/images/favicon-32x32.png"><link type="image/x-icon" rel="shortcut icon" sizes="96x96" href="file:///Users/rohitgoswami/.config/doom/reveal/sfeir-school-theme/dist/images/favicon-96x96.png"><link type="image/x-icon" rel="shortcut icon" href="file:///Users/rohitgoswami/.config/doom/reveal/sfeir-school-theme/dist/images/favicon.ico"></head>
+<body class="reveal-viewport no-toc-progress" style="transition: -webkit-transform 0.8s ease 0s; --slide-width:960px; --slide-height:700px;">
+<div class="line top"></div> <div class="line bottom"></div> <div class="line left"></div> <div class="line right"></div>
+<div class="reveal fade center focused has-vertical-slides has-horizontal-slides ready" role="application" data-transition-speed="default" data-background-transition="fade" style="">
+<div class="slides" style="width: 960px; height: 700px; inset: 50% auto auto 50%; transform: translate(-50%, -50%) scale(0.989714);">
+<section id="sec-title-slide" data-state="no-toc-progress" style="top: 121.5px; display: block;" class="present sfeir-basic-slide">
+<h1 class="title">Modern Documentation across languages</h1><h2 class="author">Rohit Goswami</h2><p class="date">Created: 2021-07-16 Fri 19:08</p>
+</section>
+
+
+
+
+
+<section style="top: 0px; display: block;" hidden="" aria-hidden="true" class="stack future sfeir-basic-slide">
+<section id="slide-Brief%20Introduction" style="top: 300.5px; display: block;" class="sfeir-basic-slide">
+<h2 id="Brief%20Introduction">Brief Introduction</h2>
+<div class="outline-text-2" id="text-Brief%20Introduction">
+</div>
+</section>
+<section id="slide-Hello%21" class="future sfeir-basic-slide" aria-hidden="true" style="top: 0px; display: block;">
+<h3 id="Hello%21">Hello!</h3>
+<ul>
+<li>Find me here: <a href="https://rgoswami.me/">https://rgoswami.me</a></li>
+<li>Who?
+<ul>
+<li><b>Rohit Goswami</b> MInstP
+<ul>
+<li>Doctoral Researcher, University of Iceland, Faculty of Physical Sciences</li>
+
+</ul></li>
+
+</ul></li>
+
+</ul>
+<div class="leftcol" id="orgf0cd885">
+
+<div id="org343f964" class="figure">
+<p><img src="./docuSeri_files/physUoI.png" alt="physUoI.png">
+</p>
+</div>
+
+<div id="org8f34264" class="figure">
+<p><img src="./docuSeri_files/seriLogo.png" alt="seriLogo.png" width="40%" height="40%">
+</p>
+</div>
+
+</div>
+<div class="rightcol" id="orgb4ab306">
+
+<div id="org7ba1b7a" class="figure">
+<p><img src="./docuSeri_files/rannisLogo.png" alt="rannisLogo.png">
+</p>
+</div>
+
+<div id="orgee54f29" class="figure">
+<p><img src="./docuSeri_files/ccLogo.png" alt="ccLogo.png" width="70%" height="70%">
+</p>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-Logistics" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="Logistics">Logistics</h3>
+<ul class="fragment appear" data-fragment-index="0">
+<li>All contents are <a href="https://github.com/HaoZeke/haozeke.github.io">hosted on GitHub</a>
+<ul>
+<li>Slides are in <code>presentations/SERI2021</code></li>
+
+</ul></li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="1">
+<li>Questions are welcome <b>after</b> the talk</li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section style="top: 0px; display: block;" hidden="" aria-hidden="true" class="stack future sfeir-basic-slide">
+<section id="slide-The%20Rationale" style="top: 300.5px; display: block;" class="sfeir-basic-slide">
+<h2 id="The%20Rationale">The Rationale</h2>
+<div class="outline-text-2" id="text-The%20Rationale">
+</div>
+</section>
+<section id="slide-Reading%20Code%20I" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="Reading%20Code%20I">Reading Code I</h3>
+<div class="leftcol" id="orgff2710f">
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="0"><span style="color: #81a2be;">main</span>:
+<span style="color: #81a2be;">push</span>    <span style="color: #b294bb;">rbp</span>
+<span style="color: #81a2be;">mov</span>     <span style="color: #b294bb;">rbp</span>, rsp
+<span style="color: #81a2be;">mov</span>     <span style="color: #b294bb;">DWORD</span> PTR [rbp-4], <span style="color: #de935f; font-weight: bold;">3</span>
+<span style="color: #81a2be;">mov</span>     <span style="color: #b294bb;">eax</span>, <span style="color: #de935f; font-weight: bold;">0</span>
+<span style="color: #81a2be;">pop</span>     <span style="color: #b294bb;">rbp</span>
+<span style="color: #81a2be;">ret</span>
+<span style="color: #81a2be;">__static_initialization</span>_
+    <span style="color: #b294bb;">and_destruction_0</span>(int, int):
+<span style="color: #81a2be;">push</span>    <span style="color: #b294bb;">rbp</span>
+<span style="color: #81a2be;">mov</span>     <span style="color: #b294bb;">rbp</span>, rsp
+<span style="color: #81a2be;">sub</span>     <span style="color: #b294bb;">rsp</span>, <span style="color: #de935f; font-weight: bold;">16</span>
+<span style="color: #81a2be;">mov</span>     <span style="color: #b294bb;">DWORD</span> PTR [rbp-4], edi
+<span style="color: #81a2be;">mov</span>     <span style="color: #b294bb;">DWORD</span> PTR [rbp-8], esi
+<span style="color: #81a2be;">cmp</span>     <span style="color: #b294bb;">DWORD</span> PTR [rbp-4], <span style="color: #de935f; font-weight: bold;">1</span>
+<span style="color: #81a2be;">jne</span>     .L5
+<span style="color: #81a2be;">cmp</span>     <span style="color: #b294bb;">DWORD</span> PTR [rbp-8], <span style="color: #de935f; font-weight: bold;">65535</span>
+<span style="color: #81a2be;">jne</span>     .L5
+<span style="color: #81a2be;">mov</span>     <span style="color: #b294bb;">edi</span>, OFFSET FLAT:_ZStL8
+    <span style="color: #b294bb;">__ioinit</span>
+</pre>
+</div>
+
+</div>
+
+<div class="rightcol" id="org1b8f588">
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="1"><span style="color: #81a2be;">call</span>    <span style="color: #b294bb;">std</span>::ios_base::Init::Init()
+    [complete object constructor]
+<span style="color: #81a2be;">mov</span>     <span style="color: #b294bb;">edx</span>, OFFSET FLAT:__dso_handle
+<span style="color: #81a2be;">mov</span>     <span style="color: #b294bb;">esi</span>, OFFSET FLAT:_ZStL8__ioinit
+<span style="color: #81a2be;">mov</span>     <span style="color: #b294bb;">edi</span>, OFFSET FLAT:_ZNSt8ios_base4InitD1Ev
+<span style="color: #81a2be;">call</span>    __cxa_atexit
+<span style="color: #81a2be;">.L5</span>:
+<span style="color: #81a2be;">nop</span>
+<span style="color: #81a2be;">leave</span>
+<span style="color: #81a2be;">ret</span>
+<span style="color: #81a2be;">_GLOBAL__sub_I_main</span>:
+<span style="color: #81a2be;">push</span>    <span style="color: #b294bb;">rbp</span>
+<span style="color: #81a2be;">mov</span>     <span style="color: #b294bb;">rbp</span>, rsp
+<span style="color: #81a2be;">mov</span>     <span style="color: #b294bb;">esi</span>, <span style="color: #de935f; font-weight: bold;">65535</span>
+<span style="color: #81a2be;">mov</span>     <span style="color: #b294bb;">edi</span>, <span style="color: #de935f; font-weight: bold;">1</span>
+<span style="color: #81a2be;">call</span>    __static_initialization_
+    <span style="color: #b294bb;">and_destruction_0</span>(int, int)
+<span style="color: #81a2be;">pop</span>     <span style="color: #b294bb;">rbp</span>
+<span style="color: #81a2be;">ret</span>
+</pre>
+</div>
+
+</div>
+<ul class="fragment appear" data-fragment-index="2">
+<li>But who <b>writes <span class="underline">assembly</span></b> anyway?</li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-Reading%20Code%20II" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="Reading%20Code%20II">Reading Code II</h3>
+<div class="leftcol" id="org7f8e0c0">
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="0"><span style="color: #f0c674;">int</span> <span style="color: #81a2be;">main</span> <span style="color: #b294bb;">()</span>
+<span style="color: #b294bb;">{</span>
+  <span style="color: #f0c674;">int</span> <span style="color: #cc6666;">D</span>.<span style="color: #de935f; font-weight: bold;">48918</span>;
+  <span style="color: #81a2be;">{</span>
+    <span style="color: #f0c674;">int</span> <span style="color: #cc6666;">a</span>;
+    a = <span style="color: #de935f; font-weight: bold;">3</span>;
+    D.<span style="color: #de935f; font-weight: bold;">48918</span> = <span style="color: #de935f; font-weight: bold;">0</span>;
+    <span style="color: #b294bb;">return</span> D.<span style="color: #de935f; font-weight: bold;">48918</span>;
+  <span style="color: #81a2be;">}</span>
+  D.<span style="color: #de935f; font-weight: bold;">48918</span> = <span style="color: #de935f; font-weight: bold;">0</span>;
+  <span style="color: #b294bb;">return</span> D.<span style="color: #de935f; font-weight: bold;">48918</span>;
+<span style="color: #b294bb;">}</span>
+
+<span style="color: #f0c674;">void</span> <span style="color: #81a2be;">_GLOBAL__sub_I_main</span>.cpp <span style="color: #b294bb;">()</span>
+<span style="color: #b294bb;">{</span>
+  <span style="color: #f0c674;">__static_initialization_</span>
+      <span style="color: #cc6666;">and_destruction_0</span> <span style="color: #81a2be;">(</span><span style="color: #de935f; font-weight: bold;">1</span>, <span style="color: #de935f; font-weight: bold;">65535</span><span style="color: #81a2be;">)</span>;
+<span style="color: #b294bb;">}</span>
+</pre>
+</div>
+
+</div>
+
+<div class="rightcol" id="orgcb0022e">
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="1"><span style="color: #f0c674;">void</span> <span style="color: #81a2be;">__static_initialization_</span>
+and_destruction_0 <span style="color: #b294bb;">(</span><span style="color: #f0c674;">int</span> <span style="color: #cc6666;">__initialize_p</span>,
+    <span style="color: #f0c674;">int</span> <span style="color: #cc6666;">__priority</span><span style="color: #b294bb;">)</span>
+<span style="color: #b294bb;">{</span>
+  <span style="color: #b294bb;">if</span> <span style="color: #81a2be;">(</span>__initialize_p == <span style="color: #de935f; font-weight: bold;">1</span><span style="color: #81a2be;">)</span> <span style="color: #b294bb;">goto</span> <span style="color: #81a2be;">&lt;</span>D.<span style="color: #de935f; font-weight: bold;">48920</span><span style="color: #81a2be;">&gt;</span>;
+  <span style="color: #b294bb;">else</span> <span style="color: #b294bb;">goto</span> <span style="color: #81a2be;">&lt;</span>D.<span style="color: #de935f; font-weight: bold;">48921</span><span style="color: #81a2be;">&gt;</span>;
+  <span style="color: #81a2be;">&lt;</span>D.<span style="color: #de935f; font-weight: bold;">48920</span><span style="color: #81a2be;">&gt;</span>:
+  <span style="color: #b294bb;">if</span> <span style="color: #81a2be;">(</span>__priority == <span style="color: #de935f; font-weight: bold;">65535</span><span style="color: #81a2be;">)</span> <span style="color: #b294bb;">goto</span> <span style="color: #81a2be;">&lt;</span>D.<span style="color: #de935f; font-weight: bold;">48922</span><span style="color: #81a2be;">&gt;</span>;
+  <span style="color: #b294bb;">else</span> <span style="color: #b294bb;">goto</span> <span style="color: #81a2be;">&lt;</span>D.<span style="color: #de935f; font-weight: bold;">48923</span><span style="color: #81a2be;">&gt;</span>;
+  <span style="color: #81a2be;">&lt;</span>D.<span style="color: #de935f; font-weight: bold;">48922</span><span style="color: #81a2be;">&gt;</span>:
+  <span style="color: #de935f;">std</span>::<span style="color: #de935f;">ios_base</span>::<span style="color: #de935f;">Init</span>::Init <span style="color: #81a2be;">(</span>&amp;__ioinit<span style="color: #81a2be;">)</span>;
+  <span style="color: #de935f;">__cxxabiv1</span>::__cxa_atexit <span style="color: #81a2be;">(</span>__dt_comp ,
+                 &amp;__ioinit, &amp;__dso_handle<span style="color: #81a2be;">)</span>;
+  <span style="color: #b294bb;">goto</span> <span style="color: #81a2be;">&lt;</span>D.<span style="color: #de935f; font-weight: bold;">48924</span><span style="color: #81a2be;">&gt;</span>;
+  <span style="color: #81a2be;">&lt;</span>D.<span style="color: #de935f; font-weight: bold;">48923</span><span style="color: #81a2be;">&gt;</span>:
+  <span style="color: #81a2be;">&lt;</span>D.<span style="color: #de935f; font-weight: bold;">48924</span><span style="color: #81a2be;">&gt;</span>:
+  <span style="color: #b294bb;">goto</span> <span style="color: #81a2be;">&lt;</span>D.<span style="color: #de935f; font-weight: bold;">48925</span><span style="color: #81a2be;">&gt;</span>;
+  <span style="color: #81a2be;">&lt;</span>D.<span style="color: #de935f; font-weight: bold;">48921</span><span style="color: #81a2be;">&gt;</span>:
+  <span style="color: #81a2be;">&lt;</span>D.<span style="color: #de935f; font-weight: bold;">48925</span><span style="color: #81a2be;">&gt;</span>:
+<span style="color: #b294bb;">}</span>
+</pre>
+</div>
+
+</div>
+<ul class="fragment appear" data-fragment-index="2">
+<li>GIMPLE is an <b>internal</b> <code>gcc</code> representation…</li>
+
+</ul>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-Reading%20Code%20III" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="Reading%20Code%20III">Reading Code III</h3>
+<div class="leftcol" id="org0d30990">
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="0"><span style="color: #c5c8c6; font-weight: bold;">#include</span><span style="color: #b294bb;">&lt;</span><span style="color: #b5bd68;">iostream</span><span style="color: #b294bb;">&gt;</span>
+
+<span style="color: #f0c674;">int</span> <span style="color: #81a2be;">main</span><span style="color: #b294bb;">()</span> <span style="color: #b294bb;">{</span>
+    <span style="color: #f0c674;">int</span> <span style="color: #cc6666;">a</span>=<span style="color: #de935f; font-weight: bold;">3</span>;
+    <span style="color: #b294bb;">return</span> <span style="color: #de935f; font-weight: bold;">0</span>;
+<span style="color: #b294bb;">}</span>
+</pre>
+</div>
+<ul class="fragment appear" data-fragment-index="1">
+<li>Better for most people, still a bit lacking for novices</li>
+
+</ul>
+
+</div>
+
+<div class="fragment appear rightcol" id="org1161693" data-fragment-index="2">
+<ul>
+<li><b>Assigning an integer</b></li>
+
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-bash">g++ main.cpp -o file
+</pre>
+</div>
+<ul>
+<li>Produces a <code>file</code> binary which can be run as:</li>
+
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-bash">./file
+</pre>
+</div>
+<dl>
+<dt>Output</dt><dd>There is <b>no</b> output, but an assignment of an integer with value 3 takes place</dd>
+
+</dl>
+
+</div>
+
+<ul class="fragment appear" data-fragment-index="3">
+<li>What about <span class="underline">different languages</span>?</li>
+
+</ul>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-Reading%20Code%20IV" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="Reading%20Code%20IV">Reading Code IV</h3>
+<div class="leftcol" id="org38e52db">
+<ul class="fragment appear" data-fragment-index="0">
+<li>Maybe <code>gcc</code> is just an ugly compiler…</li>
+
+</ul>
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="1"><span style="color: #b294bb;">program</span> <span style="color: #81a2be;">main</span>
+  <span style="color: #f0c674;">integer</span> :: x = <span style="color: #de935f; font-weight: bold;">3</span> + <span style="color: #de935f; font-weight: bold;">6</span>
+  <span style="color: #b294bb;">print</span> *, x
+<span style="color: #b294bb;">end</span> <span style="color: #b294bb;">program</span>
+</pre>
+</div>
+<ul class="fragment appear" data-fragment-index="2">
+<li><code>lfortran</code> has a nicer intermediate structure</li>
+
+</ul>
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="3">conda create -n lf
+conda activate lf
+conda install lfortran <span style="color: #b5bd68;">\</span>
+    -c conda-forge
+lfortran --show-asr consint.f90
+</pre>
+</div>
+
+</div>
+
+<div class="rightcol" id="org5e508c5">
+<p>
+
+</p>
+
+
+<div id="orgdbedd0b" class="figure">
+<p><img src="./docuSeri_files/2021-07-16_16-18-43_screenshot.png" alt="2021-07-16_16-18-43_screenshot.png" class="fragment appear" data-fragment-index="4">
+</p>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+</section>
+<section style="top: 350px; display: none;" hidden="" aria-hidden="true" class="stack future sfeir-basic-slide">
+<section id="slide-Project%20Layouts" style="top: 350px; display: none;" class="sfeir-basic-slide">
+<h2 id="Project%20Layouts">Project Layouts</h2>
+<div class="outline-text-2" id="text-Project%20Layouts">
+</div>
+</section>
+<section id="slide-Language%20Agnostic%20Beginnings" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="Language%20Agnostic%20Beginnings">Language Agnostic Beginnings</h3>
+<div class="fragment appear leftcol" id="org4ba746a" data-fragment-index="0">
+<dl>
+<dt class="fragment appear" data-fragment-index="1"><code>Readme.{md,org}</code></dt><dd class="fragment appear" data-fragment-index="2">Motivation, rationale, license, installation instructions</dd>
+<dt class="fragment appear" data-fragment-index="3"><code>LICENSE</code></dt><dd class="fragment appear" data-fragment-index="4">Plain text, and preferably an open license
+<ul>
+<li><a href="https://github.com/azu/license-generator">license-generator</a> is pretty handy for this</li>
+
+</ul></dd>
+<dt class="fragment appear" data-fragment-index="5"><code>.gitignore</code></dt><dd class="fragment appear" data-fragment-index="6">Lists files which do not need to be committed; typically generated files
+<ul>
+<li><a href="https://github.com/simonwhitaker/gibo">gibo</a> can be used to generate these</li>
+
+</ul></dd>
+
+</dl>
+
+</div>
+<div class="rightcol" id="org9115c39">
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="7">$ <span style="color: #f0c674;">git</span> init <span style="color: #5a5b5a;"># </span><span style="color: #5a5b5a;">Inside project</span>
+$ gibo macOS Windows Xcode Emacs <span style="color: #b5bd68;">\</span>
+    Vim Python C++ <span style="color: #b5bd68;">\</span>
+    CMake TeX &gt; .gitignore
+$ <span style="color: #f0c674;">touch</span> readme.md
+$ license-generator MIT <span style="color: #b5bd68;">\</span>
+    --author <span style="color: #b5bd68;">"Person"</span>
+$ tree -L <span style="color: #de935f; font-weight: bold;">2</span>
+.
+├── LICENSE
+├── docs
+│&nbsp;&nbsp; └── pres
+└── readme.org
+
+<span style="color: #de935f; font-weight: bold;">2</span> directories, <span style="color: #de935f; font-weight: bold;">2</span> files
+</pre>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-Large%20Project%20Structure" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="Large%20Project%20Structure">Large Project Structure</h3>
+<div class="leftcol" id="orgc7da50a">
+<ul class="fragment appear" data-fragment-index="0">
+<li>Has a <b>core</b></li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="1">
+<li>With <b>bindings</b>
+<ul>
+<li>For other languages</li>
+
+</ul></li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="2">
+<li>Needs <b>api</b> documentation
+<ul>
+<li>Also <b>user</b> documentation</li>
+
+</ul></li>
+
+</ul>
+
+</div>
+
+<div class="rightcol" id="org8c063e1">
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="3">.
+├── api-docs
+├── dependencies
+├── python-symengine-feedstock
+├── symengine
+├── symengine-bench
+├── SymEngineBuilder
+├── symengine.f90
+├── symengine-feedstock
+├── symengine.github.io
+├── symengine.hs
+├── SymEngine.jl
+├── symengine-paper
+├── symengine.py
+├── symengine.R
+├── symengine.rb
+├── symengine.spkg
+└── symengine-wheels
+</pre>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+</section>
+<section style="top: 350px; display: none;" hidden="" aria-hidden="true" class="stack future sfeir-basic-slide">
+<section id="slide-Documentation%20Dissemination" style="top: 350px; display: none;" class="sfeir-basic-slide">
+<h2 id="Documentation%20Dissemination">Documentation Dissemination</h2>
+<div class="outline-text-2" id="text-Documentation%20Dissemination">
+</div>
+</section>
+<section id="slide-Man%20Pages" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="Man%20Pages">Man Pages</h3>
+<ul class="fragment appear" data-fragment-index="0">
+<li>Great for terminal programs</li>
+<li>Not great for APIs</li>
+
+</ul>
+
+<div id="orgfa3efd3" class="figure">
+<p><img src="./docuSeri_files/2021-07-16_21-32-03_screenshot.png" alt="2021-07-16_21-32-03_screenshot.png" class="fragment appear" data-fragment-index="1">
+</p>
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-User%20Manuals" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="User%20Manuals">User Manuals</h3>
+<ul class="fragment appear" data-fragment-index="0">
+<li>Can be hard to manipulate
+<ul>
+<li>C++ standard is ≈1800 pages</li>
+
+</ul></li>
+
+</ul>
+
+
+<div id="org4503496" class="figure">
+<p><img src="./docuSeri_files/2021-07-17_17-45-18_screenshot.png" alt="2021-07-17_17-45-18_screenshot.png" class="fragment appear" data-fragment-index="1">
+</p>
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-Websites" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="Websites">Websites</h3>
+<ul class="fragment appear" data-fragment-index="0">
+<li>How many?</li>
+<li>Must provide metadata about the code</li>
+<li>Community building aspects</li>
+
+</ul>
+
+
+<div id="orgba47104" class="figure">
+<p><img src="./docuSeri_files/2021-07-17_17-45-46_screenshot.png" alt="2021-07-17_17-45-46_screenshot.png" class="fragment appear" data-fragment-index="1">
+</p>
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+</section>
+<section style="top: 350px; display: none;" hidden="" aria-hidden="true" class="stack future sfeir-basic-slide">
+<section id="slide-Documentation%20Insertion%20Points" style="top: 350px; display: none;" class="sfeir-basic-slide">
+<h2 id="Documentation%20Insertion%20Points">Documentation Insertion Points</h2>
+
+<div id="org9e40fd3" class="figure">
+<p><img src="./docuSeri_files/2021-07-17_18-00-13_screenshot.png" alt="2021-07-17_18-00-13_screenshot.png">
+</p>
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-User%20Perspective" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="User%20Perspective">User Perspective</h3>
+<ul class="fragment appear" data-fragment-index="0">
+<li>Tutorials
+<ul>
+<li>Code-along</li>
+
+</ul></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-Developer%20Perspective" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="Developer%20Perspective">Developer Perspective</h3>
+<ul class="fragment appear" data-fragment-index="0">
+<li>API documentation</li>
+<li>Code contribution guidelines</li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section style="top: 350px; display: none;" hidden="" aria-hidden="true" class="stack future sfeir-basic-slide">
+<section id="slide-Languages" style="top: 350px; display: none;" class="sfeir-basic-slide">
+<h2 id="Languages">Languages</h2>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col class="org-left">
+
+<col class="org-left">
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">Language</td>
+<td class="org-left">Package</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://symengine.org/symengine.R">R</a></td>
+<td class="org-left"><a href="https://pkgdown.r-lib.org/">pkgdown</a></td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://symengine.org/symengine.py">Python</a></td>
+<td class="org-left"><a href="https://www.sphinx-doc.org/">Sphinx</a></td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://symengine.org/symengine">C++</a></td>
+<td class="org-left"><a href="https://www.doxygen.nl/index.html">Doxygen</a> + <a href="https://github.com/HaoZeke/doxyYoda">doxyYoda</a></td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://symengine.org/SymEngine.jl/">Julia</a></td>
+<td class="org-left"><a href="https://juliadocs.github.io/Documenter.jl/stable/man/guide/">Documenter.jl</a></td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://symengine.org/#api-documentation">Notebooks / MyST</a></td>
+<td class="org-left"><a href="https://www.sphinx-doc.org/">Sphinx</a> + <a href="https://myst-nb.readthedocs.io/en/latest/">myst</a> + <a href="https://jupytext.readthedocs.io/en/latest/install.html">jupytext</a></td>
+</tr>
+</tbody>
+</table>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-R" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="R">R</h3>
+
+<div id="orgb5b5a2d" class="figure">
+<p><img src="./docuSeri_files/2021-07-17_17-54-40_screenshot.png" alt="2021-07-17_17-54-40_screenshot.png">
+</p>
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-Julia" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="Julia">Julia</h3>
+<div class="leftcol" id="org2ca14f7">
+<p>
+
+</p>
+
+
+<div id="org3a2a3a2" class="figure">
+<p><img src="./docuSeri_files/2021-07-17_17-53-54_screenshot.png" alt="2021-07-17_17-53-54_screenshot.png" class="fragment appear" data-fragment-index="0">
+</p>
+</div>
+
+</div>
+
+<div class="rightcol" id="orgb0b211c">
+<p>
+
+</p>
+
+
+<div id="orgf5ee41d" class="figure">
+<p><img src="./docuSeri_files/2021-07-17_17-54-10_screenshot.png" alt="2021-07-17_17-54-10_screenshot.png" class="fragment appear" data-fragment-index="1">
+</p>
+</div>
+
+
+<div id="orgf549602" class="figure">
+<p><img src="./docuSeri_files/2021-07-17_17-54-20_screenshot.png" alt="2021-07-17_17-54-20_screenshot.png" class="fragment appear" data-fragment-index="2">
+</p>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-Python" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="Python">Python</h3>
+<div class="leftcol" id="orgceb1a55">
+
+<div id="org4ff19b5" class="figure">
+<p><img src="./docuSeri_files/2021-07-17_17-52-46_screenshot.png" alt="2021-07-17_17-52-46_screenshot.png" class="fragment appear" data-fragment-index="0">
+</p>
+</div>
+
+</div>
+
+<div class="rightcol" id="org238a226">
+<p>
+
+</p>
+
+
+<div id="org2edd6d1" class="figure">
+<p><img src="./docuSeri_files/2021-07-17_17-53-09_screenshot.png" alt="2021-07-17_17-53-09_screenshot.png" class="fragment appear" data-fragment-index="1">
+</p>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+
+
+</section>
+<section id="slide-Generic" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="Generic">Generic</h3>
+<ul>
+<li><code>sphinx</code> is reasonably good for code documentation
+<ul>
+<li>Static sites can be leveraged for user-documentation</li>
+
+</ul></li>
+
+</ul>
+
+
+<div id="orge2ce4ec" class="figure">
+<p><img src="./docuSeri_files/2021-07-17_17-51-47_screenshot.png" alt="2021-07-17_17-51-47_screenshot.png" class="fragment appear" data-fragment-index="0">
+</p>
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-C%2B%2B" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="C%2B%2B">C++</h3>
+<div class="outline-text-3" id="text-C%2B%2B">
+</div>
+</section>
+<section id="slide-Project%20Files" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h4 id="Project%20Files">Project Files</h4>
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="0"><span style="color: #717171; background-color: #4d4d4d;">/**</span>
+<span style="color: #717171; background-color: #4d4d4d;"> *  @</span><span style="color: #de935f; background-color: #4d4d4d;">file</span><span style="color: #717171; background-color: #4d4d4d;">   </span><span style="color: #0d0d0d; background-color: #81a2be;">add.h</span>
+<span style="color: #717171; background-color: #4d4d4d;"> *  @</span><span style="color: #de935f; background-color: #4d4d4d;">author</span><span style="color: #717171; background-color: #4d4d4d;"> </span><span style="color: #f0c674; background-color: #4d4d4d;">SymEngine</span><span style="color: #717171; background-color: #4d4d4d;"> Developers</span>
+<span style="color: #717171; background-color: #4d4d4d;"> *  @</span><span style="color: #de935f; background-color: #4d4d4d;">date</span><span style="color: #717171; background-color: #4d4d4d;">   2021-02-25</span>
+<span style="color: #717171; background-color: #4d4d4d;"> *  @</span><span style="color: #de935f; background-color: #4d4d4d;">brief</span><span style="color: #717171; background-color: #4d4d4d;">  Classes and functions relating to the binary operation of addition</span>
+<span style="color: #717171; background-color: #4d4d4d;"> *</span>
+<span style="color: #717171; background-color: #4d4d4d;"> *  Created on: 2012-07-11</span>
+<span style="color: #717171; background-color: #4d4d4d;"> *</span>
+<span style="color: #717171; background-color: #4d4d4d;"> *  This file contains the basic binary operations defined for symbolic enties.</span>
+<span style="color: #717171; background-color: #4d4d4d;"> *   In particular the @</span><span style="color: #de935f; background-color: #4d4d4d;">ref</span><span style="color: #717171; background-color: #4d4d4d;"> </span><span style="color: #81a2be; background-color: #4d4d4d; font-weight: bold; text-decoration: underline;">Add</span><span style="color: #717171; background-color: #4d4d4d;"> class for representing addition is</span>
+<span style="color: #717171; background-color: #4d4d4d;"> *   @</span><span style="color: #de935f; background-color: #4d4d4d;">b</span><span style="color: #717171; background-color: #4d4d4d;"> </span><span style="color: #717171; background-color: #4d4d4d; font-weight: bold;">declared</span><span style="color: #717171; background-color: #4d4d4d;"> here, along with the `</span><span style="color: #de935f; background-color: #4d4d4d;">add</span><span style="color: #717171; background-color: #4d4d4d;">` and `</span><span style="color: #de935f; background-color: #4d4d4d;">substract</span><span style="color: #717171; background-color: #4d4d4d;">` functions.</span>
+<span style="color: #717171; background-color: #4d4d4d;"> */</span>
+
+<span style="color: #c5c8c6; font-weight: bold;">#if</span><span style="color: #c5c8c6; font-weight: bold;">n</span><span style="color: #c5c8c6; font-weight: bold;">def</span> <span style="color: #de935f;">SYMENGINE_ADD_H</span>
+<span style="color: #c5c8c6; font-weight: bold;">#define</span> <span style="color: #cc6666;">SYMENGINE_ADD_H</span>
+</pre>
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-Header%20Files" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h4 id="Header%20Files">Header Files</h4>
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="0">    <span style="color: #717171; background-color: #4d4d4d;">/**</span>
+<span style="color: #5a5b5a;">    </span><span style="color: #717171; background-color: #4d4d4d;"> *  @</span><span style="color: #de935f; background-color: #4d4d4d;">brief</span><span style="color: #717171; background-color: #4d4d4d;"> Create an appropriate instance from dictionary quickly.</span>
+<span style="color: #5a5b5a;">    </span><span style="color: #717171; background-color: #4d4d4d;"> *  @</span><span style="color: #de935f; background-color: #4d4d4d;">pre</span><span style="color: #717171; background-color: #4d4d4d;"> The dictionary must be in canonical form.</span>
+<span style="color: #5a5b5a;">    </span><span style="color: #717171; background-color: #4d4d4d;"> *  @</span><span style="color: #de935f; background-color: #4d4d4d;">see</span><span style="color: #717171; background-color: #4d4d4d;"> `</span><span style="color: #de935f; background-color: #4d4d4d;">Mul</span><span style="color: #717171; background-color: #4d4d4d;">` for how `</span><span style="color: #de935f; background-color: #4d4d4d;">Pow</span><span style="color: #717171; background-color: #4d4d4d;">` gets returned.</span>
+<span style="color: #5a5b5a;">    </span><span style="color: #717171; background-color: #4d4d4d;"> *  @</span><span style="color: #de935f; background-color: #4d4d4d;">see</span><span style="color: #717171; background-color: #4d4d4d;"> `</span><span style="color: #de935f; background-color: #4d4d4d;">Basic</span><span style="color: #717171; background-color: #4d4d4d;">` for the guarantees and expectations.</span>
+<span style="color: #5a5b5a;">    </span><span style="color: #717171; background-color: #4d4d4d;"> *  @</span><span style="color: #de935f; background-color: #4d4d4d;">param</span><span style="color: #717171; background-color: #4d4d4d;"> </span><span style="color: #cc6666; background-color: #4d4d4d;">coef</span><span style="color: #717171; background-color: #4d4d4d;"> the numeric coefficient.</span>
+<span style="color: #5a5b5a;">    </span><span style="color: #717171; background-color: #4d4d4d;"> *  @</span><span style="color: #de935f; background-color: #4d4d4d;">param</span><span style="color: #717171; background-color: #4d4d4d;"> </span><span style="color: #cc6666; background-color: #4d4d4d;">d</span><span style="color: #717171; background-color: #4d4d4d;"> the dictionary of the expression without the coefficient.</span>
+<span style="color: #5a5b5a;">    </span><span style="color: #717171; background-color: #4d4d4d;"> *  @</span><span style="color: #de935f; background-color: #4d4d4d;">return</span><span style="color: #717171; background-color: #4d4d4d;"> `</span><span style="color: #de935f; background-color: #4d4d4d;">coef</span><span style="color: #717171; background-color: #4d4d4d;">` if the dictionary is empty (size 0).</span>
+<span style="color: #5a5b5a;">    </span><span style="color: #717171; background-color: #4d4d4d;"> *  @</span><span style="color: #de935f; background-color: #4d4d4d;">return</span><span style="color: #717171; background-color: #4d4d4d;"> `</span><span style="color: #de935f; background-color: #4d4d4d;">Mul</span><span style="color: #717171; background-color: #4d4d4d;">` if the dictionary has one element which is a `</span><span style="color: #de935f; background-color: #4d4d4d;">Mul</span><span style="color: #717171; background-color: #4d4d4d;">`.</span>
+<span style="color: #5a5b5a;">    </span><span style="color: #717171; background-color: #4d4d4d;"> *  @</span><span style="color: #de935f; background-color: #4d4d4d;">return</span><span style="color: #717171; background-color: #4d4d4d;"> `</span><span style="color: #de935f; background-color: #4d4d4d;">Integer</span><span style="color: #717171; background-color: #4d4d4d;">` if the dictionary has one element which is a</span>
+<span style="color: #5a5b5a;">    </span><span style="color: #717171; background-color: #4d4d4d;"> *   `</span><span style="color: #de935f; background-color: #4d4d4d;">Integer</span><span style="color: #717171; background-color: #4d4d4d;">`.</span>
+<span style="color: #5a5b5a;">    </span><span style="color: #717171; background-color: #4d4d4d;"> *  @</span><span style="color: #de935f; background-color: #4d4d4d;">return</span><span style="color: #717171; background-color: #4d4d4d;"> `</span><span style="color: #de935f; background-color: #4d4d4d;">Symbol</span><span style="color: #717171; background-color: #4d4d4d;">` if the dictionary has one element which is a `</span><span style="color: #de935f; background-color: #4d4d4d;">Symbol</span><span style="color: #717171; background-color: #4d4d4d;">`.</span>
+<span style="color: #5a5b5a;">    </span><span style="color: #717171; background-color: #4d4d4d;"> *  @</span><span style="color: #de935f; background-color: #4d4d4d;">return</span><span style="color: #717171; background-color: #4d4d4d;"> `</span><span style="color: #de935f; background-color: #4d4d4d;">Pow</span><span style="color: #717171; background-color: #4d4d4d;">` if the dictionary has one element which is a `</span><span style="color: #de935f; background-color: #4d4d4d;">Pow</span><span style="color: #717171; background-color: #4d4d4d;">`.</span>
+<span style="color: #5a5b5a;">    </span><span style="color: #717171; background-color: #4d4d4d;"> *  @</span><span style="color: #de935f; background-color: #4d4d4d;">return</span><span style="color: #717171; background-color: #4d4d4d;"> `</span><span style="color: #de935f; background-color: #4d4d4d;">Add</span><span style="color: #717171; background-color: #4d4d4d;">` if the size of the dictionary is greater than 1.</span>
+<span style="color: #5a5b5a;">    </span><span style="color: #717171; background-color: #4d4d4d;"> */</span>
+    <span style="color: #b294bb;">static</span> <span style="color: #f0c674;">RCP</span><span style="color: #b294bb;">&lt;</span><span style="color: #b294bb;">const</span> <span style="color: #f0c674;">Basic</span><span style="color: #b294bb;">&gt;</span> <span style="color: #81a2be;">from_dict</span><span style="color: #b294bb;">(</span><span style="color: #b294bb;">const</span> <span style="color: #f0c674;">RCP</span><span style="color: #81a2be;">&lt;</span><span style="color: #b294bb;">const</span> <span style="color: #f0c674;">Number</span><span style="color: #81a2be;">&gt;</span> &amp;<span style="color: #cc6666;">coef</span>,
+                                      <span style="color: #f0c674;">umap_basic_num</span> &amp;&amp;<span style="color: #cc6666;">d</span><span style="color: #b294bb;">)</span>;
+</pre>
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-Source%20Files" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h4 id="Source%20Files">Source Files</h4>
+<div class="org-src-container">
+
+<pre class="src src-cpp"><span style="color: #717171; background-color: #4d4d4d;">/**</span>
+<span style="color: #717171; background-color: #4d4d4d;"> *  @</span><span style="color: #de935f; background-color: #4d4d4d;">details</span><span style="color: #717171; background-color: #4d4d4d;"> This function ensures that each term in *dict* is in canonical</span>
+<span style="color: #717171; background-color: #4d4d4d;"> *   form. The implementation in the form of a exclusion list (defaults to</span>
+<span style="color: #717171; background-color: #4d4d4d;"> *   true).</span>
+<span style="color: #717171; background-color: #4d4d4d;"> *</span>
+<span style="color: #717171; background-color: #4d4d4d;"> *  @</span><span style="color: #de935f; background-color: #4d4d4d;">note</span><span style="color: #717171; background-color: #4d4d4d;"> **Canonical form** requires the existance of both `</span><span style="color: #de935f; background-color: #4d4d4d;">coef</span><span style="color: #717171; background-color: #4d4d4d;">` and</span>
+<span style="color: #717171; background-color: #4d4d4d;"> *   `</span><span style="color: #de935f; background-color: #4d4d4d;">dict</span><span style="color: #717171; background-color: #4d4d4d;">`, so `</span><span style="color: #de935f; background-color: #4d4d4d;">null</span><span style="color: #717171; background-color: #4d4d4d;">` coefficients and purely numerical (empty dictionaries)</span>
+<span style="color: #717171; background-color: #4d4d4d;"> *   are also not considered to be in canonical form. Also, the ordering is</span>
+<span style="color: #717171; background-color: #4d4d4d;"> *   important, it must be `</span><span style="color: #de935f; background-color: #4d4d4d;">(coeff, dict)</span><span style="color: #717171; background-color: #4d4d4d;">` and **not** `</span><span style="color: #de935f; background-color: #4d4d4d;">(dict, coeff)</span><span style="color: #717171; background-color: #4d4d4d;">`.</span>
+<span style="color: #717171; background-color: #4d4d4d;"> *</span>
+<span style="color: #717171; background-color: #4d4d4d;"> *  Some **non-cannonical** forms are:</span>
+<span style="color: #717171; background-color: #4d4d4d;"> *   - @f$0 + x@f$.</span>
+<span style="color: #717171; background-color: #4d4d4d;"> *   - @f$0 + 2x@f$.</span>
+<span style="color: #717171; background-color: #4d4d4d;"> *   - @f$ 2 \</span><span style="color: #de935f; background-color: #4d4d4d;">times</span><span style="color: #717171; background-color: #4d4d4d;"> 3 @f$.</span>
+<span style="color: #717171; background-color: #4d4d4d;"> *   - @f$ x \</span><span style="color: #de935f; background-color: #4d4d4d;">times</span><span style="color: #717171; background-color: #4d4d4d;"> 0 @f$.</span>
+<span style="color: #717171; background-color: #4d4d4d;"> *   - @f$ 1 \</span><span style="color: #de935f; background-color: #4d4d4d;">times</span><span style="color: #717171; background-color: #4d4d4d;"> x @f$ has the wrong order.</span>
+<span style="color: #717171; background-color: #4d4d4d;"> *   - @f$ 3x \</span><span style="color: #de935f; background-color: #4d4d4d;">times</span><span style="color: #717171; background-color: #4d4d4d;"> 2 @f$ is actually just @f$6x@f$.</span>
+<span style="color: #717171; background-color: #4d4d4d;"> */</span>
+<span style="color: #f0c674;">bool</span> <span style="color: #de935f;">Add</span>::<span style="color: #81a2be;">is_canonical</span><span style="color: #b294bb;">(</span><span style="color: #b294bb;">const</span> <span style="color: #f0c674;">RCP</span><span style="color: #81a2be;">&lt;</span><span style="color: #b294bb;">const</span> <span style="color: #f0c674;">Number</span><span style="color: #81a2be;">&gt;</span> &amp;<span style="color: #cc6666;">coef</span>,
+                       <span style="color: #b294bb;">const</span> <span style="color: #f0c674;">umap_basic_num</span> &amp;<span style="color: #cc6666;">dict</span><span style="color: #b294bb;">)</span> <span style="color: #b294bb;">const</span>
+</pre>
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-Base%20Doxygen" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h4 id="Base%20Doxygen">Base Doxygen</h4>
+
+<div id="org651c348" class="figure">
+<p><img src="./docuSeri_files/2021-03-25_20-46-50_screenshot.png" alt="2021-03-25_20-46-50_screenshot.png" class="fragment appear" data-fragment-index="0">
+</p>
+</div>
+<ul class="fragment appear" data-fragment-index="1">
+<li>Is ugly
+<ul>
+<li>Not mobile friendly</li>
+
+</ul></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-Exhale" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h4 id="Exhale">Exhale</h4>
+<div class="leftcol" id="orga9ae569">
+
+<div id="org9318303" class="figure">
+<p><img src="./docuSeri_files/2021-03-25_20-48-42_screenshot.png" alt="2021-03-25_20-48-42_screenshot.png" width="60%" height="60%" class="fragment appear" data-fragment-index="0">
+</p>
+</div>
+
+</div>
+
+<div class="rightcol" id="org21638b0">
+<ul class="fragment appear" data-fragment-index="1">
+<li>Cannot include source code</li>
+
+</ul>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-Doxyrest" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h4 id="Doxyrest">Doxyrest</h4>
+<div class="leftcol" id="orgf9b3e8b">
+
+<div id="org92ef3d2" class="figure">
+<p><img src="./docuSeri_files/2021-03-25_20-48-59_screenshot.png" alt="2021-03-25_20-48-59_screenshot.png" class="fragment appear" data-fragment-index="0">
+</p>
+</div>
+
+</div>
+
+<div class="rightcol" id="org390a957">
+<ul class="fragment appear" data-fragment-index="1">
+<li>Includes more structure than exhale</li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="2">
+<li>Can be extended to other source languages</li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="3">
+<li>Has a rather complicated setup</li>
+
+</ul>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-DoxyYoda" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h4 id="DoxyYoda">DoxyYoda</h4>
+
+<div id="org4cf9640" class="figure">
+<p><img src="./docuSeri_files/2021-03-25_20-47-09_screenshot.png" alt="2021-03-25_20-47-09_screenshot.png" class="fragment appear" data-fragment-index="0">
+</p>
+</div>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section style="top: 350px; display: none;" hidden="" aria-hidden="true" class="stack future sfeir-basic-slide">
+<section id="slide-Translations" style="top: 350px; display: none;" class="sfeir-basic-slide">
+<h2 id="Translations">Translations</h2>
+<ul>
+<li>At the user level, e.g. with <code>docusaurus</code></li>
+
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-bash"><span style="color: #f0c674;">cat</span> irhpc.github.io/i18n/is/docusaurus-plugin-content-docs/current/intro.md
+</pre>
+</div>
+
+<div id="org3368a2b" class="figure">
+<p><img src="./docuSeri_files/2021-07-17_17-56-17_screenshot.png" alt="2021-07-17_17-56-17_screenshot.png" class="fragment appear" data-fragment-index="0">
+</p>
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+</section>
+<section style="top: 350px; display: none;" hidden="" aria-hidden="true" class="stack future sfeir-basic-slide">
+<section id="slide-Reviewing%20Documentation" style="top: 350px; display: none;" class="sfeir-basic-slide">
+<h2 id="Reviewing%20Documentation">Reviewing Documentation</h2>
+<div class="outline-text-2" id="text-Reviewing%20Documentation">
+</div>
+</section>
+<section id="slide-Documented%20Fallacies" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="Documented%20Fallacies">Documented Fallacies</h3>
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="0"><span style="color: #717171;">"""</span>
+<span style="color: #717171;">This function adds two numbers</span>
+<span style="color: #717171;">"""</span>
+<span style="color: #b294bb;">def</span> <span style="color: #81a2be;">sum</span>(a,b):
+    <span style="color: #b294bb;">return</span> a*b
+</pre>
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-Invalidate%20Often" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="Invalidate%20Often">Invalidate Often</h3>
+<ul class="fragment appear" data-fragment-index="0">
+<li>Documentation cannot typically be tested
+<ul>
+<li><code>julia</code> aside</li>
+
+</ul></li>
+
+</ul>
+
+
+<div id="org21a6879" class="figure">
+<p><img src="./docuSeri_files/2021-07-17_17-48-14_screenshot.png" alt="2021-07-17_17-48-14_screenshot.png" width="60%" height="60%" class="fragment appear" data-fragment-index="1">
+</p>
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+</section>
+<section style="top: 350px; display: none;" hidden="" aria-hidden="true" class="stack future sfeir-basic-slide">
+<section id="slide-Conclusions" style="top: 350px; display: none;" class="sfeir-basic-slide">
+<h2 id="Conclusions">Conclusions</h2>
+<div class="outline-text-2" id="text-Conclusions">
+</div>
+</section>
+<section id="slide-Omitted%20Topics" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="Omitted%20Topics">Omitted Topics</h3>
+<dl class="fragment appear" data-fragment-index="0">
+<dt>Web development and design</dt><dd>Including frameworks and UX</dd>
+
+</dl>
+<dl class="fragment appear" data-fragment-index="1">
+<dt>Continuous integration</dt><dd>How to ensure documentation is coupled to working code</dd>
+
+</dl>
+<dl class="fragment appear" data-fragment-index="2">
+<dt>Benchmarking</dt><dd>Demonstrating code superiority</dd>
+
+</dl>
+<dl class="fragment appear" data-fragment-index="3">
+<dt>Code Review Practices</dt><dd>Scrum and teamwork</dd>
+
+</dl>
+<dl class="fragment appear" data-fragment-index="4">
+<dt>Multi-language API</dt><dd>Where code from different languages are called together</dd>
+
+</dl>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-Further%20Resources" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="Further%20Resources">Further Resources</h3>
+<dl>
+<dt><a href="https://rgoswami.me/posts/symengine-gsod20/">SymEngine and the Season of Docs</a></dt><dd>Describes the present SOTA for documentation practices in the context of a large multi-language project</dd>
+<dt><a href="https://dseams.info/">d-SEAMS</a></dt><dd>A large scientific code <a class="org-ref-reference" href="file:///Users/rohitgoswami/Git/Github/WebDev/Mine/haozeke.github.io/presentations/SERI2021/acmReveal.html#/slide-bibliography">[goswamiDSEAMSDeferredStructural2020]</a> project designed with a user-wiki,</dd>
+
+</dl>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-Key%20Takeaways" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="Key%20Takeaways">Key Takeaways</h3>
+<div class="leftcol" id="org1cc5321">
+<ul class="fragment appear" data-fragment-index="0">
+<li>Document at every level</li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="1">
+<li>Use the best tools for the job</li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="2">
+<li>Internationalize only where necessary
+<ul>
+<li>User level</li>
+
+</ul></li>
+
+</ul>
+
+</div>
+
+<div class="rightcol" id="org260b770">
+<ul class="fragment appear" data-fragment-index="3">
+<li>Ensure documentation expires
+<ul>
+<li>Keep provenance</li>
+
+</ul></li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="4">
+<li>Ensure a documentation style guide is present</li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="5">
+<li>Lint automatically</li>
+
+</ul>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section style="top: 350px; display: none;" hidden="" aria-hidden="true" class="stack future sfeir-basic-slide">
+<section id="slide-The%20End" style="top: 350px; display: none;" class="sfeir-basic-slide">
+<h2 id="The%20End">The End</h2>
+<div class="outline-text-2" id="text-The%20End">
+</div>
+</section>
+<section id="slide-bibliography" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="bibliography">Bibliography</h3>
+<ul class="org-ref-bib"><li><a id="goswamiDSEAMSDeferredStructural2020">[goswamiDSEAMSDeferredStructural2020]</a> <a name="goswamiDSEAMSDeferredStructural2020"></a>Goswami, Goswami &amp; Singh, D-SEAMS: Deferred Structural Elucidation Analysis for Molecular Simulations, <i>Journal of Chemical Information and Modeling</i>, <b>60(4)</b>, 2169-2177 . <a href="http://dx.doi.org/10.1021/acs.jcim.0c00031">doi</a>.</li>
+</ul>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-Thanks%21" data-background="#005ab6" class="future has-dark-background" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="Thanks%21">Thanks!</h3>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+</div>
+<div class="backgrounds"><div class="slide-background sfeir-basic-slide present" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background stack sfeir-basic-slide future" data-loaded="true" style="display: block;"><div class="slide-background-content"></div><div class="slide-background sfeir-basic-slide present" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-background stack sfeir-basic-slide future" data-loaded="true" style="display: block;"><div class="slide-background-content"></div><div class="slide-background sfeir-basic-slide present" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-background stack sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div><div class="slide-background sfeir-basic-slide present" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-background stack sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div><div class="slide-background sfeir-basic-slide present" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-background stack sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div><div class="slide-background sfeir-basic-slide present" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-background stack sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div><div class="slide-background sfeir-basic-slide present" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-background stack sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div><div class="slide-background sfeir-basic-slide present" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-background stack sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div><div class="slide-background sfeir-basic-slide present" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-background stack sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div><div class="slide-background sfeir-basic-slide present" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-background stack sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div><div class="slide-background sfeir-basic-slide present" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background has-dark-background future" data-background-hash="#005ab6nullnullnullnullnullnullnullnullnull" style="background: rgb(0, 90, 182); display: none;"><div class="slide-background-content"></div></div></div></div><div class="slide-number" style="display: block;"><a href="file:///Users/rohitgoswami/Git/Github/WebDev/Mine/haozeke.github.io/presentations/SERI2021/acmReveal.html#/sec-title-slide">
+					<span class="slide-number-a">1</span>
+					</a></div><aside class="controls" data-controls-layout="bottom-right" data-controls-back-arrows="faded" style="display: block;"><button class="navigate-left" aria-label="previous slide" disabled="disabled"><div class="controls-arrow"></div></button>
+			<button class="navigate-right highlight enabled" aria-label="next slide"><div class="controls-arrow"></div></button>
+			<button class="navigate-up" aria-label="above slide" disabled="disabled"><div class="controls-arrow"></div></button>
+			<button class="navigate-down" aria-label="below slide" disabled="disabled"><div class="controls-arrow"></div></button></aside><div class="progress" style="display: block;"><span style="transform: scaleX(0);"></span></div><div class="speaker-notes" data-prevent-swipe="" tabindex="0"></div><div class="pause-overlay"><button class="resume-button">Resume presentation</button></div><div class="aria-status" aria-live="polite" aria-atomic="true" style="position: absolute; height: 1px; width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px);">Modern Documentation across languages Rohit Goswami Created: 2021-07-16 Fri 19:08 </div></div>
+<script src="./docuSeri_files/reveal.js"></script>
+<script src="./docuSeri_files/notes.js"></script>
+<script src="./docuSeri_files/search.js"></script>
+<script src="./docuSeri_files/zoom.js"></script>
+<script src="file:///Users/rohitgoswami/.config/doom/reveal/rjs/dist/theme/hidelinks.js"></script>
+<script src="./docuSeri_files/sfeir-theme.js"></script>
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: true,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+mouseWheel: true,
+fragmentInURL: true,
+hashOneBasedIndex: false,
+pdfSeparateFragments: false,
+
+overview: true,
+margin: 0.20,
+
+transition: 'fade',
+transitionSpeed: 'default',
+showNotes: window.location.search.match( /print-pdf/gi ) ? 'separate-page' : false,
+
+// Plugins with reveal.js 4.x
+plugins: [ RevealNotes, RevealSearch, RevealZoom ],
+
+// Optional libraries used to extend reveal.js
+dependencies: [
+]
+
+});
+</script>
+
+
+</body></html>
