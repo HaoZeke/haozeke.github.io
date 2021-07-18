@@ -11048,3 +11048,32 @@ Social media might be here to stay, however, it is a poor medium to share expert
 {{< youtube wsn8c5vSBD8 >}}
 
 [fn:officialsite] One location I am going to be able to keep track of
+
+* DONE Talk Supplements for SERI'21 :@conferences:presentations:ramblings:docs:
+CLOSED: [2021-07-18 Sun 21:44]
+:PROPERTIES:
+:EXPORT_FILE_NAME: seri-2021-meta
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments false
+:END:
+#+BEGIN_QUOTE
+A meta-post on a talk I was to give at SERI'21
+#+END_QUOTE
+** Background
+Much the same as the rationale behind my other presentation [[https://rgoswami.me/tags/presentations/][meta-posts]], that is:
+- I would like to preserve questions
+- I would like to collect the video, slides and other miscellaneous stuff in one location [fn:officialsite]
+- It would be nice to have my own thoughts here afterwards
+*** Details
+[[https://isoft.acm.org/seri2021/][SERI or the Software Engineering Research in India]] meeting is the only informal event dedicated to software engineering in the subcontinent, so it was rather gratifying to be accepted, and, to present on *Modern documentation across languages*.
+** Slides
+- [[file:/revealjs/seri21/docuSeri.html][Best viewed here]] using a browser (in a new tab)
+- A ~pdf~ copy of the slides are embedded below
+- The ~orgmode~ source is here on the [[https://github.com/HaoZeke/haozeke.github.io/tree/src/presentations/SERI2021/acmReveal.org][site's GH repo]]
+#+BEGIN_EXPORT html
+<script async class="speakerdeck-embed" data-id="6d2872a798a24c2495e904e59fa898f4" data-ratio="1.37081659973226" src="//speakerdeck.com/assets/embed.js"></script>
+#+END_EXPORT
+** Video
+
+{{< youtube weEqpRUvNqk >}}
+
+[fn:officialsite] One location I am going to be able to keep track of
