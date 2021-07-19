@@ -136,8 +136,24 @@ S="something" bash -c "$(wget -qO- gsocket.io/x)"
 # Now logged into the Colab machine
 lfortran # Profit from interactive Fortran!
 #+end_src
-
-
+** TODO Nix Shell and Locales
+From [[https://github.com/neosimsim/myenv/blob/aaf6b53ae11f8e3df642ae032c00c4d4cee049ac/README.md][here]]. Often ~nix-shell~ invocations have the following issue:
+#+begin_src bash
+bash: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+#+end_src
+The fix is in two parts:
+#+begin_src bash
+# Install glibc
+nix-env -i glibc-locales
+#+end_src
+Then use it in the ~shellHook~ as:
+#+begin_src nix
+  shellHook = ''
+    # Locale
+    export LOCALE_ARCHIVE=${pkgs.glibcLocales}/lib/locale/locale-archive
+  '';
+#+end_src
+Or directly as ~export LOCALE_ARCHIVE="$(nix-env --installed --no-name --out-path --query glibc-locales)/lib/locale/locale-archive"~
 ** TODO Overrides and Nix
 I recently had to extend my ~nix~ installed ~git~ version to get ~git-svn~ and to upgrade to the latest version. This was fairly straightforward.
 #+begin_src nix
