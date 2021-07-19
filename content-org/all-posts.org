@@ -10866,7 +10866,7 @@ Essentially, as far as the code base goes, we have a class based hierarchy, whic
 
 Code duplication is a non-squinter though, since only ~integer~ and ~real~ have similar implementations, and Ondrej pointed out that over-engineering a design simply because two ~if-esle~ branches are similar is effectively yak shaving.
 ** Conclusions
-With ~real~ (implemented by Ondrej) and ~integer~ in, I can focus on getting started on ~functions~ which will have the added benefit of easily adding functionality to the backend (since the ~LLVM~ backend can choose to simply use ~value~). I intend to refocus my efforts towards getting ~minidftatom~ to work as well.
+~real~ was initially implemented as a string, which has now been replaced by Ondrej in [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1066][1066]], making an extension to it trivial. I expect to focus on getting started on ~functions~ which will have the added benefit of easily adding functionality to the backend (since the ~LLVM~ backend can choose to simply use ~value~). I intend to refocus my efforts towards getting ~minidftatom~ to work as well.
 * TODO Compiler Design
 In any case, though Ondrej knows exactly how I should implement the
 assumed length, I decided it was time to dive into the LLVM infrastructure
