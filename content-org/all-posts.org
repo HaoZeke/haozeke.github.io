@@ -11021,7 +11021,7 @@ Some other great starting resources are:
 - Zimbatm has a [[https://zimbatm.com/NixFlakes/][nice source]] with more resources
 ** Conclusions
 ~flakes~ are the future of ~nix~. Their adoption makes it easier to decentralize and shift away from the unwieldy ~channel~ dissemination format and allows packagers to work cleanly with different variants.
-* DONE Doom Emacs and Language Servers
+* DONE Doom Emacs and Language Servers :@programming:workflow:projects:tools:emacs:
 CLOSED: [2021-07-20 Tue 02:28]
 :PROPERTIES:
 :EXPORT_FILE_NAME: emacs-lang-servers
