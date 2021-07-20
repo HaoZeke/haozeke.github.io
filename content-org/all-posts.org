@@ -8875,7 +8875,7 @@ export PATH=$HOME/.local/bin:$PATH
 wget -qO- https://micromamba.snakepit.net/api/micromamba/linux-64/latest | tar -xvj bin/micromamba
 mv bin/micromamba ~/.local/bin
 rm -rf bin
-micromamba shell init -s bash -p $HOME/micromamba
+micromamba shell init -s bash -p $HOME/.micromamba
 . ~/.bashrc
 #+end_src
 Now we can use ~mamba~ to get a temporary interactive environment.
@@ -11003,8 +11003,13 @@ installPhase
 #+end_src
 
 This makes it easier to debug as well.
+** Flake Helpers
+Note that just like with the standard workflow, we have some tools which can help matters move along.
+-
 ** Python
 To work with ~python~ I typically use ~mach-nix~ as [[Niv and Mach-Nix for Nix Python][described here]]. However, with a ~flake~.
+** Concrete Example: GPAW
+As an example of a relatively interesting package we will consider augmenting [[https://wiki.fysik.dtu.dk/gpaw/index.html][DTU's GPAW]] with a ~nix~ flake.
 ** Resources
 Some other great starting resources are:
 - The ~nix flake~ [[https://nixos.org/manual/nix/unstable/command-ref/new-cli/nix3-flake.html][manpage]]
@@ -11015,6 +11020,222 @@ Some other great starting resources are:
 - NixOS [[https://nixos.wiki/wiki/Flakes][Wiki]]
 - Zimbatm has a [[https://zimbatm.com/NixFlakes/][nice source]] with more resources
 ** Conclusions
+~flakes~ are the future of ~nix~. Their adoption makes it easier to decentralize and shift away from the unwieldy ~channel~ dissemination format and allows packagers to work cleanly with different variants.
+* DONE Doom Emacs and Language Servers
+CLOSED: [2021-07-20 Tue 02:28]
+:PROPERTIES:
+:EXPORT_FILE_NAME: emacs-lang-servers
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+begin_quote
+~doom-emacs~ as an ~ssh~ IDE with ~TRAMP~ using ~eglot~ and language servers.
+#+end_quote
+** Background
+For most of my ~emacs~ configuration[fn:howemacs], there normally isn't very much to write about which isn't immediately evident from my [[https://dotdoom.rgoswami.me][configuration site]]. However, since my shift to a MacBook, I have needed to fine tune my existing ~lsp-mode~ default setup for ~TRAMP~ and this post will cover a little bit of that. Though most of the post is about ~doom-emacs~, it is also applicable to vanilla emacs after porting the snippets over to ~use-package~ instead.
+
+There are two primary methods of interfacing ~emacs~ to language servers, ~eglot~ and ~lsp-mode~. Not for me to do a full comparison, but some thoughts of the top of my head were:
+- [[https://github.com/joaotavora/eglot][eglot]] :: Feels more minimal, maintained by the author of ~yassnippet~
+- [[https://github.com/emacs-lsp/lsp-mode/][lsp-mode]] :: Much more configuration, better documentation in some aspects, strangely difficult ~TRAMP~ setup
+
+Note that the comparisons stated are neither fair nor particularly useful. I just need something to work quickly with my main programming languages at the moment. I went with ~eglot~.
+*** Desiderata
+The things I really need, which both provide are:
+- Easily look up doc-strings
+- Auto-completion
+- Renaming symbols
+- Figuring out common mistakes
+- Indexing and lookup for symbol definitions and usage
+** Eglot
+Getting started with ~eglot~ was surprisingly pleasant, for ~doom~ ships a pretty out-of the box configuration anyway.
+#+begin_src emacs-lisp
+;; init.el
+(lsp +eglot) ;; Activate eglot
+(python +lsp) ;; Python with pyls by default
+(cc +lsp) ;; C++ with clangd by default
+#+end_src
+
+Usage was pretty sweet (after getting ~clang-tools~ for ~clangd~), it can be activated by running ~eglot~ in any supported buffer, and it came with all the standard bells and whistles.
+
+#+DOWNLOADED: screenshot @ 2021-07-19 20:19:38
+[[file:images/Language_Servers/2021-07-19_20-19-38_screenshot.png]]
+
+For working with ~tramp~ too, after ~Emacs 27.1~, in most cases it *just works*, one simply needs to supply the location of the language server executable and we're off to the races. In-fact, even adding the full path to the binary to ~PATH~ is good enough for ~eglot~.
+*** Caveats
+- No ~projectile~ support planned (though there [[https://github.com/joaotavora/eglot/issues/129][are workarounds]])
+  + Uses ~project.el~ to pick root directories (i.e. ~.git~)
+    - In particular this means it works poorly with ~git~ sub-modules
+
+Overall the main issue with ~eglot~ seems to be the insistence to be accepted into ~emacs~ core someday. This is great, and a good direction for the project to grow in, but it constrains my workflow unnecessarily. I'm more interested in working with ~doom-emacs~ than vanilla ~emacs~ and so am pretty invested in non-core libraries like ~projectile~ [fn:nofair].
+** Language Servers
+For getting the language server providers themselves, we will mostly leverage direct binaries where possible, but also, depending on the implementation, virtual environments[fn:nonix]. Essentially we have the following Rosetta stone.
+#+caption: Language servers and installation methods
+| *Language* | *Server*                  | *Installation*     | *Management* |
+| C++        | ~clangd~                  | Manual (binary)    | None         |
+| Python     | ~pylsp~                   | ~pip~              | Micromamba   |
+| Bash       | ~bash-language-server~    | ~npm~              | NVM          |
+| R          | ~languageserver~          | ~install.packages~ | N/A          |
+| TeX        | ~digestiff~               | Manual (wrapper)   | None         |
+| Nix        | ~rnix-lsp~                | Nix                | N/A          |
+| Fortran    | ~fortran-language-server~ | ~pip~              | Micromamba   |
+
+So we need to setup the following, assuming an existing ~conda~ helper (~micromamba~ as described here) setup.
+#+begin_src bash
+# Get Micromamba
+mkdir -p ~/.local/bin
+export PATH=$HOME/.local/bin:$PATH
+wget -qO- https://micromamba.snakepit.net/api/micromamba/linux-64/latest | tar -xvj bin/micromamba
+mv bin/micromamba ~/.local/bin
+rm -rf bin
+micromamba shell init -s bash -p $HOME/.micromamba
+. ~/.bashrc
+#+end_src
+Now we can use it.
+#+begin_src bash
+micromamba create -n lsp
+micromamba activate lsp
+micromamba install python==3.9 pip -c conda-forge
+#+end_src
+Note that for this to work out well, we need to activate this environment by default, with something like ~micromamba activate lsp~ added to your ~.bashrc~. In fact, it is best to also add the full path, since ~eglot~ doesn't seem to pick it up after ~micromamba activate~.
+#+begin_src bash
+export PATH=$HOME/.micromamba/envs/lsp/bin/:$PATH
+#+end_src
+Also, we need to setup ~nvm~.
+#+begin_src bash
+wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+. $HOME/.bashrc
+nvm install node
+nvm use node
+#+end_src
+*** C++
+For ~clangd~ (details [[https://clangd.llvm.org/installation.html][here]]) and ~tramp~ this amounted to:
+#+begin_src bash
+mkdir -p ~/.local/lsp
+cd ~/.local/lsp
+wget https://github.com/clangd/clangd/releases/download/12.0.0/clangd-linux-12.0.0.zip
+unzip clangd-linux-12.0.0.zip
+mv clangd-linux-12.0.0/* .
+#+end_src
+
+In combination with the standard ~doom-emacs~ [[https://github.com/hlissner/doom-emacs/tree/develop/modules/lang/cc][cc module]], this is a very good workflow, with the only issue being the ability to set the project root and files to be considered. There is ~doom-emacs~ version of appending and setting the language server used, which will be used here:
+#+begin_src emacs-lisp
+(after! eglot
+  :config
+  (set-eglot-client! 'cc-mode '("clangd" "-j=3" "--clang-tidy"))
+  )
+#+end_src
+
+Note that the best way to make a language server behave is to have a compilation database, which can be generated (for a ~CMake~ project) as follows:
+#+begin_src bash
+# From src
+mkdir build
+cd build
+# cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 .. -G 'Unix Makefiles' # default on *nix
+cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 .. -G 'Ninja' # way faster
+ninja # or make
+cp compile_commands.json ..
+#+end_src
+
+This will ensure the best experience, since the ~compile_commands.json~ (described [[https://clang.llvm.org/docs/JSONCompilationDatabase.html][here]]) file contains paths to all the files used, including system and write-only files [fn:whocares]. The setup here works well with enough with the ~ccls~ language server as well, which in turn is a more maintained fork of ~cquery~.
+*** Python
+Palantir's ~python-language-server~ is EOL, and was [[https://github.com/joaotavora/eglot/pull/688][weird to begin with]], but the Spyder team has taken up the gauntlet and maintains the ~python-lsp-server~ ([[https://github.com/python-lsp/python-lsp-server][repo]]).
+#+begin_src bash
+micromamba activate lsp # should be done in the ~/.bashrc
+micromamba install python-lsp-server[all] -c conda-forge
+#+end_src
+For working with this in an optimal manner the ~eglot~ [[https://github.com/joaotavora/eglot][readme]] suggests using ~.dir-local.el~ files. For example:
+#+begin_src emacs-lisp
+((python-mode
+  . ((eglot-workspace-configuration
+      . ((:pylsp . (:plugins (:jedi_completion (:include_params t)))))))))
+#+end_src
+It so happens that this method is flexible enough to allow multi-configuration of servers as well. Additionally, we have options for working with the setup:
+#+begin_src emacs-lisp
+(after! eglot
+  :config
+  (set-eglot-client! 'python-mode '("pylsp"))
+  (set-eglot-client! 'cc-mode '("clangd" "-j=3" "--clang-tidy"))
+)
+#+end_src
+Or in vanilla ~emacs~:
+#+begin_src emacs-lisp
+  (add-to-list 'eglot-server-programs
+               '(python-mode "pylsp"))
+#+end_src
+*** Bash
+This is fairly straightforward, and implemented in ~js~ [[https://github.com/mads-hartmann/bash-language-server][here]].
+#+begin_src bash
+nvm use node
+npm i -g bash-language-server
+#+end_src
+Along with:
+#+begin_src emacs-lisp
+(sh +lsp) ;; in the init.el file
+#+end_src
+*** Fortran
+The installation of ~fortls~ ([[https://github.com/hansec/fortran-language-server][repo]]) is simple enough.
+#+begin_src bash
+micromamba activate lsp
+pip install fortran-language-server
+#+end_src
+Unfortunately, ~doom-emacs~ does not actually support the ~fortran~ language server out of the box, so some additional ~emacs-lisp~ needs to go into the configuration.
+#+begin_src emacs-lisp
+(add-hook 'f90-mode-hook 'eglot-ensure)
+#+end_src
+This works quite well for larger projects.
+
+#+DOWNLOADED: screenshot @ 2021-07-20 01:23:39
+[[file:images/Fortran/2021-07-20_01-23-39_screenshot.png]]
+
+*** Nix
+~rnix-lsp~ ([[https://github.com/nix-community/rnix-lsp][repo]]) has no non ~nix~ installation, and a slightly uncertain future, but it is still fantastic and shouldn't be left out[fn:tragedy].
+#+begin_src bash
+nix-env -i -f https://github.com/nix-community/rnix-lsp/archive/master.tar.gz
+nix-env -i nixkpgs-fmt
+#+end_src
+As this is another unsupported server in ~doom-emacs~, the setup needs some tweaking.
+#+begin_src emacs-lisp
+(add-hook 'nix-mode-hook 'eglot-ensure)
+#+end_src
+*** TeX
+The last of the language servers, ~digestif~ ([[https://github.com/astoff/digestif][repo]]) is implemented in ~lua~, and probably shouldn't be on a remote machine[fn:whynotremote], but nevertheless.
+#+begin_src bash
+mkdir -p ~/.local/lsp/bin
+cd ~/.local/lsp/bin
+wget https://raw.githubusercontent.com/astoff/digestif/master/scripts/digestif
+chmod +x digestif
+./digestif
+#+end_src
+This sets up ~$HOME/.digestif/bin~ which is yet another path to be managed. Note that this assumes a standard ~TexLive~ installation with ~luatex~.
+** Local Usage
+For local use, assuming similar installation instructions, it is easier to manipulate ~exec-path~.
+#+begin_src emacs-lisp
+(after! eglot
+  :config
+  (add-hook 'nix-mode-hook 'eglot-ensure)
+  (add-hook 'f90-mode-hook 'eglot-ensure)
+  (set-eglot-client! 'cc-mode '("clangd" "-j=3" "--clang-tidy"))
+  (set-eglot-client! 'python-mode '("pylsp"))
+  (when (string= (system-name) "blah")
+  (setq exec-path (append exec-path '(
+                                      (concat (getenv "HOME") "/.micromamba/envs/lsp/bin/") ;; python, fortran
+                                      (concat (getenv "HOME") "/.local/lsp/bin/") ;; clangd
+                                      (concat (getenv "HOME") "/.digestif/bin/") ;; tex
+                                      (concat (getenv "HOME") "/.nvm/versions/node/v16.1.0/bin/bash-language-server")
+                                      )))
+    )
+  )
+#+end_src
+
+Where you will need to replace ~"blah"~ with the output of ~(system-name)~.
+** Conclusions
+Embarrassingly, neither setup provided as pleasant an SSH based workflow as VS Code. However, that probably has a lot more to do with TRAMP than any of the language servers, and in any case [[https://magit.vc/][Magit]] still makes ~emacs~ far superior. In any case, the setup described here is still far superior to not using anything other than ~projectile~ and ~ripgrep~ so I am satisfied for now. The path setup in this post is deliberately polluting for simplification however, and in practice [[https://github.com/HaoZeke/Dotfiles/blob/bombadil/readme.org][my Dotfiles]] are managed a lot better with ~bombadil~ which is something for a later post. Each of these will take some getting used to, and new keybindings will probably be needed, especially for my [[https://rgoswami.me/posts/colemak-dots-refactor/][idiomatic Colemak setup]].
+
+[fn:howemacs] More than adequately managed by ~hlissner~'s fantastic [[https://github.com/hlissner/doom-emacs][doom-emacs]]
+[fn:nofair] If you need more information, Doug Davis has a more [[https://ddavis.io/posts/eglot-cpp-ide/][in-depth vanilla emacs write-up]] on ~eglot~ and C++
+[fn:nonix] Though my university cluster has ~nix~, most remote machines do not, so we don't depend on it here
+[fn:whocares] This means, libraries like ~Eigen~ or even the standard library can be looked up via ~eglot~
+[fn:tragedy] The original author [[https://www.redox-os.org/news/open-source-mental-health/][unfortunately passed away earlier]] this year
+[fn:whynotremote] Visualizing the resultant ~pdf~ would be a chore
 * DONE Talk Supplements for IOP CAPS'21 Webdev Workshop :@conferences:presentations:ramblings:webdev:
 CLOSED: [2021-06-26 Sat 10:05]
 :PROPERTIES:
