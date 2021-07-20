@@ -6,6 +6,11 @@ url = "https://rgoswami.me/search/"
 title = "Search"
 
 [[input.files]]
+path = "./posts/emacs-lang-servers/index.html"
+url = "https://rgoswami.me/posts/emacs-lang-servers/"
+title = "Doom Emacs and Language Servers"
+
+[[input.files]]
 path = "./posts/seri-2021-meta/index.html"
 url = "https://rgoswami.me/posts/seri-2021-meta/"
 title = "Talk Supplements for SERI&#39;21"
