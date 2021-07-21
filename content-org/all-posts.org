@@ -11104,7 +11104,8 @@ This is in keeping with the profile data, since by default in a multi-user setup
 
 With that aside out of the way, we can start by setting up baseline channels:
 #+begin_src bash
-nix-channel --add https://github.com/NixOS/nixpkgs/archive/nixos-21.05.tar.gz nixpkgs
+# Bad idea, see notes
+# nix-channel --add https://github.com/NixOS/nixpkgs/archive/nixos-21.05.tar.gz nixpkgs
 nix-channel --add https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz unstable
 nix-channel --add https://github.com/nix-community/NUR/archive/master.tar.gz nur
 nix-channel --update
@@ -11145,6 +11146,7 @@ hello
 - We need to define ~pkgs~ since by default ~NIX_PATH~ is empty here
 - For more on ~packageOverrides~, there's [[https://nixos.org/guides/nix-pills/nixpkgs-overriding-packages.html][a pill]] for that
 - For a refresher on ~profiles~, there's the ~nix~ manual, [[https://nixos.org/manual/nix/stable/#sec-profiles][specifically chapter 10]]
+- Caveat :: Defining ~nixpkgs~ as a channel causes ~warning: name collision in input Nix expressions~ and it gets skipped
 - Caveat :: *The problem with channels* is of course that it is hard to keep control of update which occur when users run ~nix-channel --update~
 ** Pinning Packages
 To mitigate the impurity introduced by ~nix-channel --update~ we can opt to instead pin both the ~pkgs~ and ~nur~ to a particular hash. The benefit is that we can dispense with any ~channel~ management and still be guaranteed to have the same behavior across different machines.
