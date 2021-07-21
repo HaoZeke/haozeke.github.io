@@ -5857,6 +5857,8 @@ nix-env --switch-profile .nix/var/nix/profiles/default
 mkdir -p  ~/.nix/var/nix/profiles
 #+END_SRC
 
+The reason why we need to switch profiles is because by default ~nix-env --switch-profile~ will use ~/nix/var/nix/profiles/per-user/$USER/profile~, and it is better to keep this where we have control as well.
+
 We also need to kill the sandbox for now, as also seen in the [[https://aur.archlinux.org/packages/nix/?O=10&PP=10][AUR package]] (and [[https://github.com/NixOS/nix/issues/3337#issuecomment-579363583][here]]).
 #+begin_src conf
 # ~/.config/nix/nix.conf
