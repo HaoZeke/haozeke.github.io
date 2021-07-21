@@ -11180,7 +11180,7 @@ nix-prefetch-url --unpack $url
 #+end_src
 Which will emit the required hash. With this setup the usage is as before:
 #+begin_src bash
-nix-env -f '<nixpkgs>' -iA nur.repos.mic92.hello-nur
+nix-env -f '<unstable>' -iA nur.repos.mic92.hello-nur
 hello
 > Hello, NUR!
 #+end_src
