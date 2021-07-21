@@ -5857,7 +5857,7 @@ nix-env --switch-profile .nix/var/nix/profiles/default
 mkdir -p  ~/.nix/var/nix/profiles
 #+END_SRC
 
-The reason why we need to switch profiles is because by default ~nix-env --switch-profile~ will use ~/nix/var/nix/profiles/per-user/$USER/profile~, and it is better to keep this where we have control as well.
+The reason why we need to switch profiles is because by default ~nix-env --switch-profile~ will use ~/nix/var/nix/profiles/per-user/$USER/profile~ in a multi-user setup, and it is better to keep this where we have control as well.
 
 We also need to kill the sandbox for now, as also seen in the [[https://aur.archlinux.org/packages/nix/?O=10&PP=10][AUR package]] (and [[https://github.com/NixOS/nix/issues/3337#issuecomment-579363583][here]]).
 #+begin_src conf
@@ -11031,7 +11031,7 @@ What we'd like to do is actually pin to a particular commit / branch. This is pr
 #+begin_src nix
 {
   inputs = {
-    nixpkgs = { url = "github:NixOS/nixpkgs/21.05"; flake = true; }
+    nixpkgs = { url = "github:NixOS/nixpkgs/21.05"; flake = true; };
   };
   outputs = {
   self,
@@ -11041,23 +11041,27 @@ What we'd like to do is actually pin to a particular commit / branch. This is pr
     packages.x86_64-linux.hello = nixpkgs.legacyPackages.x86_64-linux.hello;
 
     defaultPackage.x86_64-linux = self.packages.x86_64-linux.hello;
-  }
+  };
 }
 #+end_src
 
 Note that we don't actually need to specify ~flake = true;~ since that is the default.
-*** Beyond ~nix-shell~
-One of the nicer aspects of ~nix develop~ is that any of the phases defined in the ~default.nix~ file can be run; for example:
+*** ~nix-shell~ Goodness
+Just like ~nix-shell~ and ~nix-build --run-env~, ~nix develop~ allows us to inspect and run any of the phases defined in the ~default.nix~; for example:
 #+begin_src bash
 cd testFlakes
 nix develop
+# Viewing only
+typeset -f buildPhase
+typeset -f genericBuild
+# Run
 unpackPhase
 configurePhase
 buildPhase
 installPhase
 #+end_src
 
-This makes it easier to debug as well.
+This makes it easier to debug phases as well.
 ** Flake Helpers
 Note that just like with the standard workflow, we have some tools which can help matters move along.
 -
@@ -11076,6 +11080,118 @@ Some other great starting resources are:
 - Zimbatm has a [[https://zimbatm.com/NixFlakes/][nice source]] with more resources
 ** Conclusions
 ~flakes~ are the future of ~nix~. Their adoption makes it easier to decentralize and shift away from the unwieldy ~channel~ dissemination format and allows packagers to work cleanly with different variants.
+* DONE Nix, Channels and the NUR :@programming:tools:nix:workflow:
+CLOSED: [2021-07-21 Wed 02:01]
+:PROPERTIES:
+:EXPORT_FILE_NAME: nix-channel-nur
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+begin_quote
+A short exploration of multi-user ~nix~ and interacting with the Nix User Repository without ~root~
+#+end_quote
+** Background
+For multi-user ~nix~ installations [fn:whocares], the ~NIX_PATH~ variable is empty. Here I briefly go over two approaches to mitigate this, one with ~nix-channel~ and the other by manual pinning. Note that this post will eventually be superseded for most cases by a better ~flake~ workflow.
+** Channels
+The idea behind using a channel is essentially that the ~tar~ at a particular commit / tag will be downloaded and stored, typically at ~$HOME/.nix-defexpr/channels~. This is in-fact a symlink typically as seen below.
+#+begin_src bash
+tree -L 2 ~/.nix-defexpr/
+/users/home/rg/.nix-defexpr/
+├── channels -> /nix/var/nix/profiles/per-user/rg/channels
+└── channels_root -> /nix/var/nix/profiles/per-user/root/channels
+#+end_src
+
+This is in keeping with the profile data, since by default in a multi-user setup we have the equivalent of running ~nix-env --switch-profile /nix/var/nix/profiles/per-user/rg/profile~.
+
+With that aside out of the way, we can start by setting up baseline channels:
+#+begin_src bash
+nix-channel --add https://github.com/NixOS/nixpkgs/archive/nixos-21.05.tar.gz nixpkgs
+nix-channel --add https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz unstable
+nix-channel --add https://github.com/nix-community/NUR/archive/master.tar.gz nur
+nix-channel --update
+#+end_src
+
+This leads to:
+#+begin_src bash
+tree /nix/var/nix/profiles/per-user/rg/channels
+/nix/var/nix/profiles/per-user/rg/channels
+├── manifest.nix -> /nix/store/smh16xjbbhcrlzhrlbl71nm16dhz7pb5-env-manifest.nix
+├── nixpkgs -> /nix/store/c1hfsx2v1cy50j7ax3y34gwwpzzvrvm5-nixpkgs-21.05/nixpkgs
+├── nur -> /nix/store/za2fqbj1z9q6hiip39642hjfa0a59mls-nur/nur
+└── unstable -> /nix/store/a4bb70ihv8x8zxj0zw4wdafl62n9a92q-unstable/unstable
+#+end_src
+
+Now we can use these names (~'<nur>'~ , ~'<unstable>'~ and ~'<nixpkgs>'~ ) to write a relatively straightforward ~config.nix~ as follows:
+#+begin_src nix
+# Uses the channel form of the installation
+# Goes in ~/.config/nixpkgs/config.nix
+{
+  # NUR setup
+  pkgs = import <unstable>; # nixos-unstable channel
+  packageOverrides = pkgs: {
+    nur = import <nur> { # Also defined as a channel
+      inherit pkgs;
+    };
+  };
+}
+#+end_src
+
+The above snippet can be modified to swap out ~unstable~ for ~nixpkgs~ as well. It is generally a good idea to define ~nixpkgs~ anyway to make sure we can do things like ~nix-env -iA cowsay -f '<nixpkgs>'~ . This allows us to now interact with ~nur~ packages without any trouble.
+#+begin_src bash
+nix-shell -p nur.repos.mic92.hello-nur
+hello
+> Hello, NUR!
+#+end_src
+*** Notes
+- We need to define ~pkgs~ since by default ~NIX_PATH~ is empty here
+- For more on ~packageOverrides~, there's [[https://nixos.org/guides/nix-pills/nixpkgs-overriding-packages.html][a pill]] for that
+- For a refresher on ~profiles~, there's the ~nix~ manual, [[https://nixos.org/manual/nix/stable/#sec-profiles][specifically chapter 10]]
+- Caveat :: *The problem with channels* is of course that it is hard to keep control of update which occur when users run ~nix-channel --update~
+** Pinning Packages
+To mitigate the impurity introduced by ~nix-channel --update~ we can opt to instead pin both the ~pkgs~ and ~nur~ to a particular hash. The benefit is that we can dispense with any ~channel~ management and still be guaranteed to have the same behavior across different machines.
+
+The star snippet here is focused around ~builtins.fetchTarball~, which takes a ~url~ and a ~sha256~ hash. Using this, our ~config.nix~ now becomes:
+#+begin_src nix
+# A config.nix
+{
+  pkgs = import (builtins.fetchTarball {
+    url = "https://github.com/NixOS/nixpkgs/archive/2588a6c9f1a3279d523e7bd0068da4e12db76ca8.tar.gz";
+    sha256 = "0x1q5sf04qk6d05gn4rr2hmlfz17mfkd9fsxwc0kdbhx5yl65zwy";
+  });
+  packageOverrides = pkgs: {
+    nur = import
+      (builtins.fetchTarball {
+        url = "https://github.com/nix-community/NUR/archive/4a81d63c672ffdbbb999eb2549c0eb0934b3384b.tar.gz";
+        sha256 = "09bg0xifdk6rw35w472rk0dj69w08c1ksb3a3qrzay0ww69495zk";
+      }
+      )
+      {
+      inherit pkgs;
+    };
+  };
+}
+#+end_src
+
+To update things in a controlled manner, use a commit from the repository as the URL, and then:
+#+begin_src bash
+url="https://github.com/nix-community/NUR/archive/3a6a6f4da737da41e27922ce2cfacf68a109ebce.tar.gz"
+nix-prefetch-url --unpack $url
+#+end_src
+Which will emit the required hash. With this setup the usage is as before:
+#+begin_src bash
+nix-shell -p nur.repos.mic92.hello-nur
+hello
+> Hello, NUR!
+#+end_src
+*** Bonus
+**** Locale Errors
+For some, dropping into ~nix-shell~ causes ~bash: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)~. In this case add the following to the ~.bashrc~ or its equivalent ~rc~ file.
+#+begin_src bash
+export LOCALE_ARCHIVE="$(nix-build --no-out-link "<nixpkgs>" -A glibcLocales)/lib/locale/locale-archive"
+#+end_src
+** Conclusions
+Much of the channel workflow is discussed directly [[https://github.com/nix-community/NUR/issues/150][in this issue]]. The main usage of this is actually to setup and use user defined packages in a more natural way, and to move away from ~channels~ which typically only update ~NIX_PATH~ when run as ~root~, which in turn [[https://github.com/NixOS/nix/issues/2033][causes much confusion]]. NUR is also ~flake~ compatible and this will be explored further in a another post.
+
+[fn:whocares] Like the setup on the ~elja~ super-computing cluster of the [[https://irhpc.github.io/docs/intro][Icelandic Research High Performance Compute]] cluster
 * DONE Doom Emacs and Language Servers :@programming:workflow:projects:tools:emacs:
 CLOSED: [2021-07-20 Tue 02:28]
 :PROPERTIES:
