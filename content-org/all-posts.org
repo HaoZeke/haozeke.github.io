@@ -11180,9 +11180,13 @@ nix-prefetch-url --unpack $url
 #+end_src
 Which will emit the required hash. With this setup the usage is as before:
 #+begin_src bash
-nix-shell -p nur.repos.mic92.hello-nur
+nix-env -f '<nixpkgs>' -iA nur.repos.mic92.hello-nur
 hello
 > Hello, NUR!
+#+end_src
+Note that the uninstall is still best done after checking the name with ~nix-env -qa~:
+#+begin_src bash
+nix-env -e hello # not hello-nur
 #+end_src
 *** Bonus
 **** Locale Errors
