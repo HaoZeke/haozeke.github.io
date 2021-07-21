@@ -10596,7 +10596,7 @@ This is true actually:
 cat lapack.mod | grep dgesv
 #+end_src
 **** Truncated Stacktraces
-Also related, probably, was an issue I noticed while co-working with Ondrej, namely, that my stacktraces were and are a good deal less informative than his. This can be quickly reproduced with:
+Also related, probably, was an issue I noticed while co-working with Ondrej, namely, that my stacktraces in ~nix~ were and are a good deal less informative than his, probably due to [[https://nixos.wiki/wiki/Debug_Symbols][the default nix lack of debug symbols]]. This can be quickly reproduced with:
 #+begin_src bash
 lfortran character_array.f90
 BFD: DWARF error: could not find variable specification at offset 2722f
