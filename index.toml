@@ -6,6 +6,11 @@ url = "https://rgoswami.me/search/"
 title = "Search"
 
 [[input.files]]
+path = "./posts/nix-channel-nur/index.html"
+url = "https://rgoswami.me/posts/nix-channel-nur/"
+title = "Nix, Channels and the NUR"
+
+[[input.files]]
 path = "./posts/emacs-lang-servers/index.html"
 url = "https://rgoswami.me/posts/emacs-lang-servers/"
 title = "Doom Emacs and Language Servers"
