@@ -7909,7 +7909,8 @@ Inspite of maximizing ergonomic bindings for most common software (e.g. Vimium, 
 This post is part of a series on Colemak and keyboard management in general.
 1. [[Switching to Colemak][Switching to Colemak]]
 2. [[Refactoring Dotfiles For Colemak][Refactoring Dotfiles For Colemak]] 
-3. *Remapping Keys Globally and Persistently with XKB* <-- You are here!
+3. *Remapping Keys with XKB and KLFC* <-- You are here!
+4. [[Keybindings and MacOS][Keybindings and MacOS]]
 ** Keyboard Basics
 Some terms to keep in mind for this post are[fn:morespecifics]:
 - Dead Keys :: These don't actually output anything, but modify the next key pressed. Like applying an umlaut on the subsequent letter.
@@ -9582,7 +9583,369 @@ Generated [[https://chrome.google.com/webstore/detail/export-links-of-all-exten/
 [fn:saywhatshell] ~bash~ defaults are particularly egregious
 [fn:whatwhypart] Water damage means I can't type on it anymore, works as a great tablet now
 [fn:whyapple] A gift, and therefore cherished inspite of the vagrancies of Apple ~clang~
-* TODO Keybindings and MacOS
+* DONE Remapping Keys for ColemakVIM on MacOS :@personal:workflow:macos:tools:
+CLOSED: [2021-07-23 Fri 04:45]
+:PROPERTIES:
+:EXPORT_FILE_NAME: keybindings-colevimhz-macos
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+begin_quote
+Struggling to emulate ~klfc~ for VIM Colemak bindings on Darwin (macOS) systems with Hammerspoon and Karabiner
+#+end_quote
+** Background
+I have mentioned in the past my customized [[Refactoring Dotfiles For Colemak][Colemak dotfiles]] which I used with [[https://rgoswami.me/posts/remap-keys-xkb-klfc/][a customized keyboard layout]]. Unfortunately, the ~.keylayout~ system of MacOS is far more primitive than the elegant ~klfc~ setup [fn:nothinggood]. For an understanding of what we are trying to get at, the following poorly made video will suffice.
+
+{{< youtube BgqlUsenmKU  >}}
+*** Series
+This post is part of a series on Colemak and keyboard management in general.
+1. [[Switching to Colemak][Switching to Colemak]]
+2. [[Refactoring Dotfiles For Colemak][Refactoring Dotfiles For Colemak]]
+3. [[https://rgoswami.me/posts/remap-keys-xkb-klfc/][Remapping Keys with XKB and KLFC]]
+4. *Keybindings and MacOS* <-- You are here!
+*** VIM Colemak Extensions
+Just as a reminder, my setup (or ~hzColemak~) consists of an augmented VIM workflow, as shown below, and [[https://rgoswami.me/posts/remap-keys-xkb-klfc/][described in my previous post]].
+
+#+name: fig:layall
+#+caption: Set of layouts
+[[file:images/keyboards/extendLayer_hz.jpg]]
+[[file:images/keyboards/extShift_hz.jpg]]
+[[file:images/keyboards/extAltGr_hz.png]]
+
+** Tools
+There are essentially a few options:
+
+- Manually write ~.keylayout~ :: These then go in ~$HOME/Library/Keyboard\ Layouts~
+- Use [[https://software.sil.org/ukelele/#about][Ukelele]] :: The incredibly poorly named (for search purposes) versatile tool is able to ease the pain slightly for writing ~.keylayout~ files
+- Use [[https://karabiner-elements.pqrs.org/][Karabiner Elements]] :: This seems to be closer to [[https://www.autohotkey.com/][AutoHotKey]] and the like, runs in the background and actively intercepts keys based on ~json~ configurations; though there seems to be a more rational method (a ~hidutil~ [[https://hidutil-generator.netlify.app/][remapping file generator]]) for newer kernels [fn:wheresay]
+- Script things with [[http://www.hammerspoon.org/][Hammerspoon]] :: Uses a ~lua~ engine to interact with the system, can be configured for the most part with [[https://fennel-lang.org/][Fennel]] using [[https://github.com/agzam/spacehammer][Spacehammer]]
+
+Now of the four, I had a predilection to move towards manually writing, with the help of Ukelele. However, evidently, there is no real way to remove the stickiness from the Caps Lock key. It can either be remapped using *system settings* [fn:whatswrong] to one of the other modifier keys, but *not to Extend*. The closest possible solution would be to do a very awkward ~Esc~ based layout. Also, rapid prototyping was out of the question, since Ukelele requires a log-out log-in cycle to set things up. Of Ukelele and manually writing things then, nothing more need be said.
+
+** Karabiner
+This left me considering ~json~ re-writer. I have been using the basic Colemak layout with a simplistic Karabiner ~caps~ to ~delete~ for a while now, which allows for a standards compliant Colemak experience, but extending this like I needed was a little bit of a struggle.
+
+#+DOWNLOADED: screenshot @ 2021-07-23 01:12:58
+#+name: fig:stdcolmk
+#+caption: Standard Colemak layout (not what MacOS provides)
+[[file:images/Karabiner/2021-07-23_01-17-01_screenshot.png]]
+[[file:images/Karabiner/2021-07-23_01-12-58_screenshot.png]]
+
+
+Apparently it is possible to overload the keyboard system with a "Hyper" key [fn:nicename], which is the closest to Extend.
+
+This is setup through a ~karabiner.json~ file, since it appears that the "Complex modifications" referred to in the GUI (Fig. [[fig:stdcolmk]]) don't really allow for more than downloading rules off of the internet [fn:whathidden], like the one below.
+
+#+begin_src json
+"complex_modifications": {
+                "rules": [
+                    {
+                        "manipulators": [
+                            {
+                                "description": "Change caps_lock to command+control+option+shift. Escape if no other key used.",
+                                "from": {
+                                    "key_code": "caps_lock",
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "left_shift",
+                                        "modifiers": [
+                                            "left_command",
+                                            "left_control",
+                                            "left_option"
+                                        ]
+                                    }
+                                ],
+                                "to_if_alone": [
+                                    {
+                                        "key_code": "escape",
+                                        "modifiers": {
+                                            "optional": [
+                                                "any"
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    }
+                ]
+            },
+#+end_src
+
+Extending this is not pleasant, so we won't go forward with this approach at all.
+
+We will still need a bit of this unfortunately, so this will stick around. In particular we need to have a simple mapping, from ~caps_lock~ to one of the un-mapped function keys, ~f18~ or ~f19~ or some such.
+
+Effectively, this can be done with the GUI, but we prefer the configuration located in ~$HOME/.config/karabiner/karabiner/karabiner.json~:
+#+begin_src json
+{
+    "from": {
+        "key_code": "caps_lock"
+    },
+    "to": {
+        "key_code": "f19"
+    }
+}
+#+end_src
+
+Note that we *do not* need to define the ~hyper~ key here with the ~complex_modifications~ in this configuration.
+** Hammerspoon
+Not that an operating system should need a scripting engine, but apparently [[http://www.hammerspoon.org/][Hammerspoon]] is worth looking into fox better control over the entire OS [fn:whyhammmer]. This made it more attractive than writing a hidden configuration file for Karabiner.
+
+The first thing we will need in our ~init.lua~ after installing the Hammerspoon application is one to reload the configuration automatically:
+#+begin_src lua
+-- Reload config when any lua file in config directory changes
+-- From https://gist.github.com/prenagha/1c28f71cb4d52b3133a4bff1b3849c3e
+function reloadConfig(files)
+    doReload = false
+    for _,file in pairs(files) do
+        if file:sub(-4) == '.lua' then
+            doReload = true
+        end
+    end
+    if doReload then
+        hs.reload()
+    end
+end
+local myWatcher = hs.pathwatcher.new(os.getenv('HOME') .. '/.hammerspoon/', reloadConfig):start()
+hs.alert.show('Config loaded')
+#+end_src
+
+An alternative to using ~Karabiner~ to map ~f19~ is to use the [[https://github.com/hetima/hammerspoon-foundation_remapping][foundation remapping plugin]] which needs to be placed in ~$HOME/.hammerspoon~ with the following added to our ~init.lua~:
+#+begin_src lua
+-- cd ~/.hammerspoon/ && wget https://raw.githubusercontent.com/hetima/hammerspoon-foundation_remapping/master/foundation_remapping.lua
+-- init.lua
+local FRemap = require('foundation_remapping')
+local remapper = FRemap.new()
+
+remapper:remap('capslock', 'f19')
+remapper:register()
+#+end_src
+The only problem with this is that it must be ~unregistered~ carefully. The Karabiner method is easier overall.
+
+Anyway, once ~f19~ has been bound, one way or another, we need to setup the hyper key itself[fn:sayzwho]:
+#+begin_src lua
+-- init.lua
+-- A global variable for the Hyper Mode
+hyper = hs.hotkey.modal.new({}, 'F18')
+
+-- Enter Hyper Mode when F19 (Hyper/Capslock) is pressed
+function enterHyperMode()
+  hyper.triggered = false
+  hyper:enter()
+  hs.alert.show('Hyper on')
+end
+
+-- Leave Hyper Mode when F19 (Hyper/Capslock) is pressed,
+function exitHyperMode()
+  hyper:exit()
+  hs.alert.show('Hyper off')
+end
+
+-- Bind the Hyper key
+f19 = hs.hotkey.bind({}, 'F19', enterHyperMode, exitHyperMode)
+#+end_src
+
+The alerts can help while setting up muscle memory, but they are optional.
+*** Remapping Keys
+The basic idea is to set a function which executes only when ~hyper:enter()~ is true.
+**** Basic Movements
+These correspond to the to the top level extend layer. We will disect one example here and refer to a later section for the details.
+#+begin_src lua
+-- h - move left {{{3
+function left() hs.eventtap.keyStroke({}, "Left") end
+hyper:bind({}, 'h', left, nil, left)
+-- }}}3
+#+end_src
+Essentially, when ~hyper~ is active, then tapping ~h~ activates the ~keyStroke~. The remaining ~hnei~ movements are similar. For the carriage return case we can go for a slightly more interesting option.
+#+begin_src lua
+-- o - open new line below cursor {{{3
+hyper:bind({}, 'o', nil, function()
+    local app = hs.application.frontmostApplication()
+    if app:name() == "Finder" then
+        hs.eventtap.keyStroke({"cmd"}, "o")
+    else
+        hs.eventtap.keyStroke({}, "Return")
+    end
+end)
+-- }}}3
+#+end_src
+We can effectively setup application specific ~keyStrokes~ which will help in the long run.
+**** Extend Layers
+These are implemented in much the same way, since modifiers can be called in the ~bind~ function.
+#+begin_src lua
+-- cmd+h - delete character before the cursor {{{3
+local function delete()
+    hs.eventtap.keyStroke({}, "delete")
+end
+hyper:bind({"cmd"}, 'h', delete, nil, delete)
+-- }}}3
+#+end_src
+**** VIM Extras
+Since we have a whole scripting engine anyway, we might as well use it to get some additional mileage not possible from our older keyboard layout.
+#+begin_src lua
+-- w - move to next word {{{3
+function word() hs.eventtap.keyStroke({"alt"}, "Right") end
+hyper:bind({}, 'w', word, nil, word)
+-- }}}3
+#+end_src
+These can be extended further into whole pseudo-VIM approach.
+** All together
+For this post, we opted for a minimal Hammerspoon setup which ended up with a monolithic setup defined in ~init.lua~ files as follows:
+#+begin_src lua
+-- Reload config when any lua file in config directory changes
+-- From https://gist.github.com/prenagha/1c28f71cb4d52b3133a4bff1b3849c3e
+function reloadConfig(files)
+    doReload = false
+    for _,file in pairs(files) do
+        if file:sub(-4) == '.lua' then
+            doReload = true
+        end
+    end
+    if doReload then
+        hs.reload()
+    end
+end
+local myWatcher = hs.pathwatcher.new(os.getenv('HOME') .. '/.hammerspoon/', reloadConfig):start()
+hs.alert.show('Config loaded')
+
+-- A global variable for the Hyper Mode
+hyper = hs.hotkey.modal.new({}, 'F18')
+
+-- Enter Hyper Mode when F19 (Hyper/Capslock) is pressed
+function enterHyperMode()
+  hyper.triggered = false
+  hyper:enter()
+  hs.alert.show('Hyper on')
+end
+
+-- Leave Hyper Mode when F19 (Hyper/Capslock) is pressed,
+-- send ESCAPE if no other keys are pressed.
+function exitHyperMode()
+  hyper:exit()
+  -- if not hyper.triggered then
+  --   hs.eventtap.keyStroke({}, 'ESCAPE')
+  -- end
+  hs.alert.show('Hyper off')
+end
+
+-- Bind the Hyper key
+f19 = hs.hotkey.bind({}, 'F19', enterHyperMode, exitHyperMode)
+
+-- Vim Colemak bindings (hzColemak)
+-- Adapted the snippets from https://github.com/dbmrq/dotfiles/blob/master/home/.hammerspoon/vim.lua
+
+-- Basic Movements {{{2
+
+-- h - move left {{{3
+function left() hs.eventtap.keyStroke({}, "Left") end
+hyper:bind({}, 'h', left, nil, left)
+-- }}}3
+
+-- n - move down {{{3
+function down() hs.eventtap.keyStroke({}, "Down") end
+hyper:bind({}, 'n', down, nil, down)
+-- }}}3
+
+-- e - move up {{{3
+function up() hs.eventtap.keyStroke({}, "Up") end
+hyper:bind({}, 'e', up, nil, up)
+-- }}}3
+
+-- i - move right {{{3
+function right() hs.eventtap.keyStroke({}, "Right") end
+hyper:bind({}, 'i', right, nil, right)
+-- }}}3
+
+-- ) - right programming brace {{{3
+function rbroundL() hs.eventtap.keyStroke({}, "(") end
+hyper:bind({}, 'k', up, nil, up)
+-- }}}3
+
+-- ) - left programming brace {{{3
+function rbroundR() hs.eventtap.keyStroke({}, ")") end
+hyper:bind({}, 'c', up, nil, up)
+-- }}}3
+
+-- o - open new line below cursor {{{3
+hyper:bind({}, 'o', nil, function()
+    local app = hs.application.frontmostApplication()
+    if app:name() == "Finder" then
+        hs.eventtap.keyStroke({"cmd"}, "o")
+    else
+        hs.eventtap.keyStroke({}, "Return")
+    end
+end)
+-- }}}3
+
+-- Extend+AltGr layer
+-- Delete {{{3
+
+-- cmd+h - delete character before the cursor {{{3
+local function delete()
+    hs.eventtap.keyStroke({}, "delete")
+end
+hyper:bind({"cmd"}, 'h', delete, nil, delete)
+-- }}}3
+
+-- cmd+i - delete character after the cursor {{{3
+local function fndelete()
+    hs.eventtap.keyStroke({}, "Right")
+    hs.eventtap.keyStroke({}, "delete")
+end
+hyper:bind({"cmd"}, 'i', fndelete, nil, fndelete)
+-- }}}3
+
+-- ) - right programming brace {{{3
+function rbcurlyL() hs.eventtap.keyStroke({}, "{") end
+hyper:bind({"cmd"}, 'k', up, nil, up)
+-- }}}3
+
+-- ) - left programming brace {{{3
+function rbcurlyR() hs.eventtap.keyStroke({}, "}") end
+hyper:bind({"cmd"}, 'c', up, nil, up)
+-- }}}3
+
+-- Extend+Shift
+
+-- ) - right programming brace {{{3
+function rbsqrL() hs.eventtap.keyStroke({}, "[") end
+hyper:bind({"shift"}, 'k', up, nil, up)
+-- }}}3
+
+-- ) - left programming brace {{{3
+function rbsqrR() hs.eventtap.keyStroke({}, "]") end
+hyper:bind({"shift"}, 'c', up, nil, up)
+-- }}}3
+
+-- Special Movements
+-- w - move to next word {{{3
+function word() hs.eventtap.keyStroke({"alt"}, "Right") end
+hyper:bind({}, 'w', word, nil, word)
+-- }}}3
+
+-- b - move to previous word {{{3
+function back() hs.eventtap.keyStroke({"alt"}, "Left") end
+hyper:bind({}, 'b', back, nil, back)
+-- }}}3
+#+end_src
+** Conclusions
+It has been very restrictive to not be able to use the keyboard layout I spent years crafting. In that regard, this post is a success story, even with the awkwardness of the implementation. On the other hand, it is baffling to see the lack of good FOSS tools on this ecosystem [fn:serious], but that is to be expected perhaps. For my purposes right now, this monolithic ~init.lua~ is enough. However, Hammerspoon is one of the more promising configuration systems especially considering the [[https://github.com/dbmrq/dotfiles/blob/master/home/.hammerspoon/vim.lua][more complete VIM bindings]] which exist in the community and would bear a second look. It would make sense to look into using Spacehammer and more VIM bindings sometime soon.
+
+[fn:nothinggood]  There are some [[http://xahlee.info/kbd/osx_keybinding.html][text snippet expansion methods]], but nothing to simply modify keys.
+[fn:whatswrong] A nauseating prospect, far too inelegant and difficult to keep track of a million manually changed GUI settings
+[fn:nicename] Coined in its current form by Brett Terpstra [[https://brettterpstra.com/2017/06/15/a-hyper-key-with-karabiner-elements-full-instructions/][here]] or Jonathan Hollin [[https://www.perpetual-beta.org/weblog/magical-caps-lock-key.html][here]], first described by Steve Losh [[https://stevelosh.com/blog/2012/10/a-modern-space-cadet/][many years ago]]
+[fn:whathidden] Yes, the original post was 4 years ago and it still isn't part of the GUI
+[fn:whyhammmer] One of the FOSS tools, plus its in my favorite language (used in [[https://dseams.info][d-SEAMS]]) for embedding things, ~lua~
+[fn:serious] It might also just be that there is a lot more media spam, like [[https://www.alfredapp.com/][Alfred]] is basically [[https://spacelauncherapp.com/][SpaceLauncher]] but the latter isn't well known
+[fn:wheresay] As discussed here on the [[https://www.naseer.dev/post/hidutil/][Random Bits blog]]
+[fn:sayzwho] This is close to the method [[https://kalis.me/setup-hyper-key-hammerspoon-macos/][Rosco Kalis has]]
 * TODO Comments: Graphcomment to Remarkbox :@notes:tools:rationale:webdev:
 * TODO Fortran and Doxygen
 #+begin_quote
