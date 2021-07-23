@@ -7910,7 +7910,7 @@ This post is part of a series on Colemak and keyboard management in general.
 1. [[Switching to Colemak][Switching to Colemak]]
 2. [[Refactoring Dotfiles For Colemak][Refactoring Dotfiles For Colemak]] 
 3. *Remapping Keys with XKB and KLFC* <-- You are here!
-4. [[Keybindings and MacOS][Keybindings and MacOS]]
+4. [[Remapping Keys for ColemakVIM on MacOS][Remapping Keys for ColemakVIM on MacOS]]
 ** Keyboard Basics
 Some terms to keep in mind for this post are[fn:morespecifics]:
 - Dead Keys :: These don't actually output anything, but modify the next key pressed. Like applying an umlaut on the subsequent letter.
@@ -9596,6 +9596,7 @@ Struggling to emulate ~klfc~ for VIM Colemak bindings on Darwin (macOS) systems 
 I have mentioned in the past my customized [[Refactoring Dotfiles For Colemak][Colemak dotfiles]] which I used with [[https://rgoswami.me/posts/remap-keys-xkb-klfc/][a customized keyboard layout]]. Unfortunately, the ~.keylayout~ system of MacOS is far more primitive than the elegant ~klfc~ setup [fn:nothinggood]. For an understanding of what we are trying to get at, the following poorly made video will suffice.
 
 {{< youtube BgqlUsenmKU  >}}
+
 *** Series
 This post is part of a series on Colemak and keyboard management in general.
 1. [[Switching to Colemak][Switching to Colemak]]
