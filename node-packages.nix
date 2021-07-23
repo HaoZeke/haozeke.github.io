@@ -409,13 +409,13 @@ let
         sha512 = "c7wVvbw3f37nuobQNtgsgG9POC9qMbNuMQmTCqZv23b6MIz0fcYpBiOlv9gEN/hdLdnZTDQhg6e9Dq5M1vKvfg==";
       };
     };
-    "caniuse-lite-1.0.30001245" = {
+    "caniuse-lite-1.0.30001246" = {
       name = "caniuse-lite";
       packageName = "caniuse-lite";
-      version = "1.0.30001245";
+      version = "1.0.30001246";
       src = fetchurl {
-        url = "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001245.tgz";
-        sha512 = "768fM9j1PKXpOCKws6eTo3RHmvTUsG9UrpT4WoREFeZgJBTi4/X9g565azS/rVUGtqb8nt7FjLeF5u4kukERnA==";
+        url = "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001246.tgz";
+        sha512 = "Tc+ff0Co/nFNbLOrziBXmMVtpt9S2c2Y+Z9Nk9Khj09J+0zR9ejvIW5qkZAErCbOrVODCx/MN+GpB5FNBs5GFA==";
       };
     };
     "caseless-0.12.0" = {
@@ -742,13 +742,13 @@ let
         sha1 = "3a83a904e54353287874c564b7549386849a98c9";
       };
     };
-    "electron-to-chromium-1.3.778" = {
+    "electron-to-chromium-1.3.785" = {
       name = "electron-to-chromium";
       packageName = "electron-to-chromium";
-      version = "1.3.778";
+      version = "1.3.785";
       src = fetchurl {
-        url = "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.3.778.tgz";
-        sha512 = "Lw04qJaPtWdq0d7qKHJTgkam+FhFi3hm/scf1EyqJWdjO3ZIGUJhNmZJRXWb7yb/bRYXQyVGSpa9RqVpjjWMQw==";
+        url = "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.3.785.tgz";
+        sha512 = "WmCgAeURsMFiyoJ646eUaJQ7GNfvMRLXo+GamUyKVNEM4MqTAsXyC0f38JEB4N3BtbD0tlAKozGP5E2T9K3YGg==";
       };
     };
     "emoji-regex-7.0.3" = {
@@ -1064,6 +1064,15 @@ let
       src = fetchurl {
         url = "https://registry.npmjs.org/glob-parent/-/glob-parent-5.1.2.tgz";
         sha512 = "AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==";
+      };
+    };
+    "glob-parent-6.0.1" = {
+      name = "glob-parent";
+      packageName = "glob-parent";
+      version = "6.0.1";
+      src = fetchurl {
+        url = "https://registry.npmjs.org/glob-parent/-/glob-parent-6.0.1.tgz";
+        sha512 = "kEVjS71mQazDBHKcsq4E9u/vUzaLcw1A8EtUeydawvIWQCJM0qQ08G1H7/XTjFUulla6XQiDOG6MXSaG0HDKog==";
       };
     };
     "global-dirs-3.0.0" = {
@@ -2002,6 +2011,15 @@ let
         sha512 = "9UZCFRHQdNrfTpGg8+1INIg93B6zE0aXMVFkw1WFwvO4SlZywU6aLg5Of0Ap/PgcbSw4LNxvMWXMeugwMCX0AA==";
       };
     };
+    "normalize-url-7.0.0" = {
+      name = "normalize-url";
+      packageName = "normalize-url";
+      version = "7.0.0";
+      src = fetchurl {
+        url = "https://registry.npmjs.org/normalize-url/-/normalize-url-7.0.0.tgz";
+        sha512 = "a7y92XA/bHw9sGhkjgyIuEdP/EItvGVkvzTusBPsvMhuy6ZK0+ET1jQdv2L5yvHlEjE0IFBovEzvwVPbIb+eIg==";
+      };
+    };
     "npm-bundled-1.1.2" = {
       name = "npm-bundled";
       packageName = "npm-bundled";
@@ -2272,13 +2290,13 @@ let
         sha1 = "ed141a6ac043a849ea588498e7dca8b15330e90c";
       };
     };
-    "postcss-8.3.5" = {
+    "postcss-8.3.6" = {
       name = "postcss";
       packageName = "postcss";
-      version = "8.3.5";
+      version = "8.3.6";
       src = fetchurl {
-        url = "https://registry.npmjs.org/postcss/-/postcss-8.3.5.tgz";
-        sha512 = "NxTuJocUhYGsMiMFHDUkmjSKT3EdH4/WbGF6GCi1NDGk+vbcUTun4fpbOqaPtD8IIsztA2ilZm2DhYCuyN58gA==";
+        url = "https://registry.npmjs.org/postcss/-/postcss-8.3.6.tgz";
+        sha512 = "wG1cc/JhRgdqB6WHEuyLTedf3KIRuD0hG6ldkFEZNCjRxiC+3i6kkWUUbiJQayP28iwG35cEmAbe98585BYV0A==";
       };
     };
     "postcss-cli-8.3.1" = {
@@ -2461,13 +2479,13 @@ let
         sha1 = "e664ef31161166c9751cdbe8dbcf86b5fb58f774";
       };
     };
-    "read-package-json-fast-2.0.2" = {
+    "read-package-json-fast-2.0.3" = {
       name = "read-package-json-fast";
       packageName = "read-package-json-fast";
-      version = "2.0.2";
+      version = "2.0.3";
       src = fetchurl {
-        url = "https://registry.npmjs.org/read-package-json-fast/-/read-package-json-fast-2.0.2.tgz";
-        sha512 = "5fyFUyO9B799foVk4n6ylcoAktG/FbE3jwRKxvwaeSrIunaoMc0u81dzXxjeAFKOce7O5KncdfwpGvvs6r5PsQ==";
+        url = "https://registry.npmjs.org/read-package-json-fast/-/read-package-json-fast-2.0.3.tgz";
+        sha512 = "W/BKtbL+dUjTuRL2vziuYhp76s5HZ9qQhd/dKfWIZveD0O40453QNyZhC0e63lqZrAQ4jiOapVoeJ7JrszenQQ==";
       };
     };
     "readable-stream-2.3.7" = {
@@ -3185,13 +3203,18 @@ let
         dependencies = [
           sources."get-stream-5.2.0"
           sources."lowercase-keys-2.0.0"
+          sources."normalize-url-4.5.1"
         ];
       })
       sources."camelcase-6.2.0"
-      sources."caniuse-lite-1.0.30001245"
+      sources."caniuse-lite-1.0.30001246"
       sources."caseless-0.12.0"
       sources."chalk-4.1.1"
-      sources."chokidar-3.5.2"
+      (sources."chokidar-3.5.2" // {
+        dependencies = [
+          sources."glob-parent-5.1.2"
+        ];
+      })
       sources."chownr-2.0.0"
       sources."ci-info-2.0.0"
       sources."cint-8.2.1"
@@ -3233,7 +3256,7 @@ let
       sources."dot-prop-5.3.0"
       sources."duplexer3-0.1.4"
       sources."ecc-jsbn-0.1.2"
-      sources."electron-to-chromium-1.3.778"
+      sources."electron-to-chromium-1.3.785"
       sources."emoji-regex-7.0.3"
       sources."encoding-0.1.13"
       sources."end-of-stream-1.4.4"
@@ -3244,7 +3267,11 @@ let
       sources."extend-3.0.2"
       sources."extsprintf-1.3.0"
       sources."fast-deep-equal-3.1.3"
-      sources."fast-glob-3.2.7"
+      (sources."fast-glob-3.2.7" // {
+        dependencies = [
+          sources."glob-parent-5.1.2"
+        ];
+      })
       sources."fast-json-stable-stringify-2.1.0"
       sources."fast-memoize-2.5.2"
       sources."fastq-1.11.1"
@@ -3265,7 +3292,7 @@ let
       sources."get-stream-4.1.0"
       sources."getpass-0.1.7"
       sources."glob-7.1.7"
-      sources."glob-parent-5.1.2"
+      sources."glob-parent-6.0.1"
       (sources."global-dirs-3.0.0" // {
         dependencies = [
           sources."ini-2.0.0"
@@ -3380,7 +3407,7 @@ let
       sources."nopt-5.0.0"
       sources."normalize-path-3.0.0"
       sources."normalize-range-0.1.2"
-      sources."normalize-url-4.5.1"
+      sources."normalize-url-7.0.0"
       sources."npm-bundled-1.1.2"
       sources."npm-check-updates-11.8.3"
       sources."npm-install-checks-4.0.0"
@@ -3412,7 +3439,7 @@ let
       sources."performance-now-2.1.0"
       sources."picomatch-2.3.0"
       sources."pify-2.3.0"
-      sources."postcss-8.3.5"
+      sources."postcss-8.3.6"
       sources."postcss-cli-8.3.1"
       sources."postcss-load-config-3.1.0"
       sources."postcss-reporter-7.0.2"
@@ -3433,7 +3460,7 @@ let
       sources."rc-1.2.8"
       sources."rc-config-loader-4.0.0"
       sources."read-cache-1.0.0"
-      sources."read-package-json-fast-2.0.2"
+      sources."read-package-json-fast-2.0.3"
       sources."readable-stream-2.3.7"
       sources."readdirp-3.6.0"
       sources."registry-auth-token-4.2.1"
