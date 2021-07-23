@@ -11334,6 +11334,7 @@ This post is part of a series based around my weekly GSoC21 project check-ins.
   + Went over the debugging workflow
   + Discussed the design of the ~SymbolTableVisitor~ and ~BodyVisitor~
   + Fixed a symbol scoping bug and discussed implementing ~value~ for ~kind~
+- Kept in touch asynchrously over Zulip and MRs
 ** Overview
 This week focused on implementing features and cleaning up parts of the project.
 *** New Merge Requests
@@ -11366,6 +11367,37 @@ Ondrej mentioned in the past that he does not use a debugger, and in our meeting
 - Inside a sub-module, we need to shift the scope, which was done for the ~BodyVisitor~ but not for the ~SymbolTableVisitor~
 ** Conclusions
 This week was possibly more productive in terms of code than any before. For that, I mostly have to thank that sudden flash of *understanding* which comes from working on a code-base for weeks (with a fantastic guide). Next week should see the rest of ~expr_value~ be completed, and I intend to try my hand at the LLVM backend to make it use ~expr_value~ when possible. Naturally, this will be done in tandem with the ~minidftatom~ issues, after-all it is back to basics in the sense that progress resumed on working through the main ~minidftatom~ roadmap as well.
+* TODO GSoC21 W8: LFortran and Backend Values :@notes:gsoc21:fortran:rambling:
+:PROPERTIES:
+:EXPORT_FILE_NAME: gsoc21-w8
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+begin_quote
+Staring into backends and more
+#+end_quote
+** Background
+Serialized update for the [[https://summerofcode.withgoogle.com/projects/#5790375215628288][2021 Google Summer of Code]] under the [[https://fortran-lang.org/][fortran-lang
+organization]], mentored by [[https://ondrejcertik.com/][Ondrej Certik]].
+*** Series
+This post is part of a series based around my weekly GSoC21 project check-ins.
+1. [[GSoC21 W1: LFortran Kickoff][GSoC21 W1: LFortran Kickoff]]
+2. [[GSoC21 W2: LFortran Unraveling][GSoC21 W2: LFortran Unraveling]]
+3. [[GSoC21 W3: Kind, Characters, and Standards][GSoC21 W3: Kind, Characters, and Standards]]
+4. [[GSoC21 W4: LFortran, Backends and Bugs][GSoC21 W4: LFortran, Backends and Bugs]]
+5. [[GSoC21 W5: LFortran Design Details and ~minidftatom~][GSoC21 W5: LFortran Design Details and ~minidftatom~]]
+6. [[GSoC21 W6: LFortran ASR and Values][GSoC21 W6: LFortran ASR and Values]]
+7. [[GSoC21 W7: LFortran Workflow Basics][GSoC21 W7: LFortran Workflow Basics]]
+8. *GSoC21 W8: LFortran and Backend Values* <-- You are here!
+** Logistics
+** Overview
+Intrinsic math, values, and more bug hunting all the way.
+*** New Merge Requests
+- [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1096][Split ast_to_asr]] :: An MR started last week, completed and approved this week
+*** Freshly Assigned Issues
+*** Additional Tasks
+** Misc Logs
+The splitting of files was harsh work. Took a few hours. Mindless, but really needs precision. Thankfully ~vim~ folds help a whole lot.
+** Conclusions
 * TODO Compiler Design
 In any case, though Ondrej knows exactly how I should implement the
 assumed length, I decided it was time to dive into the LLVM infrastructure
