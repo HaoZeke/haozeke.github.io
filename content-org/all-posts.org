@@ -9683,19 +9683,92 @@ Extending this is not pleasant, so we won't go forward with this approach at all
 
 We will still need a bit of this unfortunately, so this will stick around. In particular we need to have a simple mapping, from ~caps_lock~ to one of the un-mapped function keys, ~f18~ or ~f19~ or some such.
 
-Effectively, this can be done with the GUI, but we prefer the configuration located in ~$HOME/.config/karabiner/karabiner/karabiner.json~:
+Effectively, this can be done with the GUI, but we prefer the configuration snippet makes it far more reproducible:
 #+begin_src json
 {
+    "type": "basic",
     "from": {
         "key_code": "caps_lock"
     },
-    "to": {
+    "to":
+    {
         "key_code": "f19"
     }
 }
 #+end_src
 
-Note that we *do not* need to define the ~hyper~ key here with the ~complex_modifications~ in this configuration.
+Note that we *do not* need to define the ~hyper~ key to be a series of keystrokes or anything like that here with the ~complex_modifications~ in this configuration. The point of using ~complex_modifications~ is to not overwrite the Karabiner defaults. The following modifications also allow us to keep CAPS functionality bound to simultaneously pressing left and right shift together[fn:youwrotebro].
+
+#+begin_src json
+{
+  "title": "CAPS to fake hyper (f19) and Shift CAPS",
+  "rules": [
+    {
+      "description": "CAPS_LOCK : (HYPER)",
+      "manipulators": [
+        {
+          "from": {
+            "key_code": "caps_lock",
+            "modifiers": {
+              "optional": ["any"]
+            }
+          },
+          "to":
+            {
+              "key_code": "f19"
+            },
+          "type": "basic"
+        }
+      ]
+    },
+    {
+      "description": "Toggle CAPS_LOCK with LEFT_SHIFT + RIGHT_SHIFT",
+      "manipulators": [
+        {
+          "from": {
+            "key_code": "left_shift",
+            "modifiers": {
+              "mandatory": ["right_shift"],
+              "optional": ["caps_lock"]
+            }
+          },
+          "to": [
+            {
+              "key_code": "caps_lock"
+            }
+          ],
+          "to_if_alone": [
+            {
+              "key_code": "left_shift"
+            }
+          ],
+          "type": "basic"
+        },
+        {
+          "from": {
+            "key_code": "right_shift",
+            "modifiers": {
+              "mandatory": ["left_shift"],
+              "optional": ["caps_lock"]
+            }
+          },
+          "to": [
+            {
+              "key_code": "caps_lock"
+            }
+          ],
+          "to_if_alone": [
+            {
+              "key_code": "right_shift"
+            }
+          ],
+          "type": "basic"
+        }
+      ]
+    }
+  ]
+}
+#+end_src
 ** Hammerspoon
 Not that an operating system should need a scripting engine, but apparently [[http://www.hammerspoon.org/][Hammerspoon]] is worth looking into fox better control over the entire OS [fn:whyhammmer]. This made it more attractive than writing a hidden configuration file for Karabiner.
 
@@ -9751,9 +9824,10 @@ end
 
 -- Bind the Hyper key
 f19 = hs.hotkey.bind({}, 'F19', enterHyperMode, exitHyperMode)
+f19cmd = hs.hotkey.bind({'cmd'}, 'F19', enterHyperMode, exitHyperMode)
 #+end_src
 
-The alerts can help while setting up muscle memory, but they are optional.
+The alerts can help while setting up muscle memory, but they are optional. We also map ~cmd+f19~ to prevent the ~cmd+h~ hide application annoyance.
 *** Remapping Keys
 The basic idea is to set a function which executes only when ~hyper:enter()~ is true.
 **** Basic Movements
@@ -9942,11 +10016,12 @@ It has been very restrictive to not be able to use the keyboard layout I spent y
 [fn:nothinggood]  There are some [[http://xahlee.info/kbd/osx_keybinding.html][text snippet expansion methods]], but nothing to simply modify keys.
 [fn:whatswrong] A nauseating prospect, far too inelegant and difficult to keep track of a million manually changed GUI settings
 [fn:nicename] Coined in its current form by Brett Terpstra [[https://brettterpstra.com/2017/06/15/a-hyper-key-with-karabiner-elements-full-instructions/][here]] or Jonathan Hollin [[https://www.perpetual-beta.org/weblog/magical-caps-lock-key.html][here]], first described by Steve Losh [[https://stevelosh.com/blog/2012/10/a-modern-space-cadet/][many years ago]]
-[fn:whathidden] Yes, the original post was 4 years ago and it still isn't part of the GUI
+[fn:whathidden] Yes, the original post was 4 years ago and it still isn't part of the GUI, but it is [[https://karabiner-elements.pqrs.org/docs/json/root-data-structure/][now documented]]
 [fn:whyhammmer] One of the FOSS tools, plus its in my favorite language (used in [[https://dseams.info][d-SEAMS]]) for embedding things, ~lua~
 [fn:serious] It might also just be that there is a lot more media spam, like [[https://www.alfredapp.com/][Alfred]] is basically [[https://spacelauncherapp.com/][SpaceLauncher]] but the latter isn't well known
 [fn:wheresay] As discussed here on the [[https://www.naseer.dev/post/hidutil/][Random Bits blog]]
 [fn:sayzwho] This is close to the method [[https://kalis.me/setup-hyper-key-hammerspoon-macos/][Rosco Kalis has]]
+[fn:youwrotebro] This is adapted from these [[https://ke-complex-modifications.pqrs.org/#JesseHyperPlusVimNavigation][regular VIM Karabiner rules]]
 * TODO Comments: Graphcomment to Remarkbox :@notes:tools:rationale:webdev:
 * TODO Fortran and Doxygen
 #+begin_quote
