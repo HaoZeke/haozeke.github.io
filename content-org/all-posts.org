@@ -11308,13 +11308,14 @@ Essentially, as far as the code base goes, we have a class based hierarchy, whic
 Code duplication is a non-squinter though, since only ~integer~ and ~real~ have similar implementations, and Ondrej pointed out that over-engineering a design simply because two ~if-esle~ branches are similar is effectively yak shaving.
 ** Conclusions
 ~real~ was initially implemented as a string, which has now been replaced by Ondrej in [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1066][1066]], making an extension to it trivial. I expect to focus on getting started on ~functions~ which will have the added benefit of easily adding functionality to the backend (since the ~LLVM~ backend can choose to simply use ~value~). I intend to refocus my efforts towards getting ~minidftatom~ to work as well.
-* TODO GSoC21 W7: LFortran Workflow Basics :@notes:gsoc21:fortran:rambling:
+* DONE GSoC21 W7: LFortran Workflow Basics :@notes:gsoc21:fortran:rambling:
+CLOSED: [2021-07-23 Fri 22:33]
 :PROPERTIES:
 :EXPORT_FILE_NAME: gsoc21-w7
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :END:
 #+begin_quote
-Enriching ASR nodes at compile time
+Revisiting ~minidftatom~ and a birds eye view of ~lfortran~
 #+end_quote
 ** Background
 Serialized update for the [[https://summerofcode.withgoogle.com/projects/#5790375215628288][2021 Google Summer of Code]] under the [[https://fortran-lang.org/][fortran-lang
@@ -11327,7 +11328,7 @@ This post is part of a series based around my weekly GSoC21 project check-ins.
 4. [[GSoC21 W4: LFortran, Backends and Bugs][GSoC21 W4: LFortran, Backends and Bugs]]
 5. [[GSoC21 W5: LFortran Design Details and ~minidftatom~][GSoC21 W5: LFortran Design Details and ~minidftatom~]]
 6. [[GSoC21 W6: LFortran ASR and Values][GSoC21 W6: LFortran ASR and Values]]
-6. *GSoC21 W6: LFortran Workflow Basics* <-- You are here!
+7. *GSoC21 W7: LFortran Workflow Basics* <-- You are here!
 ** Logistics
 - Met with Ondrej on Tuesday
   + Went over the debugging workflow
@@ -11340,9 +11341,13 @@ This week focused on implementing features and cleaning up parts of the project.
 - [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1080][Values for Real Binary Operations (1080)]] :: An implementation, which is similar conceptually and in implementation to the Integer Value MR
 - [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1087][Symbol Table Scope Fix for Function Calls (1087)]] :: A bug which haunted me for a few weeks turned out to have a similar fix in the ~BodyVisitor~
 - [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1088][Intrinsic Issue Template (1088)]] :: I am rather fond of a particular style of opening missing intrinsic issues, and this codifies it for future use
+- [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1085][Draft: ci: Use Ninja everywhere (1085)]] :: A draft MR to return to after updating the CI sometime
 *** Freshly Assigned Issues
 - [[https://gitlab.com/lfortran/lfortran/-/issues/467][Suggestion to refactor ~ast_to_asr~ (467)]] :: In particular this has to do with redundancies (of sort) in the ~SymbolTable~ and ~Body~ visitors
 - [[https://gitlab.com/lfortran/lfortran/-/issues/468][Implement the sqrt intrinsic (468)]] :: Or at-least, for this issue, recognize it as a valid intrinsic
+- [[https://gitlab.com/lfortran/lfortran/-/issues/468][Implement the where conditional (475)]] :: Should be implemented along the same lines as the other conditionals
+- [[https://gitlab.com/lfortran/lfortran/-/issues/476][Semantic error: Variable not declared (476)]] :: Another fascinating episode of "bug detective", this one might be more of a red herring
+- [[https://gitlab.com/lfortran/lfortran/-/issues/477][Semantics: Minidftatom Math (477)]] :: Collection of intrinsic math functions to be implemented at the ASR level
 *** Additional Tasks
 Perhaps adding some more templates would make things easier (for me and other contributors). I intend to update the [[https://gitlab.com/lfortran/ci-images/][CI images]] to leverage ~ninja~.
 ** Misc Logs
@@ -11360,7 +11365,7 @@ Ondrej mentioned in the past that he does not use a debugger, and in our meeting
 - Intrinsics are exposed to the global scope, which has a ~nullptr~ parent
 - Inside a sub-module, we need to shift the scope, which was done for the ~BodyVisitor~ but not for the ~SymbolTableVisitor~
 ** Conclusions
-This week was possibly more productive in terms of code than any before. For that, I mostly have to thank that sudden flash of *understanding* which comes from working on a code-base for weeks (with a fantastic guide). It is back to basics in the sense that progress resumed on working through the main ~minidftatom~ roadmap as well.
+This week was possibly more productive in terms of code than any before. For that, I mostly have to thank that sudden flash of *understanding* which comes from working on a code-base for weeks (with a fantastic guide). Next week should see the rest of ~expr_value~ be completed, and I intend to try my hand at the LLVM backend to make it use ~expr_value~ when possible. Naturally, this will be done in tandem with the ~minidftatom~ issues, after-all it is back to basics in the sense that progress resumed on working through the main ~minidftatom~ roadmap as well.
 * TODO Compiler Design
 In any case, though Ondrej knows exactly how I should implement the
 assumed length, I decided it was time to dive into the LLVM infrastructure
