@@ -11951,3 +11951,95 @@ Much the same as the rationale behind my other presentation [[https://rgoswami.m
 {{< youtube weEqpRUvNqk >}}
 
 [fn:officialsite] One location I am going to be able to keep track of
+
+* DONE JuliaCon and Remote Machines
+CLOSED: [2021-07-25 Sun 01:40]
+:PROPERTIES:
+:EXPORT_FILE_NAME: juliacon-remote-machines
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+begin_quote
+Leveraging better machines for Jupyter-Julia workshops
+#+end_quote
+** Background
+I haven't ever actually worked with ~julia~ before, however, some of the talks and workshops at this year's [[https://pretalx.com/juliacon2021/schedule/][Juliacon'21]] were of great (applied) interest to me so I decided to follow along. In doing so, since my laptop is woefully inadequate for working through some of the materials (DFT), I decided to augment the installation instructions with remote machine usage notes.
+*** Assumptions
+The following gentle assumptions should not actually be much of a practical hurdle for this post, namely:
+- You have a remote machine which runs some variant of Linux
+  + No ~nix~ is assumed unfortunately
+  + Should be capable of running ~micromamba~
+- Some code snippets assume a user-modifiable directory in the ~$PATH~
+  + Typically I assume something like ~export PATH=$HOME/.local/bin:$PATH~
+
+The code snippets arise in the [[https://github.com/mfherbst/juliacon_dft_workshop][context of the DFT workshop]][fn:whydft], but are applicable across all the talks. Additionally, the snippets will assume *no forks* but in practice it is best to clone modifiable forks of these repositories so your mutations last forever.
+** Paths and Directories
+For me, I use the following layout:
+#+begin_src bash
+export jc21=$HOME/Git/Github/Julia/juliacon21
+mkdir -p $jc21
+cd $jc21
+git clone git@github.com:mfherbst/juliacon_dft_workshop.git
+#+end_src
+** Environment
+We will start by setting up a ~micromamba~ environment. This is probably the most copied snippet on my site.
+
+Now we can start with the (non-~julia~) scaffolding:
+#+begin_src bash
+cd $jc21
+micromamba create -p ./.jc21tmp pymatgen python==3.8 jupyterlab pip ipython
+micromamba activate $(pwd)/.jc21tmp
+#+end_src
+
+We need to grab a stable ~juia~ version which we will use ~jill.py~ for:
+#+begin_src bash
+pip install jill
+jill install
+#+end_src
+
+For all workshops, we need a kernel to work with ~jupyterhub~ which we get in a straightforward way with an interactive ~julia~ session.
+#+begin_src julia
+# julia
+using Pkg
+Pkg.add("IJulia")
+#+end_src
+** Exposing Access
+To make sure we can access our remote server we can use ~ngrok~ [fn:whyngrok] or ~ssh~ forwarding [fn:nothere].
+#+begin_src bash
+wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
+unzip ngrok-stable-linux-amd64.zip
+mv ngrok $HOME/.local/bin
+ngrok authtoken <token>
+ngrok http
+#+end_src
+
+We have assumed again, that ~$HOME/.local/bin~ is in our path.
+~tmux~ is optional, but it is fantastic for all headless setups.It is probably better to not do this on your login / head node, and with ~ngrok~ we don't need to care about how deeply nested we are in terms of exposing the tunnel, so just grab an interactive job. Assuming ~tmux~ then, the workflow is simply:
+#+begin_src bash
+ssh mysuperhpc
+# 6.5 hours on 1 node
+srun -N 1 -t 6:30:00 --pty /bin/bash
+# Or whatever configuration works for you
+tmux new -s jc21 # enter an environment
+cd $jc21
+micromamba activate $(pwd)/.jc21tmp
+jupyter lab --ServerApp.allow_remote_access=1 \
+    --ServerApp.open_browser=False --port=8889
+# Ctrl+B --> : --> split-pane
+ngrok http 8889
+#+end_src
+Where the ~jupyter lab~ options are self evident and circumvent having to generate a configuration file. The second pane does not need to be run from the same location naturally. With this, pointing a local browser anywhere to the ~ngrok~ URL will bring you control over your remote machine and we're off to the races.
+
+#+DOWNLOADED: screenshot @ 2021-07-25 01:39:06
+[[file:images/Exposing_Access/2021-07-25_01-39-06_screenshot.png]]
+
+Now we get a standard server with the appropriate kernel and can continue working through the workshops.
+
+#+DOWNLOADED: screenshot @ 2021-07-25 01:40:40
+[[file:images/Exposing_Access/2021-07-25_01-40-40_screenshot.png]]
+
+** Conclusions
+I'm not jumping on the ~julia~ bandwagon. I still reach for ~C++~ or ~Fortran~ or even ~Python~; but JuliaCon is *why* I need to be conversant with ~julia~. It is used for fantastic applied use-cases, and being practically able to follow along and hack around existing code is important, even if I'm not interested in it as a programming language per-say. In general these instructions could be generalized to other workflows/workshops/kernels etc. etc., so it helps to have it written down too. Keep in mind that some system admins will take umbrage at running servers like this.
+
+[fn:whyngrok] Alan Shreve is a fantastic person and ~ngrok~ blows all competition out of the water, great student pricing too
+[fn:nothere] This is a [[https://benjlindsay.com/posts/running-jupyter-lab-remotely][very good resource]] about setting up the SSH chain required, but ~ngrok~ *just works* across nodes too
+[fn:whydft] Most of my existing experience with other codes like Quantum Espresso were at CECAM events with VMs... so it wouldn't be fair to plunge into ~dftk~ on my laptop
