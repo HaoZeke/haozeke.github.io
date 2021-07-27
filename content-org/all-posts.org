@@ -12057,6 +12057,7 @@ These are tech talks, for academic presentations, [[https://github.com/haozeke/c
 - Quoted in a [[https://www.stanforddaily.com/2020/06/08/code-in-place-makes-cs-accessible-to-thousands-worldwide/][Stanford Daily Article on CS106A Code in Place]]
 - [[https://fortran-lang.org/newsletter/2020/06/01/Fortran-Newsletter-June-2020/][Fortran Monthly Newsletter (June 2020)]]
 - Emacs News
+  - [[https://sachachua.com/blog/2021/07/2021-07-26-emacs-news/][2021-07-27]] :: for [[Doom Emacs and Language Servers][Doom Emacs and Language Servers]]
   - [[https://sachachua.com/blog/2020/05/2020-05-11-emacs-news/][2020-06-22]] :: for [[Temporary LaTeX Documents with Orgmode][Temporary LaTeX Documents with Orgmode]]
   - [[https://sachachua.com/blog/2020/05/2020-05-11-emacs-news/][2020-06-15]] :: for [[Emacs for Nix-R][Emacs for Nix-R]]
   - [[https://sachachua.com/blog/2020/05/2020-05-11-emacs-news/][2020-05-11]] :: for [[An Orgmode Note Workflow][An Orgmode Note Workflow]]
