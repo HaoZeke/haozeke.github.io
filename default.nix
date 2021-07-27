@@ -11,7 +11,7 @@ let
   stdenv = pkgs.stdenv;
   myGems = pkgs.bundlerEnv {
     name = "gems-for-some-project";
-    gemdir = ./.;
+    gemdir = builtins.path { path = ./.; name = "haozeke.github.io"; };
   };
   nodePkgs = (pkgs.callPackage ./node.nix {
     inherit pkgs;
@@ -20,7 +20,7 @@ let
 in pkgs.stdenv.mkDerivation {
   name = "rgoswami.me-0.1";
 
-  srcs = ./.;
+  srcs = builtins.path { path = ./.; name = "haozeke.github.io"; };
 
   LANG = "en_US.UTF-8";
 
