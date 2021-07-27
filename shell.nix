@@ -14,7 +14,7 @@ let
   stdenv = pkgs.stdenv;
   myGems = pkgs.bundlerEnv {
     name = "gems-for-some-project";
-    gemdir = ./.;
+    gemdir = builtins.path { path = ./.; name = "haozeke.github.io"; };
   };
   hook = ''
     mkdir -p "$(pwd)/_libs"
