@@ -13,6 +13,19 @@
 
 #+startup: logdone indent overview inlineimages
 
+#+BEGIN_SRC emacs-lisp :exports none :eval always
+(require 'ox-extra)
+(ox-extras-activate '(ignore-headlines))
+(eval unpackaged/org-export-html-with-useful-ids-mode)
+;; Use citeproc-org by default
+;; similar to running citeproc-org-setup
+;; (setq org-export-before-parsing-hook '(citeproc-org-render-references org-ref-acronyms-before-parsing org-ref-glossary-before-parsing org-attach-expand-links))
+(citeproc-org-setup)
+#+END_SRC
+
+#+RESULTS:
+| citeproc-org-render-references | org-ref-acronyms-before-parsing | org-ref-glossary-before-parsing | org-attach-expand-links |
+
 * DONE About
 :PROPERTIES:
 :EXPORT_HUGO_SECTION: /
