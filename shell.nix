@@ -5,7 +5,7 @@ let
   # haskellpkgs is a pinned version of nixpkgs
   # https://github.com/HaoZeke/haozeke.github.io/commit/e312ff597931fde168e4da6aec37164ef2616894#diff-a0745f7ed88cfac6058d1d4cfb57bc71127a28ad7c6756004142a90aab5ee99f
   hpkgs = import sources.haskellpkgs {};
-  # Don't go beyond 2.10.1 until https://github.com/kaushalmodi/ox-hugo/issues/336 is closed
+  # Don't go beyond, or earlier than 2.13 until https://github.com/kaushalmodi/ox-hugo/issues/336 is closed
   # https://github.com/vaibhavsagar/website/blob/master/blog/quick-easy-nixpkgs-pinning.md
   nodePkgs = (pkgs.callPackage ./node.nix {
     inherit pkgs;
