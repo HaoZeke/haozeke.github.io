@@ -25,267 +25,6 @@
 
 #+RESULTS:
 | citeproc-org-render-references | org-ref-acronyms-before-parsing | org-ref-glossary-before-parsing | org-attach-expand-links |
-
-* DONE About
-:PROPERTIES:
-:EXPORT_HUGO_SECTION: /
-:EXPORT_FILE_NAME: about
-:EXPORT_DATE: 1995-08-10
-:END:
-
-#+begin_description
-A short historical recollection of some *thoughts* and _stuff_.
-#+end_description
-
-*Hi.*
-
-I'm [[https://orcid.org/0000-0002-2393-8056][Rohit Goswami]], better known across the web as ~HaoZeke~. I'm not the
-first of my name, which is why instead of ~rgoswami~, I occasionally use ~rg0swami~ when I need to be
-identified by something closer to my name.
-
-The actual username is a throwback to back when people *liked* being anonymous (and with multiple personalities)
-online, so that ought to give an idea of how old I am. A curriculum vitae is
-[[https://github.com/HaoZeke/CV/blob/master/RG_Latest-cv.pdf][available here]].
-
-It is difficult to keep this section short and not let it spill
-into an unstructured memoir. For a while I considered trying to consolidate my
-online presences but that turned out to be completely impossible without a
-series of posts and avatars[fn:notrefs]. I did however eventually set up a
-sporadically updated [[Collection of WebLinks][collection of web-links]] involving me. There is also, a separate list of quotes, or other things I have something to say about.
-** Intangible Positions
-This is a set of things which are primarily online and/or voluntary in a
-non-academic sense.
-- I administer and design a bunch of websites, mostly verified [[https://keybase.io/HaoZeke][on Keybase]]
-- I am a certified Software Carpentries [[https://carpentries.org/instructors/#HaoZeke][instructor]]
-- I [[https://carpentries.org/maintainers/#HaoZeke][officially maintain]], for the Software Carpentries, the lesson on R ([[https://github.com/swcarpentry/r-novice-inflammation][r-novice-inflammation]])
-- I [[https://aur.archlinux.org/packages/?SeB=m&K=HaoZeke][also maintain]] some packages on the AUR (ArchLinux User Repository)
-- I hone coursework development and teaching [[https://www.univ.ai/team/rohit-goswami][with univ.ai]]
-- I [[https://forum.xda-developers.com/xperia-z5/orig-development/cm-14-1-lineageos-t3536846][maintain(ed)]] the official LineageOS image for the Xperia Z5 Dual
-** Historical Places
-What follows is a more informal set of places I am or have been associated with or are of significance to
-me[fn:growingUp].
-*** Reykjavík
-- As of 2021, I have been awarded a three year doctoral fellowship [[https://en.rannis.is/news/allocation-from-the-icelandic-research-fund-for-the-financial-year-2021-1][from the Icelandic Research Fund (Rannís)]] for my project on "Magnetic interactions of itinerant electrons modeled using Bayesian machine learning" tenable at the Science Institute with [[https://notendur.hi.is//~hj/indexE.html][Prof. Hannes Jónsson]] as my supervisor and [[https://english.hi.is/staff/birgirhr][Prof. Birgir Hrafnkelsson]] as my co-supervisor
-- I am a Fellow at the Institute for Pure and Applied Mathematics (IPAM) for its Spring 2021 program on “[[http://www.ipam.ucla.edu/programs/long-programs/tensor-methods-and-emerging-applications-to-the-physical-and-data-sciences/?tab=participant-list][Tensor Methods and Emerging Applications to the Physical and Data Sciences]]”
-- I [[https://english.hi.is/staff/rog32][am associated]] with the [[https://notendur.hi.is/hj/researchgroup.html][reputed Jonsson group]] of the [[http://raunvisindastofnun.hi.is/the_science_institute][Science Institute]] at the
-  [[https://english.hi.is/school_of_engineering_and_natural_sciences][University of Iceland]], where I benefit from the
-  guidance of the erudite and inspiring [[https://notendur.hi.is/hj/indexE.html][Prof. Hannes Jonsson]]
-- My doctoral committee is here, which includes the very excellent inputs of
-  [[https://english.hi.is/staff/elvarorn][Dr. Elvar Jonsson]]
-- I have also benefited from sitting in on some formal coursework here, which
-  has been a fascinatingly useful experience
-*** Kanpur
-- I [[https://femtolab.science/people/rohit][retain a close association]] with the fantastic [[https://femtolab.science/][Femtolab]] at [[http://home.iitk.ac.in/~dgoswami/][IIT Kanpur]] under
-  [[https://femtolab.science/people/dgoswami][Prof. Debabrata Goswami]], who has provided constant guidance throughout my career
-- I am the co-lead developer of the FOSS scientific [[https://dseams.info][d-SEAMS software suite]] for
-  [[https://wiki.dseams.info/#citation][graph theoretic approaches to structure determination]] of molecular dynamics
-  simulations, along with my exceptional co-lead [[https://www.researchgate.net/profile/Amrita_Goswami2][Amrita Goswami]] of the CNS Lab
-  under Prof. Jayant K. Singh at IITK
-- I worked with the Nair group as part of the [[http://surge.iitk.ac.in/AnnualReport/report2017.pdf][Summer Undergraduate in Research Excellence]] (SURGE) program, also at IITK
-- Harcourt Butler Technical Institute (HBTI) Kanpur, or the [[http://hbtu.ac.in/][Harcourt Butler Technological University]], as it is now called, was where I trained to be a chemical engineer
-*** Bombay
-- I [[https://rajarshichakrabarti.wixsite.com/rajarshichakrabarti/team][spent a formative summer]] under [[https://rajarshichakrabarti.wixsite.com/rajarshichakrabarti][Prof. Rajarshi Chakrabarti]] of the IIT Bombay
-  Chemistry department, who has been instrumental in developing my interests
-- I also spent some time discussing experiments with [[https://www.che.iitb.ac.in/online/faculty/rajdip-bandyopadhyaya][Prof. Rajdip Bandyopadhyaya]]
-  of the IIT Bombay Chemical Engineering department during an industrial
-  internship in fragnance compounding at the R&D department of KEVA Ltd. under
-  [[https://in.linkedin.com/in/debojit-chakrabarty-b9a2262][Dr. Debojit Chakrabarty]]
-*** Bangalore
-- At IISc, I had the good fortune to meet Prof. Hannes Jonsson at a summer
-  workshop [[https://chemeng.iisc.ac.in/rare-events/index.html][on Rare events]]
-- At the [[http://bangaloreinternationalcentre.org/][BIC]], I undertook formal machine learning and artificial intelligence
-  training under Harvard's [[https://www.extension.harvard.edu/faculty-directory/rahul-dave][Dr. Rahul Dave]] and [[https://iacs.seas.harvard.edu/people/pavlos-protopapas][Dr. Pavlos Protopapas]] as part of the [[https://univ.ai][univ.ai]]
-  summer course
-*** Chennai
-- I spent a very fruitful summer on quantum tomography under [[https://www.imsc.res.in/~sibasish/qis.html][Prof. Sibashish Ghosh]] at the [[https://www.imsc.res.in/][Institute for Mathematical Sciences]] (IMSc Chennai)
-** Avatars
-I thought it might be of use to list a few of my more official visages. This is
-mostly to ensure people do not confuse me with a Sasquatch[fn:notpersonal].
-These mugshots are exactly that, mugshots for profile icons[fn:mountaintapir].
-
-#+caption: A collage of mugshots, shuffled and not ordered by date to confuse people trying to kill me
-[[file:images/avatarCollage.jpg]]
-
-** Donations
-If you've gotten this far, you might also want to check out the
-following[fn:patreon]:
-- [[https://www.patreon.com/rgoswami][Patreon]]
-- [[https://liberapay.com/rohit][Librepay]]
-
-[fn:patreon] There won't ever be any content behind paywalls though
-[fn:growingUp] I grew up on the verdant and beautiful [[https://www.tifr.res.in/][TIFR Mumbai]] campus, and
-completed high school and undergraduate stuff while playing with peacocks and things on
-the [[https://www.iitk.ac.in][IIT Kanpur]] campus
-[fn:notrefs] I didn't think it would be necessary, but just in case it isn't
-clear, people listed here are not necessarily all references or anything, this is
-a personal list of people associated with each city, not a cover letter
-[fn:notpersonal] This is not a replacement for [[https://www.instagram.com/rg0swami/][an Instagram feed]] or a [[https://www.facebook.com/rg0swami][Facebook
-wall]], or even a [[https://www.researchgate.net/profile/Rohit_Goswami2][ResearchGate]] or [[https://publons.com/researcher/2911170/rohit-goswami/][Publons]] or [[https://orcid.org/0000-0002-2393-8056][ORCID]] page; all of which I do sporadically remember I have
-[fn:mountaintapir] Made with the [[https://github.com/tttppp/mountain_tapir][Mountain Tapir Collage Maker]]
-* TODO Collection of Quotes
-From Statistical Rethinking:
-#+begin_quote
-An engineer, a physicist, and a statistician go hunting with a bow and arrow. The physicist underestimates ("let us ignore windspeed") and his arrow falls short. The engineer adds a fudge factor and his shot goes wide. The statistician averages the two and claims they have bagged the animal.
-#+end_quote
-Illustrates the usage of stats.
-
-From some talk by Cederic Villani:
-#+begin_quote
-A mathematician and a statistician see two people go into a building, one comes out. The statistician asserts there is a 50-50 chance of someone coming out, and the mathematician says if one person goes in, no one comes out.
-#+end_quote
-Illustrates the concept of rigor.
-
-* DONE Collection of WebLinks :@personal:ramblings:
-CLOSED: [1995-08-10]
-:PROPERTIES:
-:EXPORT_FILE_NAME: rg-collection-weblinks
-:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments false
-:END:
-#+BEGIN_QUOTE
-An attempt to re-claim and verify my digital presence.
-#+END_QUOTE
-** Background
-I mentioned [[About][on my about page]], that it is nigh impossible to keep track of every
-digital trace there is of me. That said, it is really not even a countable
-infinite set yet, so it is a good idea to get started before it gets much worse.
-This is minimally curated, and will only be sporadically updated, so take
-everything here with a grain of salt. I honestly have no idea why anyone who is
-not me would like to see this, other than to prove one of these with respect to
-the rest[fn:whereswaldo].
-** Profiles
-*** Professional
-- [[https://english.hi.is/staff/rog32][University of Iceland]]
-- [[https://femtolab.science/people/rohit][FemtoLab]]
-- [[https://g.co/kgs/Y9fpDC][Google Knowledge Panel]]
-*** Voluntary
-- The Carpentries
-  - [[https://carpentries.org/instructors#HaoZeke][Instructor]], [[https://carpentries.org/maintainers#HaoZeke][Maintainer]], [[https://2020.carpentrycon.org/task-force/][CarpentyrCon2020 Committee Task Force]], [[https://2020.carpentrycon.org/schedule/#session-10][CarpentryCon2020 Speaker]]
-- [[https://forum.igdore.org/t/rohit-goswami/656][IGDORE]]
-- [[https://www.univ.ai/teams/rohit-goswami][Univ.ai]]
-- TeX Users Group
-  - [[http://tug.org/tug2020/][TUG 2020 Conference Committee member]]
-  - TUG Zulip Admin
-- Maintainer for packages on:
-  - ArchLinux (the [[https://aur.archlinux.org/account/HaoZeke][Arch User Repository]] (AUR))
-  - [[https://github.com/NixOS/nixpkgs/search?q=haozeke][Nixpkgs]]
-  - [[https://github.com/spack/spack/pulls?q=is%3Apr+author%3AHaoZeke][Spack]]
-  - [[https://melpa.org/#/?q=HaoZeke][MELPA]]
-  - [[https://pypi.org/user/rgoswami/][PyPI]]
-*** Academic
-- [[https://publons.com/researcher/2911170/rohit-goswami/][Publons]]
-- [[https://peerj.com/rgoswami/][PeerJ]]
-- [[http://scholar.google.com/citations?user=36gIdJMAAAAJ&hl=en][Google Scholar]]
-- [[https://orcid.org/0000-0002-2393-8056][OrCiD]]
-- [[https://loop.frontiersin.org/people/829611/overview][Loop]]
-- [[https://osf.io/c47v3/][OSF]]
-# **** Software
-# I am particularly proud of my contributions to to:
-# - d-SEAMS
-*** Societies
-- [[https://engage.aiche.org/network/community-directory/profile?UserKey=8f135c8b-747d-4f79-95fd-84975458e3bd][American Institute of Chemical Engineers]]
-- [[https://ieeexplore.ieee.org/author/37086865956][IEEE]]
-*** Communities
-- [[https://figshare.com/authors/Rohit_Goswami/5453063][Figshare]]
-*** Misc
-- [[https://github.com/HaoZeke][Github]]
-- [[https://gitlab.com/HaoZeke][Gitlab]]
-- [[https://www.goodreads.com/user/show/33462912-rohit-goswami][Goodreads]]
-- [[https://keybase.io/HaoZeke][Keybase]]
-** Pages and Articles
-*** By Me
-- Everything on [[https://keybase.io/HaoZeke][any of my many websites]]
-- [[https://www.aiche.org/community/sites/committees/young-professionals/blog/fundamental-research-chemical-engineering-undergrad][Write-up on research with a ChemE undergraduate degree]] for the American Institute of Chemical Engineers (AIChE) Young Professionals Committee (YPC)
-- Hackernoon article on [[https://hackernoon.com/locking-and-encrypting-apps-with-encfs-c1484e77f479][Locking and Encrypting Apps with Encfs]]
-- The Water, Chemicals and more with Computers for Chemistry (WC3m) [[https://wc3m.github.io/][course website]]
-- My [[https://github.com/symengine/symengine/wiki/GSoD-2020-Report-Rohit-Goswami:-SymEngine][GSoD (Google Season of Docs) 2020 completion report]] for SymEngine
-**** Collaborative Carpentries Posts
-- A collaborative post on [[https://carpentries.org/blog/2020/08/r-4-migration/][migrating to R 4.0 for The
-Carpentries]]
-**** Tech Conferences
-These are tech talks, for academic presentations, [[https://github.com/haozeke/cv][my CV is a better guide]].
-- Reproducible Scalable Workflows with Nix, Papermill and Renku at [[https://in.pycon.org/2020/][PyCon India 2020]]
-- Reproducible Environments with the Nix Packaging System at [[https://2020.carpentrycon.org/schedule/#session-10][CarpentryCon 2020]]
-**** Lightning Talks
-- Nix from the dark ages (without Root) at [[https://2020.nixcon.org/][NixCon 2020]]
-*** Mentioning Me
-**** Volunteering
-- [[https://www.tug.org/TUGboat/Contents/contents41-2.html][TUGBOAT issue for TUG 2020]] proceedings
-  - Several mentions as a conference organizer
-**** Lists
-- [[https://summerofcode.withgoogle.com/projects/#5790375215628288][Google Summer of Code (GSoC) 2021 - LFortran and Computational Chemistry]]
-- [[https://en.rannis.is/news/allocation-from-the-icelandic-research-fund-for-the-financial-year-2021-1][2021 List of projects funded by the Icelandic Research Fund]]
-- [[https://developers.google.com/season-of-docs/docs/participants/project-sympy-rohitgoswami][Google Season of Docs (GSoD) 2020 - Symengine]]
-- Spring 2021 [[http://www.ipam.ucla.edu/programs/long-programs/tensor-methods-and-emerging-applications-to-the-physical-and-data-sciences/?tab=participant-list][Institute of Pure and Applied Mathematics (IPAM) Fellow]] for “Tensor Methods and Emerging Applications to the Physical and Data Sciences”
-- [[https://sites.google.com/view/2020crt/home?authuser=0][2020 Categorifications in Representation Theory]] ([[https://sites.google.com/view/2020crt/registered-participants?authuser=0][participant]])
-- [[https://web-eur.cvent.com/event/16fae83c-5b72-4690-a368-829688f0d14b/summary][Heilbronn Annual Conference 2020]] ([[https://web-eur.cvent.com/event/16fae83c-5b72-4690-a368-829688f0d14b/websitePage:1faf08a0-dcdd-4a2c-b4b8-d9d445202377?RefId=HIMR][participant]])
-- [[https://www.cirm-math.fr/Listes/liste_pre_verif.php?id_renc=2255&num_semaine=0][CIRM - Jean-Morlet Chair - Quasi-Monte Carlo Methods and Applications]] ([[https://www.chairejeanmorlet.com/2255.html][info]]) [participant]
-- [[https://www.cirm-math.fr/Listes/liste_pre_verif.php?id_renc=2146&num_semaine=0][CIRM Mathematical Methods of Modern Statistics 2]] ([[https://www.cirm-math.com/cirm-virtual-event-2146.html][info]]) [participant]
-- Kavli IPMU conference on "[[https://indico.ipmu.jp/event/314/overview][The McKay correspondence, mutation and related topics]]" ([[https://indico.ipmu.jp/event/314/registrations/participants][participant]])
-- [[https://chemeng.iisc.ac.in/rare-events/gallery.html][Gallery of RARE 2019]] at IISc
-- [[https://gitlab.com/openresearchlabs/probabilistic_data_analysis_2020/-/blob/master/session7.md][Probablistic Data Analysis]] (University of Turku)
-- [[https://twitter.com/aiidateam/status/1281323480290660352][AiiDA Virtual Tutotrial 2020]]
-- [[https://tcevents.chem.uzh.ch/event/12/contributions/45/author/73][FortranCon 2020 Author]]
-- [[https://github.com/stan-dev/math/releases/tag/v3.3.0][Stan Math 3.3.0 contributor]]
-- CECAM Participant for:
-  - [[https://www.cecam.org/workshop-details/26#participant_tab][CECAM-DE-SMSM: (Machine) learning how to coarse-grain]]
-  - [[https://www.cecam.org/workshop-details/28#participant_tab][CECAM-DE-SMSM: ESPResSo and Python: Versatile Tools for Soft Matter Research]]
-- Fortran Newsletter Mentions:
-  - [[https://fortran-lang.org/newsletter/2021/04/01/Fortran-Newsletter-April-2021/][April 2021]] :: LFortran contributor
-  - [[https://fortran-lang.org/newsletter/2021/03/01/Fortran-Newsletter-March-2021/][March 2021]] :: LFortran contributor
-  - [[https://fortran-lang.org/newsletter/2021/05/18/Welcome-GSoC-students/][May 2021]] :: GSoC acceptance
-**** Teaching
-- [[https://www.iopconferences.org/iop/frontend/reg/thome.csp?pageID=1032921&eventID=1664][IOP Workshop on C++ II - Libraries and Simulations]] :: April 13, 2020 (instructor) ([[Talk Supplements for IOP's C++ Workshop][materials]])
-- [[https://wc3m.github.io/][Water, Chemicals and more with Computers for Chemistry (WC3m)]] :: July 28-August 28, 2020 (co-lead)
-- [[https://coderefinery.github.io/2020-05-25-online/][2020 MegaCodeRefinery]] (helper)
-***** Carpentries
-- [[https://annajiat.github.io/2021-03-29-cmu-online/][Data Carpentry Ecology Social Sciences with R at CMU]] :: March 29-31, 2021 (instructor)
-- [[https://haozeke.github.io/2021-03-16-utah-online/][Network of the National Library of Medicine (NNLM) LC Workshop]] :: March 16-19, 2021 (instructor)
-- [[https://4turesearchdata-carpentries.github.io/2021-03-16-tudelft-online/][SWC workshop at the Eindhoven University of Technology (TU/e)]] :: March 16-17, 23-24, 2021 (instructor)
-- [[https://ucsbcarpentry.github.io/2021-02-18-ucsb-online/][Data Analysis and Visualization in Python for Ecologists at UCSB]] :: February 18-19, 2021 (instructor)
-- [[https://bkmgit.github.io/2020-12-01-TRLN-NNLM-online/][Triangle Research Library Network Library Carpentry Workshop]] :: December 1-4, 2020 (instructor)
-- [[https://sichongp.github.io/2020-11-11-cmu-online/][Data Carpentry Ecology with R at CMU]] :: November 11-13, 2020 (instructor)
-- [[https://marwahaha.github.io/2020-11-04-ITEP-online/][Data Carpentry Workshop at ITEP]] :: November 9-10, 2020 (instructor)
-- [[https://flatironinstitute.github.io/sciware-swc-2020-09-git/][Sciware: Git and GitHub at the Flatiron Institute]] :: September 24 and October 1, 2020 (instructor)
-- [[https://nairps.github.io/2020-09-08-ggc-SBDH-online/][Data Carpentry Workshop for Social Sciences Georgia Gwinnett College]] :: September 8-11, 2020 (instructor)
-- [[https://sadilar.github.io/2020-06-29-SA-ONLINE/][Online Data Carpentry Workshop SADiLaR, South Africa]] :: 29 June - 3 July, 2020 (instructor)
-- [[https://smcclatchy.github.io/2020-06-22-biotechPartners-pm/][Data Carpentry Ecology for Biotech Partners]] :: June 22-July 2, 2020 (instructor)
-**** Quotes
-- Quoted in a [[https://www.stanforddaily.com/2020/06/08/code-in-place-makes-cs-accessible-to-thousands-worldwide/][Stanford Daily Article on CS106A Code in Place]]
-- [[https://fortran-lang.org/newsletter/2020/06/01/Fortran-Newsletter-June-2020/][Fortran Monthly Newsletter (June 2020)]]
-- Emacs News
-  - [[https://sachachua.com/blog/2020/05/2020-05-11-emacs-news/][2020-06-22]] :: for [[Temporary LaTeX Documents with Orgmode][Temporary LaTeX Documents with Orgmode]]
-  - [[https://sachachua.com/blog/2020/05/2020-05-11-emacs-news/][2020-06-15]] :: for [[Emacs for Nix-R][Emacs for Nix-R]]
-  - [[https://sachachua.com/blog/2020/05/2020-05-11-emacs-news/][2020-05-11]] :: for [[An Orgmode Note Workflow][An Orgmode Note Workflow]]
-  - [[https://sachachua.com/blog/2020/05/2020-05-04-emacs-news/][2020-05-04]] :: for [[Pandoc to Orgmode with Babel][Pandoc to Orgmode with Babel]]
-  - [[https://sachachua.com/blog/2020/04/2020-04-27-emacs-news/][2020-04-27]] :: for [[Using Mathematica with Orgmode][Using Mathematica with Orgmode]]
-  - [[https://sachachua.com/blog/2020/04/2020-04-13-emacs-news/][2020-04-13]] :: for [[https://dotdoom.rgoswami.me][my dotDoom doom-emacs configuration]]
-  - [[https://sachachua.com/blog/2020/04/2020-04-06-emacs-news/][2020-04-06]] :: for [[Replacing Jupyter with Orgmode][Replacing Jupyter with Orgmode]]
-** Videos
-*** Of Me
-- Everything [[https://www.youtube.com/channel/UC9f_UGqNsa60kmNGj_WkLPw?][on my YouTube channel]]
-- [[https://www.youtube.com/watch?v=Q1St1VT43sc&feature=youtu.be][Discussion session]] for the CS196A Code in Place AMA with the students
-- Panelist for the CarpentryCon 2020 session on [[https://pad.carpentries.org/cchome-teaching-online][lessons learnt from remote teaching]]
-- Student Presentation at UI on [[https://hi.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=6cda865b-c58a-4a79-89a3-ab9300d6ede6][Scrum for Software Quality Management]]
-- CarpentryCon 2020 [[https://www.youtube.com/watch?v=np6TPzME0aA][session recording]] on "[[https://2020.carpentrycon.org/schedule/#session-10][Reproducible Environments with the Nix Packaging System]]"
-*** Including Me
-This category involves recordings where I asked questions, and therefore
-technically involve me in a sense.
-- I appear [[https://www.linkedin.com/posts/univ-ai_neuralnetwork-regularisation-ucla-activity-6689748037511782400-gMSx][in the audience of this clip]] on neural networks and regularization
-- Code in Place AMA with [[https://www.youtube.com/watch?v=J7S_SJ2Adi4&list=PLcil-m27rjnZ2f85ao8_EauguYhzkzSQA&index=5&t=0s][Stanford CS Lecturers]]
-- I [[http://www.youtube.com/watch?v=-Y_OYhoHOb8][appear (audibly)]] to ask a question for the TUG2020 closing seminar by John MacFarlane
-**** HPC Carpentry
-- [[https://pad.carpentries.org/hpccarpentry-tour][A guided tour]]
-**** Fortran Maintainers Monthly Calls
-- [[https://www.youtube.com/watch?v=i-gRNGRzugc][June 2020]]
-**** IAS TML Lecture Questions
-I've been sitting in on these for a while thanks to [[https://www.math.ias.edu/~ke.li/][Ke Li]], but this section lists some of the lectures I asked a question in
-  - "[[https://video.ias.edu/tml/2020/0609-AleksanderMadry][What Do Models Learn?]]" by Aleksander Mądry
-  - "[[https://youtu.be/QTnjqdxG99c?t=3879][Langevin Dynamics in Machine Learning]]" by Michael Jordan
-  - "[[https://youtu.be/Wx8J-Kw3fTA?t=4814][Graph Nets: The Next Generation]]" by Max Welling
-  - "[[https://youtu.be/IbKWTF4MzMY?t=3787][Priors for Semantic Variables]]" by Yoshua Bengio
-  - "A Blueprint of Standardized and Composable Machine Learning" by Eric Xing
-
-[fn:whereswaldo] If you do think you have seen me somewhere not on this list, drop me an email
 * DONE Search
 :PROPERTIES:
 :EXPORT_HUGO_SECTION: /
@@ -642,7 +381,7 @@ The older commenting system was implemented with [[https://utteranc.es][utteranc
 :EXPORT_HUGO_AUTO_SET_LASTMOD: t
 :END:
 #+BEGIN_QUOTE
-Thoughts on and rationale behind leaving QWERTY and touch typing in general. Followed [[Refactoring Dotfiles For Colemak][by this post]] on refactoring my Dotfiles.
+Thoughts on and rationale behind leaving QWERTY and touch typing in general. Followed [[https://rgoswami.me/posts/colemak-dots-refactor/][by this post]] on refactoring my Dotfiles.
 #+END_QUOTE
 
 ** Background
@@ -727,7 +466,7 @@ https://www.keyboard-design.com/kb-images/colemak-kla.jpg
   keys is just hitting keys
 
 +All that said, I still occasionally simply remap HJKL (QWERTY movement) to HNEI (Colemak analog) when it is feasible.+
-*update:* I actually ended up refactoring my entire Dotfiles to use more Colemak native bindings, as described [[Refactoring Dotfiles For Colemak][in this post]].
+*update:* I actually ended up refactoring my entire Dotfiles to use more Colemak native bindings, as described [[https://rgoswami.me/posts/colemak-dots-refactor/][in this post]].
 ** Conclusion
 Changing layouts was a real struggle. Watching my WPM drop back to lower than
 hunt and peck styles was pretty humiliating, especially since the reports kept
@@ -12087,3 +11826,267 @@ I'm not jumping on the ~julia~ bandwagon. I still reach for ~C++~ or ~Fortran~ o
 [fn:whyngrok] Alan Shreve is a fantastic person and ~ngrok~ blows all competition out of the water, great student pricing too
 [fn:nothere] This is a [[https://benjlindsay.com/posts/running-jupyter-lab-remotely][very good resource]] about setting up the SSH chain required, but ~ngrok~ *just works* across nodes too
 [fn:whydft] Most of my existing experience with other codes like Quantum Espresso were at CECAM events with VMs... so it wouldn't be fair to plunge into ~dftk~ on my laptop
+
+
+* Important Note :ignoreheading:ignore:
+# ALWAYS at the bottom, to ensure fresh builds do not break
+* DONE About
+:PROPERTIES:
+:EXPORT_HUGO_SECTION: /
+:EXPORT_FILE_NAME: about
+:EXPORT_DATE: 1995-08-10
+:END:
+
+#+begin_description
+A short historical recollection of some *thoughts* and _stuff_.
+#+end_description
+
+*Hi.*
+
+I'm [[https://orcid.org/0000-0002-2393-8056][Rohit Goswami]], better known across the web as ~HaoZeke~. I'm not the
+first of my name, which is why instead of ~rgoswami~, I occasionally use ~rg0swami~ when I need to be
+identified by something closer to my name.
+
+The actual username is a throwback to back when people *liked* being anonymous (and with multiple personalities)
+online, so that ought to give an idea of how old I am. A curriculum vitae is
+[[https://github.com/HaoZeke/CV/blob/master/RG_Latest-cv.pdf][available here]].
+
+It is difficult to keep this section short and not let it spill
+into an unstructured memoir. For a while I considered trying to consolidate my
+online presences but that turned out to be completely impossible without a
+series of posts and avatars[fn:notrefs]. I did however eventually set up a
+sporadically updated [[Collection of WebLinks][collection of web-links]] involving me. There is also, a separate list of quotes, or other things I have something to say about.
+** Intangible Positions
+This is a set of things which are primarily online and/or voluntary in a
+non-academic sense.
+- I administer and design a bunch of websites, mostly verified [[https://keybase.io/HaoZeke][on Keybase]]
+- I am a certified Software Carpentries [[https://carpentries.org/instructors/#HaoZeke][instructor]]
+- I [[https://carpentries.org/maintainers/#HaoZeke][officially maintain]], for the Software Carpentries, the lesson on R ([[https://github.com/swcarpentry/r-novice-inflammation][r-novice-inflammation]])
+- I [[https://aur.archlinux.org/packages/?SeB=m&K=HaoZeke][also maintain]] some packages on the AUR (ArchLinux User Repository)
+- I hone coursework development and teaching [[https://www.univ.ai/team/rohit-goswami][with univ.ai]]
+- I [[https://forum.xda-developers.com/xperia-z5/orig-development/cm-14-1-lineageos-t3536846][maintain(ed)]] the official LineageOS image for the Xperia Z5 Dual
+** Historical Places
+What follows is a more informal set of places I am or have been associated with or are of significance to
+me[fn:growingUp].
+*** Reykjavík
+- As of 2021, I have been awarded a three year doctoral fellowship [[https://en.rannis.is/news/allocation-from-the-icelandic-research-fund-for-the-financial-year-2021-1][from the Icelandic Research Fund (Rannís)]] for my project on "Magnetic interactions of itinerant electrons modeled using Bayesian machine learning" tenable at the Science Institute with [[https://notendur.hi.is//~hj/indexE.html][Prof. Hannes Jónsson]] as my supervisor and [[https://english.hi.is/staff/birgirhr][Prof. Birgir Hrafnkelsson]] as my co-supervisor
+- I am a Fellow at the Institute for Pure and Applied Mathematics (IPAM) for its Spring 2021 program on “[[http://www.ipam.ucla.edu/programs/long-programs/tensor-methods-and-emerging-applications-to-the-physical-and-data-sciences/?tab=participant-list][Tensor Methods and Emerging Applications to the Physical and Data Sciences]]”
+- I [[https://english.hi.is/staff/rog32][am associated]] with the [[https://notendur.hi.is/hj/researchgroup.html][reputed Jonsson group]] of the [[http://raunvisindastofnun.hi.is/the_science_institute][Science Institute]] at the
+  [[https://english.hi.is/school_of_engineering_and_natural_sciences][University of Iceland]], where I benefit from the
+  guidance of the erudite and inspiring [[https://notendur.hi.is/hj/indexE.html][Prof. Hannes Jonsson]]
+- My doctoral committee is here, which includes the very excellent inputs of
+  [[https://english.hi.is/staff/elvarorn][Dr. Elvar Jonsson]]
+- I have also benefited from sitting in on some formal coursework here, which
+  has been a fascinatingly useful experience
+*** Kanpur
+- I [[https://femtolab.science/people/rohit][retain a close association]] with the fantastic [[https://femtolab.science/][Femtolab]] at [[http://home.iitk.ac.in/~dgoswami/][IIT Kanpur]] under
+  [[https://femtolab.science/people/dgoswami][Prof. Debabrata Goswami]], who has provided constant guidance throughout my career
+- I am the co-lead developer of the FOSS scientific [[https://dseams.info][d-SEAMS software suite]] for
+  [[https://wiki.dseams.info/#citation][graph theoretic approaches to structure determination]] of molecular dynamics
+  simulations, along with my exceptional co-lead [[https://www.researchgate.net/profile/Amrita_Goswami2][Amrita Goswami]] of the CNS Lab
+  under Prof. Jayant K. Singh at IITK
+- I worked with the Nair group as part of the [[http://surge.iitk.ac.in/AnnualReport/report2017.pdf][Summer Undergraduate in Research Excellence]] (SURGE) program, also at IITK
+- Harcourt Butler Technical Institute (HBTI) Kanpur, or the [[http://hbtu.ac.in/][Harcourt Butler Technological University]], as it is now called, was where I trained to be a chemical engineer
+*** Bombay
+- I [[https://rajarshichakrabarti.wixsite.com/rajarshichakrabarti/team][spent a formative summer]] under [[https://rajarshichakrabarti.wixsite.com/rajarshichakrabarti][Prof. Rajarshi Chakrabarti]] of the IIT Bombay
+  Chemistry department, who has been instrumental in developing my interests
+- I also spent some time discussing experiments with [[https://www.che.iitb.ac.in/online/faculty/rajdip-bandyopadhyaya][Prof. Rajdip Bandyopadhyaya]]
+  of the IIT Bombay Chemical Engineering department during an industrial
+  internship in fragnance compounding at the R&D department of KEVA Ltd. under
+  [[https://in.linkedin.com/in/debojit-chakrabarty-b9a2262][Dr. Debojit Chakrabarty]]
+*** Bangalore
+- At IISc, I had the good fortune to meet Prof. Hannes Jonsson at a summer
+  workshop [[https://chemeng.iisc.ac.in/rare-events/index.html][on Rare events]]
+- At the [[http://bangaloreinternationalcentre.org/][BIC]], I undertook formal machine learning and artificial intelligence
+  training under Harvard's [[https://www.extension.harvard.edu/faculty-directory/rahul-dave][Dr. Rahul Dave]] and [[https://iacs.seas.harvard.edu/people/pavlos-protopapas][Dr. Pavlos Protopapas]] as part of the [[https://univ.ai][univ.ai]]
+  summer course
+*** Chennai
+- I spent a very fruitful summer on quantum tomography under [[https://www.imsc.res.in/~sibasish/qis.html][Prof. Sibashish Ghosh]] at the [[https://www.imsc.res.in/][Institute for Mathematical Sciences]] (IMSc Chennai)
+** Avatars
+I thought it might be of use to list a few of my more official visages. This is
+mostly to ensure people do not confuse me with a Sasquatch[fn:notpersonal].
+These mugshots are exactly that, mugshots for profile icons[fn:mountaintapir].
+
+#+caption: A collage of mugshots, shuffled and not ordered by date to confuse people trying to kill me
+[[file:images/avatarCollage.jpg]]
+
+** Donations
+If you've gotten this far, you might also want to check out the
+following[fn:patreon]:
+- [[https://www.patreon.com/rgoswami][Patreon]]
+- [[https://liberapay.com/rohit][Librepay]]
+
+[fn:patreon] There won't ever be any content behind paywalls though
+[fn:growingUp] I grew up on the verdant and beautiful [[https://www.tifr.res.in/][TIFR Mumbai]] campus, and
+completed high school and undergraduate stuff while playing with peacocks and things on
+the [[https://www.iitk.ac.in][IIT Kanpur]] campus
+[fn:notrefs] I didn't think it would be necessary, but just in case it isn't
+clear, people listed here are not necessarily all references or anything, this is
+a personal list of people associated with each city, not a cover letter
+[fn:notpersonal] This is not a replacement for [[https://www.instagram.com/rg0swami/][an Instagram feed]] or a [[https://www.facebook.com/rg0swami][Facebook
+wall]], or even a [[https://www.researchgate.net/profile/Rohit_Goswami2][ResearchGate]] or [[https://publons.com/researcher/2911170/rohit-goswami/][Publons]] or [[https://orcid.org/0000-0002-2393-8056][ORCID]] page; all of which I do sporadically remember I have
+[fn:mountaintapir] Made with the [[https://github.com/tttppp/mountain_tapir][Mountain Tapir Collage Maker]]
+* TODO Collection of Quotes
+From Statistical Rethinking:
+#+begin_quote
+An engineer, a physicist, and a statistician go hunting with a bow and arrow. The physicist underestimates ("let us ignore windspeed") and his arrow falls short. The engineer adds a fudge factor and his shot goes wide. The statistician averages the two and claims they have bagged the animal.
+#+end_quote
+Illustrates the usage of stats.
+
+From some talk by Cederic Villani:
+#+begin_quote
+A mathematician and a statistician see two people go into a building, one comes out. The statistician asserts there is a 50-50 chance of someone coming out, and the mathematician says if one person goes in, no one comes out.
+#+end_quote
+Illustrates the concept of rigor.
+
+* DONE Collection of WebLinks :@personal:ramblings:
+CLOSED: [1995-08-10]
+:PROPERTIES:
+:EXPORT_FILE_NAME: rg-collection-weblinks
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments false
+:END:
+#+BEGIN_QUOTE
+An attempt to re-claim and verify my digital presence.
+#+END_QUOTE
+** Background
+I mentioned [[About][on my about page]], that it is nigh impossible to keep track of every
+digital trace there is of me. That said, it is really not even a countable
+infinite set yet, so it is a good idea to get started before it gets much worse.
+This is minimally curated, and will only be sporadically updated, so take
+everything here with a grain of salt. I honestly have no idea why anyone who is
+not me would like to see this, other than to prove one of these with respect to
+the rest[fn:whereswaldo].
+** Profiles
+*** Professional
+- [[https://english.hi.is/staff/rog32][University of Iceland]]
+- [[https://femtolab.science/people/rohit][FemtoLab]]
+- [[https://g.co/kgs/Y9fpDC][Google Knowledge Panel]]
+*** Voluntary
+- The Carpentries
+  - [[https://carpentries.org/instructors#HaoZeke][Instructor]], [[https://carpentries.org/maintainers#HaoZeke][Maintainer]], [[https://2020.carpentrycon.org/task-force/][CarpentyrCon2020 Committee Task Force]], [[https://2020.carpentrycon.org/schedule/#session-10][CarpentryCon2020 Speaker]]
+- [[https://forum.igdore.org/t/rohit-goswami/656][IGDORE]]
+- [[https://www.univ.ai/teams/rohit-goswami][Univ.ai]]
+- TeX Users Group
+  - [[http://tug.org/tug2020/][TUG 2020 Conference Committee member]]
+  - TUG Zulip Admin
+- Maintainer for packages on:
+  - ArchLinux (the [[https://aur.archlinux.org/account/HaoZeke][Arch User Repository]] (AUR))
+  - [[https://github.com/NixOS/nixpkgs/search?q=haozeke][Nixpkgs]]
+  - [[https://github.com/spack/spack/pulls?q=is%3Apr+author%3AHaoZeke][Spack]]
+  - [[https://melpa.org/#/?q=HaoZeke][MELPA]]
+  - [[https://pypi.org/user/rgoswami/][PyPI]]
+*** Academic
+- [[https://publons.com/researcher/2911170/rohit-goswami/][Publons]]
+- [[https://peerj.com/rgoswami/][PeerJ]]
+- [[http://scholar.google.com/citations?user=36gIdJMAAAAJ&hl=en][Google Scholar]]
+- [[https://orcid.org/0000-0002-2393-8056][OrCiD]]
+- [[https://loop.frontiersin.org/people/829611/overview][Loop]]
+- [[https://osf.io/c47v3/][OSF]]
+# **** Software
+# I am particularly proud of my contributions to to:
+# - d-SEAMS
+*** Societies
+- [[https://engage.aiche.org/network/community-directory/profile?UserKey=8f135c8b-747d-4f79-95fd-84975458e3bd][American Institute of Chemical Engineers]]
+- [[https://ieeexplore.ieee.org/author/37086865956][IEEE]]
+*** Communities
+- [[https://figshare.com/authors/Rohit_Goswami/5453063][Figshare]]
+*** Misc
+- [[https://github.com/HaoZeke][Github]]
+- [[https://gitlab.com/HaoZeke][Gitlab]]
+- [[https://www.goodreads.com/user/show/33462912-rohit-goswami][Goodreads]]
+- [[https://keybase.io/HaoZeke][Keybase]]
+** Pages and Articles
+*** By Me
+- Everything on [[https://keybase.io/HaoZeke][any of my many websites]]
+- [[https://www.aiche.org/community/sites/committees/young-professionals/blog/fundamental-research-chemical-engineering-undergrad][Write-up on research with a ChemE undergraduate degree]] for the American Institute of Chemical Engineers (AIChE) Young Professionals Committee (YPC)
+- Hackernoon article on [[https://hackernoon.com/locking-and-encrypting-apps-with-encfs-c1484e77f479][Locking and Encrypting Apps with Encfs]]
+- The Water, Chemicals and more with Computers for Chemistry (WC3m) [[https://wc3m.github.io/][course website]]
+- My [[https://github.com/symengine/symengine/wiki/GSoD-2020-Report-Rohit-Goswami:-SymEngine][GSoD (Google Season of Docs) 2020 completion report]] for SymEngine
+**** Collaborative Carpentries Posts
+- A collaborative post on [[https://carpentries.org/blog/2020/08/r-4-migration/][migrating to R 4.0 for The
+Carpentries]]
+**** Tech Conferences
+These are tech talks, for academic presentations, [[https://github.com/haozeke/cv][my CV is a better guide]].
+- Reproducible Scalable Workflows with Nix, Papermill and Renku at [[https://in.pycon.org/2020/][PyCon India 2020]]
+- Reproducible Environments with the Nix Packaging System at [[https://2020.carpentrycon.org/schedule/#session-10][CarpentryCon 2020]]
+**** Lightning Talks
+- Nix from the dark ages (without Root) at [[https://2020.nixcon.org/][NixCon 2020]]
+*** Mentioning Me
+**** Volunteering
+- [[https://www.tug.org/TUGboat/Contents/contents41-2.html][TUGBOAT issue for TUG 2020]] proceedings
+  - Several mentions as a conference organizer
+**** Lists
+- [[https://summerofcode.withgoogle.com/projects/#5790375215628288][Google Summer of Code (GSoC) 2021 - LFortran and Computational Chemistry]]
+- [[https://en.rannis.is/news/allocation-from-the-icelandic-research-fund-for-the-financial-year-2021-1][2021 List of projects funded by the Icelandic Research Fund]]
+- [[https://developers.google.com/season-of-docs/docs/participants/project-sympy-rohitgoswami][Google Season of Docs (GSoD) 2020 - Symengine]]
+- Spring 2021 [[http://www.ipam.ucla.edu/programs/long-programs/tensor-methods-and-emerging-applications-to-the-physical-and-data-sciences/?tab=participant-list][Institute of Pure and Applied Mathematics (IPAM) Fellow]] for “Tensor Methods and Emerging Applications to the Physical and Data Sciences”
+- [[https://sites.google.com/view/2020crt/home?authuser=0][2020 Categorifications in Representation Theory]] ([[https://sites.google.com/view/2020crt/registered-participants?authuser=0][participant]])
+- [[https://web-eur.cvent.com/event/16fae83c-5b72-4690-a368-829688f0d14b/summary][Heilbronn Annual Conference 2020]] ([[https://web-eur.cvent.com/event/16fae83c-5b72-4690-a368-829688f0d14b/websitePage:1faf08a0-dcdd-4a2c-b4b8-d9d445202377?RefId=HIMR][participant]])
+- [[https://www.cirm-math.fr/Listes/liste_pre_verif.php?id_renc=2255&num_semaine=0][CIRM - Jean-Morlet Chair - Quasi-Monte Carlo Methods and Applications]] ([[https://www.chairejeanmorlet.com/2255.html][info]]) [participant]
+- [[https://www.cirm-math.fr/Listes/liste_pre_verif.php?id_renc=2146&num_semaine=0][CIRM Mathematical Methods of Modern Statistics 2]] ([[https://www.cirm-math.com/cirm-virtual-event-2146.html][info]]) [participant]
+- Kavli IPMU conference on "[[https://indico.ipmu.jp/event/314/overview][The McKay correspondence, mutation and related topics]]" ([[https://indico.ipmu.jp/event/314/registrations/participants][participant]])
+- [[https://chemeng.iisc.ac.in/rare-events/gallery.html][Gallery of RARE 2019]] at IISc
+- [[https://gitlab.com/openresearchlabs/probabilistic_data_analysis_2020/-/blob/master/session7.md][Probablistic Data Analysis]] (University of Turku)
+- [[https://twitter.com/aiidateam/status/1281323480290660352][AiiDA Virtual Tutotrial 2020]]
+- [[https://tcevents.chem.uzh.ch/event/12/contributions/45/author/73][FortranCon 2020 Author]]
+- [[https://github.com/stan-dev/math/releases/tag/v3.3.0][Stan Math 3.3.0 contributor]]
+- CECAM Participant for:
+  - [[https://www.cecam.org/workshop-details/26#participant_tab][CECAM-DE-SMSM: (Machine) learning how to coarse-grain]]
+  - [[https://www.cecam.org/workshop-details/28#participant_tab][CECAM-DE-SMSM: ESPResSo and Python: Versatile Tools for Soft Matter Research]]
+- Fortran Newsletter Mentions:
+  - [[https://fortran-lang.org/newsletter/2021/04/01/Fortran-Newsletter-April-2021/][April 2021]] :: LFortran contributor
+  - [[https://fortran-lang.org/newsletter/2021/03/01/Fortran-Newsletter-March-2021/][March 2021]] :: LFortran contributor
+  - [[https://fortran-lang.org/newsletter/2021/05/18/Welcome-GSoC-students/][May 2021]] :: GSoC acceptance
+**** Teaching
+- [[https://www.iopconferences.org/iop/frontend/reg/thome.csp?pageID=1032921&eventID=1664][IOP Workshop on C++ II - Libraries and Simulations]] :: April 13, 2020 (instructor) ([[Talk Supplements for IOP's C++ Workshop][materials]])
+- [[https://wc3m.github.io/][Water, Chemicals and more with Computers for Chemistry (WC3m)]] :: July 28-August 28, 2020 (co-lead)
+- [[https://coderefinery.github.io/2020-05-25-online/][2020 MegaCodeRefinery]] (helper)
+***** Carpentries
+- [[https://annajiat.github.io/2021-03-29-cmu-online/][Data Carpentry Ecology Social Sciences with R at CMU]] :: March 29-31, 2021 (instructor)
+- [[https://haozeke.github.io/2021-03-16-utah-online/][Network of the National Library of Medicine (NNLM) LC Workshop]] :: March 16-19, 2021 (instructor)
+- [[https://4turesearchdata-carpentries.github.io/2021-03-16-tudelft-online/][SWC workshop at the Eindhoven University of Technology (TU/e)]] :: March 16-17, 23-24, 2021 (instructor)
+- [[https://ucsbcarpentry.github.io/2021-02-18-ucsb-online/][Data Analysis and Visualization in Python for Ecologists at UCSB]] :: February 18-19, 2021 (instructor)
+- [[https://bkmgit.github.io/2020-12-01-TRLN-NNLM-online/][Triangle Research Library Network Library Carpentry Workshop]] :: December 1-4, 2020 (instructor)
+- [[https://sichongp.github.io/2020-11-11-cmu-online/][Data Carpentry Ecology with R at CMU]] :: November 11-13, 2020 (instructor)
+- [[https://marwahaha.github.io/2020-11-04-ITEP-online/][Data Carpentry Workshop at ITEP]] :: November 9-10, 2020 (instructor)
+- [[https://flatironinstitute.github.io/sciware-swc-2020-09-git/][Sciware: Git and GitHub at the Flatiron Institute]] :: September 24 and October 1, 2020 (instructor)
+- [[https://nairps.github.io/2020-09-08-ggc-SBDH-online/][Data Carpentry Workshop for Social Sciences Georgia Gwinnett College]] :: September 8-11, 2020 (instructor)
+- [[https://sadilar.github.io/2020-06-29-SA-ONLINE/][Online Data Carpentry Workshop SADiLaR, South Africa]] :: 29 June - 3 July, 2020 (instructor)
+- [[https://smcclatchy.github.io/2020-06-22-biotechPartners-pm/][Data Carpentry Ecology for Biotech Partners]] :: June 22-July 2, 2020 (instructor)
+**** Quotes
+- Quoted in a [[https://www.stanforddaily.com/2020/06/08/code-in-place-makes-cs-accessible-to-thousands-worldwide/][Stanford Daily Article on CS106A Code in Place]]
+- [[https://fortran-lang.org/newsletter/2020/06/01/Fortran-Newsletter-June-2020/][Fortran Monthly Newsletter (June 2020)]]
+- Emacs News
+  - [[https://sachachua.com/blog/2020/05/2020-05-11-emacs-news/][2020-06-22]] :: for [[Temporary LaTeX Documents with Orgmode][Temporary LaTeX Documents with Orgmode]]
+  - [[https://sachachua.com/blog/2020/05/2020-05-11-emacs-news/][2020-06-15]] :: for [[Emacs for Nix-R][Emacs for Nix-R]]
+  - [[https://sachachua.com/blog/2020/05/2020-05-11-emacs-news/][2020-05-11]] :: for [[An Orgmode Note Workflow][An Orgmode Note Workflow]]
+  - [[https://sachachua.com/blog/2020/05/2020-05-04-emacs-news/][2020-05-04]] :: for [[Pandoc to Orgmode with Babel][Pandoc to Orgmode with Babel]]
+  - [[https://sachachua.com/blog/2020/04/2020-04-27-emacs-news/][2020-04-27]] :: for [[Using Mathematica with Orgmode][Using Mathematica with Orgmode]]
+  - [[https://sachachua.com/blog/2020/04/2020-04-13-emacs-news/][2020-04-13]] :: for [[https://dotdoom.rgoswami.me][my dotDoom doom-emacs configuration]]
+  - [[https://sachachua.com/blog/2020/04/2020-04-06-emacs-news/][2020-04-06]] :: for [[Replacing Jupyter with Orgmode][Replacing Jupyter with Orgmode]]
+** Videos
+*** Of Me
+- Everything [[https://www.youtube.com/channel/UC9f_UGqNsa60kmNGj_WkLPw?][on my YouTube channel]]
+- [[https://www.youtube.com/watch?v=Q1St1VT43sc&feature=youtu.be][Discussion session]] for the CS196A Code in Place AMA with the students
+- Panelist for the CarpentryCon 2020 session on [[https://pad.carpentries.org/cchome-teaching-online][lessons learnt from remote teaching]]
+- Student Presentation at UI on [[https://hi.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=6cda865b-c58a-4a79-89a3-ab9300d6ede6][Scrum for Software Quality Management]]
+- CarpentryCon 2020 [[https://www.youtube.com/watch?v=np6TPzME0aA][session recording]] on "[[https://2020.carpentrycon.org/schedule/#session-10][Reproducible Environments with the Nix Packaging System]]"
+*** Including Me
+This category involves recordings where I asked questions, and therefore
+technically involve me in a sense.
+- I appear [[https://www.linkedin.com/posts/univ-ai_neuralnetwork-regularisation-ucla-activity-6689748037511782400-gMSx][in the audience of this clip]] on neural networks and regularization
+- Code in Place AMA with [[https://www.youtube.com/watch?v=J7S_SJ2Adi4&list=PLcil-m27rjnZ2f85ao8_EauguYhzkzSQA&index=5&t=0s][Stanford CS Lecturers]]
+- I [[http://www.youtube.com/watch?v=-Y_OYhoHOb8][appear (audibly)]] to ask a question for the TUG2020 closing seminar by John MacFarlane
+**** HPC Carpentry
+- [[https://pad.carpentries.org/hpccarpentry-tour][A guided tour]]
+**** Fortran Maintainers Monthly Calls
+- [[https://www.youtube.com/watch?v=i-gRNGRzugc][June 2020]]
+**** IAS TML Lecture Questions
+I've been sitting in on these for a while thanks to [[https://www.math.ias.edu/~ke.li/][Ke Li]], but this section lists some of the lectures I asked a question in
+  - "[[https://video.ias.edu/tml/2020/0609-AleksanderMadry][What Do Models Learn?]]" by Aleksander Mądry
+  - "[[https://youtu.be/QTnjqdxG99c?t=3879][Langevin Dynamics in Machine Learning]]" by Michael Jordan
+  - "[[https://youtu.be/Wx8J-Kw3fTA?t=4814][Graph Nets: The Next Generation]]" by Max Welling
+  - "[[https://youtu.be/IbKWTF4MzMY?t=3787][Priors for Semantic Variables]]" by Yoshua Bengio
+  - "A Blueprint of Standardized and Composable Machine Learning" by Eric Xing
+
+[fn:whereswaldo] If you do think you have seen me somewhere not on this list, drop me an email
