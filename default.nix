@@ -41,12 +41,11 @@ in pkgs.stdenv.mkDerivation {
     # Ruby
     myGems
     (lowPrio myGems.wrappedRuby)
-    myHaskellEnv
-  ];
+    ]
+ ++ [ hpkgs.pandoc ];
 
   configurePhase = ''
     mkdir -p "$(pwd)/_libs"
-    eval $(egrep ^export ${myHaskellEnv}/bin/ghc)
     export R_LIBS_USER="$(pwd)/_libs"
     ln -s ${nodePkgs}/lib/node_modules ./node_modules
     export PATH="${nodePkgs}/bin:$PATH"
