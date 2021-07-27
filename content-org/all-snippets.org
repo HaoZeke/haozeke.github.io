@@ -154,6 +154,7 @@ Then use it in the ~shellHook~ as:
   '';
 #+end_src
 Or directly as ~export LOCALE_ARCHIVE="$(nix-env --installed --no-name --out-path --query glibc-locales)/lib/locale/locale-archive"~
+** TODO Nix Thoughts
 ** TODO Overrides and Nix
 I recently had to extend my ~nix~ installed ~git~ version to get ~git-svn~ and to upgrade to the latest version. This was fairly straightforward.
 #+begin_src nix
@@ -174,3 +175,4 @@ I recently had to extend my ~nix~ installed ~git~ version to get ~git-svn~ and t
           svnSupport = true;
         };
 #+end_src
+
