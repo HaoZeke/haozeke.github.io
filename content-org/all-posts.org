@@ -10545,9 +10545,15 @@ ensuring the bulk of the technical details and other related notes makes its way
 into the appropriate channels, that is, into the ~lfortran~ [[https://gitlab.com/lfortran/lfortran][project repository]]
 and [[https://docs.lfortran.org/][documentation]].
 *** Series
-This post is the first in a series based around my weekly GSoC21 project check-ins.
+This post is part of a series based around my weekly GSoC21 project check-ins.
 1. *GSoC21 W1: LFortran Kickoff* <-- You are here!
+
 2. [[GSoC21 W2: LFortran Unraveling][GSoC21 W2: LFortran Unraveling]]
+3. [[GSoC21 W3: Kind, Characters, and Standards][GSoC21 W3: Kind, Characters, and Standards]]
+4. [[GSoC21 W4: LFortran, Backends and Bugs][GSoC21 W4: LFortran, Backends and Bugs]]
+5. [[GSoC21 W5: LFortran Design Details and ~minidftatom~][GSoC21 W5: LFortran Design Details and ~minidftatom~]]
+6. [[GSoC21 W6: LFortran ASR and Values][GSoC21 W6: LFortran ASR and Values]]
+7. [[GSoC21 W7: LFortran Workflow Basics][GSoC21 W7: LFortran Workflow Basics]]
 ** Logistics
 - I met with Ondrej on Thursday, though our standing arrangement is for Tuesday
   + Meeting earlier in the week helps reduce chances of veering off course
@@ -10688,9 +10694,16 @@ As discussed in a previous post in this series, I have been spending roughly
 half of each working day with LFortran as part of the [[https://summerofcode.withgoogle.com/projects/#5790375215628288][2021 Google Summer of Code]]
 under the [[https://fortran-lang.org/][fortran-lang organization]], mentored by [[https://ondrejcertik.com/][Ondrej Certik]].
 *** Series
-This post is the second in a series based around my weekly GSoC21 project check-ins.
+This post is part of a series based around my weekly GSoC21 project check-ins.
 1. [[GSoC21 W1: LFortran Kickoff][GSoC21 W1: LFortran Kickoff]]
 2. *GSoC21 W2: LFortran Unraveling* <-- You are here!
+
+3. [[GSoC21 W3: Kind, Characters, and Standards][GSoC21 W3: Kind, Characters, and Standards]]
+4. [[GSoC21 W4: LFortran, Backends and Bugs][GSoC21 W4: LFortran, Backends and Bugs]]
+5. [[GSoC21 W5: LFortran Design Details and ~minidftatom~][GSoC21 W5: LFortran Design Details and ~minidftatom~]]
+6. [[GSoC21 W6: LFortran ASR and Values][GSoC21 W6: LFortran ASR and Values]]
+7. [[GSoC21 W7: LFortran Workflow Basics][GSoC21 W7: LFortran Workflow Basics]]
+
 ** Logistics
 Some of the meeting points are to be expanded on below.
 - Met with Ondrej on Tuesday, as discussed previously
@@ -10842,10 +10855,15 @@ Standard practice pragmatic approaches to ~kind~ for ~dftatom~
 Serialized update for the [[https://summerofcode.withgoogle.com/projects/#5790375215628288][2021 Google Summer of Code]] under the [[https://fortran-lang.org/][fortran-lang
 organization]], mentored by [[https://ondrejcertik.com/][Ondrej Certik]].
 *** Series
-This post is the third in a series based around my weekly GSoC21 project check-ins.
+This post is part of a series based around my weekly GSoC21 project check-ins.
 1. [[GSoC21 W1: LFortran Kickoff][GSoC21 W1: LFortran Kickoff]]
 2. [[GSoC21 W2: LFortran Unraveling][GSoC21 W2: LFortran Unraveling]]
 3. *GSoC21 W3: Kind, Characters, and Standards* <-- You are here!
+
+4. [[GSoC21 W4: LFortran, Backends and Bugs][GSoC21 W4: LFortran, Backends and Bugs]]
+5. [[GSoC21 W5: LFortran Design Details and ~minidftatom~][GSoC21 W5: LFortran Design Details and ~minidftatom~]]
+6. [[GSoC21 W6: LFortran ASR and Values][GSoC21 W6: LFortran ASR and Values]]
+7. [[GSoC21 W7: LFortran Workflow Basics][GSoC21 W7: LFortran Workflow Basics]]
 ** Logistics
 - Met with Ondrej on Tuesday
   + Went over my ~kind~ implementation
@@ -10972,11 +10990,15 @@ Towards the mid-summer evaluation and redirecting efforts
 Serialized update for the [[https://summerofcode.withgoogle.com/projects/#5790375215628288][2021 Google Summer of Code]] under the [[https://fortran-lang.org/][fortran-lang
 organization]], mentored by [[https://ondrejcertik.com/][Ondrej Certik]].
 *** Series
-This post is one in a series based around my weekly GSoC21 project check-ins.
+This post is part of a series based around my weekly GSoC21 project check-ins.
 1. [[GSoC21 W1: LFortran Kickoff][GSoC21 W1: LFortran Kickoff]]
 2. [[GSoC21 W2: LFortran Unraveling][GSoC21 W2: LFortran Unraveling]]
 3. [[GSoC21 W3: Kind, Characters, and Standards][GSoC21 W3: Kind, Characters, and Standards]]
 4. *GSoC21 W4: LFortran, Backends and Bugs* <-- You are here!
+
+5. [[GSoC21 W5: LFortran Design Details and ~minidftatom~][GSoC21 W5: LFortran Design Details and ~minidftatom~]]
+6. [[GSoC21 W6: LFortran ASR and Values][GSoC21 W6: LFortran ASR and Values]]
+7. [[GSoC21 W7: LFortran Workflow Basics][GSoC21 W7: LFortran Workflow Basics]]
 ** Overview
 This week was a bit of a sticky wicket. My unfamiliarity with the LLVM backend
 and its internals caught up with me just around the same time I ran into several
@@ -11185,6 +11207,9 @@ This post is part of a series based around my weekly GSoC21 project check-ins.
 3. [[GSoC21 W3: Kind, Characters, and Standards][GSoC21 W3: Kind, Characters, and Standards]]
 4. [[GSoC21 W4: LFortran, Backends and Bugs][GSoC21 W4: LFortran, Backends and Bugs]]
 5. *GSoC21 W5: LFortran Design Details and ~minidftatom~* <-- You are here!
+
+6. [[GSoC21 W6: LFortran ASR and Values][GSoC21 W6: LFortran ASR and Values]]
+7. [[GSoC21 W7: LFortran Workflow Basics][GSoC21 W7: LFortran Workflow Basics]]
 ** Logistics
 - Met with Ondrej on Tuesday, Wednesday and Thursday
   + Discussed the AST, ASR and backends in more detail
@@ -11289,6 +11314,8 @@ This post is part of a series based around my weekly GSoC21 project check-ins.
 4. [[GSoC21 W4: LFortran, Backends and Bugs][GSoC21 W4: LFortran, Backends and Bugs]]
 5. [[GSoC21 W5: LFortran Design Details and ~minidftatom~][GSoC21 W5: LFortran Design Details and ~minidftatom~]]
 6. *GSoC21 W6: LFortran ASR and Values* <-- You are here!
+
+7. [[GSoC21 W7: LFortran Workflow Basics][GSoC21 W7: LFortran Workflow Basics]]
 ** Logistics
 - Met with Ondrej on Monday and Wednesday
   + Discussed the design choices w.r.t. class hierarchies (and the lack thereof)
@@ -11329,6 +11356,7 @@ This post is part of a series based around my weekly GSoC21 project check-ins.
 5. [[GSoC21 W5: LFortran Design Details and ~minidftatom~][GSoC21 W5: LFortran Design Details and ~minidftatom~]]
 6. [[GSoC21 W6: LFortran ASR and Values][GSoC21 W6: LFortran ASR and Values]]
 7. *GSoC21 W7: LFortran Workflow Basics* <-- You are here!
+
 ** Logistics
 - Met with Ondrej on Tuesday
   + Went over the debugging workflow
