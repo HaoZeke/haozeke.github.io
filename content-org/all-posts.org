@@ -8970,6 +8970,7 @@ CLOSED: [2021-05-02 Sun 23:12]
 :END:
 #+begin_quote
 Discussion on dotfile management, a meandering path to my current setup from ~dotgit~ to ~bombadil~.
+EDIT: Superseded by my ~chezmoi~ configuration described here
 #+end_quote
 ** Background
 No one gets very far working with stock one-size fits all tools in any discipline but it is especially true of working with computers. The right set of ~dotfiles~ have been compared to priming spells for invocation later, and this is probably true. More than anything else, ~dotfiles~ offer familiarity where there is none, be it from ~cowsay~ or a fancy shell prompt [fn:saywhatshell].
@@ -10260,7 +10261,7 @@ I gave the workshop twice and it was rather well attended both times. The speake
 [fn:officialsite] One location I am going to be able to keep track of
 * TODO Niv and Overlays
 #+begin_quote
-Pinning overlays without flakes using ~ bombadil~ for Darwin
+Pinning overlays without flakes using ~bombadil~ for Darwin
 #+end_quote
 ** Background
 ~emacs~ on Big Sur, both the Macport version and the standard version flicker a lot. This is my attempt to add a patchy fix. Much of this is a straightforward adaptation of [[https://github.com/twlz0ne/nix-gccemacs-darwin][this repository]] and [[https://dnr.im/tech/nix-overlays/][this blog post]].
@@ -11828,6 +11829,18 @@ I'm not jumping on the ~julia~ bandwagon. I still reach for ~C++~ or ~Fortran~ o
 [fn:whydft] Most of my existing experience with other codes like Quantum Espresso were at CECAM events with VMs... so it wouldn't be fair to plunge into ~dftk~ on my laptop
 
 
+* TODO Migrating Dots to Chezmoi :@personal:ramblings:tools:workflow:
+:PROPERTIES:
+:EXPORT_FILE_NAME: mig-dots-chezmoi
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+begin_quote
+Notes on migrating dotfiles to Chezmoi
+#+end_quote
+** Background
+Barely two months ago [[Dotfiles from dotgit to bombadil][I wrote about]] moving away from the (now) ~python~ based [[https://github.com/EvanPurkhiser/dots][dots]] to the ~rust~ based [[https://github.com/oknozor/toml-bombadil][toml-bombadil]]. Unfortunately, the structure I backed myself into there was needlessly complicated, and involved manually making entries in the ~bombadil.toml~ file for each sub file. This is a good workflow in principle, since it enforces separation of concerns, but it is rather annoying in practice.
+** Chezmoi
+[[https://github.com/twpayne/chezmoi/][chezmoi]] is almost an institution in and of itself, with [[https://www.chezmoi.io/][detailed documentation]] and a plethora of users. Rather than go over the features of ~chezmoi~
 * Important Note :ignoreheading:ignore:
 # ALWAYS at the bottom, to ensure fresh builds do not break
 * DONE About
