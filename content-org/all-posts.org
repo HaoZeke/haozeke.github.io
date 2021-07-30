@@ -11148,13 +11148,14 @@ Ondrej mentioned in the past that he does not use a debugger, and in our meeting
 - Inside a sub-module, we need to shift the scope, which was done for the ~BodyVisitor~ but not for the ~SymbolTableVisitor~
 ** Conclusions
 This week was possibly more productive in terms of code than any before. For that, I mostly have to thank that sudden flash of *understanding* which comes from working on a code-base for weeks (with a fantastic guide). Next week should see the rest of ~expr_value~ be completed, and I intend to try my hand at the LLVM backend to make it use ~expr_value~ when possible. Naturally, this will be done in tandem with the ~minidftatom~ issues, after-all it is back to basics in the sense that progress resumed on working through the main ~minidftatom~ roadmap as well.
-* TODO GSoC21 W8: LFortran and Backend Values :@notes:gsoc21:fortran:rambling:
+* DONE GSoC21 W8: LFortran, Refactors, and Compile Time Evaluations :@notes:gsoc21:fortran:rambling:
+CLOSED: [2021-07-30 Fri 17:11]
 :PROPERTIES:
 :EXPORT_FILE_NAME: gsoc21-w8
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :END:
 #+begin_quote
-Staring into backends and more
+Language standardese and implementations
 #+end_quote
 ** Background
 Serialized update for the [[https://summerofcode.withgoogle.com/projects/#5790375215628288][2021 Google Summer of Code]] under the [[https://fortran-lang.org/][fortran-lang
@@ -11170,15 +11171,81 @@ This post is part of a series based around my weekly GSoC21 project check-ins.
 7. [[GSoC21 W7: LFortran Workflow Basics][GSoC21 W7: LFortran Workflow Basics]]
 8. *GSoC21 W8: LFortran and Backend Values* <-- You are here!
 ** Logistics
+- Discussed more refactors over MRs and Zulip
 ** Overview
-Intrinsic math, values, and more bug hunting all the way.
+Intrinsic functions and more bug hunting. A lot of starts in different directions, but I will need to trim these down a bit. A major goal
 *** New Merge Requests
 - [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1096][Split ast_to_asr]] :: An MR started last week, completed and approved this week
+- [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1111][tiny: Runtime implementation skeleton]] :: What will eventually be compiled, hooks into ~C~ for now
+- [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1107][tiny: Compile time implementation]] :: The population of ~value~ for ~tiny~ function calls
+- [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1106][Draft: Shift runtime intrinsic design]] :: Harmonizing the code-base, much of this is cleaning up my own earlier math implementations
+- [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1103][Draft: expr_value for Kind]] :: A WIP MR which will clean up the slightly strange ~extract_kind~ function
+- [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1103][Draft: Implement where construct]] :: An MR along the lines of ~if~, related but distinct from [[https://gitlab.com/lfortran/lfortran/-/merge_requests/915][Gagandeep's masked optimization WIP]]
 *** Freshly Assigned Issues
+- [[https://gitlab.com/lfortran/lfortran/-/issues/480][--show-asr For larger values]] :: A visual glitch in the prettied output
 *** Additional Tasks
+Some of my earlier clean up MRs are beginning to stagnate (CI stuff), will have to catch up on them.
 ** Misc Logs
-The splitting of files was harsh work. Took a few hours. Mindless, but really needs precision. Thankfully ~vim~ folds help a whole lot.
+The splitting of files for the refactor was harsh work. Took a few hours. Mindless, but really needs precision. Thankfully ~vim~ folds help a whole lot. This was further enhanced by Ondrej to make things even cleaner.
+*** Intrinsic Design
+I have discussed the design and implementation of these a few times before, but perhaps another write up will give direction to my thoughts. We have two major points of contact with the intrinsic functions:
+
+- Compile time :: These are intrinsic functions like ~tiny~ or ~kind~ or even ~sin~ which can be evaluated immediately to populate the ~expr_t* value~ object
+- Runtime :: These are the actual implementations, currently the goal is to have these hook into ~C~ libraries
+
+*** Tiny Concerns
+I am not a Fortran language lawyer, but I found myself puzzling over the [[https://gitlab.com/lfortran/lfortran/-/issues/388][legalese of the F-2018 draft standard]] with respect to the ~C++~ nearest neighbor, ~std::numerical_limits~.
+
+Essentially, the usage of ~tiny~ is meant to facilitate doing mathematics without worrying about the exact representability of the value; that is:
+#+begin_src fortran
+program main
+ implicit none
+ integer, parameter :: dp=kind(0.d0)
+ real  :: a=1.0000009
+ if (abs(a-1)<tiny(1._dp)) then
+  error stop "a-1 is effectively 0"
+ end if
+end program
+#+end_src
+
+Now by definition, ~tiny~ has the following properties:
+1. *Description.* Smallest positive model number
+2. *Class.* Inquiry function
+3. *Argument.* X shall be a real scalar or array
+4. *Result Characteristics.* Scalar with the same type and kind type parameter as X.
+5. *Result Value.* The result has the value $b^{e_{min}-1}$ where $b$ and $e_{min}$ are defined in 16.4 for the model representing numbers of the same type and kind type parameter as X.
+6. *Example.* TINY(X) has the value $2^{-127}$ for real X whose model is as in 16.4
+
+This is fairly straightforward, once the model set for real $x$ is understood as (from the section mentioned):
+
+$$ x = 0 || x=s×bᵉ×∑_{k=1}ᵖfₖ×b^{-k} $$
+
+Where $b$ and $p$ are integers exceeding one; each $fₖ$ is a nonnegative integer less than $b$, with $f₁$ nonzero; $s$ is $+1$ or $-1$; and $e$ is an integer that lies between the integer minimum and maxima. An extended model for real kinds relaxes the range of the exponent.
+
+So far so good. The ~C~ equivalence is fairly straightforward, that is the ~FLT_MIN~ and ~DBL_MIN~ macros defined in ~<float.h>~. This is infact what ~gfortran~ generates as well.
+
+For a while though I was thrown by the fact that ~C++~, within ~<limits>~ also has ~std::numeric_limits<T>lowest()~ (described [[https://en.cppreference.com/w/cpp/types/numeric_limits/lowest][here]]), which is smaller than the corresponding ~min()~ calls and has no direct ~C~ equivalent. It is infact, specifically mentioned to not be ~min~ for floating-point types.
+
+However, I recognized soon enough from the implementation that there is no real conflict, as it is simply ~-max()~, which says nothing about the representability.
+
+Therefore, ~tiny~ must be ~FLT_MIN~ or ~DBL_MIN~. I also took a small detour into ~std::variant~ before going with good old ~if-else~ early returns instead.
+#+begin_src cpp
+                        int tiny_kind = LFortran::ASRUtils::extract_kind_from_ttype_t(tiny_type);
+                        if (tiny_kind ==4){
+                            float low_val = std::numeric_limits<float>::min();
+                            value = ASR::down_cast<ASR::expr_t>(ASR::make_ConstantReal_t(al, x.base.base.loc,
+                                                                                         low_val, // value
+                                                                                         tiny_type));
+                        } else {
+                            double low_val = std::numeric_limits<double>::min();
+                            value = ASR::down_cast<ASR::expr_t>(ASR::make_ConstantReal_t(al, x.base.base.loc,
+                                                                                         low_val, // value
+                                                                                         tiny_type));
+                                }
+
+#+end_src
 ** Conclusions
+My thoughts have been turning towards scalability for a long time now. Good design before it is necessary is a premature optimization, but I think I would like to formulate a cleaner way of dealing with the intrinsic functions which can be reduced to values. The ~ISO_C_BINDING~ has been in my thoughts for a while now. Without it, runtime compilation of the ASR remains intractable. I expect the next week to continue along the same lines, populating value for all the intrinsic functions called by ~minidftatom~. It would be best to also generate corresponding ~runtime~ implementations.
 * TODO Compiler Design
 In any case, though Ondrej knows exactly how I should implement the
 assumed length, I decided it was time to dive into the LLVM infrastructure
