@@ -11439,6 +11439,24 @@ Some other great starting resources are:
 - Zimbatm has a [[https://zimbatm.com/NixFlakes/][nice source]] with more resources
 ** Conclusions
 ~flakes~ are the future of ~nix~. Their adoption makes it easier to decentralize and shift away from the unwieldy ~channel~ dissemination format and allows packagers to work cleanly with different variants.
+* TODO Nix and Meson
+** Background
+** Meson and Nix
+Unlike ~cmake~, which ~nix~ is able to pick up on, ~meson~ does not seem to be able to use any of.
+** Meson Pain Points
+- As of ~0.59.0~, it is not possible to use ~meson init~ with libraries
+#+begin_src bash
+meson init -C . --type library --name ams
+Using "ams" (project name) as name of executable to build.
+Detected source files: AMS.cpp
+Detected language: cpp
+
+Generating a meson.build file from existing sources is
+supported only for project type "executable".
+Run meson init in an empty directory to create a sample project.
+#+end_src
+
+This means that each sub-directory needs to be configured by hand.
 * DONE Nix, Channels and the NUR :@programming:tools:nix:workflow:
 CLOSED: [2021-07-21 Wed 02:01]
 :PROPERTIES:
