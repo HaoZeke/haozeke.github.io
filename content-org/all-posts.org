@@ -11268,7 +11268,7 @@ This post is part of a series based around my weekly GSoC21 project check-ins.
 6. [[GSoC21 W6: LFortran ASR and Values][GSoC21 W6: LFortran ASR and Values]]
 7. [[GSoC21 W7: LFortran Workflow Basics][GSoC21 W7: LFortran Workflow Basics]]
 8. [[GSoC21 W8: LFortran Refactors, and Compile Time Evaluations][GSoC21 W8: LFortran Refactors, and Compile Time Evaluations]]
-9. *GSoC21_W9: LFortran and LAPACK* <-- You are here!
+9. *GSoC21 W9: LFortran Bug Hunting Bonanza* <-- You are here!
 ** Logistics
 - Daily checkins over Zulip
   + Code reviews on Gitlab
@@ -11338,6 +11338,37 @@ end program main
 Which ~gfortran~ accepts without a complaint. Not really much of a pain since there is a proposed refactor which is one of the primary goals of the next week after the bug fixes are in but still odd.
 ** Conclusions
 Next week is crucial. The LLVM backend must gracefully accept ~value~ when present, and there are some additional tasks which simply must be completed. All the QoL MRs will be in next week as well. That said, I expect at this point to dedicate more time to the project, which is not a bad thing, but a bit of a sobering realization. Last week I wasn't working over the weekend, but I have several catchup tasks to finish this time around; for draft MRs and issues.
+* TODO GSoC21 W10: LFortran and Wrapping Up :@notes:gsoc21:fortran:rambling:
+CLOSED: [2021-08-06 Fri 19:50]
+:PROPERTIES:
+:EXPORT_FILE_NAME: gsoc21-w10
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+begin_quote
+Final weekly update for LFortran
+#+end_quote
+** Background
+Serialized update for the [[https://summerofcode.withgoogle.com/projects/#5790375215628288][2021 Google Summer of Code]] under the [[https://fortran-lang.org/][fortran-lang
+organization]], mentored by [[https://ondrejcertik.com/][Ondrej Certik]].
+*** Series
+This post is part of a series based around my weekly GSoC21 project check-ins.
+1. [[GSoC21 W1: LFortran Kickoff][GSoC21 W1: LFortran Kickoff]]
+2. [[GSoC21 W2: LFortran Unraveling][GSoC21 W2: LFortran Unraveling]]
+3. [[GSoC21 W3: Kind, Characters, and Standards][GSoC21 W3: Kind, Characters, and Standards]]
+4. [[GSoC21 W4: LFortran, Backends and Bugs][GSoC21 W4: LFortran, Backends and Bugs]]
+5. [[GSoC21 W5: LFortran Design Details and ~minidftatom~][GSoC21 W5: LFortran Design Details and ~minidftatom~]]
+6. [[GSoC21 W6: LFortran ASR and Values][GSoC21 W6: LFortran ASR and Values]]
+7. [[GSoC21 W7: LFortran Workflow Basics][GSoC21 W7: LFortran Workflow Basics]]
+8. [[GSoC21 W8: LFortran Refactors, and Compile Time Evaluations][GSoC21 W8: LFortran Refactors, and Compile Time Evaluations]]
+9. [[GSoC21 W9: LFortran Bug Hunting Bonanza][GSoC21 W9: LFortran Bug Hunting Bonanza]]
+10. *GSoC21 W10: LFortran and Wrapping Up* <-- You are here!
+** Logistics
+** Overview
+*** New Merge Requests
+*** Freshly Assigned Issues
+** Misc Logs
+** Conclusions
+This has been the last of the weekly updates. This doesn't mean anything will change other than the format. I quite like keeping track of the work I do in this manner; keeps me honest and not complacent. For those of you following along; this has been a fun ride; for those who come to this in the future; feel free to stick to the zeroth and the final posts and refer to these only when necessary.
 * TODO Compiler Design
 In any case, though Ondrej knows exactly how I should implement the
 assumed length, I decided it was time to dive into the LLVM infrastructure
