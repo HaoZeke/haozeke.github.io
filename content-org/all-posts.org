@@ -11169,11 +11169,11 @@ This post is part of a series based around my weekly GSoC21 project check-ins.
 5. [[GSoC21 W5: LFortran Design Details and ~minidftatom~][GSoC21 W5: LFortran Design Details and ~minidftatom~]]
 6. [[GSoC21 W6: LFortran ASR and Values][GSoC21 W6: LFortran ASR and Values]]
 7. [[GSoC21 W7: LFortran Workflow Basics][GSoC21 W7: LFortran Workflow Basics]]
-8. *GSoC21 W8: LFortran and Backend Values* <-- You are here!
+8. *GSoC21 W8: LFortran Refactors, and Compile Time Evaluations* <-- You are here!
 ** Logistics
 - Discussed more refactors over MRs and Zulip
 ** Overview
-Intrinsic functions and more bug hunting. A lot of starts in different directions, but I will need to trim these down a bit. A major goal
+Intrinsic functions and more bug hunting. A lot of starts in different directions, but I will need to trim these down a bit. A major goal was working through the compile time evaluation of some intrinsic functions.
 *** New Merge Requests
 - [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1096][Split ast_to_asr]] :: An MR started last week, completed and approved this week
 - [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1111][tiny: Runtime implementation skeleton]] :: What will eventually be compiled, hooks into ~C~ for now
