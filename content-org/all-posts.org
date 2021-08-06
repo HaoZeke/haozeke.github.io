@@ -11295,7 +11295,7 @@ intermediate representation (IR) itself.
 A meandering path through the history of Fortran
 #+end_quote
 ** Background
-* TODO Nix Flakes :@programming:tools:nix:workflow:
+* TODO Nix Flakes and NUR :@programming:tools:nix:workflow:
 :PROPERTIES:
 :EXPORT_FILE_NAME: nix-flakes
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
@@ -11334,22 +11334,20 @@ mkdir testFlakes && cd testFlakes
 nix flake init
 #+end_src
 
-#+RESULTS:
-
-This creates a single ~flake.nix~ file, shown below, and running ~nix flake lock~ to get ~lockfile~ with all the details.
+This creates a single ~flake.nix~ file, shown below with some minor comments, and running ~nix flake lock~ to get ~lockfile~ with all the details.
 #+begin_src nix
 {
   description = "A very basic flake";
-
   outputs = { self, nixpkgs }: {
-
     packages.x86_64-linux.hello = nixpkgs.legacyPackages.x86_64-linux.hello;
-
+    # Executed by nix build .
     defaultPackage.x86_64-linux = self.packages.x86_64-linux.hello;
-
   };
 }
 #+end_src
+
+This replaces in effect; a ~default.nix~ file, and can be built with ~nix build .~. The ~legacyPackages~ invocation essentially defines the derivation being used.
+
 The ~flake.lock~ file generated can be used to get reproducible builds across machines. This is a simple first approximation of getting reproducibility across machines, but it is still a bit too magical. We still haven't pinned which version of ~nixpkgs~ we are using explicitly.
 What we'd like to do is actually pin to a particular commit / branch. This is pretty straightforward as well, and we will need to modify the input section.
 #+begin_src nix
@@ -11359,19 +11357,17 @@ What we'd like to do is actually pin to a particular commit / branch. This is pr
   };
   outputs = {
   self,
-  nixpkgs
+  nixpkgs # From the inputs {}
   }: {
-
     packages.x86_64-linux.hello = nixpkgs.legacyPackages.x86_64-linux.hello;
-
     defaultPackage.x86_64-linux = self.packages.x86_64-linux.hello;
   };
 }
 #+end_src
 
 Note that we don't actually need to specify ~flake = true;~ since that is the default.
-*** ~nix-shell~ Goodness
-Just like ~nix-shell~ and ~nix-build --run-env~, ~nix develop~ allows us to inspect and run any of the phases defined in the ~default.nix~; for example:
+*** Basic Derivation Introspection
+Just like ~nix-shell default.nix~ and ~nix-build --run-env~, ~nix develop~ allows us to inspect and run any of the phases defined in the ~default.nix~; for example:
 #+begin_src bash
 cd testFlakes
 nix develop
@@ -11386,9 +11382,48 @@ installPhase
 #+end_src
 
 This makes it easier to debug phases as well.
+** Augmenting Existing Packages
+Let us consider a stand-alone package; with a ~default.nix~ and ~shell.nix~. We will use [[https://dseams.info][d-SEAMS]] as a concrete example; since it is both in ~nixpkgs~ and uses ~niv~ and ~*.nix~ files in development.
+
 ** Flake Helpers
-Note that just like with the standard workflow, we have some tools which can help matters move along.
--
+Just like with the standard workflow, we have some tools which can help matters move along. Additionally, the Nix User Repository is also distributed in a flake-friendly manner, which we can use to our advantage.
+*** Flake Utilities
+For migrating existing package derivations, the ~flake-utils~ [[https://github.com/numtide/flake-utils][of numtide]] are a fantastic.
+#+begin_src nix
+{
+  description = "Flake utils demo";
+
+  inputs.flake-utils.url = "github:numtide/flake-utils";
+
+  outputs = { self, nixpkgs, flake-utils }:
+    flake-utils.lib.simpleFlake {
+      inherit self nixpkgs;
+      name = "simple-flake";
+      overlay = ./overlay.nix;
+      shell = ./shell.nix;
+    };
+}
+#+end_src
+*** NUR Usage
+A basic flake using the NUR is then:
+#+begin_src nix
+{
+  description = "A NUR test flake";
+  inputs = {
+    nixpkgs = { url = "github:NixOS/nixpkgs/21.05"; flake = true; };
+    nur = { url = "github:NixOS/nixpkgs/21.05"; flake = true; };
+  };
+  outputs = { self, nixpkgs, nur }: {
+    nixosConfigurations.myConfig = nixpkgs.lib.nixosSystem {
+      modules = [
+        { nixpkgs.overlays = [ nur.overlay ]; }
+      ];
+    };
+    packages.x86_64-linux.hello = nur.repos.mic92.hello-nur;
+    defaultPackage.x86_64-linux = self.packages.x86_64-linux.hello;
+  };
+}
+#+end_src
 ** Python
 To work with ~python~ I typically use ~mach-nix~ as [[Niv and Mach-Nix for Nix Python][described here]]. However, with a ~flake~.
 ** Concrete Example: GPAW
