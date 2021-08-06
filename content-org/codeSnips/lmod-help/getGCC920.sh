@@ -1,8 +1,6 @@
-mkdir -p ~/tmpHPC
-cd $HOME/tmpHPC
+cd $hpcroot
+ml load gcc/gmp gcc/mpfr gcc/mpc
 myprefix=$HOME/.hpc/gcc/9.2.0
-export PATH
-export LIBRARY_PATH=/usr/lib64/:$LIBRARY_PATH
 wget https://ftp.gnu.org/gnu/gcc/gcc-9.2.0/gcc-9.2.0.tar.xz
 tar xfv gcc-9.2.0.tar.xz
 cd gcc-9.2.0
@@ -24,5 +22,10 @@ SED=sed                               \
              --with-mpc=$HOME/.hpc/gcc/mpc/1.2.0 \
              --disable-bootstrap      \
              --with-system-zlib
+export PATH
+unset LIBRARY_PATH
+export LIBRARY_PATH=/usr/lib64/
+mkdir -p -- .deps
 make -j$(nproc)
+make install
 ml load gcc/9.2.0
