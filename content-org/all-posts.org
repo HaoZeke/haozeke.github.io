@@ -11246,6 +11246,98 @@ Therefore, ~tiny~ must be ~FLT_MIN~ or ~DBL_MIN~. I also took a small detour int
 #+end_src
 ** Conclusions
 My thoughts have been turning towards scalability for a long time now. Good design before it is necessary is a premature optimization, but I think I would like to formulate a cleaner way of dealing with the intrinsic functions which can be reduced to values. The ~ISO_C_BINDING~ has been in my thoughts for a while now. Without it, runtime compilation of the ASR remains intractable. I expect the next week to continue along the same lines, populating value for all the intrinsic functions called by ~minidftatom~. It would be best to also generate corresponding ~runtime~ implementations.
+* DONE GSoC21 W9: LFortran Bug Hunting Bonanza :@notes:gsoc21:fortran:rambling:
+CLOSED: [2021-08-06 Fri 19:50]
+:PROPERTIES:
+:EXPORT_FILE_NAME: gsoc21-w9
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+begin_quote
+Continuing compile time intrinsic functions, ASR passes, and testing LAPACK
+#+end_quote
+** Background
+Serialized update for the [[https://summerofcode.withgoogle.com/projects/#5790375215628288][2021 Google Summer of Code]] under the [[https://fortran-lang.org/][fortran-lang
+organization]], mentored by [[https://ondrejcertik.com/][Ondrej Certik]].
+*** Series
+This post is part of a series based around my weekly GSoC21 project check-ins.
+1. [[GSoC21 W1: LFortran Kickoff][GSoC21 W1: LFortran Kickoff]]
+2. [[GSoC21 W2: LFortran Unraveling][GSoC21 W2: LFortran Unraveling]]
+3. [[GSoC21 W3: Kind, Characters, and Standards][GSoC21 W3: Kind, Characters, and Standards]]
+4. [[GSoC21 W4: LFortran, Backends and Bugs][GSoC21 W4: LFortran, Backends and Bugs]]
+5. [[GSoC21 W5: LFortran Design Details and ~minidftatom~][GSoC21 W5: LFortran Design Details and ~minidftatom~]]
+6. [[GSoC21 W6: LFortran ASR and Values][GSoC21 W6: LFortran ASR and Values]]
+7. [[GSoC21 W7: LFortran Workflow Basics][GSoC21 W7: LFortran Workflow Basics]]
+8. [[GSoC21 W8: LFortran Refactors, and Compile Time Evaluations][GSoC21 W8: LFortran Refactors, and Compile Time Evaluations]]
+9. *GSoC21_W9: LFortran and LAPACK* <-- You are here!
+** Logistics
+- Daily checkins over Zulip
+  + Code reviews on Gitlab
+- Met with Ondrej and Thirumalai on Thursday
+  + Discussed comments and how to attach them
+    - Decided that it would make sense to possibly store the comments in the ASR to make sure that the comments are attached to the right nodes
+- We discussed a set of outputs for the next week and wrap uppolicies
+  + It was fun to see some of Thirumalai's work in person!
+** Overview
+This has been a bit of a slow slog. With the ~fixed form parser~ completed, LAPACK is no longer a distant dream, so this week involved tracing through LAPACK and narrowing down issues for it. There are a few open issues which have arcane sources; but these are meant to be handled with prejudice and not merely complained about.
+*** New Merge Requests
+I have decided to elide draft MRs for now.
+- [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1107][tiny: Body visitor implementation (1112)]] :: The population of ~value~ for ~tiny~ calls beyond the symbol table i.e. in the body
+*** Freshly Assigned Issues
+- [[https://gitlab.com/lfortran/lfortran/-/issues/480][--show-asr Scientific notation (480)]] :: A visual glitch in the prettied output; not really under my ambit but it might be fun
+- [[https://gitlab.com/lfortran/lfortran/-/issues/481][Compiling LAPACK (481)]] :: This is the first fixed form program to be tested, there are some bugs to be ironed out but it should be very much within what we can do by the end of the program. This issue is mostly handled by Ondrej, but since it is application based I assigned myself as well
+- [[https://gitlab.com/lfortran/lfortran/-/issues/482][Namespace proposal for compile time intrinsics (482)]] :: This is part of a refactoring design plan
+- [[https://gitlab.com/lfortran/lfortran/-/issues/483][Semantics: Implement REAL(A [, KIND]) (483)]] :: Conversions! The bedrock of many a numerical program, this is one of the most relevant casts
+- [[https://gitlab.com/lfortran/lfortran/-/issues/484][Semantics: Implement INT(A [, KIND]) (484)]] :: All conversions are similar, and sort of pointless in the SymbolTable, but still necessary and fun
+- [[https://gitlab.com/lfortran/lfortran/-/issues/485][Formatting: Array pointout (485)]] :: Another minor visual glitch
+** Misc Logs
+*** LAPACK Setup
+We start with a setup similar to that of ~minidftatom~ and ~dftatom~.
+#+begin_src bash
+git clone git@github.com:Reference-LAPACK/lapack.git
+cd lapack
+git checkout v3.10.0
+#+end_src
+Now we can build it with ~gfortran~ as a test.
+#+begin_src bash
+mkdir build && cd build
+ccmake .. # Make sure to turn on testing
+FC=$(which gfortran) cmake .. -DCMAKE_INSTALL_LIBDIR=$(pwd)/tmp -G "Ninja"
+cmake --build .
+ctest
+#+end_src
+This is a rather long process, with ~4097~ files to compile, ~6814~ if ~BLAS~ is required; the dependency tree is bound to be rather esoteric looking; so we won't bother.
+
+Rather than using ~cmake~ for the ~lfortran~ test we will use the ~makefile~ setup.
+#+begin_src bash
+cp make.inc.example make.inc # Modify to set paths
+#+end_src
+
+Well the very first issue is that we should remove the ~doxygen~ style comments which are marked by ~*>~. Actually we should go ahead and remove all lines starting with ~*~. The [[https://regex101.com/r/maGoQR/1][regexp for this]] is ~\*.*$~ which simply captures any line starting with ~*~. I use ~sd~ (a [[https://github.com/chmln/sd][grep alternative]]) but any standard tool will work, including ~grep -vE~.
+#+begin_src bash
+# Stadard
+cat blah.f | grep -vE '^\*'
+# Easier
+# cargo install sd
+for file in ./*.f; do
+    sd '\*.*$' '' $file
+done
+#+end_src
+*** Real Body Visitors
+I spent far too long staring at code which actually errored out for a different reason. The MR logic is solid, but ~Var~ doesn't have a value assigned to it yet, even when it is decorated with ~parameter~ which was totally a silly mistake on my end. ~parameter~, as Ondrej pointed out, effectively acts as though the variable is declared to be a constant. So there is no conceptual problem assigning an ~expr_t* value~ to such a statement.
+
+Not sure why the standard allows this, but it felt incredibly pointless to implement ~real~ for the symbol-table:
+#+begin_src fortran
+program main
+  implicit none
+  integer, parameter :: x=3
+  real, parameter :: y=real(x)
+  print*, y
+end program main
+#+end_src
+
+Which ~gfortran~ accepts without a complaint. Not really much of a pain since there is a proposed refactor which is one of the primary goals of the next week after the bug fixes are in but still odd.
+** Conclusions
+Next week is crucial. The LLVM backend must gracefully accept ~value~ when present, and there are some additional tasks which simply must be completed. All the QoL MRs will be in next week as well. That said, I expect at this point to dedicate more time to the project, which is not a bad thing, but a bit of a sobering realization. Last week I wasn't working over the weekend, but I have several catchup tasks to finish this time around; for draft MRs and issues.
 * TODO Compiler Design
 In any case, though Ondrej knows exactly how I should implement the
 assumed length, I decided it was time to dive into the LLVM infrastructure
