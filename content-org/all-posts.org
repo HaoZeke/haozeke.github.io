@@ -11369,6 +11369,47 @@ This post is part of a series based around my weekly GSoC21 project check-ins.
 ** Misc Logs
 ** Conclusions
 This has been the last of the weekly updates. This doesn't mean anything will change other than the format. I quite like keeping track of the work I do in this manner; keeps me honest and not complacent. For those of you following along; this has been a fun ride; for those who come to this in the future; feel free to stick to the zeroth and the final posts and refer to these only when necessary.
+* DONE 42nd Annual Confereence of the Tex Users Group :@conferences:presentations:ramblings:docs:
+CLOSED: [2021-08-07 Sat 15:39]
+:PROPERTIES:
+:EXPORT_FILE_NAME: tug-2021-meta
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+BEGIN_QUOTE
+A meta-post on social events and my presentation at TUG21
+#+END_QUOTE
+** Background
+Much the same as the rationale behind my other presentation [[https://rgoswami.me/tags/presentations/][meta-posts]], but with some added shilling; since TUG is fantastic. Plus like the last year, I was gven the opportunity to coordiate social events with Jennifer Claudio.
+** Social Events
+- Since the 41st TUG in 2020; there is a Zulip instance which is active all year round [fn:whyhowzu]
+  + Can be [[https://tug.zulipchat.com/join/z7zb37mniu4p6ooptvmmuoep/][joined here]]
+- This year there was a Topia instance for more "pseudo-real" interactions
+  + Details sent to [[https://tug.org/tug2021/index.html#register][people who registered]] (free)
+** Slides
+- Title :: Continuous Integration and TeX with Org-Mode
+#+begin_quote
+In this talk I would like to introduce the usage of TeX and templates along with generating ad-hoc class and style files for working with orgmode. In particular, I will highlight also the process by which literate programming practices can be implemented with babel. This allows for a more native and flexible alternative to vendor locked in systems like Jupyterlab which rely on JS based inelegant approaches towards TeX typesetting. Finally, I would like to go into how to leverage CI methods for TeX workflows augmented with git.
+#+end_quote
+
+- A ~pdf~ copy of the slides are embedded below
+- The ~orgmode~ source is here on the [[https://github.com/HaoZeke/haozeke.github.io/blob/src/presentations/TUG2021/tug21rgpres.org][site's GH repo]]
+#+BEGIN_EXPORT html
+<script async class="speakerdeck-embed" data-id="bed5bfe07de04f22a8a79c69a705c063" data-ratio="1.77966101694915" src="//speakerdeck.com/assets/embed.js"></script>
+#+END_EXPORT
+** Video
+- This should be updated, but can be figured out with the [[https://tug.org/tug2021/sched.html][help of the schedule]]
+#+begin_export html
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ppB8v_thKHk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+#+end_export
+** Thoughts
+- We had a Zulip channel and separate streams for each talk
+  + This was a bit confusing for some participants
+- Some people preferred Topia because of the point and click interface
+  + However browser support and low connectivity were a problem
+** Conclusions
+The ~TeX~ community is one of the best online communities around. There aren't any friendlier or better versed in the topics presented, so this is definitely a group I hope to continue to be a part of. There were some great suggestions for developing the concepts further to make things more user friendly as well; which might be great fodder for another presenation next year perhaps. Plus there's [[http://tug.org/TUGboat/][TUGBoat]].
+
+[fn:whyhowzu] Zulip sponsors TUG as an open source community and provides Zulip Standard for our users
 * TODO Compiler Design
 In any case, though Ondrej knows exactly how I should implement the
 assumed length, I decided it was time to dive into the LLVM infrastructure
