@@ -11399,7 +11399,7 @@ In this talk I would like to introduce the usage of TeX and templates along with
 ** Video
 - This should be updated, but can be figured out with the [[https://tug.org/tug2021/sched.html][help of the schedule]]
 #+begin_export html
-<iframe width="560" height="315" src="https://www.youtube.com/embed/ppB8v_thKHk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://youtu.be/SZHIeevyo3U?t=8700" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 #+end_export
 ** Thoughts
 - We had a Zulip channel and separate streams for each talk
