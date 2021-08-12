@@ -11401,9 +11401,93 @@ The quote is motivated by my (limited) reading of two texts in the field of impl
 We were looking for a pedagogical, simple approach to calculating ~sin~. Unsurprisingly, the entire ecosystem of compilers seems to mostly follow one implementation from the early 90s. Which is great, but Fortran doesn't really implement IEEE 754's argument reduction routine (a.k.a. ~quadmath~). It turns out with a little massaging; the pedagogical [[https://realtimecollisiondetection.net/blog/?p=9][approach presented in this blog post by Christer Ericson]] can be adapted for use.
 
 
-We needed to do slightly better. For starters, the errors of around $10^{-16}$ could be stomached, but not the ones around $10^{-10}$.
+We needed to do slightly better. For starters, the errors of around $10^{-16}$ could be stomached, but not the ones around $10^{-10}$. Think of this as the same sort of problem as the standard fitting of a potential energy surface.
+
+How do we test these? Import from the intrinsic, and rename to a different symbol, then run a loop.
+** Sollya and Remez
+One of the many online nameless luminaries of stack overflow and the lik suggested that the Remez algorithm would be of more use than the Taylor series approximation being used right now.
+
+Thankfully testing this is trivial with Sollya. Since it does nothave a terminal inbuild we need ~rlwrap~ too.
+#+begin_src bash
+nix-shell -p sollya remez
+#+end_src
+Consider a trial implementation:
+#+begin_src fortran
+! lfortran_intrinsic_sin.f90
+module lfortran_intrinsic_sin
+use, intrinsic :: iso_fortran_env, only: sp => real32, dp => real64
+implicit none
+
+interface sin
+    module procedure dsin
+end interface
+
+contains
+
+elemental real(dp) function dsin(x) result(r)
+real(dp), parameter :: pi = 3.1415926535897932384626433832795_dp
+real(dp), intent(in) :: x
+real(dp) :: y
+integer :: n
+if (abs(x) < pi/2) then
+    r = kernel_dsin(x)
+else ! fold to pi/2
+! https://realtimecollisiondetection.net/blog/?p=9
+    y = modulo(x, 2*pi)
+    y = min(y, pi - y)
+    y = max(y, -pi - y)
+    y = min(y, pi - y)
+    r = kernel_dsin(y)
+end if
+end function
+! Implement kernel_dsin with Sollya (read post)
+#+end_src
+The general approach to testing this is then:
+#+begin_src fortran
+! test_sina.f90
+program main
+  use :: lfortran_intrinsic_sin, only: sin2 => dsin
+  real(kind=8) :: x,y
+  integer(kind=8) :: i
+  do i=1,1000000
+     y = real(i)/100.0
+     print*, y, abs(sin(y)-sin2(y))
+  end do
+end program
+#+end_src
+Which can be compiled with:
+#+begin_src bash
+gfortran -ffree-line-length-none lfortran_intrinsic_sin.f90 test_sina.f90 && ./a.out
+#+end_src
+Where the line length is important since we want to be able to copy and paste expressions from Sollya.
+The test expressions can be generated as follows:
+#+begin_src bash
+nix-shell -p sollya rlwrap
+rlwrap -A sollya
+prec=120;
+f=sin(x);
+d=[-pi/2;pi/2];
+p=remez(f,16,d,default,1e-16,1e-30);
+p;
+1.430896392112983438690712915149618875e-17 + x * (0.9999999999999989714281994951487325976 + x * (-3.349530544567829511297283045847078806e-16 + x * (-0.1666666666666470131512533841331726124 + x * (2.06038248351960358085265034956173799e-15 + x * (8.33333333322297677610158866083573121e-3 + x * (-5.200037492550081347598442689963074914e-15 + x * (-1.984126981335937217532222096272076263e-4 + x * (6.779661505197324337448766161086156236e-15 + x * (2.755731547177283303366066506722157076e-6 + x * (-4.994033469644991382509162854527493863e-15 + x * (-2.505182167856013032537240066679691216e-8 + x * (2.101039405474559290547827191709051192e-15 + x * (1.604654097883256924434495617086734883e-10 + x * (-4.71033700061518989435986419744537652e-16 + x * (-7.356804698944816248097669067062646244e-13 + x * 4.36551332303930597866240036869066221e-17)))))))))))))))
+#+end_src
+Where the signature of ~remez~ is ~func, degree, interval, default=1, quality=1e-5, bounds=[0;infty]~;
+Now we can implement ~kernel_dsin~ as follows:
+#+begin_src fortran
+elemental real(dp) function kernel_dsin(x) result(res)
+  real(dp), intent(in) :: x
+  res = 2.087908370826698101212920076154545995e-37 + x * (0.999999999999999998041119383719347623 + x * (-1.064032149680587544373098154082500645e-35 + x * (-0.1666666666666666190025821826687444107 + x * (7.30686333395136116304293345061277226e-35 + x * (8.33333333333299311754500597882861296e-3 + x * (-1.943708819070258466622845490191457106e-35 + x * (-1.984126984115944978429391691458880356e-4 + x * (-5.30338548309302786712332804817767749e-34 + x * (2.75573192045805570474164007876304645e-6 + x * (1.185501640257404955632191608977614537e-33 + x * (-2.505210638108326593133314706727558551e-8 + x * (-1.130558221840288033840556502976715689e-33 + x * (1.605891864396986879258207676930409245e-10 + x * (5.55078059098189832214306988928325169e-34 + x * (-7.64251167703190749535921829507420458e-13 + x * (-1.378921764094824341145286520847883578e-34 + x * (2.716665406378575502010982726791586904e-15 + x * 1.374874330886318513437613275675104639e-35)))))))))))))))))
+end function
+#+end_src
+We would like to also get some statistics of the output, in ~bash~ just becuse we can [fn:whybashwhere].
+#+begin_src bash
+gfortran -ffree-line-length-none lfortran_intrinsic_sin.f90 test_sina.f90 && ./a.out > remez16
+awk 'NR == 1 || $2 < min {line = $0; min = $2}END{print line}' remez16
+awk 'NR == 1 || $2 > max {line = $0; max = $2}END{print line}' remez16
+#+end_src
 ** Conclusions
 This has been the last of the weekly updates. This doesn't mean anything will change other than the format. I quite like keeping track of the work I do in this manner; keeps me honest and not complacent. For those of you following along; this has been a fun ride; for those who come to this in the future; feel free to stick to the zeroth and the final posts and refer to these only when necessary.
+[fn:whybashwhere] From this [[https://stackoverflow.com/questions/13099202/awk-script-for-finding-smallest-value-from-column/13100039][stackoverflow post]] of course
 * DONE 42nd Annual Confereence of the Tex Users Group :@conferences:presentations:ramblings:docs:
 CLOSED: [2021-08-07 Sat 15:39]
 :PROPERTIES:
