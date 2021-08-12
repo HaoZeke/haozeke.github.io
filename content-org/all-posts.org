@@ -11339,13 +11339,12 @@ Which ~gfortran~ accepts without a complaint. Not really much of a pain since th
 ** Conclusions
 Next week is crucial. The LLVM backend must gracefully accept ~value~ when present, and there are some additional tasks which simply must be completed. All the QoL MRs will be in next week as well. That said, I expect at this point to dedicate more time to the project, which is not a bad thing, but a bit of a sobering realization. Last week I wasn't working over the weekend, but I have several catchup tasks to finish this time around; for draft MRs and issues.
 * TODO GSoC21 W10: LFortran and Wrapping Up :@notes:gsoc21:fortran:rambling:
-CLOSED: [2021-08-06 Fri 19:50]
 :PROPERTIES:
 :EXPORT_FILE_NAME: gsoc21-w10
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :END:
 #+begin_quote
-Final weekly update for LFortran
+The road to intrinsic functions is paved with IEEE standards
 #+end_quote
 ** Background
 Serialized update for the [[https://summerofcode.withgoogle.com/projects/#5790375215628288][2021 Google Summer of Code]] under the [[https://fortran-lang.org/][fortran-lang
@@ -11363,10 +11362,46 @@ This post is part of a series based around my weekly GSoC21 project check-ins.
 9. [[GSoC21 W9: LFortran Bug Hunting Bonanza][GSoC21 W9: LFortran Bug Hunting Bonanza]]
 10. *GSoC21 W10: LFortran and Wrapping Up* <-- You are here!
 ** Logistics
+- Met with Ondrej daily from Sunday till Friday
+  + On Sunday we finished the compile time evaluation (partially)
+    - Ondrej finished the rest overnight
+  + On Monday, we started co working on runtime implemenations
+    - Also added some more compile time stuff and pointers to clean things up
+    - Ondrej fixed a longstanding bug in the deserialise of serialized mod
 ** Overview
 *** New Merge Requests
 *** Freshly Assigned Issues
 ** Misc Logs
+This was a really packed week. Much of the discussion has already taken place in the relevant issues and MRs; but some notes are in order for posterity.
+*** Items to fix
+- Some compile time function implementations are not standard compliatn
+  + ~real~
+- Implicit casting rules fail for certain cases
+  + Notably for all ~Arrays~
+Strange bug when intrinsic functions are called on implicit cast
+*** Generic Proceedures
+This was fun to work on.
+*** Fortran Runtime Intrinsics
+A long term goal is to have a dog-fooded runtime library. We zeroed in on this design over on the wiki a few weeks ago. Now with generic proceedures in; we've begun implementing some of the intrinsic functions.
+**** Simple Functions
+The simplest ones are of course trivial:
+#+begin_src fortran
+abs
+#+end_src
+**** Trignometric functions
+For more "mathematical" methods, we needed a template. One we found which was compatible with our license is the ~fdlibm~ versions. Consider for ~sin~:
+- We have [[https://www.netlib.org/fdlibm/s_sin.c][s_sin]] and also [[http://www.netlib.org/fdlibm/k_sin.c][k_sin]]
+  + Written in C and assembly
+Older compilers are much more readable compared to the newer ones.
+** Trignometric Functions
+The quote is motivated by my (limited) reading of two texts in the field of implementing elementary functions, namely the
+*** Sin
+- [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1167/diffs?commit_id=991f1c8ca5642b4e8ebbf9766405c3d06f897a28][This and]] then the [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1167/diffs?commit_id=8314a883925187d830492a6ea32bb4e6b6968daa][simpler version here]]
+
+We were looking for a pedagogical, simple approach to calculating ~sin~. Unsurprisingly, the entire ecosystem of compilers seems to mostly follow one implementation from the early 90s. Which is great, but Fortran doesn't really implement IEEE 754's argument reduction routine (a.k.a. ~quadmath~). It turns out with a little massaging; the pedagogical [[https://realtimecollisiondetection.net/blog/?p=9][approach presented in this blog post by Christer Ericson]] can be adapted for use.
+
+
+We needed to do slightly better. For starters, the errors of around $10^{-16}$ could be stomached, but not the ones around $10^{-10}$.
 ** Conclusions
 This has been the last of the weekly updates. This doesn't mean anything will change other than the format. I quite like keeping track of the work I do in this manner; keeps me honest and not complacent. For those of you following along; this has been a fun ride; for those who come to this in the future; feel free to stick to the zeroth and the final posts and refer to these only when necessary.
 * DONE 42nd Annual Confereence of the Tex Users Group :@conferences:presentations:ramblings:docs:
