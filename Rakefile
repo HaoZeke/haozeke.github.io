@@ -1,4 +1,6 @@
 require 'rake'
+require 'image_optim'
+
 # Variables
 ORG_FILES = Rake::FileList.new("content-org/**/*.*org") do |fl| 
   fl.exclude("**/tmp/*")
@@ -13,6 +15,9 @@ rgScripts=Dir.pwd+"/scripts"
 # puts oxSetup
 # puts oxTmp
 Rake.application.options.trace_rules = true
+
+# Global
+image_optim = ImageOptim.new(:skip_missing_workers => true)
 
 # Tasks
 task :default => :hugoServe
@@ -50,6 +55,15 @@ end
 # 50.7 with -m
 # 33.8 without
 # 53 with multitask
+
+desc "Optimize images"
+task :optImages do
+  image_optim.optimize_images!(Dir['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif', '**/*.svg']) do |unoptimized, optimized|
+  if optimized
+    puts "Optimizing \n #{unoptimized} inplace\n"
+  end
+end
+end
 
 # From https://avdi.codes/rake-part-3-rules/
 def source_for_md(md_file)
