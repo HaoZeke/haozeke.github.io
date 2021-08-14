@@ -38,6 +38,8 @@ in pkgs.mkShell {
     # Ruby
     myGems
     (lowPrio myGems.wrappedRuby)
+    # Image optim
+    pngout
   ] ++ [ hpkgs.pandoc ];
   shellHook = hook;
   GIT_SSL_CAINFO = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
