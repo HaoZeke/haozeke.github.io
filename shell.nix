@@ -39,6 +39,7 @@ in pkgs.mkShell {
     myGems
     (lowPrio myGems.wrappedRuby)
     # Image optim
+    image_optim
     pngout
   ] ++ [ hpkgs.pandoc ];
   shellHook = hook;
