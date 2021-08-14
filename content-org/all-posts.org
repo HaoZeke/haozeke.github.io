@@ -11338,7 +11338,8 @@ end program main
 Which ~gfortran~ accepts without a complaint. Not really much of a pain since there is a proposed refactor which is one of the primary goals of the next week after the bug fixes are in but still odd.
 ** Conclusions
 Next week is crucial. The LLVM backend must gracefully accept ~value~ when present, and there are some additional tasks which simply must be completed. All the QoL MRs will be in next week as well. That said, I expect at this point to dedicate more time to the project, which is not a bad thing, but a bit of a sobering realization. Last week I wasn't working over the weekend, but I have several catchup tasks to finish this time around; for draft MRs and issues.
-* TODO GSoC21 W10: LFortran Runtime Library Design :@notes:gsoc21:fortran:rambling:
+* DONE GSoC21 W10: LFortran Runtime Library Design :@notes:gsoc21:fortran:rambling:
+CLOSED: [2021-08-14 Sat 00:28]
 :PROPERTIES:
 :EXPORT_FILE_NAME: gsoc21-w10
 :EXPORT_HUGO_PANDOC_CITATIONS: t
@@ -11607,6 +11608,13 @@ Rather than move forward with the closing comments; and going into more detail a
 [fn:whybashwhere] From this [[https://stackoverflow.com/questions/13099202/awk-script-for-finding-smallest-value-from-column/13100039][stackoverflow post]] of course
 [fn:wherewhysohist] From this [[https://berthub.eu/articles/posts/help-my-sin-is-slow-and-my-fpu-is-inaccurate/][blog post by Bert Hubert]]
 [fn:butresearch] I maintain similar notes for my research, but those sadly never see the light of day
+* TODO GSoC21 LFortran, the report
+#+begin_quote
+A wrap up post
+#+end_quote
+
+** Thoughts
+So, after ten weeks of thousands of words of (semi-)popular writing, countless lines of code and hours of fantastic meetings; where are we and where is ~LFortran~ and where do we go from here?
 * DONE 42nd Annual Confereence of the Tex Users Group :@conferences:presentations:ramblings:docs:
 CLOSED: [2021-08-07 Sat 15:39]
 :PROPERTIES:
