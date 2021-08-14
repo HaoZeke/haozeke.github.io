@@ -11379,6 +11379,8 @@ This post is part of a series based around my weekly GSoC21 project check-ins.
     - Also fixed another serialization bug (floats were being truncated)
   + On Friday we redesigned the runtime library
     - Also discussed future plans and longterm goals
+    - Opened discussions around the runtime library and elementary function accuracy on the Zulip instance
+    - Considered adding ~fortran~ versions of LAMMPS (F77 and F90) to the compilation plans
 ** Overview
 This was most definitely my most productive week by far.
 *** New Merge Requests
