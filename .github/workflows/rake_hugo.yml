@@ -23,9 +23,13 @@ jobs:
         run: |
           nix-env -iA cachix -f https://cachix.org/api/v1/install
           cachix use rgoswamime
+        env:
+          NIXPKGS_ALLOW_UNFREE: 1
 
       - name: Build
         run: nix-shell --run "rake hugoBuild"
+        env:
+          NIXPKGS_ALLOW_UNFREE: 1
 
       - name: Deploy
         if: "!contains(github.event.head_commit.message, 'ImgBot')"
