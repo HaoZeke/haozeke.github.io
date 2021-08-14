@@ -13,7 +13,7 @@ let
   }).shell.nodeDependencies;
   stdenv = pkgs.stdenv;
   myGems = pkgs.bundlerEnv {
-    name = "gems-for-some-project";
+    name = "rgweb-gems";
     gemdir = builtins.path { path = ./.; name = "haozeke.github.io"; };
   };
   hook = ''
@@ -39,8 +39,8 @@ in pkgs.mkShell {
     myGems
     (lowPrio myGems.wrappedRuby)
     # Image optim
-    image_optim
-    pngout
+    (if pkgs.stdenv.isDarwin then null else pngout)
+    (if pkgs.stdenv.isDarwin then null else image_optim)
   ] ++ [ hpkgs.pandoc ];
   shellHook = hook;
   GIT_SSL_CAINFO = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
