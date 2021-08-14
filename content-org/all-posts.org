@@ -11338,13 +11338,15 @@ end program main
 Which ~gfortran~ accepts without a complaint. Not really much of a pain since there is a proposed refactor which is one of the primary goals of the next week after the bug fixes are in but still odd.
 ** Conclusions
 Next week is crucial. The LLVM backend must gracefully accept ~value~ when present, and there are some additional tasks which simply must be completed. All the QoL MRs will be in next week as well. That said, I expect at this point to dedicate more time to the project, which is not a bad thing, but a bit of a sobering realization. Last week I wasn't working over the weekend, but I have several catchup tasks to finish this time around; for draft MRs and issues.
-* TODO GSoC21 W10: LFortran and Wrapping Up :@notes:gsoc21:fortran:rambling:
+* TODO GSoC21 W10: LFortran Runtime Library Design :@notes:gsoc21:fortran:rambling:
 :PROPERTIES:
 :EXPORT_FILE_NAME: gsoc21-w10
-:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_PANDOC_CITATIONS: t
+:EXPORT_BIBLIOGRAPHY: biblio/GSoC21.bib
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
 :END:
 #+begin_quote
-The road to intrinsic functions is paved with IEEE standards
+The road to accurate elementary intrinsic functions is paved with IEEE/ISO standards
 #+end_quote
 ** Background
 Serialized update for the [[https://summerofcode.withgoogle.com/projects/#5790375215628288][2021 Google Summer of Code]] under the [[https://fortran-lang.org/][fortran-lang
@@ -11360,17 +11362,47 @@ This post is part of a series based around my weekly GSoC21 project check-ins.
 7. [[GSoC21 W7: LFortran Workflow Basics][GSoC21 W7: LFortran Workflow Basics]]
 8. [[GSoC21 W8: LFortran Refactors, and Compile Time Evaluations][GSoC21 W8: LFortran Refactors, and Compile Time Evaluations]]
 9. [[GSoC21 W9: LFortran Bug Hunting Bonanza][GSoC21 W9: LFortran Bug Hunting Bonanza]]
-10. *GSoC21 W10: LFortran and Wrapping Up* <-- You are here!
+10. *GSoC21 W10: LFortran Runtime Library Design* <-- You are here!
 ** Logistics
 - Met with Ondrej daily from Sunday till Friday
-  + On Sunday we finished the compile time evaluation (partially)
+  + On Sunday we finished the compile time evaluation design (partially)
     - Ondrej finished the rest overnight
   + On Monday, we started co working on runtime implemenations
     - Also added some more compile time stuff and pointers to clean things up
     - Ondrej fixed a longstanding bug in the deserialise of serialized mod
+  + On Wednesday there was more scaffolding work done on the generics
+    - Added another implicit cast
+  + On Thursday we implemented an all fortran ~sin~ function
+    - Just as accurate as ~gfortran~
+    - Compiles with LFortran
+    - Also fixed another serialization bug (floats were being truncated)
+  + On Friday we redesigned the runtime library
+    - Also discussed future plans and longterm goals
 ** Overview
+This was most definitely my most productive week by far.
 *** New Merge Requests
+- [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1113][llvm: More values when possible (1113)]] :: Backend values from compile time evaluations
+- [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1132][kind: Compile time (1132)]] :: A rather thorny refactor; but one with great benefits
+- [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1136][asr: Clean up extract_kind (1136)]] :: Fruitful usage of the new functions
+- [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1114][Compile Time Intrinsic: Real (1114)]] :: A ~cast~ based approach
+- [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1167][selected_kinds: Body visitors (1167)]] :: Possibly my favorite MR, a nice pure ~fortran~ implementation backed by a rough ~sollya~ approximation
+- [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1167][Initial sin implementation (1167)]] :: Possibly my favorite MR, a nice pure ~fortran~ implementation backed by a rough ~sollya~ approximation
+- [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1173][sin: Rework runtime to get better approximations (1173)]] :: Possibly my favorite MR, a nice pure ~fortran~ implementation backed by a rough ~sollya~ approximation
+- [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1176][Compile time floor (1176)]] :: Fairly standard implementation requiring casts
+- [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1162][Integer2real (1162)]] :: An implicit cast which had not previously been implement
+- [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1169][Compile time int (1169)]] :: Along the lines of ~real()~
+- [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1194][Sincos tests (1194)]] :: Benchmarking and setting up of the new test harness
 *** Freshly Assigned Issues
+- [[https://gitlab.com/lfortran/lfortran/-/issues/510][Semantics: Implement correct handling of PARAMETER (510)]]
+- [[https://gitlab.com/lfortran/lfortran/-/issues/507][ASR Pass: Order functions (507)]]
+- [[https://gitlab.com/lfortran/lfortran/-/issues/506][Semantics: Implement FLOOR (A [, KIND]) (506)]]
+- [[https://gitlab.com/lfortran/lfortran/-/issues/504][Semantics: Implement MODULO (A, [, KIND]) (504)]]
+- [[https://gitlab.com/lfortran/lfortran/-/issues/501][[RFC] Compile Time Intrinsic Design (501)]]
+- [[https://gitlab.com/lfortran/lfortran/-/issues/500][Strange Runtime issue with Implicit Casts (500)]]
+- [[https://gitlab.com/lfortran/lfortran/-/issues/499][Implicit cast for parameter (499)]]
+- [[https://gitlab.com/lfortran/lfortran/-/issues/494][Better handling of intrinsic module names (494)]]
+*** Additional Tasks
+Will write a closing report for next week.
 ** Misc Logs
 This was a really packed week. Much of the discussion has already taken place in the relevant issues and MRs; but some notes are in order for posterity.
 *** Items to fix
@@ -11394,9 +11426,10 @@ For more "mathematical" methods, we needed a template. One we found which was co
   + Written in C and assembly
 Older compilers are much more readable compared to the newer ones.
 ** Trignometric Functions
-The quote is motivated by my (limited) reading of two texts in the field of implementing elementary functions, namely the
-*** Sin
+The quote is motivated by my (limited) reading of two texts in the field of implementing elementary functions, namely @mullerElementaryFunctions2016 and @mullerHandbookFloatingPointArithmetic2018.
+*** Brainstorming Sin
 - [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1167/diffs?commit_id=991f1c8ca5642b4e8ebbf9766405c3d06f897a28][This and]] then the [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1167/diffs?commit_id=8314a883925187d830492a6ea32bb4e6b6968daa][simpler version here]]
+- Multiple interval based approximation used for [[https://github.com/amd/aocl-libm-ose/blob/4033e022da428125747e118ccd6fdd9cee21c470/src/optmized/sin.c][AMD's optimized sin]]
 
 We were looking for a pedagogical, simple approach to calculating ~sin~. Unsurprisingly, the entire ecosystem of compilers seems to mostly follow one implementation from the early 90s. Which is great, but Fortran doesn't really implement IEEE 754's argument reduction routine (a.k.a. ~quadmath~). It turns out with a little massaging; the pedagogical [[https://realtimecollisiondetection.net/blog/?p=9][approach presented in this blog post by Christer Ericson]] can be adapted for use.
 
@@ -11404,12 +11437,12 @@ We were looking for a pedagogical, simple approach to calculating ~sin~. Unsurpr
 We needed to do slightly better. For starters, the errors of around $10^{-16}$ could be stomached, but not the ones around $10^{-10}$. Think of this as the same sort of problem as the standard fitting of a potential energy surface.
 
 How do we test these? Import from the intrinsic, and rename to a different symbol, then run a loop.
-** Sollya and Remez
-One of the many online nameless luminaries of stack overflow and the lik suggested that the Remez algorithm would be of more use than the Taylor series approximation being used right now.
+** Sollya and Function Approximations
+Rather than go rooting around the annals of outdated compilers; and instead of boldly copying from existing libraries; an interesting approach is to calculate precise approximations including the Remez (or minmax), Taylor approximations, and Chebyshev approximations.
 
 Thankfully testing this is trivial with Sollya. Since it does nothave a terminal inbuild we need ~rlwrap~ too.
 #+begin_src bash
-nix-shell -p sollya remez
+nix-shell -p sollya rlwrap
 #+end_src
 Consider a trial implementation:
 #+begin_src fortran
@@ -11460,6 +11493,7 @@ Which can be compiled with:
 gfortran -ffree-line-length-none lfortran_intrinsic_sin.f90 test_sina.f90 && ./a.out
 #+end_src
 Where the line length is important since we want to be able to copy and paste expressions from Sollya.
+*** Remez
 The test expressions can be generated as follows:
 #+begin_src bash
 nix-shell -p sollya rlwrap
@@ -11476,18 +11510,103 @@ Now we can implement ~kernel_dsin~ as follows:
 #+begin_src fortran
 elemental real(dp) function kernel_dsin(x) result(res)
   real(dp), intent(in) :: x
-  res = 2.087908370826698101212920076154545995e-37 + x * (0.999999999999999998041119383719347623 + x * (-1.064032149680587544373098154082500645e-35 + x * (-0.1666666666666666190025821826687444107 + x * (7.30686333395136116304293345061277226e-35 + x * (8.33333333333299311754500597882861296e-3 + x * (-1.943708819070258466622845490191457106e-35 + x * (-1.984126984115944978429391691458880356e-4 + x * (-5.30338548309302786712332804817767749e-34 + x * (2.75573192045805570474164007876304645e-6 + x * (1.185501640257404955632191608977614537e-33 + x * (-2.505210638108326593133314706727558551e-8 + x * (-1.130558221840288033840556502976715689e-33 + x * (1.605891864396986879258207676930409245e-10 + x * (5.55078059098189832214306988928325169e-34 + x * (-7.64251167703190749535921829507420458e-13 + x * (-1.378921764094824341145286520847883578e-34 + x * (2.716665406378575502010982726791586904e-15 + x * 1.374874330886318513437613275675104639e-35)))))))))))))))))
+  res = 2.087908370826698101212920076154545995e-37_dp + x * (0.999999999999999998041119383719347623_dp + x * (-1.064032149680587544373098154082500645e-35_dp + x * (-0.1666666666666666190025821826687444107_dp + x * (7.30686333395136116304293345061277226e-35_dp + x * (8.33333333333299311754500597882861296e-3_dp + x * (-1.943708819070258466622845490191457106e-35_dp + x * (-1.984126984115944978429391691458880356e-4_dp + x * (-5.30338548309302786712332804817767749e-34_dp + x * (2.75573192045805570474164007876304645e-6_dp + x * (1.185501640257404955632191608977614537e-33_dp + x * (-2.505210638108326593133314706727558551e-8_dp + x * (-1.130558221840288033840556502976715689e-33_dp + x * (1.605891864396986879258207676930409245e-10_dp + x * (5.55078059098189832214306988928325169e-34_dp + x * (-7.64251167703190749535921829507420458e-13_dp + x * (-1.378921764094824341145286520847883578e-34_dp + x * (2.716665406378575502010982726791586904e-15_dp + x * 1.374874330886318513437613275675104639e-35)))))))))))))))))
 end function
 #+end_src
+Note that we need to use double precision for the numbers, so we can replace ~SPACE+~ with ~_dpSPACE+~.
 We would like to also get some statistics of the output, in ~bash~ just becuse we can [fn:whybashwhere].
 #+begin_src bash
 gfortran -ffree-line-length-none lfortran_intrinsic_sin.f90 test_sina.f90 && ./a.out > remez16
 awk 'NR == 1 || $2 < min {line = $0; min = $2}END{print line}' remez16
 awk 'NR == 1 || $2 > max {line = $0; max = $2}END{print line}' remez16
 #+end_src
+*** Taylor and Chebyshev
+To extract information from the "certified" functions in ~Sollaya~ we need to remember that the return value is a list.
+#+begin_src bash
+nix-shell -p sollya rlwrap
+rlwrap -A sollya
+prec=120;
+f=sin(x);
+d=[-pi/2;pi/2];
+p=chebyshevform(f,16,d);
+p[2];
+p[0];
+quit;
+#+end_src
+Similarly ~taylorform~ can be used to get Taylor series expansions. Given that we know exactly what we want to generate; we can also simply use ~sollya~ with an input script:
+#+begin_src bash
+sollya < taylorform16
+#+end_src
+Where ~taylorform16~ contains:
+#+begin_src bash
+f=sin(x);
+d=[-pi/2;pi/2];
+p=taylorform(f,16,d);
+p[0];
+#+end_src
+This workflow can be easily extended into a script based runner.
+** Better Polynomials
+Some basic understanding of series expansions and / or visual inspection would make it clear that for ~sin~ at-least; the odd terms are essentially $0$. ~Sollya~ can handle these; as described in @mullerElementaryFunctions2016. We opted to go the rounding error route.
+** Rounding Errors
+With Ondrej, we were able to isolate the inaccuracy in our pure ~fortran~ implementation and we realized it stemmed from the manner in which our argument reduction is carried out. This is a well known problem with attempted solutions from 1980s @payneRadianReductionTrigonometric1983a (including a related implementation [[http://ftp.netbsd.org/pub/NetBSD/NetBSD-current/src/lib/libm/arch/vax/n_sincos.S][in BSD]])[fn:wherewhysohist]. In particular, as per this [[https://www.csee.umbc.edu/~phatak/645/supl/Ng-ArgReduction.pdf][WG document of the SunPro group]] @ngArgumentReductionHuge2006 describing the cannonical implementation; the error is actually from the division and difference. This is also touched upon elsewhere in the literature, @brisebarreNewRangeReductionAlgorithm2005 and @defourNewRangeReduction, along with @mullerHandbookFloatingPointArithmetic2018 . Naturally one of first places to check is the relevant [[http://www.open-std.org/JTC1/SC22/WG11/docs/n462.pdf][ISO draft standard on elementary functions]] @N462Pdf .
+
+#+DOWNLOADED: screenshot @ 2021-08-13 13:18:16
+#+caption: The ISO/IEC FCD 10967-2.4:1999(E) suggestion for ~sin~
+[[file:images/Rounding_Errors/2021-08-13_13-18-16_screenshot.png]]
+
+This isn't immediately actionable; but might be something for later. Naturally the discussions here in context of IEEE 754 @IEEEStd754 (which the Fortran standard does not fully support) and presumes basic knowledge of floating point numbers @goldbergWhatEveryComputer1991 . The clearest explanation for requiring higher precision for some constants in these reduction algorithms is given nicely by the draft standard:
+#+begin_quote
+For reduction of an argument given in radians, implementations use one or several approximate
+value(s) of π (or of a multiple of π), valid to, say, n digits. The division implied in the argument
+reduction cannot be valid to more than n digits, which implies a maximum absolute angle value
+for which the reduction yields an accurate reduced angle value.
+#+end_quote
+
+** Benchmarking and Testing
+To make the benchmarking of new ~lfortran~ runtime intrinsic functions as painless as the existing test runner framework; I ended up implementing a new framework for these. Currently this takes different compiler backends and a TOML file along with some ~Jinja2~ templates and makes a ~CMake~ based project which is built and gives out a grid of points along with the ~gfortran~ values and ~abs~ differences. Some things to do there:
+- [ ] Plot things automatically
+- [ ] Use non-uniform grids
+- Other QoL changes
+This is really easy to work with:
+#+begin_src bash
+cd src/runtime/pure/benchmarks
+nix-shell -p 'python38.withPackages(ps: with ps; [seaborn matplotlib click jinja2 tomli pandas])'
+# Or just micromamba install seaborn matplotlib pandas click jinja2 tomli
+python gen_test.py --execute --build --compiler "gfortran"
+#+end_src
+The TOML file has simple naming rules:
+#+begin_src toml
+[[trig]] # [name of lfortran_MODULE.f90]
+fname = "sin" # Function to generate test for; must be the same as for gfortran
+only = "dsin" # if not testing same function
+range = 20 # [-range, +range]
+stepsize = 0.01
+#+end_src
+As does the template:
+#+begin_src fortran
+program {{ fname }}_test
+  use, intrinsic :: iso_fortran_env, only: sp => real32, dp => real64
+  use :: lfortran_intrinsic_trig, only: {{ fname }}2 => {{ fname }}
+  real(dp), parameter :: pi = 3.1415926535897932384626433832795_dp
+  real(dp) :: ir, gf, lf
+  print*, "Compiled with {{ compiler  }}"
+  print*, "x           ", "gfortran_{{fname}}(x)           ", &
+        "lfortran_{{fname}}(x)           ", "abs_error           "
+  ir = -{{ range }}
+  do while (ir<={{ range }})
+     gf = {{ fname }}(ir)
+     lf = {{ fname }}2(ir)
+     print*, ir, gf, lf, abs(gf-lf)
+     ir = ir + {{ stepsize }}
+  end do
+end program
+#+end_src
 ** Conclusions
-This has been the last of the weekly updates. This doesn't mean anything will change other than the format. I quite like keeping track of the work I do in this manner; keeps me honest and not complacent. For those of you following along; this has been a fun ride; for those who come to this in the future; feel free to stick to the zeroth and the final posts and refer to these only when necessary.
+Rather than move forward with the closing comments; and going into more detail about the manner in which further ~sollya~ based polynomial approximations are being looked into; I will end this post here; as a trailer and invitation to the closing report. This has been the last of the weekly updates. This doesn't mean anything will change other than the format. I quite like keeping track of the work I do in this manner; keeps me honest and not complacent [fn:butresearch]. For those of you following along; this has been a fun ride; for those who come to this in the future; feel free to follow along from the beginning and drop comments below.
+
 [fn:whybashwhere] From this [[https://stackoverflow.com/questions/13099202/awk-script-for-finding-smallest-value-from-column/13100039][stackoverflow post]] of course
+[fn:wherewhysohist] From this [[https://berthub.eu/articles/posts/help-my-sin-is-slow-and-my-fpu-is-inaccurate/][blog post by Bert Hubert]]
+[fn:butresearch] I maintain similar notes for my research, but those sadly never see the light of day
 * DONE 42nd Annual Confereence of the Tex Users Group :@conferences:presentations:ramblings:docs:
 CLOSED: [2021-08-07 Sat 15:39]
 :PROPERTIES:
