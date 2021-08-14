@@ -11614,7 +11614,6 @@ Rather than move forward with the closing comments; and going into more detail a
 #+begin_quote
 A wrap up post
 #+end_quote
-
 ** Thoughts
 So, after ten weeks of thousands of words of (semi-)popular writing, countless lines of code and hours of fantastic meetings; where are we and where is ~LFortran~ and where do we go from here?
 * DONE 42nd Annual Confereence of the Tex Users Group :@conferences:presentations:ramblings:docs:
