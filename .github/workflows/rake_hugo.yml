@@ -3,8 +3,6 @@ name: Rake ox-hugo
 on:
   push:
     branches: [src]
-  pull_request:
-    branches: [src]
   schedule:
     - cron: "0 0 */1 * *"
 

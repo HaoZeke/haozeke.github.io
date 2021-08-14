@@ -1,7 +1,6 @@
 # Borrowed from https://github.com/fission-suite/fission/blob/main/.github/workflows/cachix.yaml
 name: Cachix
 on:
-  pull_request:
   push:
     branches: [src]
 jobs:
