@@ -40,7 +40,7 @@ task :hugoServe, [:port] => [:md] do |t, args|
 end
 
 desc "Build site with Hugo"
-task :hugoBuild => ["md"] do
+task :hugoBuild => ["md", "optImages"] do
   sh "hugo --minify --enableGitInfo"
 end
 
@@ -56,13 +56,17 @@ end
 # 33.8 without
 # 53 with multitask
 
+# For zsh:
+# rake optImages\[content-org\]
 desc "Optimize images"
-task :optImages do
-  image_optim.optimize_images!(Dir['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif', '**/*.svg']) do |unoptimized, optimized|
+task :optImages, [:sources] do |t, args|
+  args.with_defaults(:sources => "public")
+  image_optim.optimize_images!(Dir.glob("#{args.sources}**/**/*.{png,jpg,jpeg,svg,gif}")) do |unoptimized, optimized|
+    puts "Testing #{unoptimized}"
   if optimized
-    puts "Optimizing \n #{unoptimized} inplace\n"
+    puts "==> Optimized inplace"
   end
-end
+  end
 end
 
 # From https://avdi.codes/rake-part-3-rules/
