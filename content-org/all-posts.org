@@ -11611,12 +11611,120 @@ Rather than move forward with the closing comments; and going into more detail a
 [fn:whybashwhere] From this [[https://stackoverflow.com/questions/13099202/awk-script-for-finding-smallest-value-from-column/13100039][stackoverflow post]] of course
 [fn:wherewhysohist] From this [[https://berthub.eu/articles/posts/help-my-sin-is-slow-and-my-fpu-is-inaccurate/][blog post by Bert Hubert]]
 [fn:butresearch] I maintain similar notes for my research, but those sadly never see the light of day
-* TODO GSoC21 LFortran, the report
+* DONE GSoC21 LFortran and Computational Chemistry
+CLOSED: [2021-08-20 Fri 00:43]
+:PROPERTIES:
+:EXPORT_FILE_NAME: gsoc21-fin-reprot
+:EXPORT_HUGO_PANDOC_CITATIONS: t
+:EXPORT_BIBLIOGRAPHY: biblio/GSoC21.bib
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
+:END:
 #+begin_quote
-A wrap up post
+Directed recollections of the GSoC21 timeline
 #+end_quote
-** Thoughts
-So, after ten weeks of thousands of words of (semi-)popular writing, countless lines of code and hours of fantastic meetings; where are we and where is ~LFortran~ and where do we go from here?
+** Background
+If the last ten weeks of weekly posts have not made it clear; as a student developer in the Google Summer of Code in the year 2021; I was privileged to work on the [[https://lfortran.org/][LFortran compiler]] alongside [[https://czgdp1807.github.io/][Gagandeep Singh]] and [[https://fortran-lang.discourse.group/t/lfortran-gsoc-student-progress-thirumalai-shaktivel-ast-project/1271][Thirumalai Shaktivel]] under the fantastic mentorship of [[https://ondrejcertik.com/][Ondřej Čertík]] under the Fortran-Lang organization.
+*** Series
+This post is going to be generally expositionary in tone; but the series is also reproduced.
+1. [[GSoC21 W1: LFortran Kickoff][GSoC21 W1: LFortran Kickoff]]
+
+2. [[GSoC21 W2: LFortran Unraveling][GSoC21 W2: LFortran Unraveling]]
+
+3. [[GSoC21 W3: Kind, Characters, and Standards][GSoC21 W3: Kind, Characters, and Standards]]
+
+4. [[GSoC21 W4: LFortran, Backends and Bugs][GSoC21 W4: LFortran, Backends and Bugs]]
+
+5. [[GSoC21 W5: LFortran Design Details and ~minidftatom~][GSoC21 W5: LFortran Design Details and ~minidftatom~]]
+
+6. [[GSoC21 W6: LFortran ASR and Values][GSoC21 W6: LFortran ASR and Values]]
+
+7. [[GSoC21 W7: LFortran Workflow Basics][GSoC21 W7: LFortran Workflow Basics]]
+
+8. [[GSoC21 W8: LFortran Refactors, and Compile Time Evaluations][GSoC21 W8: LFortran Refactors, and Compile Time Evaluations]]
+
+9. [[GSoC21 W9: LFortran Bug Hunting Bonanza][GSoC21 W9: LFortran Bug Hunting Bonanza]]
+
+10. [[GSoC21 W10: LFortran Runtime Library Design][GSoC21 W10: LFortran Runtime Library Design]]
+
+** Pencil Pushing
+This section describes the overall work done in a manner designed to delight minds enamoured by brevity and numbers. It is by no means a replacement for going over the series.
+*** Project Overview
+Given that the LFortran compiler is implemented in a manner reminiscent of both ~CPython~ and ~clang~, the main goal of the project was to leverage the compiler to parse, compile, link and run a production code base. For this, the code base chosen was @certikDftatomRobustGeneral2013, which was further trimmed down to a [[https://gitlab.com/lfortran/examples/minidftatom][miniature version here]]. Practically speaking, this involved tackling the Fortran standard itself, segregating the functionality at various stages in the "automatic coding" pipeline; and implementing standardese. Also, a lot of **debugging** naturally.
+*** Statistics
+For a single overview of the work done; the following table of contributions sums things up nicely.
+#+caption: Code contributions to LFortran repository as of 2021-08-19T23:16:22+00:00
+| *Contribution* | *Open* | *Closed/Merged* | *Total* |
+| [[https://gitlab.com/lfortran/lfortran/-/merge_requests?scope=all&state=all&author_username=HaoZeke&label_name=GSoC][Merge Requests]] |     10 |              22 |      36 |
+| [[https://gitlab.com/lfortran/lfortran/-/issues?author_username=HaoZeke&label_name%5B%5D=GSoC&page=2&scope=all&state=all][Issues]]         |     20 |              11 |      31 |
+
+This is an ever evolving set of metrics, and the finer details of these contributions can be found by following the weekly series above. There were some extra contributions across the other repositories, involving minor fixes and some work done towards [[https://github.com/mesonbuild/meson/pull/9137][integrating with Meson]].
+*** MR Overview
+These are better described in the weeks they were made; and only the highlights of the 22 will be briefly alluded to here.
+- *Implement more kind()* [[[https://gitlab.com/lfortran/lfortran/-/merge_requests/997][997]]] :: This was the first compile time enhancement / bugfix
+
+- *Restructures and Grammar changes* [[[https://gitlab.com/lfortran/lfortran/-/merge_requests/1024][1024]], [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1037][1037]]] :: Code quality enhancement for more readable ASR values
+
+- *Binary Operations* [[[https://gitlab.com/lfortran/lfortran/-/merge_requests/1045][1045]], [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1072][1072]], [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1080][1080]]] :: Together these MRs implemented the population of value members for integer and real binary operations
+
+- *Split ast_to_asr* [[[https://gitlab.com/lfortran/lfortran/-/merge_requests/1096][1096]]] :: A major code refactor for improved readablity and rapid development
+
+- *tiny implementations* [[[https://gitlab.com/lfortran/lfortran/-/merge_requests/1107][1107]], [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1112][1112]]] :: Together these implement the ~tiny~ intrinsic at compile time
+
+- *LLVM values* [[[https://gitlab.com/lfortran/lfortran/-/merge_requests/1131][1131]]] :: This enhancement patchset furthered the population of value members at the backend
+
+- *Compile time functions (5)* :: ~real~ [[[https://gitlab.com/lfortran/lfortran/-/merge_requests/1114][1114]]], ~selected_kinds~ [[[https://gitlab.com/lfortran/lfortran/-/merge_requests/1154][1154]]], ~floor~ [[[https://gitlab.com/lfortran/lfortran/-/merge_requests/1176][1176]]], ~int~ [[[https://gitlab.com/lfortran/lfortran/-/merge_requests/1169][1169]]], ~Integer2Real~ cast [[[https://gitlab.com/lfortran/lfortran/-/merge_requests/1162][1162]]]
+
+- *Runtime sin* [[[https://gitlab.com/lfortran/lfortran/-/merge_requests/1167][1167]], [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1173][1173]]] :: Together these showcase the hopes and dreams of the current runtime library implementation
+
+- *Testing framework for runtime benchmarks* [[[https://gitlab.com/lfortran/lfortran/-/merge_requests/1194][1194]]] :: Jinja based rapid templating setup for benchmarking the runtime functions
+
+- *Bugfixes* [[[https://gitlab.com/lfortran/lfortran/-/merge_requests/1015][1015]], [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1087][1087]]] :: These span various growing pains, and were debugged mostly via the stacktrace
+** Reflections
+So, after weeks of thousands of words of (semi-)popular writing, countless lines of code and hours of fantastic meetings; where are we and where is ~LFortran~ and where do we go from here?
+- This is a rather vague point, given that we have a [[https://gitlab.com/lfortran/lfortran/-/issues][fantastic set of issues]]
+- Also, [[https://lfortran.zulipchat.com/][the Zulip instance]] is great for getting in touch with the community
+  + One of the nicer parts of being associated with the project in such a visible manner was that I was able to funnel new talent as well
+*** Target Practice
+In terms of finally compiling our minimum viable computational chemistry project, minidftatom; described in the [[GSoC21 W5: LFortran Design Details and ~minidftatom~][Week 5 post]], we are tantalizingly close; so much so that is a mere bugfix or two away; as can be seen from the state [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1219][of this MR]]. Naturally my choice of issues are biased towards my own interests:
+- Better benchmarking of the pure Fortran intrinsics
+- Finish improving the CI (~ninja~)
+- Meson integration
+- More work on the runtime library
+  + We plan to have multiple backends for the runtime (the [[https://gitlab.com/lfortran/lfortran/-/wikis/Intrinsic-Functions][relevant wiki]])
+  + We need also to implement the compile time intrinsics in a more streamlined manner (a [[https://gitlab.com/lfortran/lfortran/-/issues/501][RFC issue]] for the same)
+- Document all things!
+  + API documentation and other bugaboos are pet interest of mine
+*** Major Accomplishments
+Perhaps more than anything else; the design strategies worked out over the twelve week span will have the most lasting impact. In particular:
+- *Compile Time Intrinsics* :: These are the C++ equivalent of the Fortran standard, and are evaluated when possible at compile time (the backend then just uses the value)
+- *Runtime Library Design* :: Inspite of [[https://fortran-lang.discourse.group/t/fortran-runtime-math-library/755][strong community opposition]] to implementing elementary functions in pure Fortran; we ended up with a very well designed elegant runtime design I am immensely satisfied with. Broadly speaking (detailed in the [[GSoC21 W10: LFortran Runtime Library Design][Week 10 post]]), the design encompasses ~impure~ parts of the library, which cannot be implemented in pure Fortran, and ~pure~ sections which can be implemented without any external calls
+
+Both of these intrinsic designs were accompanied by practical implementations and a template evolved over time to aid future contributions. One of the most interesting parts of the runtime design was using certifiably correct polynomial approximations generated with [[https://www.sollya.org/][Sollya]].
+
+Implementing features at compile time required an intimate understanding of the ASR, along with the way it is generated and consumed. This took weeks of effort at first; especially given the generated nature of much of the underlying code.
+*** Learning
+Compiler design touches almost every aspect of the compuation; from hardware to linkers, and I managed to expand my understanding of several key concepts early on with @cooperEngineeringCompiler2011a, @mullerElementaryFunctions2016, @levineLinkersLoaders2000 and a host of other texts referenced in the early weeks.
+
+A special mention must be made of @J318007r1F2018, which happens to be the first full language standard I have read almost cover to cover.
+** Misc Logs
+Like every week; there are some notes of the implementations done this week as well, focused around the **runtime intrinsic** functions.
+*** Exp
+The method to calculate the exponent is largely taken from @detreyParameterizedFloatingpointExponential2005. Basically this needs a reduction to $-\frac{log 2}{2}, \frac{log 2}{2}$ but just to get the ball rolling an initial terrible approximation is essentially:
+1. ~floor(x)~, and compute ~e~ to the integral power in a loop
+2. For the remaining part, use a 16th order Remez between ~[0,1]~, something like ~p=remez(exp(x),16,[0,1],default,1e-16,1e-30);~
+This is clearly a terrible idea, and there are far better approaches, however, it will suffice for now.
+*** Better Trignometric Functions
+Visual inspection and basic trignometry (along with series expansions) brings about the understanding that our polynomial approximation should only contain odd terms. This is easily accomplished in Sollya with [[https://www.sollya.org/sollya-4.1/help.php#fpminimax][fpminimax]].
+#+begin_src bash
+P = fpminimax(sin(x),[|1,3,5,7,9,11,13,15,17,19,21|],[|1,D...|],[-pi/2;pi/2], fixed, relative);
+#+end_src
+We can also compute the supnorm of the approximation over the interval:
+#+begin_src bash
+supnorm(P,sin(x),[-pi/2;pi/2],relative,2^(-40));
+#+end_src
+Which for the seventh order polynomial above turns out to be around 2E-17 throughout. The double word (DD) variant is not worth the extra effort, since the real issue with the approximation here is still the range reduction.
+** Conclusions
+I like writing; but somehow this was one of the most difficult things to write about; mostly because I'm still itching to get back to the codebase. I believe this is probably a good sign. Surprisingly, GSoC21 turned out to be one of my most enriching experiences as a developer till date. Unsurprising given the fantastic people involved, actually. There is very much left to be said about ~LFortran~, some of which will be said by me at the [[https://tcevents.chem.uzh.ch/event/14/contributions/69/][upcoming FortranCon 2021]], and in other outlets.
 * DONE 42nd Annual Confereence of the Tex Users Group :@conferences:presentations:ramblings:docs:
 CLOSED: [2021-08-07 Sat 15:39]
 :PROPERTIES:
