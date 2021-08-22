@@ -9340,6 +9340,7 @@ CLOSED: [2021-07-23 Fri 04:45]
 :PROPERTIES:
 :EXPORT_FILE_NAME: keybindings-colevimhz-macos
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_LASTMOD: 2021-08-22T13:43:02+00:00
 :END:
 #+begin_quote
 Struggling to emulate ~klfc~ for VIM Colemak bindings on Darwin (macOS) systems with Hammerspoon and Karabiner
@@ -9666,8 +9667,6 @@ end
 f19 = hs.hotkey.bind({}, 'F19', enterHyperMode, exitHyperMode)
 
 -- Vim Colemak bindings (hzColemak)
--- Adapted the snippets from https://github.com/dbmrq/dotfiles/blob/master/home/.hammerspoon/vim.lua
-
 -- Basic Movements {{{2
 
 -- h - move left {{{3
@@ -9691,13 +9690,13 @@ hyper:bind({}, 'i', right, nil, right)
 -- }}}3
 
 -- ) - right programming brace {{{3
-function rbroundL() hs.eventtap.keyStroke({}, "(", 0) end
-hyper:bind({}, 'k', up, nil, up)
+function rbroundL() hs.eventtap.keyStrokes("(") end
+hyper:bind({}, 'k', rbroundL, nil, rbroundL)
 -- }}}3
 
 -- ) - left programming brace {{{3
-function rbroundR() hs.eventtap.keyStroke({}, ")", 0) end
-hyper:bind({}, 'c', up, nil, up)
+function rbroundR() hs.eventtap.keyStrokes(")") end
+hyper:bind({}, 'v', rbroundR, nil, rbroundR)
 -- }}}3
 
 -- o - open new line below cursor {{{3
@@ -9730,25 +9729,25 @@ hyper:bind({"cmd"}, 'i', fndelete, nil, fndelete)
 -- }}}3
 
 -- ) - right programming brace {{{3
-function rbcurlyL() hs.eventtap.keyStroke({}, "{", 0) end
-hyper:bind({"cmd"}, 'k', up, nil, up)
+function rbcurlyL() hs.eventtap.keyStrokes("{") end
+hyper:bind({"cmd"}, 'k', rbcurlyL, nil, rbcurlyL)
 -- }}}3
 
 -- ) - left programming brace {{{3
-function rbcurlyR() hs.eventtap.keyStroke({}, "}", 0) end
-hyper:bind({"cmd"}, 'c', up, nil, up)
+function rbcurlyR() hs.eventtap.keyStrokes("}") end
+hyper:bind({"cmd"}, 'v', rbcurlyR, nil, rbcurlyR)
 -- }}}3
 
 -- Extend+Shift
 
 -- ) - right programming brace {{{3
-function rbsqrL() hs.eventtap.keyStroke({}, "[", 0) end
-hyper:bind({"shift"}, 'k', up, nil, up)
+function rbsqrL() hs.eventtap.keyStrokes("[") end
+hyper:bind({"shift"}, 'k', rbsqrL, nil, rbsqrL)
 -- }}}3
 
 -- ) - left programming brace {{{3
-function rbsqrR() hs.eventtap.keyStroke({}, "]", 0) end
-hyper:bind({"shift"}, 'c', up, nil, up)
+function rbsqrR() hs.eventtap.keyStrokes("]") end
+hyper:bind({"shift"}, 'v', rbsqrR, nil, rbsqrR)
 -- }}}3
 
 -- Special Movements
