@@ -12506,7 +12506,12 @@ It is difficult to keep this section short and not let it spill
 into an unstructured memoir. For a while I considered trying to consolidate my
 online presences but that turned out to be completely impossible without a
 series of posts and avatars[fn:notrefs]. I did however eventually set up a
-sporadically updated [[Collection of WebLinks][collection of web-links]] involving me. There is also, a separate list of quotes, or other things I have something to say about.
+sporadically updated [[Collection of WebLinks][collection of web-links]] involving me. There is also, a
+separate list of quotes, or other things I have something to say about.
+** Tangible Positions
+- As of January 2021, I have been awarded a three year doctoral fellowship [[https://en.rannis.is/news/allocation-from-the-icelandic-research-fund-for-the-financial-year-2021-1][from the Icelandic Research Fund (Rannís)]] for my project on "_Magnetic interactions of itinerant electrons modeled using Bayesian machine learning_" tenable at the Science Institute with [[https://notendur.hi.is//~hj/indexE.html][Prof. Hannes Jónsson]] as my supervisor and [[https://english.hi.is/staff/birgirhr][Prof. Birgir Hrafnkelsson]] as my co-supervisor
+- As of August 2021, I have joined [[https://labs.quansight.org/][Quansight Labs]] as a Software Engineer reporting to [[https://rgommers.github.io/][Dr. Ralf Gommers]]
+  + My work will initially revolve around ~f2py~ through the [[https://labs.quansight.org/blog/2020/11/a-second-czi-grant-for-numpy-and-openblas/][CZI NumPy project]] with [[https://melissawm.github.io/about-me/][Dr. Melissa Weber Mendonça]] and [[https://github.com/pearu][Dr. Pearu Peterson]]
 ** Intangible Positions
 This is a set of things which are primarily online and/or voluntary in a
 non-academic sense.
@@ -12516,11 +12521,10 @@ non-academic sense.
 - I [[https://aur.archlinux.org/packages/?SeB=m&K=HaoZeke][also maintain]] some packages on the AUR (ArchLinux User Repository)
 - I hone coursework development and teaching [[https://www.univ.ai/team/rohit-goswami][with univ.ai]]
 - I [[https://forum.xda-developers.com/xperia-z5/orig-development/cm-14-1-lineageos-t3536846][maintain(ed)]] the official LineageOS image for the Xperia Z5 Dual
-** Historical Places
+** Historical Connections
 What follows is a more informal set of places I am or have been associated with or are of significance to
-me[fn:growingUp].
+me[fn:growingUp]. Many of these are tangible, but better ordered in this manner.
 *** Reykjavík
-- As of 2021, I have been awarded a three year doctoral fellowship [[https://en.rannis.is/news/allocation-from-the-icelandic-research-fund-for-the-financial-year-2021-1][from the Icelandic Research Fund (Rannís)]] for my project on "Magnetic interactions of itinerant electrons modeled using Bayesian machine learning" tenable at the Science Institute with [[https://notendur.hi.is//~hj/indexE.html][Prof. Hannes Jónsson]] as my supervisor and [[https://english.hi.is/staff/birgirhr][Prof. Birgir Hrafnkelsson]] as my co-supervisor
 - I am a Fellow at the Institute for Pure and Applied Mathematics (IPAM) for its Spring 2021 program on “[[http://www.ipam.ucla.edu/programs/long-programs/tensor-methods-and-emerging-applications-to-the-physical-and-data-sciences/?tab=participant-list][Tensor Methods and Emerging Applications to the Physical and Data Sciences]]”
 - I [[https://english.hi.is/staff/rog32][am associated]] with the [[https://notendur.hi.is/hj/researchgroup.html][reputed Jonsson group]] of the [[http://raunvisindastofnun.hi.is/the_science_institute][Science Institute]] at the
   [[https://english.hi.is/school_of_engineering_and_natural_sciences][University of Iceland]], where I benefit from the
