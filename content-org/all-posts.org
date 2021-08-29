@@ -12489,7 +12489,7 @@ CLOSED: [2021-08-29 Sun 02:05]
 Towards sustainable FOSS with Quansight Labs
 #+end_quote
 ** Background
-Rumors of my affiliation with Quansight Labs are indeed true. I have had the pleasure of joining the Labs division as a software engineer, whose [[https://labs.quansight.org/blog/2019/05/community-driven-opensource-funded-development/][philosophy is fantastically and succintly described]] by their director [[https://rgommers.github.io/][Dr. Ralf Gommers]]. This means, in nutshell, that in my spare time I will be able to contribute to the continued maintenance of key FOSS projects.
+Rumors of my affiliation with Quansight Labs are indeed true. I have had the pleasure of joining the Labs division as a software engineer [fn:whatabouttime], whose [[https://labs.quansight.org/blog/2019/05/community-driven-opensource-funded-development/][philosophy is fantastically and succintly described]] by their director [[https://rgommers.github.io/][Dr. Ralf Gommers]]. This means, in nutshell, that in my spare time I will be able to contribute to the continued maintenance of key FOSS projects.
 *** Why?
 A reasonable question. I have been contributing to and managing FOSS projects for over ten years now under the assumption of one day aspiring to be described by Fig. [[fig:xkcddep]]. Oer time however, there have been consequences which have required a restructuring of how I view my commitments. The projects I have had the pleasure to work have grown in scope to the point where it became increasingly difficult keep contributing to at a sustained pace.
 
@@ -12511,6 +12511,7 @@ Interestingly, I realized soon after I joined, that some of my old GSoD mentors 
 This is a huge honor and will help focus and enhance my efforts towards helping the wider scientific computing community.
 
 [fn:whythis] Which tied into a larger discussion taking place also at [[https://www.tweag.io/][Tweag]] (and the [[https://irhpc.github.io/][Icelandic HPC cluster]]) revolving around Nix-HPC
+[fn:whatabouttime] For 20-25 hours a week
 * Important Note :ignoreheading:ignore:
 # ALWAYS at the bottom, to ensure fresh builds do not break
 * DONE About
