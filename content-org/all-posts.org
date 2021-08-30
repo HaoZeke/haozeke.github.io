@@ -12491,7 +12491,7 @@ Towards sustainable FOSS with Quansight Labs
 ** Background
 Rumors of my affiliation with Quansight Labs are indeed true. I have had the pleasure of joining the Labs division as a software engineer [fn:whatabouttime], whose [[https://labs.quansight.org/blog/2019/05/community-driven-opensource-funded-development/][philosophy is fantastically and succintly described]] by their director [[https://rgommers.github.io/][Dr. Ralf Gommers]]. This means, in nutshell, that in my spare time I will be able to contribute to the continued maintenance of key FOSS projects.
 *** Why?
-A reasonable question. I have been contributing to and managing FOSS projects for over ten years now under the assumption of one day aspiring to be described by Fig. [[fig:xkcddep]]. Oer time however, there have been consequences which have required a restructuring of how I view my commitments. The projects I have had the pleasure to work have grown in scope to the point where it became increasingly difficult keep contributing to at a sustained pace.
+A reasonable question. I have been contributing to and managing FOSS projects for over ten years now under the assumption of one day aspiring to be described by Fig. [[fig:xkcddep]]. Over time however, there have been consequences which have required a restructuring of how I view my commitments. The projects I have had the pleasure to work have grown in scope to the point where it became increasingly difficult keep contributing to at a sustained pace.
 
 #+label: fig:xkcddep
 #+name: fig:xkcddep
