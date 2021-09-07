@@ -8605,7 +8605,7 @@ The ones I use mostly are enumerated in Table [[tbl:rustalternates]].
 | ~ls~     | [[https://github.com/ogham/exa][exa]]              | Listing things with colors           |
 | ~ps~     | [[https://github.com/dalance/procs][procs]]            | Better looking process lists         |
 | ~grep~   | [[https://github.com/BurntSushi/ripgrep][ripgrep]]          | Search recursively                   |
-| ~find~   | [[https://github.com/sharkdp/fd][fd]]               | Find things                          |
+| ~find~   | [[https://github.com/sharkdp/fd][fd-find]]          | Find things                          |
 | ~sed~    | [[https://github.com/chmln/sd][sd]]               | Search and replace things            |
 | ~time~   | [[https://github.com/sharkdp/hyperfine][hyperfine]]        | Better benchmarking with stats       |
 | ~man~    | [[https://github.com/dbrgn/tealdeer][tealdeer]]         | A fast ~tldr~ page viewer            |
@@ -8614,12 +8614,13 @@ The ones I use mostly are enumerated in Table [[tbl:rustalternates]].
 | ~cd / z~ | [[https://github.com/ajeetdsouza/zoxide][zoxide]]           | Directory jumping aid                |
 | ~gibo~   | bliss            | ~gitignore~ generation utility       |
 | ~diff~   | delta            | Nicer diffs                          |
+| ~CTRL+R~ | mclfy            | Reverse search                       |
 
 These are trivial to obtain:
 #+begin_src bash
-cargo install bottom ripgrep hyperfine navi skim
+cargo install bottom ripgrep hyperfine navi skim mcfly
 # The following need some system libraries (OpenSSL) and shall be dealt with later
-# bat exa fd tealdeer starship sd procs zoxide bliss
+# bat exa fd-find tealdeer starship sd procs zoxide bliss
 #+end_src
 *** MicroMamba
 We will set up a ~micromamba~ installation to get ~git~ and other base utilities.
@@ -8876,6 +8877,8 @@ This has the advantage of not needing any port forwarding (with ~--link~):
 #+begin_src bash
 code-server --link
 #+end_src
+
+Naturally this is often disabled by more security oriented SysAdmins. This can be circumvented with the same ~ngrok~ scheme as outlined earlier.
 
 [fn:whyname] A step in the right direction in terms of female representation amongst the university servers
 
@@ -11723,19 +11726,32 @@ supnorm(P,sin(x),[-pi/2;pi/2],relative,2^(-40));
 Which for the seventh order polynomial above turns out to be around 2E-17 throughout. The double word (DD) variant is not worth the extra effort, since the real issue with the approximation here is still the range reduction.
 ** Conclusions
 I like writing; but somehow this was one of the most difficult things to write about; mostly because I'm still itching to get back to the codebase. I believe this is probably a good sign. Surprisingly, GSoC21 turned out to be one of my most enriching experiences as a developer till date. Unsurprising given the fantastic people involved, actually. There is very much left to be said about ~LFortran~, some of which will be said by me at the [[https://tcevents.chem.uzh.ch/event/14/contributions/69/][upcoming FortranCon 2021]], and in other outlets.
-* TODO F2PY and Netlib
+* TODO About F2PY
 :PROPERTIES:
-:EXPORT_FILE_NAME: f2py-netlib
+:EXPORT_FILE_NAME: about-f2py
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
 :END:
 #+begin_quote
-On exploring techniques and codebases with ~f2py~
+An introduction and rough interpretation
 #+end_quote
 ** Background
 As mentioned [[Regarding Quansight Labs][earlier]], I have the pleasure of being involved in an effort to modernize and maintain the
 ~f2py~ code base under the aegis of [[https://www.quansight.com/labs][Quansight Labs]] with  [[https://rgommers.github.io/][Dr. Ralf Gommers]],  [[https://melissawm.github.io/about-me/][Dr.
 Melissa Weber Mendonça]] and [[https://github.com/pearu][Dr. Pearu Peterson]]. Here I will outline a few sample
 tasks which serve as a gentle introduction to the ecosystem.
+** Trivial Tasks
+Several trivial tasks were to become routine over the course of my exploration of the existing code. Some of these are documented here for posterity. No claims of correctness or completeness can be entertained.
+** Testing
+Unit testing is being discussed for ~f2py~, however at the moment the gold
+standard is to ensure that new changes do not break ~SciPy~. This then makes for
+a good starting point to get acquainted with ~f2py~ in production.
+*** Setting Up
+Although I normally default to using ~nix~ for everything; in this particular
+instance, I tend to take a more ~conda~ centric approach.
+#+begin_src bash
+
+#+end_src
+* TODO Testing F2PY
 ** Slatec
 [[http://www.netlib.org/slatec/][Netlib's slatec]] is a common mathematical library, circa 1993. This great candidate for ~f2py~; since it is:
 - Written in ~F77~
@@ -11758,11 +11774,7 @@ fpm build --flag "-fallow-argument-mismatch" # anything above 7.x
 #+end_src
 Note that for ~gfortran~ versions greater than ~9.x.x~ an error will be thrown on rank mismatches (as opposed to a warning), but ~7.x.x~ does not recognize the flag and will error out with it.
 
-** SciPy
-Unit testing is being discussed for ~f2py~, however at the moment the gold
-standard is to ensure that new changes do not break ~SciPy~. This then makes for
-a good starting point to get acquainted with ~f2py~ in production.
-
+SLATEC consists of 13 modules, many of which have been packaged elsewhere, making this a bit of a wasted effort.
 * TODO Fortran and Spectroscopies
 :PROPERTIES:
 :EXPORT_FILE_NAME: fortran-spetroscopies
@@ -11771,10 +11783,12 @@ a good starting point to get acquainted with ~f2py~ in production.
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
 :END:
 #+begin_quote
-Computational thermal effects and the Fortran community
+Computational spectroscopy and the Fortran community
 #+end_quote
 ** Background
-I shall be spending a week more at the Les Houches
+I recently spent two weeks at the Les Houches School of Physics for a workshop on Multiple Scattering Green's Functions for Electronic Structure and Spectroscopy. Apart from being a fantastic place to work, I became acquainted with several Fortran programs for the same. This post pays homage to them.
+** Conclusions
+The school was an enriching experience, as I mentioned in passing to one of the more senior members, while stupid questions in person are still alright, online the ability to ask basic dumb big picture questions is severely reduced. It was also exhausting, due to my many existing commitments.
 * DONE 42nd Annual Confereence of the Tex Users Group :@conferences:presentations:ramblings:docs:
 CLOSED: [2021-08-07 Sat 15:39]
 :PROPERTIES:
