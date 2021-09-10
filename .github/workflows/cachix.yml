@@ -27,15 +27,11 @@ jobs:
         env:
           NIXPKGS_ALLOW_UNFREE: 1
 
-      - name: Build
-        run: nix-shell --run "rake hugoBuild"
-        env:
-          NIXPKGS_ALLOW_UNFREE: 1
-
-      - name: Cache Nix Results
-        env:
-          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-          cachixName: rgoswamime
+      - name: Build and cache
         run: |
           cachix authtoken $authToken
-          nix-store -qR --include-outputs $(nix-instantiate shell.nix) | cachix push $cachixName
+          nix-build | cachix push rgoswamime
+        env:
+          NIXPKGS_ALLOW_UNFREE: 1
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          cachixName: rgoswamime
