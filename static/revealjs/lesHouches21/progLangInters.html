@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<!-- saved from url=(0131)file:///Users/rohitgoswami/Git/Github/WebDev/Mine/haozeke.github.io/presentations/lesHouches21/fortran_aseViz.html#/sec-title-slide -->
+<html lang="en" class="reveal-full-page"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>Programming Language Interstices</title>
+<meta name="author" content="Rohit Goswami">
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="./progLangInters_files/reveal.css">
+
+<link rel="stylesheet" href="./progLangInters_files/robot-lung.css" id="theme">
+
+<link rel="stylesheet" href="./progLangInters_files/rlExtras.css">
+
+<link rel="stylesheet" href="./progLangInters_files/oerFragments.css">
+
+<link rel="stylesheet" href="./progLangInters_files/noImgBoxes.css">
+
+<link rel="stylesheet" href="./progLangInters_files/betterCite.css">
+
+<link rel="stylesheet" href="./progLangInters_files/moreCode.css">
+
+<link rel="stylesheet" href="file:///Users/rohitgoswami/.config/doom/reveal/rjs/plugin/accessibility/helper.css">
+
+<link rel="stylesheet" href="file:///Users/rohitgoswami/.config/doom/reveal/rjs/plugin/toc-progress/toc-progress.css">
+
+<link rel="stylesheet" href="file:///Users/rohitgoswami/.config/doom/reveal/rjs/dist/theme/toc-style.css">
+
+<link rel="stylesheet" href="./progLangInters_files/source-sans-pro.css">
+<script type="text/javascript" src="./progLangInters_files/MathJax.js"></script>
+<style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 5px 0px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; -khtml-border-radius: 5px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 1px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: .7em}
+.MathJax_MenuRadioCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuLabel {padding: 1px 2em 3px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #DDDDDD; margin: 4px 3px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: #606872; color: white}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">.MathJax_Preview .MJXf-math {color: inherit!important}
+</style><style type="text/css">.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1em; bottom: 1.5em; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><style type="text/css">.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover, .MJXp-munder {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > *, .MJXp-munder > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style><link type="image/x-icon" rel="shortcut icon" sizes="16x16" href="file:///Users/rohitgoswami/.config/doom/reveal/sfeir-school-theme/dist/images/favicon-16x16.png"><link type="image/x-icon" rel="shortcut icon" sizes="32x32" href="file:///Users/rohitgoswami/.config/doom/reveal/sfeir-school-theme/dist/images/favicon-32x32.png"><link type="image/x-icon" rel="shortcut icon" sizes="96x96" href="file:///Users/rohitgoswami/.config/doom/reveal/sfeir-school-theme/dist/images/favicon-96x96.png"><link type="image/x-icon" rel="shortcut icon" href="file:///Users/rohitgoswami/.config/doom/reveal/sfeir-school-theme/dist/images/favicon.ico"><style type="text/css">.MathJax_Display {text-align: center; margin: 1em 0em; position: relative; display: block!important; text-indent: 0; max-width: none; max-height: none; min-width: 0; min-height: 0; width: 100%}
+.MathJax .merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MathJax .MJX-monospace {font-family: monospace}
+.MathJax .MJX-sans-serif {font-family: sans-serif}
+#MathJax_Tooltip {background-color: InfoBackground; color: InfoText; border: 1px solid black; box-shadow: 2px 2px 5px #AAAAAA; -webkit-box-shadow: 2px 2px 5px #AAAAAA; -moz-box-shadow: 2px 2px 5px #AAAAAA; -khtml-box-shadow: 2px 2px 5px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true'); padding: 3px 4px; z-index: 401; position: absolute; left: 0; top: 0; width: auto; height: auto; display: none}
+.MathJax {display: inline; font-style: normal; font-weight: normal; line-height: normal; font-size: 100%; font-size-adjust: none; text-indent: 0; text-align: left; text-transform: none; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0; min-height: 0; border: 0; padding: 0; margin: 0}
+.MathJax:focus, body :focus .MathJax {display: inline-table}
+.MathJax.MathJax_FullWidth {text-align: center; display: table-cell!important; width: 10000em!important}
+.MathJax img, .MathJax nobr, .MathJax a {border: 0; padding: 0; margin: 0; max-width: none; max-height: none; min-width: 0; min-height: 0; vertical-align: 0; line-height: normal; text-decoration: none}
+img.MathJax_strut {border: 0!important; padding: 0!important; margin: 0!important; vertical-align: 0!important}
+.MathJax span {display: inline; position: static; border: 0; padding: 0; margin: 0; vertical-align: 0; line-height: normal; text-decoration: none; box-sizing: content-box}
+.MathJax nobr {white-space: nowrap!important}
+.MathJax img {display: inline!important; float: none!important}
+.MathJax * {transition: none; -webkit-transition: none; -moz-transition: none; -ms-transition: none; -o-transition: none}
+.MathJax_Processing {visibility: hidden; position: fixed; width: 0; height: 0; overflow: hidden}
+.MathJax_Processed {display: none!important}
+.MathJax_test {font-style: normal; font-weight: normal; font-size: 100%; font-size-adjust: none; text-indent: 0; text-transform: none; letter-spacing: normal; word-spacing: normal; overflow: hidden; height: 1px}
+.MathJax_test.mjx-test-display {display: table!important}
+.MathJax_test.mjx-test-inline {display: inline!important; margin-right: -1px}
+.MathJax_test.mjx-test-default {display: block!important; clear: both}
+.MathJax_ex_box {display: inline-block!important; position: absolute; overflow: hidden; min-height: 0; max-height: none; padding: 0; border: 0; margin: 0; width: 1px; height: 60ex}
+.MathJax_em_box {display: inline-block!important; position: absolute; overflow: hidden; min-height: 0; max-height: none; padding: 0; border: 0; margin: 0; width: 1px; height: 60em}
+.mjx-test-inline .MathJax_left_box {display: inline-block; width: 0; float: left}
+.mjx-test-inline .MathJax_right_box {display: inline-block; width: 0; float: right}
+.mjx-test-display .MathJax_right_box {display: table-cell!important; width: 10000em!important; min-width: 0; max-width: none; padding: 0; border: 0; margin: 0}
+.MathJax .MathJax_HitBox {cursor: text; background: white; opacity: 0; filter: alpha(opacity=0)}
+.MathJax .MathJax_HitBox * {filter: none; opacity: 1; background: transparent}
+#MathJax_Tooltip * {filter: none; opacity: 1; background: transparent}
+@font-face {font-family: MathJax_Blank; src: url('about:blank')}
+.MathJax .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style></head>
+<body class="reveal-viewport no-toc-progress" style="transition: -webkit-transform 0.8s ease 0s; --slide-width:960px; --slide-height:700px;"><div style="visibility: hidden; overflow: hidden; position: absolute; top: 0px; height: 1px; width: auto; padding: 0px; border: 0px; margin: 0px; text-align: left; text-indent: 0px; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal;"><div id="MathJax_Hidden"><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></div></div><div id="MathJax_Message" style="display: none;"></div>
+<div class="line top"></div> <div class="line bottom"></div> <div class="line left"></div> <div class="line right"></div>
+<div class="reveal fade center focused has-vertical-slides has-horizontal-slides ready" role="application" data-transition-speed="default" data-background-transition="fade" style="">
+<div class="slides" style="width: 960px; height: 700px; inset: 50% auto auto 50%; transform: translate(-50%, -50%) scale(0.7875);">
+<section id="sec-title-slide" data-state="no-toc-progress" style="top: 121.5px; display: block;" class="sfeir-basic-slide present">
+<h1 class="title">Programming Language Interstices</h1><h2 class="author">Rohit Goswami</h2><p class="date">Created: 2021-09-09 Thu 12:52</p>
+</section>
+
+
+
+
+<p>
+
+</p>
+
+
+<section style="top: 0px; display: block;" class="stack sfeir-basic-slide future" data-previous-indexv="0" hidden="" aria-hidden="true">
+<section id="slide-orgaa3798d" style="top: 300.5px; display: block;" class="sfeir-basic-slide" aria-hidden="true">
+<h2 id="orgaa3798d">Brief Introduction</h2>
+<div class="outline-text-2" id="text-orgaa3798d">
+</div>
+</section>
+<section id="slide-org1bdca46" class="sfeir-basic-slide future" style="top: 0px; display: block;" hidden="" aria-hidden="true">
+<h3 id="org1bdca46">Hello!</h3>
+<ul>
+<li>Find me here: <a href="https://rgoswami.me/">https://rgoswami.me</a></li>
+<li>Who?
+<ul>
+<li><b>Rohit Goswami</b> MInstP
+<ul>
+<li>Doctoral Researcher, University of Iceland, Faculty of Physical Sciences</li>
+
+</ul></li>
+
+</ul></li>
+
+</ul>
+<div class="leftcol" id="org98f86a6">
+
+<div id="orgc532ec0" class="figure">
+<p><img src="./progLangInters_files/physUoI.png" alt="physUoI.png">
+</p>
+</div>
+
+<div id="org114bbac" class="figure">
+<p><img src="./progLangInters_files/rannisLogo.png" alt="rannisLogo.png" width="50%" height="50%">
+</p>
+</div>
+
+<div id="org069049a" class="figure">
+<p><img src="./progLangInters_files/ccLogo.png" alt="ccLogo.png" width="40%" height="40%">
+</p>
+</div>
+
+</div>
+<div class="rightcol" id="org4b2e9d7">
+
+<div id="org5e5ff8f" class="figure">
+<p><img src="./progLangInters_files/EPH_logo.jpg" alt="EPH_logo.jpg" width="40%" height="40%">
+</p>
+</div>
+
+<div id="org70689d2" class="figure">
+<p><img src="./progLangInters_files/quansightlabs.jpeg" alt="quansightlabs.jpeg" width="50%" height="40%">
+</p>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgbb9e21f" class="sfeir-basic-slide future" style="top: 231px; display: none;" data-fragment="-1" hidden="" aria-hidden="true">
+<h3 id="orgbb9e21f">Logistics</h3>
+<ul class="fragment appear" data-fragment-index="0">
+<li>All contents are <a href="https://github.com/HaoZeke/haozeke.github.io">hosted on GitHub</a>
+<ul>
+<li>Slides are in <code>presentations/lesHouches21</code></li>
+
+</ul></li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="1">
+<li>Questions are welcome <b>anytime</b></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section style="top: 0px; display: block;" class="stack sfeir-basic-slide future" data-previous-indexv="0" hidden="" aria-hidden="true">
+<section id="slide-org0a44781" style="top: 300.5px; display: block;" class="sfeir-basic-slide" aria-hidden="true">
+<h2 id="org0a44781">Programming Languages</h2>
+<div class="outline-text-2" id="text-org0a44781">
+</div>
+</section>
+<section id="slide-org81d6c59" class="sfeir-basic-slide future" style="top: 0px; display: none;" hidden="" aria-hidden="true">
+<h3 id="org81d6c59">Motivation</h3>
+<blockquote>
+<p>
+“If a program or package (the words are used interchangeably) is to <b>have a long life</b> and to be of <b>wide application</b> in its field, it is essential for it to be <b>easily moved</b> from one machine to another.
+</p>
+
+<p>
+It used to be common to dismiss such movement with the statement, <b>‘There is no such thing as a machine-independent program.’</b>
+</p>
+
+<p>
+Nonetheless, a great many packages <b>do now move</b> from one machine to another”<a class="org-ref-reference" href="file:///Users/rohitgoswami/Git/Github/WebDev/Mine/haozeke.github.io/presentations/lesHouches21/fortran_aseViz.html#/slide-bibliography">[lyonUsingAnsFortran1980]</a>
+</p>
+</blockquote>
+
+<p>
+–&gt; Through the magic of <b>automated coding</b> and <b>standards</b>
+</p>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgd16ed97" class="sfeir-basic-slide future" style="top: 0px; display: none;" data-fragment="-1" hidden="" aria-hidden="true">
+<h3 id="orgd16ed97">Language Standards</h3>
+<blockquote>
+<p>
+“The standard is the contract between the compiler writer and the application developer.”<a class="org-ref-reference" href="file:///Users/rohitgoswami/Git/Github/WebDev/Mine/haozeke.github.io/presentations/lesHouches21/fortran_aseViz.html#/slide-bibliography">[clermanModernFortranStyle2012]</a>
+</p>
+</blockquote>
+
+
+<div id="org10cf7ce" class="figure">
+<p><img src="./progLangInters_files/hello-program.png" alt="hello-program.png">
+</p>
+</div>
+
+<ul class="fragment appear" data-fragment-index="0">
+<li>Sadly interpreters are not really Code -&gt; Memory</li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="1">
+<li>Python itself is an interpreter which is commonly implemented in C</li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org5d0d77b" class="sfeir-basic-slide future" style="top: 195.5px; display: none;" hidden="" aria-hidden="true">
+<h3 id="org5d0d77b">Changing Standards</h3>
+<div class="leftcol" id="orgc99a51a">
+<div class="org-src-container">
+
+<pre class="src src-fortran"><span style="color: #5a5b5a;">c</span><span style="color: #5a5b5a;">haracter(10) BLAH*8</span>
+<span style="color: #5a5b5a;">c</span><span style="color: #5a5b5a;">haracter*8 :: BLAH_ONE(10)</span>
+<span style="color: #5a5b5a;">c</span><span style="color: #5a5b5a;">haracter(8) :: BLAH_ONE(10)</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-python"><span style="color: #5a5b5a;">#</span><span style="color: #5a5b5a;">!/usr/bin/env python</span>
+<span style="color: #b294bb;">print</span>(<span style="color: #b5bd68;">"Hello World"</span>)
+<span style="color: #b294bb;">print</span> <span style="color: #b5bd68;">"Hello World"</span>
+</pre>
+</div>
+
+</div>
+<div class="rightcol" id="orge8837fa">
+<p>
+
+</p>
+
+
+<div id="org29ad6b0" class="figure">
+<p><img src="./progLangInters_files/2021-09-08_23-12-16_screenshot.png" alt="2021-09-08_23-12-16_screenshot.png">
+</p>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgcde32bc" class="sfeir-basic-slide future" style="top: 0px; display: none;" hidden="" aria-hidden="true">
+<h3 id="orgcde32bc">F77 ∉ F90 always</h3>
+
+<div id="org0f447a6" class="figure">
+<p><img src="./progLangInters_files/2021-09-08_23-14-26_screenshot.png" alt="2021-09-08_23-14-26_screenshot.png" width="70%" height="70%">
+</p>
+</div>
+
+
+<div id="org15bed44" class="figure">
+<p><img src="./progLangInters_files/2021-09-08_23-14-38_screenshot.png" alt="2021-09-08_23-14-38_screenshot.png" width="70%" height="70%">
+</p>
+</div>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section style="top: 0px; display: none;" class="stack sfeir-basic-slide future" data-previous-indexv="0" hidden="" aria-hidden="true">
+<section id="slide-orgb5228bd" style="top: 300.5px; display: none;" class="sfeir-basic-slide" aria-hidden="true">
+<h2 id="orgb5228bd">LFortran</h2>
+<div class="outline-text-2" id="text-orgb5228bd">
+</div>
+</section>
+<section id="slide-orgcaa82f3" class="sfeir-basic-slide future" style="top: 0px; display: none;" hidden="" aria-hidden="true">
+<h3 id="orgcaa82f3">Introduction</h3>
+
+<div id="org121e02e" class="figure">
+<p><img src="./progLangInters_files/2021-09-09_00-50-56_screenshot.png" alt="2021-09-09_00-50-56_screenshot.png">
+</p>
+</div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col class="org-left">
+
+<col class="org-right">
+
+<col class="org-right">
+
+<col class="org-right">
+
+<col class="org-right">
+
+<col class="org-right">
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left"><b>Language</b></th>
+<th scope="col" class="org-right"><b>Files</b></th>
+<th scope="col" class="org-right"><b>Lines</b></th>
+<th scope="col" class="org-right"><b>Code</b></th>
+<th scope="col" class="org-right"><b>Comments</b></th>
+<th scope="col" class="org-right"><b>Blanks</b></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">C</td>
+<td class="org-right">3</td>
+<td class="org-right">1023</td>
+<td class="org-right">694</td>
+<td class="org-right">191</td>
+<td class="org-right">138</td>
+</tr>
+
+<tr>
+<td class="org-left">C Header</td>
+<td class="org-right">57</td>
+<td class="org-right">14237</td>
+<td class="org-right">11416</td>
+<td class="org-right">1041</td>
+<td class="org-right">1780</td>
+</tr>
+
+<tr>
+<td class="org-left">CMake</td>
+<td class="org-right">11</td>
+<td class="org-right">430</td>
+<td class="org-right">361</td>
+<td class="org-right">16</td>
+<td class="org-right">53</td>
+</tr>
+
+<tr>
+<td class="org-left">C++</td>
+<td class="org-right">54</td>
+<td class="org-right">30745</td>
+<td class="org-right">26911</td>
+<td class="org-right">1560</td>
+<td class="org-right">2274</td>
+</tr>
+
+<tr>
+<td class="org-left">C++ Header</td>
+<td class="org-right">1</td>
+<td class="org-right">8938</td>
+<td class="org-right">8297</td>
+<td class="org-right">348</td>
+<td class="org-right">293</td>
+</tr>
+
+<tr>
+<td class="org-left">FORTRAN</td>
+<td class="org-right">20</td>
+<td class="org-right">1738</td>
+<td class="org-right">1344</td>
+<td class="org-right">174</td>
+<td class="org-right">220</td>
+</tr>
+
+<tr>
+<td class="org-left">Python</td>
+<td class="org-right">2</td>
+<td class="org-right">224</td>
+<td class="org-right">191</td>
+<td class="org-right">4</td>
+<td class="org-right">29</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left"><b>Total</b></td>
+<td class="org-right"><b>148</b></td>
+<td class="org-right"><b>57335</b></td>
+<td class="org-right"><b>49214</b></td>
+<td class="org-right"><b>3334</b></td>
+<td class="org-right"><b>4787</b></td>
+</tr>
+</tbody>
+</table>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgd4db693" class="sfeir-basic-slide future" style="top: 0px; display: none;" hidden="" aria-hidden="true">
+<h3 id="orgd4db693">Structure</h3>
+
+<div id="org8139583" class="figure">
+<p><img src="./progLangInters_files/hello-lfortran.png" alt="hello-lfortran.png">
+</p>
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-org2acf2f3" class="sfeir-basic-slide future" style="top: 75.5px; display: none;" hidden="" aria-hidden="true">
+<h3 id="org2acf2f3">Features</h3>
+<dl>
+<dt>Runtime Libraries</dt><dd>Pure Fortran | Impure</dd>
+<dt>ASR</dt><dd>Guarantees compilation –&gt; Wrappers</dd>
+<dt>Parser</dt><dd>Currently almost all of F2018; including F77</dd>
+<dt>LLVM</dt><dd>Canonical backend, includes compile time evaluated expressions</dd>
+<dt>Jupyter</dt><dd>Native execution as a kernel</dd>
+
+</dl>
+<div class="slide-footer"><br></div>
+
+</section>
+</section>
+<section style="top: 0px; display: none;" class="stack sfeir-basic-slide future" data-previous-indexv="0" hidden="" aria-hidden="true">
+<section id="slide-org8fe58b7" style="top: 300.5px; display: none;" class="sfeir-basic-slide" aria-hidden="true">
+<h2 id="org8fe58b7">Practical Matters</h2>
+<div class="outline-text-2" id="text-org8fe58b7">
+</div>
+</section>
+<section id="slide-orgea6f3bc" class="sfeir-basic-slide future" style="top: 48px; display: none;" hidden="" aria-hidden="true">
+<h3 id="orgea6f3bc">Numerical Methods 101</h3>
+<p>
+<span class="MathJax_Preview" style="color: inherit;"></span><div class="MathJax_Display"><span class="MathJax MathJax_FullWidth" id="MathJax-Element-1-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; display=&quot;block&quot;&gt;&lt;mi&gt;A&lt;/mi&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mi&gt;b&lt;/mi&gt;&lt;mspace linebreak=&quot;newline&quot; /&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;msup&gt;&lt;mi&gt;A&lt;/mi&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x2212;&lt;/mo&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;/mrow&gt;&lt;/msup&gt;&lt;mi&gt;b&lt;/mi&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-1" style="width: 100%; display: inline-block; min-width: 4.15em;"><span style="display: inline-block; position: relative; width: 100%; height: 0px; font-size: 104%;"><span style="position: absolute; clip: rect(3.188em, 1003.91em, 5.592em, -999.997em); top: -4.023em; left: 0em; width: 100%;"><span class="mrow" id="MathJax-Span-2"><span style="display: inline-block; position: relative; width: 100%; height: 0px;"><span style="position: absolute; clip: rect(3.188em, 1003.01em, 4.21em, -999.997em); top: -4.023em; left: 50%; margin-left: -1.499em;"><span class="mi" id="MathJax-Span-3" style="font-family: STIXGeneral-Italic;">𝐴</span><span class="mi" id="MathJax-Span-4" style="font-family: STIXGeneral-Italic;">𝑥</span><span class="mo" id="MathJax-Span-5" style="font-family: STIXGeneral-Regular; padding-left: 0.303em;">=</span><span class="mi" id="MathJax-Span-6" style="font-family: STIXGeneral-Italic; padding-left: 0.303em;">𝑏</span><span style="display: inline-block; width: 0px; height: 4.029em;"></span></span><span style="position: absolute; clip: rect(2.948em, 1003.91em, 4.21em, -999.997em); top: -2.641em; left: 50%; margin-left: -1.98em;"><span class="mspace" id="MathJax-Span-7" style="height: 0em; vertical-align: 0em; width: 0em; display: inline-block; overflow: hidden;"></span><span class="mi" id="MathJax-Span-8" style="font-family: STIXGeneral-Italic;">𝑥</span><span class="mo" id="MathJax-Span-9" style="font-family: STIXGeneral-Regular; padding-left: 0.303em;">=</span><span class="msubsup" id="MathJax-Span-10" style="padding-left: 0.303em;"><span style="display: inline-block; position: relative; width: 1.626em; height: 0px;"><span style="position: absolute; clip: rect(3.188em, 1000.66em, 4.21em, -999.997em); top: -4.023em; left: 0em;"><span class="mi" id="MathJax-Span-11" style="font-family: STIXGeneral-Italic;">𝐴</span><span style="display: inline-block; width: 0px; height: 4.029em;"></span></span><span style="position: absolute; top: -4.444em; left: 0.724em;"><span class="texatom" id="MathJax-Span-12"><span class="mrow" id="MathJax-Span-13"><span class="mo" id="MathJax-Span-14" style="font-size: 70.7%; font-family: STIXGeneral-Regular;">−</span><span class="mn" id="MathJax-Span-15" style="font-size: 70.7%; font-family: STIXGeneral-Regular;">1</span></span></span><span style="display: inline-block; width: 0px; height: 4.029em;"></span></span></span></span><span class="mi" id="MathJax-Span-16" style="font-family: STIXGeneral-Italic;">𝑏</span><span style="display: inline-block; width: 0px; height: 4.029em;"></span></span></span></span><span style="display: inline-block; width: 0px; height: 4.029em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -1.497em; border-left: 0px solid; width: 0px; height: 2.253em;"></span></span></nobr><span class="MJX_Assistive_MathML MJX_Assistive_MathML_Block" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mi>A</mi><mi>x</mi><mo>=</mo><mi>b</mi><mspace linebreak="newline"></mspace><mi>x</mi><mo>=</mo><msup><mi>A</mi><mrow class="MJX-TeXAtom-ORD"><mo>−</mo><mn>1</mn></mrow></msup><mi>b</mi></math></span></span></div><script type="math/tex; mode=display" id="MathJax-Element-1">Ax=b \\
+x=A^{-1}b
+</script>
+</p>
+<ul>
+<li>Numerical stability issues</li>
+<li>Floating Point Numbers IEEE 754 <a class="org-ref-reference" href="file:///Users/rohitgoswami/Git/Github/WebDev/Mine/haozeke.github.io/presentations/lesHouches21/fortran_aseViz.html#/slide-bibliography">[goldbergWhatEveryComputer1991]</a></li>
+<li>Convergence can be tied to machine epsilon….
+<ul>
+<li>Or a <b>magic number</b> <span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-2-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mo&gt;&amp;#x2212;&lt;/mo&gt;&lt;mn&gt;5&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mo&gt;&amp;#x2212;&lt;/mo&gt;&lt;mn&gt;16&lt;/mn&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-17" style="width: 7.154em; display: inline-block;"><span style="display: inline-block; position: relative; width: 6.854em; height: 0px; font-size: 104%;"><span style="position: absolute; clip: rect(1.746em, 1006.79em, 2.948em, -999.997em); top: -2.581em; left: 0em;"><span class="mrow" id="MathJax-Span-18"><span class="mo" id="MathJax-Span-19" style="font-family: STIXGeneral-Regular;">(</span><span class="mn" id="MathJax-Span-20" style="font-family: STIXGeneral-Regular;">1</span><span class="mi" id="MathJax-Span-21" style="font-family: STIXGeneral-Italic;">𝑒</span><span class="mo" id="MathJax-Span-22" style="font-family: STIXGeneral-Regular; padding-left: 0.243em;">−</span><span class="mn" id="MathJax-Span-23" style="font-family: STIXGeneral-Regular; padding-left: 0.243em;">5</span><span class="mo" id="MathJax-Span-24" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-25" style="font-family: STIXGeneral-Regular; padding-left: 0.183em;">1</span><span class="mi" id="MathJax-Span-26" style="font-family: STIXGeneral-Italic;">𝑒</span><span class="mo" id="MathJax-Span-27" style="font-family: STIXGeneral-Regular; padding-left: 0.243em;">−</span><span class="mn" id="MathJax-Span-28" style="font-family: STIXGeneral-Regular; padding-left: 0.243em;">16</span><span class="mo" id="MathJax-Span-29" style="font-family: STIXGeneral-Regular;">)</span></span><span style="display: inline-block; width: 0px; height: 2.587em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.247em; border-left: 0px solid; width: 0px; height: 1.003em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mo stretchy="false">(</mo><mn>1</mn><mi>e</mi><mo>−</mo><mn>5</mn><mo>,</mo><mn>1</mn><mi>e</mi><mo>−</mo><mn>16</mn><mo stretchy="false">)</mo></math></span></span><script type="math/tex" id="MathJax-Element-2">(1e-5,1e-16)</script></li>
+<li>Or <b>Chemical/Spectroscopic</b> accuracy</li>
+
+</ul></li>
+
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-fortran"><span style="color: #b294bb;">program</span> <span style="color: #81a2be;">main</span>
+ <span style="color: #b294bb;">print</span>*, tiny(0.d0)
+<span style="color: #b294bb;">end</span> <span style="color: #b294bb;">program</span>
+</pre>
+</div>
+
+<pre class="example">2.2250738585072014e-308
+</pre>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-orgbceb2ea" data-background="#99e6ff" class="has-light-background future" style="top: 161.5px; display: none;" hidden="" aria-hidden="true">
+<h3 id="orgbceb2ea">Yawn</h3>
+<blockquote>
+<p>
+“I don’t care because <b>I use libraries.</b> ”
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+“I don’t care because <b>I write my own algorithms</b>.”
+</p>
+</blockquote>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org0f1876c" class="sfeir-basic-slide future" style="top: 0px; display: none;" hidden="" aria-hidden="true">
+<h3 id="org0f1876c">Implementing Sine</h3>
+
+<div id="org72fc848" class="figure">
+<p><img src="./progLangInters_files/2021-09-09_11-10-27_screenshot.png" alt="2021-09-09_11-10-27_screenshot.png" width="80%" height="40%">
+</p>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-fortran"><span style="color: #f0c674;">real</span>(<span style="color: #cc6666;">dp</span>) <span style="color: #b294bb;">function</span> <span style="color: #81a2be;">dsin</span>(x) result(r)
+<span style="color: #f0c674;">real</span>(<span style="color: #cc6666;">dp</span>), <span style="color: #f0c674;">parameter</span> :: pi = 3.1415926535897932384626433832795_dp
+<span style="color: #f0c674;">real</span>(<span style="color: #cc6666;">dp</span>), intent(in) :: x <span style="color: #5a5b5a;">! </span><span style="color: #5a5b5a;">Assume folded to [-2𝜋,2𝜋]</span>
+<span style="color: #f0c674;">real</span>(<span style="color: #cc6666;">dp</span>) :: y, xnew, twoPi, invTwoPi
+<span style="color: #b294bb;">if</span> (<span style="color: #81a2be;">abs</span>(x) &lt; pi/<span style="color: #de935f; font-weight: bold;">2</span>) <span style="color: #b294bb;">then</span>
+    r = kernel_dsin(x)
+<span style="color: #b294bb;">else</span> <span style="color: #5a5b5a;">! </span><span style="color: #5a5b5a;">fold to pi/2 from https://realtimecollisiondetection.net/blog/?p=9</span>
+    y = modulo(xnew, <span style="color: #de935f; font-weight: bold;">2</span>*pi)
+    y = <span style="color: #81a2be;">min</span>(y, pi - y)
+    y = <span style="color: #81a2be;">max</span>(y, -pi - y)
+    y = <span style="color: #81a2be;">min</span>(y, pi - y)
+    r = kernel_dsin(y)
+<span style="color: #b294bb;">end</span> <span style="color: #b294bb;">if</span>
+<span style="color: #b294bb;">end</span> <span style="color: #b294bb;">function</span>
+</pre>
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgdb74e8e" class="sfeir-basic-slide future" style="top: 0px; display: none;" hidden="" aria-hidden="true">
+<h4 id="orgdb74e8e">Folding I</h4>
+<ul>
+<li>Symmetric about <span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-3-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x1D70B;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;/&lt;/mo&gt;&lt;/mrow&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-30" style="width: 1.385em; display: inline-block;"><span style="display: inline-block; position: relative; width: 1.325em; height: 0px; font-size: 104%;"><span style="position: absolute; clip: rect(1.746em, 1001.33em, 2.767em, -999.997em); top: -2.581em; left: 0em;"><span class="mrow" id="MathJax-Span-31"><span class="texatom" id="MathJax-Span-32"><span class="mrow" id="MathJax-Span-33"><span class="mo" id="MathJax-Span-34" style="font-family: STIXGeneral-Regular;">𝜋</span></span></span><span class="texatom" id="MathJax-Span-35"><span class="mrow" id="MathJax-Span-36"><span class="mo" id="MathJax-Span-37" style="font-family: STIXGeneral-Regular;">/</span></span></span><span class="mn" id="MathJax-Span-38" style="font-family: STIXGeneral-Regular;">2</span></span><span style="display: inline-block; width: 0px; height: 2.587em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.059em; border-left: 0px solid; width: 0px; height: 0.816em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow class="MJX-TeXAtom-ORD"><mo>𝜋</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>/</mo></mrow><mn>2</mn></math></span></span><script type="math/tex" id="MathJax-Element-3">𝜋/2</script> –&gt; <span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-4-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mo&gt;&amp;#x2212;&lt;/mo&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x1D70B;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;/&lt;/mo&gt;&lt;/mrow&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-39" style="width: 3.188em; display: inline-block;"><span style="display: inline-block; position: relative; width: 3.068em; height: 0px; font-size: 104%;"><span style="position: absolute; clip: rect(1.746em, 1003.07em, 2.888em, -999.997em); top: -2.581em; left: 0em;"><span class="mrow" id="MathJax-Span-40"><span class="mi" id="MathJax-Span-41" style="font-family: STIXGeneral-Italic;">𝑥</span><span class="mo" id="MathJax-Span-42" style="font-family: STIXGeneral-Regular; padding-left: 0.243em;">−</span><span class="texatom" id="MathJax-Span-43" style="padding-left: 0.243em;"><span class="mrow" id="MathJax-Span-44"><span class="mo" id="MathJax-Span-45" style="font-family: STIXGeneral-Regular;">𝜋</span></span></span><span class="texatom" id="MathJax-Span-46"><span class="mrow" id="MathJax-Span-47"><span class="mo" id="MathJax-Span-48" style="font-family: STIXGeneral-Regular;">/</span></span></span><span class="mn" id="MathJax-Span-49" style="font-family: STIXGeneral-Regular;">2</span></span><span style="display: inline-block; width: 0px; height: 2.587em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.184em; border-left: 0px solid; width: 0px; height: 1.003em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi><mo>−</mo><mrow class="MJX-TeXAtom-ORD"><mo>𝜋</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>/</mo></mrow><mn>2</mn></math></span></span><script type="math/tex" id="MathJax-Element-4">x-𝜋/2</script></li>
+
+</ul>
+
+<div id="org8f99b50" class="figure">
+<p><img src="./progLangInters_files/2021-09-09_12-43-34_screenshot.png" alt="2021-09-09_12-43-34_screenshot.png">
+</p>
+</div>
+<ul>
+<li><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-5-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mo&gt;&amp;#x2212;&lt;/mo&gt;&lt;mi&gt;a&lt;/mi&gt;&lt;mi&gt;b&lt;/mi&gt;&lt;mi&gt;s&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-50" style="width: 5.412em; display: inline-block;"><span style="display: inline-block; position: relative; width: 5.171em; height: 0px; font-size: 104%;"><span style="position: absolute; clip: rect(1.746em, 1005.11em, 2.948em, -999.997em); top: -2.581em; left: 0em;"><span class="mrow" id="MathJax-Span-51"><span class="mi" id="MathJax-Span-52" style="font-family: STIXGeneral-Italic;">𝑥</span><span class="mo" id="MathJax-Span-53" style="font-family: STIXGeneral-Regular; padding-left: 0.303em;">=</span><span class="mo" id="MathJax-Span-54" style="font-family: STIXGeneral-Regular; padding-left: 0.303em;">−</span><span class="mi" id="MathJax-Span-55" style="font-family: STIXGeneral-Italic;">𝑎</span><span class="mi" id="MathJax-Span-56" style="font-family: STIXGeneral-Italic;">𝑏</span><span class="mi" id="MathJax-Span-57" style="font-family: STIXGeneral-Italic;">𝑠</span><span class="mo" id="MathJax-Span-58" style="font-family: STIXGeneral-Regular;">(</span><span class="mi" id="MathJax-Span-59" style="font-family: STIXGeneral-Italic;">𝑥</span><span class="mo" id="MathJax-Span-60" style="font-family: STIXGeneral-Regular;">)</span></span><span style="display: inline-block; width: 0px; height: 2.587em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.247em; border-left: 0px solid; width: 0px; height: 1.003em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi><mo>=</mo><mo>−</mo><mi>a</mi><mi>b</mi><mi>s</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></math></span></span><script type="math/tex" id="MathJax-Element-5">x=-abs(x)</script></li>
+
+</ul>
+
+<div id="orgac6b46d" class="figure">
+<p><img src="./progLangInters_files/2021-09-09_12-44-54_screenshot.png" alt="2021-09-09_12-44-54_screenshot.png">
+</p>
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org9b7f3d0" class="sfeir-basic-slide future" style="top: 113px; display: none;" hidden="" aria-hidden="true">
+<h4 id="org9b7f3d0">Folding II</h4>
+<ul>
+<li><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-6-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mo&gt;&amp;#x2212;&lt;/mo&gt;&lt;mi&gt;a&lt;/mi&gt;&lt;mi&gt;b&lt;/mi&gt;&lt;mi&gt;s&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mo&gt;&amp;#x2013;&lt;/mo&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x1D70B;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;/&lt;/mo&gt;&lt;/mrow&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;mo&gt;+&lt;/mo&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x1D70B;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;/&lt;/mo&gt;&lt;/mrow&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-61" style="width: 10.099em; display: inline-block;"><span style="display: inline-block; position: relative; width: 9.678em; height: 0px; font-size: 104%;"><span style="position: absolute; clip: rect(1.746em, 1009.68em, 2.948em, -999.997em); top: -2.581em; left: 0em;"><span class="mrow" id="MathJax-Span-62"><span class="mi" id="MathJax-Span-63" style="font-family: STIXGeneral-Italic;">𝑥</span><span class="mo" id="MathJax-Span-64" style="font-family: STIXGeneral-Regular; padding-left: 0.303em;">=</span><span class="mo" id="MathJax-Span-65" style="font-family: STIXGeneral-Regular; padding-left: 0.303em;">−</span><span class="mi" id="MathJax-Span-66" style="font-family: STIXGeneral-Italic;">𝑎</span><span class="mi" id="MathJax-Span-67" style="font-family: STIXGeneral-Italic;">𝑏</span><span class="mi" id="MathJax-Span-68" style="font-family: STIXGeneral-Italic;">𝑠</span><span class="mo" id="MathJax-Span-69" style="font-family: STIXGeneral-Regular;">(</span><span class="mi" id="MathJax-Span-70" style="font-family: STIXGeneral-Italic;">𝑥</span><span class="mo" id="MathJax-Span-71" style="font-family: STIXGeneral-Regular;">–</span><span class="texatom" id="MathJax-Span-72" style="padding-left: 0.183em;"><span class="mrow" id="MathJax-Span-73"><span class="mo" id="MathJax-Span-74" style="font-family: STIXGeneral-Regular;">𝜋</span></span></span><span class="texatom" id="MathJax-Span-75"><span class="mrow" id="MathJax-Span-76"><span class="mo" id="MathJax-Span-77" style="font-family: STIXGeneral-Regular;">/</span></span></span><span class="mn" id="MathJax-Span-78" style="font-family: STIXGeneral-Regular;">2</span><span class="mo" id="MathJax-Span-79" style="font-family: STIXGeneral-Regular;">)</span><span class="mo" id="MathJax-Span-80" style="font-family: STIXGeneral-Regular; padding-left: 0.243em;">+</span><span class="texatom" id="MathJax-Span-81" style="padding-left: 0.243em;"><span class="mrow" id="MathJax-Span-82"><span class="mo" id="MathJax-Span-83" style="font-family: STIXGeneral-Regular;">𝜋</span></span></span><span class="texatom" id="MathJax-Span-84"><span class="mrow" id="MathJax-Span-85"><span class="mo" id="MathJax-Span-86" style="font-family: STIXGeneral-Regular;">/</span></span></span><span class="mn" id="MathJax-Span-87" style="font-family: STIXGeneral-Regular;">2</span></span><span style="display: inline-block; width: 0px; height: 2.587em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.247em; border-left: 0px solid; width: 0px; height: 1.003em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi><mo>=</mo><mo>−</mo><mi>a</mi><mi>b</mi><mi>s</mi><mo stretchy="false">(</mo><mi>x</mi><mo>–</mo><mrow class="MJX-TeXAtom-ORD"><mo>𝜋</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>/</mo></mrow><mn>2</mn><mo stretchy="false">)</mo><mo>+</mo><mrow class="MJX-TeXAtom-ORD"><mo>𝜋</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>/</mo></mrow><mn>2</mn></math></span></span><script type="math/tex" id="MathJax-Element-6">x = -abs(x – 𝜋/2) + 𝜋/2</script> -&gt; <span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-7-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mi&gt;m&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x1D70B;&lt;/mo&gt;&lt;/mrow&gt;&lt;mo&gt;&amp;#x2212;&lt;/mo&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-88" style="width: 7.575em; display: inline-block;"><span style="display: inline-block; position: relative; width: 7.275em; height: 0px; font-size: 104%;"><span style="position: absolute; clip: rect(1.746em, 1007.22em, 2.948em, -999.997em); top: -2.581em; left: 0em;"><span class="mrow" id="MathJax-Span-89"><span class="mi" id="MathJax-Span-90" style="font-family: STIXGeneral-Italic;">𝑥</span><span class="mo" id="MathJax-Span-91" style="font-family: STIXGeneral-Regular; padding-left: 0.303em;">=</span><span class="mi" id="MathJax-Span-92" style="font-family: STIXGeneral-Italic; padding-left: 0.303em;">𝑚</span><span class="mi" id="MathJax-Span-93" style="font-family: STIXGeneral-Italic;">𝑖</span><span class="mi" id="MathJax-Span-94" style="font-family: STIXGeneral-Italic;">𝑛</span><span class="mo" id="MathJax-Span-95" style="font-family: STIXGeneral-Regular;">(</span><span class="mi" id="MathJax-Span-96" style="font-family: STIXGeneral-Italic;">𝑥</span><span class="mo" id="MathJax-Span-97" style="font-family: STIXGeneral-Regular;">,</span><span class="texatom" id="MathJax-Span-98" style="padding-left: 0.183em;"><span class="mrow" id="MathJax-Span-99"><span class="mo" id="MathJax-Span-100" style="font-family: STIXGeneral-Regular;">𝜋</span></span></span><span class="mo" id="MathJax-Span-101" style="font-family: STIXGeneral-Regular; padding-left: 0.243em;">−</span><span class="mi" id="MathJax-Span-102" style="font-family: STIXGeneral-Italic; padding-left: 0.243em;">𝑥</span><span class="mo" id="MathJax-Span-103" style="font-family: STIXGeneral-Regular;">)</span></span><span style="display: inline-block; width: 0px; height: 2.587em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.247em; border-left: 0px solid; width: 0px; height: 1.003em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi><mo>=</mo><mi>m</mi><mi>i</mi><mi>n</mi><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mrow class="MJX-TeXAtom-ORD"><mo>𝜋</mo></mrow><mo>−</mo><mi>x</mi><mo stretchy="false">)</mo></math></span></span><script type="math/tex" id="MathJax-Element-7">x=min(x,𝜋-x)</script></li>
+
+</ul>
+
+
+<div id="org9f38915" class="figure">
+<p><img src="./progLangInters_files/2021-09-09_12-46-39_screenshot.png" alt="2021-09-09_12-46-39_screenshot.png">
+</p>
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org149edd1" class="sfeir-basic-slide future" style="top: 0px; display: none;" hidden="" aria-hidden="true">
+<h4 id="org149edd1">Folding III</h4>
+<ul>
+<li>Repeat rightward to get <span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-8-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mi&gt;m&lt;/mi&gt;&lt;mi&gt;a&lt;/mi&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mo&gt;&amp;#x2212;&lt;/mo&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x1D70B;&lt;/mo&gt;&lt;/mrow&gt;&lt;mo&gt;&amp;#x2212;&lt;/mo&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-104" style="width: 8.597em; display: inline-block;"><span style="display: inline-block; position: relative; width: 8.236em; height: 0px; font-size: 104%;"><span style="position: absolute; clip: rect(1.746em, 1008.18em, 2.948em, -999.997em); top: -2.581em; left: 0em;"><span class="mrow" id="MathJax-Span-105"><span class="mi" id="MathJax-Span-106" style="font-family: STIXGeneral-Italic;">𝑥</span><span class="mo" id="MathJax-Span-107" style="font-family: STIXGeneral-Regular; padding-left: 0.303em;">=</span><span class="mi" id="MathJax-Span-108" style="font-family: STIXGeneral-Italic; padding-left: 0.303em;">𝑚</span><span class="mi" id="MathJax-Span-109" style="font-family: STIXGeneral-Italic;">𝑎</span><span class="mi" id="MathJax-Span-110" style="font-family: STIXGeneral-Italic;">𝑥</span><span class="mo" id="MathJax-Span-111" style="font-family: STIXGeneral-Regular;">(</span><span class="mi" id="MathJax-Span-112" style="font-family: STIXGeneral-Italic;">𝑥</span><span class="mo" id="MathJax-Span-113" style="font-family: STIXGeneral-Regular;">,</span><span class="mo" id="MathJax-Span-114" style="font-family: STIXGeneral-Regular; padding-left: 0.183em;">−</span><span class="texatom" id="MathJax-Span-115"><span class="mrow" id="MathJax-Span-116"><span class="mo" id="MathJax-Span-117" style="font-family: STIXGeneral-Regular;">𝜋</span></span></span><span class="mo" id="MathJax-Span-118" style="font-family: STIXGeneral-Regular; padding-left: 0.243em;">−</span><span class="mi" id="MathJax-Span-119" style="font-family: STIXGeneral-Italic; padding-left: 0.243em;">𝑥</span><span class="mo" id="MathJax-Span-120" style="font-family: STIXGeneral-Regular;">)</span></span><span style="display: inline-block; width: 0px; height: 2.587em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.247em; border-left: 0px solid; width: 0px; height: 1.003em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi><mo>=</mo><mi>m</mi><mi>a</mi><mi>x</mi><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mo>−</mo><mrow class="MJX-TeXAtom-ORD"><mo>𝜋</mo></mrow><mo>−</mo><mi>x</mi><mo stretchy="false">)</mo></math></span></span><script type="math/tex" id="MathJax-Element-8">x=max(x,-𝜋-x)</script></li>
+
+</ul>
+
+<div id="orgd039329" class="figure">
+<p><img src="./progLangInters_files/2021-09-09_12-47-42_screenshot.png" alt="2021-09-09_12-47-42_screenshot.png">
+</p>
+</div>
+<ul>
+<li>Complete with <span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-9-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mi&gt;m&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x1D70B;&lt;/mo&gt;&lt;/mrow&gt;&lt;mo&gt;&amp;#x2212;&lt;/mo&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-121" style="width: 7.575em; display: inline-block;"><span style="display: inline-block; position: relative; width: 7.275em; height: 0px; font-size: 104%;"><span style="position: absolute; clip: rect(1.746em, 1007.22em, 2.948em, -999.997em); top: -2.581em; left: 0em;"><span class="mrow" id="MathJax-Span-122"><span class="mi" id="MathJax-Span-123" style="font-family: STIXGeneral-Italic;">𝑥</span><span class="mo" id="MathJax-Span-124" style="font-family: STIXGeneral-Regular; padding-left: 0.303em;">=</span><span class="mi" id="MathJax-Span-125" style="font-family: STIXGeneral-Italic; padding-left: 0.303em;">𝑚</span><span class="mi" id="MathJax-Span-126" style="font-family: STIXGeneral-Italic;">𝑖</span><span class="mi" id="MathJax-Span-127" style="font-family: STIXGeneral-Italic;">𝑛</span><span class="mo" id="MathJax-Span-128" style="font-family: STIXGeneral-Regular;">(</span><span class="mi" id="MathJax-Span-129" style="font-family: STIXGeneral-Italic;">𝑥</span><span class="mo" id="MathJax-Span-130" style="font-family: STIXGeneral-Regular;">,</span><span class="texatom" id="MathJax-Span-131" style="padding-left: 0.183em;"><span class="mrow" id="MathJax-Span-132"><span class="mo" id="MathJax-Span-133" style="font-family: STIXGeneral-Regular;">𝜋</span></span></span><span class="mo" id="MathJax-Span-134" style="font-family: STIXGeneral-Regular; padding-left: 0.243em;">−</span><span class="mi" id="MathJax-Span-135" style="font-family: STIXGeneral-Italic; padding-left: 0.243em;">𝑥</span><span class="mo" id="MathJax-Span-136" style="font-family: STIXGeneral-Regular;">)</span></span><span style="display: inline-block; width: 0px; height: 2.587em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.247em; border-left: 0px solid; width: 0px; height: 1.003em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi><mo>=</mo><mi>m</mi><mi>i</mi><mi>n</mi><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mrow class="MJX-TeXAtom-ORD"><mo>𝜋</mo></mrow><mo>−</mo><mi>x</mi><mo stretchy="false">)</mo></math></span></span><script type="math/tex" id="MathJax-Element-9">x=min(x,𝜋-x)</script></li>
+
+</ul>
+
+
+<div id="org36a6522" class="figure">
+<p><img src="./progLangInters_files/2021-09-09_12-48-04_screenshot.png" alt="2021-09-09_12-48-04_screenshot.png">
+</p>
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-org93570c5" class="sfeir-basic-slide future" style="top: 65.5px; display: none;" hidden="" aria-hidden="true">
+<h3 id="org93570c5">Kernel Sine</h3>
+<div class="leftcol" id="org779c6a0">
+<p width="50%" height="50%">
+<img src="./progLangInters_files/2021-09-09_11-22-47_screenshot.png" alt="2021-09-09_11-22-47_screenshot.png" width="50%" height="50%">
+<a class="org-ref-reference" href="file:///Users/rohitgoswami/Git/Github/WebDev/Mine/haozeke.github.io/presentations/lesHouches21/fortran_aseViz.html#/slide-bibliography">[ChevillardJoldesLauter2010]</a>
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-bash">nix-shell -p sollya rlwrap
+rlwrap -A sollya
+<span style="color: #cc6666;">prec</span>=<span style="color: #de935f; font-weight: bold;">120</span>;
+<span style="color: #cc6666;">f</span>=sin<span style="color: #b294bb;">(</span>x<span style="color: #b294bb;">)</span>;
+<span style="color: #cc6666;">d</span>=<span style="color: #b294bb;">[</span>-pi/2;pi/2<span style="color: #b294bb;">]</span>;
+<span style="color: #5a5b5a;"># </span><span style="color: #5a5b5a;">Use min/max poly</span>
+<span style="color: #cc6666;">p</span>=remez<span style="color: #b294bb;">(</span>f,16,d,
+        default,1e-16,1e-30<span style="color: #b294bb;">)</span>;
+p; <span style="color: #5a5b5a;"># </span><span style="color: #5a5b5a;">Returns coefficients</span>
+<span style="color: #5a5b5a;"># </span><span style="color: #5a5b5a;">Zero out even terms</span>
+</pre>
+</div>
+
+</div>
+
+<div class="rightcol" id="org3bff368">
+<div class="org-src-container">
+
+<pre class="src src-fortran"><span style="color: #5a5b5a;">! </span><span style="color: #5a5b5a;">Accurate on [-pi/2,pi/2] to about 1e-16</span>
+elemental <span style="color: #f0c674;">real</span>(<span style="color: #cc6666;">dp</span>) <span style="color: #b294bb;">function</span> <span style="color: #81a2be;">kernel_dsin2</span>(x) result(res)
+<span style="color: #f0c674;">real</span>(<span style="color: #cc6666;">dp</span>), intent(in) :: x
+<span style="color: #f0c674;">real</span>(<span style="color: #cc6666;">dp</span>), <span style="color: #f0c674;">parameter</span> :: S1 = 0.9999999999999990771_dp
+<span style="color: #f0c674;">real</span>(<span style="color: #cc6666;">dp</span>), <span style="color: #f0c674;">parameter</span> :: S2 = -0.16666666666664811048_dp
+<span style="color: #f0c674;">real</span>(<span style="color: #cc6666;">dp</span>), <span style="color: #f0c674;">parameter</span> :: S3 = 8.333333333226519387e-3_dp
+<span style="color: #f0c674;">real</span>(<span style="color: #cc6666;">dp</span>), <span style="color: #f0c674;">parameter</span> :: S4 = -1.9841269813888534497e-4_dp
+<span style="color: #f0c674;">real</span>(<span style="color: #cc6666;">dp</span>), <span style="color: #f0c674;">parameter</span> :: S5 = 2.7557315514280769795e-6_dp
+<span style="color: #f0c674;">real</span>(<span style="color: #cc6666;">dp</span>), <span style="color: #f0c674;">parameter</span> :: S6 = -2.5051823583393710429e-8_dp
+<span style="color: #f0c674;">real</span>(<span style="color: #cc6666;">dp</span>), <span style="color: #f0c674;">parameter</span> :: S7 = 1.6046585911173017112e-10_dp
+<span style="color: #f0c674;">real</span>(<span style="color: #cc6666;">dp</span>), <span style="color: #f0c674;">parameter</span> :: S8 = -7.3572396558796051923e-13_dp
+<span style="color: #f0c674;">real</span>(<span style="color: #cc6666;">dp</span>) :: z
+z = x*x
+res = x * (S1+z*(S2+z*(S3+z*(S4+z*(S5+z*
+      (S6+z*(S7+z*S8)))))))
+<span style="color: #b294bb;">end</span> <span style="color: #b294bb;">function</span>
+</pre>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-org380adc1" class="sfeir-basic-slide future" style="top: 0px; display: none;" hidden="" aria-hidden="true">
+<h3 id="org380adc1">Auxiliary Functions</h3>
+<div class="org-src-container">
+
+<pre class="src src-fortran">elemental <span style="color: #f0c674;">real</span>(<span style="color: #cc6666;">dp</span>) <span style="color: #b294bb;">function</span> <span style="color: #81a2be;">dmodulo</span>(x, y) result(r)
+<span style="color: #f0c674;">real</span>(<span style="color: #cc6666;">dp</span>), intent(in) :: x, y
+r = x-floor(x/y)*y
+<span style="color: #b294bb;">end</span> <span style="color: #b294bb;">function</span>
+
+elemental <span style="color: #f0c674;">integer</span> <span style="color: #b294bb;">function</span> <span style="color: #81a2be;">dfloor</span>(x) result(r)
+<span style="color: #f0c674;">real</span>(<span style="color: #cc6666;">dp</span>), intent(in) :: x
+<span style="color: #b294bb;">if</span> (x &gt;= <span style="color: #de935f; font-weight: bold;">0</span>) <span style="color: #b294bb;">then</span>
+    r = x
+<span style="color: #b294bb;">else</span>
+    r = x-<span style="color: #de935f; font-weight: bold;">1</span>
+<span style="color: #b294bb;">end</span> <span style="color: #b294bb;">if</span>
+<span style="color: #b294bb;">end</span> <span style="color: #b294bb;">function</span>
+
+elemental <span style="color: #f0c674;">real</span>(<span style="color: #cc6666;">dp</span>) <span style="color: #b294bb;">function</span> <span style="color: #81a2be;">dabs</span>(x) result(r)
+<span style="color: #f0c674;">real</span>(<span style="color: #cc6666;">dp</span>), intent(in) :: x
+<span style="color: #b294bb;">if</span> (x &gt;= <span style="color: #de935f; font-weight: bold;">0</span>) <span style="color: #b294bb;">then</span>
+    r = x
+<span style="color: #b294bb;">else</span>
+    r = -x
+<span style="color: #b294bb;">end</span> <span style="color: #b294bb;">if</span>
+<span style="color: #b294bb;">end</span> <span style="color: #b294bb;">function</span>
+</pre>
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgca2df8d" class="sfeir-basic-slide future" style="top: 220px; display: none;" data-fragment="-1" hidden="" aria-hidden="true">
+<h3 id="orgca2df8d">Accuracy</h3>
+<p>
+With an evenly spaced grid of <code>0.01</code>:
+</p>
+<ul class="fragment appear" data-fragment-index="0">
+<li><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-10-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;mi&gt;E&lt;/mi&gt;&lt;mo&gt;&amp;#x2212;&lt;/mo&gt;&lt;mn&gt;16&lt;/mn&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-137" style="width: 3.549em; display: inline-block;"><span style="display: inline-block; position: relative; width: 3.368em; height: 0px; font-size: 104%;"><span style="position: absolute; clip: rect(1.746em, 1003.31em, 2.888em, -999.997em); top: -2.581em; left: 0em;"><span class="mrow" id="MathJax-Span-138"><span class="mn" id="MathJax-Span-139" style="font-family: STIXGeneral-Regular;">1</span><span class="mi" id="MathJax-Span-140" style="font-family: STIXGeneral-Italic;">𝐸<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mo" id="MathJax-Span-141" style="font-family: STIXGeneral-Regular; padding-left: 0.243em;">−</span><span class="mn" id="MathJax-Span-142" style="font-family: STIXGeneral-Regular; padding-left: 0.243em;">16</span></span><span style="display: inline-block; width: 0px; height: 2.587em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.184em; border-left: 0px solid; width: 0px; height: 1.003em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn><mi>E</mi><mo>−</mo><mn>16</mn></math></span></span><script type="math/tex" id="MathJax-Element-10">1E-16</script> over kernel range <span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-11-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mo&gt;&amp;#x2212;&lt;/mo&gt;&lt;mi&gt;&amp;#x03C0;&lt;/mi&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;/&lt;/mo&gt;&lt;/mrow&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mi&gt;&amp;#x03C0;&lt;/mi&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;/&lt;/mo&gt;&lt;/mrow&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-143" style="width: 3.969em; display: inline-block;"><span style="display: inline-block; position: relative; width: 3.789em; height: 0px; font-size: 104%;"><span style="position: absolute; clip: rect(1.746em, 1003.79em, 2.888em, -999.997em); top: -2.581em; left: 0em;"><span class="mrow" id="MathJax-Span-144"><span class="mo" id="MathJax-Span-145" style="font-family: STIXGeneral-Regular;">−</span><span class="mi" id="MathJax-Span-146" style="font-family: STIXGeneral-Italic;">𝜋<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="texatom" id="MathJax-Span-147"><span class="mrow" id="MathJax-Span-148"><span class="mo" id="MathJax-Span-149" style="font-family: STIXGeneral-Regular;">/</span></span></span><span class="mn" id="MathJax-Span-150" style="font-family: STIXGeneral-Regular;">2</span><span class="mo" id="MathJax-Span-151" style="font-family: STIXGeneral-Regular;">,</span><span class="mi" id="MathJax-Span-152" style="font-family: STIXGeneral-Italic; padding-left: 0.183em;">𝜋<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="texatom" id="MathJax-Span-153"><span class="mrow" id="MathJax-Span-154"><span class="mo" id="MathJax-Span-155" style="font-family: STIXGeneral-Regular;">/</span></span></span><span class="mn" id="MathJax-Span-156" style="font-family: STIXGeneral-Regular;">2</span></span><span style="display: inline-block; width: 0px; height: 2.587em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.184em; border-left: 0px solid; width: 0px; height: 1.003em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mo>−</mo><mi>π</mi><mrow class="MJX-TeXAtom-ORD"><mo>/</mo></mrow><mn>2</mn><mo>,</mo><mi>π</mi><mrow class="MJX-TeXAtom-ORD"><mo>/</mo></mrow><mn>2</mn></math></span></span><script type="math/tex" id="MathJax-Element-11">-\pi/2, \pi/2</script></li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="1">
+<li><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-12-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;mi&gt;E&lt;/mi&gt;&lt;mo&gt;&amp;#x2212;&lt;/mo&gt;&lt;mn&gt;16&lt;/mn&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-157" style="width: 3.549em; display: inline-block;"><span style="display: inline-block; position: relative; width: 3.368em; height: 0px; font-size: 104%;"><span style="position: absolute; clip: rect(1.746em, 1003.31em, 2.888em, -999.997em); top: -2.581em; left: 0em;"><span class="mrow" id="MathJax-Span-158"><span class="mn" id="MathJax-Span-159" style="font-family: STIXGeneral-Regular;">1</span><span class="mi" id="MathJax-Span-160" style="font-family: STIXGeneral-Italic;">𝐸<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mo" id="MathJax-Span-161" style="font-family: STIXGeneral-Regular; padding-left: 0.243em;">−</span><span class="mn" id="MathJax-Span-162" style="font-family: STIXGeneral-Regular; padding-left: 0.243em;">16</span></span><span style="display: inline-block; width: 0px; height: 2.587em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.184em; border-left: 0px solid; width: 0px; height: 1.003em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn><mi>E</mi><mo>−</mo><mn>16</mn></math></span></span><script type="math/tex" id="MathJax-Element-12">1E-16</script> over <span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-13-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mo stretchy=&quot;false&quot;&gt;[&lt;/mo&gt;&lt;mo&gt;&amp;#x2212;&lt;/mo&gt;&lt;mn&gt;20&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;20&lt;/mn&gt;&lt;mo stretchy=&quot;false&quot;&gt;]&lt;/mo&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-163" style="width: 3.969em; display: inline-block;"><span style="display: inline-block; position: relative; width: 3.789em; height: 0px; font-size: 104%;"><span style="position: absolute; clip: rect(1.746em, 1003.73em, 2.948em, -999.997em); top: -2.581em; left: 0em;"><span class="mrow" id="MathJax-Span-164"><span class="mo" id="MathJax-Span-165" style="font-family: STIXGeneral-Regular;">[</span><span class="mo" id="MathJax-Span-166" style="font-family: STIXGeneral-Regular;">−</span><span class="mn" id="MathJax-Span-167" style="font-family: STIXGeneral-Regular;">20</span><span class="mo" id="MathJax-Span-168" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-169" style="font-family: STIXGeneral-Regular; padding-left: 0.183em;">20</span><span class="mo" id="MathJax-Span-170" style="font-family: STIXGeneral-Regular;">]</span></span><span style="display: inline-block; width: 0px; height: 2.587em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.247em; border-left: 0px solid; width: 0px; height: 1.003em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mo stretchy="false">[</mo><mo>−</mo><mn>20</mn><mo>,</mo><mn>20</mn><mo stretchy="false">]</mo></math></span></span><script type="math/tex" id="MathJax-Element-13">[-20,20]</script></li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="2">
+<li><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-14-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;mi&gt;E&lt;/mi&gt;&lt;mo&gt;&amp;#x2212;&lt;/mo&gt;&lt;mn&gt;12&lt;/mn&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-171" style="width: 3.549em; display: inline-block;"><span style="display: inline-block; position: relative; width: 3.368em; height: 0px; font-size: 104%;"><span style="position: absolute; clip: rect(1.746em, 1003.37em, 2.888em, -999.997em); top: -2.581em; left: 0em;"><span class="mrow" id="MathJax-Span-172"><span class="mn" id="MathJax-Span-173" style="font-family: STIXGeneral-Regular;">1</span><span class="mi" id="MathJax-Span-174" style="font-family: STIXGeneral-Italic;">𝐸<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mo" id="MathJax-Span-175" style="font-family: STIXGeneral-Regular; padding-left: 0.243em;">−</span><span class="mn" id="MathJax-Span-176" style="font-family: STIXGeneral-Regular; padding-left: 0.243em;">12</span></span><span style="display: inline-block; width: 0px; height: 2.587em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.184em; border-left: 0px solid; width: 0px; height: 1.003em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn><mi>E</mi><mo>−</mo><mn>12</mn></math></span></span><script type="math/tex" id="MathJax-Element-14">1E-12</script> from <span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-15-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;mi&gt;E&lt;/mi&gt;&lt;mn&gt;5&lt;/mn&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-177" style="width: 1.806em; display: inline-block;"><span style="display: inline-block; position: relative; width: 1.746em; height: 0px; font-size: 104%;"><span style="position: absolute; clip: rect(1.746em, 1001.69em, 2.767em, -999.997em); top: -2.581em; left: 0em;"><span class="mrow" id="MathJax-Span-178"><span class="mn" id="MathJax-Span-179" style="font-family: STIXGeneral-Regular;">1</span><span class="mi" id="MathJax-Span-180" style="font-family: STIXGeneral-Italic;">𝐸<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mn" id="MathJax-Span-181" style="font-family: STIXGeneral-Regular;">5</span></span><span style="display: inline-block; width: 0px; height: 2.587em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.059em; border-left: 0px solid; width: 0px; height: 0.878em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn><mi>E</mi><mn>5</mn></math></span></span><script type="math/tex" id="MathJax-Element-15">1E5</script></li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="3">
+<li><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-16-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;mi&gt;E&lt;/mi&gt;&lt;mo&gt;&amp;#x2212;&lt;/mo&gt;&lt;mn&gt;7&lt;/mn&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-182" style="width: 3.008em; display: inline-block;"><span style="display: inline-block; position: relative; width: 2.888em; height: 0px; font-size: 104%;"><span style="position: absolute; clip: rect(1.746em, 1002.83em, 2.888em, -999.997em); top: -2.581em; left: 0em;"><span class="mrow" id="MathJax-Span-183"><span class="mn" id="MathJax-Span-184" style="font-family: STIXGeneral-Regular;">1</span><span class="mi" id="MathJax-Span-185" style="font-family: STIXGeneral-Italic;">𝐸<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mo" id="MathJax-Span-186" style="font-family: STIXGeneral-Regular; padding-left: 0.243em;">−</span><span class="mn" id="MathJax-Span-187" style="font-family: STIXGeneral-Regular; padding-left: 0.243em;">7</span></span><span style="display: inline-block; width: 0px; height: 2.587em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.184em; border-left: 0px solid; width: 0px; height: 1.003em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn><mi>E</mi><mo>−</mo><mn>7</mn></math></span></span><script type="math/tex" id="MathJax-Element-16">1E-7</script> from <span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-17-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;mi&gt;E&lt;/mi&gt;&lt;mn&gt;10&lt;/mn&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-188" style="width: 2.347em; display: inline-block;"><span style="display: inline-block; position: relative; width: 2.227em; height: 0px; font-size: 104%;"><span style="position: absolute; clip: rect(1.746em, 1002.23em, 2.767em, -999.997em); top: -2.581em; left: 0em;"><span class="mrow" id="MathJax-Span-189"><span class="mn" id="MathJax-Span-190" style="font-family: STIXGeneral-Regular;">1</span><span class="mi" id="MathJax-Span-191" style="font-family: STIXGeneral-Italic;">𝐸<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mn" id="MathJax-Span-192" style="font-family: STIXGeneral-Regular;">10</span></span><span style="display: inline-block; width: 0px; height: 2.587em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.059em; border-left: 0px solid; width: 0px; height: 0.816em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn><mi>E</mi><mn>10</mn></math></span></span><script type="math/tex" id="MathJax-Element-17">1E10</script></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orga1ad72f" class="sfeir-basic-slide future" style="top: 152px; display: none;" hidden="" aria-hidden="true">
+<h4 id="orga1ad72f">Post Mortem</h4>
+<ul>
+<li>The problem turned out to be <code>modulo</code>
+<ul>
+<li>IEEE defines a remainder for trignometric functions <code>ieee754_rem_pio2</code></li>
+
+</ul></li>
+
+</ul>
+<blockquote>
+<p>
+Do not <b>naively assume</b> “handcrafted” algorithms are IEEE 754 accurate
+</p>
+</blockquote>
+<div class="slide-footer"><br></div>
+
+</section>
+</section>
+<section style="top: 0px; display: none;" class="stack sfeir-basic-slide future" data-previous-indexv="0" hidden="" aria-hidden="true">
+<section id="slide-org067750d" style="top: 27px; display: none;" class="sfeir-basic-slide" aria-hidden="true">
+<h2 id="org067750d">Fortran, C, Python</h2>
+<dl>
+<dt>F2003</dt><dd>Introduced the <code>ISO_C_BINDING</code></dd>
+<dt>(no term)</dt><dd>Described in great detail on <a href="https://www.fortran90.org/src/best-practices.html#python-interface">fortran90.org</a>:</dd>
+
+</dl>
+
+<div id="org40563b5" class="figure">
+<p><img src="./progLangInters_files/hello-stdfcpy.png" alt="hello-stdfcpy.png">
+</p>
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+</section>
+<section style="top: 0px; display: none;" class="stack sfeir-basic-slide future" data-previous-indexv="0" hidden="" aria-hidden="true">
+<section id="slide-orged46ef8" style="top: 300.5px; display: none;" class="sfeir-basic-slide" aria-hidden="true">
+<h2 id="orged46ef8">F2PY</h2>
+<div class="outline-text-2" id="text-orged46ef8">
+</div>
+</section>
+<section id="slide-org64c2b1f" class="sfeir-basic-slide future" style="top: 54.5px; display: none;" hidden="" aria-hidden="true">
+<h3 id="org64c2b1f">History</h3>
+<ul>
+<li>Developed by Pearu Peterson <a class="org-ref-reference" href="file:///Users/rohitgoswami/Git/Github/WebDev/Mine/haozeke.github.io/presentations/lesHouches21/fortran_aseViz.html#/slide-bibliography">[petersonF2PYToolConnecting2009]</a>
+<dl>
+<dt>July 9, 1999</dt><dd><code>f2py.py</code> –&gt; Fortran to Python Interface Generator (FPIG)</dd>
+<dt>January 22, 2000</dt><dd><code>f2py2e</code> –&gt; Fortran to Python Interface Generator, 2nd edition.</dd>
+<dt>July 19, 2007</dt><dd><code>numpy.f2py</code> –&gt; f2py2e moved to NumPy project. This is current stable code of f2py.</dd>
+
+</dl></li>
+<li>Used extensively for F77
+<ul>
+<li><a href="https://numpy.org/">NumPy</a> <a class="org-ref-reference" href="file:///Users/rohitgoswami/Git/Github/WebDev/Mine/haozeke.github.io/presentations/lesHouches21/fortran_aseViz.html#/slide-bibliography">[waltNumPyArrayStructure2011]</a>, <a href="https://scipy.org/">SciPy</a> <a class="org-ref-reference" href="file:///Users/rohitgoswami/Git/Github/WebDev/Mine/haozeke.github.io/presentations/lesHouches21/fortran_aseViz.html#/slide-bibliography">[virtanenSciPyFundamentalAlgorithms2020]</a></li>
+<li><a href="https://msspec.cnrs.fr/">MsSpec</a> <a class="org-ref-reference" href="file:///Users/rohitgoswami/Git/Github/WebDev/Mine/haozeke.github.io/presentations/lesHouches21/fortran_aseViz.html#/slide-bibliography">[sebilleauMsSpec1MultipleScattering2011]</a> :)</li>
+
+</ul></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgf99945d" class="sfeir-basic-slide future" style="top: 34.5px; display: none;" hidden="" aria-hidden="true">
+<h3 id="orgf99945d">Design</h3>
+
+<div id="orga3d7802" class="figure">
+<p><img src="./progLangInters_files/hello-f2py.png" alt="hello-f2py.png">
+</p>
+</div>
+
+<ul>
+<li>A <b>best effort</b> wrapper
+<ul>
+<li>Specifications via <code>.pyf</code> or inline comments</li>
+<li><b>Not</b> a compiler
+<ul>
+<li>Can rewrite code :)</li>
+
+</ul></li>
+
+</ul></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgcf70276" class="sfeir-basic-slide future" style="top: 173px; display: none;" hidden="" aria-hidden="true">
+<h3 id="orgcf70276">Roadmap</h3>
+<ul>
+<li>Moves about as fast as spectroscopy codes :)
+<ul>
+<li>Also picking up speed in 2021</li>
+
+</ul></li>
+<li>Implementing newer standards (90, 95, 2003, 2008, 2018, 2020Y)
+<ul>
+<li>Automating guarantees</li>
+
+</ul></li>
+<li>Documentation</li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org4be427f" data-background="#99e6ff" class="has-light-background future" style="top: 216px; display: none;" hidden="" aria-hidden="true">
+<h3 id="org4be427f">Relevance</h3>
+<blockquote>
+<p>
+Writing <b>efficient</b> wrappers without being a language lawyer
+</p>
+</blockquote>
+<div class="slide-footer"><br></div>
+
+</section>
+</section>
+<section style="top: 0px; display: none;" class="stack sfeir-basic-slide future" data-previous-indexv="0" hidden="" aria-hidden="true">
+<section id="slide-org1a26603" style="top: 300.5px; display: none;" class="sfeir-basic-slide" aria-hidden="true">
+<h2 id="org1a26603">Bonus: Reading Code</h2>
+<div class="outline-text-2" id="text-org1a26603">
+</div>
+</section>
+<section id="slide-org8e532c7" class="sfeir-basic-slide future" style="top: 0px; display: none;" data-fragment="-1" hidden="" aria-hidden="true">
+<h3 id="org8e532c7">Reading Code I</h3>
+<div class="leftcol" id="org45bffad">
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="0"><span style="color: #81a2be;">main</span>:
+<span style="color: #81a2be;">push</span>    <span style="color: #b294bb;">rbp</span>
+<span style="color: #81a2be;">mov</span>     <span style="color: #b294bb;">rbp</span>, rsp
+<span style="color: #81a2be;">mov</span>     <span style="color: #b294bb;">DWORD</span> PTR [rbp-4], <span style="color: #de935f; font-weight: bold;">3</span>
+<span style="color: #81a2be;">mov</span>     <span style="color: #b294bb;">eax</span>, <span style="color: #de935f; font-weight: bold;">0</span>
+<span style="color: #81a2be;">pop</span>     <span style="color: #b294bb;">rbp</span>
+<span style="color: #81a2be;">ret</span>
+<span style="color: #81a2be;">__static_initialization</span>_
+    <span style="color: #b294bb;">and_destruction_0</span>(int, int):
+<span style="color: #81a2be;">push</span>    <span style="color: #b294bb;">rbp</span>
+<span style="color: #81a2be;">mov</span>     <span style="color: #b294bb;">rbp</span>, rsp
+<span style="color: #81a2be;">sub</span>     <span style="color: #b294bb;">rsp</span>, <span style="color: #de935f; font-weight: bold;">16</span>
+<span style="color: #81a2be;">mov</span>     <span style="color: #b294bb;">DWORD</span> PTR [rbp-4], edi
+<span style="color: #81a2be;">mov</span>     <span style="color: #b294bb;">DWORD</span> PTR [rbp-8], esi
+<span style="color: #81a2be;">cmp</span>     <span style="color: #b294bb;">DWORD</span> PTR [rbp-4], <span style="color: #de935f; font-weight: bold;">1</span>
+<span style="color: #81a2be;">jne</span>     .L5
+<span style="color: #81a2be;">cmp</span>     <span style="color: #b294bb;">DWORD</span> PTR [rbp-8], <span style="color: #de935f; font-weight: bold;">65535</span>
+<span style="color: #81a2be;">jne</span>     .L5
+<span style="color: #81a2be;">mov</span>     <span style="color: #b294bb;">edi</span>, OFFSET FLAT:_ZStL8
+    <span style="color: #b294bb;">__ioinit</span>
+</pre>
+</div>
+
+</div>
+
+<div class="rightcol" id="org24401d0">
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="1"><span style="color: #81a2be;">call</span>    <span style="color: #b294bb;">std</span>::ios_base::Init::Init()
+    [complete object constructor]
+<span style="color: #81a2be;">mov</span>     <span style="color: #b294bb;">edx</span>, OFFSET FLAT:__dso_handle
+<span style="color: #81a2be;">mov</span>     <span style="color: #b294bb;">esi</span>, OFFSET FLAT:_ZStL8__ioinit
+<span style="color: #81a2be;">mov</span>     <span style="color: #b294bb;">edi</span>, OFFSET FLAT:_ZNSt8ios_base4InitD1Ev
+<span style="color: #81a2be;">call</span>    __cxa_atexit
+<span style="color: #81a2be;">.L5</span>:
+<span style="color: #81a2be;">nop</span>
+<span style="color: #81a2be;">leave</span>
+<span style="color: #81a2be;">ret</span>
+<span style="color: #81a2be;">_GLOBAL__sub_I_main</span>:
+<span style="color: #81a2be;">push</span>    <span style="color: #b294bb;">rbp</span>
+<span style="color: #81a2be;">mov</span>     <span style="color: #b294bb;">rbp</span>, rsp
+<span style="color: #81a2be;">mov</span>     <span style="color: #b294bb;">esi</span>, <span style="color: #de935f; font-weight: bold;">65535</span>
+<span style="color: #81a2be;">mov</span>     <span style="color: #b294bb;">edi</span>, <span style="color: #de935f; font-weight: bold;">1</span>
+<span style="color: #81a2be;">call</span>    __static_initialization_
+    <span style="color: #b294bb;">and_destruction_0</span>(int, int)
+<span style="color: #81a2be;">pop</span>     <span style="color: #b294bb;">rbp</span>
+<span style="color: #81a2be;">ret</span>
+</pre>
+</div>
+
+</div>
+<ul class="fragment appear" data-fragment-index="2">
+<li>But who <b>writes <span class="underline">assembly</span></b> anyway?</li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org5693ba6" class="sfeir-basic-slide future" style="top: 0px; display: none;" data-fragment="-1" hidden="" aria-hidden="true">
+<h3 id="org5693ba6">Reading Code II</h3>
+<div class="leftcol" id="org9f7f676">
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="0"><span style="color: #f0c674;">int</span> <span style="color: #81a2be;">main</span> <span style="color: #b294bb;">()</span>
+<span style="color: #b294bb;">{</span>
+  <span style="color: #f0c674;">int</span> <span style="color: #cc6666;">D</span>.<span style="color: #de935f; font-weight: bold;">48918</span>;
+  <span style="color: #81a2be;">{</span>
+    <span style="color: #f0c674;">int</span> <span style="color: #cc6666;">a</span>;
+    a = <span style="color: #de935f; font-weight: bold;">3</span>;
+    D.<span style="color: #de935f; font-weight: bold;">48918</span> = <span style="color: #de935f; font-weight: bold;">0</span>;
+    <span style="color: #b294bb;">return</span> D.<span style="color: #de935f; font-weight: bold;">48918</span>;
+  <span style="color: #81a2be;">}</span>
+  D.<span style="color: #de935f; font-weight: bold;">48918</span> = <span style="color: #de935f; font-weight: bold;">0</span>;
+  <span style="color: #b294bb;">return</span> D.<span style="color: #de935f; font-weight: bold;">48918</span>;
+<span style="color: #b294bb;">}</span>
+
+<span style="color: #f0c674;">void</span> <span style="color: #81a2be;">_GLOBAL__sub_I_main</span>.cpp <span style="color: #b294bb;">()</span>
+<span style="color: #b294bb;">{</span>
+  <span style="color: #f0c674;">__static_initialization_</span>
+      <span style="color: #cc6666;">and_destruction_0</span> <span style="color: #81a2be;">(</span><span style="color: #de935f; font-weight: bold;">1</span>, <span style="color: #de935f; font-weight: bold;">65535</span><span style="color: #81a2be;">)</span>;
+<span style="color: #b294bb;">}</span>
+</pre>
+</div>
+
+</div>
+
+<div class="rightcol" id="orga3efed7">
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="1"><span style="color: #f0c674;">void</span> <span style="color: #81a2be;">__static_initialization_</span>
+and_destruction_0 <span style="color: #b294bb;">(</span><span style="color: #f0c674;">int</span> <span style="color: #cc6666;">__initialize_p</span>,
+    <span style="color: #f0c674;">int</span> <span style="color: #cc6666;">__priority</span><span style="color: #b294bb;">)</span>
+<span style="color: #b294bb;">{</span>
+  <span style="color: #b294bb;">if</span> <span style="color: #81a2be;">(</span>__initialize_p == <span style="color: #de935f; font-weight: bold;">1</span><span style="color: #81a2be;">)</span> <span style="color: #b294bb;">goto</span> <span style="color: #81a2be;">&lt;</span>D.<span style="color: #de935f; font-weight: bold;">48920</span><span style="color: #81a2be;">&gt;</span>;
+  <span style="color: #b294bb;">else</span> <span style="color: #b294bb;">goto</span> <span style="color: #81a2be;">&lt;</span>D.<span style="color: #de935f; font-weight: bold;">48921</span><span style="color: #81a2be;">&gt;</span>;
+  <span style="color: #81a2be;">&lt;</span>D.<span style="color: #de935f; font-weight: bold;">48920</span><span style="color: #81a2be;">&gt;</span>:
+  <span style="color: #b294bb;">if</span> <span style="color: #81a2be;">(</span>__priority == <span style="color: #de935f; font-weight: bold;">65535</span><span style="color: #81a2be;">)</span> <span style="color: #b294bb;">goto</span> <span style="color: #81a2be;">&lt;</span>D.<span style="color: #de935f; font-weight: bold;">48922</span><span style="color: #81a2be;">&gt;</span>;
+  <span style="color: #b294bb;">else</span> <span style="color: #b294bb;">goto</span> <span style="color: #81a2be;">&lt;</span>D.<span style="color: #de935f; font-weight: bold;">48923</span><span style="color: #81a2be;">&gt;</span>;
+  <span style="color: #81a2be;">&lt;</span>D.<span style="color: #de935f; font-weight: bold;">48922</span><span style="color: #81a2be;">&gt;</span>:
+  <span style="color: #de935f;">std</span>::<span style="color: #de935f;">ios_base</span>::<span style="color: #de935f;">Init</span>::Init <span style="color: #81a2be;">(</span>&amp;__ioinit<span style="color: #81a2be;">)</span>;
+  <span style="color: #de935f;">__cxxabiv1</span>::__cxa_atexit <span style="color: #81a2be;">(</span>__dt_comp ,
+                 &amp;__ioinit, &amp;__dso_handle<span style="color: #81a2be;">)</span>;
+  <span style="color: #b294bb;">goto</span> <span style="color: #81a2be;">&lt;</span>D.<span style="color: #de935f; font-weight: bold;">48924</span><span style="color: #81a2be;">&gt;</span>;
+  <span style="color: #81a2be;">&lt;</span>D.<span style="color: #de935f; font-weight: bold;">48923</span><span style="color: #81a2be;">&gt;</span>:
+  <span style="color: #81a2be;">&lt;</span>D.<span style="color: #de935f; font-weight: bold;">48924</span><span style="color: #81a2be;">&gt;</span>:
+  <span style="color: #b294bb;">goto</span> <span style="color: #81a2be;">&lt;</span>D.<span style="color: #de935f; font-weight: bold;">48925</span><span style="color: #81a2be;">&gt;</span>;
+  <span style="color: #81a2be;">&lt;</span>D.<span style="color: #de935f; font-weight: bold;">48921</span><span style="color: #81a2be;">&gt;</span>:
+  <span style="color: #81a2be;">&lt;</span>D.<span style="color: #de935f; font-weight: bold;">48925</span><span style="color: #81a2be;">&gt;</span>:
+<span style="color: #b294bb;">}</span>
+</pre>
+</div>
+
+</div>
+<ul class="fragment appear" data-fragment-index="2">
+<li>GIMPLE is an <b>internal</b> <code>gcc</code> representation…</li>
+
+</ul>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-org09e2f65" class="sfeir-basic-slide future" style="top: 65.5px; display: none;" data-fragment="-1" hidden="" aria-hidden="true">
+<h3 id="org09e2f65">Reading Code III</h3>
+<div class="leftcol" id="orgecdd36a">
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="0"><span style="color: #c5c8c6; font-weight: bold;">#include</span><span style="color: #b294bb;">&lt;</span><span style="color: #b5bd68;">iostream</span><span style="color: #b294bb;">&gt;</span>
+
+<span style="color: #f0c674;">int</span> <span style="color: #81a2be;">main</span><span style="color: #b294bb;">()</span> <span style="color: #b294bb;">{</span>
+    <span style="color: #f0c674;">int</span> <span style="color: #cc6666;">a</span>=<span style="color: #de935f; font-weight: bold;">3</span>;
+    <span style="color: #b294bb;">return</span> <span style="color: #de935f; font-weight: bold;">0</span>;
+<span style="color: #b294bb;">}</span>
+</pre>
+</div>
+<ul class="fragment appear" data-fragment-index="1">
+<li>Better for most people, still a bit lacking for novices</li>
+
+</ul>
+
+</div>
+
+<div class="fragment appear rightcol" id="orgddd8546" data-fragment-index="2">
+<ul>
+<li><b>Assigning an integer</b></li>
+
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-bash">g++ main.cpp -o file
+</pre>
+</div>
+<ul>
+<li>Produces a <code>file</code> binary which can be run as:</li>
+
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-bash">./file
+</pre>
+</div>
+<dl>
+<dt>Output</dt><dd>There is <b>no</b> output, but an assignment of an integer with value 3 takes place</dd>
+
+</dl>
+
+</div>
+
+<ul class="fragment appear" data-fragment-index="3">
+<li>What about <span class="underline">different languages</span>?</li>
+
+</ul>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-org510427a" class="sfeir-basic-slide future" style="top: 50.5px; display: none;" data-fragment="-1" hidden="" aria-hidden="true">
+<h3 id="org510427a">Reading Code IV</h3>
+<div class="leftcol" id="org4321971">
+<ul class="fragment appear" data-fragment-index="0">
+<li>Maybe <code>gcc</code> is just an ugly compiler…</li>
+
+</ul>
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="1"><span style="color: #b294bb;">program</span> <span style="color: #81a2be;">main</span>
+  <span style="color: #f0c674;">integer</span> :: x = <span style="color: #de935f; font-weight: bold;">3</span> + <span style="color: #de935f; font-weight: bold;">6</span>
+  <span style="color: #b294bb;">print</span> *, x
+<span style="color: #b294bb;">end</span> <span style="color: #b294bb;">program</span>
+</pre>
+</div>
+<ul class="fragment appear" data-fragment-index="2">
+<li><code>lfortran</code> has a nicer intermediate structure</li>
+
+</ul>
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="3">conda create -n lf
+conda activate lf
+conda install lfortran <span style="color: #b5bd68;">\</span>
+    -c conda-forge
+lfortran --show-asr consint.f90
+</pre>
+</div>
+
+</div>
+
+<div class="rightcol" id="org3262272">
+<p>
+
+</p>
+
+
+<div id="org46291d3" class="figure">
+<p><img src="./progLangInters_files/2021-07-16_16-18-43_screenshot.png" alt="2021-07-16_16-18-43_screenshot.png" class="fragment appear" data-fragment-index="4">
+</p>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+</section>
+<section style="top: 0px; display: none;" class="stack sfeir-basic-slide future" data-previous-indexv="0" hidden="" aria-hidden="true">
+<section id="slide-orge31ad72" style="top: 300.5px; display: none;" class="sfeir-basic-slide" aria-hidden="true">
+<h2 id="orge31ad72">Conclusions</h2>
+<div class="outline-text-2" id="text-orge31ad72">
+</div>
+</section>
+<section id="slide-orga13df09" class="sfeir-basic-slide future" style="top: 55.5px; display: none;" data-fragment="-1" hidden="" aria-hidden="true">
+<h3 id="orga13df09">Omitted Topics</h3>
+<dl class="fragment appear" data-fragment-index="0">
+<dt>Web development and design</dt><dd>Including frameworks and UX</dd>
+
+</dl>
+<dl class="fragment appear" data-fragment-index="1">
+<dt>Continuous integration</dt><dd>How to ensure documentation is coupled to working code</dd>
+
+</dl>
+<dl class="fragment appear" data-fragment-index="2">
+<dt>Benchmarking</dt><dd>Demonstrating code superiority</dd>
+
+</dl>
+<dl class="fragment appear" data-fragment-index="3">
+<dt>Code Review Practices</dt><dd>Scrum and teamwork</dd>
+
+</dl>
+<dl class="fragment appear" data-fragment-index="4">
+<dt>HPC and Parallelism</dt><dd>Efficient data usage and algorithms</dd>
+
+</dl>
+<dl class="fragment appear" data-fragment-index="5">
+<dt>Build systems</dt><dd>Portability</dd>
+
+</dl>
+<dl class="fragment appear" data-fragment-index="6">
+<dt>Science</dt><dd>Also algorithms</dd>
+<dt>Usage examples</dt><dd>For <code>f2py</code> and <code>lfortran</code></dd>
+
+</dl>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org73c9ace" class="sfeir-basic-slide future" aria-hidden="true" style="top: 152px; display: none;" hidden="">
+<h3 id="org73c9ace">Key Takeaways</h3>
+<div class="leftcol" id="org555669d">
+<ul class="fragment appear" data-fragment-index="0">
+<li>Document at every level</li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="1">
+<li>Write modern Fortran
+<ul>
+<li>Use <code>ISO_C_BINDINGS</code></li>
+<li>Use <code>IEEE</code> standards</li>
+
+</ul></li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="2">
+<li>When using F77
+<ul>
+<li>Use <code>f2py</code></li>
+
+</ul></li>
+<li>Don’t be too clever
+<ul>
+<li>Don’t be too accurate</li>
+
+</ul></li>
+
+</ul>
+
+</div>
+
+<div class="rightcol" id="orgb0485dc">
+<ul class="fragment appear" data-fragment-index="3">
+<li>Ensure style guides exist</li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="4">
+<li>Benchmark</li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="5">
+<li>Lint automatically</li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="6">
+<li>Use modern tools
+<ul>
+<li><a href="https://github.com/fortran-lang/fpm">fpm</a>, <a href="https://stdlib.fortran-lang.org/">stdlib</a></li>
+<li><a href="https://lfortran.org/">LFortran</a></li>
+
+</ul></li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="7">
+<li>Ask for help -&gt; <a href="https://fortran-lang.discourse.group/">Fortran Lang</a></li>
+
+</ul>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section style="top: 0px; display: none;" hidden="" aria-hidden="true" class="stack sfeir-basic-slide future" data-previous-indexv="0">
+<section id="slide-orgeaa88e7" style="top: 300.5px; display: none;" class="sfeir-basic-slide">
+<h2 id="orgeaa88e7">The End</h2>
+<div class="outline-text-2" id="text-orgeaa88e7">
+</div>
+</section>
+<section id="slide-orgfdb0f77" class="future sfeir-basic-slide" aria-hidden="true" style="top: 0px; display: none;">
+<h3 id="orgfdb0f77">Acknowledgements</h3>
+
+<div id="org68ab4b7" class="figure">
+<p><img src="./progLangInters_files/2021-09-09_00-22-06_screenshot.png" alt="2021-09-09_00-22-06_screenshot.png">
+</p>
+</div>
+<ul>
+<li><a href="https://notendur.hi.is//~hj/indexE.html">Prof. Hannes Jónsson</a> as my supervisor, <a href="https://english.hi.is/staff/birgirhr">Prof. Birgir Hrafnkelsson</a> as my co-supervisor, and my committee member <a href="https://english.hi.is/staff/elvarorn">Dr. Elvar Jonsson</a></li>
+<li><a href="https://ondrejcertik.com/">Dr. Ondřej Čertík</a> at Los Alamos National Laboratory</li>
+<li><a href="https://quansight.com/labs">Quansight Labs</a> (<a href="https://rgommers.github.io/">Dr. Ralf Gommers</a>, <a href="https://melissawm.github.io/about-me/">Dr. Melissa Weber Mendonça</a> and <a href="https://github.com/pearu">Dr. Pearu Peterson</a>)</li>
+<li>Family, pets, Groupmembers, <b>audience</b></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-bibliography" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="bibliography">Bibliography</h3>
+<ul class="org-ref-bib"><li><a id="ChevillardJoldesLauter2010">[ChevillardJoldesLauter2010]</a> <a name="ChevillardJoldesLauter2010"></a>Chevillard, Joldeş &amp; Lauter, Sollya: An Environment for the Development of Numerical Codes, 28-31, in in: Mathematical Software - ICMS 2010, edited by Fukuda, van der Hoeven, Joswig &amp; Takayama, Springer </li>
+<li><a id="clermanModernFortranStyle2012">[clermanModernFortranStyle2012]</a> <a name="clermanModernFortranStyle2012"></a>Clerman &amp; Spector, Modern Fortran: Style and Usage, Cambridge University Press .</li>
+<li><a id="goldbergWhatEveryComputer1991">[goldbergWhatEveryComputer1991]</a> <a name="goldbergWhatEveryComputer1991"></a>Goldberg, What Every Computer Scientist Should Know about Floating-Point Arithmetic, <i>ACM Computing Surveys</i>, <b>23(1)</b>, 5-48 . <a href="https://dl.acm.org/doi/10.1145/103162.103163">link</a>. <a href="http://dx.doi.org/10.1145/103162.103163">doi</a>.</li>
+<li><a id="lyonUsingAnsFortran1980">[lyonUsingAnsFortran1980]</a> <a name="lyonUsingAnsFortran1980"></a>Lyon, Using Ans Fortran, National Bureau of Standards .</li>
+<li><a id="petersonF2PYToolConnecting2009">[petersonF2PYToolConnecting2009]</a> <a name="petersonF2PYToolConnecting2009"></a>Peterson, F2PY: A Tool for Connecting Fortran and Python Programs, <i>International Journal of Computational Science and Engineering</i>, <b>4(4)</b>, 296 . <a href="http://www.inderscience.com/link.php?id=29165">link</a>. <a href="http://dx.doi.org/10.1504/IJCSE.2009.029165">doi</a>.</li>
+<li><a id="sebilleauMsSpec1MultipleScattering2011">[sebilleauMsSpec1MultipleScattering2011]</a> <a name="sebilleauMsSpec1MultipleScattering2011"></a>Sébilleau, Natoli, Gavaza, Zhao, Da Pieve &amp; Hatada, MsSpec-1.0: A Multiple Scattering Package for Electron Spectroscopies in Material Science, <i>Computer Physics Communications</i>, <b>182(12)</b>, 2567-2579 . <a href="https://linkinghub.elsevier.com/retrieve/pii/S0010465511002591">link</a>. <a href="http://dx.doi.org/10.1016/j.cpc.2011.07.012">doi</a>.</li>
+<li><a id="virtanenSciPyFundamentalAlgorithms2020">[virtanenSciPyFundamentalAlgorithms2020]</a> <a name="virtanenSciPyFundamentalAlgorithms2020"></a>Virtanen, Gommers, Oliphant, Haberland, Reddy, Cournapeau, Burovski, Peterson, Weckesser, Bright, van der Walt, Brett, Wilson, Millman, Mayorov, Nelson, Jones, Kern, Larson, Carey, Polat, Feng, Moore, VanderPlas, Laxalde, Perktold, Cimrman, Henriksen, Quintero, Harris, Archibald, Ribeiro, Pedregosa &amp; van Mulbregt, SciPy 1.0: Fundamental Algorithms for Scientific Computing in Python, <i>Nature Methods</i>, <b>17(3)</b>, 261-272 . <a href="https://www.nature.com/articles/s41592-019-0686-2">link</a>. <a href="http://dx.doi.org/10.1038/s41592-019-0686-2">doi</a>.</li>
+<li><a id="waltNumPyArrayStructure2011">[waltNumPyArrayStructure2011]</a> <a name="waltNumPyArrayStructure2011"></a>van der Walt, Colbert &amp; Varoquaux, The NumPy Array: A Structure for Efficient Numerical Computation, <i>Computing in Science Engineering</i>, <b>13(2)</b>, 22-30 . <a href="http://dx.doi.org/10/d8k4p9">doi</a>.</li>
+</ul>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-org0055fac" data-background="#6f4caa" class="future has-dark-background" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="org0055fac">Thanks!</h3>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+</div>
+<div class="backgrounds"><div class="slide-background sfeir-basic-slide present" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background stack sfeir-basic-slide future" data-loaded="true" style="display: block;"><div class="slide-background-content"></div><div class="slide-background sfeir-basic-slide present" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div></div><div class="slide-background stack sfeir-basic-slide future" data-loaded="true" style="display: block;"><div class="slide-background-content"></div><div class="slide-background sfeir-basic-slide present" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div></div><div class="slide-background stack sfeir-basic-slide future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div><div class="slide-background sfeir-basic-slide present" data-loaded="true" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" data-loaded="true" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" data-loaded="true" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" data-loaded="true" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-background stack sfeir-basic-slide future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div><div class="slide-background sfeir-basic-slide present" data-loaded="true" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" data-loaded="true" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background has-light-background future" data-background-hash="#99e6ffnullnullnullnullnullnullnullnullnull" data-loaded="true" style="background: rgb(153, 230, 255); display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" data-loaded="true" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" data-loaded="true" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div></div><div class="slide-background stack sfeir-basic-slide future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div><div class="slide-background sfeir-basic-slide present" data-loaded="true" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-background stack sfeir-basic-slide future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div><div class="slide-background sfeir-basic-slide present" data-loaded="true" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background has-light-background future" data-background-hash="#99e6ffnullnullnullnullnullnullnullnullnull" style="background: rgb(153, 230, 255); display: none;" data-loaded="true"><div class="slide-background-content"></div></div></div><div class="slide-background stack sfeir-basic-slide future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div><div class="slide-background sfeir-basic-slide present" data-loaded="true" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" data-loaded="true" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div></div><div class="slide-background stack sfeir-basic-slide future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div><div class="slide-background sfeir-basic-slide present" data-loaded="true" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div></div><div class="slide-background stack sfeir-basic-slide future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div><div class="slide-background sfeir-basic-slide present" data-loaded="true" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background has-dark-background future" data-background-hash="#6f4caanullnullnullnullnullnullnullnullnull" style="background: rgb(111, 76, 170); display: none;"><div class="slide-background-content"></div></div></div></div><div class="slide-number" style="display: block;"><a href="file:///Users/rohitgoswami/Git/Github/WebDev/Mine/haozeke.github.io/presentations/lesHouches21/fortran_aseViz.html#/sec-title-slide">
+					<span class="slide-number-a">1</span>
+					</a></div><aside class="controls" data-controls-layout="bottom-right" data-controls-back-arrows="faded" style="display: block;"><button class="navigate-left" aria-label="previous slide" disabled="disabled"><div class="controls-arrow"></div></button>
+			<button class="navigate-right enabled" aria-label="next slide"><div class="controls-arrow"></div></button>
+			<button class="navigate-up" aria-label="above slide" disabled="disabled"><div class="controls-arrow"></div></button>
+			<button class="navigate-down" aria-label="below slide" disabled="disabled"><div class="controls-arrow"></div></button></aside><div class="progress" style="display: block;"><span style="transform: scaleX(0);"></span></div><div class="speaker-notes" data-prevent-swipe="" tabindex="0"></div><div class="pause-overlay"><button class="resume-button">Resume presentation</button></div><div class="aria-status" aria-live="polite" aria-atomic="true" style="position: absolute; height: 1px; width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px);">Programming Language Interstices Rohit Goswami Created: 2021-09-09 Thu 12:52 </div></div>
+<script src="./progLangInters_files/reveal.js"></script>
+<script src="./progLangInters_files/notes.js"></script>
+<script src="./progLangInters_files/search.js"></script>
+<script src="./progLangInters_files/zoom.js"></script>
+<script src="file:///Users/rohitgoswami/.config/doom/reveal/rjs/dist/theme/hidelinks.js"></script>
+<script src="./progLangInters_files/sfeir-theme.js"></script>
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: true,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+mouseWheel: true,
+fragmentInURL: true,
+hashOneBasedIndex: false,
+pdfSeparateFragments: false,
+overview: true,
+margin: 0.20,
+
+transition: 'fade',
+transitionSpeed: 'default',
+showNotes: window.location.search.match( /print-pdf/gi ) ? 'separate-page' : false,
+
+// Plugins with reveal.js 4.x
+plugins: [ RevealNotes, RevealSearch, RevealZoom ],
+
+// Optional libraries used to extend reveal.js
+dependencies: [
+]
+
+});
+</script>
+
+
+<div style="position: absolute; width: 0px; height: 0px; overflow: hidden; padding: 0px; border: 0px; margin: 0px;"><div id="MathJax_Font_Test" style="position: absolute; visibility: hidden; top: 0px; left: 0px; width: auto; min-width: 0px; max-width: none; padding: 0px; border: 0px; margin: 0px; white-space: nowrap; text-align: left; text-indent: 0px; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; font-size: 40px; font-weight: normal; font-style: normal; font-family: STIXSizeOneSym, sans-serif;"></div></div></body></html>
