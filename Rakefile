@@ -40,7 +40,7 @@ task :hugoServe, [:port] => [:md] do |t, args|
 end
 
 desc "Build site with Hugo"
-task :hugoBuild => ["md", "optImages"] do
+task :hugoBuild => ["md"] do
   sh "hugo --minify --enableGitInfo"
 end
 
