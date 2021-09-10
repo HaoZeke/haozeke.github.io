@@ -39,3 +39,4 @@ jobs:
           enable_jekyll: true
           publish_branch: gh-pages
           publish_dir: ./public
+          keep_files: true
