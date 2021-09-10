@@ -11613,7 +11613,7 @@ Rather than move forward with the closing comments; and going into more detail a
 [fn:whybashwhere] From this [[https://stackoverflow.com/questions/13099202/awk-script-for-finding-smallest-value-from-column/13100039][stackoverflow post]] of course
 [fn:wherewhysohist] From this [[https://berthub.eu/articles/posts/help-my-sin-is-slow-and-my-fpu-is-inaccurate/][blog post by Bert Hubert]]
 [fn:butresearch] I maintain similar notes for my research, but those sadly never see the light of day
-* DONE GSoC21 LFortran and Computational Chemistry
+* DONE GSoC21 LFortran and Computational Chemistry :@notes:gsoc21:fortran:rambling:
 CLOSED: [2021-08-20 Fri 00:43]
 :PROPERTIES:
 :EXPORT_FILE_NAME: gsoc21-fin-reprot
@@ -11752,11 +11752,11 @@ instance, I tend to take a more ~conda~ centric approach.
 #+begin_src bash
 
 #+end_src
-* DONE Presentation Supplements for Greens Function School :@conferences:presentations:ramblings:fortran:python:
+* DONE Presentation Supplements for Greens Function School :@conferences:presentations:ramblings:fortran:
 CLOSED: [2021-09-10 Fri 09:11]
 :PROPERTIES:
 :EXPORT_FILE_NAME: leshouches-green-2021-meta
-:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments false
 :END:
 #+BEGIN_QUOTE
 A meta-post on an oral presentation around Fortran and languages
