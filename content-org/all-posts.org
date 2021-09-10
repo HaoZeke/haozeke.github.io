@@ -11753,10 +11753,12 @@ instance, I tend to take a more ~conda~ centric approach.
 
 #+end_src
 * DONE Presentation Supplements for Greens Function School :@conferences:presentations:ramblings:fortran:
-CLOSED: [2021-09-10 Fri 09:11]
+CLOSED: [2021-09-10 Fri 13:12]
 :PROPERTIES:
-:EXPORT_FILE_NAME: leshouches-green-2021-meta
-:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments false
+:EXPORT_FILE_NAME: leshouches-2021-meta
+:EXPORT_HUGO_PANDOC_CITATIONS: t
+:EXPORT_BIBLIOGRAPHY: biblio/GSoC21.bib
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments false :link-citations true
 :END:
 #+BEGIN_QUOTE
 A meta-post on an oral presentation around Fortran and languages
@@ -11778,6 +11780,10 @@ Anything tagged Fortran on this site.
 #+BEGIN_EXPORT html
 <script async class="speakerdeck-embed" data-id="a6e11d26499b44b2bcb1cb630803de0d" data-ratio="1.37081659973226" src="//speakerdeck.com/assets/embed.js"></script>
 #+END_EXPORT
+** Video
+TBD
+** Thoughts
+I haven't given a 15 minute presentation in a while. Went a little over time. Should have referenced
 * TODO Testing F2PY
 ** Slatec
 [[http://www.netlib.org/slatec/][Netlib's slatec]] is a common mathematical library, circa 1993. This great candidate for ~f2py~; since it is:
