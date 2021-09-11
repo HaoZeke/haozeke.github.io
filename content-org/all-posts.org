@@ -12610,7 +12610,7 @@ Anything tagged Fortran on this site.
 ** Video
 TBD
 ** Thoughts
-I haven't given a 15 minute presentation in a while. Went a little over time. Should have referenced
+This was the first time in a long while since I gave an in-person short presentation. I should have used a timer.
 * Important Note :ignoreheading:ignore:
 # ALWAYS at the bottom, to ensure fresh builds do not break
 * DONE About
