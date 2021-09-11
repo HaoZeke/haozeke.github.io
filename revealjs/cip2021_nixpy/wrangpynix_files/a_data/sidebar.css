@@ -1,0 +1,128 @@
+.promnesia body {
+    font-size: 15px;
+    color: black;
+}
+
+.promnesia .error {
+    font-size: 16px;
+    color: red;
+    font-weight: bold;
+    white-space: pre-wrap;
+}
+
+.promnesia a {
+    text-decoration: none;
+}
+
+/* todo would be nice to properly reuse it and share with the 'mark visited' */
+.promnesia .src {
+    /* color: orange; /\* TODO monospace font or smth? *\/ */
+    color: #b26628;
+
+    margin-right: 0.2em;
+    white-space: nowrap;
+}
+
+a.promnesia-visited {
+    outline: 0.5em solid;
+}
+
+.src-filter .src {
+    cursor: pointer;
+    display: inline-block;
+}
+
+.src-filter .src:hover {
+    color: red; /* TODO ?? */
+}
+
+/* meh, but ok for now */
+#visits {
+    /* make table occupy whole sidebar */
+    width: 100%;
+}
+
+
+#visits .context {
+    white-space: pre-wrap; /* need to keep linebreaks  */
+    padding-left: 1em;
+}
+
+/* TODO use proper flex layout... */
+#visits .locator {
+    padding-left: 1em;
+}
+
+#visits .index {
+    min-width: 1em; /* TODO meh, to make consistent with rest */
+    display: inline-block;
+}
+
+
+#visits {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#visits li {
+    margin-top: 1em;
+
+    padding: 0.2em;
+
+    background: #e6e6e6cc;
+    border: 3px solid;
+    border-color: transparent;
+}
+
+#visits li #relative_indicator {
+    display: none;
+    padding-right: 0.5em;
+}
+
+#visits li.relative #relative_indicator {
+    display: inline;
+}
+
+#visits li.relative {
+    border-left: 3px solid;
+    border-left-color: #00cc99;
+}
+
+#visits li:hover {
+    border-color: #ddd;
+}
+
+#visits li.relative:hover {
+    border-color: #00cc99;
+}
+
+#visits li.highlight {
+    border-color: red;
+}
+
+#visits .datetime {
+    white-space: nowrap;
+    float: right;
+
+    color: #666;
+
+    cursor: pointer;
+}
+
+
+/* TODO not great, but quickest way to render it neatly */
+/* TODO not sure which order users expect first? */
+#visits .time {
+    /* color: blue; */
+    margin-right: 1em;
+}
+#visits .date {
+    /* color: red; */
+    width: 11ch; /* TODO not sure how to alighn them properly across all of boxes... */
+    display: inline-block; /* otherwise width doesn't work on span */
+    text-align: end;
+
+}
+
+

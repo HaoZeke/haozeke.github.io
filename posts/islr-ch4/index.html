@@ -1,0 +1,1100 @@
+<!doctype html><html lang=en itemscope itemtype=http://schema.org/WebPage><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=author content="[Rohit Goswami]"><meta name=description content="Chapter IV - Classification All the questions are as per the ISL seventh printing of the First edition 1.
+Common Stuff Here I&amp;rsquo;ll load things I will be using throughout, mostly libraries.
+libsUsed&amp;lt;-c(&amp;#34;dplyr&amp;#34;,&amp;#34;ggplot2&amp;#34;,&amp;#34;tidyverse&amp;#34;,&amp;#34;ISLR&amp;#34;,&amp;#34;caret&amp;#34;) invisible(lapply(libsUsed, library, character.only = TRUE)) Question 4.10 - Page 171 This question should be answered using the Weekly data set, which is part of the ISLR package. This data is similar in nature to the Smarket data from this chapter&amp;rsquo;s lab, except that it contains 1, 089 weekly returns for 21 years, from the beginning of 1990 to the end of 2010."><meta name=keywords content=",solutions,R,ISLR"><meta name=robots content="noodp"><meta name=theme-color content><link rel=canonical href=https://rgoswami.me/posts/islr-ch4/><title>ISLR :: Classification :: Rohit Goswami — Reflections</title><link href=https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css rel=stylesheet type=text/css><link rel=stylesheet href=/main.min.b6dbce0fdf6c61563a0c2226e857d5dadd8e5afa2c4f73ec9ea55abd831f9a72.css><meta itemprop=name content="ISLR :: Classification"><meta itemprop=description content="Chapter IV - Classification All the questions are as per the ISL seventh printing of the First edition 1.
+Common Stuff Here I&rsquo;ll load things I will be using throughout, mostly libraries.
+libsUsed<-c(&#34;dplyr&#34;,&#34;ggplot2&#34;,&#34;tidyverse&#34;,&#34;ISLR&#34;,&#34;caret&#34;) invisible(lapply(libsUsed, library, character.only = TRUE)) Question 4.10 - Page 171 This question should be answered using the Weekly data set, which is part of the ISLR package. This data is similar in nature to the Smarket data from this chapter&rsquo;s lab, except that it contains 1, 089 weekly returns for 21 years, from the beginning of 1990 to the end of 2010."><meta itemprop=datePublished content="2020-02-17T15:28:00+00:00"><meta itemprop=dateModified content="2020-02-17T15:28:00+00:00"><meta itemprop=wordCount content="6665"><meta itemprop=image content="https://rgoswami.me/images/RG.png"><meta itemprop=keywords content="solutions,R,ISLR,"><meta property="og:title" content="ISLR :: Classification"><meta property="og:description" content="Chapter IV - Classification All the questions are as per the ISL seventh printing of the First edition 1.
+Common Stuff Here I&rsquo;ll load things I will be using throughout, mostly libraries.
+libsUsed<-c(&#34;dplyr&#34;,&#34;ggplot2&#34;,&#34;tidyverse&#34;,&#34;ISLR&#34;,&#34;caret&#34;) invisible(lapply(libsUsed, library, character.only = TRUE)) Question 4.10 - Page 171 This question should be answered using the Weekly data set, which is part of the ISLR package. This data is similar in nature to the Smarket data from this chapter&rsquo;s lab, except that it contains 1, 089 weekly returns for 21 years, from the beginning of 1990 to the end of 2010."><meta property="og:type" content="article"><meta property="og:url" content="https://rgoswami.me/posts/islr-ch4/"><meta property="og:image" content="https://rgoswami.me/images/RG.png"><meta property="article:section" content="posts"><meta property="article:published_time" content="2020-02-17T15:28:00+00:00"><meta property="article:modified_time" content="2020-02-17T15:28:00+00:00"><meta property="og:site_name" content="Rohit Goswami"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://rgoswami.me/images/RG.png"><meta name=twitter:title content="ISLR :: Classification"><meta name=twitter:description content="Chapter IV - Classification All the questions are as per the ISL seventh printing of the First edition 1.
+Common Stuff Here I&rsquo;ll load things I will be using throughout, mostly libraries.
+libsUsed<-c(&#34;dplyr&#34;,&#34;ggplot2&#34;,&#34;tidyverse&#34;,&#34;ISLR&#34;,&#34;caret&#34;) invisible(lapply(libsUsed, library, character.only = TRUE)) Question 4.10 - Page 171 This question should be answered using the Weekly data set, which is part of the ISLR package. This data is similar in nature to the Smarket data from this chapter&rsquo;s lab, except that it contains 1, 089 weekly returns for 21 years, from the beginning of 1990 to the end of 2010."><meta property="article:section" content="programming"><meta property="article:published_time" content="2020-02-17 15:28:00 +0000 GMT"></head><body><div class=container><header class=header><div class=header__inner><div class=header__left><div class=logo><a href=/ style=text-decoration:none><img src=/images/home.png alt></a></div></div><div class=header__mid><button class=button><div class=button__text><a href=https://rgoswami.me//search>Search</a></div></button></div><div class=header__right><nav class=menu><ul class=menu__inner><li><a href=https://rgoswami.me/about>About</a></li><li><a href=https://rgoswami.me/posts>Blog</a></li></ul><ul class=menu__inner><li><a href=https://rgoswami.me/categories>Categories</a></li><li><a href=https://rgoswami.me/tags>Tags</a></li></ul></nav><button id=toggleMenu><div class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></div></button>
+<button class=theme-toggle id=toggleTheme><svg class="theme-toggler" width="32" height="32" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41c10.4934.0 19-8.5066 19-19C41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg></button></div></div></header><script src=https://rgoswami.me/js/mathjax-config.js></script><script id=MathJax-script async src=https://unpkg.com/mathjax@3/es5/tex-chtml.js></script><aside class=sidebar><div class=hideTOC><button id=tocTog>TOC</button><div class="sideTOC m-fadeOut"><nav id=TableOfContents><ul><li><a href=#chapter-iv---classification>Chapter IV - Classification</a><ul><li><a href=#common-stuff>Common Stuff</a></li></ul></li><li><a href=#question-4.10---page-171>Question 4.10 - Page 171</a><ul><li><a href=#answer>Answer</a></li><li><a href=#a-summary-statistics>a) Summary Statistics</a></li><li><a href=#b-logistic-regression---predictor-significance>b) Logistic Regression - Predictor Significance</a></li><li><a href=#c-confusion-matrix-and-metrics>c) Confusion Matrix and Metrics</a></li><li><a href=#d-train-test-splits>d) Train Test Splits</a></li><li><a href=#e-lda-models>e) LDA models</a></li><li><a href=#f-qda-models>f) QDA models</a></li><li><a href=#g-knn>g) KNN</a></li><li><a href=#h-model-selection>h) Model Selection</a></li><li><a href=#i-further-tuning>i) Further Tuning</a></li><li><a href=#logistic>Logistic</a></li></ul></li><li><a href=#question-4.11---pages-171-172>Question 4.11 - Pages 171-172</a><ul><li><a href=#answer-1>Answer</a></li><li><a href=#a-binary-variable>a) Binary Variable</a></li><li><a href=#b-visual-exploration>b) Visual Exploration</a></li><li><a href=#c-train-test-split>c) Train-Test Split</a></li><li><a href=#d-lda-with-significant-variables>d) LDA with Significant Variables</a></li><li><a href=#e-qda-with-significant-variables>e) QDA with Significant Variables</a></li><li><a href=#f-logistic-with-significant-variables>f) Logistic with Significant Variables</a></li><li><a href=#g-knn-modeling>g) KNN Modeling</a></li></ul></li><li><a href=#question-4.12---pages-172-173>Question 4.12 - Pages 172-173</a><ul><li><a href=#answer-2>Answer</a></li><li><a href=#a-create-a-squaring-function>a) Create a Squaring Function</a></li><li><a href=#b-generalizing-power-to-arbitrary-numbers>b) Generalizing Power to arbitrary numbers</a></li><li><a href=#c-random-testing-of-power2>c) Random Testing of Power2</a></li><li><a href=#d-return-a-value>d) Return a value</a></li><li><a href=#e-plot-something-with-power3>e) Plot something with Power3</a></li><li><a href=#f-plotpower-function>f) PlotPower Function</a></li></ul></li><li><a href=#question-4.13---pages-173>Question 4.13 - Pages 173</a><ul><li><a href=#answer-3>Answer</a></li></ul></li></ul></nav></div></div></aside><main class=post><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>32 minutes<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Written: 2020-02-17 15:28 +0000</p></p></div><article class=h-entry><h1 class="post-title p-name"><a class=u-url href=https://rgoswami.me/posts/islr-ch4/>ISLR :: Classification</a></h1><div class=post-info><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pen-tool"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg><span class="author u-author p-author"><a href=https://rgoswami.me/author/rohit-goswami>Rohit Goswami</a></span></div><hr><aside id=toc class=sidebar><div class=toc-title>Table of Contents</div><nav id=TableOfContents><ul><li><a href=#chapter-iv---classification>Chapter IV - Classification</a><ul><li><a href=#common-stuff>Common Stuff</a></li></ul></li><li><a href=#question-4.10---page-171>Question 4.10 - Page 171</a><ul><li><a href=#answer>Answer</a></li><li><a href=#a-summary-statistics>a) Summary Statistics</a></li><li><a href=#b-logistic-regression---predictor-significance>b) Logistic Regression - Predictor Significance</a></li><li><a href=#c-confusion-matrix-and-metrics>c) Confusion Matrix and Metrics</a></li><li><a href=#d-train-test-splits>d) Train Test Splits</a></li><li><a href=#e-lda-models>e) LDA models</a></li><li><a href=#f-qda-models>f) QDA models</a></li><li><a href=#g-knn>g) KNN</a></li><li><a href=#h-model-selection>h) Model Selection</a></li><li><a href=#i-further-tuning>i) Further Tuning</a></li><li><a href=#logistic>Logistic</a></li></ul></li><li><a href=#question-4.11---pages-171-172>Question 4.11 - Pages 171-172</a><ul><li><a href=#answer-1>Answer</a></li><li><a href=#a-binary-variable>a) Binary Variable</a></li><li><a href=#b-visual-exploration>b) Visual Exploration</a></li><li><a href=#c-train-test-split>c) Train-Test Split</a></li><li><a href=#d-lda-with-significant-variables>d) LDA with Significant Variables</a></li><li><a href=#e-qda-with-significant-variables>e) QDA with Significant Variables</a></li><li><a href=#f-logistic-with-significant-variables>f) Logistic with Significant Variables</a></li><li><a href=#g-knn-modeling>g) KNN Modeling</a></li></ul></li><li><a href=#question-4.12---pages-172-173>Question 4.12 - Pages 172-173</a><ul><li><a href=#answer-2>Answer</a></li><li><a href=#a-create-a-squaring-function>a) Create a Squaring Function</a></li><li><a href=#b-generalizing-power-to-arbitrary-numbers>b) Generalizing Power to arbitrary numbers</a></li><li><a href=#c-random-testing-of-power2>c) Random Testing of Power2</a></li><li><a href=#d-return-a-value>d) Return a value</a></li><li><a href=#e-plot-something-with-power3>e) Plot something with Power3</a></li><li><a href=#f-plotpower-function>f) PlotPower Function</a></li></ul></li><li><a href=#question-4.13---pages-173>Question 4.13 - Pages 173</a><ul><li><a href=#answer-3>Answer</a></li></ul></li></ul></nav></aside><hr><div class="post-content e-content"><h2 id=chapter-iv---classification>Chapter IV - Classification</h2><p>All the questions are as per the
+<a href=https://www.statlearning.com/>ISL seventh
+printing of the First edition</a> <sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup>.</p><h3 id=common-stuff>Common Stuff</h3><p>Here I&rsquo;ll load things I will be using throughout, mostly libraries.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>libsUsed</span><span class=o>&lt;-</span><span class=nf>c</span><span class=p>(</span><span class=s>&#34;dplyr&#34;</span><span class=p>,</span><span class=s>&#34;ggplot2&#34;</span><span class=p>,</span><span class=s>&#34;tidyverse&#34;</span><span class=p>,</span><span class=s>&#34;ISLR&#34;</span><span class=p>,</span><span class=s>&#34;caret&#34;</span><span class=p>)</span>
+<span class=nf>invisible</span><span class=p>(</span><span class=nf>lapply</span><span class=p>(</span><span class=n>libsUsed</span><span class=p>,</span> <span class=n>library</span><span class=p>,</span> <span class=n>character.only</span> <span class=o>=</span> <span class=kc>TRUE</span><span class=p>))</span>
+</code></pre></div><h2 id=question-4.10---page-171>Question 4.10 - Page 171</h2><p>This question should be answered using the <code>Weekly</code> data set, which is
+part of the ISLR package. This data is similar in nature to the Smarket
+data from this chapter&rsquo;s lab, except that it contains 1, 089 weekly
+returns for 21 years, from the beginning of 1990 to the end of 2010.</p><p><strong>(a)</strong> Produce some numerical and graphical summaries of the Weekly data.
+Do there appear to be any patterns?</p><p><strong>(b)</strong> Use the full data set to perform a logistic regression with
+<code>Direction</code> as the response and the five lag variables plus <code>Volume</code> as
+predictors. Use the summary function to print the results. Do any of the
+predictors appear to be statistically significant? If so, which ones?</p><p><strong>(c)</strong> Compute the confusion matrix and overall fraction of correct
+predictions. Explain what the confusion matrix is telling you about the
+types of mistakes made by logistic regression.</p><p><strong>(d)</strong> Now fit the logistic regression model using a training data period
+from 1990 to 2008, with <code>Lag2</code> as the only predictor. Compute the
+confusion matrix and the overall fraction of correct predictions for the
+held out data (that is, the data from 2009 and 2010).</p><p><strong>(e)</strong> Repeat <strong>(d)</strong> using LDA.</p><p><strong>(f)</strong> Repeat <strong>(d)</strong> using QDA.</p><p><strong>(g)</strong> Repeat <strong>(d)</strong> using KNN with \(K = 1\).</p><p><strong>(h)</strong> Which of these methods appears to provide the best results on this
+data?</p><p><strong>(i)</strong> Experiment with different combinations of predictors, including
+possible transformations and interactions, for each of the methods.
+Report the variables, method, and associated confusion matrix that
+appears to provide the best results on the held out data. Note that you
+should also experiment with values for K in the KNN classifier.</p><h3 id=answer>Answer</h3><p>We will need the data in a variable for ease of use.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>weeklyDat</span><span class=o>&lt;-</span><span class=n>ISLR</span><span class=o>::</span><span class=n>Weekly</span>
+</code></pre></div><h3 id=a-summary-statistics>a) Summary Statistics</h3><h4 id=text>Text</h4><p>Most of this segment relies heavily on usage of <code>dplyr</code> and especially
+the <code>%>%</code> or pipe operator for readability. The use of the <code>skimr</code>
+package<sup id=fnref:2><a href=#fn:2 class=footnote-ref role=doc-noteref>2</a></sup> might added more descriptive statistics, but is not
+covered here.</p><h4 id=basic-summaries>Basic Summaries</h4><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>weeklyDat</span> <span class=o>%&gt;%</span> <span class=n>str</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># &#39;data.frame&#39;: 1089 obs. of  9 variables:
+#  $ Year     : num  1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 ...
+#  $ Lag1     : num  0.816 -0.27 -2.576 3.514 0.712 ...
+#  $ Lag2     : num  1.572 0.816 -0.27 -2.576 3.514 ...
+#  $ Lag3     : num  -3.936 1.572 0.816 -0.27 -2.576 ...
+#  $ Lag4     : num  -0.229 -3.936 1.572 0.816 -0.27 ...
+#  $ Lag5     : num  -3.484 -0.229 -3.936 1.572 0.816 ...
+#  $ Volume   : num  0.155 0.149 0.16 0.162 0.154 ...
+#  $ Today    : num  -0.27 -2.576 3.514 0.712 1.178 ...
+#  $ Direction: Factor w/ 2 levels &#34;Down&#34;,&#34;Up&#34;: 1 1 2 2 2 1 2 2 2 1 ...
+</code></pre></div><p>We see that there is only one <code>Factor</code>, which makes sense.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>weeklyDat</span> <span class=o>%&gt;%</span> <span class=n>summary</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>#       Year           Lag1               Lag2               Lag3
+#  Min.   :1990   Min.   :-18.1950   Min.   :-18.1950   Min.   :-18.1950
+#  1st Qu.:1995   1st Qu.: -1.1540   1st Qu.: -1.1540   1st Qu.: -1.1580
+#  Median :2000   Median :  0.2410   Median :  0.2410   Median :  0.2410
+#  Mean   :2000   Mean   :  0.1506   Mean   :  0.1511   Mean   :  0.1472
+#  3rd Qu.:2005   3rd Qu.:  1.4050   3rd Qu.:  1.4090   3rd Qu.:  1.4090
+#  Max.   :2010   Max.   : 12.0260   Max.   : 12.0260   Max.   : 12.0260
+#       Lag4               Lag5              Volume            Today
+#  Min.   :-18.1950   Min.   :-18.1950   Min.   :0.08747   Min.   :-18.1950
+#  1st Qu.: -1.1580   1st Qu.: -1.1660   1st Qu.:0.33202   1st Qu.: -1.1540
+#  Median :  0.2380   Median :  0.2340   Median :1.00268   Median :  0.2410
+#  Mean   :  0.1458   Mean   :  0.1399   Mean   :1.57462   Mean   :  0.1499
+#  3rd Qu.:  1.4090   3rd Qu.:  1.4050   3rd Qu.:2.05373   3rd Qu.:  1.4050
+#  Max.   : 12.0260   Max.   : 12.0260   Max.   :9.32821   Max.   : 12.0260
+#  Direction
+#  Down:484
+#  Up  :605
+#
+#
+#
+#
+</code></pre></div><h4 id=unique-values>Unique Values</h4><p>We might also want to know how many unique values are there in each
+column.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>weeklyDat</span> <span class=o>%&gt;%</span> <span class=nf>sapply</span><span class=p>(</span><span class=n>unique</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=nf>sapply</span><span class=p>(</span><span class=n>length</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>#      Year      Lag1      Lag2      Lag3      Lag4      Lag5    Volume     Today
+#        21      1004      1005      1005      1005      1005      1089      1003
+# Direction
+#         2
+</code></pre></div><p>We note that year has disproportionately lower values, something to keep
+in mind while constructing models later.</p><h4 id=range>Range</h4><p>The range of each variable might be useful as well, but we have to
+ignore the factor.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>weeklyDat</span> <span class=o>%&gt;%</span> <span class=nf>subset</span><span class=p>(</span><span class=n>select</span><span class=o>=-</span><span class=nf>c</span><span class=p>(</span><span class=n>Direction</span><span class=p>))</span> <span class=o>%&gt;%</span> <span class=nf>sapply</span><span class=p>(</span><span class=n>range</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>#      Year    Lag1    Lag2    Lag3    Lag4    Lag5   Volume   Today
+# [1,] 1990 -18.195 -18.195 -18.195 -18.195 -18.195 0.087465 -18.195
+# [2,] 2010  12.026  12.026  12.026  12.026  12.026 9.328214  12.026
+</code></pre></div><p>The most interesting thing about this is probably that the <code>Lag</code>
+variables all have the same range, also something to be kept in mind
+while applying transformations to the variable (if at all).</p><h4 id=mean-and-std.-dev>Mean and Std. Dev</h4><p>By now we might have a pretty good idea of how this will look, but it is
+still worth seeing.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>weeklyDat</span> <span class=o>%&gt;%</span> <span class=nf>subset</span><span class=p>(</span><span class=n>select</span><span class=o>=-</span><span class=nf>c</span><span class=p>(</span><span class=n>Direction</span><span class=p>))</span> <span class=o>%&gt;%</span> <span class=nf>sapply</span><span class=p>(</span><span class=n>mean</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>#         Year         Lag1         Lag2         Lag3         Lag4         Lag5
+# 2000.0486685    0.1505849    0.1510790    0.1472048    0.1458182    0.1398926
+#       Volume        Today
+#    1.5746176    0.1498990
+</code></pre></div><p>As expected, the <code>Lag</code> values have almost the same mean, what is a bit
+interesting though, is that the <code>Today</code> variable has roughly the same
+mean as the <code>Lag</code> variables.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>weeklyDat</span> <span class=o>%&gt;%</span> <span class=nf>subset</span><span class=p>(</span><span class=n>select</span><span class=o>=-</span><span class=nf>c</span><span class=p>(</span><span class=n>Direction</span><span class=p>))</span> <span class=o>%&gt;%</span> <span class=nf>sapply</span><span class=p>(</span><span class=n>sd</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>#     Year     Lag1     Lag2     Lag3     Lag4     Lag5   Volume    Today
+# 6.033182 2.357013 2.357254 2.360502 2.360279 2.361285 1.686636 2.356927
+</code></pre></div><p>This is largely redundant in terms of new information.</p><h4 id=correlations>Correlations</h4><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>weeklyDat</span> <span class=o>%&gt;%</span> <span class=nf>subset</span><span class=p>(</span><span class=n>select</span><span class=o>=-</span><span class=nf>c</span><span class=p>(</span><span class=n>Direction</span><span class=p>))</span> <span class=o>%&gt;%</span> <span class=n>cor</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>#               Year         Lag1        Lag2        Lag3         Lag4
+# Year    1.00000000 -0.032289274 -0.03339001 -0.03000649 -0.031127923
+# Lag1   -0.03228927  1.000000000 -0.07485305  0.05863568 -0.071273876
+# Lag2   -0.03339001 -0.074853051  1.00000000 -0.07572091  0.058381535
+# Lag3   -0.03000649  0.058635682 -0.07572091  1.00000000 -0.075395865
+# Lag4   -0.03112792 -0.071273876  0.05838153 -0.07539587  1.000000000
+# Lag5   -0.03051910 -0.008183096 -0.07249948  0.06065717 -0.075675027
+# Volume  0.84194162 -0.064951313 -0.08551314 -0.06928771 -0.061074617
+# Today  -0.03245989 -0.075031842  0.05916672 -0.07124364 -0.007825873
+#                Lag5      Volume        Today
+# Year   -0.030519101  0.84194162 -0.032459894
+# Lag1   -0.008183096 -0.06495131 -0.075031842
+# Lag2   -0.072499482 -0.08551314  0.059166717
+# Lag3    0.060657175 -0.06928771 -0.071243639
+# Lag4   -0.075675027 -0.06107462 -0.007825873
+# Lag5    1.000000000 -0.05851741  0.011012698
+# Volume -0.058517414  1.00000000 -0.033077783
+# Today   0.011012698 -0.03307778  1.000000000
+</code></pre></div><p>Useful though this is, it is kind of difficult to work with, in this
+form, so we might as well programmatic-ally remove strongly correlated
+data instead.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=c1># Uses caret</span>
+<span class=n>corrCols</span><span class=o>=</span><span class=n>weeklyDat</span> <span class=o>%&gt;%</span> <span class=nf>subset</span><span class=p>(</span><span class=n>select</span><span class=o>=-</span><span class=nf>c</span><span class=p>(</span><span class=n>Direction</span><span class=p>))</span> <span class=o>%&gt;%</span> <span class=n>cor</span> <span class=o>%&gt;%</span> <span class=nf>findCorrelation</span><span class=p>(</span><span class=n>cutoff</span><span class=o>=</span><span class=m>0.8</span><span class=p>)</span>
+<span class=n>reducedDat</span><span class=o>&lt;-</span><span class=n>weeklyDat[</span><span class=o>-</span><span class=nf>c</span><span class=p>(</span><span class=n>corrCols</span><span class=p>)</span><span class=n>]</span>
+<span class=n>reducedDat</span> <span class=o>%&gt;%</span> <span class=n>summary</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>#       Year           Lag1               Lag2               Lag3
+#  Min.   :1990   Min.   :-18.1950   Min.   :-18.1950   Min.   :-18.1950
+#  1st Qu.:1995   1st Qu.: -1.1540   1st Qu.: -1.1540   1st Qu.: -1.1580
+#  Median :2000   Median :  0.2410   Median :  0.2410   Median :  0.2410
+#  Mean   :2000   Mean   :  0.1506   Mean   :  0.1511   Mean   :  0.1472
+#  3rd Qu.:2005   3rd Qu.:  1.4050   3rd Qu.:  1.4090   3rd Qu.:  1.4090
+#  Max.   :2010   Max.   : 12.0260   Max.   : 12.0260   Max.   : 12.0260
+#       Lag4               Lag5              Today          Direction
+#  Min.   :-18.1950   Min.   :-18.1950   Min.   :-18.1950   Down:484
+#  1st Qu.: -1.1580   1st Qu.: -1.1660   1st Qu.: -1.1540   Up  :605
+#  Median :  0.2380   Median :  0.2340   Median :  0.2410
+#  Mean   :  0.1458   Mean   :  0.1399   Mean   :  0.1499
+#  3rd Qu.:  1.4090   3rd Qu.:  1.4050   3rd Qu.:  1.4050
+#  Max.   : 12.0260   Max.   : 12.0260   Max.   : 12.0260
+</code></pre></div><p>We can see that the <code>Volume</code> variable has been dropped, since it
+evidently is strongly correlated with <code>Year</code>. This may or may not be a
+useful insight, but it is good to keep in mind.</p><h4 id=visualization>Visualization</h4><p>We will be using the <code>ggplot2</code> library throughout for this segment.</p><p>Lets start with some scatter plots in a one v/s all scheme, similar to
+the methodology
+<a href=https://www.r-bloggers.com/plot-some-variables-against-many-others-with-tidyr-and-ggplot2/>described
+here</a>.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>weeklyDat</span> <span class=o>%&gt;%</span> <span class=nf>subset</span><span class=p>(</span><span class=n>select</span><span class=o>=-</span><span class=nf>c</span><span class=p>(</span><span class=n>Direction</span><span class=p>))</span> <span class=o>%&gt;%</span> <span class=nf>gather</span><span class=p>(</span><span class=o>-</span><span class=n>Year</span><span class=p>,</span><span class=n>key</span><span class=o>=</span><span class=s>&#34;Variable&#34;</span><span class=p>,</span> <span class=n>value</span><span class=o>=</span><span class=s>&#34;Value&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=nf>ggplot</span><span class=p>(</span><span class=nf>aes</span><span class=p>(</span><span class=n>x</span><span class=o>=</span><span class=n>Value</span><span class=p>,</span><span class=n>y</span><span class=o>=</span><span class=n>Year</span><span class=p>))</span> <span class=o>+</span>
+  <span class=nf>geom_point</span><span class=p>()</span> <span class=o>+</span>
+  <span class=nf>facet_wrap</span><span class=p>(</span><span class=o>~</span><span class=n>Variable</span><span class=p>)</span> <span class=o>+</span>
+  <span class=nf>coord_flip</span><span class=p>()</span>
+</code></pre></div><figure><img src=/islr/sol2/unnamed-chunk-11-1.png alt="Figure 1: One v/s all for Direction"><figcaption><p>Figure 1: One v/s all for Direction</p></figcaption></figure><p>That didn&rsquo;t really tell us much which we didn&rsquo;t already get from the
+<code>cor()</code> function, but we can go the whole hog and do this for every
+variable since we don&rsquo;t have that many in the first place..</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>weeklyDat</span> <span class=o>%&gt;%</span> <span class=nf>subset</span><span class=p>(</span><span class=n>select</span><span class=o>=-</span><span class=nf>c</span><span class=p>(</span><span class=n>Direction</span><span class=p>))</span> <span class=o>%&gt;%</span> <span class=n>pairs</span>
+</code></pre></div><figure><img src=/islr/sol2/unnamed-chunk-12-1.png alt="Figure 2: Pairs"><figcaption><p>Figure 2: Pairs</p></figcaption></figure><p>This is not especially useful, and it is doubtful if more scatter-plots
+will help at all, so lets move on to box plots.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>weeklyDat</span> <span class=o>%&gt;%</span> <span class=nf>pivot_longer</span><span class=p>(</span><span class=o>-</span><span class=nf>c</span><span class=p>(</span><span class=n>Direction</span><span class=p>,</span><span class=n>Volume</span><span class=p>,</span><span class=n>Today</span><span class=p>,</span><span class=n>Year</span><span class=p>),</span><span class=n>names_to</span><span class=o>=</span><span class=s>&#34;Lag&#34;</span><span class=p>,</span><span class=n>values_to</span><span class=o>=</span><span class=s>&#34;Value&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=nf>ggplot</span><span class=p>(</span><span class=nf>aes</span><span class=p>(</span><span class=n>x</span><span class=o>=</span><span class=n>Direction</span><span class=p>,</span><span class=n>y</span><span class=o>=</span><span class=n>Value</span><span class=p>,</span><span class=n>fill</span><span class=o>=</span><span class=n>Lag</span><span class=p>))</span> <span class=o>+</span>
+  <span class=nf>geom_boxplot</span><span class=p>()</span>
+</code></pre></div><figure><img src=/islr/sol2/unnamed-chunk-13-1.png alt="Figure 3: Box plots for Direction"><figcaption><p>Figure 3: Box plots for Direction</p></figcaption></figure><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>weeklyDat</span> <span class=o>%&gt;%</span> <span class=nf>pivot_longer</span><span class=p>(</span><span class=o>-</span><span class=nf>c</span><span class=p>(</span><span class=n>Direction</span><span class=p>,</span><span class=n>Volume</span><span class=p>,</span><span class=n>Today</span><span class=p>,</span><span class=n>Year</span><span class=p>),</span><span class=n>names_to</span><span class=o>=</span><span class=s>&#34;Lag&#34;</span><span class=p>,</span><span class=n>values_to</span><span class=o>=</span><span class=s>&#34;Value&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=nf>ggplot</span><span class=p>(</span><span class=nf>aes</span><span class=p>(</span><span class=n>x</span><span class=o>=</span><span class=n>Today</span><span class=p>,</span><span class=n>y</span><span class=o>=</span><span class=n>Value</span><span class=p>,</span><span class=n>fill</span><span class=o>=</span><span class=n>Lag</span><span class=p>))</span> <span class=o>+</span>
+  <span class=nf>geom_boxplot</span><span class=p>()</span>
+</code></pre></div><figure><img src=/islr/sol2/unnamed-chunk-14-1.png alt="Figure 4: More box plots"><figcaption><p>Figure 4: More box plots</p></figcaption></figure><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>weeklyDat</span> <span class=o>%&gt;%</span> <span class=nf>pivot_longer</span><span class=p>(</span><span class=o>-</span><span class=nf>c</span><span class=p>(</span><span class=n>Direction</span><span class=p>,</span><span class=n>Volume</span><span class=p>,</span><span class=n>Today</span><span class=p>,</span><span class=n>Year</span><span class=p>),</span><span class=n>names_to</span><span class=o>=</span><span class=s>&#34;Lag&#34;</span><span class=p>,</span><span class=n>values_to</span><span class=o>=</span><span class=s>&#34;Value&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=nf>ggplot</span><span class=p>(</span><span class=nf>aes</span><span class=p>(</span><span class=n>x</span><span class=o>=</span><span class=n>Lag</span><span class=p>,</span><span class=n>y</span><span class=o>=</span><span class=n>Value</span><span class=p>,</span><span class=n>fill</span><span class=o>=</span><span class=n>Direction</span><span class=p>))</span> <span class=o>+</span>
+  <span class=nf>geom_boxplot</span><span class=p>()</span>
+</code></pre></div><figure><img src=/islr/sol2/unnamed-chunk-15-1.png alt="Figure 5: Lag v/s all"><figcaption><p>Figure 5: Lag v/s all</p></figcaption></figure><p>This does summarize our text analysis quite well. Importantly, it tells
+us that the <code>Today</code> value is largely unrelated to the \(4\) <code>Lag</code>
+variables.</p><p>A really good-looking box-plot is easy to get with the <code>caret</code> library:</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>weeklyDat</span> <span class=o>%&gt;%</span> <span class=nf>subset</span><span class=p>(</span><span class=n>select</span><span class=o>=-</span><span class=nf>c</span><span class=p>(</span><span class=n>Direction</span><span class=p>))</span> <span class=o>%&gt;%</span> <span class=nf>featurePlot</span><span class=p>(</span>
+            <span class=n>y</span> <span class=o>=</span> <span class=n>weeklyDat</span><span class=o>$</span><span class=n>Direction</span><span class=p>,</span>
+            <span class=n>plot</span> <span class=o>=</span> <span class=s>&#34;box&#34;</span><span class=p>,</span>
+            <span class=c1># Pass in options to bwplot()</span>
+            <span class=n>scales</span> <span class=o>=</span> <span class=nf>list</span><span class=p>(</span><span class=n>y</span> <span class=o>=</span> <span class=nf>list</span><span class=p>(</span><span class=n>relation</span><span class=o>=</span><span class=s>&#34;free&#34;</span><span class=p>),</span>
+                          <span class=n>x</span> <span class=o>=</span> <span class=nf>list</span><span class=p>(</span><span class=n>rot</span> <span class=o>=</span> <span class=m>90</span><span class=p>)),</span>
+            <span class=n>auto.key</span> <span class=o>=</span> <span class=nf>list</span><span class=p>(</span><span class=n>columns</span> <span class=o>=</span> <span class=m>2</span><span class=p>))</span>
+</code></pre></div><figure><img src=/islr/sol2/unnamed-chunk-16-1.png alt="Figure 6: Plots with caret"><figcaption><p>Figure 6: Plots with <code>caret</code></p></figcaption></figure><p>We might want to
+<a href=http://www.sthda.com/english/wiki/ggplot2-quick-correlation-matrix-heatmap-r-software-and-data-visualization>visualize</a>
+our correlation matrix as well.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>library</span><span class=p>(</span><span class=n>reshape2</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>#
+# Attaching package: &#39;reshape2&#39;
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># The following object is masked from &#39;package:tidyr&#39;:
+#
+#     smiths
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>weeklyDat</span> <span class=o>%&gt;%</span> <span class=nf>subset</span><span class=p>(</span><span class=n>select</span><span class=o>=-</span><span class=nf>c</span><span class=p>(</span><span class=n>Direction</span><span class=p>))</span> <span class=o>%&gt;%</span> <span class=n>cor</span> <span class=o>%&gt;%</span> <span class=n>melt</span> <span class=o>%&gt;%</span> <span class=nf>ggplot</span><span class=p>(</span><span class=nf>aes</span><span class=p>(</span><span class=n>x</span><span class=o>=</span><span class=n>Var1</span><span class=p>,</span><span class=n>y</span><span class=o>=</span><span class=n>Var2</span><span class=p>,</span><span class=n>fill</span><span class=o>=</span><span class=n>value</span><span class=p>))</span> <span class=o>+</span>
+  <span class=nf>geom_tile</span><span class=p>()</span>
+</code></pre></div><figure><img src=/islr/sol2/unnamed-chunk-17-1.png alt="Figure 7: Heatmap of the correlation matrix"><figcaption><p>Figure 7: Heatmap of the correlation matrix</p></figcaption></figure><h3 id=b-logistic-regression---predictor-significance>b) Logistic Regression - Predictor Significance</h3><p>Lets start with the native <code>glm</code> function.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>glm.fit</span><span class=o>=</span><span class=nf>glm</span><span class=p>(</span><span class=n>Direction</span><span class=o>~</span><span class=n>Lag1</span><span class=o>+</span><span class=n>Lag2</span><span class=o>+</span><span class=n>Lag3</span><span class=o>+</span><span class=n>Lag4</span><span class=o>+</span><span class=n>Lag5</span><span class=o>+</span><span class=n>Volume</span><span class=p>,</span> <span class=n>data</span><span class=o>=</span><span class=n>weeklyDat</span><span class=p>,</span> <span class=n>family</span><span class=o>=</span><span class=n>binomial</span><span class=p>)</span>
+<span class=nf>summary</span><span class=p>(</span><span class=n>glm.fit</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>#
+# Call:
+# glm(formula = Direction ~ Lag1 + Lag2 + Lag3 + Lag4 + Lag5 +
+#     Volume, family = binomial, data = weeklyDat)
+#
+# Deviance Residuals:
+#     Min       1Q   Median       3Q      Max
+# -1.6949  -1.2565   0.9913   1.0849   1.4579
+#
+# Coefficients:
+#             Estimate Std. Error z value Pr(&gt;|z|)
+# (Intercept)  0.26686    0.08593   3.106   0.0019 **
+# Lag1        -0.04127    0.02641  -1.563   0.1181
+# Lag2         0.05844    0.02686   2.175   0.0296 *
+# Lag3        -0.01606    0.02666  -0.602   0.5469
+# Lag4        -0.02779    0.02646  -1.050   0.2937
+# Lag5        -0.01447    0.02638  -0.549   0.5833
+# Volume      -0.02274    0.03690  -0.616   0.5377
+# ---
+# Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+#
+# (Dispersion parameter for binomial family taken to be 1)
+#
+#     Null deviance: 1496.2  on 1088  degrees of freedom
+# Residual deviance: 1486.4  on 1082  degrees of freedom
+# AIC: 1500.4
+#
+# Number of Fisher Scoring iterations: 4
+</code></pre></div><p>Evidently, only the <code>Lag2</code> value is of statistical significance.</p><p>It is always of importance to figure out what numeric values R will
+assign to our factors, and it is best not to guess.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>contrasts</span><span class=p>(</span><span class=n>weeklyDat</span><span class=o>$</span><span class=n>Direction</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>#      Up
+# Down  0
+# Up    1
+</code></pre></div><h3 id=c-confusion-matrix-and-metrics>c) Confusion Matrix and Metrics</h3><p>Essentially:</p><ul><li>Predict the response</li><li>Create an output length vector</li><li>Apply thresholding to obtain labels</li></ul><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>glm.probs</span> <span class=o>=</span> <span class=nf>predict</span><span class=p>(</span><span class=n>glm.fit</span><span class=p>,</span> <span class=n>type</span> <span class=o>=</span> <span class=s>&#34;response&#34;</span><span class=p>)</span>
+<span class=n>glm.pred</span> <span class=o>=</span> <span class=nf>rep</span><span class=p>(</span><span class=s>&#34;Up&#34;</span><span class=p>,</span><span class=nf>length</span><span class=p>(</span><span class=n>glm.probs</span><span class=p>))</span>
+<span class=n>glm.pred[glm.probs</span><span class=o>&lt;</span><span class=m>0.5</span><span class=n>]</span><span class=o>=</span><span class=s>&#34;Down&#34;</span>
+<span class=n>glm.pred</span><span class=o>=</span><span class=nf>factor</span><span class=p>(</span><span class=n>glm.pred</span><span class=p>)</span>
+<span class=nf>confusionMatrix</span><span class=p>(</span><span class=n>glm.pred</span><span class=p>,</span><span class=n>weeklyDat</span><span class=o>$</span><span class=n>Direction</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># Confusion Matrix and Statistics
+#
+#           Reference
+# Prediction Down  Up
+#       Down   54  48
+#       Up    430 557
+#
+#                Accuracy : 0.5611
+#                  95% CI : (0.531, 0.5908)
+#     No Information Rate : 0.5556
+#     P-Value [Acc &gt; NIR] : 0.369
+#
+#                   Kappa : 0.035
+#
+#  Mcnemar&#39;s Test P-Value : &lt;2e-16
+#
+#             Sensitivity : 0.11157
+#             Specificity : 0.92066
+#          Pos Pred Value : 0.52941
+#          Neg Pred Value : 0.56434
+#              Prevalence : 0.44444
+#          Detection Rate : 0.04959
+#    Detection Prevalence : 0.09366
+#       Balanced Accuracy : 0.51612
+#
+#        &#39;Positive&#39; Class : Down
+#
+</code></pre></div><ul><li>We have used the <code>confusionMatrix</code> function from <code>caret</code>
+(<a href=https://rdrr.io/cran/caret/man/confusionMatrix.html>documented
+here</a>) instead of displaying the results with <code>table</code> and then
+calculating precision, recall and the rest by hand.</li></ul><h3 id=d-train-test-splits>d) Train Test Splits</h3><p>Although we could have used the indices and passed it to <code>glm</code> as the
+<code>subset</code> attribute, it is cleaner to just make subsets instead.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>weeklyVal</span><span class=o>&lt;-</span><span class=n>weeklyDat</span> <span class=o>%&gt;%</span> <span class=nf>filter</span><span class=p>(</span><span class=n>Year</span><span class=o>&gt;=</span><span class=m>2009</span><span class=p>)</span>
+<span class=n>weeklyTrain</span><span class=o>&lt;-</span><span class=n>weeklyDat</span> <span class=o>%&gt;%</span> <span class=nf>filter</span><span class=p>(</span><span class=n>Year</span><span class=o>&lt;</span><span class=m>2009</span><span class=p>)</span>
+</code></pre></div><p>Now we can train a model on our training data.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>glm.fit</span><span class=o>=</span><span class=nf>glm</span><span class=p>(</span><span class=n>Direction</span><span class=o>~</span><span class=n>Lag2</span><span class=p>,</span><span class=n>data</span><span class=o>=</span><span class=n>weeklyTrain</span><span class=p>,</span><span class=n>family</span><span class=o>=</span><span class=n>binomial</span><span class=p>)</span>
+<span class=nf>summary</span><span class=p>(</span><span class=n>glm.fit</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>#
+# Call:
+# glm(formula = Direction ~ Lag2, family = binomial, data = weeklyTrain)
+#
+# Deviance Residuals:
+#    Min      1Q  Median      3Q     Max
+# -1.536  -1.264   1.021   1.091   1.368
+#
+# Coefficients:
+#             Estimate Std. Error z value Pr(&gt;|z|)
+# (Intercept)  0.20326    0.06428   3.162  0.00157 **
+# Lag2         0.05810    0.02870   2.024  0.04298 *
+# ---
+# Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+#
+# (Dispersion parameter for binomial family taken to be 1)
+#
+#     Null deviance: 1354.7  on 984  degrees of freedom
+# Residual deviance: 1350.5  on 983  degrees of freedom
+# AIC: 1354.5
+#
+# Number of Fisher Scoring iterations: 4
+</code></pre></div><p>Having fit our model, we will test the predictions on our held out data.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>glm.probs</span> <span class=o>=</span> <span class=nf>predict</span><span class=p>(</span><span class=n>glm.fit</span><span class=p>,</span><span class=n>weeklyVal</span><span class=p>,</span> <span class=n>type</span> <span class=o>=</span> <span class=s>&#34;response&#34;</span><span class=p>)</span>
+<span class=n>glm.pred</span> <span class=o>=</span> <span class=nf>rep</span><span class=p>(</span><span class=s>&#34;Up&#34;</span><span class=p>,</span><span class=nf>length</span><span class=p>(</span><span class=n>glm.probs</span><span class=p>))</span>
+<span class=n>glm.pred[glm.probs</span><span class=o>&lt;</span><span class=m>0.5</span><span class=n>]</span><span class=o>=</span><span class=s>&#34;Down&#34;</span>
+<span class=n>glm.pred</span><span class=o>=</span><span class=nf>factor</span><span class=p>(</span><span class=n>glm.pred</span><span class=p>)</span>
+<span class=nf>confusionMatrix</span><span class=p>(</span><span class=n>glm.pred</span><span class=p>,</span><span class=n>weeklyVal</span><span class=o>$</span><span class=n>Direction</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># Confusion Matrix and Statistics
+#
+#           Reference
+# Prediction Down Up
+#       Down    9  5
+#       Up     34 56
+#
+#                Accuracy : 0.625
+#                  95% CI : (0.5247, 0.718)
+#     No Information Rate : 0.5865
+#     P-Value [Acc &gt; NIR] : 0.2439
+#
+#                   Kappa : 0.1414
+#
+#  Mcnemar&#39;s Test P-Value : 7.34e-06
+#
+#             Sensitivity : 0.20930
+#             Specificity : 0.91803
+#          Pos Pred Value : 0.64286
+#          Neg Pred Value : 0.62222
+#              Prevalence : 0.41346
+#          Detection Rate : 0.08654
+#    Detection Prevalence : 0.13462
+#       Balanced Accuracy : 0.56367
+#
+#        &#39;Positive&#39; Class : Down
+#
+</code></pre></div><p>We really aren&rsquo;t doing very well with this single variable model as is
+evident.</p><h3 id=e-lda-models>e) LDA models</h3><p>At this stage we could use <code>MASS</code> to get the <code>lda</code> function, but it
+would be better to just switch to using <code>caret</code>. Note that the <code>caret</code>
+prediction is a label by default, so thresholding needs to be specified
+differently if required.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>lda.fit</span><span class=o>=</span><span class=nf>train</span><span class=p>(</span><span class=n>Direction</span><span class=o>~</span><span class=n>Lag2</span><span class=p>,</span><span class=n>data</span><span class=o>=</span><span class=n>weeklyTrain</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;lda&#34;</span><span class=p>)</span>
+<span class=nf>summary</span><span class=p>(</span><span class=n>lda.fit</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>#             Length Class      Mode
+# prior       2      -none-     numeric
+# counts      2      -none-     numeric
+# means       2      -none-     numeric
+# scaling     1      -none-     numeric
+# lev         2      -none-     character
+# svd         1      -none-     numeric
+# N           1      -none-     numeric
+# call        3      -none-     call
+# xNames      1      -none-     character
+# problemType 1      -none-     character
+# tuneValue   1      data.frame list
+# obsLevels   2      -none-     character
+# param       0      -none-     list
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>predict</span><span class=p>(</span><span class=n>lda.fit</span><span class=p>,</span><span class=n>weeklyVal</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=nf>confusionMatrix</span><span class=p>(</span><span class=n>weeklyVal</span><span class=o>$</span><span class=n>Direction</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># Confusion Matrix and Statistics
+#
+#           Reference
+# Prediction Down Up
+#       Down    9  5
+#       Up     34 56
+#
+#                Accuracy : 0.625
+#                  95% CI : (0.5247, 0.718)
+#     No Information Rate : 0.5865
+#     P-Value [Acc &gt; NIR] : 0.2439
+#
+#                   Kappa : 0.1414
+#
+#  Mcnemar&#39;s Test P-Value : 7.34e-06
+#
+#             Sensitivity : 0.20930
+#             Specificity : 0.91803
+#          Pos Pred Value : 0.64286
+#          Neg Pred Value : 0.62222
+#              Prevalence : 0.41346
+#          Detection Rate : 0.08654
+#    Detection Prevalence : 0.13462
+#       Balanced Accuracy : 0.56367
+#
+#        &#39;Positive&#39; Class : Down
+#
+</code></pre></div><h3 id=f-qda-models>f) QDA models</h3><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>qda.fit</span><span class=o>=</span><span class=nf>train</span><span class=p>(</span><span class=n>Direction</span><span class=o>~</span><span class=n>Lag2</span><span class=p>,</span><span class=n>data</span><span class=o>=</span><span class=n>weeklyTrain</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;qda&#34;</span><span class=p>)</span>
+<span class=nf>summary</span><span class=p>(</span><span class=n>qda.fit</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>#             Length Class      Mode
+# prior       2      -none-     numeric
+# counts      2      -none-     numeric
+# means       2      -none-     numeric
+# scaling     2      -none-     numeric
+# ldet        2      -none-     numeric
+# lev         2      -none-     character
+# N           1      -none-     numeric
+# call        3      -none-     call
+# xNames      1      -none-     character
+# problemType 1      -none-     character
+# tuneValue   1      data.frame list
+# obsLevels   2      -none-     character
+# param       0      -none-     list
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>predict</span><span class=p>(</span><span class=n>qda.fit</span><span class=p>,</span><span class=n>weeklyVal</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=nf>confusionMatrix</span><span class=p>(</span><span class=n>weeklyVal</span><span class=o>$</span><span class=n>Direction</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># Confusion Matrix and Statistics
+#
+#           Reference
+# Prediction Down Up
+#       Down    0  0
+#       Up     43 61
+#
+#                Accuracy : 0.5865
+#                  95% CI : (0.4858, 0.6823)
+#     No Information Rate : 0.5865
+#     P-Value [Acc &gt; NIR] : 0.5419
+#
+#                   Kappa : 0
+#
+#  Mcnemar&#39;s Test P-Value : 1.504e-10
+#
+#             Sensitivity : 0.0000
+#             Specificity : 1.0000
+#          Pos Pred Value :    NaN
+#          Neg Pred Value : 0.5865
+#              Prevalence : 0.4135
+#          Detection Rate : 0.0000
+#    Detection Prevalence : 0.0000
+#       Balanced Accuracy : 0.5000
+#
+#        &#39;Positive&#39; Class : Down
+#
+</code></pre></div><p>This is quite possibly the worst of the lot. As is evident, the model
+just predicts <code>Up</code> no matter what.</p><h3 id=g-knn>g) KNN</h3><p><code>caret</code> tends to over-zealously retrain models and find the best
+possible parameters. In this case that is annoying and redundant so we
+will use the <code>class</code> library. We <strong>should really scale our data</strong> before
+using KNN though.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>library</span><span class=p>(</span><span class=n>class</span><span class=p>)</span>
+<span class=nf>set.seed</span><span class=p>(</span><span class=m>1</span><span class=p>)</span>
+<span class=n>knn.pred</span><span class=o>=</span><span class=nf>knn</span><span class=p>(</span><span class=nf>as.matrix</span><span class=p>(</span><span class=n>weeklyTrain</span><span class=o>$</span><span class=n>Lag2</span><span class=p>),</span><span class=nf>as.matrix</span><span class=p>(</span><span class=n>weeklyVal</span><span class=o>$</span><span class=n>Lag2</span><span class=p>),</span><span class=n>weeklyTrain</span><span class=o>$</span><span class=n>Direction</span><span class=p>,</span><span class=n>k</span><span class=o>=</span><span class=m>1</span><span class=p>)</span>
+<span class=nf>confusionMatrix</span><span class=p>(</span><span class=n>knn.pred</span><span class=p>,</span><span class=n>weeklyVal</span><span class=o>$</span><span class=n>Direction</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># Confusion Matrix and Statistics
+#
+#           Reference
+# Prediction Down Up
+#       Down   21 30
+#       Up     22 31
+#
+#                Accuracy : 0.5
+#                  95% CI : (0.4003, 0.5997)
+#     No Information Rate : 0.5865
+#     P-Value [Acc &gt; NIR] : 0.9700
+#
+#                   Kappa : -0.0033
+#
+#  Mcnemar&#39;s Test P-Value : 0.3317
+#
+#             Sensitivity : 0.4884
+#             Specificity : 0.5082
+#          Pos Pred Value : 0.4118
+#          Neg Pred Value : 0.5849
+#              Prevalence : 0.4135
+#          Detection Rate : 0.2019
+#    Detection Prevalence : 0.4904
+#       Balanced Accuracy : 0.4983
+#
+#        &#39;Positive&#39; Class : Down
+#
+</code></pre></div><p>Clearly this model is not doing very well.</p><h3 id=h-model-selection>h) Model Selection</h3><p>We will first get the ROC curves.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>library</span><span class=p>(</span><span class=n>pROC</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># Type &#39;citation(&#34;pROC&#34;)&#39; for a citation.
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>#
+# Attaching package: &#39;pROC&#39;
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># The following objects are masked from &#39;package:stats&#39;:
+#
+#     cov, smooth, var
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>knnROC</span><span class=o>&lt;-</span><span class=nf>roc</span><span class=p>(</span><span class=n>predictor</span><span class=o>=</span><span class=nf>as.numeric</span><span class=p>(</span><span class=n>knn.pred</span><span class=p>),</span><span class=n>response</span><span class=o>=</span><span class=n>weeklyVal</span><span class=o>$</span><span class=n>Direction</span><span class=p>,</span><span class=n>levels</span><span class=o>=</span><span class=nf>rev</span><span class=p>(</span><span class=nf>levels</span><span class=p>(</span><span class=n>weeklyVal</span><span class=o>$</span><span class=n>Direction</span><span class=p>)))</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># Setting direction: controls &lt; cases
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>logiROC</span><span class=o>&lt;-</span><span class=nf>roc</span><span class=p>(</span><span class=n>predictor</span><span class=o>=</span><span class=nf>as.numeric</span><span class=p>(</span><span class=nf>predict</span><span class=p>(</span><span class=n>glm.fit</span><span class=p>,</span><span class=n>weeklyVal</span><span class=p>)),</span><span class=n>response</span><span class=o>=</span><span class=n>weeklyVal</span><span class=o>$</span><span class=n>Direction</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># Setting levels: control = Down, case = Up
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># Setting direction: controls &gt; cases
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>ldaROC</span><span class=o>&lt;-</span><span class=nf>roc</span><span class=p>(</span><span class=n>predictor</span><span class=o>=</span><span class=nf>as.numeric</span><span class=p>(</span><span class=nf>predict</span><span class=p>(</span><span class=n>lda.fit</span><span class=p>,</span><span class=n>weeklyVal</span><span class=p>)),</span><span class=n>response</span><span class=o>=</span><span class=n>weeklyVal</span><span class=o>$</span><span class=n>Direction</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># Setting levels: control = Down, case = Up
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># Setting direction: controls &lt; cases
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>qdaROC</span><span class=o>&lt;-</span><span class=nf>roc</span><span class=p>(</span><span class=n>predictor</span><span class=o>=</span><span class=nf>as.numeric</span><span class=p>(</span><span class=nf>predict</span><span class=p>(</span><span class=n>qda.fit</span><span class=p>,</span><span class=n>weeklyVal</span><span class=p>)),</span><span class=n>response</span><span class=o>=</span><span class=n>weeklyVal</span><span class=o>$</span><span class=n>Direction</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># Setting levels: control = Down, case = Up
+# Setting direction: controls &lt; cases
+</code></pre></div><p>Now to plot them.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>ggroc</span><span class=p>(</span><span class=nf>list</span><span class=p>(</span><span class=n>KNN</span><span class=o>=</span><span class=n>knnROC</span><span class=p>,</span><span class=n>Logistic</span><span class=o>=</span><span class=n>logiROC</span><span class=p>,</span><span class=n>LDA</span><span class=o>=</span><span class=n>ldaROC</span><span class=p>,</span><span class=n>QDA</span><span class=o>=</span><span class=n>qdaROC</span><span class=p>))</span>
+</code></pre></div><figure><img src=/islr/sol2/unnamed-chunk-28-1.png alt="Figure 8: ROC curves for Weekly data"><figcaption><p>Figure 8: ROC curves for Weekly data</p></figcaption></figure><p>To compare models with <code>caret</code> it is easy to refit the logistic and knn
+models in the caret formulation.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>knnCaret</span><span class=o>=</span><span class=nf>train</span><span class=p>(</span><span class=n>Direction</span><span class=o>~</span><span class=n>Lag2</span><span class=p>,</span><span class=n>data</span><span class=o>=</span><span class=n>weeklyTrain</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;knn&#34;</span><span class=p>)</span>
+</code></pre></div><p>However, the KNN model is the best parameter model.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>resmod</span> <span class=o>&lt;-</span> <span class=nf>resamples</span><span class=p>(</span><span class=nf>list</span><span class=p>(</span><span class=n>lda</span><span class=o>=</span><span class=n>lda.fit</span><span class=p>,</span> <span class=n>qda</span><span class=o>=</span><span class=n>qda.fit</span><span class=p>,</span> <span class=n>KNN</span><span class=o>=</span><span class=n>knnCaret</span><span class=p>))</span>
+<span class=nf>summary</span><span class=p>(</span><span class=n>resmod</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>#
+# Call:
+# summary.resamples(object = resmod)
+#
+# Models: lda, qda, KNN
+# Number of resamples: 25
+#
+# Accuracy
+#          Min.   1st Qu.    Median      Mean   3rd Qu.      Max. NA&#39;s
+# lda 0.5043228 0.5344353 0.5529101 0.5500861 0.5683060 0.5846995    0
+# qda 0.5044248 0.5204360 0.5307263 0.5326785 0.5462428 0.5777778    0
+# KNN 0.4472222 0.5082873 0.5240642 0.5168327 0.5302198 0.5485714    0
+#
+# Kappa
+#            Min.      1st Qu.      Median         Mean    3rd Qu.       Max.
+# lda -0.02618939 -0.003638168 0.005796908  0.007801904 0.01635328 0.05431238
+# qda -0.06383592 -0.005606123 0.000000000 -0.003229697 0.00000000 0.03606344
+# KNN -0.11297539  0.004168597 0.024774647  0.016171229 0.04456142 0.07724439
+#     NA&#39;s
+# lda    0
+# qda    0
+# KNN    0
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>bwplot</span><span class=p>(</span><span class=n>resmod</span><span class=p>)</span>
+</code></pre></div><figure><img src=/islr/sol2/unnamed-chunk-30-1.png alt="Figure 9: Caret plots for comparison"><figcaption><p>Figure 9: Caret plots for comparison</p></figcaption></figure><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>dotplot</span><span class=p>(</span><span class=n>resmod</span><span class=p>)</span>
+</code></pre></div><figure><img src=/islr/sol2/unnamed-chunk-30-2.png></figure><p>Kappa or Cohen&rsquo;s Kappa is essentially classification accuracy,
+normalized at the baseline of random chance. It is a more useful measure
+to use on problems that have imbalanced classes. There&rsquo;s more on model
+selection
+<a href=https://machinelearningmastery.com/machine-learning-evaluation-metrics-in-r/>here</a>.</p><h3 id=i-further-tuning>i) Further Tuning</h3><p>Do note the <code>caret</code>
+<a href=https://topepo.github.io/caret/model-training-and-tuning.html>defaults</a>.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>fitControl</span> <span class=o>&lt;-</span> <span class=nf>trainControl</span><span class=p>(</span><span class=c1># 10-fold CV</span>
+                           <span class=n>method</span> <span class=o>=</span> <span class=s>&#34;repeatedcv&#34;</span><span class=p>,</span>
+                           <span class=n>number</span> <span class=o>=</span> <span class=m>10</span><span class=p>,</span>
+                           <span class=c1># repeated ten times</span>
+                           <span class=n>repeats</span> <span class=o>=</span> <span class=m>10</span><span class=p>)</span>
+</code></pre></div><h3 id=logistic>Logistic</h3><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>glm2.fit</span><span class=o>=</span><span class=nf>glm</span><span class=p>(</span><span class=n>Direction</span><span class=o>~</span><span class=n>Lag1</span><span class=o>+</span><span class=n>Lag2</span><span class=o>+</span><span class=n>Lag3</span><span class=o>+</span><span class=n>Lag4</span><span class=o>+</span><span class=n>Lag5</span><span class=o>+</span><span class=n>Volume</span><span class=p>,</span> <span class=n>data</span><span class=o>=</span><span class=n>weeklyDat</span><span class=p>,</span> <span class=n>family</span><span class=o>=</span><span class=n>binomial</span><span class=p>)</span>
+
+<span class=n>glm2.probs</span> <span class=o>=</span> <span class=nf>predict</span><span class=p>(</span><span class=n>glm2.fit</span><span class=p>,</span><span class=n>weeklyVal</span><span class=p>,</span> <span class=n>type</span> <span class=o>=</span> <span class=s>&#34;response&#34;</span><span class=p>)</span>
+<span class=n>glm2.pred</span> <span class=o>=</span> <span class=nf>rep</span><span class=p>(</span><span class=s>&#34;Up&#34;</span><span class=p>,</span><span class=nf>length</span><span class=p>(</span><span class=n>glm2.probs</span><span class=p>))</span>
+<span class=n>glm2.pred[glm2.probs</span><span class=o>&lt;</span><span class=m>0.5</span><span class=n>]</span><span class=o>=</span><span class=s>&#34;Down&#34;</span>
+<span class=n>glm2.pred</span><span class=o>=</span><span class=nf>factor</span><span class=p>(</span><span class=n>glm2.pred</span><span class=p>)</span>
+<span class=nf>confusionMatrix</span><span class=p>(</span><span class=n>glm2.pred</span><span class=p>,</span><span class=n>weeklyVal</span><span class=o>$</span><span class=n>Direction</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># Confusion Matrix and Statistics
+#
+#           Reference
+# Prediction Down Up
+#       Down   17 13
+#       Up     26 48
+#
+#                Accuracy : 0.625
+#                  95% CI : (0.5247, 0.718)
+#     No Information Rate : 0.5865
+#     P-Value [Acc &gt; NIR] : 0.24395
+#
+#                   Kappa : 0.1907
+#
+#  Mcnemar&#39;s Test P-Value : 0.05466
+#
+#             Sensitivity : 0.3953
+#             Specificity : 0.7869
+#          Pos Pred Value : 0.5667
+#          Neg Pred Value : 0.6486
+#              Prevalence : 0.4135
+#          Detection Rate : 0.1635
+#    Detection Prevalence : 0.2885
+#       Balanced Accuracy : 0.5911
+#
+#        &#39;Positive&#39; Class : Down
+#
+</code></pre></div><h4 id=qda>QDA</h4><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>qdaCaret</span><span class=o>=</span><span class=nf>train</span><span class=p>(</span><span class=n>Direction</span><span class=o>~</span><span class=n>Lag2</span><span class=o>+</span><span class=n>Lag4</span><span class=p>,</span><span class=n>data</span><span class=o>=</span><span class=n>weeklyTrain</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;qda&#34;</span><span class=p>,</span><span class=n>trainControl</span><span class=o>=</span><span class=n>fitControl</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>summary</span><span class=p>(</span><span class=n>qdaCaret</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>#             Length Class      Mode
+# prior       2      -none-     numeric
+# counts      2      -none-     numeric
+# means       4      -none-     numeric
+# scaling     8      -none-     numeric
+# ldet        2      -none-     numeric
+# lev         2      -none-     character
+# N           1      -none-     numeric
+# call        4      -none-     call
+# xNames      2      -none-     character
+# problemType 1      -none-     character
+# tuneValue   1      data.frame list
+# obsLevels   2      -none-     character
+# param       1      -none-     list
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>predict</span><span class=p>(</span><span class=n>qdaCaret</span><span class=p>,</span><span class=n>weeklyVal</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=nf>confusionMatrix</span><span class=p>(</span><span class=n>weeklyVal</span><span class=o>$</span><span class=n>Direction</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># Confusion Matrix and Statistics
+#
+#           Reference
+# Prediction Down Up
+#       Down    9 14
+#       Up     34 47
+#
+#                Accuracy : 0.5385
+#                  95% CI : (0.438, 0.6367)
+#     No Information Rate : 0.5865
+#     P-Value [Acc &gt; NIR] : 0.863079
+#
+#                   Kappa : -0.0217
+#
+#  Mcnemar&#39;s Test P-Value : 0.006099
+#
+#             Sensitivity : 0.20930
+#             Specificity : 0.77049
+#          Pos Pred Value : 0.39130
+#          Neg Pred Value : 0.58025
+#              Prevalence : 0.41346
+#          Detection Rate : 0.08654
+#    Detection Prevalence : 0.22115
+#       Balanced Accuracy : 0.48990
+#
+#        &#39;Positive&#39; Class : Down
+#
+</code></pre></div><h4 id=lda>LDA</h4><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>ldaCaret</span><span class=o>=</span><span class=nf>train</span><span class=p>(</span><span class=n>Direction</span><span class=o>~</span><span class=n>Lag2</span><span class=o>+</span><span class=n>Lag1</span><span class=o>+</span><span class=n>Year</span><span class=p>,</span><span class=n>data</span><span class=o>=</span><span class=n>weeklyTrain</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;lda&#34;</span><span class=p>,</span><span class=n>trainControl</span><span class=o>=</span><span class=n>fitControl</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>summary</span><span class=p>(</span><span class=n>ldaCaret</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>#             Length Class      Mode
+# prior       2      -none-     numeric
+# counts      2      -none-     numeric
+# means       6      -none-     numeric
+# scaling     3      -none-     numeric
+# lev         2      -none-     character
+# svd         1      -none-     numeric
+# N           1      -none-     numeric
+# call        4      -none-     call
+# xNames      3      -none-     character
+# problemType 1      -none-     character
+# tuneValue   1      data.frame list
+# obsLevels   2      -none-     character
+# param       1      -none-     list
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>predict</span><span class=p>(</span><span class=n>ldaCaret</span><span class=p>,</span><span class=n>weeklyVal</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=nf>confusionMatrix</span><span class=p>(</span><span class=n>weeklyVal</span><span class=o>$</span><span class=n>Direction</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># Confusion Matrix and Statistics
+#
+#           Reference
+# Prediction Down Up
+#       Down   20 19
+#       Up     23 42
+#
+#                Accuracy : 0.5962
+#                  95% CI : (0.4954, 0.6913)
+#     No Information Rate : 0.5865
+#     P-Value [Acc &gt; NIR] : 0.4626
+#
+#                   Kappa : 0.1558
+#
+#  Mcnemar&#39;s Test P-Value : 0.6434
+#
+#             Sensitivity : 0.4651
+#             Specificity : 0.6885
+#          Pos Pred Value : 0.5128
+#          Neg Pred Value : 0.6462
+#              Prevalence : 0.4135
+#          Detection Rate : 0.1923
+#    Detection Prevalence : 0.3750
+#       Balanced Accuracy : 0.5768
+#
+#        &#39;Positive&#39; Class : Down
+#
+</code></pre></div><h4 id=knn>KNN</h4><p>Honestly, again, this should be scaled. Plot <code>KNN</code> with the best
+parameters.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>plot</span><span class=p>(</span><span class=n>knnCaret</span><span class=p>)</span>
+</code></pre></div><figure><img src=/islr/sol2/unnamed-chunk-37-1.png alt="Figure 10: KNN statistics"><figcaption><p>Figure 10: KNN statistics</p></figcaption></figure><p>Evidently, the accuracy increases with an increase in the number of
+neighbors considered.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>plot</span><span class=p>(</span><span class=n>knnCaret</span><span class=p>,</span> <span class=n>print.thres</span> <span class=o>=</span> <span class=m>0.5</span><span class=p>,</span> <span class=n>type</span><span class=o>=</span><span class=s>&#34;S&#34;</span><span class=p>)</span>
+</code></pre></div><figure><img src=/islr/sol2/unnamed-chunk-38-1.png alt="Figure 11: Visualizing thresholds for KNN"><figcaption><p>Figure 11: Visualizing thresholds for KNN</p></figcaption></figure><p>However this shows that we don&rsquo;t actually get much of an increase in
+accuracy anyway.</p><h2 id=question-4.11---pages-171-172>Question 4.11 - Pages 171-172</h2><p>In this problem, you will develop a model to predict whether a given car
+gets high or low gas mileage based on the Auto data set.</p><p><strong>(a)</strong> Create a binary variable, <code>mpg01</code> , that contains a 1 if <code>mpg</code>
+contains a value above its median, and a 0 if mpg contains a value below
+its median. You can compute the median using the <code>median()</code> function.
+Note you may find it helpful to use the <code>data.frame()</code> function to
+create a single data set containing both <code>mpg01</code> and the other <code>Auto</code>
+variables.</p><p><strong>(b)</strong> Explore the data graphically in order to investigate the
+association between <code>mpg01</code> and the other features. Which of the other
+features seem most likely to be useful in predicting <code>mpg01</code> ?
+Scatter-plots and boxplots may be useful tools to answer this question.
+Describe your findings.</p><p><strong>(c)</strong> Split the data into a training set and a test set.</p><p><strong>(d)</strong> Perform LDA on the training data in order to predict <code>mpg01</code> using
+the variables that seemed most associated with <code>mpg01</code> in <strong>(b)</strong>. What is
+the test error of the model obtained?</p><p><strong>(e)</strong> Perform QDA on the training data in order to predict <code>mpg01</code> using
+the variables that seemed most associated with <code>mpg01</code> in <strong>(b)</strong>. What is
+the test error of the model obtained?</p><p><strong>(f)</strong> Perform logistic regression on the training data in order to
+predict <code>mpg01</code> using the variables that seemed most associated with
+<code>mpg01</code> in <strong>(b)</strong>. What is the test error of the model obtained?</p><p><strong>(g)</strong> Perform KNN on the training data, with several values of \(K\), in
+order to predict <code>mpg01</code> . Use only the variables that seemed most
+associated with <code>mpg01</code> in <strong>(b)</strong>. What test errors do you obtain? Which
+value of \(K\) seems to perform the best on this data set?</p><h3 id=answer-1>Answer</h3><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>autoDat</span><span class=o>&lt;-</span><span class=n>ISLR</span><span class=o>::</span><span class=n>Auto</span>
+</code></pre></div><h3 id=a-binary-variable>a) Binary Variable</h3><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>autoDat</span><span class=o>$</span><span class=n>mpg</span> <span class=o>%&gt;%</span> <span class=nf>sort</span><span class=p>()</span> <span class=o>%&gt;%</span> <span class=nf>median</span><span class=p>()</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># [1] 22.75
+</code></pre></div><p>Now we can get a new variable from that.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>newDat</span><span class=o>=</span><span class=n>autoDat</span>
+<span class=n>newDat</span><span class=o>$</span><span class=n>mpg01</span> <span class=o>&lt;-</span> <span class=nf>ifelse</span><span class=p>(</span><span class=n>autoDat</span><span class=o>$</span><span class=n>mpg</span><span class=o>&lt;</span><span class=n>autoDat</span><span class=o>$</span><span class=n>mpg</span> <span class=o>%&gt;%</span> <span class=nf>sort</span><span class=p>()</span> <span class=o>%&gt;%</span> <span class=nf>median</span><span class=p>(),</span><span class=m>0</span><span class=p>,</span><span class=m>1</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=nf>factor</span><span class=p>()</span>
+</code></pre></div><p>Note that the <code>ifelse</code> command takes a truthy function, value when
+false, value when true, but does not return a factor automatically so we
+piped it to factor to ensure it is factorial.</p><h3 id=b-visual-exploration>b) Visual Exploration</h3><p>Some box-plots:</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>newDat</span> <span class=o>%&gt;%</span> <span class=nf>pivot_longer</span><span class=p>(</span><span class=o>-</span><span class=nf>c</span><span class=p>(</span><span class=n>mpg01</span><span class=p>,</span><span class=n>name</span><span class=p>),</span><span class=n>names_to</span><span class=o>=</span><span class=s>&#34;Params&#34;</span><span class=p>,</span><span class=n>values_to</span><span class=o>=</span><span class=s>&#34;Value&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=nf>ggplot</span><span class=p>(</span><span class=nf>aes</span><span class=p>(</span><span class=n>x</span><span class=o>=</span><span class=n>mpg01</span><span class=p>,</span><span class=n>y</span><span class=o>=</span><span class=n>Value</span><span class=p>))</span> <span class=o>+</span>
+  <span class=nf>geom_boxplot</span><span class=p>()</span> <span class=o>+</span>
+  <span class=nf>facet_wrap</span><span class=p>(</span><span class=o>~</span> <span class=n>Params</span><span class=p>,</span> <span class=n>scales</span> <span class=o>=</span> <span class=s>&#34;free_y&#34;</span><span class=p>)</span>
+</code></pre></div><figure><img src=/islr/sol2/unnamed-chunk-42-1.png alt="Figure 12: Box plots"><figcaption><p>Figure 12: Box plots</p></figcaption></figure><p>With some scatter plots as well:</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>newDat</span> <span class=o>%&gt;%</span> <span class=nf>pivot_longer</span><span class=p>(</span><span class=o>-</span><span class=nf>c</span><span class=p>(</span><span class=n>mpg01</span><span class=p>,</span><span class=n>name</span><span class=p>,</span><span class=n>weight</span><span class=p>),</span><span class=n>names_to</span><span class=o>=</span><span class=s>&#34;Params&#34;</span><span class=p>,</span><span class=n>values_to</span><span class=o>=</span><span class=s>&#34;Value&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=nf>ggplot</span><span class=p>(</span><span class=nf>aes</span><span class=p>(</span><span class=n>x</span><span class=o>=</span><span class=n>weight</span><span class=p>,</span><span class=n>y</span><span class=o>=</span><span class=n>Value</span><span class=p>,</span><span class=n>color</span><span class=o>=</span><span class=n>mpg01</span><span class=p>))</span> <span class=o>+</span>
+  <span class=nf>geom_point</span><span class=p>()</span> <span class=o>+</span>
+  <span class=nf>facet_wrap</span><span class=p>(</span><span class=o>~</span> <span class=n>Params</span><span class=p>,</span> <span class=n>scales</span> <span class=o>=</span> <span class=s>&#34;free_y&#34;</span><span class=p>)</span>
+</code></pre></div><figure><img src=/islr/sol2/unnamed-chunk-43-1.png alt="Figure 13: Scatter plots"><figcaption><p>Figure 13: Scatter plots</p></figcaption></figure><p>Clearly, <code>origin</code>, <code>year</code> and <code>cylinder</code> are essentially not very
+relevant numerically for the regression lines and confidence intervals.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>newDat</span> <span class=o>%&gt;%</span> <span class=nf>select</span><span class=p>(</span><span class=o>-</span><span class=n>year</span><span class=p>,</span><span class=o>-</span><span class=n>origin</span><span class=p>,</span><span class=o>-</span><span class=n>cylinders</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=nf>pivot_longer</span><span class=p>(</span><span class=o>-</span><span class=nf>c</span><span class=p>(</span><span class=n>mpg01</span><span class=p>,</span><span class=n>name</span><span class=p>,</span><span class=n>mpg</span><span class=p>),</span><span class=n>names_to</span><span class=o>=</span><span class=s>&#34;Params&#34;</span><span class=p>,</span><span class=n>values_to</span><span class=o>=</span><span class=s>&#34;Value&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=nf>ggplot</span><span class=p>(</span><span class=nf>aes</span><span class=p>(</span><span class=n>x</span><span class=o>=</span><span class=n>mpg</span><span class=p>,</span><span class=n>y</span><span class=o>=</span><span class=n>Value</span><span class=p>,</span><span class=n>color</span><span class=o>=</span><span class=n>mpg01</span><span class=p>))</span> <span class=o>+</span>
+  <span class=nf>geom_point</span><span class=p>()</span> <span class=o>+</span>
+  <span class=nf>geom_smooth</span><span class=p>(</span><span class=n>method</span><span class=o>=</span><span class=n>lm</span><span class=p>)</span> <span class=o>+</span>
+  <span class=nf>facet_wrap</span><span class=p>(</span><span class=o>~</span> <span class=n>Params</span><span class=p>,</span> <span class=n>scales</span> <span class=o>=</span> <span class=s>&#34;free_y&#34;</span><span class=p>)</span>
+</code></pre></div><figure><img src=/islr/sol2/unnamed-chunk-44-1.png></figure><h3 id=c-train-test-split>c) Train-Test Split</h3><p>We can split our data
+<a href=https://topepo.github.io/caret/data-splitting.html#simple-splitting-based-on-the-outcome>very
+easily</a> with <code>caret</code>. It is important to remember that for factors,
+random sampling occurs within each class to preserve the overall class
+distribution of the data.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>set.seed</span><span class=p>(</span><span class=m>1984</span><span class=p>)</span>
+<span class=n>trainInd</span> <span class=o>&lt;-</span> <span class=nf>createDataPartition</span><span class=p>(</span><span class=n>newDat</span><span class=o>$</span><span class=n>mpg01</span><span class=p>,</span> <span class=c1># Factor, so class sampling</span>
+                                <span class=n>p</span><span class=o>=</span><span class=m>0.7</span><span class=p>,</span> <span class=c1># 70-30 train-test</span>
+                                <span class=n>list</span><span class=o>=</span><span class=kc>FALSE</span><span class=p>,</span> <span class=c1># No lists</span>
+                                <span class=n>times</span><span class=o>=</span><span class=m>1</span><span class=p>)</span> <span class=c1># No bootstrap</span>
+<span class=n>autoTrain</span><span class=o>&lt;-</span><span class=n>newDat[trainInd</span><span class=p>,</span><span class=n>]</span>
+<span class=n>autoTest</span><span class=o>&lt;-</span><span class=n>newDat[</span><span class=o>-</span><span class=n>trainInd</span><span class=p>,</span><span class=n>]</span>
+</code></pre></div><h3 id=d-lda-with-significant-variables>d) LDA with Significant Variables</h3><p>Whenever I see significant I think correlation, so let&rsquo;s take a look at
+that.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>newDat</span> <span class=o>%&gt;%</span> <span class=nf>select</span><span class=p>(</span><span class=o>-</span><span class=n>mpg01</span><span class=p>,</span><span class=o>-</span><span class=n>name</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>cor</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>#                     mpg  cylinders displacement horsepower     weight
+# mpg           1.0000000 -0.7776175   -0.8051269 -0.7784268 -0.8322442
+# cylinders    -0.7776175  1.0000000    0.9508233  0.8429834  0.8975273
+# displacement -0.8051269  0.9508233    1.0000000  0.8972570  0.9329944
+# horsepower   -0.7784268  0.8429834    0.8972570  1.0000000  0.8645377
+# weight       -0.8322442  0.8975273    0.9329944  0.8645377  1.0000000
+# acceleration  0.4233285 -0.5046834   -0.5438005 -0.6891955 -0.4168392
+# year          0.5805410 -0.3456474   -0.3698552 -0.4163615 -0.3091199
+# origin        0.5652088 -0.5689316   -0.6145351 -0.4551715 -0.5850054
+#              acceleration       year     origin
+# mpg             0.4233285  0.5805410  0.5652088
+# cylinders      -0.5046834 -0.3456474 -0.5689316
+# displacement   -0.5438005 -0.3698552 -0.6145351
+# horsepower     -0.6891955 -0.4163615 -0.4551715
+# weight         -0.4168392 -0.3091199 -0.5850054
+# acceleration    1.0000000  0.2903161  0.2127458
+# year            0.2903161  1.0000000  0.1815277
+# origin          0.2127458  0.1815277  1.0000000
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>newDat</span> <span class=o>%&gt;%</span> <span class=n>length</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># [1] 10
+</code></pre></div><p>Now lets quickly see what it looks like with correlated values removed.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>corrCols2</span><span class=o>=</span><span class=n>newDat</span> <span class=o>%&gt;%</span> <span class=nf>select</span><span class=p>(</span><span class=o>-</span><span class=n>mpg01</span><span class=p>,</span><span class=o>-</span><span class=n>name</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>cor</span> <span class=o>%&gt;%</span> <span class=nf>findCorrelation</span><span class=p>(</span><span class=n>cutoff</span><span class=o>=</span><span class=m>0.85</span><span class=p>)</span>
+<span class=n>newRed</span><span class=o>&lt;-</span><span class=n>newDat[</span><span class=o>-</span><span class=nf>c</span><span class=p>(</span><span class=n>corrCols2</span><span class=p>)</span><span class=n>]</span>
+<span class=n>newRed</span> <span class=o>%&gt;%</span> <span class=n>summary</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>#       mpg            weight      acceleration        year           origin
+#  Min.   : 9.00   Min.   :1613   Min.   : 8.00   Min.   :70.00   Min.   :1.000
+#  1st Qu.:17.00   1st Qu.:2225   1st Qu.:13.78   1st Qu.:73.00   1st Qu.:1.000
+#  Median :22.75   Median :2804   Median :15.50   Median :76.00   Median :1.000
+#  Mean   :23.45   Mean   :2978   Mean   :15.54   Mean   :75.98   Mean   :1.577
+#  3rd Qu.:29.00   3rd Qu.:3615   3rd Qu.:17.02   3rd Qu.:79.00   3rd Qu.:2.000
+#  Max.   :46.60   Max.   :5140   Max.   :24.80   Max.   :82.00   Max.   :3.000
+#
+#                  name     mpg01
+#  amc matador       :  5   0:196
+#  ford pinto        :  5   1:196
+#  toyota corolla    :  5
+#  amc gremlin       :  4
+#  amc hornet        :  4
+#  chevrolet chevette:  4
+#  (Other)           :365
+</code></pre></div><p>Inherent in this discussion is the fact that I consider what is
+correlated to <code>mpg</code> to be a good indicator of what will help <code>mpg01</code> for
+obvious reasons.</p><p>Now we can just use the columns we found with <code>findCorrelation</code>.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>corrCols2</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># [1] 3 4 2
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>names</span><span class=p>(</span><span class=n>newDat</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>#  [1] &#34;mpg&#34;          &#34;cylinders&#34;    &#34;displacement&#34; &#34;horsepower&#34;   &#34;weight&#34;
+#  [6] &#34;acceleration&#34; &#34;year&#34;         &#34;origin&#34;       &#34;name&#34;         &#34;mpg01&#34;
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>autoLDA</span><span class=o>=</span><span class=nf>train</span><span class=p>(</span><span class=n>mpg01</span><span class=o>~</span><span class=n>cylinders</span><span class=o>+</span><span class=n>displacement</span><span class=o>+</span><span class=n>horsepower</span><span class=p>,</span><span class=n>data</span><span class=o>=</span><span class=n>autoTrain</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;lda&#34;</span><span class=p>)</span>
+<span class=n>valScoreLDA</span><span class=o>=</span><span class=nf>predict</span><span class=p>(</span><span class=n>autoLDA</span><span class=p>,</span><span class=n>autoTest</span><span class=p>)</span>
+</code></pre></div><p>Now we can check the statistics.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>confusionMatrix</span><span class=p>(</span><span class=n>valScoreLDA</span><span class=p>,</span><span class=n>autoTest</span><span class=o>$</span><span class=n>mpg01</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># Confusion Matrix and Statistics
+#
+#           Reference
+# Prediction  0  1
+#          0 56  2
+#          1  2 56
+#
+#                Accuracy : 0.9655
+#                  95% CI : (0.9141, 0.9905)
+#     No Information Rate : 0.5
+#     P-Value [Acc &gt; NIR] : &lt;2e-16
+#
+#                   Kappa : 0.931
+#
+#  Mcnemar&#39;s Test P-Value : 1
+#
+#             Sensitivity : 0.9655
+#             Specificity : 0.9655
+#          Pos Pred Value : 0.9655
+#          Neg Pred Value : 0.9655
+#              Prevalence : 0.5000
+#          Detection Rate : 0.4828
+#    Detection Prevalence : 0.5000
+#       Balanced Accuracy : 0.9655
+#
+#        &#39;Positive&#39; Class : 0
+#
+</code></pre></div><p>That is an amazingly accurate model.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>auto_ldaROC</span><span class=o>&lt;-</span><span class=nf>roc</span><span class=p>(</span><span class=n>predictor</span><span class=o>=</span><span class=nf>as.numeric</span><span class=p>(</span><span class=n>valScoreLDA</span><span class=p>),</span><span class=n>response</span><span class=o>=</span><span class=n>autoTest</span><span class=o>$</span><span class=n>mpg01</span><span class=p>,</span><span class=n>levels</span><span class=o>=</span><span class=nf>levels</span><span class=p>(</span><span class=n>autoTest</span><span class=o>$</span><span class=n>mpg01</span><span class=p>))</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># Setting direction: controls &lt; cases
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>ggroc</span><span class=p>(</span><span class=n>auto_ldaROC</span><span class=p>)</span>
+</code></pre></div><figure><img src=/islr/sol2/unnamed-chunk-51-1.png></figure><h3 id=e-qda-with-significant-variables>e) QDA with Significant Variables</h3><p>Same deal as before.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>autoQDA</span><span class=o>=</span><span class=nf>train</span><span class=p>(</span><span class=n>mpg01</span><span class=o>~</span><span class=n>cylinders</span><span class=o>+</span><span class=n>displacement</span><span class=o>+</span><span class=n>horsepower</span><span class=p>,</span><span class=n>data</span><span class=o>=</span><span class=n>autoTrain</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;qda&#34;</span><span class=p>)</span>
+<span class=n>valScoreQDA</span><span class=o>=</span><span class=nf>predict</span><span class=p>(</span><span class=n>autoQDA</span><span class=p>,</span><span class=n>autoTest</span><span class=p>)</span>
+</code></pre></div><p>Now we can check the statistics.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>confusionMatrix</span><span class=p>(</span><span class=n>valScoreQDA</span><span class=p>,</span><span class=n>autoTest</span><span class=o>$</span><span class=n>mpg01</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># Confusion Matrix and Statistics
+#
+#           Reference
+# Prediction  0  1
+#          0 56  2
+#          1  2 56
+#
+#                Accuracy : 0.9655
+#                  95% CI : (0.9141, 0.9905)
+#     No Information Rate : 0.5
+#     P-Value [Acc &gt; NIR] : &lt;2e-16
+#
+#                   Kappa : 0.931
+#
+#  Mcnemar&#39;s Test P-Value : 1
+#
+#             Sensitivity : 0.9655
+#             Specificity : 0.9655
+#          Pos Pred Value : 0.9655
+#          Neg Pred Value : 0.9655
+#              Prevalence : 0.5000
+#          Detection Rate : 0.4828
+#    Detection Prevalence : 0.5000
+#       Balanced Accuracy : 0.9655
+#
+#        &#39;Positive&#39; Class : 0
+#
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>auto_qdaROC</span><span class=o>&lt;-</span><span class=nf>roc</span><span class=p>(</span><span class=n>predictor</span><span class=o>=</span><span class=nf>as.numeric</span><span class=p>(</span><span class=n>valScoreQDA</span><span class=p>),</span><span class=n>response</span><span class=o>=</span><span class=n>autoTest</span><span class=o>$</span><span class=n>mpg01</span><span class=p>,</span><span class=n>levels</span><span class=o>=</span><span class=nf>levels</span><span class=p>(</span><span class=n>autoTest</span><span class=o>$</span><span class=n>mpg01</span><span class=p>))</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># Setting direction: controls &lt; cases
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>ggroc</span><span class=p>(</span><span class=n>auto_qdaROC</span><span class=p>)</span>
+</code></pre></div><figure><img src=/islr/sol2/unnamed-chunk-54-1.png></figure><p>OK, this is weird enough to check if it isn&rsquo;t some sort of artifact.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>autoQDA2</span><span class=o>=</span><span class=nf>train</span><span class=p>(</span><span class=n>mpg01</span><span class=o>~</span><span class=n>horsepower</span><span class=p>,</span> <span class=n>data</span><span class=o>=</span><span class=n>autoTrain</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#39;qda&#39;</span><span class=p>)</span>
+<span class=n>valScoreQDA2</span><span class=o>=</span><span class=nf>predict</span><span class=p>(</span><span class=n>autoQDA2</span><span class=p>,</span> <span class=n>autoTest</span><span class=p>)</span>
+<span class=nf>confusionMatrix</span><span class=p>(</span><span class=n>valScoreQDA2</span><span class=p>,</span><span class=n>autoTest</span><span class=o>$</span><span class=n>mpg01</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># Confusion Matrix and Statistics
+#
+#           Reference
+# Prediction  0  1
+#          0 42  3
+#          1 16 55
+#
+#                Accuracy : 0.8362
+#                  95% CI : (0.7561, 0.8984)
+#     No Information Rate : 0.5
+#     P-Value [Acc &gt; NIR] : 4.315e-14
+#
+#                   Kappa : 0.6724
+#
+#  Mcnemar&#39;s Test P-Value : 0.005905
+#
+#             Sensitivity : 0.7241
+#             Specificity : 0.9483
+#          Pos Pred Value : 0.9333
+#          Neg Pred Value : 0.7746
+#              Prevalence : 0.5000
+#          Detection Rate : 0.3621
+#    Detection Prevalence : 0.3879
+#       Balanced Accuracy : 0.8362
+#
+#        &#39;Positive&#39; Class : 0
+#
+</code></pre></div><p>OK, so the model isn&rsquo;t completely creepily correct all the time. In this
+case we should probably think about what is going on. I would think it
+is because of the nature of the <code>train-test</code> split we performed. We have
+ensured during the sampling of our data that the train and test sets
+contain the SAME distribution (assumed). So that&rsquo;s why our training
+result and test results are both incredibly good. They&rsquo;re essentially
+the same thing.</p><p>In fact, this is the perfect time to consider a validation set, just to
+see what the models are really doing. Won&rsquo;t get into it right now
+though.</p><h3 id=f-logistic-with-significant-variables>f) Logistic with Significant Variables</h3><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>glmAuto.fit</span><span class=o>=</span><span class=nf>glm</span><span class=p>(</span><span class=n>mpg01</span><span class=o>~</span><span class=n>cylinders</span><span class=o>+</span><span class=n>displacement</span><span class=o>+</span><span class=n>horsepower</span><span class=p>,</span> <span class=n>data</span><span class=o>=</span><span class=n>autoTrain</span><span class=p>,</span> <span class=n>family</span><span class=o>=</span><span class=n>binomial</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>glmAuto.probs</span> <span class=o>=</span> <span class=nf>predict</span><span class=p>(</span><span class=n>glmAuto.fit</span><span class=p>,</span><span class=n>autoTest</span><span class=p>,</span> <span class=n>type</span> <span class=o>=</span> <span class=s>&#34;response&#34;</span><span class=p>)</span>
+<span class=n>glmAuto.pred</span> <span class=o>=</span> <span class=nf>rep</span><span class=p>(</span><span class=m>1</span><span class=p>,</span><span class=nf>length</span><span class=p>(</span><span class=n>glmAuto.probs</span><span class=p>))</span>
+<span class=n>glmAuto.pred[glmAuto.probs</span><span class=o>&lt;</span><span class=m>0.5</span><span class=n>]</span><span class=o>=</span><span class=m>0</span>
+<span class=n>glmAuto.pred</span><span class=o>=</span><span class=nf>factor</span><span class=p>(</span><span class=n>glmAuto.pred</span><span class=p>)</span>
+<span class=nf>confusionMatrix</span><span class=p>(</span><span class=n>glmAuto.pred</span><span class=p>,</span><span class=n>autoTest</span><span class=o>$</span><span class=n>mpg01</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># Confusion Matrix and Statistics
+#
+#           Reference
+# Prediction  0  1
+#          0 56  4
+#          1  2 54
+#
+#                Accuracy : 0.9483
+#                  95% CI : (0.8908, 0.9808)
+#     No Information Rate : 0.5
+#     P-Value [Acc &gt; NIR] : &lt;2e-16
+#
+#                   Kappa : 0.8966
+#
+#  Mcnemar&#39;s Test P-Value : 0.6831
+#
+#             Sensitivity : 0.9655
+#             Specificity : 0.9310
+#          Pos Pred Value : 0.9333
+#          Neg Pred Value : 0.9643
+#              Prevalence : 0.5000
+#          Detection Rate : 0.4828
+#    Detection Prevalence : 0.5172
+#       Balanced Accuracy : 0.9483
+#
+#        &#39;Positive&#39; Class : 0
+#
+</code></pre></div><h3 id=g-knn-modeling>g) KNN Modeling</h3><p>Scale the parameters later.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>knnAuto</span><span class=o>=</span><span class=nf>train</span><span class=p>(</span><span class=n>mpg01</span><span class=o>~</span><span class=n>cylinders</span><span class=o>+</span><span class=n>displacement</span><span class=o>+</span><span class=n>horsepower</span><span class=p>,</span><span class=n>data</span><span class=o>=</span><span class=n>autoTrain</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;knn&#34;</span><span class=p>)</span>
+</code></pre></div><p>Plot <code>KNN</code> with the best parameters.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>plot</span><span class=p>(</span><span class=n>knnCaret</span><span class=p>)</span>
+</code></pre></div><figure><img src=/islr/sol2/unnamed-chunk-59-1.png></figure><p>Evidently, the accuracy increases with an increase in the number of
+neighbors considered.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>plot</span><span class=p>(</span><span class=n>knnAuto</span><span class=p>,</span> <span class=n>print.thres</span> <span class=o>=</span> <span class=m>0.5</span><span class=p>,</span> <span class=n>type</span><span class=o>=</span><span class=s>&#34;S&#34;</span><span class=p>)</span>
+</code></pre></div><figure><img src=/islr/sol2/unnamed-chunk-60-1.png></figure><p>So we can see that \(5\) neighbors is a good compromise.</p><h2 id=question-4.12---pages-172-173>Question 4.12 - Pages 172-173</h2><p>This problem involves writing functions.</p><p><strong>(a)</strong> Write a function, <code>Power()</code> , that prints out the result of
+raising 2 to the 3rd power. In other words, your function should compute
+2^3 and print out the results.</p><p><em>Hint: Recall that <code>x^a</code> raises x to the power a. Use the <code>print()</code>
+function to output the result.</em></p><p><strong>(b)</strong> Create a new function, <code>Power2()</code> , that allows you to pass any
+two numbers, <code>x</code> and <code>a</code> , and prints out the value of <code>x^a</code> . You can
+do this by beginning your function with the line</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>Power2</span><span class=o>=</span><span class=nf>function</span><span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=n>a</span><span class=p>){}</span>
+</code></pre></div><p>You should be able to call your function by entering, for instance,</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>Power2</span><span class=p>(</span><span class=m>3</span><span class=p>,</span><span class=m>8</span><span class=p>)</span>
+</code></pre></div><p>on the command line. This should output the value of \(3^8\), namely,
+\(6,651\).</p><p><strong>(c)</strong> Using the <code>Power2()</code> function that you just wrote, compute \(10^3\),
+\(8^{17}\), and \(131^3\).</p><p><strong>(d)</strong> Now create a new function, <code>Power3()</code>, that actually <em>returns</em> the
+result <code>x^a</code> as an <code>R</code> object, rather than simply printing it to the
+screen. That is, if you store the value <code>x^a</code> in an object called
+<code>result</code> within your function, then you can simply <code>return()</code> this
+result, using the following line:</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>return</span><span class=p>(</span><span class=n>result</span><span class=p>)</span>
+</code></pre></div><p>The line above should be the last line in your function, before the <code>}</code>
+symbol.</p><p><strong>(e)</strong> Now using the <code>Power3()</code> function, create a plot of \(f(x)=x^2\).
+The <em>x</em>-axis should display a range of integers from \(1\) to \(10\), and
+the <em>y</em>-axis should display \(x^2\) . Label the axes appropriately, and
+use an appropriate title for the figure. Consider displaying either the
+<em>x</em>-axis, the <em>y</em>-axis, or both on the log-scale. You can do this by
+using <code>log=‘‘x’’</code>, <code>log=‘‘y’’</code>, or <code>log=‘‘xy’’</code> as arguments to the
+<code>plot()</code> function.</p><p><strong>(f)</strong> Create a function, <code>PlotPower()</code> , that allows you to create a
+plot of <code>x</code> against <code>x^a</code> for a fixed <code>a</code> and for a range of values of
+<code>x</code>. For instance, if you call</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>PlotPower </span><span class=p>(</span><span class=m>1</span><span class=o>:</span><span class=m>10</span> <span class=p>,</span><span class=m>3</span><span class=p>)</span>
+</code></pre></div><p>then a plot should be created with an <em>x</em>-axis taking on values
+\(1,2,&mldr;,10\) and a <em>y</em>-axis taking on values \(1^3,2^3,&mldr;,10^3\)</p><h3 id=answer-2>Answer</h3><h3 id=a-create-a-squaring-function>a) Create a Squaring Function</h3><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>Power</span><span class=o>=</span><span class=nf>function</span><span class=p>(</span><span class=n>x</span><span class=p>){</span><span class=nf>print</span><span class=p>(</span><span class=m>2</span><span class=n>^x</span><span class=p>)}</span>
+<span class=nf>Power</span><span class=p>(</span><span class=m>3</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># [1] 8
+</code></pre></div><h3 id=b-generalizing-power-to-arbitrary-numbers>b) Generalizing Power to arbitrary numbers</h3><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>Power2</span><span class=o>=</span><span class=nf>function</span><span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=n>a</span><span class=p>){</span><span class=nf>print</span><span class=p>(</span><span class=n>x^a</span><span class=p>)}</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>Power2</span><span class=p>(</span><span class=m>3</span><span class=p>,</span><span class=m>8</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># [1] 6561
+</code></pre></div><h3 id=c-random-testing-of-power2>c) Random Testing of Power2</h3><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>Power2</span><span class=p>(</span><span class=m>10</span><span class=p>,</span><span class=m>3</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># [1] 1000
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>Power2</span><span class=p>(</span><span class=m>8</span><span class=p>,</span><span class=m>17</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># [1] 2.2518e+15
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>Power2</span><span class=p>(</span><span class=m>131</span><span class=p>,</span><span class=m>2</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># [1] 17161
+</code></pre></div><h3 id=d-return-a-value>d) Return a value</h3><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>Power3</span><span class=o>=</span><span class=nf>function</span><span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=n>a</span><span class=p>){</span><span class=nf>return</span><span class=p>(</span><span class=n>x^a</span><span class=p>)}</span>
+</code></pre></div><h3 id=e-plot-something-with-power3>e) Plot something with Power3</h3><p>Actually now would be a good place to introduce <code>LaTeX</code> labeling.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=c1>#install.packages(&#34;latex2exp&#34;)</span>
+<span class=nf>library</span><span class=p>(</span><span class=n>latex2exp</span><span class=p>)</span>
+</code></pre></div><p>No log scale.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>qplot</span><span class=p>(</span><span class=n>x</span><span class=o>=</span><span class=nf>seq</span><span class=p>(</span><span class=m>1</span><span class=p>,</span><span class=m>10</span><span class=p>),</span><span class=n>y</span><span class=o>=</span><span class=nf>Power3</span><span class=p>(</span><span class=nf>seq</span><span class=p>(</span><span class=m>1</span><span class=p>,</span><span class=m>10</span><span class=p>),</span><span class=m>2</span><span class=p>))</span> <span class=o>+</span> <span class=nf>ggtitle</span><span class=p>(</span><span class=s>&#34;Function without a log scale&#34;</span><span class=p>)</span> <span class=o>+</span>
+  <span class=nf>geom_point</span><span class=p>()</span> <span class=o>+</span> <span class=nf>xlab</span><span class=p>(</span><span class=s>&#34;X&#34;</span><span class=p>)</span> <span class=o>+</span> <span class=nf>ylab</span><span class=p>(</span><span class=nf>TeX</span><span class=p>(</span><span class=s>&#34;$X^2$&#34;</span><span class=p>))</span>
+</code></pre></div><figure><img src=/islr/sol2/unnamed-chunk-67-1.png></figure><p>With a log scale.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>qplot</span><span class=p>(</span><span class=n>x</span><span class=o>=</span><span class=nf>seq</span><span class=p>(</span><span class=m>1</span><span class=p>,</span><span class=m>10</span><span class=p>),</span><span class=n>y</span><span class=o>=</span><span class=nf>Power3</span><span class=p>(</span><span class=nf>seq</span><span class=p>(</span><span class=m>1</span><span class=p>,</span><span class=m>10</span><span class=p>),</span><span class=m>2</span><span class=p>))</span> <span class=o>+</span> <span class=nf>ggtitle</span><span class=p>(</span><span class=s>&#34;Function with a log scale&#34;</span><span class=p>)</span> <span class=o>+</span>
+  <span class=nf>geom_point</span><span class=p>()</span> <span class=o>+</span> <span class=nf>xlab</span><span class=p>(</span><span class=s>&#34;X&#34;</span><span class=p>)</span> <span class=o>+</span> <span class=nf>ylab</span><span class=p>(</span><span class=nf>TeX</span><span class=p>(</span><span class=s>&#34;$X^2$&#34;</span><span class=p>))</span> <span class=o>+</span> <span class=nf>scale_y_log10</span><span class=p>()</span>
+</code></pre></div><figure><img src=/islr/sol2/unnamed-chunk-68-1.png></figure><h3 id=f-plotpower-function>f) PlotPower Function</h3><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>PlotPower</span><span class=o>=</span><span class=nf>function</span><span class=p>(</span><span class=n>xrange</span><span class=p>,</span><span class=n>pow</span><span class=p>){</span><span class=nf>return</span><span class=p>(</span><span class=nf>qplot</span><span class=p>(</span><span class=n>x</span><span class=o>=</span><span class=n>xrange</span><span class=p>,</span><span class=n>y</span><span class=o>=</span><span class=nf>Power3</span><span class=p>(</span><span class=n>xrange</span><span class=p>,</span><span class=n>pow</span><span class=p>)))}</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>plotter</span><span class=o>&lt;-</span><span class=nf>PlotPower</span><span class=p>(</span><span class=m>1</span><span class=o>:</span><span class=m>10</span><span class=p>,</span><span class=m>3</span><span class=p>)</span>
+<span class=n>plotter</span>
+</code></pre></div><figure><img src=/islr/sol2/unnamed-chunk-70-1.png></figure><p>The <a href=http://www.cookbook-r.com/Graphs/Titles%5F(ggplot2)/>R Cookbook</a>
+is quite neat for some simple tasks like this.</p><h2 id=question-4.13---pages-173>Question 4.13 - Pages 173</h2><p>Using the <code>Boston</code> data set, fit classification models in order to
+predict whether a given suburb has a crime rate above or below the
+median. Explore logistic regression, LDA, and KNN models using various
+subsets of the predictors. Describe your findings.</p><h3 id=answer-3>Answer</h3><p>OK, to speed this up, I will simply run through all the work done on the
+<code>Auto</code> set. Recall that details about this data-set are
+<a href=https://www.cs.toronto.edu/~delve/data/boston/bostonDetail.html>also
+here</a>.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>boston</span><span class=o>&lt;-</span><span class=n>MASS</span><span class=o>::</span><span class=n>Boston</span>
+</code></pre></div><ul><li>Check unique values</li></ul><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>boston</span> <span class=o>%&gt;%</span> <span class=nf>sapply</span><span class=p>(</span><span class=n>unique</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=nf>sapply</span><span class=p>(</span><span class=n>length</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>#    crim      zn   indus    chas     nox      rm     age     dis     rad     tax
+#     504      26      76       2      81     446     356     412       9      66
+# ptratio   black   lstat    medv
+#      46     357     455     229
+</code></pre></div><p><code>CHAS</code> is of course something which should be a factor, and with <code>RAD</code>
+having only \(9\) levels, I&rsquo;m inclined to make it a factor as well.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>boston</span><span class=o>&lt;-</span><span class=n>boston</span> <span class=o>%&gt;%</span> <span class=nf>mutate</span><span class=p>(</span><span class=n>rad</span><span class=o>=</span><span class=nf>factor</span><span class=p>(</span><span class=n>rad</span><span class=p>),</span><span class=n>chas</span><span class=o>=</span><span class=nf>factor</span><span class=p>(</span><span class=n>chas</span><span class=p>))</span>
+</code></pre></div><ul><li>Make a median variable</li></ul><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>boston</span><span class=o>$</span><span class=n>highCrime</span><span class=o>&lt;-</span> <span class=nf>ifelse</span><span class=p>(</span><span class=n>boston</span><span class=o>$</span><span class=n>crim</span><span class=o>&lt;</span><span class=n>boston</span><span class=o>$</span><span class=n>crim</span> <span class=o>%&gt;%</span> <span class=nf>median</span><span class=p>(),</span><span class=m>0</span><span class=p>,</span><span class=m>1</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=nf>factor</span><span class=p>()</span>
+</code></pre></div><ul><li>Take a look at the data</li></ul><p>Some box-plots:</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>boston</span> <span class=o>%&gt;%</span> <span class=nf>pivot_longer</span><span class=p>(</span><span class=o>-</span><span class=nf>c</span><span class=p>(</span><span class=n>rad</span><span class=p>,</span><span class=n>chas</span><span class=p>,</span><span class=n>highCrime</span><span class=p>),</span><span class=n>names_to</span><span class=o>=</span><span class=s>&#34;Param&#34;</span><span class=p>,</span><span class=n>values_to</span><span class=o>=</span><span class=s>&#34;Value&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=nf>ggplot</span><span class=p>(</span><span class=nf>aes</span><span class=p>(</span><span class=n>x</span><span class=o>=</span><span class=n>highCrime</span><span class=p>,</span><span class=n>y</span><span class=o>=</span><span class=n>Value</span><span class=p>,</span><span class=n>fill</span><span class=o>=</span><span class=n>chas</span><span class=p>))</span> <span class=o>+</span>
+  <span class=nf>geom_boxplot</span><span class=p>()</span><span class=o>+</span>
+  <span class=nf>facet_wrap</span><span class=p>(</span><span class=o>~</span><span class=n>Param</span><span class=p>,</span><span class=n>scales</span><span class=o>=</span><span class=s>&#34;free_y&#34;</span><span class=p>)</span>
+</code></pre></div><figure><img src=/islr/sol2/unnamed-chunk-75-1.png></figure><p>It is surprising, but evidently the <code>CHAS</code> variable is strangely
+relevant. 1 implies the tract bounds the river, otherwise 0.</p><ul><li>Correlations</li></ul><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>boston</span> <span class=o>%&gt;%</span> <span class=nf>select</span><span class=p>(</span><span class=o>-</span><span class=nf>c</span><span class=p>(</span><span class=n>rad</span><span class=p>,</span><span class=n>chas</span><span class=p>,</span><span class=n>highCrime</span><span class=p>))</span> <span class=o>%&gt;%</span> <span class=n>cor</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>#               crim         zn      indus        nox         rm        age
+# crim     1.0000000 -0.2004692  0.4065834  0.4209717 -0.2192467  0.3527343
+# zn      -0.2004692  1.0000000 -0.5338282 -0.5166037  0.3119906 -0.5695373
+# indus    0.4065834 -0.5338282  1.0000000  0.7636514 -0.3916759  0.6447785
+# nox      0.4209717 -0.5166037  0.7636514  1.0000000 -0.3021882  0.7314701
+# rm      -0.2192467  0.3119906 -0.3916759 -0.3021882  1.0000000 -0.2402649
+# age      0.3527343 -0.5695373  0.6447785  0.7314701 -0.2402649  1.0000000
+# dis     -0.3796701  0.6644082 -0.7080270 -0.7692301  0.2052462 -0.7478805
+# tax      0.5827643 -0.3145633  0.7207602  0.6680232 -0.2920478  0.5064556
+# ptratio  0.2899456 -0.3916785  0.3832476  0.1889327 -0.3555015  0.2615150
+# black   -0.3850639  0.1755203 -0.3569765 -0.3800506  0.1280686 -0.2735340
+# lstat    0.4556215 -0.4129946  0.6037997  0.5908789 -0.6138083  0.6023385
+# medv    -0.3883046  0.3604453 -0.4837252 -0.4273208  0.6953599 -0.3769546
+#                dis        tax    ptratio      black      lstat       medv
+# crim    -0.3796701  0.5827643  0.2899456 -0.3850639  0.4556215 -0.3883046
+# zn       0.6644082 -0.3145633 -0.3916785  0.1755203 -0.4129946  0.3604453
+# indus   -0.7080270  0.7207602  0.3832476 -0.3569765  0.6037997 -0.4837252
+# nox     -0.7692301  0.6680232  0.1889327 -0.3800506  0.5908789 -0.4273208
+# rm       0.2052462 -0.2920478 -0.3555015  0.1280686 -0.6138083  0.6953599
+# age     -0.7478805  0.5064556  0.2615150 -0.2735340  0.6023385 -0.3769546
+# dis      1.0000000 -0.5344316 -0.2324705  0.2915117 -0.4969958  0.2499287
+# tax     -0.5344316  1.0000000  0.4608530 -0.4418080  0.5439934 -0.4685359
+# ptratio -0.2324705  0.4608530  1.0000000 -0.1773833  0.3740443 -0.5077867
+# black    0.2915117 -0.4418080 -0.1773833  1.0000000 -0.3660869  0.3334608
+# lstat   -0.4969958  0.5439934  0.3740443 -0.3660869  1.0000000 -0.7376627
+# medv     0.2499287 -0.4685359 -0.5077867  0.3334608 -0.7376627  1.0000000
+</code></pre></div><p>Now, unsurprisingly, there&rsquo;s nothing which is really strongly correlated
+here for some reason.</p><ul><li>Train test splits</li></ul><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>set.seed</span><span class=p>(</span><span class=m>1984</span><span class=p>)</span>
+<span class=n>trainIndCri</span> <span class=o>&lt;-</span> <span class=nf>createDataPartition</span><span class=p>(</span><span class=n>boston</span><span class=o>$</span><span class=n>highCrime</span><span class=p>,</span> <span class=c1># Factor, so class sampling</span>
+                                <span class=n>p</span><span class=o>=</span><span class=m>0.7</span><span class=p>,</span> <span class=c1># 70-30 train-test</span>
+                                <span class=n>list</span><span class=o>=</span><span class=kc>FALSE</span><span class=p>,</span> <span class=c1># No lists</span>
+                                <span class=n>times</span><span class=o>=</span><span class=m>1</span><span class=p>)</span> <span class=c1># No bootstrap</span>
+<span class=n>bostonTrain</span><span class=o>&lt;-</span><span class=n>boston[trainIndCri</span><span class=p>,</span><span class=n>]</span>
+<span class=n>bostonTest</span><span class=o>&lt;-</span><span class=n>boston[</span><span class=o>-</span><span class=n>trainIndCri</span><span class=p>,</span><span class=n>]</span>
+</code></pre></div><ul><li>Make a bunch of models</li></ul><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>glmBos.fit</span><span class=o>=</span><span class=nf>glm</span><span class=p>(</span><span class=n>highCrime</span><span class=o>~</span><span class=n>.,</span> <span class=n>data</span><span class=o>=</span><span class=n>bostonTrain</span><span class=p>,</span> <span class=n>family</span><span class=o>=</span><span class=n>binomial</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># Warning: glm.fit: algorithm did not converge
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>glmBos.probs</span> <span class=o>=</span> <span class=nf>predict</span><span class=p>(</span><span class=n>glmBos.fit</span><span class=p>,</span><span class=n>bostonTest</span><span class=p>,</span> <span class=n>type</span> <span class=o>=</span> <span class=s>&#34;response&#34;</span><span class=p>)</span>
+<span class=n>glmBos.pred</span> <span class=o>=</span> <span class=nf>rep</span><span class=p>(</span><span class=m>1</span><span class=p>,</span><span class=nf>length</span><span class=p>(</span><span class=n>glmBos.probs</span><span class=p>))</span>
+<span class=n>glmBos.pred[glmBos.probs</span><span class=o>&lt;</span><span class=m>0.5</span><span class=n>]</span><span class=o>=</span><span class=m>0</span>
+<span class=n>glmBos.pred</span><span class=o>=</span><span class=nf>factor</span><span class=p>(</span><span class=n>glmBos.pred</span><span class=p>)</span>
+<span class=nf>confusionMatrix</span><span class=p>(</span><span class=n>glmBos.pred</span><span class=p>,</span><span class=n>bostonTest</span><span class=o>$</span><span class=n>highCrime</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># Confusion Matrix and Statistics
+#
+#           Reference
+# Prediction  0  1
+#          0 68  6
+#          1  7 69
+#
+#                Accuracy : 0.9133
+#                  95% CI : (0.8564, 0.953)
+#     No Information Rate : 0.5
+#     P-Value [Acc &gt; NIR] : &lt;2e-16
+#
+#                   Kappa : 0.8267
+#
+#  Mcnemar&#39;s Test P-Value : 1
+#
+#             Sensitivity : 0.9067
+#             Specificity : 0.9200
+#          Pos Pred Value : 0.9189
+#          Neg Pred Value : 0.9079
+#              Prevalence : 0.5000
+#          Detection Rate : 0.4533
+#    Detection Prevalence : 0.4933
+#       Balanced Accuracy : 0.9133
+#
+#        &#39;Positive&#39; Class : 0
+#
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>bostonLDA</span><span class=o>=</span><span class=nf>train</span><span class=p>(</span><span class=n>highCrime</span><span class=o>~</span><span class=n>.,data</span><span class=o>=</span><span class=n>bostonTrain</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#39;lda&#39;</span><span class=p>)</span>
+<span class=n>bostonQDA</span><span class=o>=</span><span class=nf>train</span><span class=p>(</span><span class=n>highCrime</span><span class=o>~</span><span class=n>tax</span><span class=o>+</span><span class=n>crim</span><span class=p>,</span><span class=n>data</span><span class=o>=</span><span class=n>bostonTrain</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#39;qda&#39;</span><span class=p>)</span>
+<span class=n>bostonKNN</span><span class=o>=</span><span class=nf>train</span><span class=p>(</span><span class=n>highCrime</span><span class=o>~</span><span class=n>.,data</span><span class=o>=</span><span class=n>bostonTrain</span><span class=p>,</span><span class=n>preProcess</span> <span class=o>=</span> <span class=nf>c</span><span class=p>(</span><span class=s>&#34;center&#34;</span><span class=p>,</span><span class=s>&#34;scale&#34;</span><span class=p>),</span><span class=n>method</span><span class=o>=</span><span class=s>&#39;knn&#39;</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>bLDAp</span><span class=o>=</span><span class=nf>predict</span><span class=p>(</span><span class=n>bostonLDA</span><span class=p>,</span><span class=n>bostonTest</span><span class=p>)</span>
+<span class=n>bQDAp</span><span class=o>=</span><span class=nf>predict</span><span class=p>(</span><span class=n>bostonQDA</span><span class=p>,</span><span class=n>bostonTest</span><span class=p>)</span>
+<span class=n>bKNNp</span><span class=o>=</span><span class=nf>predict</span><span class=p>(</span><span class=n>bostonKNN</span><span class=p>,</span><span class=n>bostonTest</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>confusionMatrix</span><span class=p>(</span><span class=n>bLDAp</span><span class=p>,</span><span class=n>bostonTest</span><span class=o>$</span><span class=n>highCrime</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># Confusion Matrix and Statistics
+#
+#           Reference
+# Prediction  0  1
+#          0 72  6
+#          1  3 69
+#
+#                Accuracy : 0.94
+#                  95% CI : (0.8892, 0.9722)
+#     No Information Rate : 0.5
+#     P-Value [Acc &gt; NIR] : &lt;2e-16
+#
+#                   Kappa : 0.88
+#
+#  Mcnemar&#39;s Test P-Value : 0.505
+#
+#             Sensitivity : 0.9600
+#             Specificity : 0.9200
+#          Pos Pred Value : 0.9231
+#          Neg Pred Value : 0.9583
+#              Prevalence : 0.5000
+#          Detection Rate : 0.4800
+#    Detection Prevalence : 0.5200
+#       Balanced Accuracy : 0.9400
+#
+#        &#39;Positive&#39; Class : 0
+#
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>confusionMatrix</span><span class=p>(</span><span class=n>bQDAp</span><span class=p>,</span><span class=n>bostonTest</span><span class=o>$</span><span class=n>highCrime</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># Confusion Matrix and Statistics
+#
+#           Reference
+# Prediction  0  1
+#          0 73  5
+#          1  2 70
+#
+#                Accuracy : 0.9533
+#                  95% CI : (0.9062, 0.981)
+#     No Information Rate : 0.5
+#     P-Value [Acc &gt; NIR] : &lt;2e-16
+#
+#                   Kappa : 0.9067
+#
+#  Mcnemar&#39;s Test P-Value : 0.4497
+#
+#             Sensitivity : 0.9733
+#             Specificity : 0.9333
+#          Pos Pred Value : 0.9359
+#          Neg Pred Value : 0.9722
+#              Prevalence : 0.5000
+#          Detection Rate : 0.4867
+#    Detection Prevalence : 0.5200
+#       Balanced Accuracy : 0.9533
+#
+#        &#39;Positive&#39; Class : 0
+#
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>confusionMatrix</span><span class=p>(</span><span class=n>bKNNp</span><span class=p>,</span><span class=n>bostonTest</span><span class=o>$</span><span class=n>highCrime</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># Confusion Matrix and Statistics
+#
+#           Reference
+# Prediction  0  1
+#          0 74  6
+#          1  1 69
+#
+#                Accuracy : 0.9533
+#                  95% CI : (0.9062, 0.981)
+#     No Information Rate : 0.5
+#     P-Value [Acc &gt; NIR] : &lt;2e-16
+#
+#                   Kappa : 0.9067
+#
+#  Mcnemar&#39;s Test P-Value : 0.1306
+#
+#             Sensitivity : 0.9867
+#             Specificity : 0.9200
+#          Pos Pred Value : 0.9250
+#          Neg Pred Value : 0.9857
+#              Prevalence : 0.5000
+#          Detection Rate : 0.4933
+#    Detection Prevalence : 0.5333
+#       Balanced Accuracy : 0.9533
+#
+#        &#39;Positive&#39; Class : 0
+#
+</code></pre></div><p>Clearly in this particular case, an LDA model seems to be working out
+the best for this data when trained on all the parameters, though
+Logistic Regression is doing quite well too.</p><ul><li>Notes on KNN</li></ul><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>plot</span><span class=p>(</span><span class=n>bostonKNN</span><span class=p>)</span>
+</code></pre></div><figure><img src=/islr/sol2/unnamed-chunk-84-1.png></figure><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>plot</span><span class=p>(</span><span class=n>bostonKNN</span><span class=p>,</span> <span class=n>print.thres</span> <span class=o>=</span> <span class=m>0.5</span><span class=p>,</span> <span class=n>type</span><span class=o>=</span><span class=s>&#34;S&#34;</span><span class=p>)</span>
+</code></pre></div><figure><img src=/islr/sol2/unnamed-chunk-85-1.png></figure><ul><li>Comparison</li></ul><p>Finally, we will quickly plot some indicative measures.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>knnBosROC</span><span class=o>&lt;-</span><span class=nf>roc</span><span class=p>(</span><span class=n>predictor</span><span class=o>=</span><span class=nf>as.numeric</span><span class=p>(</span><span class=n>bKNNp</span><span class=p>),</span><span class=n>response</span><span class=o>=</span><span class=n>bostonTest</span><span class=o>$</span><span class=n>highCrime</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># Setting levels: control = 0, case = 1
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># Setting direction: controls &lt; cases
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>logiBosROC</span><span class=o>&lt;-</span><span class=nf>roc</span><span class=p>(</span><span class=n>predictor</span><span class=o>=</span><span class=nf>as.numeric</span><span class=p>(</span><span class=n>glmBos.probs</span><span class=p>),</span><span class=n>response</span><span class=o>=</span><span class=n>bostonTest</span><span class=o>$</span><span class=n>highCrime</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># Setting levels: control = 0, case = 1
+# Setting direction: controls &lt; cases
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>ldaBosROC</span><span class=o>&lt;-</span><span class=nf>roc</span><span class=p>(</span><span class=n>predictor</span><span class=o>=</span><span class=nf>as.numeric</span><span class=p>(</span><span class=n>bLDAp</span><span class=p>),</span><span class=n>response</span><span class=o>=</span><span class=n>bostonTest</span><span class=o>$</span><span class=n>highCrime</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># Setting levels: control = 0, case = 1
+# Setting direction: controls &lt; cases
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>qdaBosROC</span><span class=o>&lt;-</span><span class=nf>roc</span><span class=p>(</span><span class=n>predictor</span><span class=o>=</span><span class=nf>as.numeric</span><span class=p>(</span><span class=n>bQDAp</span><span class=p>),</span><span class=n>response</span><span class=o>=</span><span class=n>bostonTest</span><span class=o>$</span><span class=n>highCrime</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text># Setting levels: control = 0, case = 1
+# Setting direction: controls &lt; cases
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>ggroc</span><span class=p>(</span><span class=nf>list</span><span class=p>(</span><span class=n>KNN</span><span class=o>=</span><span class=n>knnBosROC</span><span class=p>,</span><span class=n>Logistic</span><span class=o>=</span><span class=n>logiBosROC</span><span class=p>,</span><span class=n>LDA</span><span class=o>=</span><span class=n>ldaBosROC</span><span class=p>,</span><span class=n>QDA</span><span class=o>=</span><span class=n>qdaBosROC</span><span class=p>))</span>
+</code></pre></div><figure><img src=/islr/sol2/unnamed-chunk-87-1.png alt="Figure 14: plot of chunk unnamed-chunk-87"><figcaption><p>Figure 14: plot of chunk unnamed-chunk-87</p></figcaption></figure><p>OK, one of the reasons why these models do so well is because they are
+all assuming an equal distribution of train and test classes, and they
+use <code>crim</code> itself as a predictor. This is no doubt a strong reason why
+these models uniformly perform so well. I&rsquo;d say 5 is the best option.</p><section class=footnotes role=doc-endnotes><hr><ol><li id=fn:1 role=doc-endnote><p>James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). An Introduction to Statistical Learning: with Applications in R. Berlin, Germany: Springer Science & Business Media.&#160;<a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li><li id=fn:2 role=doc-endnote><p>A good introduction to the caret and skimr packages <a href=https://www.machinelearningplus.com/machine-learning/caret-package/>is here</a>&#160;<a href=#fnref:2 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li></ol></section></div></article><hr><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7" y2="7"/></svg><span class=tag><a href=https://rgoswami.me/tags/solutions>solutions</a></span><span class=tag><a href=https://rgoswami.me/tags/r>R</a></span><span class=tag><a href=https://rgoswami.me/tags/islr>ISLR</a></span></p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6A2 2 0 004 4v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>6665 Words</p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Posted: <time class=dt-published>2020-02-17 15:28 +0000</time></p><a class=resp-sharing-button__link href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2frgoswami.me%2fposts%2fislr-ch4%2f" target=_blank rel=noopener aria-label=Facebook><div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.5"/><path d="M15.84 9.5H13.5V8.48c0-.53.35-.65.6-.65h1.4v-2.3h-2.35c-2.3.0-2.65 1.7-2.65 2.8V9.5h-2v2h2v7h3v-7h2.1l.24-2z"/></svg></div>Facebook</div></a><a class=resp-sharing-button__link href="https://twitter.com/intent/tweet/?text=%22ISLR%20%3a%3a%20Classification%22%20seems%20like%20an%20interesting%20read%20from%20%40rg0swami&url=https%3a%2f%2frgoswami.me%2fposts%2fislr-ch4%2f" target=_blank rel=noopener aria-label=Twitter><div class="resp-sharing-button resp-sharing-button--twitter resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.5 7.4l-2 .2c-.4-.5-1-.8-2-.8C13.3 6.8 12 8 12 9.4v.6c-2 0-4-1-5.4-2.7-.2.4-.3.8-.3 1.3.0 1 .4 1.7 1.2 2.2-.5.0-1 0-1.2-.3.0 1.3 1 2.3 2 2.6-.3.4-.7.4-1 0 .2 1.4 1.2 2 2.3 2-1 1-2.5 1.4-4 1 1.3 1 2.7 1.4 4.2 1.4 4.8.0 7.5-4 7.5-7.5v-.4c.5-.4.8-1.5 1.2-2z"/><circle cx="12" cy="12" r="11.5"/></svg></div>Twitter</div></a><a class=resp-sharing-button__link href="mailto:?subject=%22ISLR%20%3a%3a%20Classification%22%20seems%20interesting...&body=https%3a%2f%2frgoswami.me%2fposts%2fislr-ch4%2f" target=_self rel=noopener aria-label=E-Mail><div class="resp-sharing-button resp-sharing-button--email resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19.5 16c0 .8-.7 1.5-1.5 1.5H6c-.8.0-1.5-.7-1.5-1.5V8c0-.8.7-1.5 1.5-1.5h12c.8.0 1.5.7 1.5 1.5v8zm-2-7.5L12 13 6.5 8.5m11 6-4-2.5m-7 2.5 4-2.5"/><circle cx="12" cy="12" r="11.5"/></svg></div>E-Mail</div></a><a class=resp-sharing-button__link href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2frgoswami.me%2fposts%2fislr-ch4%2f&title=%22ISLR%20%3a%3a%20Classification%22%20seems%20interesting...&summary=%22ISLR%20%3a%3a%20Classification%22%20seems%20interesting...&source=https%3a%2f%2frgoswami.me%2fposts%2fislr-ch4%2f" target=_blank rel=noopener aria-label=LinkedIn><div class="resp-sharing-button resp-sharing-button--linkedin resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.5"/><path d="M15 12.5c-.28.0-.5.22-.5.5v3.5h-3s.03-6.48.0-7h3v.83s.46-.75 1.7-.75c1.56.0 2.3 1.12 2.3 3.3v3.62h-3V13c0-.28-.23-.5-.5-.5zm-7.5-3h2v7h-2z"/><circle cx="8.5" cy="6.5" r="1"/></svg></div>LinkedIn</div></a><a class=resp-sharing-button__link href="https://reddit.com/submit/?url=https%3a%2f%2frgoswami.me%2fposts%2fislr-ch4%2f&resubmit=true&title=%22ISLR%20%3a%3a%20Classification%22%20seems%20interesting..." target=_blank rel=noopener aria-label=Reddit><div class="resp-sharing-button resp-sharing-button--reddit resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.5"/><ellipse cx="12" cy="14.37" rx="6.2" ry="4.24"/><path d="M14.3 16.25c-.62.36-1.42.57-2.3.57s-1.7-.2-2.32-.58"/><circle cx="14.61" cy="13.39" r=".98"/><circle cx="9.39" cy="13.39" r=".98"/><path d="M16.4 11.38c.26-.55.82-.92 1.47-.92.9.0 1.63.73 1.63 1.63.0.8-.6 1.47-1.38 1.6"/><circle cx="17.22" cy="7.52" r="1.63"/><path d="M7.6 11.38c-.26-.54-.82-.92-1.47-.92-.9.0-1.63.73-1.63 1.63.0.8.6 1.47 1.38 1.6M12 10.12s-.08-4.82 3.6-2.6"/></svg></div>Reddit</div></a><a class=resp-sharing-button__link href="whatsapp://send?text=%22ISLR%20%3a%3a%20Classification%22%20seems%20interesting...%20https%3a%2f%2frgoswami.me%2fposts%2fislr-ch4%2f" target=_blank rel=noopener aria-label=WhatsApp><div class="resp-sharing-button resp-sharing-button--whatsapp resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle xmlns="http://www.w3.org/2000/svg" cx="12" cy="12" r="11.5"/><path stroke-width="1" d="M17.6 6.2c-1.5-1.5-3.4-2.3-5.5-2.3-4.3.0-7.8 3.5-7.8 7.8.0 1.4.4 2.7 1 3.9l-1.1 4 4.1-1.1c1.1.6 2.4.9 3.7.9 4.3.0 7.8-3.5 7.8-7.8.1-2-.7-3.9-2.2-5.4zm-5.5 11.9c-1.2.0-2.3-.3-3.3-.9l-.2-.1-2.4.6.7-2.4-.2-.2c-.6-1-1-2.2-1-3.4.0-3.6 2.9-6.5 6.5-6.5 1.7.0 3.3.7 4.6 1.9 1.2 1.2 1.9 2.8 1.9 4.6-.1 3.5-3 6.4-6.6 6.4zm3.5-4.8c-.2-.1-1.1-.6-1.3-.6-.2-.1-.3-.1-.4.1s-.5.6-.6.8c-.1.1-.2.1-.4.0s-.8-.3-1.6-1c-.6-.5-1-1.2-1.1-1.3-.1-.2.0-.3.1-.4l.3-.3s.1-.2.2-.3c.1-.1.0-.2.0-.3s-.4-1.1-.6-1.4c-.2-.4-.3-.3-.4-.3h-.4s-.3.0-.5.2-.7.7-.7 1.6c0 1 .7 1.9.8 2s1.4 2.1 3.3 2.9c.5.2.8.3 1.1.4.5.1.9.1 1.2.1.4-.1 1.1-.5 1.3-.9.2-.5.2-.8.1-.9.0-.2-.2-.3-.4-.4z"/></svg></div>WhatsApp</div></a></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://rgoswami.me/posts/islr-ch5/><span class=button__icon>←</span>
+<span class=button__text>ISLR :: Resampling Methods</span></a></span>
+<span class="button next"><a href=https://rgoswami.me/posts/pandora-proxychains/><span class=button__text>Pandora and Proxychains</span>
+<span class=button__icon>→</span></a></span></div></div><div id=comments class=thin><div class=pagination__title><span class=pagination__title-h>Comments</span><hr></div><div id=remarkbox-div><noscript><iframe id=remarkbox-iframe src="https://my.remarkbox.com/embed?nojs=true" style=height:600px;width:100%;border:none!important tabindex=0></iframe></noscript></div><script src=https://my.remarkbox.com/static/js/iframe-resizer/iframeResizer.min.js></script><script>var rb_owner_key="8e660759-e7e6-11ea-9711-040140774501",thread_uri=window.location.href,thread_title=window.document.title,thread_fragment=window.location.hash,rb_src="https://my.remarkbox.com/embed?rb_owner_key="+rb_owner_key+"&thread_title="+encodeURI(thread_title)+"&thread_uri="+encodeURIComponent(thread_uri)+thread_fragment;function create_remarkbox_iframe(){var a=document.createElement("iframe");a.setAttribute("id","remarkbox-iframe"),a.setAttribute("scrolling","no"),a.setAttribute("src",rb_src),a.setAttribute("frameborder","0"),a.setAttribute("tabindex","0"),a.setAttribute("title","Remarkbox"),a.style.width="100%",document.getElementById("remarkbox-div").appendChild(a)}create_remarkbox_iframe(),iFrameResize({checkOrigin:["https://my.remarkbox.com"],inPageLinks:!0,initCallback:function(a){a.iFrameResizer.moveToAnchor(thread_fragment)}},document.getElementById("remarkbox-iframe"))</script></div></main><footer class=footer><p>&copy; 2021
+<span><a href=https://rgoswami.me/>Rohit Goswami (HaoZeke)</a></span>
+<a href=https://rgoswami.me/posts/index.xml target=_blank title=rss><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 019 9"/><path d="M4 4a16 16 0 0116 16"/><circle cx="5" cy="19" r="1"/></svg></a><br><a rel=license href=http://creativecommons.org/licenses/by-nc-sa/4.0/>CC BY-NC-SA 4.0</a>.
+Powered by <a href=http://gohugo.io><u>Hugo</u></a> and <a href=https://github.com/HaoZeke/hugo-theme-hello-friend-ng-hz><u>this theme</u></a>.</br>Hosted with <u><a href=https://www.netlify.com/>Netlify</a></u>.</br><script src=https://liberapay.com/rohit/widgets/button.js></script><noscript><a href=https://liberapay.com/rohit/donate><img alt="Donate using Liberapay" src=https://liberapay.com/assets/widgets/donate.svg></a></noscript></p></footer></div><script src=/bundle.min.5fae9992ea406007408dc33b0b3a8376d61e2f1d6ac50ba1dad7580ac50afb5199bcef3bbc3677e77553a9980bf882cf71edc2f755687dd7725f12ece4304ac2.js></script><script>(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)})(window,document,'script','//www.google-analytics.com/analytics.js','ga'),ga('create','UA-109503488-16','auto'),ga('send','pageview')</script><script type=text/javascript>(function(a,e,b,f,g,c,d){a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},c=e.createElement(f),c.async=1,c.src="https://www.clarity.ms/tag/"+g,d=e.getElementsByTagName(f)[0],d.parentNode.insertBefore(c,d)})(window,document,"clarity","script","3z2xvwqu4u")</script><script data-goatcounter=https://rgoswami.goatcounter.com/count async src=//gc.zgo.at/count.js></script><script>var clicky_site_ids=clicky_site_ids||[];clicky_site_ids.push("101265002")</script><script async src=https://static.getclicky.com/js></script><script src=https://cdn.jsdelivr.net/npm/readmore-js@3.0.0-beta-1/dist/readmore.min.js></script><script src=/js/codefold.min.4a43062cb83308b55227adf937c91be79ff6d95df8bb821dfd71805ce54629ff8cffed3ae81d70fdee5f324fa0f39c5280ae785f165801885db074551a993a21.js></script></body></html>

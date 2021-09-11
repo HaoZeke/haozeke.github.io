@@ -1,0 +1,615 @@
+<!doctype html><html lang=en itemscope itemtype=http://schema.org/WebPage><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=author content="[Rohit Goswami]"><meta name=description content="Background My move away from the powerful, but unimaginatively named HPC clusters of IITK 1 brought me in close contact with the Lua based 2 lmod module system. Rather than fall into the rabbit hole of brew we will leverage the existing system to add our new libraries. Not finding any good collections of these composable environments, and having failed once before to install Nix as a user without admin access, I decided to start my own collection of Lmod recipies."><meta name=keywords content=",workflow,projects,hpc"><meta name=robots content="noodp"><meta name=theme-color content><link rel=canonical href=https://rgoswami.me/posts/hpc-dots-lmod/><title>HPC Dotfiles and LMod :: Rohit Goswami — Reflections</title><link href=https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css rel=stylesheet type=text/css><link rel=stylesheet href=/main.min.b6dbce0fdf6c61563a0c2226e857d5dadd8e5afa2c4f73ec9ea55abd831f9a72.css><meta itemprop=name content="HPC Dotfiles and LMod"><meta itemprop=description content="Background My move away from the powerful, but unimaginatively named HPC clusters of IITK 1 brought me in close contact with the Lua based 2 lmod module system. Rather than fall into the rabbit hole of brew we will leverage the existing system to add our new libraries. Not finding any good collections of these composable environments, and having failed once before to install Nix as a user without admin access, I decided to start my own collection of Lmod recipies."><meta itemprop=datePublished content="2020-08-09T02:29:00+00:00"><meta itemprop=dateModified content="2020-08-09T02:29:00+00:00"><meta itemprop=wordCount content="2891"><meta itemprop=image content="https://rgoswami.me/images/RG.png"><meta itemprop=keywords content="workflow,projects,hpc,"><meta property="og:title" content="HPC Dotfiles and LMod"><meta property="og:description" content="Background My move away from the powerful, but unimaginatively named HPC clusters of IITK 1 brought me in close contact with the Lua based 2 lmod module system. Rather than fall into the rabbit hole of brew we will leverage the existing system to add our new libraries. Not finding any good collections of these composable environments, and having failed once before to install Nix as a user without admin access, I decided to start my own collection of Lmod recipies."><meta property="og:type" content="article"><meta property="og:url" content="https://rgoswami.me/posts/hpc-dots-lmod/"><meta property="og:image" content="https://rgoswami.me/images/RG.png"><meta property="article:section" content="posts"><meta property="article:published_time" content="2020-08-09T02:29:00+00:00"><meta property="article:modified_time" content="2020-08-09T02:29:00+00:00"><meta property="og:site_name" content="Rohit Goswami"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://rgoswami.me/images/RG.png"><meta name=twitter:title content="HPC Dotfiles and LMod"><meta name=twitter:description content="Background My move away from the powerful, but unimaginatively named HPC clusters of IITK 1 brought me in close contact with the Lua based 2 lmod module system. Rather than fall into the rabbit hole of brew we will leverage the existing system to add our new libraries. Not finding any good collections of these composable environments, and having failed once before to install Nix as a user without admin access, I decided to start my own collection of Lmod recipies."><meta property="article:section" content="programming"><meta property="article:published_time" content="2020-08-09 02:29:00 +0000 GMT"></head><body><div class=container><header class=header><div class=header__inner><div class=header__left><div class=logo><a href=/ style=text-decoration:none><img src=/images/home.png alt></a></div></div><div class=header__mid><button class=button><div class=button__text><a href=https://rgoswami.me//search>Search</a></div></button></div><div class=header__right><nav class=menu><ul class=menu__inner><li><a href=https://rgoswami.me/about>About</a></li><li><a href=https://rgoswami.me/posts>Blog</a></li></ul><ul class=menu__inner><li><a href=https://rgoswami.me/categories>Categories</a></li><li><a href=https://rgoswami.me/tags>Tags</a></li></ul></nav><button id=toggleMenu><div class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></div></button>
+<button class=theme-toggle id=toggleTheme><svg class="theme-toggler" width="32" height="32" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41c10.4934.0 19-8.5066 19-19C41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg></button></div></div></header><script src=https://rgoswami.me/js/mathjax-config.js></script><script id=MathJax-script async src=https://unpkg.com/mathjax@3/es5/tex-chtml.js></script><aside class=sidebar><div class=hideTOC><button id=tocTog>TOC</button><div class="sideTOC m-fadeOut"><nav id=TableOfContents><ul><li><a href=#background>Background</a></li><li><a href=#setting-up>Setting Up</a></li><li><a href=#basic-setup>Basic Setup</a><ul><li><a href=#micromamba>MicroMamba</a></li><li><a href=#warning>Warning</a></li></ul></li><li><a href=#lmod-libraries>LMod Libraries</a><ul><li><a href=#patch>Patch</a></li><li><a href=#help2man>Help2man</a></li><li><a href=#perl>Perl</a></li><li><a href=#autotools>Autotools</a></li><li><a href=#gmp>GMP</a></li><li><a href=#mpfr>MPFR</a></li><li><a href=#mpc>MPC</a></li><li><a href=#gcc-9-dot-2-dot-0>GCC 9.2.0</a></li><li><a href=#pkg-config>Pkg-Config</a></li><li><a href=#zlib>Zlib</a></li><li><a href=#xz-utils>XZ Utils</a></li><li><a href=#openssl>OpenSSL</a></li><li><a href=#curl>cURL</a></li><li><a href=#git>Git</a></li><li><a href=#boost>Boost</a></li><li><a href=#cmake>Cmake</a></li><li><a href=#gnu-make>GNU-Make</a></li><li><a href=#brotli>Brotli</a></li><li><a href=#ncurses>ncurses</a></li><li><a href=#texinfo>texinfo</a></li><li><a href=#gperf>gperf</a></li><li><a href=#libseccomp>libseccomp</a></li><li><a href=#bdwgc>BDWGC</a></li><li><a href=#pcre>pcre</a></li><li><a href=#bison>bison</a></li><li><a href=#flex>flex</a></li><li><a href=#jq>jq</a></li><li><a href=#bzip2>bzip2</a></li><li><a href=#sqlite>sqlite</a></li><li><a href=#editline>editline</a></li><li><a href=#miniconda>Miniconda</a></li></ul></li><li><a href=#applications>Applications</a><ul><li><a href=#ag>ag</a></li><li><a href=#neovim>Neovim</a></li><li><a href=#tmux>Tmux</a></li><li><a href=#zsh>Zsh</a></li></ul></li><li><a href=#conclusion>Conclusion</a></li></ul></nav></div></div></aside><main class=post><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>14 minutes<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Written: 2020-08-09 02:29 +0000</p></p></div><article class=h-entry><h1 class="post-title p-name"><a class=u-url href=https://rgoswami.me/posts/hpc-dots-lmod/>HPC Dotfiles and LMod</a></h1><div class=post-info><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pen-tool"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg><span class="author u-author p-author"><a href=https://rgoswami.me/author/rohit-goswami>Rohit Goswami</a></span></div><hr><aside id=toc class=sidebar><div class=toc-title>Table of Contents</div><nav id=TableOfContents><ul><li><a href=#background>Background</a></li><li><a href=#setting-up>Setting Up</a></li><li><a href=#basic-setup>Basic Setup</a><ul><li><a href=#micromamba>MicroMamba</a></li><li><a href=#warning>Warning</a></li></ul></li><li><a href=#lmod-libraries>LMod Libraries</a><ul><li><a href=#patch>Patch</a></li><li><a href=#help2man>Help2man</a></li><li><a href=#perl>Perl</a></li><li><a href=#autotools>Autotools</a></li><li><a href=#gmp>GMP</a></li><li><a href=#mpfr>MPFR</a></li><li><a href=#mpc>MPC</a></li><li><a href=#gcc-9-dot-2-dot-0>GCC 9.2.0</a></li><li><a href=#pkg-config>Pkg-Config</a></li><li><a href=#zlib>Zlib</a></li><li><a href=#xz-utils>XZ Utils</a></li><li><a href=#openssl>OpenSSL</a></li><li><a href=#curl>cURL</a></li><li><a href=#git>Git</a></li><li><a href=#boost>Boost</a></li><li><a href=#cmake>Cmake</a></li><li><a href=#gnu-make>GNU-Make</a></li><li><a href=#brotli>Brotli</a></li><li><a href=#ncurses>ncurses</a></li><li><a href=#texinfo>texinfo</a></li><li><a href=#gperf>gperf</a></li><li><a href=#libseccomp>libseccomp</a></li><li><a href=#bdwgc>BDWGC</a></li><li><a href=#pcre>pcre</a></li><li><a href=#bison>bison</a></li><li><a href=#flex>flex</a></li><li><a href=#jq>jq</a></li><li><a href=#bzip2>bzip2</a></li><li><a href=#sqlite>sqlite</a></li><li><a href=#editline>editline</a></li><li><a href=#miniconda>Miniconda</a></li></ul></li><li><a href=#applications>Applications</a><ul><li><a href=#ag>ag</a></li><li><a href=#neovim>Neovim</a></li><li><a href=#tmux>Tmux</a></li><li><a href=#zsh>Zsh</a></li></ul></li><li><a href=#conclusion>Conclusion</a></li></ul></nav></aside><hr><div class="post-content e-content"><h2 id=background>Background</h2><p>My move away from the powerful, but unimaginatively named HPC clusters of IITK <sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup> brought me in close contact with the Lua based <sup id=fnref:2><a href=#fn:2 class=footnote-ref role=doc-noteref>2</a></sup> <a href=https://lmod.readthedocs.io/en/latest/index.html>lmod module system</a>. Rather than fall into the rabbit hole of <a href=https://docs.brew.sh/Homebrew-on-Linux>brew</a> we will leverage the existing system to add our new libraries. Not finding any good collections of these composable environments, and <a href=/posts/prov-dots/>having failed once before</a> to install Nix as a user without admin access, I decided to <a href=https://github.com/HaoZeke/hzHPC%5Flmod>start my own collection of Lmod recipies</a>. The rest of this post details the installation proceedure to be carried out in conjunction with the <a href=https://github.com/HaoZeke/hzHPC%5Flmod>hzHPC_lmod repo</a>.</p><h2 id=setting-up>Setting Up</h2><p>These are reproduced from the repo for completeness.</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>git clone https://github.com/kobus-v-schoor/dotgit.git
+mkdir -p ~/.local/bin
+cp -r dotgit/old/bin/dotgit* ~/.local/bin
+cat dotgit/old/bin/bash_completion &gt;&gt; ~/.bash_completion
+rm -rf dotgit
+</code></pre></div><p>I actually strongly suggest using a target from <a href=https://github.com/HaoZeke/Dotfiles>my Dotfiles</a> in conjunction with this, but it isn&rsquo;t really required, so:</p><div class=highlight><pre class=chroma><code class=language-fallback data-lang=fallback>~/.local/bin/dotgit restore hzhpc
+</code></pre></div><p>Note that because of the suggested separation, I have not opted to setup a shell or even ensure that there are scripts here to help keep <code>module</code> in your path. Those are in <a href=https://github.com/HaoZeke/Dotfiles>my Dotfiles</a>.
+If, you <strong>opt to not use</strong> these <code>dotfiles</code>, then <strong>do not</strong> run the <code>ml load</code> commands.</p><h2 id=basic-setup>Basic Setup</h2><p>We will first load an environment with basic packages (<code>autotools</code>). This is a stop-gap solution.</p><h3 id=micromamba>MicroMamba</h3><p>We will set up a <code>micromamba</code> installation to get <code>git</code> and other base utilities.</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>mkdir -p ~/.local/bin
+<span class=nb>export</span> <span class=nv>PATH</span><span class=o>=</span><span class=nv>$HOME</span>/.local/bin:<span class=nv>$PATH</span>
+wget -qO- https://micromamba.snakepit.net/api/micromamba/linux-64/latest <span class=p>|</span> tar -xvj bin/micromamba
+mv bin/micromamba ~/.local/bin
+rm -rf bin
+micromamba shell init -s bash -p <span class=nv>$HOME</span>/micromamba
+. ~/.bashrc
+</code></pre></div><p>Now we can use <code>mamba</code> to get a temporary interactive environment</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=c1># Spack requirements</span>
+<span class=nv>PKGS</span><span class=o>=</span><span class=s2>&#34;git patch curl make tar gzip unzip bzip2 xz zstd subversion lsof m4&#34;</span>
+mkdir ~/.mamba_venvs
+micromamba create -p ~/.mamba_venvs/intBase <span class=nv>$PKGS</span>
+micromamba activate ~/.mamba_venvs/intBase
+</code></pre></div><p>For subsequent logins we can simply run:</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>export</span> <span class=nv>PATH</span><span class=o>=</span><span class=nv>$HOME</span>/.local/bin:<span class=nv>$PATH</span>
+. ~/.bashrc
+micromamba activate ~/.mamba_venvs/intBase
+</code></pre></div><h4 id=configuration>Configuration</h4><p>A simple <code>.condarc</code> will suffice for the above.</p><div class=highlight><pre class=chroma><code class=language-yaml data-lang=yaml><span class=nt>channels</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span>- <span class=l>conda-forge</span><span class=w>
+</span><span class=w>  </span>- <span class=l>defaults</span><span class=w>
+</span><span class=w></span><span class=nt>channel_priority</span><span class=p>:</span><span class=w> </span><span class=l>disabled</span><span class=w>
+</span></code></pre></div><h3 id=warning>Warning</h3><p>Note that once the base packages have been installed&mldr;</p><blockquote><p>We must <strong>unload</strong> our micromamba environment!!</p></blockquote><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>micromamba deactivate
+</code></pre></div><p>It is recommended to use a minimal set of <code>micromamba</code> packages.</p><h2 id=lmod-libraries>LMod Libraries</h2><blockquote><p><strong>Note that</strong>: <a href=http://ihpc.is/garpur/>garpur</a> and elja already has <code>lmod</code></p></blockquote><p>The scripts in this post will also be part of the <a href=https://github.com/HaoZeke/haozeke.github.io/>repo</a>, but keep in mind that these are not meant to be robust ways to install anything, and every command should be run by hand because things will probably break badly. We keep all sources in <code>$HOME/tmphpc</code> and install everything relative to <code>$HOME/.hpc</code>. Paths are managed by the <code>lmod</code> system.</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>export</span> <span class=nv>hpcroot</span><span class=o>=</span><span class=nv>$HOME</span>/tmphpc
+mkdir -p <span class=nv>$hpcroot</span>
+</code></pre></div><p>Combining our paths with the <a href=https://lmod.readthedocs.io/en/latest/020%5Fadvanced.html>lmod manual</a> gives rise to the following definiton (roughly the same for each one):</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>local</span> <span class=nv>home</span>    <span class=o>=</span> os.getenv<span class=o>(</span><span class=s2>&#34;HOME&#34;</span><span class=o>)</span>
+<span class=nb>local</span> <span class=nv>version</span> <span class=o>=</span> myModuleVersion<span class=o>()</span>
+<span class=nb>local</span> <span class=nv>pkgName</span> <span class=o>=</span> myModuleName<span class=o>()</span>
+<span class=nb>local</span> <span class=nv>pkg</span>     <span class=o>=</span> pathJoin<span class=o>(</span>home,<span class=s2>&#34;.hpc&#34;</span>,pkgName,version,<span class=s2>&#34;bin&#34;</span><span class=o>)</span>
+prepend_path<span class=o>(</span><span class=s2>&#34;PATH&#34;</span>, pkg<span class=o>)</span>
+</code></pre></div><p>We will no longer bother with the module definitions for the rest of this post, as they are handled and documented <a href=https://github.com/HaoZeke/hzHPC%5Flmod/tree/master/dotfiles>in the repo</a>.</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=c1># Setting up hzhpc modules</span>
+<span class=nb>cd</span> tmphpc
+git clone https://github.com/kobus-v-schoor/dotgit.git
+mkdir -p ~/.local/bin
+cp -r dotgit/old/bin/dotgit* ~/.local/bin
+cat dotgit/bin/bash_completion &gt;&gt; ~/.bash_completion
+rm -rf dotgit
+~/.local/bin/dotgit restore hzhpc
+</code></pre></div><h3 id=patch>Patch</h3><p>This is a basic utility we need before getting to anything else.</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$hpcroot</span>
+<span class=nv>myprefix</span><span class=o>=</span><span class=nv>$HOME</span>/.hpc/patch/2.7.2
+wget http://ftp.gnu.org/gnu/patch/patch-2.7.2.tar.gz
+gzip -dc patch-2.7.2.tar.gz <span class=p>|</span> tar xvf -
+<span class=nb>cd</span> patch-2.7.2
+./configure --prefix<span class=o>=</span><span class=nv>$myprefix</span>
+make -j<span class=k>$(</span>nproc<span class=k>)</span> <span class=o>&amp;&amp;</span> make install
+ml load patch
+</code></pre></div><h3 id=help2man>Help2man</h3><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$hpcroot</span>
+<span class=nv>myprefix</span><span class=o>=</span><span class=nv>$HOME</span>/.hpc/help2man/1.48.3
+wget https://gnuftp.uib.no/help2man/help2man-1.48.3.tar.xz
+tar xfv help2man-1.48.3.tar.xz
+<span class=nb>cd</span> help2man-1.48.3
+./configure --prefix<span class=o>=</span><span class=nv>$myprefix</span>
+make -j<span class=k>$(</span>nproc<span class=k>)</span>
+make install
+ml load help2man/1.48.3
+</code></pre></div><h3 id=perl>Perl</h3><p>This is essentially the setup from the <a href=https://learn.perl.org/installing/unix%5Flinux.html>main docs</a>.</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=c1># Get Perl</span>
+curl -L http://xrl.us/installperlnix <span class=p>|</span> bash
+cpanm --local-lib<span class=o>=</span>~/perl5 local::lib <span class=o>&amp;&amp;</span> <span class=nb>eval</span> <span class=k>$(</span>perl -I ~/perl5/lib/perl5/ -Mlocal::lib<span class=k>)</span>
+cpanm ExtUtils::MakeMaker --force <span class=c1># For git</span>
+cpanm Thread::Queue <span class=c1># For automake</span>
+ml load perl/5.28.0
+</code></pre></div><h3 id=autotools>Autotools</h3><h4 id=m4>M4</h4><p>This requires special considerations for <code>glibc</code> greater than <code>2.28</code> (true for compilers like <code>gcc8</code> and above).</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$HOME</span>/tmphpc
+<span class=nv>myprefix</span><span class=o>=</span><span class=nv>$HOME</span>/.hpc/autotools
+wget http://ftp.gnu.org/gnu/m4/m4-1.4.18.tar.gz
+gzip -dc m4-1.4.18.tar.gz <span class=p>|</span> tar xvf -
+<span class=nb>cd</span> m4-1.4.18
+<span class=c1># From http://git.openembedded.org/openembedded-core/commit/meta/recipes-devtools/m4/m4/m4-1.4.18-glibc-change-work-around.patch</span>
+<span class=c1># From https://askubuntu.com/a/1112101/690387</span>
+wget http://git.openembedded.org/openembedded-core/plain/meta/recipes-devtools/m4/m4/m4-1.4.18-glibc-change-work-around.patch
+patch  -p <span class=m>1</span>  &lt; m4-1.4.18-glibc-change-work-around.patch
+./configure -C --prefix<span class=o>=</span><span class=nv>$myprefix</span>/m4/1.4.18 <span class=o>&amp;&amp;</span> make -j<span class=k>$(</span>nproc<span class=k>)</span> <span class=o>&amp;&amp;</span> make install
+</code></pre></div><h5 id=patch-contents>Patch contents</h5><p>The patch is needed since <code>glibc 2.28</code> and above have changed the nesting levels. The patch is effectively backported from the upstream repositories. Some more context <a href=https://github.com/buildroot/buildroot/commit/c48f8a64626c60bd1b46804b7cf1a699ff53cdf3#diff-0d8a48b477da9bfd28490aad8b4acd5efb319779f29bbdf56e2fb026bb0fbe52>is here</a>.</p><div class=highlight><pre class=chroma><code class=language-cpp data-lang=cpp><span class=n>update</span> <span class=k>for</span> <span class=n>glibc</span> <span class=n>libio</span><span class=p>.</span><span class=n>h</span> <span class=n>removal</span> <span class=n>in</span> <span class=mf>2.28</span><span class=o>+</span>
+
+<span class=n>see</span>
+<span class=nl>https</span><span class=p>:</span><span class=c1>//src.fedoraproject.org/rpms/m4/c/814d592134fad36df757f9a61422d164ea2c6c9b?branch=master
+</span><span class=c1></span>
+<span class=n>Upstream</span><span class=o>-</span><span class=nl>Status</span><span class=p>:</span> <span class=n>Backport</span> <span class=p>[</span><span class=nl>https</span><span class=p>:</span><span class=c1>//git.savannah.gnu.org/cgit/gnulib.git/commit/?id=4af4a4a718]
+</span><span class=c1></span><span class=n>Signed</span><span class=o>-</span><span class=n>off</span><span class=o>-</span><span class=nl>by</span><span class=p>:</span> <span class=n>Khem</span> <span class=n>Raj</span> <span class=o>&lt;</span><span class=n>raj</span><span class=p>.</span><span class=n>khem</span><span class=err>@</span><span class=n>gmail</span><span class=p>.</span><span class=n>com</span><span class=o>&gt;</span>
+
+<span class=nl>Index</span><span class=p>:</span> <span class=n>m4</span><span class=o>-</span><span class=mf>1.4.18</span><span class=o>/</span><span class=n>lib</span><span class=o>/</span><span class=n>fflush</span><span class=p>.</span><span class=n>c</span>
+<span class=o>===================================================================</span>
+<span class=o>---</span> <span class=n>m4</span><span class=o>-</span><span class=mf>1.4.18</span><span class=p>.</span><span class=n>orig</span><span class=o>/</span><span class=n>lib</span><span class=o>/</span><span class=n>fflush</span><span class=p>.</span><span class=n>c</span>
+<span class=o>+++</span> <span class=n>m4</span><span class=o>-</span><span class=mf>1.4.18</span><span class=o>/</span><span class=n>lib</span><span class=o>/</span><span class=n>fflush</span><span class=p>.</span><span class=n>c</span>
+<span class=err>@@</span> <span class=o>-</span><span class=mi>33</span><span class=p>,</span><span class=mi>7</span> <span class=o>+</span><span class=mi>33</span><span class=p>,</span><span class=mi>7</span> <span class=err>@@</span>
+ <span class=cp>#undef fflush
+</span><span class=cp></span>
+
+<span class=o>-</span><span class=err>#</span><span class=k>if</span> <span class=n>defined</span> <span class=n>_IO_ftrylockfile</span> <span class=o>||</span> <span class=n>__GNU_LIBRARY__</span> <span class=o>==</span> <span class=mi>1</span> <span class=cm>/* GNU libc, BeOS, Haiku, Linux libc5 */</span>
+<span class=o>+</span><span class=err>#</span><span class=k>if</span> <span class=n>defined</span> <span class=n>_IO_EOF_SEEN</span> <span class=o>||</span> <span class=n>__GNU_LIBRARY__</span> <span class=o>==</span> <span class=mi>1</span> <span class=cm>/* GNU libc, BeOS, Haiku, Linux libc5 */</span>
+
+ <span class=cm>/* Clear the stream&#39;s ungetc buffer, preserving the value of ftello (fp).  */</span>
+ <span class=k>static</span> <span class=kt>void</span>
+<span class=err>@@</span> <span class=o>-</span><span class=mi>72</span><span class=p>,</span><span class=mi>7</span> <span class=o>+</span><span class=mi>72</span><span class=p>,</span><span class=mi>7</span> <span class=err>@@</span> <span class=n>clear_ungetc_buffer</span> <span class=p>(</span><span class=n>FILE</span> <span class=o>*</span><span class=n>fp</span><span class=p>)</span>
+
+ <span class=cp>#endif
+</span><span class=cp></span>
+<span class=o>-</span><span class=err>#</span><span class=k>if</span> <span class=o>!</span> <span class=p>(</span><span class=n>defined</span> <span class=n>_IO_ftrylockfile</span> <span class=o>||</span> <span class=n>__GNU_LIBRARY__</span> <span class=o>==</span> <span class=mi>1</span> <span class=cm>/* GNU libc, BeOS, Haiku, Linux libc5 */</span><span class=p>)</span>
+<span class=o>+</span><span class=err>#</span><span class=k>if</span> <span class=o>!</span> <span class=p>(</span><span class=n>defined</span> <span class=n>_IO_EOF_SEEN</span> <span class=o>||</span> <span class=n>__GNU_LIBRARY__</span> <span class=o>==</span> <span class=mi>1</span> <span class=cm>/* GNU libc, BeOS, Haiku, Linux libc5 */</span><span class=p>)</span>
+
+ <span class=cp># if (defined __sferror || defined __DragonFly__ || defined __ANDROID__) &amp;&amp; defined __SNPT
+</span><span class=cp></span> <span class=cm>/* FreeBSD, NetBSD, OpenBSD, DragonFly, Mac OS X, Cygwin, Android */</span>
+<span class=err>@@</span> <span class=o>-</span><span class=mi>148</span><span class=p>,</span><span class=mi>7</span> <span class=o>+</span><span class=mi>148</span><span class=p>,</span><span class=mi>7</span> <span class=err>@@</span> <span class=n>rpl_fflush</span> <span class=p>(</span><span class=n>FILE</span> <span class=o>*</span><span class=n>stream</span><span class=p>)</span>
+   <span class=k>if</span> <span class=p>(</span><span class=n>stream</span> <span class=o>==</span> <span class=nb>NULL</span> <span class=o>||</span> <span class=o>!</span> <span class=n>freading</span> <span class=p>(</span><span class=n>stream</span><span class=p>))</span>
+     <span class=k>return</span> <span class=n>fflush</span> <span class=p>(</span><span class=n>stream</span><span class=p>);</span>
+
+<span class=o>-</span><span class=err>#</span><span class=k>if</span> <span class=n>defined</span> <span class=n>_IO_ftrylockfile</span> <span class=o>||</span> <span class=n>__GNU_LIBRARY__</span> <span class=o>==</span> <span class=mi>1</span> <span class=cm>/* GNU libc, BeOS, Haiku, Linux libc5 */</span>
+<span class=o>+</span><span class=err>#</span><span class=k>if</span> <span class=n>defined</span> <span class=n>_IO_EOF_SEEN</span> <span class=o>||</span> <span class=n>__GNU_LIBRARY__</span> <span class=o>==</span> <span class=mi>1</span> <span class=cm>/* GNU libc, BeOS, Haiku, Linux libc5 */</span>
+
+   <span class=n>clear_ungetc_buffer_preserving_position</span> <span class=p>(</span><span class=n>stream</span><span class=p>);</span>
+
+<span class=nl>Index</span><span class=p>:</span> <span class=n>m4</span><span class=o>-</span><span class=mf>1.4.18</span><span class=o>/</span><span class=n>lib</span><span class=o>/</span><span class=n>fpending</span><span class=p>.</span><span class=n>c</span>
+<span class=o>===================================================================</span>
+<span class=o>---</span> <span class=n>m4</span><span class=o>-</span><span class=mf>1.4.18</span><span class=p>.</span><span class=n>orig</span><span class=o>/</span><span class=n>lib</span><span class=o>/</span><span class=n>fpending</span><span class=p>.</span><span class=n>c</span>
+<span class=o>+++</span> <span class=n>m4</span><span class=o>-</span><span class=mf>1.4.18</span><span class=o>/</span><span class=n>lib</span><span class=o>/</span><span class=n>fpending</span><span class=p>.</span><span class=n>c</span>
+<span class=err>@@</span> <span class=o>-</span><span class=mi>32</span><span class=p>,</span><span class=mi>7</span> <span class=o>+</span><span class=mi>32</span><span class=p>,</span><span class=mi>7</span> <span class=err>@@</span> <span class=n>__fpending</span> <span class=p>(</span><span class=n>FILE</span> <span class=o>*</span><span class=n>fp</span><span class=p>)</span>
+   <span class=cm>/* Most systems provide FILE as a struct and the necessary bitmask in
+</span><span class=cm>      &lt;stdio.h&gt;, because they need it for implementing getc() and putc() as
+</span><span class=cm>      fast macros.  */</span>
+<span class=o>-</span><span class=err>#</span><span class=k>if</span> <span class=n>defined</span> <span class=n>_IO_ftrylockfile</span> <span class=o>||</span> <span class=n>__GNU_LIBRARY__</span> <span class=o>==</span> <span class=mi>1</span> <span class=cm>/* GNU libc, BeOS, Haiku, Linux libc5 */</span>
+<span class=o>+</span><span class=err>#</span><span class=k>if</span> <span class=n>defined</span> <span class=n>_IO_EOF_SEEN</span> <span class=o>||</span> <span class=n>__GNU_LIBRARY__</span> <span class=o>==</span> <span class=mi>1</span> <span class=cm>/* GNU libc, BeOS, Haiku, Linux libc5 */</span>
+   <span class=k>return</span> <span class=n>fp</span><span class=o>-&gt;</span><span class=n>_IO_write_ptr</span> <span class=o>-</span> <span class=n>fp</span><span class=o>-&gt;</span><span class=n>_IO_write_base</span><span class=p>;</span>
+ <span class=cp>#elif defined __sferror || defined __DragonFly__ || defined __ANDROID__
+</span><span class=cp></span>   <span class=cm>/* FreeBSD, NetBSD, OpenBSD, DragonFly, Mac OS X, Cygwin, Android */</span>
+<span class=nl>Index</span><span class=p>:</span> <span class=n>m4</span><span class=o>-</span><span class=mf>1.4.18</span><span class=o>/</span><span class=n>lib</span><span class=o>/</span><span class=n>fpurge</span><span class=p>.</span><span class=n>c</span>
+<span class=o>===================================================================</span>
+<span class=o>---</span> <span class=n>m4</span><span class=o>-</span><span class=mf>1.4.18</span><span class=p>.</span><span class=n>orig</span><span class=o>/</span><span class=n>lib</span><span class=o>/</span><span class=n>fpurge</span><span class=p>.</span><span class=n>c</span>
+<span class=o>+++</span> <span class=n>m4</span><span class=o>-</span><span class=mf>1.4.18</span><span class=o>/</span><span class=n>lib</span><span class=o>/</span><span class=n>fpurge</span><span class=p>.</span><span class=n>c</span>
+<span class=err>@@</span> <span class=o>-</span><span class=mi>62</span><span class=p>,</span><span class=mi>7</span> <span class=o>+</span><span class=mi>62</span><span class=p>,</span><span class=mi>7</span> <span class=err>@@</span> <span class=n>fpurge</span> <span class=p>(</span><span class=n>FILE</span> <span class=o>*</span><span class=n>fp</span><span class=p>)</span>
+   <span class=cm>/* Most systems provide FILE as a struct and the necessary bitmask in
+</span><span class=cm>      &lt;stdio.h&gt;, because they need it for implementing getc() and putc() as
+</span><span class=cm>      fast macros.  */</span>
+<span class=o>-</span><span class=err>#</span> <span class=k>if</span> <span class=n>defined</span> <span class=n>_IO_ftrylockfile</span> <span class=o>||</span> <span class=n>__GNU_LIBRARY__</span> <span class=o>==</span> <span class=mi>1</span> <span class=cm>/* GNU libc, BeOS, Haiku, Linux libc5 */</span>
+<span class=o>+</span><span class=err>#</span> <span class=k>if</span> <span class=n>defined</span> <span class=n>_IO_EOF_SEEN</span> <span class=o>||</span> <span class=n>__GNU_LIBRARY__</span> <span class=o>==</span> <span class=mi>1</span> <span class=cm>/* GNU libc, BeOS, Haiku, Linux libc5 */</span>
+   <span class=n>fp</span><span class=o>-&gt;</span><span class=n>_IO_read_end</span> <span class=o>=</span> <span class=n>fp</span><span class=o>-&gt;</span><span class=n>_IO_read_ptr</span><span class=p>;</span>
+   <span class=n>fp</span><span class=o>-&gt;</span><span class=n>_IO_write_ptr</span> <span class=o>=</span> <span class=n>fp</span><span class=o>-&gt;</span><span class=n>_IO_write_base</span><span class=p>;</span>
+   <span class=cm>/* Avoid memory leak when there is an active ungetc buffer.  */</span>
+<span class=nl>Index</span><span class=p>:</span> <span class=n>m4</span><span class=o>-</span><span class=mf>1.4.18</span><span class=o>/</span><span class=n>lib</span><span class=o>/</span><span class=n>freadahead</span><span class=p>.</span><span class=n>c</span>
+<span class=o>===================================================================</span>
+<span class=o>---</span> <span class=n>m4</span><span class=o>-</span><span class=mf>1.4.18</span><span class=p>.</span><span class=n>orig</span><span class=o>/</span><span class=n>lib</span><span class=o>/</span><span class=n>freadahead</span><span class=p>.</span><span class=n>c</span>
+<span class=o>+++</span> <span class=n>m4</span><span class=o>-</span><span class=mf>1.4.18</span><span class=o>/</span><span class=n>lib</span><span class=o>/</span><span class=n>freadahead</span><span class=p>.</span><span class=n>c</span>
+<span class=err>@@</span> <span class=o>-</span><span class=mi>25</span><span class=p>,</span><span class=mi>7</span> <span class=o>+</span><span class=mi>25</span><span class=p>,</span><span class=mi>7</span> <span class=err>@@</span>
+ <span class=n>size_t</span>
+ <span class=n>freadahead</span> <span class=p>(</span><span class=n>FILE</span> <span class=o>*</span><span class=n>fp</span><span class=p>)</span>
+ <span class=p>{</span>
+<span class=o>-</span><span class=err>#</span><span class=k>if</span> <span class=n>defined</span> <span class=n>_IO_ftrylockfile</span> <span class=o>||</span> <span class=n>__GNU_LIBRARY__</span> <span class=o>==</span> <span class=mi>1</span> <span class=cm>/* GNU libc, BeOS, Haiku, Linux libc5 */</span>
+<span class=o>+</span><span class=err>#</span><span class=k>if</span> <span class=n>defined</span> <span class=n>_IO_EOF_SEEN</span> <span class=o>||</span> <span class=n>__GNU_LIBRARY__</span> <span class=o>==</span> <span class=mi>1</span> <span class=cm>/* GNU libc, BeOS, Haiku, Linux libc5 */</span>
+   <span class=k>if</span> <span class=p>(</span><span class=n>fp</span><span class=o>-&gt;</span><span class=n>_IO_write_ptr</span> <span class=o>&gt;</span> <span class=n>fp</span><span class=o>-&gt;</span><span class=n>_IO_write_base</span><span class=p>)</span>
+     <span class=k>return</span> <span class=mi>0</span><span class=p>;</span>
+   <span class=k>return</span> <span class=p>(</span><span class=n>fp</span><span class=o>-&gt;</span><span class=n>_IO_read_end</span> <span class=o>-</span> <span class=n>fp</span><span class=o>-&gt;</span><span class=n>_IO_read_ptr</span><span class=p>)</span>
+<span class=nl>Index</span><span class=p>:</span> <span class=n>m4</span><span class=o>-</span><span class=mf>1.4.18</span><span class=o>/</span><span class=n>lib</span><span class=o>/</span><span class=n>freading</span><span class=p>.</span><span class=n>c</span>
+<span class=o>===================================================================</span>
+<span class=o>---</span> <span class=n>m4</span><span class=o>-</span><span class=mf>1.4.18</span><span class=p>.</span><span class=n>orig</span><span class=o>/</span><span class=n>lib</span><span class=o>/</span><span class=n>freading</span><span class=p>.</span><span class=n>c</span>
+<span class=o>+++</span> <span class=n>m4</span><span class=o>-</span><span class=mf>1.4.18</span><span class=o>/</span><span class=n>lib</span><span class=o>/</span><span class=n>freading</span><span class=p>.</span><span class=n>c</span>
+<span class=err>@@</span> <span class=o>-</span><span class=mi>31</span><span class=p>,</span><span class=mi>7</span> <span class=o>+</span><span class=mi>31</span><span class=p>,</span><span class=mi>7</span> <span class=err>@@</span> <span class=n>freading</span> <span class=p>(</span><span class=n>FILE</span> <span class=o>*</span><span class=n>fp</span><span class=p>)</span>
+   <span class=cm>/* Most systems provide FILE as a struct and the necessary bitmask in
+</span><span class=cm>      &lt;stdio.h&gt;, because they need it for implementing getc() and putc() as
+</span><span class=cm>      fast macros.  */</span>
+<span class=o>-</span><span class=err>#</span> <span class=k>if</span> <span class=n>defined</span> <span class=n>_IO_ftrylockfile</span> <span class=o>||</span> <span class=n>__GNU_LIBRARY__</span> <span class=o>==</span> <span class=mi>1</span> <span class=cm>/* GNU libc, BeOS, Haiku, Linux libc5 */</span>
+<span class=o>+</span><span class=err>#</span> <span class=k>if</span> <span class=n>defined</span> <span class=n>_IO_EOF_SEEN</span> <span class=o>||</span> <span class=n>__GNU_LIBRARY__</span> <span class=o>==</span> <span class=mi>1</span> <span class=cm>/* GNU libc, BeOS, Haiku, Linux libc5 */</span>
+   <span class=k>return</span> <span class=p>((</span><span class=n>fp</span><span class=o>-&gt;</span><span class=n>_flags</span> <span class=o>&amp;</span> <span class=n>_IO_NO_WRITES</span><span class=p>)</span> <span class=o>!=</span> <span class=mi>0</span>
+           <span class=o>||</span> <span class=p>((</span><span class=n>fp</span><span class=o>-&gt;</span><span class=n>_flags</span> <span class=o>&amp;</span> <span class=p>(</span><span class=n>_IO_NO_READS</span> <span class=o>|</span> <span class=n>_IO_CURRENTLY_PUTTING</span><span class=p>))</span> <span class=o>==</span> <span class=mi>0</span>
+               <span class=o>&amp;&amp;</span> <span class=n>fp</span><span class=o>-&gt;</span><span class=n>_IO_read_base</span> <span class=o>!=</span> <span class=nb>NULL</span><span class=p>));</span>
+<span class=nl>Index</span><span class=p>:</span> <span class=n>m4</span><span class=o>-</span><span class=mf>1.4.18</span><span class=o>/</span><span class=n>lib</span><span class=o>/</span><span class=n>fseeko</span><span class=p>.</span><span class=n>c</span>
+<span class=o>===================================================================</span>
+<span class=o>---</span> <span class=n>m4</span><span class=o>-</span><span class=mf>1.4.18</span><span class=p>.</span><span class=n>orig</span><span class=o>/</span><span class=n>lib</span><span class=o>/</span><span class=n>fseeko</span><span class=p>.</span><span class=n>c</span>
+<span class=o>+++</span> <span class=n>m4</span><span class=o>-</span><span class=mf>1.4.18</span><span class=o>/</span><span class=n>lib</span><span class=o>/</span><span class=n>fseeko</span><span class=p>.</span><span class=n>c</span>
+<span class=err>@@</span> <span class=o>-</span><span class=mi>47</span><span class=p>,</span><span class=mi>7</span> <span class=o>+</span><span class=mi>47</span><span class=p>,</span><span class=mi>7</span> <span class=err>@@</span> <span class=n>fseeko</span> <span class=p>(</span><span class=n>FILE</span> <span class=o>*</span><span class=n>fp</span><span class=p>,</span> <span class=n>off_t</span> <span class=n>offset</span><span class=p>,</span> <span class=kt>int</span> <span class=n>when</span>
+ <span class=cp>#endif
+</span><span class=cp></span>
+   <span class=cm>/* These tests are based on fpurge.c.  */</span>
+<span class=o>-</span><span class=err>#</span><span class=k>if</span> <span class=n>defined</span> <span class=n>_IO_ftrylockfile</span> <span class=o>||</span> <span class=n>__GNU_LIBRARY__</span> <span class=o>==</span> <span class=mi>1</span> <span class=cm>/* GNU libc, BeOS, Haiku, Linux libc5 */</span>
+<span class=o>+</span><span class=err>#</span><span class=k>if</span> <span class=n>defined</span> <span class=n>_IO_EOF_SEEN</span> <span class=o>||</span> <span class=n>__GNU_LIBRARY__</span> <span class=o>==</span> <span class=mi>1</span> <span class=cm>/* GNU libc, BeOS, Haiku, Linux libc5 */</span>
+   <span class=k>if</span> <span class=p>(</span><span class=n>fp</span><span class=o>-&gt;</span><span class=n>_IO_read_end</span> <span class=o>==</span> <span class=n>fp</span><span class=o>-&gt;</span><span class=n>_IO_read_ptr</span>
+       <span class=o>&amp;&amp;</span> <span class=n>fp</span><span class=o>-&gt;</span><span class=n>_IO_write_ptr</span> <span class=o>==</span> <span class=n>fp</span><span class=o>-&gt;</span><span class=n>_IO_write_base</span>
+       <span class=o>&amp;&amp;</span> <span class=n>fp</span><span class=o>-&gt;</span><span class=n>_IO_save_base</span> <span class=o>==</span> <span class=nb>NULL</span><span class=p>)</span>
+<span class=err>@@</span> <span class=o>-</span><span class=mi>123</span><span class=p>,</span><span class=mi>7</span> <span class=o>+</span><span class=mi>123</span><span class=p>,</span><span class=mi>7</span> <span class=err>@@</span> <span class=n>fseeko</span> <span class=p>(</span><span class=n>FILE</span> <span class=o>*</span><span class=n>fp</span><span class=p>,</span> <span class=n>off_t</span> <span class=n>offset</span><span class=p>,</span> <span class=kt>int</span> <span class=n>when</span>
+           <span class=k>return</span> <span class=o>-</span><span class=mi>1</span><span class=p>;</span>
+         <span class=p>}</span>
+
+<span class=o>-</span><span class=err>#</span><span class=k>if</span> <span class=n>defined</span> <span class=n>_IO_ftrylockfile</span> <span class=o>||</span> <span class=n>__GNU_LIBRARY__</span> <span class=o>==</span> <span class=mi>1</span> <span class=cm>/* GNU libc, BeOS, Haiku, Linux libc5 */</span>
+<span class=o>+</span><span class=err>#</span><span class=k>if</span> <span class=n>defined</span> <span class=n>_IO_EOF_SEEN</span> <span class=o>||</span> <span class=n>__GNU_LIBRARY__</span> <span class=o>==</span> <span class=mi>1</span> <span class=cm>/* GNU libc, BeOS, Haiku, Linux libc5 */</span>
+       <span class=n>fp</span><span class=o>-&gt;</span><span class=n>_flags</span> <span class=o>&amp;=</span> <span class=o>~</span><span class=n>_IO_EOF_SEEN</span><span class=p>;</span>
+       <span class=n>fp</span><span class=o>-&gt;</span><span class=n>_offset</span> <span class=o>=</span> <span class=n>pos</span><span class=p>;</span>
+ <span class=cp>#elif defined __sferror || defined __DragonFly__ || defined __ANDROID__
+</span><span class=cp></span><span class=nl>Index</span><span class=p>:</span> <span class=n>m4</span><span class=o>-</span><span class=mf>1.4.18</span><span class=o>/</span><span class=n>lib</span><span class=o>/</span><span class=n>stdio</span><span class=o>-</span><span class=n>impl</span><span class=p>.</span><span class=n>h</span>
+<span class=o>===================================================================</span>
+<span class=o>---</span> <span class=n>m4</span><span class=o>-</span><span class=mf>1.4.18</span><span class=p>.</span><span class=n>orig</span><span class=o>/</span><span class=n>lib</span><span class=o>/</span><span class=n>stdio</span><span class=o>-</span><span class=n>impl</span><span class=p>.</span><span class=n>h</span>
+<span class=o>+++</span> <span class=n>m4</span><span class=o>-</span><span class=mf>1.4.18</span><span class=o>/</span><span class=n>lib</span><span class=o>/</span><span class=n>stdio</span><span class=o>-</span><span class=n>impl</span><span class=p>.</span><span class=n>h</span>
+<span class=err>@@</span> <span class=o>-</span><span class=mi>18</span><span class=p>,</span><span class=mi>6</span> <span class=o>+</span><span class=mi>18</span><span class=p>,</span><span class=mi>12</span> <span class=err>@@</span>
+    <span class=n>the</span> <span class=n>same</span> <span class=n>implementation</span> <span class=n>of</span> <span class=n>stdio</span> <span class=n>extension</span> <span class=n>API</span><span class=p>,</span> <span class=n>except</span> <span class=n>that</span> <span class=n>some</span> <span class=n>fields</span>
+    <span class=n>have</span> <span class=n>different</span> <span class=n>naming</span> <span class=n>conventions</span><span class=p>,</span> <span class=n>or</span> <span class=n>their</span> <span class=n>access</span> <span class=k>requires</span> <span class=n>some</span> <span class=n>casts</span><span class=p>.</span>  <span class=err>*/</span>
+
+<span class=o>+</span><span class=cm>/* Glibc 2.28 made _IO_IN_BACKUP private.  For now, work around this
+</span><span class=cm>+   problem by defining it ourselves.  FIXME: Do not rely on glibc
+</span><span class=cm>+   internals.  */</span>
+<span class=o>+</span><span class=err>#</span><span class=k>if</span> <span class=o>!</span><span class=n>defined</span> <span class=n>_IO_IN_BACKUP</span> <span class=o>&amp;&amp;</span> <span class=n>defined</span> <span class=n>_IO_EOF_SEEN</span>
+<span class=o>+</span><span class=err>#</span> <span class=n>define</span> <span class=n>_IO_IN_BACKUP</span> <span class=mh>0x100</span>
+<span class=o>+</span><span class=err>#</span><span class=n>endif</span>
+
+ <span class=cm>/* BSD stdio derived implementations.  */</span>
+</code></pre></div><h4 id=auto-conf-make-and-libtool>Auto{Conf,Make} and Libtool</h4><p>This follows the standard approach outlined in the <a href=https://www.gnu.org/software/automake/faq/autotools-faq.html#How-can-I-install-software-below-my-home-directory%5F003f>GNU Autotools FAQ</a>:</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$hpcroot</span>
+<span class=nv>myprefix</span><span class=o>=</span><span class=nv>$HOME</span>/.hpc/autotools
+<span class=nb>export</span> PATH
+wget http://ftp.gnu.org/gnu/autoconf/autoconf-2.69.tar.gz
+wget http://ftp.gnu.org/gnu/automake/automake-1.16.2.tar.gz
+wget http://ftp.gnu.org/gnu/libtool/libtool-2.4.6.tar.gz
+wget http://ftp.gnu.org/gnu/gettext/gettext-0.20.tar.gz
+wget https://gnuftp.uib.no/autoconf-archive/autoconf-archive-2021.02.19.tar.xz
+tar xfv autoconf-archive-2021.02.19.tar.xz
+gzip -dc autoconf-2.69.tar.gz <span class=p>|</span> tar xvf -
+gzip -dc automake-1.16.2.tar.gz <span class=p>|</span> tar xvf -
+gzip -dc libtool-2.4.6.tar.gz <span class=p>|</span> tar xvf -
+gzip -dc gettext-0.20.tar.gz <span class=p>|</span> tar xvf -
+<span class=nb>cd</span> autoconf-2.69
+./configure -C --prefix<span class=o>=</span><span class=nv>$myprefix</span>/autoconf/2.69 <span class=o>&amp;&amp;</span> make -j<span class=k>$(</span>nproc<span class=k>)</span> <span class=o>&amp;&amp;</span> make install
+<span class=nb>cd</span> ../automake-1.16.2
+./configure -C --prefix<span class=o>=</span><span class=nv>$myprefix</span>/automake/1.16.2 --docdir<span class=o>=</span><span class=nv>$myprefix</span>/automake/1.16.2/share/doc/automake-1.16.2 <span class=o>&amp;&amp;</span> make -j<span class=k>$(</span>nproc<span class=k>)</span> <span class=o>&amp;&amp;</span> make install
+<span class=nb>cd</span> ../autoconf-archive-2021.02.19
+./configure -C --prefix<span class=o>=</span><span class=nv>$myprefix</span>/automake/1.16.2
+<span class=nb>cd</span> ../libtool-2.4.6
+./configure -C --disable-static --prefix<span class=o>=</span><span class=nv>$myprefix</span>/libtool/2.4.6 <span class=o>&amp;&amp;</span> make -j<span class=k>$(</span>nproc<span class=k>)</span> <span class=o>&amp;&amp;</span> make install
+<span class=nb>cd</span> ../gettext-0.20
+./configure -C --prefix<span class=o>=</span><span class=nv>$myprefix</span>/gettext/0.20 <span class=o>&amp;&amp;</span> make -j<span class=k>$(</span>nproc<span class=k>)</span> <span class=o>&amp;&amp;</span> make install
+ml load autotools/autotools
+</code></pre></div><h3 id=gmp>GMP</h3><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$hpcroot</span>
+<span class=nv>myprefix</span><span class=o>=</span><span class=nv>$HOME</span>/.hpc/gcc/gmp/6.2.0
+<span class=nb>export</span> PATH
+wget https://gmplib.org/download/gmp/gmp-6.2.0.tar.xz
+tar xfv gmp-6.2.0.tar.xz
+<span class=nb>cd</span> gmp-6.2.0
+./configure --prefix<span class=o>=</span><span class=nv>$myprefix</span>    <span class=se>\
+</span><span class=se></span>            --enable-cxx     <span class=se>\
+</span><span class=se></span>            --docdir<span class=o>=</span><span class=nv>$myprefix</span>/doc/gmp-6.2.0
+make -j<span class=k>$(</span>nproc<span class=k>)</span>
+make install
+ml load gcc/gmp/6.2.0
+</code></pre></div><h3 id=mpfr>MPFR</h3><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$hpcroot</span>
+<span class=nv>myprefix</span><span class=o>=</span><span class=nv>$HOME</span>/.hpc/gcc/mpfr/4.1.0
+<span class=nb>export</span> PATH
+wget https://www.mpfr.org/mpfr-current/mpfr-4.1.0.tar.xz
+tar xfv mpfr-4.1.0.tar.xz
+<span class=nb>cd</span> mpfr-4.1.0
+./configure --prefix<span class=o>=</span><span class=nv>$myprefix</span>    <span class=se>\
+</span><span class=se></span>            --enable-thread-safe     <span class=se>\
+</span><span class=se></span>            --with-gmp<span class=o>=</span><span class=nv>$HOME</span>/.hpc/gcc/gmp/6.2.0 <span class=se>\
+</span><span class=se></span>            --docdir<span class=o>=</span><span class=nv>$myprefix</span>/doc/mpfr-4.1.0
+make -j<span class=k>$(</span>nproc<span class=k>)</span>
+make install
+ml load gcc/mpfr/4.1.0
+</code></pre></div><h3 id=mpc>MPC</h3><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$hpcroot</span>
+<span class=nv>myprefix</span><span class=o>=</span><span class=nv>$HOME</span>/.hpc/gcc/mpc/1.2.0
+<span class=nb>export</span> PATH
+wget https://ftp.gnu.org/gnu/mpc/mpc-1.2.0.tar.gz
+tar xfv mpc-1.2.0.tar.gz
+<span class=nb>cd</span> mpc-1.2.0
+./configure --prefix<span class=o>=</span><span class=nv>$myprefix</span>    <span class=se>\
+</span><span class=se></span>            --with-gmp<span class=o>=</span><span class=nv>$HOME</span>/.hpc/gcc/gmp/6.2.0 <span class=se>\
+</span><span class=se></span>            --with-mpfr<span class=o>=</span><span class=nv>$HOME</span>/.hpc/gcc/mpfr/4.1.0 <span class=se>\
+</span><span class=se></span>            --docdir<span class=o>=</span><span class=nv>$myprefix</span>/doc/mpc-1.2.0
+make -j<span class=k>$(</span>nproc<span class=k>)</span>
+make install
+ml load gcc/mpc/1.2.0
+</code></pre></div><h3 id=gcc-9-dot-2-dot-0>GCC 9.2.0</h3><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$hpcroot</span>
+ml load gcc/gmp gcc/mpfr gcc/mpc
+<span class=nv>myprefix</span><span class=o>=</span><span class=nv>$HOME</span>/.hpc/gcc/9.2.0
+wget https://ftp.gnu.org/gnu/gcc/gcc-9.2.0/gcc-9.2.0.tar.xz
+tar xfv gcc-9.2.0.tar.xz
+<span class=nb>cd</span> gcc-9.2.0
+<span class=k>case</span> <span class=k>$(</span>uname -m<span class=k>)</span> in
+  x86_64<span class=o>)</span>
+    sed -e <span class=s1>&#39;/m64=/s/lib64/lib/&#39;</span> <span class=se>\
+</span><span class=se></span>        -i.orig gcc/config/i386/t-linux64
+  <span class=p>;;</span>
+<span class=k>esac</span>
+mkdir -p build                                         <span class=o>&amp;&amp;</span>
+<span class=nb>cd</span>    build                                            <span class=o>&amp;&amp;</span>
+
+<span class=nv>SED</span><span class=o>=</span>sed                               <span class=se>\
+</span><span class=se></span>../configure --prefix<span class=o>=</span><span class=nv>$myprefix</span>            <span class=se>\
+</span><span class=se></span>             --enable-languages<span class=o>=</span>c,c++,fortran <span class=se>\
+</span><span class=se></span>             --disable-multilib       <span class=se>\
+</span><span class=se></span>             --with-gmp<span class=o>=</span><span class=nv>$HOME</span>/.hpc/gcc/gmp/6.2.0 <span class=se>\
+</span><span class=se></span>             --with-mpfr<span class=o>=</span><span class=nv>$HOME</span>/.hpc/gcc/mpfr/4.1.0 <span class=se>\
+</span><span class=se></span>             --with-mpc<span class=o>=</span><span class=nv>$HOME</span>/.hpc/gcc/mpc/1.2.0 <span class=se>\
+</span><span class=se></span>             --disable-bootstrap      <span class=se>\
+</span><span class=se></span>             --with-system-zlib
+<span class=nb>export</span> PATH
+<span class=nb>unset</span> LIBRARY_PATH
+<span class=nb>export</span> <span class=nv>LIBRARY_PATH</span><span class=o>=</span>/usr/lib64/
+mkdir -p -- .deps
+make -j<span class=k>$(</span>nproc<span class=k>)</span>
+make install
+ml load gcc/9.2.0
+</code></pre></div><h3 id=pkg-config>Pkg-Config</h3><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$hpcroot</span>
+<span class=nv>myprefix</span><span class=o>=</span><span class=nv>$HOME</span>/.hpc/pkg-config/0.29.2
+wget https://pkg-config.freedesktop.org/releases/pkg-config-0.29.2.tar.gz
+gzip -dc pkg-config-0.29.2.tar.gz <span class=p>|</span> tar xvf -
+<span class=nb>cd</span> pkg-config-0.29.2
+./configure --prefix<span class=o>=</span><span class=nv>$myprefix</span> --with-internal-glib --disable-host-tool --docdir<span class=o>=</span><span class=nv>$myprefix</span>/share/doc/pkg-config-0.29.2
+mkdir <span class=nv>$myprefix</span>/lib
+make -j <span class=k>$(</span>nproc<span class=k>)</span>
+make install
+ml load pkg-config/0.29.2
+</code></pre></div><h3 id=zlib>Zlib</h3><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$hpcroot</span>
+<span class=nv>myprefix</span><span class=o>=</span><span class=nv>$HOME</span>/.hpc/zlib/1.2.11
+wget http://zlib.net/zlib-1.2.11.tar.gz
+gzip -dc zlib-1.2.11.tar.gz <span class=p>|</span> tar xvf -
+<span class=nb>cd</span> zlib-1.2.11
+./configure --prefix<span class=o>=</span><span class=nv>$myprefix</span>
+make -j <span class=k>$(</span>nproc<span class=k>)</span>
+make install
+ml load zlib/1.2.11
+</code></pre></div><h3 id=xz-utils>XZ Utils</h3><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$hpcroot</span>
+<span class=nv>myprefix</span><span class=o>=</span><span class=nv>$HOME</span>/.hpc/xz/5.2.5
+wget https://tukaani.org/xz/xz-5.2.5.tar.gz
+gzip -dc xz-5.2.5.tar.gz <span class=p>|</span> tar xvf -
+<span class=nb>cd</span> xz-5.2.5
+./configure --prefix<span class=o>=</span><span class=nv>$myprefix</span> --enable-threads<span class=o>=</span>yes
+make -j <span class=k>$(</span>nproc<span class=k>)</span>
+make install
+ml load xz/5.2.5
+</code></pre></div><h3 id=openssl>OpenSSL</h3><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$hpcroot</span>
+<span class=nv>myprefix</span><span class=o>=</span><span class=nv>$HOME</span>/.hpc/openssl/1.1.1d
+wget https://www.openssl.org/source/openssl-1.1.1d.tar.gz
+gzip -dc openssl-1.1.1d.tar.gz <span class=p>|</span> tar xvf -
+<span class=nb>cd</span> openssl-1.1.1d
+./config --prefix<span class=o>=</span><span class=nv>$myprefix</span> --openssldir<span class=o>=</span><span class=nv>$myprefix</span>/etc/ssl shared zlib-dynamic
+make -j <span class=k>$(</span>nproc<span class=k>)</span>
+make install
+ml load openssl/1.1.1d
+</code></pre></div><h3 id=curl>cURL</h3><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$hpcroot</span>
+<span class=nv>myprefix</span><span class=o>=</span><span class=nv>$HOME</span>/.hpc/curl/7.76.0
+wget https://curl.haxx.se/download/curl-7.76.0.tar.xz
+tar xfv  curl-7.76.0.tar.xz
+<span class=nb>cd</span> curl-7.76.0
+./configure --prefix<span class=o>=</span><span class=nv>$myprefix</span> <span class=se>\
+</span><span class=se></span>    --disable-static <span class=se>\
+</span><span class=se></span>    --enable-threaded-resolver <span class=se>\
+</span><span class=se></span>    --with-openssl
+make -j <span class=k>$(</span>nproc<span class=k>)</span>
+make install
+ml load curl/7.76.0
+</code></pre></div><h3 id=git>Git</h3><p>This is very similar to the previous approach. However, since by default the system <code>perl</code> was being picked up, some slight changes have been made.</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$hpcroot</span>
+<span class=nv>myprefix</span><span class=o>=</span><span class=nv>$HOME</span>/.hpc/git/2.9.5
+<span class=nv>PATH</span><span class=o>=</span><span class=nv>$myprefix</span>/bin:<span class=nv>$PATH</span>
+<span class=nb>export</span> PATH
+wget https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.9.5.tar.gz
+gzip -dc git-2.9.5.tar.gz <span class=p>|</span> tar xvf -
+<span class=nb>cd</span> git-2.9.5
+./configure --with-perl<span class=o>=</span><span class=k>$(</span>which perl<span class=k>)</span> --with-curl<span class=o>=</span><span class=k>$(</span>which curl<span class=k>)</span> -C --prefix<span class=o>=</span><span class=nv>$myprefix</span>
+make -j <span class=k>$(</span>nproc<span class=k>)</span>
+make install
+ml load git/2.9.5
+ml unload openssl <span class=c1># System will suffice</span>
+ml unload curl <span class=c1># System will suffice</span>
+</code></pre></div><h4 id=caveat>Caveat</h4><p>Also, for TRAMP, we would prefer having a more constant path, so we can set up a symlink:</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>mkdir ~/.hpc/bin
+ln ~/.hpc/git/2.9.5/bin/git ~/.hpc/bin/git
+</code></pre></div><h3 id=boost>Boost</h3><p>The <a href=https://www.boost.org/>boost website</a> is utterly incomprehensible. As is the documentation. Also, fun fact, the move from <code>svn</code> makes things worse. This is best installed with the standard compiler present, since the B2 engine detection seems to be very hit and miss. Thankfully, a quick dive into the slightly <a href=https://github.com/boostorg/wiki/wiki/Getting-Started%3A-Overview>better Github wiki</a> led to this nugget:</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$hpcroot</span>
+git clone --recursive https://github.com/boostorg/boost.git
+<span class=nb>cd</span> boost
+git checkout tags/boost-1.76.0 <span class=c1># or whatever branch you want to use</span>
+./bootstrap.sh
+./b2 headers
+</code></pre></div><p>This means we&rsquo;re almost done!</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>./b2
+./b2 install --prefix<span class=o>=</span><span class=nv>$HOME</span>/.hpc/boost/boost-1.76.0
+ml load boost/boost-1.76.0
+</code></pre></div><h3 id=cmake>Cmake</h3><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$hpcroot</span>
+<span class=nv>myprefix</span><span class=o>=</span><span class=nv>$HOME</span>/.hpc/cmake/3.20.1
+wget https://github.com/Kitware/CMake/releases/download/v3.20.1/cmake-3.20.1.tar.gz
+gzip -dc cmake-3.20.1.tar.gz <span class=p>|</span> tar xvf -
+<span class=nb>cd</span> cmake-3.20.1
+<span class=nv>CXXFLAGS</span><span class=o>=</span><span class=s2>&#34;-std=c++11&#34;</span> <span class=nv>CC</span><span class=o>=</span><span class=k>$(</span>which gcc<span class=k>)</span> <span class=nv>CXX</span><span class=o>=</span><span class=k>$(</span>which g++<span class=k>)</span> ./bootstrap --prefix<span class=o>=</span><span class=nv>$myprefix</span> --system-libs
+make -j <span class=k>$(</span>nproc<span class=k>)</span>
+make install
+ml load cmake/3.20.1
+</code></pre></div><h3 id=gnu-make>GNU-Make</h3><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$hpcroot</span>
+<span class=nv>myprefix</span><span class=o>=</span><span class=nv>$HOME</span>/.hpc/make/4.3
+wget http://ftp.gnu.org/gnu/make/make-4.3.tar.gz
+gzip -dc make-4.3.tar.gz <span class=p>|</span> tar xvf -
+<span class=nb>cd</span> make-4.3
+./configure --prefix<span class=o>=</span><span class=nv>$myprefix</span>
+make -j <span class=k>$(</span>nproc<span class=k>)</span>
+make install
+ml load make/4.3
+</code></pre></div><h3 id=brotli>Brotli</h3><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$hpcroot</span>
+<span class=nv>myprefix</span><span class=o>=</span><span class=nv>$HOME</span>/.hpc/brotli/1.0.1
+git clone https://github.com/bagder/libbrotli
+<span class=nb>cd</span> libbrotli
+libtoolize
+aclocal
+autoheader
+./autogen.sh
+./configure --prefix<span class=o>=</span><span class=nv>$myprefix</span>
+make -j <span class=k>$(</span>nproc<span class=k>)</span>
+make install
+ml load brotli/1.0.1
+</code></pre></div><h3 id=ncurses>ncurses</h3><p>We will need to manually ensure the paths for <code>pkg-config</code> are in a feasible location.</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$hpcroot</span>
+<span class=nv>myprefix</span><span class=o>=</span><span class=nv>$HOME</span>/.hpc/ncurses/6.2
+wget https://invisible-mirror.net/archives/ncurses/ncurses-6.2.tar.gz
+gzip -dc ncurses-6.2.tar.gz <span class=p>|</span> tar xvf -
+<span class=nb>cd</span> ncurses-6.2
+./configure --prefix<span class=o>=</span><span class=nv>$myprefix</span> --enable-widec --enable-pc-files --with-shared
+make -j <span class=k>$(</span>nproc<span class=k>)</span>
+make install
+mkdir pkgconfig
+cp misc/formw.pc misc/menuw.pc misc/ncurses++w.pc misc/ncursesw.pc misc/panelw.pc pkgconfig/
+mv pkgconfig <span class=nv>$myprefix</span>/lib/
+ml load ncurses/6.2
+</code></pre></div><h3 id=texinfo>texinfo</h3><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$hpcroot</span>
+<span class=nv>myprefix</span><span class=o>=</span><span class=nv>$HOME</span>/.hpc/texinfo/6.7
+wget http://ftp.gnu.org/gnu/texinfo/texinfo-6.7.tar.gz
+gzip -dc texinfo-6.7.tar.gz <span class=p>|</span> tar xvf -
+<span class=nb>cd</span> texinfo-6.7
+./configure --prefix<span class=o>=</span><span class=nv>$myprefix</span>
+make -j <span class=k>$(</span>nproc<span class=k>)</span>
+make install
+ml load texinfo/6.7
+</code></pre></div><h3 id=gperf>gperf</h3><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$hpcroot</span>
+<span class=nv>myprefix</span><span class=o>=</span><span class=nv>$HOME</span>/.hpc/gperf/3.1
+wget http://ftp.gnu.org/gnu/gperf/gperf-3.1.tar.gz
+gzip -dc gperf-3.1.tar.gz <span class=p>|</span> tar xvf -
+<span class=nb>cd</span> gperf-3.1
+./configure --prefix<span class=o>=</span><span class=nv>$myprefix</span>
+make -j <span class=k>$(</span>nproc<span class=k>)</span>
+make install
+ml load gperf/3.1
+</code></pre></div><h3 id=libseccomp>libseccomp</h3><p>There is a bug, which requires modifying <code>src/system.c</code> to change <code>__NR_seccomp</code> to <code>_nr_seccomp</code>.</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$hpcroot</span>
+<span class=nv>myprefix</span><span class=o>=</span><span class=nv>$HOME</span>/.hpc/libseccomp/2.5.0
+git clone https://github.com/seccomp/libseccomp
+<span class=nb>cd</span> libseccomp
+git checkout tags/v2.5.0
+./autogen.sh
+./configure --prefix<span class=o>=</span><span class=nv>$myprefix</span>
+make -j <span class=k>$(</span>nproc<span class=k>)</span>
+make install
+ml load libseccomp/2.5.0
+</code></pre></div><p>Alternatively, it is easier to work with an older version.</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$hpcroot</span>
+<span class=nv>myprefix</span><span class=o>=</span><span class=nv>$HOME</span>/.hpc/libseccomp/2.4.4
+wget https://github.com/seccomp/libseccomp/releases/download/v2.4.4/libseccomp-2.4.4.tar.gz
+tar xfv libseccomp-2.4.4.tar.gz
+<span class=nb>cd</span> libseccomp-2.4.4
+./configure --prefix<span class=o>=</span><span class=nv>$myprefix</span>
+make -j <span class=k>$(</span>nproc<span class=k>)</span>
+make install
+ml load libseccomp/2.4.4
+</code></pre></div><h3 id=bdwgc>BDWGC</h3><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$hpcroot</span>
+<span class=nv>myprefix</span><span class=o>=</span><span class=nv>$HOME</span>/.hpc/bdwgc/8.0.4
+wget https://github.com/ivmai/bdwgc/releases/download/v8.0.4/gc-8.0.4.tar.gz
+gzip -dc gc-8.0.4.tar.gz <span class=p>|</span> tar xvf -
+<span class=nb>cd</span> gc-8.0.4
+./configure --prefix<span class=o>=</span><span class=nv>$myprefix</span> --enable-cplusplus
+make -j <span class=k>$(</span>nproc<span class=k>)</span>
+make install
+ml load bdwgc/8.0.4
+</code></pre></div><h3 id=pcre>pcre</h3><p>We will prep both <code>pcre2</code> and <code>pcre</code>.</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$hpcroot</span>
+<span class=nv>myprefix</span><span class=o>=</span><span class=nv>$HOME</span>/.hpc/pcre2/10.35
+wget https://ftp.pcre.org/pub/pcre/pcre2-10.35.tar.gz
+gzip -dc pcre2-10.35.tar.gz <span class=p>|</span> tar xvf -
+<span class=nb>cd</span> pcre2-10.35
+./configure --prefix<span class=o>=</span><span class=nv>$myprefix</span> <span class=se>\
+</span><span class=se></span>            --enable-pcre2-16  <span class=se>\
+</span><span class=se></span>            --enable-pcre2-32  <span class=se>\
+</span><span class=se></span>            --enable-pcre2grep-libz
+make -j <span class=k>$(</span>nproc<span class=k>)</span>
+make install
+ml load pcre2/10.35
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$hpcroot</span>
+<span class=nv>myprefix</span><span class=o>=</span><span class=nv>$HOME</span>/.hpc/pcre/8.44
+wget https://ftp.pcre.org/pub/pcre/pcre-8.44.tar.gz
+gzip -dc pcre-8.44.tar.gz <span class=p>|</span> tar xvf -
+<span class=nb>cd</span> pcre-8.44
+./configure --prefix<span class=o>=</span><span class=nv>$myprefix</span> <span class=se>\
+</span><span class=se></span>            --enable-pcre-16  <span class=se>\
+</span><span class=se></span>            --enable-pcre-32  <span class=se>\
+</span><span class=se></span>            --enable-pcregrep-libz
+make -j <span class=k>$(</span>nproc<span class=k>)</span>
+make install
+ml load pcre/8.44
+</code></pre></div><h3 id=bison>bison</h3><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$hpcroot</span>
+<span class=nv>myprefix</span><span class=o>=</span><span class=nv>$HOME</span>/.hpc/bison/3.7.1
+wget http://ftp.gnu.org/gnu/bison/bison-3.7.1.tar.gz
+gzip -dc bison-3.7.1.tar.gz <span class=p>|</span> tar xvf -
+<span class=nb>cd</span> bison-3.7.1
+./configure --prefix<span class=o>=</span><span class=nv>$myprefix</span>
+make -j <span class=k>$(</span>nproc<span class=k>)</span>
+make install
+ml load bison/3.7.1
+</code></pre></div><h3 id=flex>flex</h3><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$hpcroot</span>
+<span class=nv>myprefix</span><span class=o>=</span><span class=nv>$HOME</span>/.hpc/flex/2.6.4
+wget https://github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz
+gzip -dc flex-2.6.4.tar.gz <span class=p>|</span> tar xvf -
+<span class=nb>cd</span> flex-2.6.4
+./configure --prefix<span class=o>=</span><span class=nv>$myprefix</span>
+make -j <span class=k>$(</span>nproc<span class=k>)</span>
+make install
+ml load flex/2.6.4
+</code></pre></div><h3 id=jq>jq</h3><p>We first need the <code>oniguruma</code> <a href=https://github.com/kkos/oniguruma>regular expression library</a>.</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$hpcroot</span>
+<span class=nv>myprefix</span><span class=o>=</span><span class=nv>$HOME</span>/.hpc/oniguruma/6.9.7.1
+git clone git@github.com:kkos/oniguruma.git
+<span class=nb>cd</span> oniguruma
+git checkout tags/v6.9.7.1
+libtoolize
+autoreconf -i
+./configure --prefix<span class=o>=</span><span class=nv>$myprefix</span>
+make -j <span class=k>$(</span>nproc<span class=k>)</span>
+make install
+ml load oniguruma/6.9.7.1
+</code></pre></div><p>We will actually use the binary.</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$HOME</span>/.local/bin
+wget https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
+chmod +x jq-linux64
+mv jq-linux64 jq
+</code></pre></div><h3 id=bzip2>bzip2</h3><p>Needed to manually configure it as shown <a href=https://github.com/samtools/htslib/issues/696#issuecomment-387405020>here</a></p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$hpcroot</span>
+<span class=nv>myprefix</span><span class=o>=</span><span class=nv>$HOME</span>/.hpc/bzip2/1.0.8
+wget https://www.sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz
+gzip -dc bzip2-1.0.8.tar.gz <span class=p>|</span> tar xvf -
+<span class=nb>cd</span> bzip2-1.0.8
+make -f Makefile-libbz2_so
+ln -sf libbz2.so.1.0 libbz2.so
+mkdir -p <span class=nv>$myprefix</span>/include
+mkdir -p <span class=nv>$myprefix</span>/lib
+cp -avf bzlib.h <span class=nv>$myprefix</span>/include
+cp -avf libbz2.so* <span class=nv>$myprefix</span>/lib
+make install <span class=nv>PREFIX</span><span class=o>=</span><span class=nv>$myprefix</span>
+ml load bzip2/1.0.8
+</code></pre></div><p>Actually <a href=https://github.com/libimobiledevice/sbmanager/issues/1#issuecomment-575051418>there are a set of patches</a> for <code>1.0.6</code> which include <code>pkg-config</code> support so we will use those as well.</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$hpcroot</span>
+<span class=nv>myprefix</span><span class=o>=</span><span class=nv>$HOME</span>/.hpc/bzip2/1.0.6
+wget ftp://sourceware.org/pub/bzip2/bzip2-1.0.6.tar.gz
+tar xfz bzip2-1.0.6.tar.gz
+<span class=nb>cd</span> bzip2-1.0.6
+<span class=c1># patches.list: https://gist.github.com/steakknife/0ee85c93495ab9f9cff5e21ee12fb25b</span>
+wget https://gist.githubusercontent.com/steakknife/946f6ee331512a269145b293cbe898cc/raw/bzip2-1.0.6-install_docs-1.patch
+wget https://gist.githubusercontent.com/steakknife/eceda09cae0cdb4900bcd9e479bab9be/raw/bzip2recover-CVE-2016-3189.patch
+wget https://gist.githubusercontent.com/steakknife/42feaa223adb4dd7c5c85f288794973c/raw/bzip2-man-page-location.patch
+wget https://gist.githubusercontent.com/steakknife/94f8aa4bfa79a3f896a660bf4e973f72/raw/bzip2-shared-make-install.patch
+wget https://gist.githubusercontent.com/steakknife/4faee8a657db9402cbeb579279156e84/raw/bzip2-pkg-config.patch
+patch -u &lt; bzip2-1.0.6-install_docs-1.patch
+patch -u &lt; bzip2recover-CVE-2016-3189.patch
+patch -u &lt; bzip2-man-page-location.patch
+patch -u &lt; bzip2-shared-make-install.patch
+patch -u &lt; bzip2-pkg-config.patch
+make
+make install <span class=nv>PREFIX</span><span class=o>=</span><span class=nv>$myprefix</span>
+ml load bzip2/1.0.6
+</code></pre></div><h3 id=sqlite>sqlite</h3><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$hpcroot</span>
+<span class=nv>myprefix</span><span class=o>=</span><span class=nv>$HOME</span>/.hpc/sqlite/3.32.3
+wget https://www.sqlite.org/2020/sqlite-autoconf-3320300.tar.gz
+gzip -dc sqlite-autoconf-3320300.tar.gz <span class=p>|</span> tar xvf -
+<span class=nb>cd</span> sqlite-autoconf-3320300
+./configure --prefix<span class=o>=</span><span class=nv>$myprefix</span>
+make -j <span class=k>$(</span>nproc<span class=k>)</span>
+make install
+ml load sqlite/3.32.3
+</code></pre></div><h3 id=editline>editline</h3><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$hpcroot</span>
+<span class=nv>myprefix</span><span class=o>=</span><span class=nv>$HOME</span>/.hpc/editline/1.17.1
+wget https://github.com/troglobit/editline/releases/download/1.17.1/editline-1.17.1.tar.gz
+gzip -dc editline-1.17.1.tar.gz <span class=p>|</span> tar xvf -
+<span class=nb>cd</span> editline-1.17.1
+./configure --prefix<span class=o>=</span><span class=nv>$myprefix</span>
+make -j <span class=k>$(</span>nproc<span class=k>)</span>
+make install
+ml load editline/1.17.1
+</code></pre></div><h3 id=miniconda>Miniconda</h3><p>We don&rsquo;t need this very much, but it is still useful for some edge cases, mainly revolving around <code>jupyter</code> infrastructure.</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$HOME</span>
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+chmod +x Miniconda3-latest-Linux-x86_64.sh
+./Miniconda3-latest-Linux-x86_64.sh
+<span class=c1># Do not allow it to mess up the shell rc files</span>
+<span class=nb>eval</span> <span class=s2>&#34;</span><span class=k>$(</span><span class=nv>$HOME</span>/miniconda3/bin/conda shell.zsh hook<span class=k>)</span><span class=s2>&#34;</span>
+</code></pre></div><p>Note that we will prefer the manual evaluation since it can be handled in the <code>lmod</code> file.</p><h2 id=applications>Applications</h2><p>Libraries and <code>git</code> aside, there are some tools we might want to have.</p><h3 id=ag>ag</h3><p>The silver searcher, along with <code>rg</code> is very useful to have.</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$hpcroot</span>
+<span class=nv>myprefix</span><span class=o>=</span><span class=nv>$HOME</span>/.hpc/the_silver_searcher/2.2.0
+wget https://geoff.greer.fm/ag/releases/the_silver_searcher-2.2.0.tar.gz
+gzip -dc the_silver_searcher-2.2.0.tar.gz <span class=p>|</span> tar xvf -
+<span class=nb>cd</span> the_silver_searcher-2.2.0
+./configure --prefix<span class=o>=</span><span class=nv>$myprefix</span>
+make -j <span class=k>$(</span>nproc<span class=k>)</span>
+make install
+ml load the_silver_searcher/2.2.0
+</code></pre></div><h3 id=neovim>Neovim</h3><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$hpcroot</span>
+<span class=nv>myprefix</span><span class=o>=</span><span class=nv>$HOME</span>/.hpc/nvim/0.5.0
+wget https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
+chmod +x nvim.appimage
+./nvim.appimage --appimage-extract
+mkdir -p <span class=nv>$myprefix</span>
+mv squashfs-root/usr/* <span class=nv>$myprefix</span>
+ml load nvim/0.5.0
+</code></pre></div><h3 id=tmux>Tmux</h3><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$hpcroot</span>
+<span class=nv>myprefix</span><span class=o>=</span><span class=nv>$HOME</span>/.hpc/tmux/3.1b
+wget https://github.com/tmux/tmux/releases/download/3.1b/tmux-3.1b-x86_64.AppImage
+chmod +x tmux-3.1b-x86_64.AppImage
+rm -rf squashfs-root
+./tmux-3.1b-x86_64.AppImage --appimage-extract
+mkdir -p <span class=nv>$myprefix</span>
+mv squashfs-root/usr/bin squashfs-root/usr/lib squashfs-root/usr/share <span class=nv>$myprefix</span>
+ml load tmux/3.1b
+</code></pre></div><h3 id=zsh>Zsh</h3><p>More of an update than a requirement.</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$hpcroot</span>
+<span class=nv>myprefix</span><span class=o>=</span><span class=nv>$HOME</span>/.hpc/zsh/5.8
+wget https://github.com/zsh-users/zsh/archive/zsh-5.8.tar.gz
+gzip -dc zsh-5.8.tar.gz <span class=p>|</span> tar xvf -
+<span class=nb>cd</span> zsh-zsh-5.8
+autoreconf -fiv
+./configure --prefix<span class=o>=</span><span class=nv>$myprefix</span>
+make -j <span class=k>$(</span>nproc<span class=k>)</span>
+make install
+ml load zsh/5.8
+</code></pre></div><h2 id=conclusion>Conclusion</h2><p>Having composed a bunch of these, I will of course try to somehow get <code>nix</code> up and running so it can bootstrap itself and allow me to work in peace. I might also eventually create shell scripts to automate updating these, but hopefully I can set up <code>nix</code> and not re-create package manager logic in <code>lua</code>.</p><section class=footnotes role=doc-endnotes><hr><ol><li id=fn:1 role=doc-endnote><p>They were called <code>hpc2013</code> and <code>hpc2010</code> respectively&#160;<a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li><li id=fn:2 role=doc-endnote><p>I really like Lua, enough to embed it in <a href=https://dseams.info>d-SEAMS</a>&#160;<a href=#fnref:2 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li></ol></section></div></article><hr><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7" y2="7"/></svg><span class=tag><a href=https://rgoswami.me/tags/workflow>workflow</a></span><span class=tag><a href=https://rgoswami.me/tags/projects>projects</a></span><span class=tag><a href=https://rgoswami.me/tags/hpc>hpc</a></span></p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6A2 2 0 004 4v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>2891 Words</p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Posted: <time class=dt-published>2020-08-09 02:29 +0000</time></p><a class=resp-sharing-button__link href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2frgoswami.me%2fposts%2fhpc-dots-lmod%2f" target=_blank rel=noopener aria-label=Facebook><div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.5"/><path d="M15.84 9.5H13.5V8.48c0-.53.35-.65.6-.65h1.4v-2.3h-2.35c-2.3.0-2.65 1.7-2.65 2.8V9.5h-2v2h2v7h3v-7h2.1l.24-2z"/></svg></div>Facebook</div></a><a class=resp-sharing-button__link href="https://twitter.com/intent/tweet/?text=%22HPC%20Dotfiles%20and%20LMod%22%20seems%20like%20an%20interesting%20read%20from%20%40rg0swami&url=https%3a%2f%2frgoswami.me%2fposts%2fhpc-dots-lmod%2f" target=_blank rel=noopener aria-label=Twitter><div class="resp-sharing-button resp-sharing-button--twitter resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.5 7.4l-2 .2c-.4-.5-1-.8-2-.8C13.3 6.8 12 8 12 9.4v.6c-2 0-4-1-5.4-2.7-.2.4-.3.8-.3 1.3.0 1 .4 1.7 1.2 2.2-.5.0-1 0-1.2-.3.0 1.3 1 2.3 2 2.6-.3.4-.7.4-1 0 .2 1.4 1.2 2 2.3 2-1 1-2.5 1.4-4 1 1.3 1 2.7 1.4 4.2 1.4 4.8.0 7.5-4 7.5-7.5v-.4c.5-.4.8-1.5 1.2-2z"/><circle cx="12" cy="12" r="11.5"/></svg></div>Twitter</div></a><a class=resp-sharing-button__link href="mailto:?subject=%22HPC%20Dotfiles%20and%20LMod%22%20seems%20interesting...&body=https%3a%2f%2frgoswami.me%2fposts%2fhpc-dots-lmod%2f" target=_self rel=noopener aria-label=E-Mail><div class="resp-sharing-button resp-sharing-button--email resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19.5 16c0 .8-.7 1.5-1.5 1.5H6c-.8.0-1.5-.7-1.5-1.5V8c0-.8.7-1.5 1.5-1.5h12c.8.0 1.5.7 1.5 1.5v8zm-2-7.5L12 13 6.5 8.5m11 6-4-2.5m-7 2.5 4-2.5"/><circle cx="12" cy="12" r="11.5"/></svg></div>E-Mail</div></a><a class=resp-sharing-button__link href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2frgoswami.me%2fposts%2fhpc-dots-lmod%2f&title=%22HPC%20Dotfiles%20and%20LMod%22%20seems%20interesting...&summary=%22HPC%20Dotfiles%20and%20LMod%22%20seems%20interesting...&source=https%3a%2f%2frgoswami.me%2fposts%2fhpc-dots-lmod%2f" target=_blank rel=noopener aria-label=LinkedIn><div class="resp-sharing-button resp-sharing-button--linkedin resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.5"/><path d="M15 12.5c-.28.0-.5.22-.5.5v3.5h-3s.03-6.48.0-7h3v.83s.46-.75 1.7-.75c1.56.0 2.3 1.12 2.3 3.3v3.62h-3V13c0-.28-.23-.5-.5-.5zm-7.5-3h2v7h-2z"/><circle cx="8.5" cy="6.5" r="1"/></svg></div>LinkedIn</div></a><a class=resp-sharing-button__link href="https://reddit.com/submit/?url=https%3a%2f%2frgoswami.me%2fposts%2fhpc-dots-lmod%2f&resubmit=true&title=%22HPC%20Dotfiles%20and%20LMod%22%20seems%20interesting..." target=_blank rel=noopener aria-label=Reddit><div class="resp-sharing-button resp-sharing-button--reddit resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.5"/><ellipse cx="12" cy="14.37" rx="6.2" ry="4.24"/><path d="M14.3 16.25c-.62.36-1.42.57-2.3.57s-1.7-.2-2.32-.58"/><circle cx="14.61" cy="13.39" r=".98"/><circle cx="9.39" cy="13.39" r=".98"/><path d="M16.4 11.38c.26-.55.82-.92 1.47-.92.9.0 1.63.73 1.63 1.63.0.8-.6 1.47-1.38 1.6"/><circle cx="17.22" cy="7.52" r="1.63"/><path d="M7.6 11.38c-.26-.54-.82-.92-1.47-.92-.9.0-1.63.73-1.63 1.63.0.8.6 1.47 1.38 1.6M12 10.12s-.08-4.82 3.6-2.6"/></svg></div>Reddit</div></a><a class=resp-sharing-button__link href="whatsapp://send?text=%22HPC%20Dotfiles%20and%20LMod%22%20seems%20interesting...%20https%3a%2f%2frgoswami.me%2fposts%2fhpc-dots-lmod%2f" target=_blank rel=noopener aria-label=WhatsApp><div class="resp-sharing-button resp-sharing-button--whatsapp resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle xmlns="http://www.w3.org/2000/svg" cx="12" cy="12" r="11.5"/><path stroke-width="1" d="M17.6 6.2c-1.5-1.5-3.4-2.3-5.5-2.3-4.3.0-7.8 3.5-7.8 7.8.0 1.4.4 2.7 1 3.9l-1.1 4 4.1-1.1c1.1.6 2.4.9 3.7.9 4.3.0 7.8-3.5 7.8-7.8.1-2-.7-3.9-2.2-5.4zm-5.5 11.9c-1.2.0-2.3-.3-3.3-.9l-.2-.1-2.4.6.7-2.4-.2-.2c-.6-1-1-2.2-1-3.4.0-3.6 2.9-6.5 6.5-6.5 1.7.0 3.3.7 4.6 1.9 1.2 1.2 1.9 2.8 1.9 4.6-.1 3.5-3 6.4-6.6 6.4zm3.5-4.8c-.2-.1-1.1-.6-1.3-.6-.2-.1-.3-.1-.4.1s-.5.6-.6.8c-.1.1-.2.1-.4.0s-.8-.3-1.6-1c-.6-.5-1-1.2-1.1-1.3-.1-.2.0-.3.1-.4l.3-.3s.1-.2.2-.3c.1-.1.0-.2.0-.3s-.4-1.1-.6-1.4c-.2-.4-.3-.3-.4-.3h-.4s-.3.0-.5.2-.7.7-.7 1.6c0 1 .7 1.9.8 2s1.4 2.1 3.3 2.9c.5.2.8.3 1.1.4.5.1.9.1 1.2.1.4-.1 1.1-.5 1.3-.9.2-.5.2-.8.1-.9.0-.2-.2-.3-.4-.4z"/></svg></div>WhatsApp</div></a></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://rgoswami.me/posts/ccon-tut-nix/><span class=button__icon>←</span>
+<span class=button__text>A Tutorial Introduction to Nix</span></a></span>
+<span class="button next"><a href=https://rgoswami.me/posts/expl-backlight-control/><span class=button__text>Explorations with Backlight Controllers</span>
+<span class=button__icon>→</span></a></span></div></div><div id=comments class=thin><div class=pagination__title><span class=pagination__title-h>Comments</span><hr></div><div id=remarkbox-div><noscript><iframe id=remarkbox-iframe src="https://my.remarkbox.com/embed?nojs=true" style=height:600px;width:100%;border:none!important tabindex=0></iframe></noscript></div><script src=https://my.remarkbox.com/static/js/iframe-resizer/iframeResizer.min.js></script><script>var rb_owner_key="8e660759-e7e6-11ea-9711-040140774501",thread_uri=window.location.href,thread_title=window.document.title,thread_fragment=window.location.hash,rb_src="https://my.remarkbox.com/embed?rb_owner_key="+rb_owner_key+"&thread_title="+encodeURI(thread_title)+"&thread_uri="+encodeURIComponent(thread_uri)+thread_fragment;function create_remarkbox_iframe(){var a=document.createElement("iframe");a.setAttribute("id","remarkbox-iframe"),a.setAttribute("scrolling","no"),a.setAttribute("src",rb_src),a.setAttribute("frameborder","0"),a.setAttribute("tabindex","0"),a.setAttribute("title","Remarkbox"),a.style.width="100%",document.getElementById("remarkbox-div").appendChild(a)}create_remarkbox_iframe(),iFrameResize({checkOrigin:["https://my.remarkbox.com"],inPageLinks:!0,initCallback:function(a){a.iFrameResizer.moveToAnchor(thread_fragment)}},document.getElementById("remarkbox-iframe"))</script></div></main><footer class=footer><p>&copy; 2021
+<span><a href=https://rgoswami.me/>Rohit Goswami (HaoZeke)</a></span>
+<a href=https://rgoswami.me/posts/index.xml target=_blank title=rss><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 019 9"/><path d="M4 4a16 16 0 0116 16"/><circle cx="5" cy="19" r="1"/></svg></a><br><a rel=license href=http://creativecommons.org/licenses/by-nc-sa/4.0/>CC BY-NC-SA 4.0</a>.
+Powered by <a href=http://gohugo.io><u>Hugo</u></a> and <a href=https://github.com/HaoZeke/hugo-theme-hello-friend-ng-hz><u>this theme</u></a>.</br>Hosted with <u><a href=https://www.netlify.com/>Netlify</a></u>.</br><script src=https://liberapay.com/rohit/widgets/button.js></script><noscript><a href=https://liberapay.com/rohit/donate><img alt="Donate using Liberapay" src=https://liberapay.com/assets/widgets/donate.svg></a></noscript></p></footer></div><script src=/bundle.min.5fae9992ea406007408dc33b0b3a8376d61e2f1d6ac50ba1dad7580ac50afb5199bcef3bbc3677e77553a9980bf882cf71edc2f755687dd7725f12ece4304ac2.js></script><script>(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)})(window,document,'script','//www.google-analytics.com/analytics.js','ga'),ga('create','UA-109503488-16','auto'),ga('send','pageview')</script><script type=text/javascript>(function(a,e,b,f,g,c,d){a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},c=e.createElement(f),c.async=1,c.src="https://www.clarity.ms/tag/"+g,d=e.getElementsByTagName(f)[0],d.parentNode.insertBefore(c,d)})(window,document,"clarity","script","3z2xvwqu4u")</script><script data-goatcounter=https://rgoswami.goatcounter.com/count async src=//gc.zgo.at/count.js></script><script>var clicky_site_ids=clicky_site_ids||[];clicky_site_ids.push("101265002")</script><script async src=https://static.getclicky.com/js></script><script src=https://cdn.jsdelivr.net/npm/readmore-js@3.0.0-beta-1/dist/readmore.min.js></script><script src=/js/codefold.min.4a43062cb83308b55227adf937c91be79ff6d95df8bb821dfd71805ce54629ff8cffed3ae81d70fdee5f324fa0f39c5280ae785f165801885db074551a993a21.js></script></body></html>

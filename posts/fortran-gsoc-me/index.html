@@ -1,0 +1,181 @@
+<!doctype html><html lang=en itemscope itemtype=http://schema.org/WebPage><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=author content="[Rohit Goswami]"><meta name=description content="Reminisces and prophecies brought upon by LFortran and GSoC 2021
+ Background  I know not what the language of the future will look like, but I know it will be called FORTRAN&amp;hellip; &amp;mdash; Charles Anthony Richard Hoare, circa 1982 &amp;ndash; Daan Frenkel, 2020
+ This post is a little belated, given that the GSoC announcements were a few days ago. Therein lies the future, and much digital ink, sweat and blood shall be spilled towards accomplishing the goals outlined in my accepted project proposal."><meta name=keywords content=",history,ramblings,workflow,fortran"><meta name=robots content="noodp"><meta name=theme-color content><link rel=canonical href=https://rgoswami.me/posts/fortran-gsoc-me/><title>Fortran, GSoC21 and Me :: Rohit Goswami — Reflections</title><link href=https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css rel=stylesheet type=text/css><link rel=stylesheet href=/main.min.b6dbce0fdf6c61563a0c2226e857d5dadd8e5afa2c4f73ec9ea55abd831f9a72.css><meta itemprop=name content="Fortran, GSoC21 and Me"><meta itemprop=description content="Reminisces and prophecies brought upon by LFortran and GSoC 2021
+ Background  I know not what the language of the future will look like, but I know it will be called FORTRAN&mldr; &mdash; Charles Anthony Richard Hoare, circa 1982 &ndash; Daan Frenkel, 2020
+ This post is a little belated, given that the GSoC announcements were a few days ago. Therein lies the future, and much digital ink, sweat and blood shall be spilled towards accomplishing the goals outlined in my accepted project proposal."><meta itemprop=datePublished content="2021-05-21T05:17:00+00:00"><meta itemprop=dateModified content="2021-05-21T05:17:00+00:00"><meta itemprop=wordCount content="1606"><meta itemprop=image content="https://rgoswami.me/images/RG.png"><meta itemprop=keywords content="history,ramblings,workflow,fortran,"><meta property="og:title" content="Fortran, GSoC21 and Me"><meta property="og:description" content="Reminisces and prophecies brought upon by LFortran and GSoC 2021
+ Background  I know not what the language of the future will look like, but I know it will be called FORTRAN&mldr; &mdash; Charles Anthony Richard Hoare, circa 1982 &ndash; Daan Frenkel, 2020
+ This post is a little belated, given that the GSoC announcements were a few days ago. Therein lies the future, and much digital ink, sweat and blood shall be spilled towards accomplishing the goals outlined in my accepted project proposal."><meta property="og:type" content="article"><meta property="og:url" content="https://rgoswami.me/posts/fortran-gsoc-me/"><meta property="og:image" content="https://rgoswami.me/images/RG.png"><meta property="article:section" content="posts"><meta property="article:published_time" content="2021-05-21T05:17:00+00:00"><meta property="article:modified_time" content="2021-05-21T05:17:00+00:00"><meta property="og:site_name" content="Rohit Goswami"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://rgoswami.me/images/RG.png"><meta name=twitter:title content="Fortran, GSoC21 and Me"><meta name=twitter:description content="Reminisces and prophecies brought upon by LFortran and GSoC 2021
+ Background  I know not what the language of the future will look like, but I know it will be called FORTRAN&mldr; &mdash; Charles Anthony Richard Hoare, circa 1982 &ndash; Daan Frenkel, 2020
+ This post is a little belated, given that the GSoC announcements were a few days ago. Therein lies the future, and much digital ink, sweat and blood shall be spilled towards accomplishing the goals outlined in my accepted project proposal."><meta property="article:section" content="personal"><meta property="article:published_time" content="2021-05-21 05:17:00 +0000 GMT"></head><body><div class=container><header class=header><div class=header__inner><div class=header__left><div class=logo><a href=/ style=text-decoration:none><img src=/images/home.png alt></a></div></div><div class=header__mid><button class=button><div class=button__text><a href=https://rgoswami.me//search>Search</a></div></button></div><div class=header__right><nav class=menu><ul class=menu__inner><li><a href=https://rgoswami.me/about>About</a></li><li><a href=https://rgoswami.me/posts>Blog</a></li></ul><ul class=menu__inner><li><a href=https://rgoswami.me/categories>Categories</a></li><li><a href=https://rgoswami.me/tags>Tags</a></li></ul></nav><button id=toggleMenu><div class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></div></button>
+<button class=theme-toggle id=toggleTheme><svg class="theme-toggler" width="32" height="32" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41c10.4934.0 19-8.5066 19-19C41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg></button></div></div></header><script src=https://rgoswami.me/js/mathjax-config.js></script><script id=MathJax-script async src=https://unpkg.com/mathjax@3/es5/tex-chtml.js></script><aside class=sidebar><div class=hideTOC><button id=tocTog>TOC</button><div class="sideTOC m-fadeOut"><nav id=TableOfContents><ul><li><a href=#background>Background</a></li><li><a href=#before-fortran-dot-dot>Before Fortran..</a></li><li><a href=#towards-fortran>Towards Fortran</a></li><li><a href=#first-encounter>First Encounter</a></li><li><a href=#fortran-the-stable>Fortran the stable</a></li><li><a href=#ice-fire-and-fortran>Ice, Fire and Fortran</a></li><li><a href=#quantum-chemistry-and-fortran>Quantum Chemistry and Fortran</a></li><li><a href=#tensors-ipam-and-fortran>Tensors, IPAM and Fortran</a></li><li><a href=#fortran-lang-and-lfortran>Fortran Lang and LFortran</a></li><li><a href=#conclusions>Conclusions</a></li><li><a href=#references>References</a></li></ul></nav></div></div></aside><main class=post><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>8 minutes<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Written: 2021-05-21 05:17 +0000</p></p></div><article class=h-entry><h1 class="post-title p-name"><a class=u-url href=https://rgoswami.me/posts/fortran-gsoc-me/>Fortran, GSoC21 and Me</a></h1><div class=post-info><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pen-tool"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg><span class="author u-author p-author"><a href=https://rgoswami.me/author/rohit-goswami>Rohit Goswami</a></span></div><hr><aside id=toc class=sidebar><div class=toc-title>Table of Contents</div><nav id=TableOfContents><ul><li><a href=#background>Background</a></li><li><a href=#before-fortran-dot-dot>Before Fortran..</a></li><li><a href=#towards-fortran>Towards Fortran</a></li><li><a href=#first-encounter>First Encounter</a></li><li><a href=#fortran-the-stable>Fortran the stable</a></li><li><a href=#ice-fire-and-fortran>Ice, Fire and Fortran</a></li><li><a href=#quantum-chemistry-and-fortran>Quantum Chemistry and Fortran</a></li><li><a href=#tensors-ipam-and-fortran>Tensors, IPAM and Fortran</a></li><li><a href=#fortran-lang-and-lfortran>Fortran Lang and LFortran</a></li><li><a href=#conclusions>Conclusions</a></li><li><a href=#references>References</a></li></ul></nav></aside><hr><div class="post-content e-content"><blockquote><p>Reminisces and prophecies brought upon by
+<a href=https://lfortran.org/>LFortran</a> and <a href=https://summerofcode.withgoogle.com/projects/#5790375215628288>GSoC
+2021</a></p></blockquote><h2 id=background>Background</h2><blockquote><p>I know not what the language of the future will look like, but I know
+it will be called FORTRAN&mldr;<br>&mdash; Charles Anthony Richard Hoare,
+circa 1982<br>&ndash; Daan Frenkel, 2020</p></blockquote><p>This post is a little belated, given that the GSoC announcements were a
+few days ago. Therein lies the future, and much digital ink, sweat and
+blood shall be spilled towards accomplishing the goals outlined in my
+<a href=https://summerofcode.withgoogle.com/projects/#5790375215628288>accepted project
+proposal</a>.
+However, interestingly, it was an offhand comment at a <a href=https://www.cecam.org/lectures-categories/cecam-marvel-classics>CECAM MARVEL
+Classics
+webinar</a>
+on free energy of solids <sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup> which triggered this.</p><h2 id=before-fortran-dot-dot>Before Fortran..</h2><p>Formula translation, or FORTRAN was not my first programming language. I
+grew up with the Logo turtle, and progressed naturally into C for
+coursework (as was the tradition back during my schooldays) and C++ for
+monkeying around with my Xperia devices (mostly Cyanogenmod stuff, some
+LineageOS). I shifted rather awkwardly in and out of Java (also a
+popular mainstay in different schools) and decided at some point during
+high school to pick up a high level language. I choose Ruby, because it
+was cuter than Python (still is!) and I had just been bitten by the
+web-design bug (Jekyll!!! Ruby on Rails!).</p><p>I was not unaware of Fortran, but I had little to no inclination to
+learn it, at the time, in my youth I was only interested in systems
+programming, web-design and other practical, visual activities.</p><h2 id=towards-fortran>Towards Fortran</h2><p>As I grew older, my interest in crass physical things waned and my
+interest in the cool, calculating and sly discipline of simulation;
+fortune telling with confidence and code kept pace.</p><p>I <strong>almost</strong> came into contact with Fortran when I mistakenly stumbled
+onto <a href=http://www.quantum-espresso.org/>Quantum Espresso</a> in the course
+of my first summer undergraduate research project under Prof. Rajarshi
+Chakrabarti at IIT Bombay back in 2014&mldr;.</p><p>Almost, but not quite, for I was hunting models for soft matter
+(eventually found them too <a href=#ref-theeyancheriTranslationalRotationalDynamics2020>Theeyancheri et
+al.</a>
+(<a href=#ref-theeyancheriTranslationalRotationalDynamics2020>2020</a>) ), and
+<a href=https://espressomd.org/wordpress/about/features/>EsPReSSO MD</a> <strong>is
+not</strong> Quantum Espresso.</p><h2 id=first-encounter>First Encounter</h2><p>I finally stumbled upon FORTRAN in all its free form <code>f90</code> glory in the
+form of <a href=https://bigdft.org/>BigDFT</a> during my stint in the 2015
+Students-Undergraduate Research Graduate Excellence (SURGE) program of
+IIT Kanpur. A mere six years ago.</p><p>By then I had been programming, as perhaps many do, largely on the
+largess of the internet. It was my source of information, and even
+seeded some of my opinions. I immediately set out to discover as much
+about Fortran as I could. Back then I failed miserably. For the first
+time, I was confronted only with ridiculously ugly <code>F77</code> code examples,
+and it seemed abundantly evident that most questions and projects were
+clearly related to coursework (poorly taught coursework no less).</p><p>The only ray of sunshine in a mess of poor content was Ondřej Čertík&rsquo;s
+<a href=https://www.fortran90.org/>fortran90.org</a>. I knew better than to write
+off Fortran though, I knew even then its pedigree (impossible to
+configure <a href=https://github.com/lammps/lammps>LAMMPS</a> without touching
+upon <a href=http://www.netlib.org/blas/>BLAS</a> and
+<a href=http://performance.netlib.org/lapack/>LAPACK</a>&mldr;) <sup id=fnref:2><a href=#fn:2 class=footnote-ref role=doc-noteref>2</a></sup>.</p><p>I was not a chemist, and my dealings with elegant EsPReSSo and LAMMPS in
+no way prepared me for the horrific mess which was (and is) the codes of
+ab-initio chemistry. I was however, introduced to
+<a href=#ref-redwineUpgradingFortran901995>Redwine</a>
+(<a href=#ref-redwineUpgradingFortran901995>1995</a>) .</p><h2 id=fortran-the-stable>Fortran the stable</h2><p>During my third year, I attempted to submit a project written in Julia.
+I spent the next couple of months convincing the instructor of the fact
+that Julia was a legitimate language and not a figment of my
+imagination. Little wonder then, when the time came to submit an
+undergraduate thesis, much of the computations were was inspired by the
+venerable Fortran codes of
+<a href=#ref-kayodeFortranProgramsChemical1995>Kayode</a>
+(<a href=#ref-kayodeFortranProgramsChemical1995>1995</a>) .</p><h2 id=ice-fire-and-fortran>Ice, Fire and Fortran</h2><p>The fortunate circumstances behind my position here in Iceland, are best
+left to other posts. One of my tasks, was the migration of existing code
+for the Single Center Multipole Expansion water model <a href=#ref-wikfeldtTransferableH2OInteraction2013>Wikfeldt et
+al.</a>
+(<a href=#ref-wikfeldtTransferableH2OInteraction2013>2013</a>) from Fortran (free
+form, but not modern) to <code>C++</code> or at-least to write <code>ISO_C_BINDING</code>
+wrappers for incorporation into existing <code>C++</code> libraries (with an eye
+towards LAMMPS integration). At the time, given my projects in <code>C++</code>
+(<a href=#ref-goswamiDSEAMSDeferredStructural2020>Goswami, Goswami, and Singh
+2020</a>) and passable
+familiarity with Fortran, this seemed like an optimal use of time.</p><p>However, the force-field was and remains to be heavily under development
+<a href=#ref-jonssonTransferablePotentialFunction2020>Jónsson et al.</a>
+(<a href=#ref-jonssonTransferablePotentialFunction2020>2020</a>), <a href=#ref-jonssonPolarizableEmbeddingTransferable2019>Jónsson, Dohn,
+and Jónsson</a>
+(<a href=#ref-jonssonPolarizableEmbeddingTransferable2019>2019</a>), which made
+anything less than a hard fork unfeasible. Still on the books however,
+<strong>another Fortran project</strong> to look forward to!</p><h2 id=quantum-chemistry-and-fortran>Quantum Chemistry and Fortran</h2><p>With collaborators at SURFSara I was involved in the port from MATLAB to
+C++, Gaussian Process Regression models <a href=#ref-koistinenNudgedElasticBand2019>Koistinen et
+al.</a>
+(<a href=#ref-koistinenNudgedElasticBand2019>2019</a>), <a href=#ref-koistinenNudgedElasticBand2017>Koistinen et
+al.</a>
+(<a href=#ref-koistinenNudgedElasticBand2017>2017</a>), <a href=#ref-koistinenMinimumModeSaddle2020>Koistinen et
+al.</a>
+(<a href=#ref-koistinenMinimumModeSaddle2020>2020</a>),
+<a href=#ref-koistinenAlgorithmsFindingSaddle2019>Koistinen</a>
+(<a href=#ref-koistinenAlgorithmsFindingSaddle2019>2019</a>) for accelerating
+saddle searches and coupling said methodologies to EON <a href=#ref-chillEONSoftwareLong2014>Chill et
+al.</a>
+(<a href=#ref-chillEONSoftwareLong2014>2014</a>) for long time scales. This was
+under my brilliant advisor&rsquo;s <a href=https://www.reaxpro.eu/>ReaxPro project</a>
+who also guided and encouraged me towards applying for a fellowship. As
+befitting a multiscale modeling project, this lead to an NDA and tweaks
+towards efficient workflows using potentials from the <a href=https://www.scm.com/>Amsterdam
+Modeling Suite</a>, which naturally, is <strong>written in
+Fortran</strong>.</p><h2 id=tensors-ipam-and-fortran>Tensors, IPAM and Fortran</h2><p>Much <a href="https://fortran-lang.discourse.group/t/why-abandon-fortran-for-linear-algebra/1191/6?u=rgoswami">has been
+said</a>
+about <a href=https://www.nwchem-sw.org>NWChem</a>&rsquo;s <a href=https://www.hpcwire.com/2021/04/29/nwchemex-computational-chemistry-code-for-the-exascale-era/>pivot
+towards</a>
+<code>C++</code>. However, this has quite a bit to do with
+<a href=https://github.com/pnnl/HiParTI>HiParTI</a> (a tensor library) being in
+<code>C++</code>. To throw away Fortran simply because Tensors are as yet easier to
+implement in other languages is treating a symptom, not fixing the
+cause. In any case, over the course of an <a href="http://www.ipam.ucla.edu/programs/long-programs/tensor-methods-and-emerging-applications-to-the-physical-and-data-sciences/?tab=participant-list">IPAM
+fellowship</a>
+(supported by my advisor) I was able to gain a broad overview of the
+underlying numerical complaints driving the schism; and there are
+already fantastic libraries which can be leveraged for multilinear
+algebra. Fortran is still one of the only language to have standardized
+parallel programming paradigms, and in the long run there is no way that
+won&rsquo;t count in its favor.</p><h2 id=fortran-lang-and-lfortran>Fortran Lang and LFortran</h2><p>Around the same time frame, I was lucky enough to be involved in the
+documentation for <a href=https://symengine.org>SymEngine</a>, and from there I
+was poised to witness the rapid rejuvenation and development of the
+Fortran ecosystem spearheaded in no small part by Ondřej Čertík (a
+fantastic person, mentor, and scientist; conversant in both algorithmic
+topics and quantum chemistry). <code>LFortran</code> is perhaps the most
+path-breaking of all the existing drives to fight the perceived
+obsolesce of Fortran. By bringing interactivity to the masses, the
+natural beauty of Fortran (recently reaffirmed by <a href=https://milancurcic.com/book/>Milan Curic&rsquo;s
+book</a>) can come to the fore.</p><p>The Google Summer of Code project blends both my deep rooted interest in
+language semantics and flexible implementations; while also whetting my
+academic appetite by being so closely tied to the topics I love. Working
+on <code>dftatom</code> (and related quantum chemistry codes) while gaining
+familiarity with the LLVM based LFortran is fantastic. Being able to
+work closely with the <a href=https://fortran-lang.org/newsletter/2021/05/18/Welcome-GSoC-students/>rest of the team behind Fortran
+lang</a>
+to bring about an &ldquo;age of Fortran, as promised twenty years ago&rdquo; is one
+of the most exciting premises I can imagine.</p><h2 id=conclusions>Conclusions</h2><p>The picture painted here, like all nostalgic reminisces, is colored and
+deeply biased. My love for modern <code>C++</code> and elegant <code>R</code>, my forays into
+other languages, none of these are mentioned. The sheer <strong>joy</strong> of using
+modern Fortran, of projects with <code>fpm</code>; is lost in translation. It is
+true, that my work, has more often involved production level <code>C++</code> over
+Fortran, however, given everything, I can be certain of one thing:</p><blockquote><p>The future is Fortran! (Or at-least involves a lot of Fortran)</p></blockquote><h2 id=references>References</h2><div id=refs class="references csl-bib-body hanging-indent"><div></div><div id=ref-chillEONSoftwareLong2014 class=csl-entry><div></div><p>Chill, Samuel T, Matthew Welborn, Rye Terrell, Liang Zhang, Jean-Claude
+Berthet, Andreas Pedersen, Hannes Jónsson, and Graeme Henkelman. 2014.
+&ldquo;EON: Software for Long Time Simulations of Atomic Scale Systems.&rdquo;
+<em>Modelling and Simulation in Materials Science and Engineering</em> 22 (5):
+055002. <a href=https://doi.org/10.1088/0965-0393/22/5/055002>https://doi.org/10.1088/0965-0393/22/5/055002</a>.</p></div><div id=ref-goswamiDSEAMSDeferredStructural2020 class=csl-entry><div></div><p>Goswami, Rohit, Amrita Goswami, and Jayant K. Singh. 2020. &ldquo;D-SEAMS:
+Deferred Structural Elucidation Analysis for Molecular Simulations.&rdquo;
+<em>Journal of Chemical Information and Modeling</em> 60 (4): 2169&ndash;77.
+<a href=https://doi.org/10.1021/acs.jcim.0c00031>https://doi.org/10.1021/acs.jcim.0c00031</a>.</p></div><div id=ref-jonssonPolarizableEmbeddingTransferable2019 class=csl-entry><p>Jónsson, Elvar Örn, Asmus Ougaard Dohn, and Hannes Jónsson. 2019.
+&ldquo;Polarizable Embedding with a Transferable H2o Potential Function I:
+Formulation and Tests on Dimer.&rdquo; <em>Journal of Chemical Theory and
+Computation</em>, November. <a href=https://doi.org/10.1021/acs.jctc.9b00777>https://doi.org/10.1021/acs.jctc.9b00777</a>.</p></div><div id=ref-jonssonTransferablePotentialFunction2020 class=csl-entry><p>Jónsson, Elvar Örn, Soroush Rasti, Marta Galynska, Jörg Meyer, and
+Hannes Jónsson. 2020. &ldquo;Transferable Potential Function for Flexible
+H$_2$O Molecules Based on the Single Center Multipole Expansion.&rdquo;
+July 12, 2020. <a href=http://arxiv.org/abs/2007.06090>http://arxiv.org/abs/2007.06090</a>.</p></div><div id=ref-kayodeFortranProgramsChemical1995 class=csl-entry><div></div><p>Kayode, Coker, A. 1995. <em>Fortran Programs for Chemical Process Design,
+Analysis, and Simulation</em>. Elsevier.
+<a href=https://doi.org/10.1016/B978-0-88415-280-4.X5000-6>https://doi.org/10.1016/B978-0-88415-280-4.X5000-6</a>.</p></div><div id=ref-koistinenAlgorithmsFindingSaddle2019 class=csl-entry><div></div><p>Koistinen, Olli-Pekka. 2019. &ldquo;Algorithms for Finding Saddle Points and
+Minimum Energy Paths Using Gaussian Process Regression.&rdquo; Aalto
+University School of Science.
+<a href=https://opinvisindi.is/handle/20.500.11815/1460>https://opinvisindi.is/handle/20.500.11815/1460</a>.</p></div><div id=ref-koistinenNudgedElasticBand2019 class=csl-entry><div></div><p>Koistinen, Olli-Pekka, Vilhjálmur Ásgeirsson, Aki Vehtari, and Hannes
+Jónsson. 2019. &ldquo;Nudged Elastic Band Calculations Accelerated with
+Gaussian Process Regression Based on Inverse Interatomic Distances.&rdquo;
+<em>Journal of Chemical Theory and Computation</em> 15 (12): 6738&ndash;51.
+<a href=https://doi.org/10.1021/acs.jctc.9b00692>https://doi.org/10.1021/acs.jctc.9b00692</a>.</p></div><div id=ref-koistinenMinimumModeSaddle2020 class=csl-entry><div></div><p>&mdash;&mdash;&mdash;. 2020. &ldquo;Minimum Mode Saddle Point Searches Using Gaussian
+Process Regression with Inverse-Distance Covariance Function.&rdquo; <em>Journal
+of Chemical Theory and Computation</em> 16 (1): 499&ndash;509.
+<a href=https://doi.org/10.1021/acs.jctc.9b01038>https://doi.org/10.1021/acs.jctc.9b01038</a>.</p></div><div id=ref-koistinenNudgedElasticBand2017 class=csl-entry><div></div><p>Koistinen, Olli-Pekka, Freyja B. Dagbjartsdóttir, Vilhjálmur Ásgeirsson,
+Aki Vehtari, and Hannes Jónsson. 2017. &ldquo;Nudged Elastic Band Calculations
+Accelerated with Gaussian Process Regression.&rdquo; <em>The Journal of Chemical
+Physics</em> 147 (15): 152720. <a href=https://doi.org/10.1063/1.4986787>https://doi.org/10.1063/1.4986787</a>.</p></div><div id=ref-redwineUpgradingFortran901995 class=csl-entry><div></div><p>Redwine, Cooper. 1995. <em>Upgrading to Fortran 90</em>. New York: Springer.</p></div><div id=ref-theeyancheriTranslationalRotationalDynamics2020 class=csl-entry><p>Theeyancheri, Ligesh, Subhasish Chaki, Nairhita Samanta, Rohit Goswami,
+Raghunath Chelakkot, and Rajarshi Chakrabarti. 2020. &ldquo;Translational and
+Rotational Dynamics of a Self-Propelled Janus Probe in Crowded
+Environments.&rdquo; <em>Soft Matter</em>, August.
+<a href=https://doi.org/10.1039/D0SM00339E>https://doi.org/10.1039/D0SM00339E</a>.</p></div><div id=ref-wikfeldtTransferableH2OInteraction2013 class=csl-entry><div></div><p>Wikfeldt, K. T., E. R. Batista, F. D. Vila, and H. Jónsson. 2013. &ldquo;A
+Transferable H2o Interaction Potential Based on a Single Center
+Multipole Expansion: SCME.&rdquo; <em>Physical Chemistry Chemical Physics</em> 15
+(39): 16542. <a href=https://doi.org/f2z5vm>https://doi.org/f2z5vm</a>.</p></div></div><section class=footnotes role=doc-endnotes><hr><ol><li id=fn:1 role=doc-endnote><p>I am after-all, actually secretly a computational chemist,
+whatever my degrees and blog posts might imply..&#160;<a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li><li id=fn:2 role=doc-endnote><p>Also a mentor and inspiration of mine (within my family) used
+Fortran for graduate research&mldr;&#160;<a href=#fnref:2 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li></ol></section></div></article><hr><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7" y2="7"/></svg><span class=tag><a href=https://rgoswami.me/tags/history>history</a></span><span class=tag><a href=https://rgoswami.me/tags/ramblings>ramblings</a></span><span class=tag><a href=https://rgoswami.me/tags/workflow>workflow</a></span><span class=tag><a href=https://rgoswami.me/tags/fortran>fortran</a></span></p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6A2 2 0 004 4v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>1606 Words</p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Posted: <time class=dt-published>2021-05-21 05:17 +0000</time></p><a class=resp-sharing-button__link href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2frgoswami.me%2fposts%2ffortran-gsoc-me%2f" target=_blank rel=noopener aria-label=Facebook><div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.5"/><path d="M15.84 9.5H13.5V8.48c0-.53.35-.65.6-.65h1.4v-2.3h-2.35c-2.3.0-2.65 1.7-2.65 2.8V9.5h-2v2h2v7h3v-7h2.1l.24-2z"/></svg></div>Facebook</div></a><a class=resp-sharing-button__link href="https://twitter.com/intent/tweet/?text=%22Fortran%2c%20GSoC21%20and%20Me%22%20seems%20like%20an%20interesting%20read%20from%20%40rg0swami&url=https%3a%2f%2frgoswami.me%2fposts%2ffortran-gsoc-me%2f" target=_blank rel=noopener aria-label=Twitter><div class="resp-sharing-button resp-sharing-button--twitter resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.5 7.4l-2 .2c-.4-.5-1-.8-2-.8C13.3 6.8 12 8 12 9.4v.6c-2 0-4-1-5.4-2.7-.2.4-.3.8-.3 1.3.0 1 .4 1.7 1.2 2.2-.5.0-1 0-1.2-.3.0 1.3 1 2.3 2 2.6-.3.4-.7.4-1 0 .2 1.4 1.2 2 2.3 2-1 1-2.5 1.4-4 1 1.3 1 2.7 1.4 4.2 1.4 4.8.0 7.5-4 7.5-7.5v-.4c.5-.4.8-1.5 1.2-2z"/><circle cx="12" cy="12" r="11.5"/></svg></div>Twitter</div></a><a class=resp-sharing-button__link href="mailto:?subject=%22Fortran%2c%20GSoC21%20and%20Me%22%20seems%20interesting...&body=https%3a%2f%2frgoswami.me%2fposts%2ffortran-gsoc-me%2f" target=_self rel=noopener aria-label=E-Mail><div class="resp-sharing-button resp-sharing-button--email resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19.5 16c0 .8-.7 1.5-1.5 1.5H6c-.8.0-1.5-.7-1.5-1.5V8c0-.8.7-1.5 1.5-1.5h12c.8.0 1.5.7 1.5 1.5v8zm-2-7.5L12 13 6.5 8.5m11 6-4-2.5m-7 2.5 4-2.5"/><circle cx="12" cy="12" r="11.5"/></svg></div>E-Mail</div></a><a class=resp-sharing-button__link href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2frgoswami.me%2fposts%2ffortran-gsoc-me%2f&title=%22Fortran%2c%20GSoC21%20and%20Me%22%20seems%20interesting...&summary=%22Fortran%2c%20GSoC21%20and%20Me%22%20seems%20interesting...&source=https%3a%2f%2frgoswami.me%2fposts%2ffortran-gsoc-me%2f" target=_blank rel=noopener aria-label=LinkedIn><div class="resp-sharing-button resp-sharing-button--linkedin resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.5"/><path d="M15 12.5c-.28.0-.5.22-.5.5v3.5h-3s.03-6.48.0-7h3v.83s.46-.75 1.7-.75c1.56.0 2.3 1.12 2.3 3.3v3.62h-3V13c0-.28-.23-.5-.5-.5zm-7.5-3h2v7h-2z"/><circle cx="8.5" cy="6.5" r="1"/></svg></div>LinkedIn</div></a><a class=resp-sharing-button__link href="https://reddit.com/submit/?url=https%3a%2f%2frgoswami.me%2fposts%2ffortran-gsoc-me%2f&resubmit=true&title=%22Fortran%2c%20GSoC21%20and%20Me%22%20seems%20interesting..." target=_blank rel=noopener aria-label=Reddit><div class="resp-sharing-button resp-sharing-button--reddit resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.5"/><ellipse cx="12" cy="14.37" rx="6.2" ry="4.24"/><path d="M14.3 16.25c-.62.36-1.42.57-2.3.57s-1.7-.2-2.32-.58"/><circle cx="14.61" cy="13.39" r=".98"/><circle cx="9.39" cy="13.39" r=".98"/><path d="M16.4 11.38c.26-.55.82-.92 1.47-.92.9.0 1.63.73 1.63 1.63.0.8-.6 1.47-1.38 1.6"/><circle cx="17.22" cy="7.52" r="1.63"/><path d="M7.6 11.38c-.26-.54-.82-.92-1.47-.92-.9.0-1.63.73-1.63 1.63.0.8.6 1.47 1.38 1.6M12 10.12s-.08-4.82 3.6-2.6"/></svg></div>Reddit</div></a><a class=resp-sharing-button__link href="whatsapp://send?text=%22Fortran%2c%20GSoC21%20and%20Me%22%20seems%20interesting...%20https%3a%2f%2frgoswami.me%2fposts%2ffortran-gsoc-me%2f" target=_blank rel=noopener aria-label=WhatsApp><div class="resp-sharing-button resp-sharing-button--whatsapp resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle xmlns="http://www.w3.org/2000/svg" cx="12" cy="12" r="11.5"/><path stroke-width="1" d="M17.6 6.2c-1.5-1.5-3.4-2.3-5.5-2.3-4.3.0-7.8 3.5-7.8 7.8.0 1.4.4 2.7 1 3.9l-1.1 4 4.1-1.1c1.1.6 2.4.9 3.7.9 4.3.0 7.8-3.5 7.8-7.8.1-2-.7-3.9-2.2-5.4zm-5.5 11.9c-1.2.0-2.3-.3-3.3-.9l-.2-.1-2.4.6.7-2.4-.2-.2c-.6-1-1-2.2-1-3.4.0-3.6 2.9-6.5 6.5-6.5 1.7.0 3.3.7 4.6 1.9 1.2 1.2 1.9 2.8 1.9 4.6-.1 3.5-3 6.4-6.6 6.4zm3.5-4.8c-.2-.1-1.1-.6-1.3-.6-.2-.1-.3-.1-.4.1s-.5.6-.6.8c-.1.1-.2.1-.4.0s-.8-.3-1.6-1c-.6-.5-1-1.2-1.1-1.3-.1-.2.0-.3.1-.4l.3-.3s.1-.2.2-.3c.1-.1.0-.2.0-.3s-.4-1.1-.6-1.4c-.2-.4-.3-.3-.4-.3h-.4s-.3.0-.5.2-.7.7-.7 1.6c0 1 .7 1.9.8 2s1.4 2.1 3.3 2.9c.5.2.8.3 1.1.4.5.1.9.1 1.2.1.4-.1 1.1-.5 1.3-.9.2-.5.2-.8.1-.9.0-.2-.2-.3-.4-.4z"/></svg></div>WhatsApp</div></a></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://rgoswami.me/posts/zotero-biblatex-bibtex/><span class=button__icon>←</span>
+<span class=button__text>Biblatex to Bibtex for Sphinx</span></a></span>
+<span class="button next"><a href=https://rgoswami.me/posts/cip2021-fin/><span class=button__text>Wrapping Up Code in Place 2021</span>
+<span class=button__icon>→</span></a></span></div></div><div id=comments class=thin><div class=pagination__title><span class=pagination__title-h>Comments</span><hr></div><div id=remarkbox-div><noscript><iframe id=remarkbox-iframe src="https://my.remarkbox.com/embed?nojs=true" style=height:600px;width:100%;border:none!important tabindex=0></iframe></noscript></div><script src=https://my.remarkbox.com/static/js/iframe-resizer/iframeResizer.min.js></script><script>var rb_owner_key="8e660759-e7e6-11ea-9711-040140774501",thread_uri=window.location.href,thread_title=window.document.title,thread_fragment=window.location.hash,rb_src="https://my.remarkbox.com/embed?rb_owner_key="+rb_owner_key+"&thread_title="+encodeURI(thread_title)+"&thread_uri="+encodeURIComponent(thread_uri)+thread_fragment;function create_remarkbox_iframe(){var a=document.createElement("iframe");a.setAttribute("id","remarkbox-iframe"),a.setAttribute("scrolling","no"),a.setAttribute("src",rb_src),a.setAttribute("frameborder","0"),a.setAttribute("tabindex","0"),a.setAttribute("title","Remarkbox"),a.style.width="100%",document.getElementById("remarkbox-div").appendChild(a)}create_remarkbox_iframe(),iFrameResize({checkOrigin:["https://my.remarkbox.com"],inPageLinks:!0,initCallback:function(a){a.iFrameResizer.moveToAnchor(thread_fragment)}},document.getElementById("remarkbox-iframe"))</script></div></main><footer class=footer><p>&copy; 2021
+<span><a href=https://rgoswami.me/>Rohit Goswami (HaoZeke)</a></span>
+<a href=https://rgoswami.me/posts/index.xml target=_blank title=rss><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 019 9"/><path d="M4 4a16 16 0 0116 16"/><circle cx="5" cy="19" r="1"/></svg></a><br><a rel=license href=http://creativecommons.org/licenses/by-nc-sa/4.0/>CC BY-NC-SA 4.0</a>.
+Powered by <a href=http://gohugo.io><u>Hugo</u></a> and <a href=https://github.com/HaoZeke/hugo-theme-hello-friend-ng-hz><u>this theme</u></a>.</br>Hosted with <u><a href=https://www.netlify.com/>Netlify</a></u>.</br><script src=https://liberapay.com/rohit/widgets/button.js></script><noscript><a href=https://liberapay.com/rohit/donate><img alt="Donate using Liberapay" src=https://liberapay.com/assets/widgets/donate.svg></a></noscript></p></footer></div><script src=/bundle.min.5fae9992ea406007408dc33b0b3a8376d61e2f1d6ac50ba1dad7580ac50afb5199bcef3bbc3677e77553a9980bf882cf71edc2f755687dd7725f12ece4304ac2.js></script><script>(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)})(window,document,'script','//www.google-analytics.com/analytics.js','ga'),ga('create','UA-109503488-16','auto'),ga('send','pageview')</script><script type=text/javascript>(function(a,e,b,f,g,c,d){a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},c=e.createElement(f),c.async=1,c.src="https://www.clarity.ms/tag/"+g,d=e.getElementsByTagName(f)[0],d.parentNode.insertBefore(c,d)})(window,document,"clarity","script","3z2xvwqu4u")</script><script data-goatcounter=https://rgoswami.goatcounter.com/count async src=//gc.zgo.at/count.js></script><script>var clicky_site_ids=clicky_site_ids||[];clicky_site_ids.push("101265002")</script><script async src=https://static.getclicky.com/js></script><script src=https://cdn.jsdelivr.net/npm/readmore-js@3.0.0-beta-1/dist/readmore.min.js></script><script src=/js/codefold.min.4a43062cb83308b55227adf937c91be79ff6d95df8bb821dfd71805ce54629ff8cffed3ae81d70fdee5f324fa0f39c5280ae785f165801885db074551a993a21.js></script></body></html>
