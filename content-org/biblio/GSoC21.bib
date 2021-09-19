@@ -94,6 +94,22 @@
   keywords = {Approximation error,Certification,Formal proof,Sum of squares,Supremum norm,Taylor models,Validation}
 }
 
+@inproceedings{chevillardSollyaEnvironmentDevelopment2010,
+  title = {Sollya: {{An}} Environment for the Development of Numerical Codes},
+  booktitle = {Mathematical Software - {{ICMS}} 2010},
+  author = {Chevillard, S. and Joldeş, M. and Lauter, C.},
+  editor = {Fukuda, K. and van der Hoeven, J. and Joswig, M. and Takayama, N.},
+  options = {useprefix=true},
+  date = {2010-09},
+  series = {Lecture Notes in Computer Science},
+  volume = {6327},
+  pages = {28--31},
+  publisher = {{Springer}},
+  location = {{Heidelberg, Germany}},
+  abstract = {Sollya has become a mature tool for the development of numerical software. With about 175 built-in algorithms and a broad extensibility, it offers a complete tool-chain for fixed- and floating-point software and hardware design. Its features include on-the-fly faithful rounding, specialized approximation algorithms and extensive support for floating-point code generation.},
+  keywords = {computer algebra,development tool,faithful rounding,function approximation,numerical software}
+}
+
 @article{cipraBest20thCentury,
   title = {The {{Best}} of the 20th {{Century}}: {{Editors Name Top}} 10 {{Algorithms}}},
   author = {Cipra, Barry A},
@@ -276,6 +292,18 @@
   url = {https://j3-fortran.org/doc/year/18/18-007r1.pdf},
   urldate = {2021-06-28},
   abstract = {October 21, 1997 12:28 pm}
+}
+
+@inproceedings{johanssonEfficientImplementationElementary2015,
+  title = {Efficient Implementation of Elementary Functions in the Medium-Precision Range},
+  booktitle = {22nd {{IEEE Symposium}} on {{Computer Arithmetic}} ({{ARITH22}})},
+  author = {Johansson, Fredrik},
+  date = {2015-06},
+  location = {{Lyon, France}},
+  doi = {10.1109/ARITH.2015.16},
+  url = {https://hal.archives-ouvertes.fr/hal-01079834},
+  urldate = {2021-09-17},
+  abstract = {We describe a new implementation of the elementary transcendental functions exp, sin, cos, log and atan for variable precision up to approximately 4096 bits. Compared to the MPFR library, we achieve a maximum speedup ranging from a factor 3 for cos to 30 for atan. Our implementation uses table-based argument reduction together with rectangular splitting to evaluate Taylor series. We collect denominators to reduce the number of divisions in the Taylor series, and avoid overhead by doing all multiprecision arithmetic using the mpn layer of the GMP library. Our implementation provides rigorous error bounds.}
 }
 
 @article{kahanIEEEStandard7541997,
