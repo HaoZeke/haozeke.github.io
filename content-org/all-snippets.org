@@ -59,7 +59,112 @@ Host super
   LocalForward 8004 localhost:8004
 #+end_src
 This is good for interactive sessions with multiple servers. For single servers, reverse proxy tunnels are more efficient.
+** DONE Programming Language Management
+CLOSED: [2021-09-19 Sun 17:39]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: prog-lang-man
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
+~nix~ aside[fn:whynot], I recently shifted to using [[https://asdf-vm.com/guide/getting-started.html#_3-install-asdf][asdf]] to manage different language versions.
+#+begin_src bash
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.8.1
+#+end_src
+The main reason to prefer ~asdf~ over competing language specific options like ~rvm~ or ~pyenv~ or ~nvm~ and company is simply uniformity of the interface. This can be coupled with ~zinit snippet OMZ::plugins/asdf~ for loading the completions. Note that the installation steps can take a while especially if ~openssl~ is being installed.
+*** Configuration
+Actually one weird aspect of ~asdf~ is that it pollutes ~$HOME~ by default
+instead of respectfully storing its configuration in ~$HOME/.config/asdf~ like
+every other program. To change this; exporting ~ASDF_CONFIG_FILE~ works.
+Essentially a ~zsh~ configuration with ~zinit~ would look like this[fn:whatwhy]:
+#+begin_src bash
+if [[ ! -d ~/.asdf ]]; then
+    mkdir ~/.asdf
+    git clone https://github.com/asdf-vm/asdf.git ~/.asdf
+fi
 
+export ASDF_CONFIG_FILE="~/.config/asdf/asdfrc"
+zinit snippet OMZ::plugins/asdf
+#+end_src
+
+~asdf~ has an option; ~legacy_version_file = yes~ which is meant to ensure that
+existing solutions (e.g. ~.nvmrc~ or ~.node-version~) are compatible. There is
+also ~$HOME/.tool-versions~ for trickle-down language versions; that is
+language-version pairs defined in such files are activated for the directory and
+lower sub-directories. The rest of a reasonable configuration ([[https://asdf-vm.com/manage/configuration.html][described here]])
+might look like:
+#+begin_src bash
+legacy_version_file = yes
+always_keep_download = no
+#+end_src
+*** Ruby
+This [[https://github.com/asdf-vm/asdf-ruby][plugin]] leverages [[https://github.com/rbenv/ruby-build#custom-build-configuration][ruby-build]] and so can take a pick up an extended set of
+environment variables; it supports ~.ruby-version~ files as well.
+#+begin_src bash
+asdf plugin add ruby
+asdf list all ruby
+asdf install ruby 3.0.2
+asdf global ruby 3.0.2 # Convenience
+#+end_src
+*** NodeJS
+This [[https://github.com/asdf-vm/asdf-nodejs][plugin]] respects ~.nvmrc~ and ~.node-version~ files.
+#+begin_src bash
+asdf plugin add nodejs
+asdf global nodejs latest
+asdf install nodejs latest
+#+end_src
+*** Python
+Builds with [[https://github.com/yyuu/pyenv/tree/master/plugins/python-build][python-build]].
+#+begin_src bash
+asdf plugin add python
+asdf install python 3.9.7
+asdf global python 3.9.7
+#+end_src
+*** Direnv
+I'm a huge fan of ~direnv~; and a [[https://github.com/asdf-community/asdf-direnv][fantastic little plugin]] (with neat ~hyperfine~ benchmarks) for ~asdf~ removes a layer of shim indirection while playing nicely with ~direnv~.
+#+begin_src bash
+asdf plugin-add direnv
+asdf install direnv latest
+asdf global direnv latest
+#+end_src
+This comes with an associated set of shell profile instructions:
+#+begin_src bash
+# File: ~/.zshrc
+# Hook direnv into your shell.
+eval "$(asdf exec direnv hook zsh)"
+# A shortcut for asdf managed direnv.
+direnv() { asdf exec direnv "$@"; }
+#+end_src
+Along with a commiserate ~$HOME/.config/direnv/direnvrc~ requirement:
+#+begin_src bash
+source "$(asdf direnv hook asdf)"
+#+end_src
+Now every new ~.envrc~ can start with ~use asdf~ which will now speed up evaluations.
+*** Conclusions
+This method appears to be more robust than remembering the various idiosyncrasies and logic of a host of other tools.
+
+[fn:whatwhy] This structure can be seen in [[https://github.com/HaoZeke/Dotfiles][my own Dotfiles]] as well
+[fn:whynot] This was during the [[https://github.com/Ericson2314/nix-rfcs/blob/plan-dynamism/rfcs/0000-plan-dynanism.md][build plan dynamism RFCs]] which themselves were symptomatic of the ~{yarn,composer,node,*}2nix~ issues
+** DONE Watching Files
+CLOSED: [2021-09-19 Sun 17:39]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: watch-files
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
+My personal favorite for watching files and running context sensitive commands is to use the lovely [[https://github.com/filewatcher/filewatcher][filewatcher CLI utility]] written in Ruby.
+#+begin_src bash
+gem install filewatcher
+gem install filewatcher-cli
+#+end_src
+This can then be used with:
+#+begin_src bash
+filewatcher '**/*.js' 'node $FILENAME'
+#+end_src
+However this hasn't been updated in a while now *and fails* on newer versions of Ruby. So now I use [[https://github.com/watchexec/watchexec/tree/main/cli#installation][watchexec]].
+#+begin_src bash
+cargo install watchexec-cli
+watchexec -w source/f2py 'make html'
+#+end_src
 ** TODO Org Export for CI
 I had cause to recently collaborate with some colleagues who were not likely to have a high degree of ~emacs~ foo. Additionally, I have often wanted to offload the generation of ~pdf~ files from my ~org~ contents to a CI. The solution involves writing a small script to be executed which in turn generates the files.
 ** TODO Caching LaTeX on a CI
