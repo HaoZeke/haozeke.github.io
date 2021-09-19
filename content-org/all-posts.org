@@ -8614,7 +8614,8 @@ The ones I use mostly are enumerated in Table [[tbl:rustalternates]].
 | ~cd / z~ | [[https://github.com/ajeetdsouza/zoxide][zoxide]]           | Directory jumping aid                |
 | ~gibo~   | bliss            | ~gitignore~ generation utility       |
 | ~diff~   | delta            | Nicer diffs                          |
-| ~CTRL+R~ | mclfy            | Reverse search                       |
+| ~watch~  | [[https://github.com/watchexec/watchexec][watchexec]]        | Watch and execute                    |
+| ~CTRL+R~ | mcfly            | Reverse search                       |
 
 These are trivial to obtain:
 #+begin_src bash
