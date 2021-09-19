@@ -1,6 +1,16 @@
 # We use the generated html to prevent issues involving markdown frontmatter
 
 [[input.files]]
+path = "./snippets/prog-lang-man/index.html"
+url = "https://rgoswami.me/snippets/prog-lang-man/"
+title = "Programming Language Management"
+
+[[input.files]]
+path = "./snippets/watch-files/index.html"
+url = "https://rgoswami.me/snippets/watch-files/"
+title = "Watching Files"
+
+[[input.files]]
 path = "./posts/leshouches-2021-meta/index.html"
 url = "https://rgoswami.me/posts/leshouches-2021-meta/"
 title = "Presentation Supplements for Greens Function School"
