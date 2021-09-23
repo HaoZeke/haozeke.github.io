@@ -1,22 +1,230 @@
-<!doctype html><html lang=en itemscope itemtype=http://schema.org/WebPage><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=author content="[Rohit Goswami]"><meta name=description content="Setup details are described here, and the meta-post about these solutions is here.
+<!doctype html><html lang=en itemscope itemtype=http://schema.org/WebPage>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="ie=edge">
+<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
+<meta name=author content="[Rohit Goswami]">
+<meta name=description content="Setup details are described here, and the meta-post about these solutions is here.
  Materials The summmer course1 is based off of the second edition of Statistical Rethinking by Richard McElreath. This submission covers the following exercise questions:
- Chapter 9  E{3,4,5,6} M{1,2,3}   Chapter 11  E{1,2,3,4} M{2,3,4,5,6,8}   Chapter 12  E{4} H{1,2}    Packages A colophon with details is provided at the end, but the following packages and theme parameters are used throughout."><meta name=keywords content=",solutions,R,SR2"><meta name=robots content="noodp"><meta name=theme-color content><link rel=canonical href=https://rgoswami.me/posts/sr2-ch9-ch11-ch12/><title>SR2 :: Solutions for Chapters {9,11,12} :: Rohit Goswami — Reflections</title><link href=https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css rel=stylesheet type=text/css><link rel=stylesheet href=/main.min.b6dbce0fdf6c61563a0c2226e857d5dadd8e5afa2c4f73ec9ea55abd831f9a72.css><meta itemprop=name content="SR2 :: Solutions for Chapters {9,11,12}"><meta itemprop=description content="Setup details are described here, and the meta-post about these solutions is here.
+ Chapter 9  E{3,4,5,6} M{1,2,3}   Chapter 11  E{1,2,3,4} M{2,3,4,5,6,8}   Chapter 12  E{4} H{1,2}    Packages A colophon with details is provided at the end, but the following packages and theme parameters are used throughout.">
+<meta name=keywords content=",solutions,R,SR2">
+<meta name=robots content="noodp">
+<meta name=theme-color content>
+<link rel=canonical href=https://rgoswami.me/posts/sr2-ch9-ch11-ch12/>
+<title>
+SR2 :: Solutions for Chapters {9,11,12} :: Rohit Goswami — Reflections
+</title>
+<link href=https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css rel=stylesheet type=text/css>
+<link rel=stylesheet href=/main.min.b6dbce0fdf6c61563a0c2226e857d5dadd8e5afa2c4f73ec9ea55abd831f9a72.css>
+<meta itemprop=name content="SR2 :: Solutions for Chapters {9,11,12}">
+<meta itemprop=description content="Setup details are described here, and the meta-post about these solutions is here.
  Materials The summmer course1 is based off of the second edition of Statistical Rethinking by Richard McElreath. This submission covers the following exercise questions:
- Chapter 9  E{3,4,5,6} M{1,2,3}   Chapter 11  E{1,2,3,4} M{2,3,4,5,6,8}   Chapter 12  E{4} H{1,2}    Packages A colophon with details is provided at the end, but the following packages and theme parameters are used throughout."><meta itemprop=datePublished content="2020-06-21T00:00:00+00:00"><meta itemprop=dateModified content="2020-06-21T00:00:00+00:00"><meta itemprop=wordCount content="12079"><meta itemprop=image content="https://rgoswami.me/images/RG.png"><meta itemprop=keywords content="solutions,R,SR2,"><meta property="og:title" content="SR2 :: Solutions for Chapters {9,11,12}"><meta property="og:description" content="Setup details are described here, and the meta-post about these solutions is here.
+ Chapter 9  E{3,4,5,6} M{1,2,3}   Chapter 11  E{1,2,3,4} M{2,3,4,5,6,8}   Chapter 12  E{4} H{1,2}    Packages A colophon with details is provided at the end, but the following packages and theme parameters are used throughout."><meta itemprop=datePublished content="2020-06-21T00:00:00+00:00">
+<meta itemprop=dateModified content="2020-06-21T00:00:00+00:00">
+<meta itemprop=wordCount content="12079"><meta itemprop=image content="https://rgoswami.me/images/RG.png">
+<meta itemprop=keywords content="solutions,R,SR2,"><meta property="og:title" content="SR2 :: Solutions for Chapters {9,11,12}">
+<meta property="og:description" content="Setup details are described here, and the meta-post about these solutions is here.
  Materials The summmer course1 is based off of the second edition of Statistical Rethinking by Richard McElreath. This submission covers the following exercise questions:
- Chapter 9  E{3,4,5,6} M{1,2,3}   Chapter 11  E{1,2,3,4} M{2,3,4,5,6,8}   Chapter 12  E{4} H{1,2}    Packages A colophon with details is provided at the end, but the following packages and theme parameters are used throughout."><meta property="og:type" content="article"><meta property="og:url" content="https://rgoswami.me/posts/sr2-ch9-ch11-ch12/"><meta property="og:image" content="https://rgoswami.me/images/RG.png"><meta property="article:section" content="posts"><meta property="article:published_time" content="2020-06-21T00:00:00+00:00"><meta property="article:modified_time" content="2020-06-21T00:00:00+00:00"><meta property="og:site_name" content="Rohit Goswami"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://rgoswami.me/images/RG.png"><meta name=twitter:title content="SR2 :: Solutions for Chapters {9,11,12}"><meta name=twitter:description content="Setup details are described here, and the meta-post about these solutions is here.
+ Chapter 9  E{3,4,5,6} M{1,2,3}   Chapter 11  E{1,2,3,4} M{2,3,4,5,6,8}   Chapter 12  E{4} H{1,2}    Packages A colophon with details is provided at the end, but the following packages and theme parameters are used throughout.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://rgoswami.me/posts/sr2-ch9-ch11-ch12/"><meta property="og:image" content="https://rgoswami.me/images/RG.png"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2020-06-21T00:00:00+00:00">
+<meta property="article:modified_time" content="2020-06-21T00:00:00+00:00"><meta property="og:site_name" content="Rohit Goswami">
+<meta name=twitter:card content="summary_large_image">
+<meta name=twitter:image content="https://rgoswami.me/images/RG.png">
+<meta name=twitter:title content="SR2 :: Solutions for Chapters {9,11,12}">
+<meta name=twitter:description content="Setup details are described here, and the meta-post about these solutions is here.
  Materials The summmer course1 is based off of the second edition of Statistical Rethinking by Richard McElreath. This submission covers the following exercise questions:
- Chapter 9  E{3,4,5,6} M{1,2,3}   Chapter 11  E{1,2,3,4} M{2,3,4,5,6,8}   Chapter 12  E{4} H{1,2}    Packages A colophon with details is provided at the end, but the following packages and theme parameters are used throughout."><meta property="article:section" content="programming"><meta property="article:published_time" content="2020-06-21 00:00:00 +0000 UTC"></head><body><div class=container><header class=header><div class=header__inner><div class=header__left><div class=logo><a href=/ style=text-decoration:none><img src=/images/home.png alt></a></div></div><div class=header__mid><button class=button><div class=button__text><a href=https://rgoswami.me//search>Search</a></div></button></div><div class=header__right><nav class=menu><ul class=menu__inner><li><a href=https://rgoswami.me/about>About</a></li><li><a href=https://rgoswami.me/posts>Blog</a></li></ul><ul class=menu__inner><li><a href=https://rgoswami.me/categories>Categories</a></li><li><a href=https://rgoswami.me/tags>Tags</a></li></ul></nav><button id=toggleMenu><div class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></div></button>
-<button class=theme-toggle id=toggleTheme><svg class="theme-toggler" width="32" height="32" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41c10.4934.0 19-8.5066 19-19C41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg></button></div></div></header><script src=https://rgoswami.me/js/mathjax-config.js></script><script id=MathJax-script async src=https://unpkg.com/mathjax@3/es5/tex-chtml.js></script><aside class=sidebar><div class=hideTOC><button id=tocTog>TOC</button><div class="sideTOC m-fadeOut"><nav id=TableOfContents><ul><li><a href=#materials>Materials</a><ul><li><a href=#packages>Packages</a></li></ul></li><li><a href=#chapter-ix-markov-chain-monte-carlo>Chapter IX: Markov Chain Monte Carlo</a><ul><li><a href=#easy-questions--ch9>Easy Questions (Ch9)</a></li><li><a href=#questions-of-medium-complexity--ch9>Questions of Medium Complexity (Ch9)</a></li></ul></li><li><a href=#chapter-xi-god-spiked-the-integers>Chapter XI: God Spiked The Integers</a><ul><li><a href=#easy-questions--ch11>Easy Questions (Ch11)</a></li><li><a href=#questions-of-medium-complexity--ch11>Questions of Medium Complexity (Ch11)</a></li></ul></li><li><a href=#chapter-xii-monsters-and-mixtures>Chapter XII: Monsters and Mixtures</a><ul><li><a href=#easy-questions--ch12>Easy Questions (Ch12)</a></li><li><a href=#hard-questions--ch12>Hard Questions (Ch12)</a></li></ul></li><li><a href=#a-colophon>A: Colophon</a></li></ul></nav></div></div></aside><main class=post><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>57 minutes<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Written: 2020-06-21 00:00 +0000</p></p></div><article class=h-entry><h1 class="post-title p-name"><a class=u-url href=https://rgoswami.me/posts/sr2-ch9-ch11-ch12/>SR2 :: Solutions for Chapters {9,11,12}</a></h1><div class=post-info><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pen-tool"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg><span class="author u-author p-author"><a href=https://rgoswami.me/author/rohit-goswami>Rohit Goswami</a></span></div><hr><aside id=toc class=sidebar><div class=toc-title>Table of Contents</div><nav id=TableOfContents><ul><li><a href=#materials>Materials</a><ul><li><a href=#packages>Packages</a></li></ul></li><li><a href=#chapter-ix-markov-chain-monte-carlo>Chapter IX: Markov Chain Monte Carlo</a><ul><li><a href=#easy-questions--ch9>Easy Questions (Ch9)</a></li><li><a href=#questions-of-medium-complexity--ch9>Questions of Medium Complexity (Ch9)</a></li></ul></li><li><a href=#chapter-xi-god-spiked-the-integers>Chapter XI: God Spiked The Integers</a><ul><li><a href=#easy-questions--ch11>Easy Questions (Ch11)</a></li><li><a href=#questions-of-medium-complexity--ch11>Questions of Medium Complexity (Ch11)</a></li></ul></li><li><a href=#chapter-xii-monsters-and-mixtures>Chapter XII: Monsters and Mixtures</a><ul><li><a href=#easy-questions--ch12>Easy Questions (Ch12)</a></li><li><a href=#hard-questions--ch12>Hard Questions (Ch12)</a></li></ul></li><li><a href=#a-colophon>A: Colophon</a></li></ul></nav></aside><hr><div class="post-content e-content"><blockquote><p>Setup details <a href=https://rgoswami.me/posts/rethinking-r-nix/>are described here</a>, and the meta-post about these solutions <a href=https://rgoswami.me/posts/some-sol-sr2/>is here</a>.</p></blockquote><h2 id=materials>Materials</h2><p>The <a href="https://ugla.hi.is/kennsluskra/index.php?sid=&tab=nam&chapter=namskeid&id=71055920203">summmer course</a><sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup> is based off of <a href=https://xcelab.net/rm/statistical-rethinking/>the second edition of
+ Chapter 9  E{3,4,5,6} M{1,2,3}   Chapter 11  E{1,2,3,4} M{2,3,4,5,6,8}   Chapter 12  E{4} H{1,2}    Packages A colophon with details is provided at the end, but the following packages and theme parameters are used throughout.">
+<meta property="article:section" content="programming">
+<meta property="article:published_time" content="2020-06-21 00:00:00 +0000 UTC">
+</head>
+<body>
+<div class=container>
+<header class=header>
+<div class=header__inner>
+<div class=header__left>
+<div class=logo>
+<a href=/ style=text-decoration:none>
+<img src=/images/home.png alt>
+</a>
+</div>
+</div>
+<div class=header__mid>
+<button class=button>
+<div class=button__text>
+<a href=https://rgoswami.me//search>
+Search
+</a>
+</div>
+</button>
+</div>
+<div class=header__right>
+<nav class=menu>
+<ul class=menu__inner><li><a href=https://rgoswami.me/about>About</a></li><li><a href=https://rgoswami.me/posts>Blog</a></li>
+</ul>
+<ul class=menu__inner><li><a href=https://rgoswami.me/categories>Categories</a></li><li><a href=https://rgoswami.me/tags>Tags</a></li>
+</ul>
+</nav>
+<button id=toggleMenu>
+<div class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+</div>
+</button>
+<button class=theme-toggle id=toggleTheme><svg class="theme-toggler" width="32" height="32" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41c10.4934.0 19-8.5066 19-19C41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg>
+</button>
+</div>
+</div>
+</header>
+<script src=https://rgoswami.me/js/mathjax-config.js></script>
+<script id=MathJax-script async src=https://unpkg.com/mathjax@3/es5/tex-chtml.js></script>
+<aside class=sidebar>
+<div class=hideTOC>
+<button id=tocTog>TOC</button>
+<div class="sideTOC m-fadeOut">
+<nav id=TableOfContents>
+<ul>
+<li><a href=#materials>Materials</a>
+<ul>
+<li><a href=#packages>Packages</a></li>
+</ul>
+</li>
+<li><a href=#chapter-ix-markov-chain-monte-carlo>Chapter IX: Markov Chain Monte Carlo</a>
+<ul>
+<li><a href=#easy-questions--ch9>Easy Questions (Ch9)</a></li>
+<li><a href=#questions-of-medium-complexity--ch9>Questions of Medium Complexity (Ch9)</a></li>
+</ul>
+</li>
+<li><a href=#chapter-xi-god-spiked-the-integers>Chapter XI: God Spiked The Integers</a>
+<ul>
+<li><a href=#easy-questions--ch11>Easy Questions (Ch11)</a></li>
+<li><a href=#questions-of-medium-complexity--ch11>Questions of Medium Complexity (Ch11)</a></li>
+</ul>
+</li>
+<li><a href=#chapter-xii-monsters-and-mixtures>Chapter XII: Monsters and Mixtures</a>
+<ul>
+<li><a href=#easy-questions--ch12>Easy Questions (Ch12)</a></li>
+<li><a href=#hard-questions--ch12>Hard Questions (Ch12)</a></li>
+</ul>
+</li>
+<li><a href=#a-colophon>A: Colophon</a></li>
+</ul>
+</nav>
+</div>
+</div>
+</aside>
+<main class=post>
+<div class=post-info>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>57 minutes
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Written: 2020-06-21 00:00 +0000</p>
+</p>
+</div>
+<article class=h-entry>
+<h1 class="post-title p-name">
+<a class=u-url href=https://rgoswami.me/posts/sr2-ch9-ch11-ch12/>SR2 :: Solutions for Chapters {9,11,12}</a>
+</h1>
+<div class=post-info><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pen-tool"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+<span class="author u-author p-author"><a href=https://rgoswami.me/author/rohit-goswami>Rohit Goswami</a></span>
+</div>
+<hr>
+<aside id=toc class=sidebar>
+<div class=toc-title>Table of Contents</div>
+<nav id=TableOfContents>
+<ul>
+<li><a href=#materials>Materials</a>
+<ul>
+<li><a href=#packages>Packages</a></li>
+</ul>
+</li>
+<li><a href=#chapter-ix-markov-chain-monte-carlo>Chapter IX: Markov Chain Monte Carlo</a>
+<ul>
+<li><a href=#easy-questions--ch9>Easy Questions (Ch9)</a></li>
+<li><a href=#questions-of-medium-complexity--ch9>Questions of Medium Complexity (Ch9)</a></li>
+</ul>
+</li>
+<li><a href=#chapter-xi-god-spiked-the-integers>Chapter XI: God Spiked The Integers</a>
+<ul>
+<li><a href=#easy-questions--ch11>Easy Questions (Ch11)</a></li>
+<li><a href=#questions-of-medium-complexity--ch11>Questions of Medium Complexity (Ch11)</a></li>
+</ul>
+</li>
+<li><a href=#chapter-xii-monsters-and-mixtures>Chapter XII: Monsters and Mixtures</a>
+<ul>
+<li><a href=#easy-questions--ch12>Easy Questions (Ch12)</a></li>
+<li><a href=#hard-questions--ch12>Hard Questions (Ch12)</a></li>
+</ul>
+</li>
+<li><a href=#a-colophon>A: Colophon</a></li>
+</ul>
+</nav>
+</aside>
+<hr>
+<div class="post-content e-content">
+<blockquote>
+<p>Setup details <a href=https://rgoswami.me/posts/rethinking-r-nix/>are described here</a>, and the meta-post about these solutions <a href=https://rgoswami.me/posts/some-sol-sr2/>is here</a>.</p>
+</blockquote>
+<h2 id=materials>Materials</h2>
+<p>The <a href="https://ugla.hi.is/kennsluskra/index.php?sid=&tab=nam&chapter=namskeid&id=71055920203">summmer course</a><sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup> is based off of <a href=https://xcelab.net/rm/statistical-rethinking/>the second edition of
 Statistical Rethinking</a> by <a href=https://twitter.com/rlmcelreath>Richard McElreath</a>.
-This submission covers the following exercise questions:</p><ul><li><input checked disabled type=checkbox> Chapter 9<ul><li><input checked disabled type=checkbox> E{3,4,5,6}</li><li><input checked disabled type=checkbox> M{1,2,3}</li></ul></li><li><input checked disabled type=checkbox> Chapter 11<ul><li><input checked disabled type=checkbox> E{1,2,3,4}</li><li><input checked disabled type=checkbox> M{2,3,4,5,6,8}</li></ul></li><li><input checked disabled type=checkbox> Chapter 12<ul><li><input checked disabled type=checkbox> E{4}</li><li><input checked disabled type=checkbox> H{1,2}</li></ul></li></ul><h3 id=packages>Packages</h3><p>A colophon with details is provided <a href=#a-colophon>at the end</a>, but the following packages and theme parameters are used throughout.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>libsUsed</span><span class=o>&lt;-</span><span class=nf>c</span><span class=p>(</span><span class=s>&#34;tidyverse&#34;</span><span class=p>,</span><span class=s>&#34;tidybayes&#34;</span><span class=p>,</span><span class=s>&#34;orgutils&#34;</span><span class=p>,</span><span class=s>&#34;dagitty&#34;</span><span class=p>,</span>
+This submission covers the following exercise questions:</p>
+<ul>
+<li><input checked disabled type=checkbox> Chapter 9
+<ul>
+<li><input checked disabled type=checkbox> E{3,4,5,6}</li>
+<li><input checked disabled type=checkbox> M{1,2,3}</li>
+</ul>
+</li>
+<li><input checked disabled type=checkbox> Chapter 11
+<ul>
+<li><input checked disabled type=checkbox> E{1,2,3,4}</li>
+<li><input checked disabled type=checkbox> M{2,3,4,5,6,8}</li>
+</ul>
+</li>
+<li><input checked disabled type=checkbox> Chapter 12
+<ul>
+<li><input checked disabled type=checkbox> E{4}</li>
+<li><input checked disabled type=checkbox> H{1,2}</li>
+</ul>
+</li>
+</ul>
+<h3 id=packages>Packages</h3>
+<p>A colophon with details is provided <a href=#a-colophon>at the end</a>, but the following packages and theme parameters are used throughout.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>libsUsed</span><span class=o>&lt;-</span><span class=nf>c</span><span class=p>(</span><span class=s>&#34;tidyverse&#34;</span><span class=p>,</span><span class=s>&#34;tidybayes&#34;</span><span class=p>,</span><span class=s>&#34;orgutils&#34;</span><span class=p>,</span><span class=s>&#34;dagitty&#34;</span><span class=p>,</span>
             <span class=s>&#34;rethinking&#34;</span><span class=p>,</span><span class=s>&#34;tidybayes.rethinking&#34;</span><span class=p>,</span>
             <span class=s>&#34;ggplot2&#34;</span><span class=p>,</span><span class=s>&#34;kableExtra&#34;</span><span class=p>,</span><span class=s>&#34;dplyr&#34;</span><span class=p>,</span><span class=s>&#34;glue&#34;</span><span class=p>,</span>
             <span class=s>&#34;latex2exp&#34;</span><span class=p>,</span><span class=s>&#34;data.table&#34;</span><span class=p>,</span><span class=s>&#34;printr&#34;</span><span class=p>,</span><span class=s>&#34;devtools&#34;</span><span class=p>)</span>
 <span class=nf>invisible</span><span class=p>(</span><span class=nf>lapply</span><span class=p>(</span><span class=n>libsUsed</span><span class=p>,</span> <span class=n>library</span><span class=p>,</span> <span class=n>character.only</span> <span class=o>=</span> <span class=kc>TRUE</span><span class=p>));</span>
 <span class=nf>theme_set</span><span class=p>(</span><span class=nf>theme_grey</span><span class=p>(</span><span class=n>base_size</span><span class=o>=</span><span class=m>24</span><span class=p>))</span>
 <span class=nf>set.seed</span><span class=p>(</span><span class=m>1995</span><span class=p>)</span>
-</code></pre></div><h2 id=chapter-ix-markov-chain-monte-carlo>Chapter IX: Markov Chain Monte Carlo</h2><h3 id=easy-questions--ch9>Easy Questions (Ch9)</h3><h4 id=9e3>9E3</h4><p>Which sort of parameters can Hamiltonian Monte Carlo not handle? Can you explain why?</p><h5 id=solution>Solution</h5><p>Hamiltonian Monte Carlo is derived by adding the concept of momentum which requires that the Hessian is non-negative, which in term requires a continuous smooth function. Thus HMC cannot handle discrete parameters by construction. More formally, the HMC requires a transform from the D-dimensional parameter space to a 2D-dimensional phase space cite:betancourtConceptualIntroductionHamiltonian2018.</p><h4 id=9e4>9E4</h4><p>Explain the difference between the effective number of samples, <code>n_eff</code> as calculated by Stan, and the actual number of samples.</p><h5 id=solution>Solution</h5><p>We will invoke the precise definition of the effective sample size cite:betancourtConceptualIntroductionHamiltonian2018</p><p>\[ ESS = \frac{N}{1+2\sum_{l=1}^{\infty}\rho_{l}} \]</p><p>Where we note that \(\rho_{l}\) is the lag-l autocorrelation of \(f\) over the Markov chain (in time). In essence, this is the number of independent samples which have equivalent information of the posterior. This is relevant, because the samples from a Marko chain are sequentially correlated (autocorrelated).</p><h4 id=9e5>9E5</h4><p>Which value should <code>Rhat</code> approach, when a chain is sampling the posterior distribution correctly?</p><h5 id=solution>Solution</h5><p>The literature cite:gelmanBayesianDataAnalysis2014 often cites a value of \(1.01\) for convergence. However, newer versions of Stan tend are documented to suggest \(1.05\) since they use newer formulations of the Rhat value cite:vehtariRanknormalizationFoldingLocalization2020. It should also be noted that cite:royConvergenceDiagnosticsMarkov2020 the Rhat value does not necessarily indicate convergence, it is not a necessary and sufficient condition, but a heuristic, and should be understood as such.</p><h4 id=hold-9e6>HOLD 9E6</h4><p>Sketch a good trace plot for a Markov chain, one that is effectively sampling from the posterior distribution. What is good about its shape? Then sketch a trace plot for a malfunctioning Markov chain. What about its shape indicates malfunction?</p><h5 id=solution>Solution</h5><p>Recall that the &ldquo;health&rdquo; of a chain can be determined by the following qualities in the trace plot.</p><dl><dt>Stationarity</dt><dd>This ensures that the chain is sampling the high probability portion of the posterior distribution</dd><dt>Mixing</dt><dd>This ensures that the chain explores the full region</dd><dt>Convergence</dt><dd>Convergence implies that independent chains agree on the same region of high probability</dd></dl><p>We will require a sample model to plot.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>data</span><span class=p>(</span><span class=n>rugged</span><span class=p>)</span>
+</code></pre></div><h2 id=chapter-ix-markov-chain-monte-carlo>Chapter IX: Markov Chain Monte Carlo</h2>
+<h3 id=easy-questions--ch9>Easy Questions (Ch9)</h3>
+<h4 id=9e3>9E3</h4>
+<p>Which sort of parameters can Hamiltonian Monte Carlo not handle? Can you explain why?</p>
+<h5 id=solution>Solution</h5>
+<p>Hamiltonian Monte Carlo is derived by adding the concept of momentum which requires that the Hessian is non-negative, which in term requires a continuous smooth function. Thus HMC cannot handle discrete parameters by construction. More formally, the HMC requires a transform from the D-dimensional parameter space to a 2D-dimensional phase space cite:betancourtConceptualIntroductionHamiltonian2018.</p>
+<h4 id=9e4>9E4</h4>
+<p>Explain the difference between the effective number of samples, <code>n_eff</code> as calculated by Stan, and the actual number of samples.</p>
+<h5 id=solution>Solution</h5>
+<p>We will invoke the precise definition of the effective sample size cite:betancourtConceptualIntroductionHamiltonian2018</p>
+<p>\[ ESS = \frac{N}{1+2\sum_{l=1}^{\infty}\rho_{l}} \]</p>
+<p>Where we note that \(\rho_{l}\) is the lag-l autocorrelation of \(f\) over the Markov chain (in time). In essence, this is the number of independent samples which have equivalent information of the posterior. This is relevant, because the samples from a Marko chain are sequentially correlated (autocorrelated).</p>
+<h4 id=9e5>9E5</h4>
+<p>Which value should <code>Rhat</code> approach, when a chain is sampling the posterior distribution correctly?</p>
+<h5 id=solution>Solution</h5>
+<p>The literature cite:gelmanBayesianDataAnalysis2014 often cites a value of \(1.01\) for convergence. However, newer versions of Stan tend are documented to suggest \(1.05\) since they use newer formulations of the Rhat value cite:vehtariRanknormalizationFoldingLocalization2020. It should also be noted that cite:royConvergenceDiagnosticsMarkov2020 the Rhat value does not necessarily indicate convergence, it is not a necessary and sufficient condition, but a heuristic, and should be understood as such.</p>
+<h4 id=hold-9e6>HOLD 9E6</h4>
+<p>Sketch a good trace plot for a Markov chain, one that is effectively sampling from the posterior distribution. What is good about its shape? Then sketch a trace plot for a malfunctioning Markov chain. What about its shape indicates malfunction?</p>
+<h5 id=solution>Solution</h5>
+<p>Recall that the &ldquo;health&rdquo; of a chain can be determined by the following qualities in the trace plot.</p>
+<dl>
+<dt>Stationarity</dt>
+<dd>This ensures that the chain is sampling the high probability portion of the posterior distribution</dd>
+<dt>Mixing</dt>
+<dd>This ensures that the chain explores the full region</dd>
+<dt>Convergence</dt>
+<dd>Convergence implies that independent chains agree on the same region of high probability</dd>
+</dl>
+<p>We will require a sample model to plot.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>data</span><span class=p>(</span><span class=n>rugged</span><span class=p>)</span>
 <span class=n>rugDat</span><span class=o>&lt;-</span><span class=n>rugged</span>
 <span class=n>rugDat</span><span class=o>&lt;-</span><span class=n>rugDat</span> <span class=o>%&gt;%</span> <span class=n>dplyr</span><span class=o>::</span><span class=nf>mutate</span><span class=p>(</span><span class=n>logGDP</span><span class=o>=</span><span class=nf>log</span><span class=p>(</span><span class=n>rgdppc_2000</span><span class=p>))</span> <span class=o>%&gt;%</span> <span class=n>tidyr</span><span class=o>::</span><span class=nf>drop_na</span><span class=p>()</span> <span class=o>%&gt;%</span> <span class=n>dplyr</span><span class=o>::</span><span class=nf>mutate</span><span class=p>(</span><span class=n>logGDP_std</span><span class=o>=</span><span class=n>logGDP</span><span class=o>/</span><span class=nf>mean</span><span class=p>(</span><span class=n>logGDP</span><span class=p>),</span>
                                                                                                  <span class=n>rugged_std</span><span class=o>=</span><span class=n>rugged</span><span class=o>/</span><span class=nf>max</span><span class=p>(</span><span class=n>rugged</span><span class=p>),</span>
@@ -26,7 +234,7 @@ This submission covers the following exercise questions:</p><ul><li><input check
   <span class=n>rugged_std</span><span class=o>=</span><span class=n>rugDat</span><span class=o>$</span><span class=n>rugged_std</span><span class=p>,</span>
   <span class=n>cid</span><span class=o>=</span><span class=nf>as.integer</span><span class=p>(</span><span class=n>rugDat</span><span class=o>$</span><span class=n>cid</span><span class=p>)</span>
 <span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>m91unif</span><span class=o>&lt;-</span><span class=nf>ulam</span><span class=p>(</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>m91unif</span><span class=o>&lt;-</span><span class=nf>ulam</span><span class=p>(</span>
   <span class=nf>alist</span><span class=p>(</span>
     <span class=n>logGDP_std</span> <span class=o>~</span> <span class=nf>dnorm</span><span class=p>(</span><span class=n>mu</span><span class=p>,</span><span class=n>sigma</span><span class=p>),</span>
     <span class=n>mu</span><span class=o>&lt;-</span><span class=n>a[cid]</span> <span class=o>+</span> <span class=n>b[cid]</span><span class=o>*</span><span class=p>(</span><span class=n>rugged_std</span><span class=m>-0.215</span><span class=p>),</span>
@@ -35,9 +243,16 @@ This submission covers the following exercise questions:</p><ul><li><input check
     <span class=n>sigma</span><span class=o>~</span><span class=nf>dunif</span><span class=p>(</span><span class=m>0</span><span class=p>,</span><span class=m>1</span><span class=p>)</span>
   <span class=p>),</span> <span class=n>data</span><span class=o>=</span><span class=n>datList</span><span class=p>,</span> <span class=n>chains</span><span class=o>=</span><span class=m>4</span><span class=p>,</span> <span class=n>cores</span><span class=o>=</span><span class=m>4</span>
 <span class=p>)</span>
-</code></pre></div><p>We would like to check the trace and trace rank plots.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>m91unif</span> <span class=o>%&gt;%</span> <span class=n>traceplot</span>
-</code></pre></div><figure><img src=/ox-hugo/9E4trace.png></figure><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>m91unif</span> <span class=o>%&gt;%</span> <span class=n>trankplot</span>
-</code></pre></div><figure><img src=/ox-hugo/9E4trank.png></figure><p>Clearly this is a good model, with well mixed chains, as can be seen in the trank and trace plots.</p><p>We will now check the plots for the unhealthy chain described in the chapter.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>m9e4un</span><span class=o>&lt;-</span><span class=nf>ulam</span><span class=p>(</span>
+</code></pre></div><p>We would like to check the trace and trace rank plots.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>m91unif</span> <span class=o>%&gt;%</span> <span class=n>traceplot</span>
+</code></pre></div><figure><img src=/ox-hugo/9E4trace.png>
+</figure>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>m91unif</span> <span class=o>%&gt;%</span> <span class=n>trankplot</span>
+</code></pre></div><figure><img src=/ox-hugo/9E4trank.png>
+</figure>
+<p>Clearly this is a good model, with well mixed chains, as can be seen in the trank and trace plots.</p>
+<p>We will now check the plots for the unhealthy chain described in the chapter.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>m9e4un</span><span class=o>&lt;-</span><span class=nf>ulam</span><span class=p>(</span>
   <span class=nf>alist</span><span class=p>(</span>
     <span class=n>y</span> <span class=o>~</span> <span class=nf>dnorm</span><span class=p>(</span><span class=n>mu</span><span class=p>,</span><span class=n>sigma</span><span class=p>),</span>
     <span class=n>mu</span><span class=o>&lt;-</span><span class=n>alpha</span><span class=p>,</span>
@@ -45,7 +260,7 @@ This submission covers the following exercise questions:</p><ul><li><input check
     <span class=n>sigma</span><span class=o>~</span><span class=nf>dexp</span><span class=p>(</span><span class=m>0.0001</span><span class=p>)</span>
   <span class=p>),</span><span class=n>data</span><span class=o>=</span><span class=nf>list</span><span class=p>(</span><span class=n>y</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=m>-1</span><span class=p>,</span><span class=m>1</span><span class=p>)),</span><span class=n>chains</span><span class=o>=</span><span class=m>4</span><span class=p>,</span><span class=n>cores</span><span class=o>=</span><span class=m>4</span>
 <span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>SAMPLING FOR MODEL &#39;726d002e27cec1633082261fcfedb813&#39; NOW (CHAIN 1).
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>SAMPLING FOR MODEL &#39;726d002e27cec1633082261fcfedb813&#39; NOW (CHAIN 1).
 Chain 1:
 Chain 1: Gradient evaluation took 8.1e-05 seconds
 Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.81 seconds.
@@ -158,13 +373,24 @@ http://mc-stan.org/misc/warnings.html#bulk-ess
 5: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.
 Running the chains for more iterations may help. See
 http://mc-stan.org/misc/warnings.html#tail-ess
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>m9e4un</span> <span class=o>%&gt;%</span> <span class=n>traceplot</span>
-</code></pre></div><figure><img src=/ox-hugo/9E4tracePoor.png></figure><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>m9e4un</span> <span class=o>%&gt;%</span> <span class=n>trankplot</span>
-</code></pre></div><figure><img src=/ox-hugo/9E4trankPoor.png></figure><p>Clearly these plots show a model which is unable to converge.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>m9e4un</span> <span class=o>%&gt;%</span> <span class=n>precis</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>        mean     sd    5.5%   94.5% n_eff Rhat4
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>m9e4un</span> <span class=o>%&gt;%</span> <span class=n>traceplot</span>
+</code></pre></div><figure><img src=/ox-hugo/9E4tracePoor.png>
+</figure>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>m9e4un</span> <span class=o>%&gt;%</span> <span class=n>trankplot</span>
+</code></pre></div><figure><img src=/ox-hugo/9E4trankPoor.png>
+</figure>
+<p>Clearly these plots show a model which is unable to converge.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>m9e4un</span> <span class=o>%&gt;%</span> <span class=n>precis</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>        mean     sd    5.5%   94.5% n_eff Rhat4
 alpha -22.01 267.51 -414.95  316.61   154  1.02
 sigma 420.97 983.52    5.39 1894.87   151  1.04
-</code></pre></div><p>This has clear repercussions on the actual predictions as well.</p><h3 id=questions-of-medium-complexity--ch9>Questions of Medium Complexity (Ch9)</h3><h4 id=hold-9m1>HOLD 9M1</h4><p>Re-estimate the terrain ruggedness model from the chapter, but now using a uniform prior for the standard deviation, <code>sigma</code>. The uniform prior should be <code>dunif(0,1)</code>. Use <code>ulam</code> to estimate the posterior. Does the different prior have any detectable influence on the posterior distribution of <code>sigma</code>? What or why not?</p><h5 id=solution>Solution</h5><p>Instead of using the <code>complete.cases</code> formulation in the book, we will instead use a more <code>tidyverse</code> friendly approach.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>data</span><span class=p>(</span><span class=n>rugged</span><span class=p>)</span>
+</code></pre></div><p>This has clear repercussions on the actual predictions as well.</p>
+<h3 id=questions-of-medium-complexity--ch9>Questions of Medium Complexity (Ch9)</h3>
+<h4 id=hold-9m1>HOLD 9M1</h4>
+<p>Re-estimate the terrain ruggedness model from the chapter, but now using a uniform prior for the standard deviation, <code>sigma</code>. The uniform prior should be <code>dunif(0,1)</code>. Use <code>ulam</code> to estimate the posterior. Does the different prior have any detectable influence on the posterior distribution of <code>sigma</code>? What or why not?</p>
+<h5 id=solution>Solution</h5>
+<p>Instead of using the <code>complete.cases</code> formulation in the book, we will instead use a more <code>tidyverse</code> friendly approach.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>data</span><span class=p>(</span><span class=n>rugged</span><span class=p>)</span>
 <span class=n>rugDat</span><span class=o>&lt;-</span><span class=n>rugged</span>
 <span class=n>rugDat</span><span class=o>&lt;-</span><span class=n>rugDat</span> <span class=o>%&gt;%</span> <span class=n>dplyr</span><span class=o>::</span><span class=nf>mutate</span><span class=p>(</span><span class=n>logGDP</span><span class=o>=</span><span class=nf>log</span><span class=p>(</span><span class=n>rgdppc_2000</span><span class=p>))</span> <span class=o>%&gt;%</span> <span class=n>tidyr</span><span class=o>::</span><span class=nf>drop_na</span><span class=p>()</span> <span class=o>%&gt;%</span> <span class=n>dplyr</span><span class=o>::</span><span class=nf>mutate</span><span class=p>(</span><span class=n>logGDP_std</span><span class=o>=</span><span class=n>logGDP</span><span class=o>/</span><span class=nf>mean</span><span class=p>(</span><span class=n>logGDP</span><span class=p>),</span>
                                                                                                  <span class=n>rugged_std</span><span class=o>=</span><span class=n>rugged</span><span class=o>/</span><span class=nf>max</span><span class=p>(</span><span class=n>rugged</span><span class=p>),</span>
@@ -174,7 +400,8 @@ sigma 420.97 983.52    5.39 1894.87   151  1.04
   <span class=n>rugged_std</span><span class=o>=</span><span class=n>rugDat</span><span class=o>$</span><span class=n>rugged_std</span><span class=p>,</span>
   <span class=n>cid</span><span class=o>=</span><span class=nf>as.integer</span><span class=p>(</span><span class=n>rugDat</span><span class=o>$</span><span class=n>cid</span><span class=p>)</span>
 <span class=p>)</span>
-</code></pre></div><p>We can now formulate a model with a uniform prior on sigma.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>m91unif</span><span class=o>&lt;-</span><span class=nf>ulam</span><span class=p>(</span>
+</code></pre></div><p>We can now formulate a model with a uniform prior on sigma.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>m91unif</span><span class=o>&lt;-</span><span class=nf>ulam</span><span class=p>(</span>
   <span class=nf>alist</span><span class=p>(</span>
     <span class=n>logGDP_std</span> <span class=o>~</span> <span class=nf>dnorm</span><span class=p>(</span><span class=n>mu</span><span class=p>,</span><span class=n>sigma</span><span class=p>),</span>
     <span class=n>mu</span><span class=o>&lt;-</span><span class=n>a[cid]</span> <span class=o>+</span> <span class=n>b[cid]</span><span class=o>*</span><span class=p>(</span><span class=n>rugged_std</span><span class=m>-0.215</span><span class=p>),</span>
@@ -183,7 +410,7 @@ sigma 420.97 983.52    5.39 1894.87   151  1.04
     <span class=n>sigma</span><span class=o>~</span><span class=nf>dunif</span><span class=p>(</span><span class=m>0</span><span class=p>,</span><span class=m>1</span><span class=p>)</span>
   <span class=p>),</span> <span class=n>data</span><span class=o>=</span><span class=n>datList</span><span class=p>,</span> <span class=n>chains</span><span class=o>=</span><span class=m>4</span><span class=p>,</span> <span class=n>cores</span><span class=o>=</span><span class=m>4</span>
 <span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>m91exp</span><span class=o>&lt;-</span><span class=nf>ulam</span><span class=p>(</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>m91exp</span><span class=o>&lt;-</span><span class=nf>ulam</span><span class=p>(</span>
   <span class=nf>alist</span><span class=p>(</span>
     <span class=n>logGDP_std</span> <span class=o>~</span> <span class=nf>dnorm</span><span class=p>(</span><span class=n>mu</span><span class=p>,</span><span class=n>sigma</span><span class=p>),</span>
     <span class=n>mu</span><span class=o>&lt;-</span><span class=n>a[cid]</span> <span class=o>+</span> <span class=n>b[cid]</span><span class=o>*</span><span class=p>(</span><span class=n>rugged_std</span><span class=m>-0.215</span><span class=p>),</span>
@@ -192,7 +419,7 @@ sigma 420.97 983.52    5.39 1894.87   151  1.04
     <span class=n>sigma</span><span class=o>~</span><span class=nf>dexp</span><span class=p>(</span><span class=m>1</span><span class=p>)</span>
   <span class=p>),</span> <span class=n>data</span><span class=o>=</span><span class=n>datList</span><span class=p>,</span> <span class=n>chains</span><span class=o>=</span><span class=m>4</span><span class=p>,</span> <span class=n>cores</span><span class=o>=</span><span class=m>4</span>
 <span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>SAMPLING FOR MODEL &#39;9b462775c5cc2badb2b667c53f2020c8&#39; NOW (CHAIN 1).
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>SAMPLING FOR MODEL &#39;9b462775c5cc2badb2b667c53f2020c8&#39; NOW (CHAIN 1).
 Chain 1:
 Chain 1: Gradient evaluation took 2.8e-05 seconds
 Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.28 seconds.
@@ -291,13 +518,23 @@ Chain 4:  Elapsed Time: 0.040804 seconds (Warm-up)
 Chain 4:                0.018479 seconds (Sampling)
 Chain 4:                0.059283 seconds (Total)
 Chain 4:
-</code></pre></div><p>The posterior distributions are simply:</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>m91exp</span> <span class=o>%&gt;%</span> <span class=n>extract.samples</span> <span class=o>%&gt;%</span> <span class=n>.$sigma</span> <span class=o>%&gt;%</span> <span class=nf>dens</span><span class=p>(</span><span class=n>.,xlab</span><span class=o>=</span><span class=s>&#34;sigma&#34;</span><span class=p>)</span>
+</code></pre></div><p>The posterior distributions are simply:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>m91exp</span> <span class=o>%&gt;%</span> <span class=n>extract.samples</span> <span class=o>%&gt;%</span> <span class=n>.$sigma</span> <span class=o>%&gt;%</span> <span class=nf>dens</span><span class=p>(</span><span class=n>.,xlab</span><span class=o>=</span><span class=s>&#34;sigma&#34;</span><span class=p>)</span>
 <span class=n>m91unif</span> <span class=o>%&gt;%</span> <span class=n>extract.samples</span>  <span class=o>%&gt;%</span> <span class=n>.$sigma</span> <span class=o>%&gt;%</span> <span class=nf>dens</span><span class=p>(</span><span class=n>.,add</span><span class=o>=</span><span class=kc>TRUE</span><span class=p>,</span><span class=n>col</span><span class=o>=</span><span class=s>&#34;blue&#34;</span><span class=p>)</span>
 <span class=nf>mtext</span><span class=p>(</span><span class=s>&#34;posterior&#34;</span><span class=p>)</span>
-</code></pre></div><figure><img src=/ox-hugo/m91densPost.png></figure><p>With the priors being:</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>m91exp</span> <span class=o>%&gt;%</span> <span class=n>extract.prior</span> <span class=o>%&gt;%</span> <span class=n>.$sigma</span> <span class=o>%&gt;%</span> <span class=nf>dens</span><span class=p>(</span><span class=n>.,xlab</span><span class=o>=</span><span class=s>&#34;sigma&#34;</span><span class=p>)</span>
+</code></pre></div><figure><img src=/ox-hugo/m91densPost.png>
+</figure>
+<p>With the priors being:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>m91exp</span> <span class=o>%&gt;%</span> <span class=n>extract.prior</span> <span class=o>%&gt;%</span> <span class=n>.$sigma</span> <span class=o>%&gt;%</span> <span class=nf>dens</span><span class=p>(</span><span class=n>.,xlab</span><span class=o>=</span><span class=s>&#34;sigma&#34;</span><span class=p>)</span>
 <span class=n>m91unif</span> <span class=o>%&gt;%</span> <span class=n>extract.prior</span>  <span class=o>%&gt;%</span> <span class=n>.$sigma</span> <span class=o>%&gt;%</span> <span class=nf>dens</span><span class=p>(</span><span class=n>.,add</span><span class=o>=</span><span class=kc>TRUE</span><span class=p>,</span><span class=n>col</span><span class=o>=</span><span class=s>&#34;blue&#34;</span><span class=p>)</span>
 <span class=nf>mtext</span><span class=p>(</span><span class=s>&#34;prior&#34;</span><span class=p>)</span>
-</code></pre></div><figure><img src=/ox-hugo/m91densPrior.png></figure><p>This makes sense, since we know that uniform prior is essentially a step function between 0 and 1 with a value of 1, while the exponential function decays normally, but should actually be spiked upwards to 1 as well.</p><h4 id=hold-9m2>HOLD 9M2</h4><p>Modify the terrain ruggedness model again. This times, change the prior for <code>b[cid]</code> to <code>dexp(0.3)</code>. What does this do to the posterior distribution? Can you explain it?</p><h5 id=solution>Solution</h5><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>m92exp</span><span class=o>&lt;-</span><span class=nf>ulam</span><span class=p>(</span>
+</code></pre></div><figure><img src=/ox-hugo/m91densPrior.png>
+</figure>
+<p>This makes sense, since we know that uniform prior is essentially a step function between 0 and 1 with a value of 1, while the exponential function decays normally, but should actually be spiked upwards to 1 as well.</p>
+<h4 id=hold-9m2>HOLD 9M2</h4>
+<p>Modify the terrain ruggedness model again. This times, change the prior for <code>b[cid]</code> to <code>dexp(0.3)</code>. What does this do to the posterior distribution? Can you explain it?</p>
+<h5 id=solution>Solution</h5>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>m92exp</span><span class=o>&lt;-</span><span class=nf>ulam</span><span class=p>(</span>
   <span class=nf>alist</span><span class=p>(</span>
     <span class=n>logGDP_std</span> <span class=o>~</span> <span class=nf>dnorm</span><span class=p>(</span><span class=n>mu</span><span class=p>,</span><span class=n>sigma</span><span class=p>),</span>
     <span class=n>mu</span><span class=o>&lt;-</span><span class=n>a[cid]</span> <span class=o>+</span> <span class=n>b[cid]</span><span class=o>*</span><span class=p>(</span><span class=n>rugged_std</span><span class=m>-0.215</span><span class=p>),</span>
@@ -306,14 +543,20 @@ Chain 4:
     <span class=n>sigma</span><span class=o>~</span><span class=nf>dexp</span><span class=p>(</span><span class=m>1</span><span class=p>)</span>
   <span class=p>),</span><span class=n>data</span><span class=o>=</span><span class=n>datList</span><span class=p>,</span> <span class=n>chains</span><span class=o>=</span><span class=m>4</span><span class=p>,</span> <span class=n>cores</span><span class=o>=</span><span class=m>4</span>
 <span class=p>)</span>
-</code></pre></div><p>Priors:</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>m92exp</span> <span class=o>%&gt;%</span> <span class=n>extract.prior</span> <span class=o>%&gt;%</span> <span class=n>.$sigma</span> <span class=o>%&gt;%</span> <span class=nf>dens</span><span class=p>(</span><span class=n>.,xlab</span><span class=o>=</span><span class=s>&#34;sigma&#34;</span><span class=p>,</span><span class=n>col</span><span class=o>=</span><span class=s>&#34;blue&#34;</span><span class=p>)</span>
+</code></pre></div><p>Priors:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>m92exp</span> <span class=o>%&gt;%</span> <span class=n>extract.prior</span> <span class=o>%&gt;%</span> <span class=n>.$sigma</span> <span class=o>%&gt;%</span> <span class=nf>dens</span><span class=p>(</span><span class=n>.,xlab</span><span class=o>=</span><span class=s>&#34;sigma&#34;</span><span class=p>,</span><span class=n>col</span><span class=o>=</span><span class=s>&#34;blue&#34;</span><span class=p>)</span>
 <span class=nf>mtext</span><span class=p>(</span><span class=s>&#34;prior&#34;</span><span class=p>)</span>
-</code></pre></div><figure><img src=/ox-hugo/m92densPrior.png></figure><p>Posterior:</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>m92exp</span> <span class=o>%&gt;%</span> <span class=n>extract.samples</span> <span class=o>%&gt;%</span> <span class=n>.$sigma</span> <span class=o>%&gt;%</span> <span class=nf>dens</span><span class=p>(</span><span class=n>.,xlab</span><span class=o>=</span><span class=s>&#34;sigma&#34;</span><span class=p>,</span><span class=n>col</span><span class=o>=</span><span class=s>&#34;blue&#34;</span><span class=p>)</span>
+</code></pre></div><figure><img src=/ox-hugo/m92densPrior.png>
+</figure>
+<p>Posterior:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>m92exp</span> <span class=o>%&gt;%</span> <span class=n>extract.samples</span> <span class=o>%&gt;%</span> <span class=n>.$sigma</span> <span class=o>%&gt;%</span> <span class=nf>dens</span><span class=p>(</span><span class=n>.,xlab</span><span class=o>=</span><span class=s>&#34;sigma&#34;</span><span class=p>,</span><span class=n>col</span><span class=o>=</span><span class=s>&#34;blue&#34;</span><span class=p>)</span>
 <span class=nf>mtext</span><span class=p>(</span><span class=s>&#34;posterior&#34;</span><span class=p>)</span>
-</code></pre></div><figure><img src=/ox-hugo/m92densPost.png></figure><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>m92exp</span> <span class=o>%&gt;%</span> <span class=nf>precis</span><span class=p>(</span><span class=n>.,depth</span> <span class=o>=</span> <span class=m>2</span><span class=p>)</span>
+</code></pre></div><figure><img src=/ox-hugo/m92densPost.png>
+</figure>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>m92exp</span> <span class=o>%&gt;%</span> <span class=nf>precis</span><span class=p>(</span><span class=n>.,depth</span> <span class=o>=</span> <span class=m>2</span><span class=p>)</span>
 <span class=n>m91exp</span> <span class=o>%&gt;%</span> <span class=nf>precis</span><span class=p>(</span><span class=n>.,depth</span> <span class=o>=</span> <span class=m>2</span><span class=p>)</span>
 <span class=n>m91unif</span> <span class=o>%&gt;%</span> <span class=nf>precis</span><span class=p>(</span><span class=n>.,depth</span> <span class=o>=</span> <span class=m>2</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>      mean   sd 5.5% 94.5% n_eff Rhat4
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>      mean   sd 5.5% 94.5% n_eff Rhat4
 a[1]  1.01 0.02 0.98  1.03  1161     1
 b[1]  0.13 0.08 0.02  0.27   821     1
 sigma 0.12 0.01 0.10  0.15  1097     1
@@ -327,14 +570,23 @@ sigma 0.12 0.01  0.10  0.15  1493     1
 a[1]  1.01 0.02  0.97  1.04  1744     1
 b[1]  0.10 0.09 -0.05  0.25  1874     1
 sigma 0.12 0.01  0.10  0.15  1824     1
-</code></pre></div><p>We can see that there isn&rsquo;t much difference, however, the main difference is in the <code>b</code> parameter, which seems to have fewer samples, and is also no longer takes any negative values.</p><h4 id=hold-9m3>HOLD 9M3</h4><p>Re-estimate one of the Stan models from the chapter, but at different numbers of <code>warmup</code> iterations. Be sure to use the same number of sampling iterations in each case. Compare the <code>n_eff</code> values. How much warmup is enough?</p><h5 id=solution>Solution</h5><p>For brevity, we will re-use the same data and model as used in the previous questions.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>warmTrial</span><span class=o>&lt;-</span><span class=nf>seq.int</span><span class=p>(</span><span class=m>10</span><span class=p>,</span><span class=m>10000</span><span class=p>,</span><span class=n>length.out</span> <span class=o>=</span> <span class=m>10</span><span class=p>)</span>
+</code></pre></div><p>We can see that there isn&rsquo;t much difference, however, the main difference is in the <code>b</code> parameter, which seems to have fewer samples, and is also no longer takes any negative values.</p>
+<h4 id=hold-9m3>HOLD 9M3</h4>
+<p>Re-estimate one of the Stan models from the chapter, but at different numbers of <code>warmup</code> iterations. Be sure to use the same number of sampling iterations in each case. Compare the <code>n_eff</code> values. How much warmup is enough?</p>
+<h5 id=solution>Solution</h5>
+<p>For brevity, we will re-use the same data and model as used in the previous questions.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>warmTrial</span><span class=o>&lt;-</span><span class=nf>seq.int</span><span class=p>(</span><span class=m>10</span><span class=p>,</span><span class=m>10000</span><span class=p>,</span><span class=n>length.out</span> <span class=o>=</span> <span class=m>10</span><span class=p>)</span>
 <span class=n>nSampleEff</span><span class=o>&lt;-</span><span class=nf>matrix</span><span class=p>(</span><span class=kc>NA</span><span class=p>,</span><span class=n>nrow</span><span class=o>=</span><span class=nf>length</span><span class=p>(</span><span class=n>warmTrial</span><span class=p>),</span><span class=n>ncol</span><span class=o>=</span><span class=m>3</span><span class=p>)</span>
 <span class=n>nSampleEffExp</span><span class=o>&lt;-</span><span class=nf>matrix</span><span class=p>(</span><span class=kc>NA</span><span class=p>,</span><span class=n>nrow</span><span class=o>=</span><span class=nf>length</span><span class=p>(</span><span class=n>warmTrial</span><span class=p>),</span><span class=n>ncol</span><span class=o>=</span><span class=m>3</span><span class=p>)</span>
-</code></pre></div><ul><li><p>Uniform Model</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>for</span><span class=p>(</span><span class=n>i</span> <span class=n>in</span> <span class=m>1</span><span class=o>:</span><span class=nf>length</span><span class=p>(</span><span class=n>warmTrial</span><span class=p>)){</span>
+</code></pre></div>
+<ul>
+<li>
+<p>Uniform Model</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>for</span><span class=p>(</span><span class=n>i</span> <span class=n>in</span> <span class=m>1</span><span class=o>:</span><span class=nf>length</span><span class=p>(</span><span class=n>warmTrial</span><span class=p>)){</span>
   <span class=n>tmp</span><span class=o>&lt;-</span><span class=nf>ulam</span><span class=p>(</span><span class=n>m91unif</span><span class=p>,</span><span class=n>chains</span><span class=o>=</span><span class=m>4</span><span class=p>,</span><span class=n>cores</span><span class=o>=</span><span class=m>4</span><span class=p>,</span><span class=n>refresh</span><span class=o>=</span><span class=m>-1</span><span class=p>,</span><span class=n>warmup</span><span class=o>=</span><span class=n>warmTrial[i]</span><span class=p>,</span><span class=n>iter</span><span class=o>=</span><span class=m>1000</span><span class=o>+</span><span class=n>warmTrial[i]</span><span class=p>)</span>
   <span class=n>nSampleEff[i</span><span class=p>,</span><span class=n>]</span><span class=o>&lt;-</span><span class=nf>precis</span><span class=p>(</span><span class=n>tmp</span><span class=p>,</span><span class=m>2</span><span class=p>)</span><span class=o>$</span><span class=n>n_eff</span>
 <span class=p>}</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>
 Chain 1:
 Chain 1: Gradient evaluation took 9.7e-05 seconds
 Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.97 seconds.
@@ -803,8 +1055,8 @@ http://mc-stan.org/misc/warnings.html#bulk-ess
 6: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.
 Running the chains for more iterations may help. See
 http://mc-stan.org/misc/warnings.html#tail-ess
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>nSampleEff</span> <span class=o>%&gt;%</span> <span class=nf>tibble</span><span class=p>(</span><span class=n>nWarmup</span><span class=o>=</span><span class=n>warmTrial</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>[90m# A tibble: 10 x 2[39m
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>nSampleEff</span> <span class=o>%&gt;%</span> <span class=nf>tibble</span><span class=p>(</span><span class=n>nWarmup</span><span class=o>=</span><span class=n>warmTrial</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>[90m# A tibble: 10 x 2[39m
    .[,&#34;a[1]&#34;] [,&#34;b[1]&#34;] [,&#34;sigma&#34;] nWarmup
         [3m[90m&lt;dbl&gt;[39m[23m     [3m[90m&lt;dbl&gt;[39m[23m      [3m[90m&lt;dbl&gt;[39m[23m   [3m[90m&lt;int&gt;[39m[23m
 [90m 1[39m      [4m1[24m051.      399.       45.8      10
@@ -817,11 +1069,16 @@ http://mc-stan.org/misc/warnings.html#tail-ess
 [90m 8[39m      [4m3[24m570.     [4m3[24m050.     [4m3[24m079.     [4m7[24m780
 [90m 9[39m      [4m3[24m247.     [4m3[24m148.     [4m3[24m340.     [4m8[24m890
 [90m10[39m      [4m3[24m159.     [4m2[24m929.     [4m2[24m960.    [4m1[24m[4m0[24m000
-</code></pre></div></li></ul><ul><li><p>Exponential Model</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>for</span><span class=p>(</span><span class=n>i</span> <span class=n>in</span> <span class=m>1</span><span class=o>:</span><span class=nf>length</span><span class=p>(</span><span class=n>warmTrial</span><span class=p>)){</span>
+</code></pre></div></li>
+</ul>
+<ul>
+<li>
+<p>Exponential Model</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>for</span><span class=p>(</span><span class=n>i</span> <span class=n>in</span> <span class=m>1</span><span class=o>:</span><span class=nf>length</span><span class=p>(</span><span class=n>warmTrial</span><span class=p>)){</span>
   <span class=n>tmp</span><span class=o>&lt;-</span><span class=nf>ulam</span><span class=p>(</span><span class=n>m91exp</span><span class=p>,</span><span class=n>chains</span><span class=o>=</span><span class=m>4</span><span class=p>,</span><span class=n>cores</span><span class=o>=</span><span class=m>4</span><span class=p>,</span><span class=n>refresh</span><span class=o>=</span><span class=m>-1</span><span class=p>,</span><span class=n>warmup</span><span class=o>=</span><span class=n>warmTrial[i]</span><span class=p>,</span><span class=n>iter</span><span class=o>=</span><span class=m>1000</span><span class=o>+</span><span class=n>warmTrial[i]</span><span class=p>)</span>
   <span class=n>nSampleEffExp[i</span><span class=p>,</span><span class=n>]</span><span class=o>&lt;-</span><span class=nf>precis</span><span class=p>(</span><span class=n>tmp</span><span class=p>,</span><span class=m>2</span><span class=p>)</span><span class=o>$</span><span class=n>n_eff</span>
 <span class=p>}</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>
 Chain 1:
 Chain 1: Gradient evaluation took 3e-05 seconds
 Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.3 seconds.
@@ -1278,8 +1535,8 @@ Warning messages:
 1: There were 14 divergent transitions after warmup. Increasing adapt_delta above 0.95 may help. See
 http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
 2: Examine the pairs() plot to diagnose sampling problems
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>nSampleEffExp</span> <span class=o>%&gt;%</span> <span class=nf>tibble</span><span class=p>(</span><span class=n>nWarmup</span><span class=o>=</span><span class=n>warmTrial</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>[90m# A tibble: 10 x 2[39m
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>nSampleEffExp</span> <span class=o>%&gt;%</span> <span class=nf>tibble</span><span class=p>(</span><span class=n>nWarmup</span><span class=o>=</span><span class=n>warmTrial</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>[90m# A tibble: 10 x 2[39m
    .[,1]  [,2]  [,3] nWarmup
    [3m[90m&lt;dbl&gt;[39m[23m [3m[90m&lt;dbl&gt;[39m[23m [3m[90m&lt;dbl&gt;[39m[23m   [3m[90m&lt;int&gt;[39m[23m
 [90m 1[39m [4m3[24m063. [4m1[24m265. [4m1[24m045.      10
@@ -1292,18 +1549,86 @@ http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
 [90m 8[39m [4m3[24m210. [4m3[24m207. [4m3[24m125.    [4m7[24m780
 [90m 9[39m [4m2[24m919. [4m3[24m329. [4m3[24m060.    [4m8[24m890
 [90m10[39m [4m2[24m951. [4m3[24m461. [4m3[24m078.   [4m1[24m[4m0[24m000
-</code></pre></div><p>It is important to note that the divergent transitions are probably why the number of effective samples decrease in the last two rows.</p></li></ul><ul><li><p>Results</p><p>We can see that the number of effective samples increases almost constantly. This is probably due to correlations in the chain, which are removed during the warmup period.</p></li></ul><h2 id=chapter-xi-god-spiked-the-integers>Chapter XI: God Spiked The Integers</h2><h3 id=easy-questions--ch11>Easy Questions (Ch11)</h3><h4 id=11e1>11E1</h4><p>If an event has probability \(0.35\), what are the log-odds of this event?</p><h5 id=solution>Solution</h5><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>log</span><span class=p>(</span><span class=m>0.35</span><span class=o>/</span><span class=p>(</span><span class=m>1-0.35</span><span class=p>))</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>[1] -0.6190392
-</code></pre></div><h4 id=11e2>11E2</h4><p>If an event has log-odds \(3.2\), what is the probability of this event?</p><h5 id=solution>Solution</h5><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>logistic</span><span class=p>(</span><span class=m>3.2</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>[1] 0.9608343
-</code></pre></div><h4 id=11e3>11E3</h4><p>Suppose that a coefficient in a logistic regression has value \(1.7\). What does this imply about the proportional change in odds of the outcome?</p><h5 id=solution>Solution</h5><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>exp</span><span class=p>(</span><span class=m>1.7</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>[1] 5.473947
-</code></pre></div><p>Note that this is not really the change in the variable, but the <strong>proportional odds</strong>.</p><h4 id=hold-11e4>HOLD 11E4</h4><p>Why do Poisson regressions sometimes require the use of an <em>offset</em>? Provide an example.</p><h5 id=solution>Solution</h5><p>The Poisson distribution is often understood as a limiting distribution of the Binomial where \(λ=np\) as \(n→∞\) and \(p→0\). The single parameter thus expresses the expected value, but is often used to encode different time-steps as well. Essentially, the distribution assumes a constant rate in time or space, and thus the change in exposure, is expressed by the offset, which is the logarithm of the exposure.</p><p>For any case where samples are drawn from populations which have different aggregation time periods but are still within the purview of a Poisson distribution, the offset is a natural way of expressing these.</p><p>To leverage the example of the book, when constructing a model to account for the fact that one Monastery calculates their averages on a weekly basis, while the other averages by day, this constraint should be modeled by having differing offsets.</p><h3 id=questions-of-medium-complexity--ch11>Questions of Medium Complexity (Ch11)</h3><h4 id=hold-11m2>HOLD 11M2</h4><p>If a coefficient in a Poisson regression has values \(1.7\), what does this imply about the change in the outcome?</p><h5 id=solution>Solution</h5><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>exp</span><span class=p>(</span><span class=m>1.7</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>[1] 5.473947
-</code></pre></div><p>The coefficient in a Poisson regression implies that the <strong>proportional change</strong> in the count will be ~5.474 when the predictor variable increase by one unit.</p><h4 id=hold-11m3>HOLD 11M3</h4><p>Explain why the logit link is appropriate for a binomial generalized linear model.</p><h5 id=solution>Solution</h5><p>The logit link essentially connects a parameter constrained between zero and one and the real space. The logit function is defined as:</p><p>\[\mathrm{logit}(pᵢ)=\log{\frac{pᵢ}{1-pᵢ}}\]</p><p>Where \(pᵢ\) is a probability mass. This link makes sense for a GLM since the predicted value is a probability distribution parameter, and we would like to obtain this from a linear model which spans the entire set of real numbers.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>curve</span><span class=p>(</span><span class=n>logit</span><span class=p>,</span><span class=n>from</span><span class=o>=</span><span class=m>-0.5</span><span class=p>,</span><span class=n>to</span><span class=o>=</span><span class=m>1.5</span><span class=p>)</span>
-</code></pre></div><figure><img src=/ox-hugo/logitFunction.png></figure><p>The link function maps a parameter onto a linear model.</p><h4 id=hold-11m4>HOLD 11M4</h4><p>Explain why the log is appropriate for a Poisson generalized linear model.</p><h5 id=solution>Solution</h5><p>The log function ensures that the parameter cannot take values which are less than zero. This is a natural consequence of the function definition.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>curve</span><span class=p>(</span><span class=n>log</span><span class=p>,</span><span class=n>from</span><span class=o>=</span><span class=m>-0.5</span><span class=p>,</span><span class=n>to</span><span class=o>=</span><span class=m>100000</span><span class=p>)</span>
-</code></pre></div><figure><img src=/ox-hugo/logFunction.png></figure><p>The log link assumes that the parameter value is the exponentiation of the linear model.</p><p>This makes sense for a Poisson GLM as the Poisson distribution does not accept negative values.</p><h4 id=hold-11m5>HOLD 11M5</h4><p>What would it imply to use a logit link for the mean of a Poisson generalized linear model? Can you think of a real research problem for which this would make sense?</p><h5 id=solution>Solution</h5><p>We should write this out more explicitly.</p><p>This implies that the mean μ lies between zero and one. Since the Poisson distribution is defined by a single parameter, this does limit the model outputs. The premise of a Poisson regression problem is that the GLM models a count with an unknown maximum, so it does seem to be a very severe restriction.</p><p>To my mind this is feasible for constrained problems, where the Poisson distribution is to be followed but only within a particular range for some reason, and when the Binomial (of which the Poisson is a special case), decreases too slowly.</p><p>It was mentioned on the <strong>class forums</strong>, that the COVID-19 problem was modeled with a two parameter generalized link function, i.e. \(\log{\frac{p}{S-p}}\) which essentially constrains the model to have Poisson dynamics but with an output mean between 0 and S.</p><h4 id=hold-11m6>HOLD 11M6</h4><p>State the constraints for which the binomial and Poisson distributions have maximum entropy. Are the constraints different at all for binomial and Poisson? Why or why not?</p><h5 id=solution>Solution</h5><p>The Binomial distribution is defined to be the maximum entropy distributions are:</p><ol><li>Discrete binary outcomes</li><li>Constant probability (or expectation)</li></ol><p>This is defined by the number of outcomes (n) as well as the probability (p). The experiment is essentially reduced to a series of independent and identical Bernoulli trials with only two outcomes.
-The Poisson distribution is derived as a limiting form of the Binomial, where \(n→∞\) and \(p→0\). Since this does not change the underlying constraints, this is still a maximum entropy distribution.</p><h4 id=hold-11m8>HOLD 11M8</h4><p>Revisit the <code>data(Kline)</code> islands example. This time drop Hawaii from the sample and refit the models. What changes do you observe?</p><h5 id=solution>Solution</h5><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>data</span><span class=p>(</span><span class=n>Kline</span><span class=p>)</span>
+</code></pre></div><p>It is important to note that the divergent transitions are probably why the number of effective samples decrease in the last two rows.</p>
+</li>
+</ul>
+<ul>
+<li>
+<p>Results</p>
+<p>We can see that the number of effective samples increases almost constantly. This is probably due to correlations in the chain, which are removed during the warmup period.</p>
+</li>
+</ul>
+<h2 id=chapter-xi-god-spiked-the-integers>Chapter XI: God Spiked The Integers</h2>
+<h3 id=easy-questions--ch11>Easy Questions (Ch11)</h3>
+<h4 id=11e1>11E1</h4>
+<p>If an event has probability \(0.35\), what are the log-odds of this event?</p>
+<h5 id=solution>Solution</h5>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>log</span><span class=p>(</span><span class=m>0.35</span><span class=o>/</span><span class=p>(</span><span class=m>1-0.35</span><span class=p>))</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>[1] -0.6190392
+</code></pre></div><h4 id=11e2>11E2</h4>
+<p>If an event has log-odds \(3.2\), what is the probability of this event?</p>
+<h5 id=solution>Solution</h5>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>logistic</span><span class=p>(</span><span class=m>3.2</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>[1] 0.9608343
+</code></pre></div><h4 id=11e3>11E3</h4>
+<p>Suppose that a coefficient in a logistic regression has value \(1.7\). What does this imply about the proportional change in odds of the outcome?</p>
+<h5 id=solution>Solution</h5>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>exp</span><span class=p>(</span><span class=m>1.7</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>[1] 5.473947
+</code></pre></div><p>Note that this is not really the change in the variable, but the <strong>proportional odds</strong>.</p>
+<h4 id=hold-11e4>HOLD 11E4</h4>
+<p>Why do Poisson regressions sometimes require the use of an <em>offset</em>? Provide an example.</p>
+<h5 id=solution>Solution</h5>
+<p>The Poisson distribution is often understood as a limiting distribution of the Binomial where \(λ=np\) as \(n→∞\) and \(p→0\). The single parameter thus expresses the expected value, but is often used to encode different time-steps as well. Essentially, the distribution assumes a constant rate in time or space, and thus the change in exposure, is expressed by the offset, which is the logarithm of the exposure.</p>
+<p>For any case where samples are drawn from populations which have different aggregation time periods but are still within the purview of a Poisson distribution, the offset is a natural way of expressing these.</p>
+<p>To leverage the example of the book, when constructing a model to account for the fact that one Monastery calculates their averages on a weekly basis, while the other averages by day, this constraint should be modeled by having differing offsets.</p>
+<h3 id=questions-of-medium-complexity--ch11>Questions of Medium Complexity (Ch11)</h3>
+<h4 id=hold-11m2>HOLD 11M2</h4>
+<p>If a coefficient in a Poisson regression has values \(1.7\), what does this imply about the change in the outcome?</p>
+<h5 id=solution>Solution</h5>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>exp</span><span class=p>(</span><span class=m>1.7</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>[1] 5.473947
+</code></pre></div><p>The coefficient in a Poisson regression implies that the <strong>proportional change</strong> in the count will be ~5.474 when the predictor variable increase by one unit.</p>
+<h4 id=hold-11m3>HOLD 11M3</h4>
+<p>Explain why the logit link is appropriate for a binomial generalized linear model.</p>
+<h5 id=solution>Solution</h5>
+<p>The logit link essentially connects a parameter constrained between zero and one and the real space. The logit function is defined as:</p>
+<p>\[\mathrm{logit}(pᵢ)=\log{\frac{pᵢ}{1-pᵢ}}\]</p>
+<p>Where \(pᵢ\) is a probability mass. This link makes sense for a GLM since the predicted value is a probability distribution parameter, and we would like to obtain this from a linear model which spans the entire set of real numbers.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>curve</span><span class=p>(</span><span class=n>logit</span><span class=p>,</span><span class=n>from</span><span class=o>=</span><span class=m>-0.5</span><span class=p>,</span><span class=n>to</span><span class=o>=</span><span class=m>1.5</span><span class=p>)</span>
+</code></pre></div><figure><img src=/ox-hugo/logitFunction.png>
+</figure>
+<p>The link function maps a parameter onto a linear model.</p>
+<h4 id=hold-11m4>HOLD 11M4</h4>
+<p>Explain why the log is appropriate for a Poisson generalized linear model.</p>
+<h5 id=solution>Solution</h5>
+<p>The log function ensures that the parameter cannot take values which are less than zero. This is a natural consequence of the function definition.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>curve</span><span class=p>(</span><span class=n>log</span><span class=p>,</span><span class=n>from</span><span class=o>=</span><span class=m>-0.5</span><span class=p>,</span><span class=n>to</span><span class=o>=</span><span class=m>100000</span><span class=p>)</span>
+</code></pre></div><figure><img src=/ox-hugo/logFunction.png>
+</figure>
+<p>The log link assumes that the parameter value is the exponentiation of the linear model.</p>
+<p>This makes sense for a Poisson GLM as the Poisson distribution does not accept negative values.</p>
+<h4 id=hold-11m5>HOLD 11M5</h4>
+<p>What would it imply to use a logit link for the mean of a Poisson generalized linear model? Can you think of a real research problem for which this would make sense?</p>
+<h5 id=solution>Solution</h5>
+<p>We should write this out more explicitly.</p>
+<p>This implies that the mean μ lies between zero and one. Since the Poisson distribution is defined by a single parameter, this does limit the model outputs. The premise of a Poisson regression problem is that the GLM models a count with an unknown maximum, so it does seem to be a very severe restriction.</p>
+<p>To my mind this is feasible for constrained problems, where the Poisson distribution is to be followed but only within a particular range for some reason, and when the Binomial (of which the Poisson is a special case), decreases too slowly.</p>
+<p>It was mentioned on the <strong>class forums</strong>, that the COVID-19 problem was modeled with a two parameter generalized link function, i.e. \(\log{\frac{p}{S-p}}\) which essentially constrains the model to have Poisson dynamics but with an output mean between 0 and S.</p>
+<h4 id=hold-11m6>HOLD 11M6</h4>
+<p>State the constraints for which the binomial and Poisson distributions have maximum entropy. Are the constraints different at all for binomial and Poisson? Why or why not?</p>
+<h5 id=solution>Solution</h5>
+<p>The Binomial distribution is defined to be the maximum entropy distributions are:</p>
+<ol>
+<li>Discrete binary outcomes</li>
+<li>Constant probability (or expectation)</li>
+</ol>
+<p>This is defined by the number of outcomes (n) as well as the probability (p). The experiment is essentially reduced to a series of independent and identical Bernoulli trials with only two outcomes.
+The Poisson distribution is derived as a limiting form of the Binomial, where \(n→∞\) and \(p→0\). Since this does not change the underlying constraints, this is still a maximum entropy distribution.</p>
+<h4 id=hold-11m8>HOLD 11M8</h4>
+<p>Revisit the <code>data(Kline)</code> islands example. This time drop Hawaii from the sample and refit the models. What changes do you observe?</p>
+<h5 id=solution>Solution</h5>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>data</span><span class=p>(</span><span class=n>Kline</span><span class=p>)</span>
 <span class=n>kDat</span><span class=o>&lt;-</span><span class=n>Kline</span>
 <span class=n>kDat</span><span class=o>&lt;-</span><span class=n>kDat</span> <span class=o>%&gt;%</span> <span class=n>dplyr</span><span class=o>::</span><span class=nf>mutate</span><span class=p>(</span><span class=n>cid</span><span class=o>=</span><span class=nf>ifelse</span><span class=p>(</span><span class=n>contact</span><span class=o>==</span><span class=s>&#34;high&#34;</span><span class=p>,</span><span class=m>2</span><span class=p>,</span><span class=m>1</span><span class=p>),</span>
                              <span class=n>stdPop</span><span class=o>=</span><span class=nf>standardize</span><span class=p>(</span><span class=nf>log</span><span class=p>(</span><span class=n>population</span><span class=p>)))</span> <span class=o>%&gt;%</span> <span class=nf>filter</span><span class=p>(</span><span class=n>culture</span><span class=o>!=</span><span class=s>&#34;Hawaii&#34;</span><span class=p>)</span>
@@ -1312,7 +1637,8 @@ The Poisson distribution is derived as a limiting form of the Binomial, where \(
   <span class=n>stdPop</span><span class=o>=</span><span class=n>kDat</span><span class=o>$</span><span class=n>stdPop</span><span class=p>,</span>
   <span class=n>cid</span><span class=o>=</span><span class=nf>as.integer</span><span class=p>(</span><span class=n>kDat</span><span class=o>$</span><span class=n>cid</span><span class=p>)</span>
 <span class=p>)</span>
-</code></pre></div><p>We can now fit this.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>m11m10res</span><span class=o>&lt;-</span><span class=nf>ulam</span><span class=p>(</span>
+</code></pre></div><p>We can now fit this.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>m11m10res</span><span class=o>&lt;-</span><span class=nf>ulam</span><span class=p>(</span>
   <span class=nf>alist</span><span class=p>(</span>
     <span class=n>totTools</span> <span class=o>~</span> <span class=nf>dpois</span><span class=p>(</span><span class=n>lambda</span><span class=p>),</span>
     <span class=nf>log</span><span class=p>(</span><span class=n>lambda</span><span class=p>)</span><span class=o>&lt;-</span><span class=n>a[cid]</span><span class=o>+</span><span class=n>b[cid]</span><span class=o>*</span><span class=n>stdPop</span><span class=p>,</span>
@@ -1320,24 +1646,52 @@ The Poisson distribution is derived as a limiting form of the Binomial, where \(
     <span class=n>b[cid]</span> <span class=o>~</span> <span class=nf>dnorm</span><span class=p>(</span><span class=m>0</span><span class=p>,</span><span class=m>0.2</span><span class=p>)</span>
   <span class=p>),</span><span class=n>data</span><span class=o>=</span><span class=n>datList</span><span class=p>,</span> <span class=n>chains</span><span class=o>=</span><span class=m>4</span><span class=p>,</span> <span class=n>cores</span><span class=o>=</span><span class=m>4</span>
 <span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>m11m10res</span> <span class=o>%&gt;%</span> <span class=nf>precis</span><span class=p>(</span><span class=m>2</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>     mean   sd  5.5% 94.5% n_eff Rhat4
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>m11m10res</span> <span class=o>%&gt;%</span> <span class=nf>precis</span><span class=p>(</span><span class=m>2</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>     mean   sd  5.5% 94.5% n_eff Rhat4
 a[1] 3.18 0.12  2.99  3.37  1621     1
 a[2] 3.61 0.08  3.48  3.73  1962     1
 b[1] 0.19 0.13 -0.01  0.39  1639     1
 b[2] 0.19 0.16 -0.06  0.44  1830     1
-</code></pre></div><p>We see that the slopes are now the same, which makes sense since in this data-set Hawaii was the only outlier.</p><h2 id=chapter-xii-monsters-and-mixtures>Chapter XII: Monsters and Mixtures</h2><h3 id=easy-questions--ch12>Easy Questions (Ch12)</h3><h4 id=hold-12e4>HOLD 12E4</h4><p>Over-dispersion is common in count data. Give an example of a natural process that might produce over-dispersed counts. Can you also give an example of a process that might produce /under-/dispersed counts?</p><h5 id=solution>Solution</h5><ul><li><p>Over-dispersion</p><p>Over dispersion is essentially the occurrence of greater variability than accounted for based on the statistical model. The presence of over-dispersion is typically due to heterogeneity in populations.
-This heterogeneity may arise from simple aggregation issues like in the case considered in the text, of Monasteries which accumulate data weekly or daily, in-spite of following the same Poisson model.</p></li></ul><ul><li><p>Under-dispersion</p><p>Under dispersion is essentially the occurrence of less variability than accounted for based on the statistical model.
+</code></pre></div><p>We see that the slopes are now the same, which makes sense since in this data-set Hawaii was the only outlier.</p>
+<h2 id=chapter-xii-monsters-and-mixtures>Chapter XII: Monsters and Mixtures</h2>
+<h3 id=easy-questions--ch12>Easy Questions (Ch12)</h3>
+<h4 id=hold-12e4>HOLD 12E4</h4>
+<p>Over-dispersion is common in count data. Give an example of a natural process that might produce over-dispersed counts. Can you also give an example of a process that might produce /under-/dispersed counts?</p>
+<h5 id=solution>Solution</h5>
+<ul>
+<li>
+<p>Over-dispersion</p>
+<p>Over dispersion is essentially the occurrence of greater variability than accounted for based on the statistical model. The presence of over-dispersion is typically due to heterogeneity in populations.
+This heterogeneity may arise from simple aggregation issues like in the case considered in the text, of Monasteries which accumulate data weekly or daily, in-spite of following the same Poisson model.</p>
+</li>
+</ul>
+<ul>
+<li>
+<p>Under-dispersion</p>
+<p>Under dispersion is essentially the occurrence of less variability than accounted for based on the statistical model.
 The clearest example of under-dispersion is from the draws of an MCMC sampler. The number of effective samples is typically lower than the number of samples, as the data is highly correlated (autocorrelated) as the sampler draws sequential samples.
-For a count model, if a hidden rate limiting variable exists and has not been accounted for, then the variation in counts is lowered, and will show up as under-dispersion.</p></li></ul><h3 id=hard-questions--ch12>Hard Questions (Ch12)</h3><h4 id=12h1>12H1</h4><p>In 2014, a paper was published that was entitle &ldquo;Female hurricanes are deadlier than male hurricanes.&rdquo; As the title suggests, the paper claimed that hurricanes with female names have caused greater loss of life, and the explanation given is that people unconsciously rate female hurricanes as less dangerous and so are less likely to evacuate. Statisticians severely criticized the paper after publication. Here, you&rsquo;ll explore the complete data used in the paper and consider the hypothesis that hurricanes with female names are deadlier. Load the data with:</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>library</span><span class=p>(</span><span class=n>rethinking</span><span class=p>)</span>
+For a count model, if a hidden rate limiting variable exists and has not been accounted for, then the variation in counts is lowered, and will show up as under-dispersion.</p>
+</li>
+</ul>
+<h3 id=hard-questions--ch12>Hard Questions (Ch12)</h3>
+<h4 id=12h1>12H1</h4>
+<p>In 2014, a paper was published that was entitle &ldquo;Female hurricanes are deadlier than male hurricanes.&rdquo; As the title suggests, the paper claimed that hurricanes with female names have caused greater loss of life, and the explanation given is that people unconsciously rate female hurricanes as less dangerous and so are less likely to evacuate. Statisticians severely criticized the paper after publication. Here, you&rsquo;ll explore the complete data used in the paper and consider the hypothesis that hurricanes with female names are deadlier. Load the data with:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>library</span><span class=p>(</span><span class=n>rethinking</span><span class=p>)</span>
 <span class=nf>data</span><span class=p>(</span><span class=n>Hurricanes</span><span class=p>)</span>
-</code></pre></div><p>Acquaint yourself with the columns by inspecting the help <code>?Hurricanes</code>. In this problem, you&rsquo;ll focus on predicting <code>deaths</code> using <code>feminity</code> as a predictor. You can use <code>quap</code> or <code>ulam</code>. Compare the model to an intercept-only Poisson model of <code>deaths</code>. How strong is the association between feminity of name and deaths? Which storms does the model fit (retrodict) well? Which storms does it fit poorly?</p><h5 id=solution>Solution</h5><p>Since I have no understanding of hurricanes except that it is unlikely to have too much of an effect. I will run through some sample priors. Presumably, most hurricanes do not kill over a thousand people. Furthermore, a-priori, I would not like to assume that femininity is positive or negative, so I will instead encode a belief that it shouldn&rsquo;t matter much either way, ergo a Gaussian.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>N</span><span class=o>&lt;-</span><span class=m>100</span>
+</code></pre></div><p>Acquaint yourself with the columns by inspecting the help <code>?Hurricanes</code>. In this problem, you&rsquo;ll focus on predicting <code>deaths</code> using <code>feminity</code> as a predictor. You can use <code>quap</code> or <code>ulam</code>. Compare the model to an intercept-only Poisson model of <code>deaths</code>. How strong is the association between feminity of name and deaths? Which storms does the model fit (retrodict) well? Which storms does it fit poorly?</p>
+<h5 id=solution>Solution</h5>
+<p>Since I have no understanding of hurricanes except that it is unlikely to have too much of an effect. I will run through some sample priors. Presumably, most hurricanes do not kill over a thousand people. Furthermore, a-priori, I would not like to assume that femininity is positive or negative, so I will instead encode a belief that it shouldn&rsquo;t matter much either way, ergo a Gaussian.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>N</span><span class=o>&lt;-</span><span class=m>100</span>
 <span class=n>a</span><span class=o>&lt;-</span><span class=nf>rnorm</span><span class=p>(</span><span class=n>N</span><span class=p>,</span><span class=m>1</span><span class=p>,</span><span class=m>0.5</span><span class=p>)</span>
 <span class=n>bF</span><span class=o>&lt;-</span><span class=nf>rnorm</span><span class=p>(</span><span class=n>N</span><span class=p>,</span><span class=m>0.5</span><span class=p>,</span><span class=m>2</span><span class=p>)</span>
 <span class=n>seqF</span><span class=o>&lt;-</span><span class=nf>seq</span><span class=p>(</span><span class=n>from</span><span class=o>=</span><span class=m>-2</span><span class=p>,</span><span class=n>to</span><span class=o>=</span><span class=m>2</span><span class=p>,</span><span class=n>length.out</span><span class=o>=</span><span class=m>100</span><span class=p>)</span>
 <span class=nf>plot</span><span class=p>(</span><span class=kc>NULL</span><span class=p>,</span><span class=n>xlim</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=m>-2</span><span class=p>,</span><span class=m>2</span><span class=p>),</span><span class=n>ylim</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=m>0</span><span class=p>,</span><span class=m>1000</span><span class=p>),</span><span class=n>xlab</span><span class=o>=</span><span class=s>&#34;Femininity&#34;</span><span class=p>,</span><span class=n>ylab</span><span class=o>=</span><span class=s>&#34;deaths&#34;</span><span class=p>)</span>
 <span class=nf>for</span><span class=p>(</span><span class=n>i</span> <span class=n>in</span> <span class=m>1</span><span class=o>:</span><span class=n>N</span><span class=p>)</span> <span class=nf>lines</span><span class=p>(</span><span class=n>seqF</span><span class=p>,</span><span class=nf>exp</span><span class=p>(</span><span class=n>a[i]</span><span class=o>+</span><span class=n>bF[i]</span><span class=o>*</span><span class=n>seqF</span><span class=p>),</span><span class=n>col</span><span class=o>=</span><span class=nf>grau</span><span class=p>())</span>
-</code></pre></div><figure><img src=/ox-hugo/m12h1Prior.png></figure><p>This seems to be reasonable to me. It does have a bit of an unreasonable focus on 0, but it does also seem to mostly hug the x-axis in a way indicating my prior belief that it should not matter all that much. There is enough diversity in the priors to allow for stronger trends, but they are by and large unlikely.</p><p>Now we can actually use these in a model.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>data</span><span class=p>(</span><span class=n>Hurricanes</span><span class=p>)</span>
+</code></pre></div><figure><img src=/ox-hugo/m12h1Prior.png>
+</figure>
+<p>This seems to be reasonable to me. It does have a bit of an unreasonable focus on 0, but it does also seem to mostly hug the x-axis in a way indicating my prior belief that it should not matter all that much. There is enough diversity in the priors to allow for stronger trends, but they are by and large unlikely.</p>
+<p>Now we can actually use these in a model.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>data</span><span class=p>(</span><span class=n>Hurricanes</span><span class=p>)</span>
 <span class=n>hurDat</span><span class=o>&lt;-</span><span class=n>Hurricanes</span> <span class=o>%&gt;%</span> <span class=n>as.data.frame</span>
 <span class=n>hurDat</span><span class=o>&lt;-</span><span class=n>hurDat</span> <span class=o>%&gt;%</span> <span class=n>dplyr</span><span class=o>::</span><span class=nf>mutate</span><span class=p>(</span><span class=n>femStd</span><span class=o>=</span><span class=nf>standardize</span><span class=p>(</span><span class=n>femininity</span><span class=p>))</span>
 <span class=n>datListH</span><span class=o>&lt;-</span><span class=nf>list</span><span class=p>(</span><span class=n>deaths</span><span class=o>=</span><span class=n>hurDat</span><span class=o>$</span><span class=n>deaths</span><span class=p>,</span><span class=n>femStd</span><span class=o>=</span><span class=n>hurDat</span><span class=o>$</span><span class=n>femStd</span><span class=p>)</span>
@@ -1346,7 +1700,7 @@ For a count model, if a hidden rate limiting variable exists and has not been ac
                  <span class=n>a</span> <span class=o>~</span> <span class=nf>dnorm</span><span class=p>(</span><span class=m>1</span><span class=p>,</span><span class=m>0.5</span><span class=p>),</span>
                  <span class=n>bF</span> <span class=o>~</span> <span class=nf>dnorm</span><span class=p>(</span><span class=m>0.5</span><span class=p>,</span><span class=m>2</span><span class=p>)</span>
                  <span class=p>),</span><span class=n>data</span><span class=o>=</span><span class=n>datListH</span><span class=p>,</span> <span class=n>chains</span><span class=o>=</span><span class=m>4</span><span class=p>,</span> <span class=n>cores</span><span class=o>=</span><span class=m>4</span><span class=p>,</span><span class=n>log_lik</span> <span class=o>=</span> <span class=kc>TRUE</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>SAMPLING FOR MODEL &#39;bd16fb771b491de48a3f8ce09fc68301&#39; NOW (CHAIN 1).
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>SAMPLING FOR MODEL &#39;bd16fb771b491de48a3f8ce09fc68301&#39; NOW (CHAIN 1).
 
 SAMPLING FOR MODEL &#39;bd16fb771b491de48a3f8ce09fc68301&#39; NOW (CHAIN 2).
 Chain 2:
@@ -1445,12 +1799,23 @@ Chain 4:  Elapsed Time: 0.054509 seconds (Warm-up)
 Chain 4:                0.036572 seconds (Sampling)
 Chain 4:                0.091081 seconds (Total)
 Chain 4:
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>m12h1norm</span> <span class=o>%&gt;%</span> <span class=n>precis</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>   mean   sd 5.5% 94.5% n_eff Rhat4
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>m12h1norm</span> <span class=o>%&gt;%</span> <span class=n>precis</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>   mean   sd 5.5% 94.5% n_eff Rhat4
 a  3.00 0.02 2.96  3.04  1334     1
 bF 0.24 0.02 0.20  0.28  1361     1
-</code></pre></div><p>There are several points to be noted:</p><ul><li>The number of effective samples is far lower than the number simulated (4000)</li><li>The bounds are quite tight for the values</li></ul><p>All told, we can see that the model is quite certain of the values, but given the low number of effective samples it would make sense to run this model longer.</p><p>Furthermore, the model infers that from our data, there is a positive correlation (quite a high one) between femininity and deaths.</p><p>This is best seen by actually visualizing the results.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>m12h1norm</span> <span class=o>%&gt;%</span> <span class=n>pairs</span>
-</code></pre></div><figure><img src=/ox-hugo/m12h1densPostpairs.png></figure><p>We should check the posterior as well.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>k</span><span class=o>&lt;-</span><span class=nf>PSIS</span><span class=p>(</span><span class=n>m12h1norm</span><span class=p>,</span><span class=n>pointwise</span><span class=o>=</span><span class=kc>TRUE</span><span class=p>)</span><span class=o>$</span><span class=n>k</span>
+</code></pre></div><p>There are several points to be noted:</p>
+<ul>
+<li>The number of effective samples is far lower than the number simulated (4000)</li>
+<li>The bounds are quite tight for the values</li>
+</ul>
+<p>All told, we can see that the model is quite certain of the values, but given the low number of effective samples it would make sense to run this model longer.</p>
+<p>Furthermore, the model infers that from our data, there is a positive correlation (quite a high one) between femininity and deaths.</p>
+<p>This is best seen by actually visualizing the results.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>m12h1norm</span> <span class=o>%&gt;%</span> <span class=n>pairs</span>
+</code></pre></div><figure><img src=/ox-hugo/m12h1densPostpairs.png>
+</figure>
+<p>We should check the posterior as well.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>k</span><span class=o>&lt;-</span><span class=nf>PSIS</span><span class=p>(</span><span class=n>m12h1norm</span><span class=p>,</span><span class=n>pointwise</span><span class=o>=</span><span class=kc>TRUE</span><span class=p>)</span><span class=o>$</span><span class=n>k</span>
 <span class=nf>plot</span><span class=p>(</span><span class=n>hurDat</span><span class=o>$</span><span class=n>femStd</span><span class=p>,</span><span class=n>hurDat</span><span class=o>$</span><span class=n>deaths</span><span class=p>,</span><span class=n>xlab</span><span class=o>=</span><span class=s>&#34;Standardized Femininity&#34;</span><span class=p>,</span><span class=n>ylab</span><span class=o>=</span><span class=s>&#34;Deaths&#34;</span><span class=p>,</span><span class=n>col</span><span class=o>=</span><span class=n>rangi2</span><span class=p>,</span><span class=n>pch</span><span class=o>=</span><span class=n>hurDat</span><span class=o>$</span><span class=n>female</span><span class=p>,</span> <span class=n>lwd</span><span class=o>=</span><span class=m>2</span><span class=p>,</span><span class=n>cex</span><span class=o>=</span><span class=m>1</span><span class=o>+</span><span class=nf>normalize</span><span class=p>(</span><span class=n>k</span><span class=p>))</span>
 <span class=c1>## Axis for predictions</span>
 <span class=n>ns</span><span class=o>&lt;-</span><span class=m>500</span>
@@ -1461,11 +1826,17 @@ bF 0.24 0.02 0.20  0.28  1361     1
 <span class=n>lci</span><span class=o>&lt;-</span><span class=nf>apply</span><span class=p>(</span><span class=n>lambda</span><span class=p>,</span><span class=m>2</span><span class=p>,</span><span class=n>PI</span><span class=p>)</span>
 <span class=nf>lines</span><span class=p>(</span><span class=n>femininity</span><span class=p>,</span><span class=n>lmu</span><span class=p>,</span><span class=n>lty</span><span class=o>=</span><span class=m>2</span><span class=p>,</span><span class=n>lwd</span><span class=o>=</span><span class=m>1.5</span><span class=p>)</span>
 <span class=nf>shade</span><span class=p>(</span><span class=n>lci</span><span class=p>,</span><span class=n>femininity</span><span class=p>,</span><span class=n>xpd</span><span class=o>=</span><span class=kc>TRUE</span><span class=p>)</span>
-</code></pre></div><figure><img src=/ox-hugo/m12h1PostPoint.png></figure><p>We can see that the model prediction does not actually handle the data very well, in that it is evident the model simply cannot account for the high death rate values. We have plotted the 89% interval as well (the default for PI).</p><p>We can also inspect the expect PSISk values.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>m12h1norm</span> <span class=o>%&gt;%</span> <span class=n>PSISk</span> <span class=o>%&gt;%</span> <span class=n>summary</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>Some Pareto k values are very high (&gt;1). Set pointwise=TRUE to inspect individual points.
+</code></pre></div><figure><img src=/ox-hugo/m12h1PostPoint.png>
+</figure>
+<p>We can see that the model prediction does not actually handle the data very well, in that it is evident the model simply cannot account for the high death rate values. We have plotted the 89% interval as well (the default for PI).</p>
+<p>We can also inspect the expect PSISk values.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>m12h1norm</span> <span class=o>%&gt;%</span> <span class=n>PSISk</span> <span class=o>%&gt;%</span> <span class=n>summary</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>Some Pareto k values are very high (&gt;1). Set pointwise=TRUE to inspect individual points.
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
 -0.1800 -0.0500  0.0600  0.1521  0.1500  2.5800
-</code></pre></div><p>Clearly, there are some points with high leverage.</p><p>Finally we can plot the posterior distribution.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>posterior</span><span class=o>&lt;-</span><span class=n>m12h1norm</span> <span class=o>%&gt;%</span> <span class=n>extract.samples</span>
+</code></pre></div><p>Clearly, there are some points with high leverage.</p>
+<p>Finally we can plot the posterior distribution.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>posterior</span><span class=o>&lt;-</span><span class=n>m12h1norm</span> <span class=o>%&gt;%</span> <span class=n>extract.samples</span>
 <span class=n>fem</span><span class=o>&lt;-</span><span class=nf>sample</span><span class=p>(</span><span class=n>hurDat</span><span class=o>$</span><span class=n>femStd</span><span class=p>,</span><span class=m>3</span><span class=p>)</span>
 <span class=nf>for</span><span class=p>(</span><span class=n>i</span> <span class=n>in</span> <span class=m>1</span><span class=o>:</span><span class=m>10</span><span class=p>){</span>
   <span class=nf>curve</span><span class=p>(</span><span class=nf>dgamma</span><span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=nf>exp</span><span class=p>(</span><span class=n>posterior</span><span class=o>$</span><span class=n>a[i]</span><span class=o>+</span><span class=n>posterior</span><span class=o>$</span><span class=n>bF[i]</span><span class=o>*</span><span class=p>(</span><span class=n>fem[1]</span><span class=p>))),</span> <span class=n>from</span><span class=o>=</span><span class=m>0</span><span class=p>,</span><span class=n>to</span><span class=o>=</span><span class=m>100</span><span class=p>,</span> <span class=n>col</span><span class=o>=</span><span class=s>&#34;red&#34;</span><span class=p>,</span><span class=n>ylab</span><span class=o>=</span><span class=s>&#34;Density&#34;</span><span class=p>,</span><span class=n>xlab</span><span class=o>=</span><span class=s>&#34;Average deaths&#34;</span><span class=p>,</span><span class=n>add</span><span class=o>=</span><span class=nf>ifelse</span><span class=p>(</span><span class=n>i</span><span class=o>==</span><span class=m>1</span><span class=p>,</span><span class=kc>FALSE</span><span class=p>,</span><span class=kc>TRUE</span><span class=p>))</span>
@@ -1476,8 +1847,15 @@ bF 0.24 0.02 0.20  0.28  1361     1
        <span class=n>col</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=s>&#34;red&#34;</span><span class=p>,</span><span class=s>&#34;blue&#34;</span><span class=p>,</span><span class=s>&#34;black&#34;</span><span class=p>),</span>
        <span class=n>pch</span><span class=o>=</span><span class=m>19</span>
        <span class=p>)</span>
-</code></pre></div><figure><img src=/ox-hugo/m12h1densPost.png></figure><p>As is to be expected, for each value of femininity, we have one family of gamma distributions.</p><h4 id=hold-12h2>HOLD 12H2</h4><p>Counts are nearly always over-dispersed relative to Poisson. So fit a gamma-Poisson (aka negative-binomial) model to predict <code>deaths</code> using <code>feminity</code>. Show that the over-dispersed model no longer shows as precise a positive association between feminity and deaths, with an $89$% interval that overlaps zero. Can you explain why the association diminished in strength?</p><h5 id=solution>Solution</h5><p>Recall that the gamma-Poisson has two parameters, one for the rate, and the other for the dispersion of rates. Larger values of the dispersion imply that the distribution is more similar to a pure Poisson process.
-For ensuring meaningful comparisons, we will keep the same priors as before. We will need a scale parameter, but we will postulate a simple exponential prior for that.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>data</span><span class=p>(</span><span class=n>Hurricanes</span><span class=p>)</span>
+</code></pre></div><figure><img src=/ox-hugo/m12h1densPost.png>
+</figure>
+<p>As is to be expected, for each value of femininity, we have one family of gamma distributions.</p>
+<h4 id=hold-12h2>HOLD 12H2</h4>
+<p>Counts are nearly always over-dispersed relative to Poisson. So fit a gamma-Poisson (aka negative-binomial) model to predict <code>deaths</code> using <code>feminity</code>. Show that the over-dispersed model no longer shows as precise a positive association between feminity and deaths, with an $89$% interval that overlaps zero. Can you explain why the association diminished in strength?</p>
+<h5 id=solution>Solution</h5>
+<p>Recall that the gamma-Poisson has two parameters, one for the rate, and the other for the dispersion of rates. Larger values of the dispersion imply that the distribution is more similar to a pure Poisson process.
+For ensuring meaningful comparisons, we will keep the same priors as before. We will need a scale parameter, but we will postulate a simple exponential prior for that.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>data</span><span class=p>(</span><span class=n>Hurricanes</span><span class=p>)</span>
 <span class=n>hurDat</span><span class=o>&lt;-</span><span class=n>Hurricanes</span> <span class=o>%&gt;%</span> <span class=n>as.data.frame</span>
 <span class=n>hurDat</span><span class=o>&lt;-</span><span class=n>hurDat</span> <span class=o>%&gt;%</span> <span class=n>dplyr</span><span class=o>::</span><span class=nf>mutate</span><span class=p>(</span><span class=n>femStd</span><span class=o>=</span><span class=nf>standardize</span><span class=p>(</span><span class=n>femininity</span><span class=p>))</span>
 <span class=n>datListH</span><span class=o>&lt;-</span><span class=nf>list</span><span class=p>(</span><span class=n>deaths</span><span class=o>=</span><span class=n>hurDat</span><span class=o>$</span><span class=n>deaths</span><span class=p>,</span><span class=n>femStd</span><span class=o>=</span><span class=n>hurDat</span><span class=o>$</span><span class=n>femStd</span><span class=p>)</span>
@@ -1487,7 +1865,7 @@ For ensuring meaningful comparisons, we will keep the same priors as before. We 
                  <span class=n>bF</span> <span class=o>~</span> <span class=nf>dnorm</span><span class=p>(</span><span class=m>0.5</span><span class=p>,</span><span class=m>2</span><span class=p>),</span>
                  <span class=n>scale</span> <span class=o>~</span> <span class=nf>dexp</span><span class=p>(</span><span class=m>1</span><span class=p>)</span>
                  <span class=p>),</span><span class=n>data</span><span class=o>=</span><span class=n>datListH</span><span class=p>,</span> <span class=n>chains</span><span class=o>=</span><span class=m>4</span><span class=p>,</span> <span class=n>cores</span><span class=o>=</span><span class=m>4</span><span class=p>,</span><span class=n>log_lik</span> <span class=o>=</span> <span class=kc>TRUE</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>SAMPLING FOR MODEL &#39;5dc94bd836781d34a208695cf643c56c&#39; NOW (CHAIN 1).
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>SAMPLING FOR MODEL &#39;5dc94bd836781d34a208695cf643c56c&#39; NOW (CHAIN 1).
 Chain 1:
 Chain 1: Gradient evaluation took 0.00012 seconds
 Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.2 seconds.
@@ -1586,9 +1964,9 @@ Chain 1:  Elapsed Time: 0.110931 seconds (Warm-up)
 Chain 1:                0.129622 seconds (Sampling)
 Chain 1:                0.240553 seconds (Total)
 Chain 1:
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>m12h2norm</span> <span class=o>%&gt;%</span> <span class=n>precis</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>m12h2norm</span> <span class=o>%&gt;%</span> <span class=n>precis</span>
 <span class=n>m12h1norm</span> <span class=o>%&gt;%</span> <span class=n>precis</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>      mean   sd  5.5% 94.5% n_eff Rhat4
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>      mean   sd  5.5% 94.5% n_eff Rhat4
 a     2.86 0.14  2.64  3.08  1705     1
 bF    0.21 0.14 -0.01  0.44  1946     1
 scale 0.45 0.06  0.35  0.55  1957     1
@@ -1596,16 +1974,28 @@ scale 0.45 0.06  0.35  0.55  1957     1
    mean   sd 5.5% 94.5% n_eff Rhat4
 a  3.00 0.02 2.96  3.04  1334     1
 bF 0.24 0.02 0.20  0.28  1361     1
-</code></pre></div><p>We note that the effective number of samples in the second model are greater, which implies that this model is less prone to correlations. We can quantify this with the WAIC as well.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>WAIC</span><span class=p>(</span><span class=n>m12h2norm</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=nf>rbind</span><span class=p>(</span><span class=nf>WAIC</span><span class=p>(</span><span class=n>m12h1norm</span><span class=p>))</span> <span class=o>%&gt;%</span> <span class=nf>tibble</span><span class=p>(</span><span class=n>model</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=s>&#34;Gamma-Poisson&#34;</span><span class=p>,</span><span class=s>&#34;Poisson&#34;</span><span class=p>))</span> <span class=o>%&gt;%</span> <span class=n>toOrg</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>|            WAIC |              lppd |          penalty |          std_err | model         |
+</code></pre></div><p>We note that the effective number of samples in the second model are greater, which implies that this model is less prone to correlations. We can quantify this with the WAIC as well.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>WAIC</span><span class=p>(</span><span class=n>m12h2norm</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=nf>rbind</span><span class=p>(</span><span class=nf>WAIC</span><span class=p>(</span><span class=n>m12h1norm</span><span class=p>))</span> <span class=o>%&gt;%</span> <span class=nf>tibble</span><span class=p>(</span><span class=n>model</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=s>&#34;Gamma-Poisson&#34;</span><span class=p>,</span><span class=s>&#34;Poisson&#34;</span><span class=p>))</span> <span class=o>%&gt;%</span> <span class=n>toOrg</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>|            WAIC |              lppd |          penalty |          std_err | model         |
 |-----------------+-------------------+------------------+------------------+---------------|
 | 710.78471929582 | -351.457619486557 | 3.93474016135277 | 34.6128979470592 | Gamma-Poisson |
 | 4427.5667952452 | -2080.92835360918 | 132.855044013418 | 1009.13483879188 | Poisson       |
-</code></pre></div><p>The WAIC values show that the gamma-Poisson model is less likely to over-fit.</p><p>We would like to see the models together.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>m12h1norm</span> <span class=o>%&gt;%</span> <span class=nf>precis</span><span class=p>(</span><span class=n>pars</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=s>&#34;a&#34;</span><span class=p>,</span><span class=s>&#34;bF&#34;</span><span class=p>))</span> <span class=o>%&gt;%</span> <span class=nf>plot</span><span class=p>(</span><span class=n>col</span><span class=o>=</span><span class=s>&#34;blue&#34;</span><span class=p>)</span>
+</code></pre></div><p>The WAIC values show that the gamma-Poisson model is less likely to over-fit.</p>
+<p>We would like to see the models together.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>m12h1norm</span> <span class=o>%&gt;%</span> <span class=nf>precis</span><span class=p>(</span><span class=n>pars</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=s>&#34;a&#34;</span><span class=p>,</span><span class=s>&#34;bF&#34;</span><span class=p>))</span> <span class=o>%&gt;%</span> <span class=nf>plot</span><span class=p>(</span><span class=n>col</span><span class=o>=</span><span class=s>&#34;blue&#34;</span><span class=p>)</span>
 <span class=n>m12h2norm</span> <span class=o>%&gt;%</span> <span class=nf>precis</span><span class=p>(</span><span class=n>pars</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=s>&#34;a&#34;</span><span class=p>,</span><span class=s>&#34;bF&#34;</span><span class=p>))</span> <span class=o>%&gt;%</span> <span class=nf>plot</span><span class=p>(</span><span class=n>add</span><span class=o>=</span><span class=kc>TRUE</span><span class=p>,</span><span class=n>col</span><span class=o>=</span><span class=s>&#34;red&#34;</span><span class=p>)</span>
-</code></pre></div><figure><img src=/ox-hugo/m12h2pres.png></figure><p>We can see that there is little to no difference in the means, though the intervals seem wider than before. This is more clear in the <code>coeftab</code> plot.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>plot</span><span class=p>(</span><span class=nf>coeftab</span><span class=p>(</span><span class=n>m12h1norm</span><span class=p>,</span><span class=n>m12h2norm</span><span class=p>))</span>
-</code></pre></div><figure><img src=/ox-hugo/m12h2Coef.png></figure><p>An important consequence of this is that the model is no longer completely sure that there is any effect of femininity on the death count, as can be seen from the wider uncertainty interval, which includes 0.</p><p>We can also visualize the model with <code>pairs</code>.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>pairs</span><span class=p>(</span><span class=n>m12h2norm</span><span class=p>)</span>
-</code></pre></div><figure><img src=/ox-hugo/m12h2PostPairs.png></figure><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>k</span><span class=o>&lt;-</span><span class=nf>PSIS</span><span class=p>(</span><span class=n>m12h2norm</span><span class=p>,</span><span class=n>pointwise</span><span class=o>=</span><span class=kc>TRUE</span><span class=p>)</span><span class=o>$</span><span class=n>k</span>
+</code></pre></div><figure><img src=/ox-hugo/m12h2pres.png>
+</figure>
+<p>We can see that there is little to no difference in the means, though the intervals seem wider than before. This is more clear in the <code>coeftab</code> plot.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>plot</span><span class=p>(</span><span class=nf>coeftab</span><span class=p>(</span><span class=n>m12h1norm</span><span class=p>,</span><span class=n>m12h2norm</span><span class=p>))</span>
+</code></pre></div><figure><img src=/ox-hugo/m12h2Coef.png>
+</figure>
+<p>An important consequence of this is that the model is no longer completely sure that there is any effect of femininity on the death count, as can be seen from the wider uncertainty interval, which includes 0.</p>
+<p>We can also visualize the model with <code>pairs</code>.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>pairs</span><span class=p>(</span><span class=n>m12h2norm</span><span class=p>)</span>
+</code></pre></div><figure><img src=/ox-hugo/m12h2PostPairs.png>
+</figure>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>k</span><span class=o>&lt;-</span><span class=nf>PSIS</span><span class=p>(</span><span class=n>m12h2norm</span><span class=p>,</span><span class=n>pointwise</span><span class=o>=</span><span class=kc>TRUE</span><span class=p>)</span><span class=o>$</span><span class=n>k</span>
 <span class=nf>plot</span><span class=p>(</span><span class=n>hurDat</span><span class=o>$</span><span class=n>femStd</span><span class=p>,</span><span class=n>hurDat</span><span class=o>$</span><span class=n>deaths</span><span class=p>,</span><span class=n>xlab</span><span class=o>=</span><span class=s>&#34;Standardized Femininity&#34;</span><span class=p>,</span><span class=n>ylab</span><span class=o>=</span><span class=s>&#34;Deaths&#34;</span><span class=p>,</span><span class=n>col</span><span class=o>=</span><span class=n>rangi2</span><span class=p>,</span><span class=n>pch</span><span class=o>=</span><span class=n>hurDat</span><span class=o>$</span><span class=n>female</span><span class=p>,</span> <span class=n>lwd</span><span class=o>=</span><span class=m>2</span><span class=p>,</span><span class=n>cex</span><span class=o>=</span><span class=m>1</span><span class=o>+</span><span class=nf>normalize</span><span class=p>(</span><span class=n>k</span><span class=p>))</span>
 <span class=c1>## Axis for predictions</span>
 <span class=n>ns</span><span class=o>&lt;-</span><span class=m>500</span>
@@ -1622,7 +2012,11 @@ bF 0.24 0.02 0.20  0.28  1361     1
 <span class=n>lci</span><span class=o>&lt;-</span><span class=nf>apply</span><span class=p>(</span><span class=n>lambda</span><span class=p>,</span><span class=m>2</span><span class=p>,</span><span class=n>PI</span><span class=p>)</span>
 <span class=nf>shade</span><span class=p>(</span><span class=n>lci</span><span class=p>,</span><span class=n>femininity</span><span class=p>,</span><span class=n>xpd</span><span class=o>=</span><span class=kc>TRUE</span><span class=p>,</span><span class=n>col</span><span class=o>=</span><span class=s>&#34;blue&#34;</span><span class=p>)</span>
 <span class=nf>lines</span><span class=p>(</span><span class=n>femininity</span><span class=p>,</span><span class=n>lmu</span><span class=p>,</span><span class=n>lty</span><span class=o>=</span><span class=m>2</span><span class=p>,</span><span class=n>lwd</span><span class=o>=</span><span class=m>1.5</span><span class=p>,</span><span class=n>col</span><span class=o>=</span><span class=s>&#34;white&#34;</span><span class=p>)</span>
-</code></pre></div><figure><img src=/ox-hugo/m12h2PostPoint.png></figure><p>Clearly, the uncertainty of the newer model is much greater, even though the predictions do not differ much. Unfortunately, both models fail to account for storms with high death counts.</p><p>We would also like to plot the predicted distributions.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>posterior</span><span class=o>&lt;-</span><span class=n>m12h2norm</span> <span class=o>%&gt;%</span> <span class=n>extract.samples</span>
+</code></pre></div><figure><img src=/ox-hugo/m12h2PostPoint.png>
+</figure>
+<p>Clearly, the uncertainty of the newer model is much greater, even though the predictions do not differ much. Unfortunately, both models fail to account for storms with high death counts.</p>
+<p>We would also like to plot the predicted distributions.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>posterior</span><span class=o>&lt;-</span><span class=n>m12h2norm</span> <span class=o>%&gt;%</span> <span class=n>extract.samples</span>
 <span class=n>fem</span><span class=o>&lt;-</span><span class=nf>sample</span><span class=p>(</span><span class=n>hurDat</span><span class=o>$</span><span class=n>femStd</span><span class=p>,</span><span class=m>2</span><span class=p>)</span>
 <span class=nf>for</span><span class=p>(</span><span class=n>i</span> <span class=n>in</span> <span class=m>1</span><span class=o>:</span><span class=m>100</span><span class=p>){</span>
   <span class=nf>curve</span><span class=p>(</span><span class=nf>dgamma2</span><span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=nf>exp</span><span class=p>(</span><span class=n>posterior</span><span class=o>$</span><span class=n>a[i]</span><span class=o>+</span><span class=n>posterior</span><span class=o>$</span><span class=n>bF[i]</span><span class=o>*</span><span class=p>(</span><span class=n>fem[1]</span><span class=p>)),</span><span class=n>posterior</span><span class=o>$</span><span class=n>scale[i]</span><span class=p>),</span> <span class=n>from</span><span class=o>=</span><span class=m>0</span><span class=p>,</span><span class=n>to</span><span class=o>=</span><span class=m>100</span><span class=p>,</span><span class=n>col</span><span class=o>=</span><span class=s>&#34;red&#34;</span><span class=p>,</span><span class=n>ylab</span><span class=o>=</span><span class=s>&#34;Density&#34;</span><span class=p>,</span><span class=n>xlab</span><span class=o>=</span><span class=s>&#34;Average deaths&#34;</span><span class=p>,</span><span class=n>add</span><span class=o>=</span><span class=nf>ifelse</span><span class=p>(</span><span class=n>i</span><span class=o>==</span><span class=m>1</span><span class=p>,</span><span class=kc>FALSE</span><span class=p>,</span><span class=kc>TRUE</span><span class=p>))</span>
@@ -1633,8 +2027,13 @@ bF 0.24 0.02 0.20  0.28  1361     1
        <span class=n>col</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=s>&#34;red&#34;</span><span class=p>,</span><span class=s>&#34;blue&#34;</span><span class=p>),</span>
        <span class=n>pch</span><span class=o>=</span><span class=m>19</span>
        <span class=p>)</span>
-</code></pre></div><figure><img src=/ox-hugo/m12h2densPost.png></figure><p>This clearly has more spread than the previous predictions. By definition, the dispersion term tends to spread the distribution out, with higher values of the dispersion corresponding to a &ldquo;true&rdquo; Poisson distribution.</p><h2 id=a-colophon>A: Colophon</h2><p>To ensure that this document is fully reproducible at a later date, we will record the session info.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>devtools</span><span class=o>::</span><span class=nf>session_info</span><span class=p>()</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>─ Session info ───────────────────────────────────────────────────────────────
+</code></pre></div><figure><img src=/ox-hugo/m12h2densPost.png>
+</figure>
+<p>This clearly has more spread than the previous predictions. By definition, the dispersion term tends to spread the distribution out, with higher values of the dispersion corresponding to a &ldquo;true&rdquo; Poisson distribution.</p>
+<h2 id=a-colophon>A: Colophon</h2>
+<p>To ensure that this document is fully reproducible at a later date, we will record the session info.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>devtools</span><span class=o>::</span><span class=nf>session_info</span><span class=p>()</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>─ Session info ───────────────────────────────────────────────────────────────
  setting  value
  version  R version 4.0.0 (2020-04-24)
  os       Arch Linux
@@ -1994,10 +2393,102 @@ bF 0.24 0.02 0.20  0.28  1361     1
 [245] /nix/store/3zj4dkjbdwgf3mdsl9nf9jkicpz1nwgc-r-V8-3.0.2/library
 [246] /nix/store/qiqsh62w69b5xgj2i4wjamibzxxji0mf-r-tidybayes.rethinking/library
 [247] /nix/store/4j6byy1klyk4hm2k6g3657682cf3wxcj-R-4.0.0/lib/R/library
-</code></pre></div><section class=footnotes role=doc-endnotes><hr><ol><li id=fn:1 role=doc-endnote><p>Summer of 2020&#160;<a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li></ol></section></div></article><hr><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7" y2="7"/></svg><span class=tag><a href=https://rgoswami.me/tags/solutions>solutions</a></span><span class=tag><a href=https://rgoswami.me/tags/r>R</a></span><span class=tag><a href=https://rgoswami.me/tags/sr2>SR2</a></span></p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6A2 2 0 004 4v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>12079 Words</p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Posted: <time class=dt-published>2020-06-21 00:00 +0000</time></p><a class=resp-sharing-button__link href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2frgoswami.me%2fposts%2fsr2-ch9-ch11-ch12%2f" target=_blank rel=noopener aria-label=Facebook><div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.5"/><path d="M15.84 9.5H13.5V8.48c0-.53.35-.65.6-.65h1.4v-2.3h-2.35c-2.3.0-2.65 1.7-2.65 2.8V9.5h-2v2h2v7h3v-7h2.1l.24-2z"/></svg></div>Facebook</div></a><a class=resp-sharing-button__link href="https://twitter.com/intent/tweet/?text=%22SR2%20%3a%3a%20Solutions%20for%20Chapters%20%7b9%2c11%2c12%7d%22%20seems%20like%20an%20interesting%20read%20from%20%40rg0swami&url=https%3a%2f%2frgoswami.me%2fposts%2fsr2-ch9-ch11-ch12%2f" target=_blank rel=noopener aria-label=Twitter><div class="resp-sharing-button resp-sharing-button--twitter resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.5 7.4l-2 .2c-.4-.5-1-.8-2-.8C13.3 6.8 12 8 12 9.4v.6c-2 0-4-1-5.4-2.7-.2.4-.3.8-.3 1.3.0 1 .4 1.7 1.2 2.2-.5.0-1 0-1.2-.3.0 1.3 1 2.3 2 2.6-.3.4-.7.4-1 0 .2 1.4 1.2 2 2.3 2-1 1-2.5 1.4-4 1 1.3 1 2.7 1.4 4.2 1.4 4.8.0 7.5-4 7.5-7.5v-.4c.5-.4.8-1.5 1.2-2z"/><circle cx="12" cy="12" r="11.5"/></svg></div>Twitter</div></a><a class=resp-sharing-button__link href="mailto:?subject=%22SR2%20%3a%3a%20Solutions%20for%20Chapters%20%7b9%2c11%2c12%7d%22%20seems%20interesting...&body=https%3a%2f%2frgoswami.me%2fposts%2fsr2-ch9-ch11-ch12%2f" target=_self rel=noopener aria-label=E-Mail><div class="resp-sharing-button resp-sharing-button--email resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19.5 16c0 .8-.7 1.5-1.5 1.5H6c-.8.0-1.5-.7-1.5-1.5V8c0-.8.7-1.5 1.5-1.5h12c.8.0 1.5.7 1.5 1.5v8zm-2-7.5L12 13 6.5 8.5m11 6-4-2.5m-7 2.5 4-2.5"/><circle cx="12" cy="12" r="11.5"/></svg></div>E-Mail</div></a><a class=resp-sharing-button__link href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2frgoswami.me%2fposts%2fsr2-ch9-ch11-ch12%2f&title=%22SR2%20%3a%3a%20Solutions%20for%20Chapters%20%7b9%2c11%2c12%7d%22%20seems%20interesting...&summary=%22SR2%20%3a%3a%20Solutions%20for%20Chapters%20%7b9%2c11%2c12%7d%22%20seems%20interesting...&source=https%3a%2f%2frgoswami.me%2fposts%2fsr2-ch9-ch11-ch12%2f" target=_blank rel=noopener aria-label=LinkedIn><div class="resp-sharing-button resp-sharing-button--linkedin resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.5"/><path d="M15 12.5c-.28.0-.5.22-.5.5v3.5h-3s.03-6.48.0-7h3v.83s.46-.75 1.7-.75c1.56.0 2.3 1.12 2.3 3.3v3.62h-3V13c0-.28-.23-.5-.5-.5zm-7.5-3h2v7h-2z"/><circle cx="8.5" cy="6.5" r="1"/></svg></div>LinkedIn</div></a><a class=resp-sharing-button__link href="https://reddit.com/submit/?url=https%3a%2f%2frgoswami.me%2fposts%2fsr2-ch9-ch11-ch12%2f&resubmit=true&title=%22SR2%20%3a%3a%20Solutions%20for%20Chapters%20%7b9%2c11%2c12%7d%22%20seems%20interesting..." target=_blank rel=noopener aria-label=Reddit><div class="resp-sharing-button resp-sharing-button--reddit resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.5"/><ellipse cx="12" cy="14.37" rx="6.2" ry="4.24"/><path d="M14.3 16.25c-.62.36-1.42.57-2.3.57s-1.7-.2-2.32-.58"/><circle cx="14.61" cy="13.39" r=".98"/><circle cx="9.39" cy="13.39" r=".98"/><path d="M16.4 11.38c.26-.55.82-.92 1.47-.92.9.0 1.63.73 1.63 1.63.0.8-.6 1.47-1.38 1.6"/><circle cx="17.22" cy="7.52" r="1.63"/><path d="M7.6 11.38c-.26-.54-.82-.92-1.47-.92-.9.0-1.63.73-1.63 1.63.0.8.6 1.47 1.38 1.6M12 10.12s-.08-4.82 3.6-2.6"/></svg></div>Reddit</div></a><a class=resp-sharing-button__link href="whatsapp://send?text=%22SR2%20%3a%3a%20Solutions%20for%20Chapters%20%7b9%2c11%2c12%7d%22%20seems%20interesting...%20https%3a%2f%2frgoswami.me%2fposts%2fsr2-ch9-ch11-ch12%2f" target=_blank rel=noopener aria-label=WhatsApp><div class="resp-sharing-button resp-sharing-button--whatsapp resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle xmlns="http://www.w3.org/2000/svg" cx="12" cy="12" r="11.5"/><path stroke-width="1" d="M17.6 6.2c-1.5-1.5-3.4-2.3-5.5-2.3-4.3.0-7.8 3.5-7.8 7.8.0 1.4.4 2.7 1 3.9l-1.1 4 4.1-1.1c1.1.6 2.4.9 3.7.9 4.3.0 7.8-3.5 7.8-7.8.1-2-.7-3.9-2.2-5.4zm-5.5 11.9c-1.2.0-2.3-.3-3.3-.9l-.2-.1-2.4.6.7-2.4-.2-.2c-.6-1-1-2.2-1-3.4.0-3.6 2.9-6.5 6.5-6.5 1.7.0 3.3.7 4.6 1.9 1.2 1.2 1.9 2.8 1.9 4.6-.1 3.5-3 6.4-6.6 6.4zm3.5-4.8c-.2-.1-1.1-.6-1.3-.6-.2-.1-.3-.1-.4.1s-.5.6-.6.8c-.1.1-.2.1-.4.0s-.8-.3-1.6-1c-.6-.5-1-1.2-1.1-1.3-.1-.2.0-.3.1-.4l.3-.3s.1-.2.2-.3c.1-.1.0-.2.0-.3s-.4-1.1-.6-1.4c-.2-.4-.3-.3-.4-.3h-.4s-.3.0-.5.2-.7.7-.7 1.6c0 1 .7 1.9.8 2s1.4 2.1 3.3 2.9c.5.2.8.3 1.1.4.5.1.9.1 1.2.1.4-.1 1.1-.5 1.3-.9.2-.5.2-.8.1-.9.0-.2-.2-.3-.4-.4z"/></svg></div>WhatsApp</div></a></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://rgoswami.me/posts/sr2-ch13-ch14/><span class=button__icon>←</span>
-<span class=button__text>SR2 :: Solutions for Chapters {13,14}</span></a></span>
-<span class="button next"><a href=https://rgoswami.me/posts/org-arb-tex/><span class=button__text>Temporary LaTeX Documents with Orgmode</span>
-<span class=button__icon>→</span></a></span></div></div><div id=comments class=thin><div class=pagination__title><span class=pagination__title-h>Comments</span><hr></div><div id=remarkbox-div><noscript><iframe id=remarkbox-iframe src="https://my.remarkbox.com/embed?nojs=true" style=height:600px;width:100%;border:none!important tabindex=0></iframe></noscript></div><script src=https://my.remarkbox.com/static/js/iframe-resizer/iframeResizer.min.js></script><script>var rb_owner_key="8e660759-e7e6-11ea-9711-040140774501",thread_uri=window.location.href,thread_title=window.document.title,thread_fragment=window.location.hash,rb_src="https://my.remarkbox.com/embed?rb_owner_key="+rb_owner_key+"&thread_title="+encodeURI(thread_title)+"&thread_uri="+encodeURIComponent(thread_uri)+thread_fragment;function create_remarkbox_iframe(){var a=document.createElement("iframe");a.setAttribute("id","remarkbox-iframe"),a.setAttribute("scrolling","no"),a.setAttribute("src",rb_src),a.setAttribute("frameborder","0"),a.setAttribute("tabindex","0"),a.setAttribute("title","Remarkbox"),a.style.width="100%",document.getElementById("remarkbox-div").appendChild(a)}create_remarkbox_iframe(),iFrameResize({checkOrigin:["https://my.remarkbox.com"],inPageLinks:!0,initCallback:function(a){a.iFrameResizer.moveToAnchor(thread_fragment)}},document.getElementById("remarkbox-iframe"))</script></div></main><footer class=footer><p>&copy; 2021
+</code></pre></div><section class=footnotes role=doc-endnotes>
+<hr>
+<ol>
+<li id=fn:1 role=doc-endnote>
+<p>Summer of 2020&#160;<a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+</div>
+</article>
+<hr>
+<div class=post-info>
+<p>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7" y2="7"/></svg><span class=tag><a href=https://rgoswami.me/tags/solutions>solutions</a></span><span class=tag><a href=https://rgoswami.me/tags/r>R</a></span><span class=tag><a href=https://rgoswami.me/tags/sr2>SR2</a></span>
+</p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6A2 2 0 004 4v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>12079 Words</p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Posted: <time class=dt-published> 2020-06-21 00:00 +0000</time></p>
+<a class=resp-sharing-button__link href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2frgoswami.me%2fposts%2fsr2-ch9-ch11-ch12%2f" target=_blank rel=noopener aria-label=Facebook>
+<div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.5"/><path d="M15.84 9.5H13.5V8.48c0-.53.35-.65.6-.65h1.4v-2.3h-2.35c-2.3.0-2.65 1.7-2.65 2.8V9.5h-2v2h2v7h3v-7h2.1l.24-2z"/></svg></div>Facebook</div>
+</a>
+<a class=resp-sharing-button__link href="https://twitter.com/intent/tweet/?text=%22SR2%20%3a%3a%20Solutions%20for%20Chapters%20%7b9%2c11%2c12%7d%22%20seems%20like%20an%20interesting%20read%20from%20%40rg0swami&url=https%3a%2f%2frgoswami.me%2fposts%2fsr2-ch9-ch11-ch12%2f" target=_blank rel=noopener aria-label=Twitter>
+<div class="resp-sharing-button resp-sharing-button--twitter resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.5 7.4l-2 .2c-.4-.5-1-.8-2-.8C13.3 6.8 12 8 12 9.4v.6c-2 0-4-1-5.4-2.7-.2.4-.3.8-.3 1.3.0 1 .4 1.7 1.2 2.2-.5.0-1 0-1.2-.3.0 1.3 1 2.3 2 2.6-.3.4-.7.4-1 0 .2 1.4 1.2 2 2.3 2-1 1-2.5 1.4-4 1 1.3 1 2.7 1.4 4.2 1.4 4.8.0 7.5-4 7.5-7.5v-.4c.5-.4.8-1.5 1.2-2z"/><circle cx="12" cy="12" r="11.5"/></svg></div>Twitter</div>
+</a>
+<a class=resp-sharing-button__link href="mailto:?subject=%22SR2%20%3a%3a%20Solutions%20for%20Chapters%20%7b9%2c11%2c12%7d%22%20seems%20interesting...&body=https%3a%2f%2frgoswami.me%2fposts%2fsr2-ch9-ch11-ch12%2f" target=_self rel=noopener aria-label=E-Mail>
+<div class="resp-sharing-button resp-sharing-button--email resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19.5 16c0 .8-.7 1.5-1.5 1.5H6c-.8.0-1.5-.7-1.5-1.5V8c0-.8.7-1.5 1.5-1.5h12c.8.0 1.5.7 1.5 1.5v8zm-2-7.5L12 13 6.5 8.5m11 6-4-2.5m-7 2.5 4-2.5"/><circle cx="12" cy="12" r="11.5"/></svg></div>E-Mail</div>
+</a>
+<a class=resp-sharing-button__link href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2frgoswami.me%2fposts%2fsr2-ch9-ch11-ch12%2f&title=%22SR2%20%3a%3a%20Solutions%20for%20Chapters%20%7b9%2c11%2c12%7d%22%20seems%20interesting...&summary=%22SR2%20%3a%3a%20Solutions%20for%20Chapters%20%7b9%2c11%2c12%7d%22%20seems%20interesting...&source=https%3a%2f%2frgoswami.me%2fposts%2fsr2-ch9-ch11-ch12%2f" target=_blank rel=noopener aria-label=LinkedIn>
+<div class="resp-sharing-button resp-sharing-button--linkedin resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.5"/><path d="M15 12.5c-.28.0-.5.22-.5.5v3.5h-3s.03-6.48.0-7h3v.83s.46-.75 1.7-.75c1.56.0 2.3 1.12 2.3 3.3v3.62h-3V13c0-.28-.23-.5-.5-.5zm-7.5-3h2v7h-2z"/><circle cx="8.5" cy="6.5" r="1"/></svg></div>LinkedIn</div>
+</a>
+<a class=resp-sharing-button__link href="https://reddit.com/submit/?url=https%3a%2f%2frgoswami.me%2fposts%2fsr2-ch9-ch11-ch12%2f&resubmit=true&title=%22SR2%20%3a%3a%20Solutions%20for%20Chapters%20%7b9%2c11%2c12%7d%22%20seems%20interesting..." target=_blank rel=noopener aria-label=Reddit>
+<div class="resp-sharing-button resp-sharing-button--reddit resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.5"/><ellipse cx="12" cy="14.37" rx="6.2" ry="4.24"/><path d="M14.3 16.25c-.62.36-1.42.57-2.3.57s-1.7-.2-2.32-.58"/><circle cx="14.61" cy="13.39" r=".98"/><circle cx="9.39" cy="13.39" r=".98"/><path d="M16.4 11.38c.26-.55.82-.92 1.47-.92.9.0 1.63.73 1.63 1.63.0.8-.6 1.47-1.38 1.6"/><circle cx="17.22" cy="7.52" r="1.63"/><path d="M7.6 11.38c-.26-.54-.82-.92-1.47-.92-.9.0-1.63.73-1.63 1.63.0.8.6 1.47 1.38 1.6M12 10.12s-.08-4.82 3.6-2.6"/></svg></div>Reddit</div>
+</a>
+<a class=resp-sharing-button__link href="whatsapp://send?text=%22SR2%20%3a%3a%20Solutions%20for%20Chapters%20%7b9%2c11%2c12%7d%22%20seems%20interesting...%20https%3a%2f%2frgoswami.me%2fposts%2fsr2-ch9-ch11-ch12%2f" target=_blank rel=noopener aria-label=WhatsApp>
+<div class="resp-sharing-button resp-sharing-button--whatsapp resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle xmlns="http://www.w3.org/2000/svg" cx="12" cy="12" r="11.5"/><path stroke-width="1" d="M17.6 6.2c-1.5-1.5-3.4-2.3-5.5-2.3-4.3.0-7.8 3.5-7.8 7.8.0 1.4.4 2.7 1 3.9l-1.1 4 4.1-1.1c1.1.6 2.4.9 3.7.9 4.3.0 7.8-3.5 7.8-7.8.1-2-.7-3.9-2.2-5.4zm-5.5 11.9c-1.2.0-2.3-.3-3.3-.9l-.2-.1-2.4.6.7-2.4-.2-.2c-.6-1-1-2.2-1-3.4.0-3.6 2.9-6.5 6.5-6.5 1.7.0 3.3.7 4.6 1.9 1.2 1.2 1.9 2.8 1.9 4.6-.1 3.5-3 6.4-6.6 6.4zm3.5-4.8c-.2-.1-1.1-.6-1.3-.6-.2-.1-.3-.1-.4.1s-.5.6-.6.8c-.1.1-.2.1-.4.0s-.8-.3-1.6-1c-.6-.5-1-1.2-1.1-1.3-.1-.2.0-.3.1-.4l.3-.3s.1-.2.2-.3c.1-.1.0-.2.0-.3s-.4-1.1-.6-1.4c-.2-.4-.3-.3-.4-.3h-.4s-.3.0-.5.2-.7.7-.7 1.6c0 1 .7 1.9.8 2s1.4 2.1 3.3 2.9c.5.2.8.3 1.1.4.5.1.9.1 1.2.1.4-.1 1.1-.5 1.3-.9.2-.5.2-.8.1-.9.0-.2-.2-.3-.4-.4z"/></svg></div>WhatsApp</div>
+</a>
+</div>
+<div class=pagination>
+<div class=pagination__title>
+<span class=pagination__title-h>Read other posts</span>
+<hr>
+</div>
+<div class=pagination__buttons>
+<span class="button previous">
+<a href=https://rgoswami.me/posts/sr2-ch13-ch14/>
+<span class=button__icon>←</span>
+<span class=button__text>SR2 :: Solutions for Chapters {13,14}</span>
+</a>
+</span>
+<span class="button next">
+<a href=https://rgoswami.me/posts/sr2-ch5-ch6-ch7/>
+<span class=button__text>SR2 :: Solutions for Chapters {5,6,7}</span>
+<span class=button__icon>→</span>
+</a>
+</span>
+</div>
+</div>
+<div id=comments class=thin><div class=pagination__title>
+<span class=pagination__title-h>Comments</span>
+<hr>
+</div>
+<div id=remarkbox-div>
+<noscript>
+<iframe id=remarkbox-iframe src="https://my.remarkbox.com/embed?nojs=true" style=height:600px;width:100%;border:none!important tabindex=0></iframe>
+</noscript>
+</div>
+<script src=https://my.remarkbox.com/static/js/iframe-resizer/iframeResizer.min.js></script>
+<script>var rb_owner_key="8e660759-e7e6-11ea-9711-040140774501",thread_uri=window.location.href,thread_title=window.document.title,thread_fragment=window.location.hash,rb_src="https://my.remarkbox.com/embed?rb_owner_key="+rb_owner_key+"&thread_title="+encodeURI(thread_title)+"&thread_uri="+encodeURIComponent(thread_uri)+thread_fragment;function create_remarkbox_iframe(){var a=document.createElement("iframe");a.setAttribute("id","remarkbox-iframe"),a.setAttribute("scrolling","no"),a.setAttribute("src",rb_src),a.setAttribute("frameborder","0"),a.setAttribute("tabindex","0"),a.setAttribute("title","Remarkbox"),a.style.width="100%",document.getElementById("remarkbox-div").appendChild(a)}create_remarkbox_iframe(),iFrameResize({checkOrigin:["https://my.remarkbox.com"],inPageLinks:!0,initCallback:function(a){a.iFrameResizer.moveToAnchor(thread_fragment)}},document.getElementById("remarkbox-iframe"))</script>
+</div>
+</main>
+<footer class=footer>
+<p>
+&copy; 2021
 <span><a href=https://rgoswami.me/>Rohit Goswami (HaoZeke)</a></span>
-<a href=https://rgoswami.me/posts/index.xml target=_blank title=rss><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 019 9"/><path d="M4 4a16 16 0 0116 16"/><circle cx="5" cy="19" r="1"/></svg></a><br><a rel=license href=http://creativecommons.org/licenses/by-nc-sa/4.0/>CC BY-NC-SA 4.0</a>.
-Powered by <a href=http://gohugo.io><u>Hugo</u></a> and <a href=https://github.com/HaoZeke/hugo-theme-hello-friend-ng-hz><u>this theme</u></a>.</br>Hosted with <u><a href=https://www.netlify.com/>Netlify</a></u>.</br><script src=https://liberapay.com/rohit/widgets/button.js></script><noscript><a href=https://liberapay.com/rohit/donate><img alt="Donate using Liberapay" src=https://liberapay.com/assets/widgets/donate.svg></a></noscript></p></footer></div><script src=/bundle.min.5fae9992ea406007408dc33b0b3a8376d61e2f1d6ac50ba1dad7580ac50afb5199bcef3bbc3677e77553a9980bf882cf71edc2f755687dd7725f12ece4304ac2.js></script><script>(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)})(window,document,'script','//www.google-analytics.com/analytics.js','ga'),ga('create','UA-109503488-16','auto'),ga('send','pageview')</script><script type=text/javascript>(function(a,e,b,f,g,c,d){a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},c=e.createElement(f),c.async=1,c.src="https://www.clarity.ms/tag/"+g,d=e.getElementsByTagName(f)[0],d.parentNode.insertBefore(c,d)})(window,document,"clarity","script","3z2xvwqu4u")</script><script data-goatcounter=https://rgoswami.goatcounter.com/count async src=//gc.zgo.at/count.js></script><script>var clicky_site_ids=clicky_site_ids||[];clicky_site_ids.push("101265002")</script><script async src=https://static.getclicky.com/js></script><script src=https://cdn.jsdelivr.net/npm/readmore-js@3.0.0-beta-1/dist/readmore.min.js></script><script src=/js/codefold.min.4a43062cb83308b55227adf937c91be79ff6d95df8bb821dfd71805ce54629ff8cffed3ae81d70fdee5f324fa0f39c5280ae785f165801885db074551a993a21.js></script></body></html>
+<a href=https://rgoswami.me/posts/index.xml target=_blank title=rss><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 019 9"/><path d="M4 4a16 16 0 0116 16"/><circle cx="5" cy="19" r="1"/></svg></a>
+<br>
+<a rel=license href=http://creativecommons.org/licenses/by-nc-sa/4.0/>CC BY-NC-SA 4.0</a>.
+Powered by <a href=http://gohugo.io><u>Hugo</u></a> and <a href=https://github.com/HaoZeke/hugo-theme-hello-friend-ng-hz><u>this theme</u></a>.</br>
+Hosted with <u><a href=https://www.netlify.com/>Netlify</a></u>.</br>
+<script src=https://liberapay.com/rohit/widgets/button.js></script>
+<noscript><a href=https://liberapay.com/rohit/donate><img alt="Donate using Liberapay" src=https://liberapay.com/assets/widgets/donate.svg></a></noscript>
+</p>
+</footer>
+</div>
+<script src=/bundle.min.5fae9992ea406007408dc33b0b3a8376d61e2f1d6ac50ba1dad7580ac50afb5199bcef3bbc3677e77553a9980bf882cf71edc2f755687dd7725f12ece4304ac2.js></script>
+<script>(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)})(window,document,'script','//www.google-analytics.com/analytics.js','ga'),ga('create','UA-109503488-16','auto'),ga('send','pageview')</script>
+<script type=text/javascript>(function(a,e,b,f,g,c,d){a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},c=e.createElement(f),c.async=1,c.src="https://www.clarity.ms/tag/"+g,d=e.getElementsByTagName(f)[0],d.parentNode.insertBefore(c,d)})(window,document,"clarity","script","3z2xvwqu4u")</script>
+<script data-goatcounter=https://rgoswami.goatcounter.com/count async src=//gc.zgo.at/count.js></script>
+<script>var clicky_site_ids=clicky_site_ids||[];clicky_site_ids.push("101265002")</script>
+<script async src=https://static.getclicky.com/js></script>
+<script src=https://cdn.jsdelivr.net/npm/readmore-js@3.0.0-beta-1/dist/readmore.min.js></script>
+<script src=/js/codefold.min.4a43062cb83308b55227adf937c91be79ff6d95df8bb821dfd71805ce54629ff8cffed3ae81d70fdee5f324fa0f39c5280ae785f165801885db074551a993a21.js></script>
+</body>
+</html>

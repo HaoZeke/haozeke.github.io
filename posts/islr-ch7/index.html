@@ -1,30 +1,193 @@
-<!doctype html><html lang=en itemscope itemtype=http://schema.org/WebPage><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=author content="[Rohit Goswami]"><meta name=description content="Chapter VII - Moving Beyond Linearity All the questions are as per the ISL seventh printing of the First edition1.
+<!doctype html><html lang=en itemscope itemtype=http://schema.org/WebPage>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="ie=edge">
+<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
+<meta name=author content="[Rohit Goswami]">
+<meta name=description content="Chapter VII - Moving Beyond Linearity All the questions are as per the ISL seventh printing of the First edition1.
 Common libsUsed&amp;lt;-c(&amp;#34;dplyr&amp;#34;,&amp;#34;ggplot2&amp;#34;,&amp;#34;tidyverse&amp;#34;, &amp;#34;ISLR&amp;#34;,&amp;#34;caret&amp;#34;,&amp;#34;MASS&amp;#34;, &amp;#34;gridExtra&amp;#34;, &amp;#34;pls&amp;#34;,&amp;#34;latex2exp&amp;#34;,&amp;#34;data.table&amp;#34;) invisible(lapply(libsUsed, library, character.only = TRUE)) Question 7.6 - Page 299 In this exercise, you will further analyze the Wage data set considered throughout this chapter.
-(a) Perform polynomial regression to predict wage using age. Use cross-validation to select the optimal degree d for the polynomial. What degree was chosen, and how does this compare to the results of hypothesis testing using ANOVA?"><meta name=keywords content=",solutions,R,ISLR"><meta name=robots content="noodp"><meta name=theme-color content><link rel=canonical href=https://rgoswami.me/posts/islr-ch7/><title>ISLR :: Moving Beyond Linearity :: Rohit Goswami — Reflections</title><link href=https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css rel=stylesheet type=text/css><link rel=stylesheet href=/main.min.b6dbce0fdf6c61563a0c2226e857d5dadd8e5afa2c4f73ec9ea55abd831f9a72.css><meta itemprop=name content="ISLR :: Moving Beyond Linearity"><meta itemprop=description content="Chapter VII - Moving Beyond Linearity All the questions are as per the ISL seventh printing of the First edition1.
+(a) Perform polynomial regression to predict wage using age. Use cross-validation to select the optimal degree d for the polynomial. What degree was chosen, and how does this compare to the results of hypothesis testing using ANOVA?">
+<meta name=keywords content=",solutions,R,ISLR">
+<meta name=robots content="noodp">
+<meta name=theme-color content>
+<link rel=canonical href=https://rgoswami.me/posts/islr-ch7/>
+<title>
+ISLR :: Moving Beyond Linearity :: Rohit Goswami — Reflections
+</title>
+<link href=https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css rel=stylesheet type=text/css>
+<link rel=stylesheet href=/main.min.b6dbce0fdf6c61563a0c2226e857d5dadd8e5afa2c4f73ec9ea55abd831f9a72.css>
+<meta itemprop=name content="ISLR :: Moving Beyond Linearity">
+<meta itemprop=description content="Chapter VII - Moving Beyond Linearity All the questions are as per the ISL seventh printing of the First edition1.
 Common libsUsed<-c(&#34;dplyr&#34;,&#34;ggplot2&#34;,&#34;tidyverse&#34;, &#34;ISLR&#34;,&#34;caret&#34;,&#34;MASS&#34;, &#34;gridExtra&#34;, &#34;pls&#34;,&#34;latex2exp&#34;,&#34;data.table&#34;) invisible(lapply(libsUsed, library, character.only = TRUE)) Question 7.6 - Page 299 In this exercise, you will further analyze the Wage data set considered throughout this chapter.
-(a) Perform polynomial regression to predict wage using age. Use cross-validation to select the optimal degree d for the polynomial. What degree was chosen, and how does this compare to the results of hypothesis testing using ANOVA?"><meta itemprop=datePublished content="2020-02-19T09:47:00+00:00"><meta itemprop=dateModified content="2020-02-19T09:47:00+00:00"><meta itemprop=wordCount content="5855"><meta itemprop=image content="https://rgoswami.me/images/RG.png"><meta itemprop=keywords content="solutions,R,ISLR,"><meta property="og:title" content="ISLR :: Moving Beyond Linearity"><meta property="og:description" content="Chapter VII - Moving Beyond Linearity All the questions are as per the ISL seventh printing of the First edition1.
+(a) Perform polynomial regression to predict wage using age. Use cross-validation to select the optimal degree d for the polynomial. What degree was chosen, and how does this compare to the results of hypothesis testing using ANOVA?"><meta itemprop=datePublished content="2020-02-19T09:47:00+00:00">
+<meta itemprop=dateModified content="2020-02-19T09:47:00+00:00">
+<meta itemprop=wordCount content="5855"><meta itemprop=image content="https://rgoswami.me/images/RG.png">
+<meta itemprop=keywords content="solutions,R,ISLR,"><meta property="og:title" content="ISLR :: Moving Beyond Linearity">
+<meta property="og:description" content="Chapter VII - Moving Beyond Linearity All the questions are as per the ISL seventh printing of the First edition1.
 Common libsUsed<-c(&#34;dplyr&#34;,&#34;ggplot2&#34;,&#34;tidyverse&#34;, &#34;ISLR&#34;,&#34;caret&#34;,&#34;MASS&#34;, &#34;gridExtra&#34;, &#34;pls&#34;,&#34;latex2exp&#34;,&#34;data.table&#34;) invisible(lapply(libsUsed, library, character.only = TRUE)) Question 7.6 - Page 299 In this exercise, you will further analyze the Wage data set considered throughout this chapter.
-(a) Perform polynomial regression to predict wage using age. Use cross-validation to select the optimal degree d for the polynomial. What degree was chosen, and how does this compare to the results of hypothesis testing using ANOVA?"><meta property="og:type" content="article"><meta property="og:url" content="https://rgoswami.me/posts/islr-ch7/"><meta property="og:image" content="https://rgoswami.me/images/RG.png"><meta property="article:section" content="posts"><meta property="article:published_time" content="2020-02-19T09:47:00+00:00"><meta property="article:modified_time" content="2020-02-19T09:47:00+00:00"><meta property="og:site_name" content="Rohit Goswami"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://rgoswami.me/images/RG.png"><meta name=twitter:title content="ISLR :: Moving Beyond Linearity"><meta name=twitter:description content="Chapter VII - Moving Beyond Linearity All the questions are as per the ISL seventh printing of the First edition1.
+(a) Perform polynomial regression to predict wage using age. Use cross-validation to select the optimal degree d for the polynomial. What degree was chosen, and how does this compare to the results of hypothesis testing using ANOVA?">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://rgoswami.me/posts/islr-ch7/"><meta property="og:image" content="https://rgoswami.me/images/RG.png"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2020-02-19T09:47:00+00:00">
+<meta property="article:modified_time" content="2020-02-19T09:47:00+00:00"><meta property="og:site_name" content="Rohit Goswami">
+<meta name=twitter:card content="summary_large_image">
+<meta name=twitter:image content="https://rgoswami.me/images/RG.png">
+<meta name=twitter:title content="ISLR :: Moving Beyond Linearity">
+<meta name=twitter:description content="Chapter VII - Moving Beyond Linearity All the questions are as per the ISL seventh printing of the First edition1.
 Common libsUsed<-c(&#34;dplyr&#34;,&#34;ggplot2&#34;,&#34;tidyverse&#34;, &#34;ISLR&#34;,&#34;caret&#34;,&#34;MASS&#34;, &#34;gridExtra&#34;, &#34;pls&#34;,&#34;latex2exp&#34;,&#34;data.table&#34;) invisible(lapply(libsUsed, library, character.only = TRUE)) Question 7.6 - Page 299 In this exercise, you will further analyze the Wage data set considered throughout this chapter.
-(a) Perform polynomial regression to predict wage using age. Use cross-validation to select the optimal degree d for the polynomial. What degree was chosen, and how does this compare to the results of hypothesis testing using ANOVA?"><meta property="article:section" content="programming"><meta property="article:published_time" content="2020-02-19 09:47:00 +0000 UTC"></head><body><div class=container><header class=header><div class=header__inner><div class=header__left><div class=logo><a href=/ style=text-decoration:none><img src=/images/home.png alt></a></div></div><div class=header__mid><button class=button><div class=button__text><a href=https://rgoswami.me//search>Search</a></div></button></div><div class=header__right><nav class=menu><ul class=menu__inner><li><a href=https://rgoswami.me/about>About</a></li><li><a href=https://rgoswami.me/posts>Blog</a></li></ul><ul class=menu__inner><li><a href=https://rgoswami.me/categories>Categories</a></li><li><a href=https://rgoswami.me/tags>Tags</a></li></ul></nav><button id=toggleMenu><div class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></div></button>
-<button class=theme-toggle id=toggleTheme><svg class="theme-toggler" width="32" height="32" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41c10.4934.0 19-8.5066 19-19C41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg></button></div></div></header><script src=https://rgoswami.me/js/mathjax-config.js></script><script id=MathJax-script async src=https://unpkg.com/mathjax@3/es5/tex-chtml.js></script><aside class=sidebar><div class=hideTOC><button id=tocTog>TOC</button><div class="sideTOC m-fadeOut"><nav id=TableOfContents><ul><li><a href=#chapter-vii---linear-model-selection-and-regularization>Chapter VII - Moving Beyond Linearity</a><ul><li><a href=#common>Common</a></li></ul></li><li><a href=#question-7.6---page-299>Question 7.6 - Page 299</a><ul><li><a href=#answer>Answer</a></li></ul></li><li><a href=#question-7.8---page-299>Question 7.8 - Page 299</a><ul><li><a href=#answer-1>Answer</a></li></ul></li><li><a href=#question-7.9---pages-299-300>Question 7.9 - Pages 299-300</a><ul><li><a href=#answer-2>Answer</a></li></ul></li><li><a href=#question-10---page-300>Question 10 - Page 300</a><ul><li><a href=#answer-3>Answer</a></li></ul></li></ul></nav></div></div></aside><main class=post><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>28 minutes<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Written: 2020-02-19 09:47 +0000</p></p></div><article class=h-entry><h1 class="post-title p-name"><a class=u-url href=https://rgoswami.me/posts/islr-ch7/>ISLR :: Moving Beyond Linearity</a></h1><div class=post-info><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pen-tool"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg><span class="author u-author p-author"><a href=https://rgoswami.me/author/rohit-goswami>Rohit Goswami</a></span></div><hr><aside id=toc class=sidebar><div class=toc-title>Table of Contents</div><nav id=TableOfContents><ul><li><a href=#chapter-vii---linear-model-selection-and-regularization>Chapter VII - Moving Beyond Linearity</a><ul><li><a href=#common>Common</a></li></ul></li><li><a href=#question-7.6---page-299>Question 7.6 - Page 299</a><ul><li><a href=#answer>Answer</a></li></ul></li><li><a href=#question-7.8---page-299>Question 7.8 - Page 299</a><ul><li><a href=#answer-1>Answer</a></li></ul></li><li><a href=#question-7.9---pages-299-300>Question 7.9 - Pages 299-300</a><ul><li><a href=#answer-2>Answer</a></li></ul></li><li><a href=#question-10---page-300>Question 10 - Page 300</a><ul><li><a href=#answer-3>Answer</a></li></ul></li></ul></nav></aside><hr><div class="post-content e-content"><h2 id=chapter-vii---linear-model-selection-and-regularization>Chapter VII - Moving Beyond Linearity</h2><p>All the questions are as per the
+(a) Perform polynomial regression to predict wage using age. Use cross-validation to select the optimal degree d for the polynomial. What degree was chosen, and how does this compare to the results of hypothesis testing using ANOVA?">
+<meta property="article:section" content="programming">
+<meta property="article:published_time" content="2020-02-19 09:47:00 +0000 +0000">
+</head>
+<body>
+<div class=container>
+<header class=header>
+<div class=header__inner>
+<div class=header__left>
+<div class=logo>
+<a href=/ style=text-decoration:none>
+<img src=/images/home.png alt>
+</a>
+</div>
+</div>
+<div class=header__mid>
+<button class=button>
+<div class=button__text>
+<a href=https://rgoswami.me//search>
+Search
+</a>
+</div>
+</button>
+</div>
+<div class=header__right>
+<nav class=menu>
+<ul class=menu__inner><li><a href=https://rgoswami.me/about>About</a></li><li><a href=https://rgoswami.me/posts>Blog</a></li>
+</ul>
+<ul class=menu__inner><li><a href=https://rgoswami.me/categories>Categories</a></li><li><a href=https://rgoswami.me/tags>Tags</a></li>
+</ul>
+</nav>
+<button id=toggleMenu>
+<div class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+</div>
+</button>
+<button class=theme-toggle id=toggleTheme><svg class="theme-toggler" width="32" height="32" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41c10.4934.0 19-8.5066 19-19C41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg>
+</button>
+</div>
+</div>
+</header>
+<script src=https://rgoswami.me/js/mathjax-config.js></script>
+<script id=MathJax-script async src=https://unpkg.com/mathjax@3/es5/tex-chtml.js></script>
+<aside class=sidebar>
+<div class=hideTOC>
+<button id=tocTog>TOC</button>
+<div class="sideTOC m-fadeOut">
+<nav id=TableOfContents>
+<ul>
+<li><a href=#chapter-vii---linear-model-selection-and-regularization>Chapter VII - Moving Beyond Linearity</a>
+<ul>
+<li><a href=#common>Common</a></li>
+</ul>
+</li>
+<li><a href=#question-7.6---page-299>Question 7.6 - Page 299</a>
+<ul>
+<li><a href=#answer>Answer</a></li>
+</ul>
+</li>
+<li><a href=#question-7.8---page-299>Question 7.8 - Page 299</a>
+<ul>
+<li><a href=#answer-1>Answer</a></li>
+</ul>
+</li>
+<li><a href=#question-7.9---pages-299-300>Question 7.9 - Pages 299-300</a>
+<ul>
+<li><a href=#answer-2>Answer</a></li>
+</ul>
+</li>
+<li><a href=#question-10---page-300>Question 10 - Page 300</a>
+<ul>
+<li><a href=#answer-3>Answer</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</aside>
+<main class=post>
+<div class=post-info>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>28 minutes
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Written: 2020-02-19 09:47 +0000</p>
+</p>
+</div>
+<article class=h-entry>
+<h1 class="post-title p-name">
+<a class=u-url href=https://rgoswami.me/posts/islr-ch7/>ISLR :: Moving Beyond Linearity</a>
+</h1>
+<div class=post-info><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pen-tool"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+<span class="author u-author p-author"><a href=https://rgoswami.me/author/rohit-goswami>Rohit Goswami</a></span>
+</div>
+<hr>
+<aside id=toc class=sidebar>
+<div class=toc-title>Table of Contents</div>
+<nav id=TableOfContents>
+<ul>
+<li><a href=#chapter-vii---linear-model-selection-and-regularization>Chapter VII - Moving Beyond Linearity</a>
+<ul>
+<li><a href=#common>Common</a></li>
+</ul>
+</li>
+<li><a href=#question-7.6---page-299>Question 7.6 - Page 299</a>
+<ul>
+<li><a href=#answer>Answer</a></li>
+</ul>
+</li>
+<li><a href=#question-7.8---page-299>Question 7.8 - Page 299</a>
+<ul>
+<li><a href=#answer-1>Answer</a></li>
+</ul>
+</li>
+<li><a href=#question-7.9---pages-299-300>Question 7.9 - Pages 299-300</a>
+<ul>
+<li><a href=#answer-2>Answer</a></li>
+</ul>
+</li>
+<li><a href=#question-10---page-300>Question 10 - Page 300</a>
+<ul>
+<li><a href=#answer-3>Answer</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</aside>
+<hr>
+<div class="post-content e-content">
+<h2 id=chapter-vii---linear-model-selection-and-regularization>Chapter VII - Moving Beyond Linearity</h2>
+<p>All the questions are as per the
 <a href=https://www.statlearning.com/>ISL seventh
-printing of the First edition</a><sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup>.</p><h3 id=common>Common</h3><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>libsUsed</span><span class=o>&lt;-</span><span class=nf>c</span><span class=p>(</span><span class=s>&#34;dplyr&#34;</span><span class=p>,</span><span class=s>&#34;ggplot2&#34;</span><span class=p>,</span><span class=s>&#34;tidyverse&#34;</span><span class=p>,</span>
+printing of the First edition</a><sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup>.</p>
+<h3 id=common>Common</h3>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>libsUsed</span><span class=o>&lt;-</span><span class=nf>c</span><span class=p>(</span><span class=s>&#34;dplyr&#34;</span><span class=p>,</span><span class=s>&#34;ggplot2&#34;</span><span class=p>,</span><span class=s>&#34;tidyverse&#34;</span><span class=p>,</span>
             <span class=s>&#34;ISLR&#34;</span><span class=p>,</span><span class=s>&#34;caret&#34;</span><span class=p>,</span><span class=s>&#34;MASS&#34;</span><span class=p>,</span> <span class=s>&#34;gridExtra&#34;</span><span class=p>,</span>
             <span class=s>&#34;pls&#34;</span><span class=p>,</span><span class=s>&#34;latex2exp&#34;</span><span class=p>,</span><span class=s>&#34;data.table&#34;</span><span class=p>)</span>
 <span class=nf>invisible</span><span class=p>(</span><span class=nf>lapply</span><span class=p>(</span><span class=n>libsUsed</span><span class=p>,</span> <span class=n>library</span><span class=p>,</span> <span class=n>character.only</span> <span class=o>=</span> <span class=kc>TRUE</span><span class=p>))</span>
-</code></pre></div><h2 id=question-7.6---page-299>Question 7.6 - Page 299</h2><p>In this exercise, you will further analyze the <code>Wage</code> data set
-considered throughout this chapter.</p><p><strong>(a)</strong> Perform polynomial regression to predict <code>wage</code> using <code>age</code>. Use
+</code></pre></div><h2 id=question-7.6---page-299>Question 7.6 - Page 299</h2>
+<p>In this exercise, you will further analyze the <code>Wage</code> data set
+considered throughout this chapter.</p>
+<p><strong>(a)</strong> Perform polynomial regression to predict <code>wage</code> using <code>age</code>. Use
 cross-validation to select the optimal degree <em>d</em> for the polynomial.
 What degree was chosen, and how does this compare to the results of
 hypothesis testing using ANOVA? Make a plot of the resulting polynomial
-fit to the data.</p><p><strong>(b)</strong> Fit a step function to predict <code>wage</code> using <code>age</code>, and perform
+fit to the data.</p>
+<p><strong>(b)</strong> Fit a step function to predict <code>wage</code> using <code>age</code>, and perform
 cross-validation to choose the optimal number of cuts. Make a plot of
 the fit obtained. In this exercise, we will generate simulated data, and
-will then use this data to perform best subset selection.</p><h3 id=answer>Answer</h3><p>Lets get the data.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>set.seed</span><span class=p>(</span><span class=m>1984</span><span class=p>)</span>
+will then use this data to perform best subset selection.</p>
+<h3 id=answer>Answer</h3>
+<p>Lets get the data.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>set.seed</span><span class=p>(</span><span class=m>1984</span><span class=p>)</span>
 <span class=n>wageDat</span><span class=o>&lt;-</span><span class=n>ISLR</span><span class=o>::</span><span class=n>Wage</span>
 <span class=n>wageDat</span> <span class=o>%&gt;%</span> <span class=n>str</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## &#39;data.frame&#39;:    3000 obs. of  11 variables:
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## &#39;data.frame&#39;:    3000 obs. of  11 variables:
 ##  $ year      : int  2006 2004 2003 2003 2005 2008 2009 2008 2006 2004 ...
 ##  $ age       : int  18 24 45 43 50 54 44 30 41 52 ...
 ##  $ maritl    : Factor w/ 5 levels &#34;1. Never Married&#34;,..: 1 1 2 2 4 2 2 1 1 2 ...
@@ -37,8 +200,8 @@ will then use this data to perform best subset selection.</p><h3 id=answer>Answe
 ##  $ logwage   : num  4.32 4.26 4.88 5.04 4.32 ...
 ##  $ wage      : num  75 70.5 131 154.7 75 ...
 ## NULL
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>wageDat</span> <span class=o>%&gt;%</span> <span class=n>summary</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>##       year           age                     maritl           race
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>wageDat</span> <span class=o>%&gt;%</span> <span class=n>summary</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>##       year           age                     maritl           race
 ##  Min.   :2003   Min.   :18.00   1. Never Married: 648   1. White:2480
 ##  1st Qu.:2004   1st Qu.:33.75   2. Married      :2074   2. Black: 293
 ##  Median :2006   Median :42.00   3. Widowed      :  19   3. Asian: 190
@@ -62,18 +225,19 @@ will then use this data to perform best subset selection.</p><h3 id=answer>Answe
 ##                                      3rd Qu.:4.857   3rd Qu.:128.68
 ##                                      Max.   :5.763   Max.   :318.34
 ##
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>wageDat</span> <span class=o>%&gt;%</span> <span class=nf>sapply</span><span class=p>(</span><span class=n>unique</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=nf>sapply</span><span class=p>(</span><span class=n>length</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>##       year        age     maritl       race  education     region   jobclass
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>wageDat</span> <span class=o>%&gt;%</span> <span class=nf>sapply</span><span class=p>(</span><span class=n>unique</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=nf>sapply</span><span class=p>(</span><span class=n>length</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>##       year        age     maritl       race  education     region   jobclass
 ##          7         61          5          4          5          1          2
 ##     health health_ins    logwage       wage
 ##          2          2        508        508
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>library</span><span class=p>(</span><span class=n>boot</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>##
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>library</span><span class=p>(</span><span class=n>boot</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>##
 ## Attaching package: &#39;boot&#39;
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## The following object is masked from &#39;package:lattice&#39;:
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## The following object is masked from &#39;package:lattice&#39;:
 ##
 ##     melanoma
-</code></pre></div><h4 id=a-polynomial-regression>a) Polynomial regression</h4><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>all.deltas</span> <span class=o>=</span> <span class=nf>rep</span><span class=p>(</span><span class=kc>NA</span><span class=p>,</span> <span class=m>10</span><span class=p>)</span>
+</code></pre></div><h4 id=a-polynomial-regression>a) Polynomial regression</h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>all.deltas</span> <span class=o>=</span> <span class=nf>rep</span><span class=p>(</span><span class=kc>NA</span><span class=p>,</span> <span class=m>10</span><span class=p>)</span>
 <span class=nf>for </span><span class=p>(</span><span class=n>i</span> <span class=n>in</span> <span class=m>1</span><span class=o>:</span><span class=m>10</span><span class=p>)</span> <span class=p>{</span>
   <span class=n>glm.fit</span> <span class=o>=</span> <span class=nf>glm</span><span class=p>(</span><span class=n>wage</span><span class=o>~</span><span class=nf>poly</span><span class=p>(</span><span class=n>age</span><span class=p>,</span> <span class=n>i</span><span class=p>),</span> <span class=n>data</span><span class=o>=</span><span class=n>Wage</span><span class=p>)</span>
   <span class=n>all.deltas[i]</span> <span class=o>=</span> <span class=nf>cv.glm</span><span class=p>(</span><span class=n>Wage</span><span class=p>,</span> <span class=n>glm.fit</span><span class=p>,</span> <span class=n>K</span><span class=o>=</span><span class=m>10</span><span class=p>)</span><span class=o>$</span><span class=n>delta[2]</span>
@@ -84,14 +248,16 @@ will then use this data to perform best subset selection.</p><h3 id=answer>Answe
 <span class=nf>abline</span><span class=p>(</span><span class=n>h</span><span class=o>=</span><span class=n>min.point</span> <span class=o>+</span> <span class=m>0.2</span> <span class=o>*</span> <span class=n>sd.points</span><span class=p>,</span> <span class=n>col</span><span class=o>=</span><span class=s>&#34;red&#34;</span><span class=p>,</span> <span class=n>lty</span><span class=o>=</span><span class=s>&#34;dashed&#34;</span><span class=p>)</span>
 <span class=nf>abline</span><span class=p>(</span><span class=n>h</span><span class=o>=</span><span class=n>min.point</span> <span class=o>-</span> <span class=m>0.2</span> <span class=o>*</span> <span class=n>sd.points</span><span class=p>,</span> <span class=n>col</span><span class=o>=</span><span class=s>&#34;red&#34;</span><span class=p>,</span> <span class=n>lty</span><span class=o>=</span><span class=s>&#34;dashed&#34;</span><span class=p>)</span>
 <span class=nf>legend</span><span class=p>(</span><span class=s>&#34;topright&#34;</span><span class=p>,</span> <span class=s>&#34;0.2-standard deviation lines&#34;</span><span class=p>,</span> <span class=n>lty</span><span class=o>=</span><span class=s>&#34;dashed&#34;</span><span class=p>,</span> <span class=n>col</span><span class=o>=</span><span class=s>&#34;red&#34;</span><span class=p>)</span>
-</code></pre></div><figure><img src=/islr/sol5/unnamed-chunk-4-1.png></figure><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=c1># ANOVA</span>
+</code></pre></div><figure><img src=/islr/sol5/unnamed-chunk-4-1.png>
+</figure>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=c1># ANOVA</span>
 <span class=n>fits</span><span class=o>=</span><span class=nf>list</span><span class=p>()</span>
 <span class=nf>for </span><span class=p>(</span><span class=n>i</span> <span class=n>in</span> <span class=m>1</span><span class=o>:</span><span class=m>10</span><span class=p>)</span> <span class=p>{</span>
   <span class=n>fits[[i]]</span><span class=o>=</span><span class=nf>glm</span><span class=p>(</span><span class=n>wage</span><span class=o>~</span><span class=nf>poly</span><span class=p>(</span><span class=n>age</span><span class=p>,</span><span class=n>i</span><span class=p>),</span><span class=n>data</span><span class=o>=</span><span class=n>wageDat</span><span class=p>)</span>
 <span class=p>}</span>
 <span class=nf>anova</span><span class=p>(</span><span class=n>fits[[1]]</span><span class=p>,</span><span class=n>fits[[2]]</span><span class=p>,</span><span class=n>fits[[3]]</span><span class=p>,</span><span class=n>fits[[4]]</span><span class=p>,</span><span class=n>fits[[5]]</span><span class=p>,</span>
   <span class=n>fits[[6]]</span><span class=p>,</span><span class=n>fits[[7]]</span><span class=p>,</span><span class=n>fits[[8]]</span><span class=p>,</span><span class=n>fits[[9]]</span><span class=p>,</span><span class=n>fits[[10]]</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Analysis of Deviance Table
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Analysis of Deviance Table
 ##
 ## Model  1: wage ~ poly(age, i)
 ## Model  2: wage ~ poly(age, i)
@@ -114,7 +280,10 @@ will then use this data to perform best subset selection.</p><h3 id=answer>Answe
 ## 8       2991    4763707  1      127
 ## 9       2990    4756703  1     7004
 ## 10      2989    4756701  1        3
-</code></pre></div><ul><li>The 4th degree looks the best at the moment</li></ul><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=c1># 3rd or 4th degrees look best based on ANOVA test</span>
+</code></pre></div><ul>
+<li>The 4th degree looks the best at the moment</li>
+</ul>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=c1># 3rd or 4th degrees look best based on ANOVA test</span>
 <span class=c1># let&#39;s go with 4th degree fit</span>
 <span class=nf>plot</span><span class=p>(</span><span class=n>wage</span><span class=o>~</span><span class=n>age</span><span class=p>,</span> <span class=n>data</span><span class=o>=</span><span class=n>wageDat</span><span class=p>,</span> <span class=n>col</span><span class=o>=</span><span class=s>&#34;darkgrey&#34;</span><span class=p>)</span>
 <span class=n>agelims</span> <span class=o>=</span> <span class=nf>range</span><span class=p>(</span><span class=n>wageDat</span><span class=o>$</span><span class=n>age</span><span class=p>)</span>
@@ -122,7 +291,10 @@ will then use this data to perform best subset selection.</p><h3 id=answer>Answe
 <span class=n>lm.fit</span> <span class=o>=</span> <span class=nf>lm</span><span class=p>(</span><span class=n>wage</span><span class=o>~</span><span class=nf>poly</span><span class=p>(</span><span class=n>age</span><span class=p>,</span> <span class=m>4</span><span class=p>),</span> <span class=n>data</span><span class=o>=</span><span class=n>wageDat</span><span class=p>)</span>
 <span class=n>lm.pred</span> <span class=o>=</span> <span class=nf>predict</span><span class=p>(</span><span class=n>lm.fit</span><span class=p>,</span> <span class=nf>data.frame</span><span class=p>(</span><span class=n>age</span><span class=o>=</span><span class=n>age.grid</span><span class=p>))</span>
 <span class=nf>lines</span><span class=p>(</span><span class=n>age.grid</span><span class=p>,</span> <span class=n>lm.pred</span><span class=p>,</span> <span class=n>col</span><span class=o>=</span><span class=s>&#34;blue&#34;</span><span class=p>,</span> <span class=n>lwd</span><span class=o>=</span><span class=m>2</span><span class=p>)</span>
-</code></pre></div><figure><img src=/islr/sol5/unnamed-chunk-6-1.png></figure><h4 id=b-step-function-and-cross-validation>b) Step function and cross-validation</h4><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=c1># cross-validation</span>
+</code></pre></div><figure><img src=/islr/sol5/unnamed-chunk-6-1.png>
+</figure>
+<h4 id=b-step-function-and-cross-validation>b) Step function and cross-validation</h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=c1># cross-validation</span>
 <span class=n>cv.error</span> <span class=o>&lt;-</span> <span class=nf>rep</span><span class=p>(</span><span class=m>0</span><span class=p>,</span><span class=m>9</span><span class=p>)</span>
 <span class=nf>for </span><span class=p>(</span><span class=n>i</span> <span class=n>in</span> <span class=m>2</span><span class=o>:</span><span class=m>10</span><span class=p>)</span> <span class=p>{</span>
   <span class=n>wageDat</span><span class=o>$</span><span class=n>age.cut</span> <span class=o>&lt;-</span> <span class=nf>cut</span><span class=p>(</span><span class=n>wageDat</span><span class=o>$</span><span class=n>age</span><span class=p>,</span><span class=n>i</span><span class=p>)</span>
@@ -130,38 +302,48 @@ will then use this data to perform best subset selection.</p><h3 id=answer>Answe
   <span class=n>cv.error[i</span><span class=m>-1</span><span class=n>]</span> <span class=o>&lt;-</span> <span class=nf>cv.glm</span><span class=p>(</span><span class=n>wageDat</span><span class=p>,</span> <span class=n>glm.fit</span><span class=p>,</span> <span class=n>K</span><span class=o>=</span><span class=m>10</span><span class=p>)</span><span class=o>$</span><span class=n>delta[1]</span>  <span class=c1># [1]:std, [2]:bias-corrected</span>
 <span class=p>}</span>
 <span class=n>cv.error</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## [1] 1732.337 1682.978 1636.736 1635.600 1624.174 1610.688 1604.081 1612.005
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## [1] 1732.337 1682.978 1636.736 1635.600 1624.174 1610.688 1604.081 1612.005
 ## [9] 1607.022
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>cv.error</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## [1] 1732.337 1682.978 1636.736 1635.600 1624.174 1610.688 1604.081 1612.005
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>cv.error</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## [1] 1732.337 1682.978 1636.736 1635.600 1624.174 1610.688 1604.081 1612.005
 ## [9] 1607.022
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>plot</span><span class=p>(</span><span class=m>2</span><span class=o>:</span><span class=m>10</span><span class=p>,</span> <span class=n>cv.error</span><span class=p>,</span> <span class=n>type</span><span class=o>=</span><span class=s>&#34;b&#34;</span><span class=p>)</span>
-</code></pre></div><figure><img src=/islr/sol5/unnamed-chunk-7-1.png></figure><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>cut.fit</span> <span class=o>&lt;-</span> <span class=nf>glm</span><span class=p>(</span><span class=n>wage</span><span class=o>~</span><span class=nf>cut</span><span class=p>(</span><span class=n>age</span><span class=p>,</span><span class=m>8</span><span class=p>),</span> <span class=n>data</span><span class=o>=</span><span class=n>wageDat</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>plot</span><span class=p>(</span><span class=m>2</span><span class=o>:</span><span class=m>10</span><span class=p>,</span> <span class=n>cv.error</span><span class=p>,</span> <span class=n>type</span><span class=o>=</span><span class=s>&#34;b&#34;</span><span class=p>)</span>
+</code></pre></div><figure><img src=/islr/sol5/unnamed-chunk-7-1.png>
+</figure>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>cut.fit</span> <span class=o>&lt;-</span> <span class=nf>glm</span><span class=p>(</span><span class=n>wage</span><span class=o>~</span><span class=nf>cut</span><span class=p>(</span><span class=n>age</span><span class=p>,</span><span class=m>8</span><span class=p>),</span> <span class=n>data</span><span class=o>=</span><span class=n>wageDat</span><span class=p>)</span>
 <span class=n>preds</span> <span class=o>&lt;-</span> <span class=nf>predict</span><span class=p>(</span><span class=n>cut.fit</span><span class=p>,</span> <span class=n>newdata</span><span class=o>=</span><span class=nf>list</span><span class=p>(</span><span class=n>age</span><span class=o>=</span><span class=n>age.grid</span><span class=p>),</span> <span class=n>se</span><span class=o>=</span><span class=kc>TRUE</span><span class=p>)</span>
 <span class=n>se.bands</span> <span class=o>&lt;-</span> <span class=n>preds</span><span class=o>$</span><span class=n>fit</span> <span class=o>+</span> <span class=nf>cbind</span><span class=p>(</span><span class=m>2</span><span class=o>*</span><span class=n>preds</span><span class=o>$</span><span class=n>se.fit</span><span class=p>,</span> <span class=m>-2</span><span class=o>*</span><span class=n>preds</span><span class=o>$</span><span class=n>se.fit</span><span class=p>)</span>
 <span class=nf>plot</span><span class=p>(</span><span class=n>wageDat</span><span class=o>$</span><span class=n>age</span><span class=p>,</span> <span class=n>wageDat</span><span class=o>$</span><span class=n>wage</span><span class=p>,</span> <span class=n>xlim</span><span class=o>=</span><span class=n>agelims</span><span class=p>,</span> <span class=n>cex</span><span class=o>=</span><span class=m>0.5</span><span class=p>,</span> <span class=n>col</span><span class=o>=</span><span class=s>&#34;darkgrey&#34;</span><span class=p>)</span>
 <span class=nf>title</span><span class=p>(</span><span class=s>&#34;Fit with 8 Age Bands&#34;</span><span class=p>)</span>
 <span class=nf>lines</span><span class=p>(</span><span class=n>age.grid</span><span class=p>,</span> <span class=n>preds</span><span class=o>$</span><span class=n>fit</span><span class=p>,</span> <span class=n>lwd</span><span class=o>=</span><span class=m>2</span><span class=p>,</span> <span class=n>col</span><span class=o>=</span><span class=s>&#34;blue&#34;</span><span class=p>)</span>
 <span class=nf>matlines</span><span class=p>(</span><span class=n>age.grid</span><span class=p>,</span> <span class=n>se.bands</span><span class=p>,</span> <span class=n>lwd</span><span class=o>=</span><span class=m>1</span><span class=p>,</span> <span class=n>col</span><span class=o>=</span><span class=s>&#34;blue&#34;</span><span class=p>,</span> <span class=n>lty</span><span class=o>=</span><span class=m>3</span><span class=p>)</span>
-</code></pre></div><figure><img src=/islr/sol5/unnamed-chunk-8-1.png></figure><h2 id=question-7.8---page-299>Question 7.8 - Page 299</h2><p>Fit some of the non-linear models investigated in this chapter to the
+</code></pre></div><figure><img src=/islr/sol5/unnamed-chunk-8-1.png>
+</figure>
+<h2 id=question-7.8---page-299>Question 7.8 - Page 299</h2>
+<p>Fit some of the non-linear models investigated in this chapter to the
 <code>Auto</code> data set. Is there evidence for non-linear relationships in this
-data set? Create some informative plots to justify your answer.</p><h3 id=answer-1>Answer</h3><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>autoDat</span><span class=o>&lt;-</span><span class=n>ISLR</span><span class=o>::</span><span class=n>Auto</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>autoDat</span> <span class=o>%&gt;%</span> <span class=nf>pivot_longer</span><span class=p>(</span><span class=o>-</span><span class=nf>c</span><span class=p>(</span><span class=n>mpg</span><span class=p>,</span><span class=n>name</span><span class=p>),</span><span class=n>names_to</span><span class=o>=</span><span class=s>&#34;Params&#34;</span><span class=p>,</span><span class=n>values_to</span><span class=o>=</span><span class=s>&#34;Value&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=nf>ggplot</span><span class=p>(</span><span class=nf>aes</span><span class=p>(</span><span class=n>x</span><span class=o>=</span><span class=n>mpg</span><span class=p>,</span><span class=n>y</span><span class=o>=</span><span class=n>Value</span><span class=p>))</span> <span class=o>+</span>
+data set? Create some informative plots to justify your answer.</p>
+<h3 id=answer-1>Answer</h3>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>autoDat</span><span class=o>&lt;-</span><span class=n>ISLR</span><span class=o>::</span><span class=n>Auto</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>autoDat</span> <span class=o>%&gt;%</span> <span class=nf>pivot_longer</span><span class=p>(</span><span class=o>-</span><span class=nf>c</span><span class=p>(</span><span class=n>mpg</span><span class=p>,</span><span class=n>name</span><span class=p>),</span><span class=n>names_to</span><span class=o>=</span><span class=s>&#34;Params&#34;</span><span class=p>,</span><span class=n>values_to</span><span class=o>=</span><span class=s>&#34;Value&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=nf>ggplot</span><span class=p>(</span><span class=nf>aes</span><span class=p>(</span><span class=n>x</span><span class=o>=</span><span class=n>mpg</span><span class=p>,</span><span class=n>y</span><span class=o>=</span><span class=n>Value</span><span class=p>))</span> <span class=o>+</span>
   <span class=nf>geom_point</span><span class=p>()</span> <span class=o>+</span>
   <span class=nf>facet_wrap</span><span class=p>(</span><span class=o>~</span> <span class=n>Params</span><span class=p>,</span> <span class=n>scales</span> <span class=o>=</span> <span class=s>&#34;free_y&#34;</span><span class=p>)</span>
-</code></pre></div><figure><img src=/islr/sol5/unnamed-chunk-10-1.png></figure><p>Very clearly there is a lot of non-linearity in the <code>mpg</code> data,
-especially for <code>acceleration</code>, <code>weight</code>, <code>displacement</code>, <code>horsepower</code>.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>rss</span> <span class=o>=</span> <span class=nf>rep</span><span class=p>(</span><span class=kc>NA</span><span class=p>,</span> <span class=m>10</span><span class=p>)</span>
+</code></pre></div><figure><img src=/islr/sol5/unnamed-chunk-10-1.png>
+</figure>
+<p>Very clearly there is a lot of non-linearity in the <code>mpg</code> data,
+especially for <code>acceleration</code>, <code>weight</code>, <code>displacement</code>, <code>horsepower</code>.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>rss</span> <span class=o>=</span> <span class=nf>rep</span><span class=p>(</span><span class=kc>NA</span><span class=p>,</span> <span class=m>10</span><span class=p>)</span>
 <span class=n>fits</span> <span class=o>=</span> <span class=nf>list</span><span class=p>()</span>
 <span class=nf>for </span><span class=p>(</span><span class=n>d</span> <span class=n>in</span> <span class=m>1</span><span class=o>:</span><span class=m>10</span><span class=p>)</span> <span class=p>{</span>
     <span class=n>fits[[d]]</span> <span class=o>=</span> <span class=nf>lm</span><span class=p>(</span><span class=n>mpg</span> <span class=o>~</span> <span class=nf>poly</span><span class=p>(</span><span class=n>displacement</span><span class=p>,</span> <span class=n>d</span><span class=p>),</span> <span class=n>data</span> <span class=o>=</span> <span class=n>autoDat</span><span class=p>)</span>
     <span class=n>rss[d]</span> <span class=o>=</span> <span class=nf>deviance</span><span class=p>(</span><span class=n>fits[[d]]</span><span class=p>)</span>
 <span class=p>}</span>
 <span class=n>rss</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>##  [1] 8378.822 7412.263 7392.322 7391.722 7380.838 7270.746 7089.716 6917.401
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>##  [1] 8378.822 7412.263 7392.322 7391.722 7380.838 7270.746 7089.716 6917.401
 ##  [9] 6737.801 6610.190
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>anova</span><span class=p>(</span><span class=n>fits[[1]]</span><span class=p>,</span><span class=n>fits[[2]]</span><span class=p>,</span><span class=n>fits[[3]]</span><span class=p>,</span><span class=n>fits[[4]]</span><span class=p>,</span><span class=n>fits[[5]]</span><span class=p>,</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>anova</span><span class=p>(</span><span class=n>fits[[1]]</span><span class=p>,</span><span class=n>fits[[2]]</span><span class=p>,</span><span class=n>fits[[3]]</span><span class=p>,</span><span class=n>fits[[4]]</span><span class=p>,</span><span class=n>fits[[5]]</span><span class=p>,</span>
   <span class=n>fits[[6]]</span><span class=p>,</span><span class=n>fits[[7]]</span><span class=p>,</span><span class=n>fits[[8]]</span><span class=p>,</span><span class=n>fits[[9]]</span><span class=p>,</span><span class=n>fits[[10]]</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Analysis of Variance Table
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Analysis of Variance Table
 ##
 ## Model  1: mpg ~ poly(displacement, d)
 ## Model  2: mpg ~ poly(displacement, d)
@@ -187,23 +369,25 @@ especially for <code>acceleration</code>, <code>weight</code>, <code>displacemen
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 </code></pre></div><p>Confirming our visual indications, we see that the second degree models
-work well.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>library</span><span class=p>(</span><span class=n>glmnet</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Loading required package: Matrix
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>##
+work well.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>library</span><span class=p>(</span><span class=n>glmnet</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Loading required package: Matrix
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>##
 ## Attaching package: &#39;Matrix&#39;
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## The following objects are masked from &#39;package:tidyr&#39;:
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## The following objects are masked from &#39;package:tidyr&#39;:
 ##
 ##     expand, pack, unpack
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Loaded glmnet 3.0-2
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>library</span><span class=p>(</span><span class=n>boot</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>cv.errs</span> <span class=o>=</span> <span class=nf>rep</span><span class=p>(</span><span class=kc>NA</span><span class=p>,</span> <span class=m>15</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Loaded glmnet 3.0-2
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>library</span><span class=p>(</span><span class=n>boot</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>cv.errs</span> <span class=o>=</span> <span class=nf>rep</span><span class=p>(</span><span class=kc>NA</span><span class=p>,</span> <span class=m>15</span><span class=p>)</span>
 <span class=nf>for </span><span class=p>(</span><span class=n>d</span> <span class=n>in</span> <span class=m>1</span><span class=o>:</span><span class=m>15</span><span class=p>)</span> <span class=p>{</span>
     <span class=n>fit</span> <span class=o>=</span> <span class=nf>glm</span><span class=p>(</span><span class=n>mpg</span> <span class=o>~</span> <span class=nf>poly</span><span class=p>(</span><span class=n>displacement</span><span class=p>,</span> <span class=n>d</span><span class=p>),</span> <span class=n>data</span> <span class=o>=</span> <span class=n>Auto</span><span class=p>)</span>
     <span class=n>cv.errs[d]</span> <span class=o>=</span> <span class=nf>cv.glm</span><span class=p>(</span><span class=n>Auto</span><span class=p>,</span> <span class=n>fit</span><span class=p>,</span> <span class=n>K</span> <span class=o>=</span> <span class=m>15</span><span class=p>)</span><span class=o>$</span><span class=n>delta[2]</span>
 <span class=p>}</span>
 <span class=nf>which.min</span><span class=p>(</span><span class=n>cv.errs</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## [1] 10
-</code></pre></div><p>Strangely, we seem to have ended up with a ten variable model here.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=c1># Step functions</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## [1] 10
+</code></pre></div><p>Strangely, we seem to have ended up with a ten variable model here.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=c1># Step functions</span>
 <span class=n>cv.errs</span> <span class=o>=</span> <span class=nf>rep</span><span class=p>(</span><span class=kc>NA</span><span class=p>,</span> <span class=m>10</span><span class=p>)</span>
 <span class=nf>for </span><span class=p>(</span><span class=n>c</span> <span class=n>in</span> <span class=m>2</span><span class=o>:</span><span class=m>10</span><span class=p>)</span> <span class=p>{</span>
     <span class=n>Auto</span><span class=o>$</span><span class=n>dis.cut</span> <span class=o>=</span> <span class=nf>cut</span><span class=p>(</span><span class=n>Auto</span><span class=o>$</span><span class=n>displacement</span><span class=p>,</span> <span class=n>c</span><span class=p>)</span>
@@ -211,29 +395,29 @@ work well.</p><div class=highlight><pre class=chroma><code class=language-R data
     <span class=n>cv.errs[c]</span> <span class=o>=</span> <span class=nf>cv.glm</span><span class=p>(</span><span class=n>Auto</span><span class=p>,</span> <span class=n>fit</span><span class=p>,</span> <span class=n>K</span> <span class=o>=</span> <span class=m>10</span><span class=p>)</span><span class=o>$</span><span class=n>delta[2]</span>
 <span class=p>}</span>
 <span class=nf>which.min</span><span class=p>(</span><span class=n>cv.errs</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## [1] 9
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>library</span><span class=p>(</span><span class=n>splines</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## [1] 9
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>library</span><span class=p>(</span><span class=n>splines</span><span class=p>)</span>
 <span class=n>cv.errs</span> <span class=o>=</span> <span class=nf>rep</span><span class=p>(</span><span class=kc>NA</span><span class=p>,</span> <span class=m>10</span><span class=p>)</span>
 <span class=nf>for </span><span class=p>(</span><span class=n>df</span> <span class=n>in</span> <span class=m>3</span><span class=o>:</span><span class=m>10</span><span class=p>)</span> <span class=p>{</span>
     <span class=n>fit</span> <span class=o>=</span> <span class=nf>glm</span><span class=p>(</span><span class=n>mpg</span> <span class=o>~</span> <span class=nf>ns</span><span class=p>(</span><span class=n>displacement</span><span class=p>,</span> <span class=n>df</span> <span class=o>=</span> <span class=n>df</span><span class=p>),</span> <span class=n>data</span> <span class=o>=</span> <span class=n>Auto</span><span class=p>)</span>
     <span class=n>cv.errs[df]</span> <span class=o>=</span> <span class=nf>cv.glm</span><span class=p>(</span><span class=n>Auto</span><span class=p>,</span> <span class=n>fit</span><span class=p>,</span> <span class=n>K</span> <span class=o>=</span> <span class=m>10</span><span class=p>)</span><span class=o>$</span><span class=n>delta[2]</span>
 <span class=p>}</span>
 <span class=nf>which.min</span><span class=p>(</span><span class=n>cv.errs</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## [1] 10
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>library</span><span class=p>(</span><span class=n>gam</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Loading required package: foreach
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>##
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## [1] 10
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>library</span><span class=p>(</span><span class=n>gam</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Loading required package: foreach
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>##
 ## Attaching package: &#39;foreach&#39;
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## The following objects are masked from &#39;package:purrr&#39;:
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## The following objects are masked from &#39;package:purrr&#39;:
 ##
 ##     accumulate, when
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Loaded gam 1.16.1
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=c1># GAMs</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Loaded gam 1.16.1
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=c1># GAMs</span>
 <span class=n>fit</span> <span class=o>=</span> <span class=nf>gam</span><span class=p>(</span><span class=n>mpg</span> <span class=o>~</span> <span class=nf>s</span><span class=p>(</span><span class=n>displacement</span><span class=p>,</span> <span class=m>4</span><span class=p>)</span> <span class=o>+</span> <span class=nf>s</span><span class=p>(</span><span class=n>horsepower</span><span class=p>,</span> <span class=m>4</span><span class=p>),</span> <span class=n>data</span> <span class=o>=</span> <span class=n>Auto</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Warning in model.matrix.default(mt, mf, contrasts): non-list contrasts argument
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Warning in model.matrix.default(mt, mf, contrasts): non-list contrasts argument
 ## ignored
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>summary</span><span class=p>(</span><span class=n>fit</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>##
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>summary</span><span class=p>(</span><span class=n>fit</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>##
 ## Call: gam(formula = mpg ~ s(displacement, 4) + s(horsepower, 4), data = Auto)
 ## Deviance Residuals:
 ##      Min       1Q   Median       3Q      Max
@@ -262,23 +446,32 @@ work well.</p><div class=highlight><pre class=chroma><code class=language-R data
 ## s(horsepower, 4)         3 15.606 1.349e-09 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-</code></pre></div><h2 id=question-7.9---pages-299-300>Question 7.9 - Pages 299-300</h2><p>This question uses the variables <code>dis</code> (the weighted mean of distances
+</code></pre></div><h2 id=question-7.9---pages-299-300>Question 7.9 - Pages 299-300</h2>
+<p>This question uses the variables <code>dis</code> (the weighted mean of distances
 to five <code>Boston</code> employment centers) and <code>nox</code> (nitrogen oxides
 concentration in parts per 10 million) from the <code>Boston</code> data. We will
-treat <code>dis</code> as the predictor and <code>nox</code> as the response.</p><p><strong>(a)</strong> Use the <code>poly()</code> function to fit a cubic polynomial regression to
+treat <code>dis</code> as the predictor and <code>nox</code> as the response.</p>
+<p><strong>(a)</strong> Use the <code>poly()</code> function to fit a cubic polynomial regression to
 predict <code>nox</code> using <code>dis</code>. Report the regression output, and plot the
-resulting data and polynomial fits.</p><p><strong>(b)</strong> Plot the polynomial fits for a range of different polynomial
+resulting data and polynomial fits.</p>
+<p><strong>(b)</strong> Plot the polynomial fits for a range of different polynomial
 degrees (say, from 1 to 10), and report the associated residual sum of
-squares.</p><p><strong>(c)</strong> Perform cross-validation or another approach to select the optimal
-degree for the polynomial, and explain your results.</p><p><strong>(d)</strong> Use the <code>bs()</code> function to fit a regression spline to predict nox
+squares.</p>
+<p><strong>(c)</strong> Perform cross-validation or another approach to select the optimal
+degree for the polynomial, and explain your results.</p>
+<p><strong>(d)</strong> Use the <code>bs()</code> function to fit a regression spline to predict nox
 using <code>dis</code>. Report the output for the fit using four degrees of
-freedom. How did you choose the knots? Plot the resulting fit.</p><p><strong>(e)</strong> Now fit a regression spline for a range of degrees of freedom, and
+freedom. How did you choose the knots? Plot the resulting fit.</p>
+<p><strong>(e)</strong> Now fit a regression spline for a range of degrees of freedom, and
 plot the resulting fits and report the resulting RSS. Describe the
-results obtained.</p><p><strong>(f)</strong> Perform cross-validation or another approach in order to select
+results obtained.</p>
+<p><strong>(f)</strong> Perform cross-validation or another approach in order to select
 the best degrees of freedom for a regression spline on this data.
-Describe your results.</p><h3 id=answer-2>Answer</h3><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>boston</span><span class=o>&lt;-</span><span class=n>MASS</span><span class=o>::</span><span class=n>Boston</span>
+Describe your results.</p>
+<h3 id=answer-2>Answer</h3>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>boston</span><span class=o>&lt;-</span><span class=n>MASS</span><span class=o>::</span><span class=n>Boston</span>
 <span class=n>boston</span> <span class=o>%&gt;%</span> <span class=n>str</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## &#39;data.frame&#39;:    506 obs. of  14 variables:
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## &#39;data.frame&#39;:    506 obs. of  14 variables:
 ##  $ crim   : num  0.00632 0.02731 0.02729 0.03237 0.06905 ...
 ##  $ zn     : num  18 0 0 0 0 0 12.5 12.5 12.5 12.5 ...
 ##  $ indus  : num  2.31 7.07 7.07 2.18 2.18 2.18 7.87 7.87 7.87 7.87 ...
@@ -294,8 +487,8 @@ Describe your results.</p><h3 id=answer-2>Answer</h3><div class=highlight><pre c
 ##  $ lstat  : num  4.98 9.14 4.03 2.94 5.33 ...
 ##  $ medv   : num  24 21.6 34.7 33.4 36.2 28.7 22.9 27.1 16.5 18.9 ...
 ## NULL
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>boston</span> <span class=o>%&gt;%</span> <span class=n>summary</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>##       crim                zn             indus            chas
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>boston</span> <span class=o>%&gt;%</span> <span class=n>summary</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>##       crim                zn             indus            chas
 ##  Min.   : 0.00632   Min.   :  0.00   Min.   : 0.46   Min.   :0.00000
 ##  1st Qu.: 0.08204   1st Qu.:  0.00   1st Qu.: 5.19   1st Qu.:0.00000
 ##  Median : 0.25651   Median :  0.00   Median : 9.69   Median :0.00000
@@ -323,12 +516,13 @@ Describe your results.</p><h3 id=answer-2>Answer</h3><div class=highlight><pre c
 ##  Mean   :12.65   Mean   :22.53
 ##  3rd Qu.:16.95   3rd Qu.:25.00
 ##  Max.   :37.97   Max.   :50.00
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>boston</span> <span class=o>%&gt;%</span> <span class=nf>sapply</span><span class=p>(</span><span class=n>unique</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=nf>sapply</span><span class=p>(</span><span class=n>length</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>##    crim      zn   indus    chas     nox      rm     age     dis     rad     tax
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>boston</span> <span class=o>%&gt;%</span> <span class=nf>sapply</span><span class=p>(</span><span class=n>unique</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=nf>sapply</span><span class=p>(</span><span class=n>length</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>##    crim      zn   indus    chas     nox      rm     age     dis     rad     tax
 ##     504      26      76       2      81     446     356     412       9      66
 ## ptratio   black   lstat    medv
 ##      46     357     455     229
-</code></pre></div><h4 id=a-polynomial>a) Polynomial</h4><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>fit.03</span> <span class=o>&lt;-</span> <span class=nf>lm</span><span class=p>(</span><span class=n>nox</span><span class=o>~</span><span class=nf>poly</span><span class=p>(</span><span class=n>dis</span><span class=p>,</span><span class=m>3</span><span class=p>),</span> <span class=n>data</span><span class=o>=</span><span class=n>boston</span><span class=p>)</span>
+</code></pre></div><h4 id=a-polynomial>a) Polynomial</h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>fit.03</span> <span class=o>&lt;-</span> <span class=nf>lm</span><span class=p>(</span><span class=n>nox</span><span class=o>~</span><span class=nf>poly</span><span class=p>(</span><span class=n>dis</span><span class=p>,</span><span class=m>3</span><span class=p>),</span> <span class=n>data</span><span class=o>=</span><span class=n>boston</span><span class=p>)</span>
 <span class=n>dislims</span> <span class=o>&lt;-</span> <span class=nf>range</span><span class=p>(</span><span class=n>boston</span><span class=o>$</span><span class=n>dis</span><span class=p>)</span>
 <span class=n>dis.grid</span> <span class=o>&lt;-</span> <span class=nf>seq</span><span class=p>(</span><span class=n>dislims[1]</span><span class=p>,</span> <span class=n>dislims[2]</span><span class=p>,</span> <span class=m>0.1</span><span class=p>)</span>
 <span class=n>preds</span> <span class=o>&lt;-</span> <span class=nf>predict</span><span class=p>(</span><span class=n>fit.03</span><span class=p>,</span> <span class=n>newdata</span><span class=o>=</span><span class=nf>list</span><span class=p>(</span><span class=n>dis</span><span class=o>=</span><span class=n>dis.grid</span><span class=p>),</span> <span class=n>se</span><span class=o>=</span><span class=kc>TRUE</span><span class=p>)</span>
@@ -338,8 +532,10 @@ Describe your results.</p><h3 id=answer-2>Answer</h3><div class=highlight><pre c
 <span class=nf>title</span><span class=p>(</span><span class=s>&#34;Degree 3 Polynomial Fit&#34;</span><span class=p>)</span>
 <span class=nf>lines</span><span class=p>(</span><span class=n>dis.grid</span><span class=p>,</span> <span class=n>preds</span><span class=o>$</span><span class=n>fit</span><span class=p>,</span> <span class=n>lwd</span><span class=o>=</span><span class=m>2</span><span class=p>,</span> <span class=n>col</span><span class=o>=</span><span class=s>&#34;blue&#34;</span><span class=p>)</span>
 <span class=nf>matlines</span><span class=p>(</span><span class=n>dis.grid</span><span class=p>,</span> <span class=n>se.bands</span><span class=p>,</span> <span class=n>lwd</span><span class=o>=</span><span class=m>1</span><span class=p>,</span> <span class=n>col</span><span class=o>=</span><span class=s>&#34;blue&#34;</span><span class=p>,</span> <span class=n>lty</span><span class=o>=</span><span class=m>3</span><span class=p>)</span>
-</code></pre></div><figure><img src=/islr/sol5/unnamed-chunk-20-1.png></figure><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>summary</span><span class=p>(</span><span class=n>fit.03</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>##
+</code></pre></div><figure><img src=/islr/sol5/unnamed-chunk-20-1.png>
+</figure>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>summary</span><span class=p>(</span><span class=n>fit.03</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>##
 ## Call:
 ## lm(formula = nox ~ poly(dis, 3), data = boston)
 ##
@@ -359,16 +555,20 @@ Describe your results.</p><h3 id=answer-2>Answer</h3><div class=highlight><pre c
 ## Residual standard error: 0.06207 on 502 degrees of freedom
 ## Multiple R-squared:  0.7148, Adjusted R-squared:  0.7131
 ## F-statistic: 419.3 on 3 and 502 DF,  p-value: &lt; 2.2e-16
-</code></pre></div><h4 id=b-multiple-polynomials>b) Multiple Polynomials</h4><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>rss.error</span> <span class=o>&lt;-</span> <span class=nf>rep</span><span class=p>(</span><span class=m>0</span><span class=p>,</span><span class=m>10</span><span class=p>)</span>
+</code></pre></div><h4 id=b-multiple-polynomials>b) Multiple Polynomials</h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>rss.error</span> <span class=o>&lt;-</span> <span class=nf>rep</span><span class=p>(</span><span class=m>0</span><span class=p>,</span><span class=m>10</span><span class=p>)</span>
 <span class=nf>for </span><span class=p>(</span><span class=n>i</span> <span class=n>in</span> <span class=m>1</span><span class=o>:</span><span class=m>10</span><span class=p>)</span> <span class=p>{</span>
   <span class=n>lm.fit</span> <span class=o>&lt;-</span> <span class=nf>lm</span><span class=p>(</span><span class=n>nox</span><span class=o>~</span><span class=nf>poly</span><span class=p>(</span><span class=n>dis</span><span class=p>,</span><span class=n>i</span><span class=p>),</span> <span class=n>data</span><span class=o>=</span><span class=n>boston</span><span class=p>)</span>
   <span class=n>rss.error[i]</span> <span class=o>&lt;-</span> <span class=nf>sum</span><span class=p>(</span><span class=n>lm.fit</span><span class=o>$</span><span class=n>residuals^2</span><span class=p>)</span>
 <span class=p>}</span>
 <span class=n>rss.error</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>##  [1] 2.768563 2.035262 1.934107 1.932981 1.915290 1.878257 1.849484 1.835630
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>##  [1] 2.768563 2.035262 1.934107 1.932981 1.915290 1.878257 1.849484 1.835630
 ##  [9] 1.833331 1.832171
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>plot</span><span class=p>(</span><span class=n>rss.error</span><span class=p>,</span> <span class=n>type</span><span class=o>=</span><span class=s>&#34;b&#34;</span><span class=p>)</span>
-</code></pre></div><figure><img src=/islr/sol5/unnamed-chunk-21-1.png></figure><h4 id=c-cross-validation-and-polynomial-selection>c) Cross validation and polynomial selection</h4><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>require</span><span class=p>(</span><span class=n>boot</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>plot</span><span class=p>(</span><span class=n>rss.error</span><span class=p>,</span> <span class=n>type</span><span class=o>=</span><span class=s>&#34;b&#34;</span><span class=p>)</span>
+</code></pre></div><figure><img src=/islr/sol5/unnamed-chunk-21-1.png>
+</figure>
+<h4 id=c-cross-validation-and-polynomial-selection>c) Cross validation and polynomial selection</h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>require</span><span class=p>(</span><span class=n>boot</span><span class=p>)</span>
 <span class=nf>set.seed</span><span class=p>(</span><span class=m>1</span><span class=p>)</span>
 <span class=n>cv.error</span> <span class=o>&lt;-</span> <span class=nf>rep</span><span class=p>(</span><span class=m>0</span><span class=p>,</span><span class=m>10</span><span class=p>)</span>
 <span class=nf>for </span><span class=p>(</span><span class=n>i</span> <span class=n>in</span> <span class=m>1</span><span class=o>:</span><span class=m>10</span><span class=p>)</span> <span class=p>{</span>
@@ -376,118 +576,145 @@ Describe your results.</p><h3 id=answer-2>Answer</h3><div class=highlight><pre c
   <span class=n>cv.error[i]</span> <span class=o>&lt;-</span> <span class=nf>cv.glm</span><span class=p>(</span><span class=n>boston</span><span class=p>,</span> <span class=n>glm.fit</span><span class=p>,</span> <span class=n>K</span><span class=o>=</span><span class=m>10</span><span class=p>)</span><span class=o>$</span><span class=n>delta[1]</span>  <span class=c1># [1]:std, [2]:bias-corrected</span>
 <span class=p>}</span>
 <span class=n>cv.error</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>##  [1] 0.005558263 0.004085706 0.003876521 0.003863342 0.004237452 0.005686862
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>##  [1] 0.005558263 0.004085706 0.003876521 0.003863342 0.004237452 0.005686862
 ##  [7] 0.010278897 0.006810868 0.033308607 0.004075599
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>plot</span><span class=p>(</span><span class=n>cv.error</span><span class=p>,</span> <span class=n>type</span><span class=o>=</span><span class=s>&#34;b&#34;</span><span class=p>)</span>
-</code></pre></div><figure><img src=/islr/sol5/unnamed-chunk-22-1.png></figure><ul><li>I feel like the second degree fit would be the most reasonable, though
-the fourth degree seems to be doing well.</li></ul><h4 id=d-regression-spline>d) Regression spline</h4><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>fit.sp</span> <span class=o>&lt;-</span> <span class=nf>lm</span><span class=p>(</span><span class=n>nox</span><span class=o>~</span><span class=nf>bs</span><span class=p>(</span><span class=n>dis</span><span class=p>,</span> <span class=n>df</span><span class=o>=</span><span class=m>4</span><span class=p>),</span> <span class=n>data</span><span class=o>=</span><span class=n>boston</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>plot</span><span class=p>(</span><span class=n>cv.error</span><span class=p>,</span> <span class=n>type</span><span class=o>=</span><span class=s>&#34;b&#34;</span><span class=p>)</span>
+</code></pre></div><figure><img src=/islr/sol5/unnamed-chunk-22-1.png>
+</figure>
+<ul>
+<li>I feel like the second degree fit would be the most reasonable, though
+the fourth degree seems to be doing well.</li>
+</ul>
+<h4 id=d-regression-spline>d) Regression spline</h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>fit.sp</span> <span class=o>&lt;-</span> <span class=nf>lm</span><span class=p>(</span><span class=n>nox</span><span class=o>~</span><span class=nf>bs</span><span class=p>(</span><span class=n>dis</span><span class=p>,</span> <span class=n>df</span><span class=o>=</span><span class=m>4</span><span class=p>),</span> <span class=n>data</span><span class=o>=</span><span class=n>boston</span><span class=p>)</span>
 <span class=n>pred</span> <span class=o>&lt;-</span> <span class=nf>predict</span><span class=p>(</span><span class=n>fit.sp</span><span class=p>,</span> <span class=n>newdata</span><span class=o>=</span><span class=nf>list</span><span class=p>(</span><span class=n>dis</span><span class=o>=</span><span class=n>dis.grid</span><span class=p>),</span> <span class=n>se</span><span class=o>=</span><span class=bp>T</span><span class=p>)</span>
 <span class=nf>plot</span><span class=p>(</span><span class=n>boston</span><span class=o>$</span><span class=n>dis</span><span class=p>,</span> <span class=n>boston</span><span class=o>$</span><span class=n>nox</span><span class=p>,</span> <span class=n>col</span><span class=o>=</span><span class=s>&#34;gray&#34;</span><span class=p>)</span>
 <span class=nf>lines</span><span class=p>(</span><span class=n>dis.grid</span><span class=p>,</span> <span class=n>pred</span><span class=o>$</span><span class=n>fit</span><span class=p>,</span> <span class=n>lwd</span><span class=o>=</span><span class=m>2</span><span class=p>)</span>
 <span class=nf>lines</span><span class=p>(</span><span class=n>dis.grid</span><span class=p>,</span> <span class=n>pred</span><span class=o>$</span><span class=n>fit</span><span class=m>+2</span><span class=o>*</span><span class=n>pred</span><span class=o>$</span><span class=n>se</span><span class=p>,</span> <span class=n>lty</span><span class=o>=</span><span class=s>&#34;dashed&#34;</span><span class=p>)</span>
 <span class=nf>lines</span><span class=p>(</span><span class=n>dis.grid</span><span class=p>,</span> <span class=n>pred</span><span class=o>$</span><span class=n>fit</span><span class=m>-2</span><span class=o>*</span><span class=n>pred</span><span class=o>$</span><span class=n>se</span><span class=p>,</span> <span class=n>lty</span><span class=o>=</span><span class=s>&#34;dashed&#34;</span><span class=p>)</span>
-</code></pre></div><figure><img src=/islr/sol5/unnamed-chunk-23-1.png></figure><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=c1># set df to select knots at uniform quantiles of `dis`</span>
+</code></pre></div><figure><img src=/islr/sol5/unnamed-chunk-23-1.png>
+</figure>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=c1># set df to select knots at uniform quantiles of `dis`</span>
 <span class=nf>attr</span><span class=p>(</span><span class=nf>bs</span><span class=p>(</span><span class=n>boston</span><span class=o>$</span><span class=n>dis</span><span class=p>,</span><span class=n>df</span><span class=o>=</span><span class=m>4</span><span class=p>),</span><span class=s>&#34;knots&#34;</span><span class=p>)</span>  <span class=c1># only 1 knot at 50th percentile</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>##     50%
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>##     50%
 ## 3.20745
-</code></pre></div><h4 id=e-range-of-regression-splines>e) Range of regression splines</h4><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>rss.error</span> <span class=o>&lt;-</span> <span class=nf>rep</span><span class=p>(</span><span class=m>0</span><span class=p>,</span><span class=m>7</span><span class=p>)</span>
+</code></pre></div><h4 id=e-range-of-regression-splines>e) Range of regression splines</h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>rss.error</span> <span class=o>&lt;-</span> <span class=nf>rep</span><span class=p>(</span><span class=m>0</span><span class=p>,</span><span class=m>7</span><span class=p>)</span>
 <span class=nf>for </span><span class=p>(</span><span class=n>i</span> <span class=n>in</span> <span class=m>4</span><span class=o>:</span><span class=m>10</span><span class=p>)</span> <span class=p>{</span>
   <span class=n>fit.sp</span> <span class=o>&lt;-</span> <span class=nf>lm</span><span class=p>(</span><span class=n>nox</span><span class=o>~</span><span class=nf>bs</span><span class=p>(</span><span class=n>dis</span><span class=p>,</span> <span class=n>df</span><span class=o>=</span><span class=n>i</span><span class=p>),</span> <span class=n>data</span><span class=o>=</span><span class=n>boston</span><span class=p>)</span>
   <span class=n>rss.error[i</span><span class=m>-3</span><span class=n>]</span> <span class=o>&lt;-</span> <span class=nf>sum</span><span class=p>(</span><span class=n>fit.sp</span><span class=o>$</span><span class=n>residuals^2</span><span class=p>)</span>
 <span class=p>}</span>
 <span class=n>rss.error</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## [1] 1.922775 1.840173 1.833966 1.829884 1.816995 1.825653 1.792535
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>plot</span><span class=p>(</span><span class=m>4</span><span class=o>:</span><span class=m>10</span><span class=p>,</span> <span class=n>rss.error</span><span class=p>,</span> <span class=n>type</span><span class=o>=</span><span class=s>&#34;b&#34;</span><span class=p>)</span>
-</code></pre></div><figure><img src=/islr/sol5/unnamed-chunk-24-1.png></figure><ul><li>As the model gains more degrees of freedom, it tends to over fit to
-the training data better</li></ul><h4 id=f-cross-validation-for-best-spline>f) Cross validation for best spline</h4><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>cv.error</span> <span class=o>&lt;-</span> <span class=nf>rep</span><span class=p>(</span><span class=m>0</span><span class=p>,</span><span class=m>7</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## [1] 1.922775 1.840173 1.833966 1.829884 1.816995 1.825653 1.792535
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>plot</span><span class=p>(</span><span class=m>4</span><span class=o>:</span><span class=m>10</span><span class=p>,</span> <span class=n>rss.error</span><span class=p>,</span> <span class=n>type</span><span class=o>=</span><span class=s>&#34;b&#34;</span><span class=p>)</span>
+</code></pre></div><figure><img src=/islr/sol5/unnamed-chunk-24-1.png>
+</figure>
+<ul>
+<li>As the model gains more degrees of freedom, it tends to over fit to
+the training data better</li>
+</ul>
+<h4 id=f-cross-validation-for-best-spline>f) Cross validation for best spline</h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>cv.error</span> <span class=o>&lt;-</span> <span class=nf>rep</span><span class=p>(</span><span class=m>0</span><span class=p>,</span><span class=m>7</span><span class=p>)</span>
 <span class=nf>for </span><span class=p>(</span><span class=n>i</span> <span class=n>in</span> <span class=m>4</span><span class=o>:</span><span class=m>10</span><span class=p>)</span> <span class=p>{</span>
   <span class=n>glm.fit</span> <span class=o>&lt;-</span> <span class=nf>glm</span><span class=p>(</span><span class=n>nox</span><span class=o>~</span><span class=nf>bs</span><span class=p>(</span><span class=n>dis</span><span class=p>,</span> <span class=n>df</span><span class=o>=</span><span class=n>i</span><span class=p>),</span> <span class=n>data</span><span class=o>=</span><span class=n>boston</span><span class=p>)</span>
   <span class=n>cv.error[i</span><span class=m>-3</span><span class=n>]</span> <span class=o>&lt;-</span> <span class=nf>cv.glm</span><span class=p>(</span><span class=n>boston</span><span class=p>,</span> <span class=n>glm.fit</span><span class=p>,</span> <span class=n>K</span><span class=o>=</span><span class=m>10</span><span class=p>)</span><span class=o>$</span><span class=n>delta[1]</span>
 <span class=p>}</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Warning in bs(dis, degree = 3L, knots = c(`50%` = 3.1523), Boundary.knots =
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Warning in bs(dis, degree = 3L, knots = c(`50%` = 3.1523), Boundary.knots =
 ## c(1.1296, : some &#39;x&#39; values beyond boundary knots may cause ill-conditioned
 ## bases
 
 ## Warning in bs(dis, degree = 3L, knots = c(`50%` = 3.1523), Boundary.knots =
 ## c(1.1296, : some &#39;x&#39; values beyond boundary knots may cause ill-conditioned
 ## bases
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Warning in bs(dis, degree = 3L, knots = c(`50%` = 3.2157), Boundary.knots =
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Warning in bs(dis, degree = 3L, knots = c(`50%` = 3.2157), Boundary.knots =
 ## c(1.137, : some &#39;x&#39; values beyond boundary knots may cause ill-conditioned bases
 
 ## Warning in bs(dis, degree = 3L, knots = c(`50%` = 3.2157), Boundary.knots =
 ## c(1.137, : some &#39;x&#39; values beyond boundary knots may cause ill-conditioned bases
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Warning in bs(dis, degree = 3L, knots = c(`33.33333%` = 2.35953333333333, : some
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Warning in bs(dis, degree = 3L, knots = c(`33.33333%` = 2.35953333333333, : some
 ## &#39;x&#39; values beyond boundary knots may cause ill-conditioned bases
 
 ## Warning in bs(dis, degree = 3L, knots = c(`33.33333%` = 2.35953333333333, : some
 ## &#39;x&#39; values beyond boundary knots may cause ill-conditioned bases
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Warning in bs(dis, degree = 3L, knots = c(`33.33333%` = 2.38403333333333, : some
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Warning in bs(dis, degree = 3L, knots = c(`33.33333%` = 2.38403333333333, : some
 ## &#39;x&#39; values beyond boundary knots may cause ill-conditioned bases
 
 ## Warning in bs(dis, degree = 3L, knots = c(`33.33333%` = 2.38403333333333, : some
 ## &#39;x&#39; values beyond boundary knots may cause ill-conditioned bases
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Warning in bs(dis, degree = 3L, knots = c(`25%` = 2.07945, `50%` = 3.1323, :
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Warning in bs(dis, degree = 3L, knots = c(`25%` = 2.07945, `50%` = 3.1323, :
 ## some &#39;x&#39; values beyond boundary knots may cause ill-conditioned bases
 
 ## Warning in bs(dis, degree = 3L, knots = c(`25%` = 2.07945, `50%` = 3.1323, :
 ## some &#39;x&#39; values beyond boundary knots may cause ill-conditioned bases
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Warning in bs(dis, degree = 3L, knots = c(`25%` = 2.1103, `50%` = 3.2797, : some
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Warning in bs(dis, degree = 3L, knots = c(`25%` = 2.1103, `50%` = 3.2797, : some
 ## &#39;x&#39; values beyond boundary knots may cause ill-conditioned bases
 
 ## Warning in bs(dis, degree = 3L, knots = c(`25%` = 2.1103, `50%` = 3.2797, : some
 ## &#39;x&#39; values beyond boundary knots may cause ill-conditioned bases
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Warning in bs(dis, degree = 3L, knots = c(`20%` = 1.9682, `40%` = 2.7147, : some
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Warning in bs(dis, degree = 3L, knots = c(`20%` = 1.9682, `40%` = 2.7147, : some
 ## &#39;x&#39; values beyond boundary knots may cause ill-conditioned bases
 
 ## Warning in bs(dis, degree = 3L, knots = c(`20%` = 1.9682, `40%` = 2.7147, : some
 ## &#39;x&#39; values beyond boundary knots may cause ill-conditioned bases
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Warning in bs(dis, degree = 3L, knots = c(`20%` = 1.95434, `40%` = 2.59666, :
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Warning in bs(dis, degree = 3L, knots = c(`20%` = 1.95434, `40%` = 2.59666, :
 ## some &#39;x&#39; values beyond boundary knots may cause ill-conditioned bases
 
 ## Warning in bs(dis, degree = 3L, knots = c(`20%` = 1.95434, `40%` = 2.59666, :
 ## some &#39;x&#39; values beyond boundary knots may cause ill-conditioned bases
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Warning in bs(dis, degree = 3L, knots = c(`16.66667%` = 1.82203333333333, : some
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Warning in bs(dis, degree = 3L, knots = c(`16.66667%` = 1.82203333333333, : some
 ## &#39;x&#39; values beyond boundary knots may cause ill-conditioned bases
 
 ## Warning in bs(dis, degree = 3L, knots = c(`16.66667%` = 1.82203333333333, : some
 ## &#39;x&#39; values beyond boundary knots may cause ill-conditioned bases
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Warning in bs(dis, degree = 3L, knots = c(`16.66667%` = 1.8226, `33.33333%` =
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Warning in bs(dis, degree = 3L, knots = c(`16.66667%` = 1.8226, `33.33333%` =
 ## 2.3817, : some &#39;x&#39; values beyond boundary knots may cause ill-conditioned bases
 
 ## Warning in bs(dis, degree = 3L, knots = c(`16.66667%` = 1.8226, `33.33333%` =
 ## 2.3817, : some &#39;x&#39; values beyond boundary knots may cause ill-conditioned bases
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Warning in bs(dis, degree = 3L, knots = c(`14.28571%` = 1.7936, `28.57143%`
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Warning in bs(dis, degree = 3L, knots = c(`14.28571%` = 1.7936, `28.57143%`
 ## = 2.16972857142857, : some &#39;x&#39; values beyond boundary knots may cause ill-
 ## conditioned bases
 
 ## Warning in bs(dis, degree = 3L, knots = c(`14.28571%` = 1.7936, `28.57143%`
 ## = 2.16972857142857, : some &#39;x&#39; values beyond boundary knots may cause ill-
 ## conditioned bases
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Warning in bs(dis, degree = 3L, knots = c(`12.5%` = 1.754625, `25%` = 2.10215, :
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Warning in bs(dis, degree = 3L, knots = c(`12.5%` = 1.754625, `25%` = 2.10215, :
 ## some &#39;x&#39; values beyond boundary knots may cause ill-conditioned bases
 
 ## Warning in bs(dis, degree = 3L, knots = c(`12.5%` = 1.754625, `25%` = 2.10215, :
 ## some &#39;x&#39; values beyond boundary knots may cause ill-conditioned bases
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Warning in bs(dis, degree = 3L, knots = c(`12.5%` = 1.751575, `25%` = 2.08755, :
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Warning in bs(dis, degree = 3L, knots = c(`12.5%` = 1.751575, `25%` = 2.08755, :
 ## some &#39;x&#39; values beyond boundary knots may cause ill-conditioned bases
 
 ## Warning in bs(dis, degree = 3L, knots = c(`12.5%` = 1.751575, `25%` = 2.08755, :
 ## some &#39;x&#39; values beyond boundary knots may cause ill-conditioned bases
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>cv.error</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## [1] 0.003898810 0.003694675 0.003732665 0.003766202 0.003716389 0.003723126
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>cv.error</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## [1] 0.003898810 0.003694675 0.003732665 0.003766202 0.003716389 0.003723126
 ## [7] 0.003727358
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>plot</span><span class=p>(</span><span class=m>4</span><span class=o>:</span><span class=m>10</span><span class=p>,</span> <span class=n>cv.error</span><span class=p>,</span> <span class=n>type</span><span class=o>=</span><span class=s>&#34;b&#34;</span><span class=p>)</span>
-</code></pre></div><figure><img src=/islr/sol5/unnamed-chunk-25-1.png></figure><ul><li>A fifth degree polynomial is clearly indicated</li></ul><h2 id=question-10---page-300>Question 10 - Page 300</h2><p>This question relates to the <code>College</code> data set.</p><p><strong>(a)</strong> Split the data into a training set and a test set. Using
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>plot</span><span class=p>(</span><span class=m>4</span><span class=o>:</span><span class=m>10</span><span class=p>,</span> <span class=n>cv.error</span><span class=p>,</span> <span class=n>type</span><span class=o>=</span><span class=s>&#34;b&#34;</span><span class=p>)</span>
+</code></pre></div><figure><img src=/islr/sol5/unnamed-chunk-25-1.png>
+</figure>
+<ul>
+<li>A fifth degree polynomial is clearly indicated</li>
+</ul>
+<h2 id=question-10---page-300>Question 10 - Page 300</h2>
+<p>This question relates to the <code>College</code> data set.</p>
+<p><strong>(a)</strong> Split the data into a training set and a test set. Using
 out-of-state tuition as the response and the other variables as the
 predictors, perform forward stepwise selection on the training set in
 order to identify a satisfactory model that uses just a subset of the
-predictors.</p><p><strong>(b)</strong> Fit a GAM on the training data, using out-of-state tuition as the
+predictors.</p>
+<p><strong>(b)</strong> Fit a GAM on the training data, using out-of-state tuition as the
 response and the features selected in the previous step as the
-predictors. Plot the results, and explain your ﬁndings.</p><p><strong>(c)</strong> Evaluate the model obtained on the test set, and explain the
-results obtained.</p><p><strong>(d)</strong> For which variables, if any, is there evidence of a non-linear
-relationship with the response?</p><h3 id=answer-3>Answer</h3><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>colDat</span><span class=o>&lt;-</span><span class=n>ISLR</span><span class=o>::</span><span class=n>College</span>
+predictors. Plot the results, and explain your ﬁndings.</p>
+<p><strong>(c)</strong> Evaluate the model obtained on the test set, and explain the
+results obtained.</p>
+<p><strong>(d)</strong> For which variables, if any, is there evidence of a non-linear
+relationship with the response?</p>
+<h3 id=answer-3>Answer</h3>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>colDat</span><span class=o>&lt;-</span><span class=n>ISLR</span><span class=o>::</span><span class=n>College</span>
 <span class=n>colDat</span> <span class=o>%&gt;%</span> <span class=n>str</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## &#39;data.frame&#39;:    777 obs. of  18 variables:
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## &#39;data.frame&#39;:    777 obs. of  18 variables:
 ##  $ Private    : Factor w/ 2 levels &#34;No&#34;,&#34;Yes&#34;: 2 2 2 2 2 2 2 2 2 2 ...
 ##  $ Apps       : num  1660 2186 1428 417 193 ...
 ##  $ Accept     : num  1232 1924 1097 349 146 ...
@@ -507,8 +734,8 @@ relationship with the response?</p><h3 id=answer-3>Answer</h3><div class=highlig
 ##  $ Expend     : num  7041 10527 8735 19016 10922 ...
 ##  $ Grad.Rate  : num  60 56 54 59 15 55 63 73 80 52 ...
 ## NULL
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>colDat</span> <span class=o>%&gt;%</span> <span class=n>summary</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>##  Private        Apps           Accept          Enroll       Top10perc
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>colDat</span> <span class=o>%&gt;%</span> <span class=n>summary</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>##  Private        Apps           Accept          Enroll       Top10perc
 ##  No :212   Min.   :   81   Min.   :   72   Min.   :  35   Min.   : 1.00
 ##  Yes:565   1st Qu.:  776   1st Qu.:  604   1st Qu.: 242   1st Qu.:15.00
 ##            Median : 1558   Median : 1110   Median : 434   Median :23.00
@@ -543,14 +770,14 @@ relationship with the response?</p><h3 id=answer-3>Answer</h3><div class=highlig
 ##  Mean   : 65.46
 ##  3rd Qu.: 78.00
 ##  Max.   :118.00
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>colDat</span> <span class=o>%&gt;%</span> <span class=nf>sapply</span><span class=p>(</span><span class=n>unique</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=nf>sapply</span><span class=p>(</span><span class=n>length</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>##     Private        Apps      Accept      Enroll   Top10perc   Top25perc
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>colDat</span> <span class=o>%&gt;%</span> <span class=nf>sapply</span><span class=p>(</span><span class=n>unique</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=nf>sapply</span><span class=p>(</span><span class=n>length</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>##     Private        Apps      Accept      Enroll   Top10perc   Top25perc
 ##           2         711         693         581          82          89
 ## F.Undergrad P.Undergrad    Outstate  Room.Board       Books    Personal
 ##         714         566         640         553         122         294
 ##         PhD    Terminal   S.F.Ratio perc.alumni      Expend   Grad.Rate
 ##          78          65         173          61         744          81
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>plotLEAP</span><span class=o>=</span><span class=nf>function</span><span class=p>(</span><span class=n>leapObj</span><span class=p>){</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>plotLEAP</span><span class=o>=</span><span class=nf>function</span><span class=p>(</span><span class=n>leapObj</span><span class=p>){</span>
   <span class=nf>par</span><span class=p>(</span><span class=n>mfrow</span> <span class=o>=</span> <span class=nf>c</span><span class=p>(</span><span class=m>2</span><span class=p>,</span><span class=m>2</span><span class=p>))</span>
   <span class=n>bar2</span><span class=o>=</span><span class=nf>which.max</span><span class=p>(</span><span class=n>leapObj</span><span class=o>$</span><span class=n>adjr2</span><span class=p>)</span>
   <span class=n>bbic</span><span class=o>=</span><span class=nf>which.min</span><span class=p>(</span><span class=n>leapObj</span><span class=o>$</span><span class=n>bic</span><span class=p>)</span>
@@ -563,14 +790,16 @@ relationship with the response?</p><h3 id=answer-3>Answer</h3><div class=highlig
   <span class=nf>plot</span><span class=p>(</span><span class=n>leapObj</span><span class=o>$</span><span class=n>cp</span><span class=p>,</span><span class=n>xlab</span><span class=o>=</span><span class=s>&#34;Number of variables&#34;</span><span class=p>,</span><span class=n>ylab</span><span class=o>=</span><span class=nf>TeX</span><span class=p>(</span><span class=s>&#34;C_p&#34;</span><span class=p>),</span><span class=n>type</span><span class=o>=</span><span class=s>&#34;b&#34;</span><span class=p>)</span>
   <span class=nf>points</span><span class=p>(</span><span class=n>bcp</span><span class=p>,</span><span class=n>leapObj</span><span class=o>$</span><span class=n>cp[bcp]</span><span class=p>,</span><span class=n>col</span><span class=o>=</span><span class=s>&#34;red&#34;</span><span class=p>,</span><span class=n>cex</span><span class=o>=</span><span class=m>2</span><span class=p>,</span><span class=n>pch</span><span class=o>=</span><span class=m>20</span><span class=p>)</span>
 <span class=p>}</span>
-</code></pre></div><h4 id=a-train-test>a) Train test</h4><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>train_ind</span> <span class=o>=</span> <span class=nf>sample</span><span class=p>(</span><span class=n>colDat</span> <span class=o>%&gt;%</span> <span class=n>nrow</span><span class=p>,</span><span class=m>100</span><span class=p>)</span>
+</code></pre></div><h4 id=a-train-test>a) Train test</h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>train_ind</span> <span class=o>=</span> <span class=nf>sample</span><span class=p>(</span><span class=n>colDat</span> <span class=o>%&gt;%</span> <span class=n>nrow</span><span class=p>,</span><span class=m>100</span><span class=p>)</span>
 <span class=n>test_ind</span> <span class=o>=</span> <span class=nf>setdiff</span><span class=p>(</span><span class=nf>seq_len</span><span class=p>(</span><span class=n>colDat</span> <span class=o>%&gt;%</span> <span class=n>nrow</span><span class=p>),</span> <span class=n>train_ind</span><span class=p>)</span>
-</code></pre></div><h4 id=best-subset-selection>Best subset selection</h4><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>train_set</span><span class=o>&lt;-</span><span class=n>colDat[train_ind</span><span class=p>,</span><span class=n>]</span>
+</code></pre></div><h4 id=best-subset-selection>Best subset selection</h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>train_set</span><span class=o>&lt;-</span><span class=n>colDat[train_ind</span><span class=p>,</span><span class=n>]</span>
 <span class=n>test_set</span><span class=o>&lt;-</span><span class=n>colDat[</span><span class=o>-</span><span class=n>train_ind</span><span class=p>,</span><span class=n>]</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>library</span><span class=p>(</span><span class=n>leaps</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>modelFit</span><span class=o>&lt;-</span><span class=nf>regsubsets</span><span class=p>(</span><span class=n>Outstate</span><span class=o>~</span><span class=n>.,data</span><span class=o>=</span><span class=n>colDat</span><span class=p>,</span><span class=n>nvmax</span><span class=o>=</span><span class=m>20</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>library</span><span class=p>(</span><span class=n>leaps</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>modelFit</span><span class=o>&lt;-</span><span class=nf>regsubsets</span><span class=p>(</span><span class=n>Outstate</span><span class=o>~</span><span class=n>.,data</span><span class=o>=</span><span class=n>colDat</span><span class=p>,</span><span class=n>nvmax</span><span class=o>=</span><span class=m>20</span><span class=p>)</span>
 <span class=n>modelFit</span> <span class=o>%&gt;%</span> <span class=n>summary</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Subset selection object
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Subset selection object
 ## Call: regsubsets.formula(Outstate ~ ., data = colDat, nvmax = 20)
 ## 17 Variables  (and intercept)
 ##             Forced in Forced out
@@ -647,61 +876,79 @@ relationship with the response?</p><h3 id=answer-3>Answer</h3><div class=highlig
 ## 15  ( 1 ) &#34;*&#34;         &#34;*&#34;    &#34;*&#34;
 ## 16  ( 1 ) &#34;*&#34;         &#34;*&#34;    &#34;*&#34;
 ## 17  ( 1 ) &#34;*&#34;         &#34;*&#34;    &#34;*&#34;
-</code></pre></div><p>We might want to take a look at these.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>par</span><span class=p>(</span><span class=n>mfrow</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=m>2</span><span class=p>,</span><span class=m>2</span><span class=p>))</span>
+</code></pre></div><p>We might want to take a look at these.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>par</span><span class=p>(</span><span class=n>mfrow</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=m>2</span><span class=p>,</span><span class=m>2</span><span class=p>))</span>
 <span class=nf>plot</span><span class=p>(</span><span class=n>modelFit</span><span class=p>)</span>
 <span class=nf>plot</span><span class=p>(</span><span class=n>modelFit</span><span class=p>,</span><span class=n>scale</span><span class=o>=</span><span class=s>&#39;Cp&#39;</span><span class=p>)</span>
 <span class=nf>plot</span><span class=p>(</span><span class=n>modelFit</span><span class=p>,</span><span class=n>scale</span><span class=o>=</span><span class=s>&#39;r2&#39;</span><span class=p>)</span>
 <span class=nf>plot</span><span class=p>(</span><span class=n>modelFit</span><span class=p>,</span><span class=n>scale</span><span class=o>=</span><span class=s>&#39;adjr2&#39;</span><span class=p>)</span>
-</code></pre></div><figure><img src=/islr/sol5/unnamed-chunk-32-1.png></figure><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>plotLEAP</span><span class=p>(</span><span class=n>modelFit</span> <span class=o>%&gt;%</span> <span class=n>summary</span><span class=p>)</span>
-</code></pre></div><figure><img src=/islr/sol5/unnamed-chunk-33-1.png></figure><ul><li>So we like 14 variables, namely</li></ul><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>coefficients</span><span class=p>(</span><span class=n>modelFit</span><span class=p>,</span><span class=n>id</span><span class=o>=</span><span class=m>14</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>##   (Intercept)    PrivateYes          Apps        Accept        Enroll
+</code></pre></div><figure><img src=/islr/sol5/unnamed-chunk-32-1.png>
+</figure>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>plotLEAP</span><span class=p>(</span><span class=n>modelFit</span> <span class=o>%&gt;%</span> <span class=n>summary</span><span class=p>)</span>
+</code></pre></div><figure><img src=/islr/sol5/unnamed-chunk-33-1.png>
+</figure>
+<ul>
+<li>So we like 14 variables, namely</li>
+</ul>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>coefficients</span><span class=p>(</span><span class=n>modelFit</span><span class=p>,</span><span class=n>id</span><span class=o>=</span><span class=m>14</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>##   (Intercept)    PrivateYes          Apps        Accept        Enroll
 ## -1.817040e+03  2.256946e+03 -2.999022e-01  8.023519e-01 -5.372545e-01
 ##     Top10perc   F.Undergrad    Room.Board      Personal           PhD
 ##  2.365529e+01 -9.569936e-02  8.741819e-01 -2.478418e-01  1.269506e+01
 ##      Terminal     S.F.Ratio   perc.alumni        Expend     Grad.Rate
 ##  2.297296e+01 -4.700560e+01  4.195006e+01  2.003912e-01  2.383197e+01
-</code></pre></div><ul><li>But five seems like a better bet.</li></ul><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>coefficients</span><span class=p>(</span><span class=n>modelFit</span><span class=p>,</span><span class=n>id</span><span class=o>=</span><span class=m>5</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>##   (Intercept)    PrivateYes    Room.Board           PhD   perc.alumni
+</code></pre></div><ul>
+<li>But five seems like a better bet.</li>
+</ul>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>coefficients</span><span class=p>(</span><span class=n>modelFit</span><span class=p>,</span><span class=n>id</span><span class=o>=</span><span class=m>5</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>##   (Intercept)    PrivateYes    Room.Board           PhD   perc.alumni
 ## -2864.6325619  2936.7416766     1.0677573    40.5334088    61.3147684
 ##        Expend
 ##     0.2253945
-</code></pre></div><h4 id=b-gam>b) GAM</h4><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>library</span><span class=p>(</span><span class=n>gam</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>fit</span> <span class=o>=</span> <span class=nf>gam</span><span class=p>(</span><span class=n>Outstate</span> <span class=o>~</span> <span class=n>Private</span><span class=o>+</span><span class=nf>s</span><span class=p>(</span><span class=n>Apps</span><span class=p>,</span><span class=m>3</span><span class=p>)</span><span class=o>+</span><span class=n>Accept</span><span class=o>+</span><span class=n>Enroll</span><span class=o>+</span>
+</code></pre></div><h4 id=b-gam>b) GAM</h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>library</span><span class=p>(</span><span class=n>gam</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>fit</span> <span class=o>=</span> <span class=nf>gam</span><span class=p>(</span><span class=n>Outstate</span> <span class=o>~</span> <span class=n>Private</span><span class=o>+</span><span class=nf>s</span><span class=p>(</span><span class=n>Apps</span><span class=p>,</span><span class=m>3</span><span class=p>)</span><span class=o>+</span><span class=n>Accept</span><span class=o>+</span><span class=n>Enroll</span><span class=o>+</span>
             <span class=n>Top10perc</span><span class=o>+</span><span class=bp>F</span><span class=n>.Undergrad</span><span class=o>+</span><span class=n>Room.Board</span><span class=o>+</span>
             <span class=n>Personal</span><span class=o>+</span><span class=n>PhD</span><span class=o>+</span><span class=n>Terminal</span><span class=o>+</span><span class=n>S.F.Ratio</span><span class=o>+</span>
             <span class=n>perc.alumni</span><span class=o>+</span><span class=n>Expend</span><span class=o>+</span><span class=n>Grad.Rate</span>
         <span class=p>,</span> <span class=n>data</span> <span class=o>=</span> <span class=n>colDat</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Warning in model.matrix.default(mt, mf, contrasts): non-list contrasts argument
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Warning in model.matrix.default(mt, mf, contrasts): non-list contrasts argument
 ## ignored
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>fit2</span> <span class=o>=</span> <span class=nf>gam</span><span class=p>(</span><span class=n>Outstate</span> <span class=o>~</span> <span class=n>Private</span><span class=o>+</span><span class=nf>s</span><span class=p>(</span><span class=n>Room.Board</span><span class=p>,</span><span class=m>2</span><span class=p>)</span><span class=o>+</span><span class=nf>s</span><span class=p>(</span><span class=n>PhD</span><span class=p>,</span><span class=m>3</span><span class=p>)</span><span class=o>+</span><span class=nf>s</span><span class=p>(</span><span class=n>perc.alumni</span><span class=p>)</span><span class=o>+</span><span class=n>Expend</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>fit2</span> <span class=o>=</span> <span class=nf>gam</span><span class=p>(</span><span class=n>Outstate</span> <span class=o>~</span> <span class=n>Private</span><span class=o>+</span><span class=nf>s</span><span class=p>(</span><span class=n>Room.Board</span><span class=p>,</span><span class=m>2</span><span class=p>)</span><span class=o>+</span><span class=nf>s</span><span class=p>(</span><span class=n>PhD</span><span class=p>,</span><span class=m>3</span><span class=p>)</span><span class=o>+</span><span class=nf>s</span><span class=p>(</span><span class=n>perc.alumni</span><span class=p>)</span><span class=o>+</span><span class=n>Expend</span>
         <span class=p>,</span> <span class=n>data</span> <span class=o>=</span> <span class=n>colDat</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Warning in model.matrix.default(mt, mf, contrasts): non-list contrasts argument
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Warning in model.matrix.default(mt, mf, contrasts): non-list contrasts argument
 ## ignored
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>par</span><span class=p>(</span><span class=n>mfrow</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=m>2</span><span class=p>,</span><span class=m>2</span><span class=p>))</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>par</span><span class=p>(</span><span class=n>mfrow</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=m>2</span><span class=p>,</span><span class=m>2</span><span class=p>))</span>
 <span class=nf>plot</span><span class=p>(</span><span class=n>fit</span><span class=p>,</span><span class=n>se</span><span class=o>=</span><span class=kc>TRUE</span><span class=p>)</span>
 </code></pre></div><p><img src=/islr/sol5/unnamed-chunk-39-1.png alt>
 <img src=/islr/sol5/unnamed-chunk-39-2.png alt>
 <img src=/islr/sol5/unnamed-chunk-39-3.png alt>
-<img src=/islr/sol5/unnamed-chunk-39-4.png alt></p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>par</span><span class=p>(</span><span class=n>mfrow</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=m>2</span><span class=p>,</span><span class=m>2</span><span class=p>))</span>
+<img src=/islr/sol5/unnamed-chunk-39-4.png alt></p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>par</span><span class=p>(</span><span class=n>mfrow</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=m>2</span><span class=p>,</span><span class=m>2</span><span class=p>))</span>
 <span class=nf>plot</span><span class=p>(</span><span class=n>fit2</span><span class=p>,</span><span class=n>se</span><span class=o>=</span><span class=kc>TRUE</span><span class=p>)</span>
-</code></pre></div><figure><img src=/islr/sol5/unnamed-chunk-40-2.png></figure><h4 id=c-evaluate>c) Evaluate</h4><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>pred</span> <span class=o>&lt;-</span> <span class=nf>predict</span><span class=p>(</span><span class=n>fit</span><span class=p>,</span> <span class=n>test_set</span><span class=p>)</span>
+</code></pre></div><figure><img src=/islr/sol5/unnamed-chunk-40-2.png>
+</figure>
+<h4 id=c-evaluate>c) Evaluate</h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>pred</span> <span class=o>&lt;-</span> <span class=nf>predict</span><span class=p>(</span><span class=n>fit</span><span class=p>,</span> <span class=n>test_set</span><span class=p>)</span>
 <span class=n>mse.error</span> <span class=o>&lt;-</span> <span class=nf>mean</span><span class=p>((</span><span class=n>test_set</span><span class=o>$</span><span class=n>Outstate</span> <span class=o>-</span> <span class=n>pred</span><span class=p>)</span><span class=n>^2</span><span class=p>)</span>
 <span class=n>mse.error</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## [1] 3691891
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>gam.tss</span> <span class=o>=</span> <span class=nf>mean</span><span class=p>((</span><span class=n>test_set</span><span class=o>$</span><span class=n>Outstate</span> <span class=o>-</span> <span class=nf>mean</span><span class=p>(</span><span class=n>test_set</span><span class=o>$</span><span class=n>Outstate</span><span class=p>))</span><span class=n>^2</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## [1] 3691891
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>gam.tss</span> <span class=o>=</span> <span class=nf>mean</span><span class=p>((</span><span class=n>test_set</span><span class=o>$</span><span class=n>Outstate</span> <span class=o>-</span> <span class=nf>mean</span><span class=p>(</span><span class=n>test_set</span><span class=o>$</span><span class=n>Outstate</span><span class=p>))</span><span class=n>^2</span><span class=p>)</span>
 <span class=n>test.rss</span> <span class=o>=</span> <span class=m>1</span> <span class=o>-</span> <span class=n>mse.error</span><span class=o>/</span><span class=n>gam.tss</span>
 <span class=n>test.rss</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## [1] 0.7731239
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>pred2</span> <span class=o>&lt;-</span> <span class=nf>predict</span><span class=p>(</span><span class=n>fit2</span><span class=p>,</span> <span class=n>test_set</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## [1] 0.7731239
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>pred2</span> <span class=o>&lt;-</span> <span class=nf>predict</span><span class=p>(</span><span class=n>fit2</span><span class=p>,</span> <span class=n>test_set</span><span class=p>)</span>
 <span class=n>mse.error2</span> <span class=o>&lt;-</span> <span class=nf>mean</span><span class=p>((</span><span class=n>test_set</span><span class=o>$</span><span class=n>Outstate</span> <span class=o>-</span> <span class=n>pred2</span><span class=p>)</span><span class=n>^2</span><span class=p>)</span>
 <span class=n>mse.error2</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## [1] 4121902
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>gam.tss2</span> <span class=o>=</span> <span class=nf>mean</span><span class=p>((</span><span class=n>test_set</span><span class=o>$</span><span class=n>Outstate</span> <span class=o>-</span> <span class=nf>mean</span><span class=p>(</span><span class=n>test_set</span><span class=o>$</span><span class=n>Outstate</span><span class=p>))</span><span class=n>^2</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## [1] 4121902
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>gam.tss2</span> <span class=o>=</span> <span class=nf>mean</span><span class=p>((</span><span class=n>test_set</span><span class=o>$</span><span class=n>Outstate</span> <span class=o>-</span> <span class=nf>mean</span><span class=p>(</span><span class=n>test_set</span><span class=o>$</span><span class=n>Outstate</span><span class=p>))</span><span class=n>^2</span><span class=p>)</span>
 <span class=n>test.rss2</span> <span class=o>=</span> <span class=m>1</span> <span class=o>-</span> <span class=n>mse.error2</span><span class=o>/</span><span class=n>gam.tss2</span>
 <span class=n>test.rss2</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## [1] 0.7466987
-</code></pre></div><p>This is pretty good model, all told.</p><h4 id=d-summary>d) Summary</h4><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>summary</span><span class=p>(</span><span class=n>fit</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>##
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## [1] 0.7466987
+</code></pre></div><p>This is pretty good model, all told.</p>
+<h4 id=d-summary>d) Summary</h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>summary</span><span class=p>(</span><span class=n>fit</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>##
 ## Call: gam(formula = Outstate ~ Private + s(Apps, 3) + Accept + Enroll +
 ##     Top10perc + F.Undergrad + Room.Board + Personal + PhD + Terminal +
 ##     S.F.Ratio + perc.alumni + Expend + Grad.Rate, data = colDat)
@@ -756,8 +1003,8 @@ relationship with the response?</p><h3 id=answer-3>Answer</h3><div class=highlig
 ## Grad.Rate
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>summary</span><span class=p>(</span><span class=n>fit2</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>##
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>summary</span><span class=p>(</span><span class=n>fit2</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>##
 ## Call: gam(formula = Outstate ~ Private + s(Room.Board, 2) + s(PhD,
 ##     3) + s(perc.alumni) + Expend, data = colDat)
 ## Deviance Residuals:
@@ -793,10 +1040,102 @@ relationship with the response?</p><h3 id=answer-3>Answer</h3><div class=highlig
 ## Expend
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-</code></pre></div><section class=footnotes role=doc-endnotes><hr><ol><li id=fn:1 role=doc-endnote><p>James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). An Introduction to Statistical Learning: with Applications in R. Berlin, Germany: Springer Science & Business Media.&#160;<a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li></ol></section></div></article><hr><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7" y2="7"/></svg><span class=tag><a href=https://rgoswami.me/tags/solutions>solutions</a></span><span class=tag><a href=https://rgoswami.me/tags/r>R</a></span><span class=tag><a href=https://rgoswami.me/tags/islr>ISLR</a></span></p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6A2 2 0 004 4v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>5855 Words</p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Posted: <time class=dt-published>2020-02-19 09:47 +0000</time></p><a class=resp-sharing-button__link href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2frgoswami.me%2fposts%2fislr-ch7%2f" target=_blank rel=noopener aria-label=Facebook><div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.5"/><path d="M15.84 9.5H13.5V8.48c0-.53.35-.65.6-.65h1.4v-2.3h-2.35c-2.3.0-2.65 1.7-2.65 2.8V9.5h-2v2h2v7h3v-7h2.1l.24-2z"/></svg></div>Facebook</div></a><a class=resp-sharing-button__link href="https://twitter.com/intent/tweet/?text=%22ISLR%20%3a%3a%20Moving%20Beyond%20Linearity%22%20seems%20like%20an%20interesting%20read%20from%20%40rg0swami&url=https%3a%2f%2frgoswami.me%2fposts%2fislr-ch7%2f" target=_blank rel=noopener aria-label=Twitter><div class="resp-sharing-button resp-sharing-button--twitter resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.5 7.4l-2 .2c-.4-.5-1-.8-2-.8C13.3 6.8 12 8 12 9.4v.6c-2 0-4-1-5.4-2.7-.2.4-.3.8-.3 1.3.0 1 .4 1.7 1.2 2.2-.5.0-1 0-1.2-.3.0 1.3 1 2.3 2 2.6-.3.4-.7.4-1 0 .2 1.4 1.2 2 2.3 2-1 1-2.5 1.4-4 1 1.3 1 2.7 1.4 4.2 1.4 4.8.0 7.5-4 7.5-7.5v-.4c.5-.4.8-1.5 1.2-2z"/><circle cx="12" cy="12" r="11.5"/></svg></div>Twitter</div></a><a class=resp-sharing-button__link href="mailto:?subject=%22ISLR%20%3a%3a%20Moving%20Beyond%20Linearity%22%20seems%20interesting...&body=https%3a%2f%2frgoswami.me%2fposts%2fislr-ch7%2f" target=_self rel=noopener aria-label=E-Mail><div class="resp-sharing-button resp-sharing-button--email resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19.5 16c0 .8-.7 1.5-1.5 1.5H6c-.8.0-1.5-.7-1.5-1.5V8c0-.8.7-1.5 1.5-1.5h12c.8.0 1.5.7 1.5 1.5v8zm-2-7.5L12 13 6.5 8.5m11 6-4-2.5m-7 2.5 4-2.5"/><circle cx="12" cy="12" r="11.5"/></svg></div>E-Mail</div></a><a class=resp-sharing-button__link href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2frgoswami.me%2fposts%2fislr-ch7%2f&title=%22ISLR%20%3a%3a%20Moving%20Beyond%20Linearity%22%20seems%20interesting...&summary=%22ISLR%20%3a%3a%20Moving%20Beyond%20Linearity%22%20seems%20interesting...&source=https%3a%2f%2frgoswami.me%2fposts%2fislr-ch7%2f" target=_blank rel=noopener aria-label=LinkedIn><div class="resp-sharing-button resp-sharing-button--linkedin resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.5"/><path d="M15 12.5c-.28.0-.5.22-.5.5v3.5h-3s.03-6.48.0-7h3v.83s.46-.75 1.7-.75c1.56.0 2.3 1.12 2.3 3.3v3.62h-3V13c0-.28-.23-.5-.5-.5zm-7.5-3h2v7h-2z"/><circle cx="8.5" cy="6.5" r="1"/></svg></div>LinkedIn</div></a><a class=resp-sharing-button__link href="https://reddit.com/submit/?url=https%3a%2f%2frgoswami.me%2fposts%2fislr-ch7%2f&resubmit=true&title=%22ISLR%20%3a%3a%20Moving%20Beyond%20Linearity%22%20seems%20interesting..." target=_blank rel=noopener aria-label=Reddit><div class="resp-sharing-button resp-sharing-button--reddit resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.5"/><ellipse cx="12" cy="14.37" rx="6.2" ry="4.24"/><path d="M14.3 16.25c-.62.36-1.42.57-2.3.57s-1.7-.2-2.32-.58"/><circle cx="14.61" cy="13.39" r=".98"/><circle cx="9.39" cy="13.39" r=".98"/><path d="M16.4 11.38c.26-.55.82-.92 1.47-.92.9.0 1.63.73 1.63 1.63.0.8-.6 1.47-1.38 1.6"/><circle cx="17.22" cy="7.52" r="1.63"/><path d="M7.6 11.38c-.26-.54-.82-.92-1.47-.92-.9.0-1.63.73-1.63 1.63.0.8.6 1.47 1.38 1.6M12 10.12s-.08-4.82 3.6-2.6"/></svg></div>Reddit</div></a><a class=resp-sharing-button__link href="whatsapp://send?text=%22ISLR%20%3a%3a%20Moving%20Beyond%20Linearity%22%20seems%20interesting...%20https%3a%2f%2frgoswami.me%2fposts%2fislr-ch7%2f" target=_blank rel=noopener aria-label=WhatsApp><div class="resp-sharing-button resp-sharing-button--whatsapp resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle xmlns="http://www.w3.org/2000/svg" cx="12" cy="12" r="11.5"/><path stroke-width="1" d="M17.6 6.2c-1.5-1.5-3.4-2.3-5.5-2.3-4.3.0-7.8 3.5-7.8 7.8.0 1.4.4 2.7 1 3.9l-1.1 4 4.1-1.1c1.1.6 2.4.9 3.7.9 4.3.0 7.8-3.5 7.8-7.8.1-2-.7-3.9-2.2-5.4zm-5.5 11.9c-1.2.0-2.3-.3-3.3-.9l-.2-.1-2.4.6.7-2.4-.2-.2c-.6-1-1-2.2-1-3.4.0-3.6 2.9-6.5 6.5-6.5 1.7.0 3.3.7 4.6 1.9 1.2 1.2 1.9 2.8 1.9 4.6-.1 3.5-3 6.4-6.6 6.4zm3.5-4.8c-.2-.1-1.1-.6-1.3-.6-.2-.1-.3-.1-.4.1s-.5.6-.6.8c-.1.1-.2.1-.4.0s-.8-.3-1.6-1c-.6-.5-1-1.2-1.1-1.3-.1-.2.0-.3.1-.4l.3-.3s.1-.2.2-.3c.1-.1.0-.2.0-.3s-.4-1.1-.6-1.4c-.2-.4-.3-.3-.4-.3h-.4s-.3.0-.5.2-.7.7-.7 1.6c0 1 .7 1.9.8 2s1.4 2.1 3.3 2.9c.5.2.8.3 1.1.4.5.1.9.1 1.2.1.4-.1 1.1-.5 1.3-.9.2-.5.2-.8.1-.9.0-.2-.2-.3-.4-.4z"/></svg></div>WhatsApp</div></a></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://rgoswami.me/posts/bojack-horseman/><span class=button__icon>←</span>
-<span class=button__text>Bojack Horseman</span></a></span>
-<span class="button next"><a href=https://rgoswami.me/posts/islr-ch6/><span class=button__text>ISLR :: Linear Model Selection and Regularization</span>
-<span class=button__icon>→</span></a></span></div></div><div id=comments class=thin><div class=pagination__title><span class=pagination__title-h>Comments</span><hr></div><div id=remarkbox-div><noscript><iframe id=remarkbox-iframe src="https://my.remarkbox.com/embed?nojs=true" style=height:600px;width:100%;border:none!important tabindex=0></iframe></noscript></div><script src=https://my.remarkbox.com/static/js/iframe-resizer/iframeResizer.min.js></script><script>var rb_owner_key="8e660759-e7e6-11ea-9711-040140774501",thread_uri=window.location.href,thread_title=window.document.title,thread_fragment=window.location.hash,rb_src="https://my.remarkbox.com/embed?rb_owner_key="+rb_owner_key+"&thread_title="+encodeURI(thread_title)+"&thread_uri="+encodeURIComponent(thread_uri)+thread_fragment;function create_remarkbox_iframe(){var a=document.createElement("iframe");a.setAttribute("id","remarkbox-iframe"),a.setAttribute("scrolling","no"),a.setAttribute("src",rb_src),a.setAttribute("frameborder","0"),a.setAttribute("tabindex","0"),a.setAttribute("title","Remarkbox"),a.style.width="100%",document.getElementById("remarkbox-div").appendChild(a)}create_remarkbox_iframe(),iFrameResize({checkOrigin:["https://my.remarkbox.com"],inPageLinks:!0,initCallback:function(a){a.iFrameResizer.moveToAnchor(thread_fragment)}},document.getElementById("remarkbox-iframe"))</script></div></main><footer class=footer><p>&copy; 2021
+</code></pre></div><section class=footnotes role=doc-endnotes>
+<hr>
+<ol>
+<li id=fn:1 role=doc-endnote>
+<p>James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). An Introduction to Statistical Learning: with Applications in R. Berlin, Germany: Springer Science & Business Media.&#160;<a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+</div>
+</article>
+<hr>
+<div class=post-info>
+<p>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7" y2="7"/></svg><span class=tag><a href=https://rgoswami.me/tags/solutions>solutions</a></span><span class=tag><a href=https://rgoswami.me/tags/r>R</a></span><span class=tag><a href=https://rgoswami.me/tags/islr>ISLR</a></span>
+</p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6A2 2 0 004 4v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>5855 Words</p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Posted: <time class=dt-published> 2020-02-19 09:47 +0000</time></p>
+<a class=resp-sharing-button__link href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2frgoswami.me%2fposts%2fislr-ch7%2f" target=_blank rel=noopener aria-label=Facebook>
+<div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.5"/><path d="M15.84 9.5H13.5V8.48c0-.53.35-.65.6-.65h1.4v-2.3h-2.35c-2.3.0-2.65 1.7-2.65 2.8V9.5h-2v2h2v7h3v-7h2.1l.24-2z"/></svg></div>Facebook</div>
+</a>
+<a class=resp-sharing-button__link href="https://twitter.com/intent/tweet/?text=%22ISLR%20%3a%3a%20Moving%20Beyond%20Linearity%22%20seems%20like%20an%20interesting%20read%20from%20%40rg0swami&url=https%3a%2f%2frgoswami.me%2fposts%2fislr-ch7%2f" target=_blank rel=noopener aria-label=Twitter>
+<div class="resp-sharing-button resp-sharing-button--twitter resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.5 7.4l-2 .2c-.4-.5-1-.8-2-.8C13.3 6.8 12 8 12 9.4v.6c-2 0-4-1-5.4-2.7-.2.4-.3.8-.3 1.3.0 1 .4 1.7 1.2 2.2-.5.0-1 0-1.2-.3.0 1.3 1 2.3 2 2.6-.3.4-.7.4-1 0 .2 1.4 1.2 2 2.3 2-1 1-2.5 1.4-4 1 1.3 1 2.7 1.4 4.2 1.4 4.8.0 7.5-4 7.5-7.5v-.4c.5-.4.8-1.5 1.2-2z"/><circle cx="12" cy="12" r="11.5"/></svg></div>Twitter</div>
+</a>
+<a class=resp-sharing-button__link href="mailto:?subject=%22ISLR%20%3a%3a%20Moving%20Beyond%20Linearity%22%20seems%20interesting...&body=https%3a%2f%2frgoswami.me%2fposts%2fislr-ch7%2f" target=_self rel=noopener aria-label=E-Mail>
+<div class="resp-sharing-button resp-sharing-button--email resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19.5 16c0 .8-.7 1.5-1.5 1.5H6c-.8.0-1.5-.7-1.5-1.5V8c0-.8.7-1.5 1.5-1.5h12c.8.0 1.5.7 1.5 1.5v8zm-2-7.5L12 13 6.5 8.5m11 6-4-2.5m-7 2.5 4-2.5"/><circle cx="12" cy="12" r="11.5"/></svg></div>E-Mail</div>
+</a>
+<a class=resp-sharing-button__link href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2frgoswami.me%2fposts%2fislr-ch7%2f&title=%22ISLR%20%3a%3a%20Moving%20Beyond%20Linearity%22%20seems%20interesting...&summary=%22ISLR%20%3a%3a%20Moving%20Beyond%20Linearity%22%20seems%20interesting...&source=https%3a%2f%2frgoswami.me%2fposts%2fislr-ch7%2f" target=_blank rel=noopener aria-label=LinkedIn>
+<div class="resp-sharing-button resp-sharing-button--linkedin resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.5"/><path d="M15 12.5c-.28.0-.5.22-.5.5v3.5h-3s.03-6.48.0-7h3v.83s.46-.75 1.7-.75c1.56.0 2.3 1.12 2.3 3.3v3.62h-3V13c0-.28-.23-.5-.5-.5zm-7.5-3h2v7h-2z"/><circle cx="8.5" cy="6.5" r="1"/></svg></div>LinkedIn</div>
+</a>
+<a class=resp-sharing-button__link href="https://reddit.com/submit/?url=https%3a%2f%2frgoswami.me%2fposts%2fislr-ch7%2f&resubmit=true&title=%22ISLR%20%3a%3a%20Moving%20Beyond%20Linearity%22%20seems%20interesting..." target=_blank rel=noopener aria-label=Reddit>
+<div class="resp-sharing-button resp-sharing-button--reddit resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.5"/><ellipse cx="12" cy="14.37" rx="6.2" ry="4.24"/><path d="M14.3 16.25c-.62.36-1.42.57-2.3.57s-1.7-.2-2.32-.58"/><circle cx="14.61" cy="13.39" r=".98"/><circle cx="9.39" cy="13.39" r=".98"/><path d="M16.4 11.38c.26-.55.82-.92 1.47-.92.9.0 1.63.73 1.63 1.63.0.8-.6 1.47-1.38 1.6"/><circle cx="17.22" cy="7.52" r="1.63"/><path d="M7.6 11.38c-.26-.54-.82-.92-1.47-.92-.9.0-1.63.73-1.63 1.63.0.8.6 1.47 1.38 1.6M12 10.12s-.08-4.82 3.6-2.6"/></svg></div>Reddit</div>
+</a>
+<a class=resp-sharing-button__link href="whatsapp://send?text=%22ISLR%20%3a%3a%20Moving%20Beyond%20Linearity%22%20seems%20interesting...%20https%3a%2f%2frgoswami.me%2fposts%2fislr-ch7%2f" target=_blank rel=noopener aria-label=WhatsApp>
+<div class="resp-sharing-button resp-sharing-button--whatsapp resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle xmlns="http://www.w3.org/2000/svg" cx="12" cy="12" r="11.5"/><path stroke-width="1" d="M17.6 6.2c-1.5-1.5-3.4-2.3-5.5-2.3-4.3.0-7.8 3.5-7.8 7.8.0 1.4.4 2.7 1 3.9l-1.1 4 4.1-1.1c1.1.6 2.4.9 3.7.9 4.3.0 7.8-3.5 7.8-7.8.1-2-.7-3.9-2.2-5.4zm-5.5 11.9c-1.2.0-2.3-.3-3.3-.9l-.2-.1-2.4.6.7-2.4-.2-.2c-.6-1-1-2.2-1-3.4.0-3.6 2.9-6.5 6.5-6.5 1.7.0 3.3.7 4.6 1.9 1.2 1.2 1.9 2.8 1.9 4.6-.1 3.5-3 6.4-6.6 6.4zm3.5-4.8c-.2-.1-1.1-.6-1.3-.6-.2-.1-.3-.1-.4.1s-.5.6-.6.8c-.1.1-.2.1-.4.0s-.8-.3-1.6-1c-.6-.5-1-1.2-1.1-1.3-.1-.2.0-.3.1-.4l.3-.3s.1-.2.2-.3c.1-.1.0-.2.0-.3s-.4-1.1-.6-1.4c-.2-.4-.3-.3-.4-.3h-.4s-.3.0-.5.2-.7.7-.7 1.6c0 1 .7 1.9.8 2s1.4 2.1 3.3 2.9c.5.2.8.3 1.1.4.5.1.9.1 1.2.1.4-.1 1.1-.5 1.3-.9.2-.5.2-.8.1-.9.0-.2-.2-.3-.4-.4z"/></svg></div>WhatsApp</div>
+</a>
+</div>
+<div class=pagination>
+<div class=pagination__title>
+<span class=pagination__title-h>Read other posts</span>
+<hr>
+</div>
+<div class=pagination__buttons>
+<span class="button previous">
+<a href=https://rgoswami.me/posts/bojack-horseman/>
+<span class=button__icon>←</span>
+<span class=button__text>Bojack Horseman</span>
+</a>
+</span>
+<span class="button next">
+<a href=https://rgoswami.me/posts/islr-ch6/>
+<span class=button__text>ISLR :: Linear Model Selection and Regularization</span>
+<span class=button__icon>→</span>
+</a>
+</span>
+</div>
+</div>
+<div id=comments class=thin><div class=pagination__title>
+<span class=pagination__title-h>Comments</span>
+<hr>
+</div>
+<div id=remarkbox-div>
+<noscript>
+<iframe id=remarkbox-iframe src="https://my.remarkbox.com/embed?nojs=true" style=height:600px;width:100%;border:none!important tabindex=0></iframe>
+</noscript>
+</div>
+<script src=https://my.remarkbox.com/static/js/iframe-resizer/iframeResizer.min.js></script>
+<script>var rb_owner_key="8e660759-e7e6-11ea-9711-040140774501",thread_uri=window.location.href,thread_title=window.document.title,thread_fragment=window.location.hash,rb_src="https://my.remarkbox.com/embed?rb_owner_key="+rb_owner_key+"&thread_title="+encodeURI(thread_title)+"&thread_uri="+encodeURIComponent(thread_uri)+thread_fragment;function create_remarkbox_iframe(){var a=document.createElement("iframe");a.setAttribute("id","remarkbox-iframe"),a.setAttribute("scrolling","no"),a.setAttribute("src",rb_src),a.setAttribute("frameborder","0"),a.setAttribute("tabindex","0"),a.setAttribute("title","Remarkbox"),a.style.width="100%",document.getElementById("remarkbox-div").appendChild(a)}create_remarkbox_iframe(),iFrameResize({checkOrigin:["https://my.remarkbox.com"],inPageLinks:!0,initCallback:function(a){a.iFrameResizer.moveToAnchor(thread_fragment)}},document.getElementById("remarkbox-iframe"))</script>
+</div>
+</main>
+<footer class=footer>
+<p>
+&copy; 2021
 <span><a href=https://rgoswami.me/>Rohit Goswami (HaoZeke)</a></span>
-<a href=https://rgoswami.me/posts/index.xml target=_blank title=rss><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 019 9"/><path d="M4 4a16 16 0 0116 16"/><circle cx="5" cy="19" r="1"/></svg></a><br><a rel=license href=http://creativecommons.org/licenses/by-nc-sa/4.0/>CC BY-NC-SA 4.0</a>.
-Powered by <a href=http://gohugo.io><u>Hugo</u></a> and <a href=https://github.com/HaoZeke/hugo-theme-hello-friend-ng-hz><u>this theme</u></a>.</br>Hosted with <u><a href=https://www.netlify.com/>Netlify</a></u>.</br><script src=https://liberapay.com/rohit/widgets/button.js></script><noscript><a href=https://liberapay.com/rohit/donate><img alt="Donate using Liberapay" src=https://liberapay.com/assets/widgets/donate.svg></a></noscript></p></footer></div><script src=/bundle.min.5fae9992ea406007408dc33b0b3a8376d61e2f1d6ac50ba1dad7580ac50afb5199bcef3bbc3677e77553a9980bf882cf71edc2f755687dd7725f12ece4304ac2.js></script><script>(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)})(window,document,'script','//www.google-analytics.com/analytics.js','ga'),ga('create','UA-109503488-16','auto'),ga('send','pageview')</script><script type=text/javascript>(function(a,e,b,f,g,c,d){a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},c=e.createElement(f),c.async=1,c.src="https://www.clarity.ms/tag/"+g,d=e.getElementsByTagName(f)[0],d.parentNode.insertBefore(c,d)})(window,document,"clarity","script","3z2xvwqu4u")</script><script data-goatcounter=https://rgoswami.goatcounter.com/count async src=//gc.zgo.at/count.js></script><script>var clicky_site_ids=clicky_site_ids||[];clicky_site_ids.push("101265002")</script><script async src=https://static.getclicky.com/js></script><script src=https://cdn.jsdelivr.net/npm/readmore-js@3.0.0-beta-1/dist/readmore.min.js></script><script src=/js/codefold.min.4a43062cb83308b55227adf937c91be79ff6d95df8bb821dfd71805ce54629ff8cffed3ae81d70fdee5f324fa0f39c5280ae785f165801885db074551a993a21.js></script></body></html>
+<a href=https://rgoswami.me/posts/index.xml target=_blank title=rss><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 019 9"/><path d="M4 4a16 16 0 0116 16"/><circle cx="5" cy="19" r="1"/></svg></a>
+<br>
+<a rel=license href=http://creativecommons.org/licenses/by-nc-sa/4.0/>CC BY-NC-SA 4.0</a>.
+Powered by <a href=http://gohugo.io><u>Hugo</u></a> and <a href=https://github.com/HaoZeke/hugo-theme-hello-friend-ng-hz><u>this theme</u></a>.</br>
+Hosted with <u><a href=https://www.netlify.com/>Netlify</a></u>.</br>
+<script src=https://liberapay.com/rohit/widgets/button.js></script>
+<noscript><a href=https://liberapay.com/rohit/donate><img alt="Donate using Liberapay" src=https://liberapay.com/assets/widgets/donate.svg></a></noscript>
+</p>
+</footer>
+</div>
+<script src=/bundle.min.5fae9992ea406007408dc33b0b3a8376d61e2f1d6ac50ba1dad7580ac50afb5199bcef3bbc3677e77553a9980bf882cf71edc2f755687dd7725f12ece4304ac2.js></script>
+<script>(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)})(window,document,'script','//www.google-analytics.com/analytics.js','ga'),ga('create','UA-109503488-16','auto'),ga('send','pageview')</script>
+<script type=text/javascript>(function(a,e,b,f,g,c,d){a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},c=e.createElement(f),c.async=1,c.src="https://www.clarity.ms/tag/"+g,d=e.getElementsByTagName(f)[0],d.parentNode.insertBefore(c,d)})(window,document,"clarity","script","3z2xvwqu4u")</script>
+<script data-goatcounter=https://rgoswami.goatcounter.com/count async src=//gc.zgo.at/count.js></script>
+<script>var clicky_site_ids=clicky_site_ids||[];clicky_site_ids.push("101265002")</script>
+<script async src=https://static.getclicky.com/js></script>
+<script src=https://cdn.jsdelivr.net/npm/readmore-js@3.0.0-beta-1/dist/readmore.min.js></script>
+<script src=/js/codefold.min.4a43062cb83308b55227adf937c91be79ff6d95df8bb821dfd71805ce54629ff8cffed3ae81d70fdee5f324fa0f39c5280ae785f165801885db074551a993a21.js></script>
+</body>
+</html>

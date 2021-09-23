@@ -1,91 +1,289 @@
-<!doctype html><html lang=en itemscope itemtype=http://schema.org/WebPage><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=author content="[Rohit Goswami]"><meta name=description content="Chapter V - Resampling Methods All the questions are as per the ISL seventh printing of the First edition1.
+<!doctype html><html lang=en itemscope itemtype=http://schema.org/WebPage>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="ie=edge">
+<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
+<meta name=author content="[Rohit Goswami]">
+<meta name=description content="Chapter V - Resampling Methods All the questions are as per the ISL seventh printing of the First edition1.
 Common Instead of using the standard functions, we will leverage the mlr3 package2.
 #install.packages(&amp;#34;mlr3&amp;#34;,&amp;#34;data.table&amp;#34;,&amp;#34;mlr3viz&amp;#34;,&amp;#34;mlr3learners&amp;#34;) Actually for R version 3.6.2, the steps to get it working were a bit more involved.
 install.packages(&amp;#34;remotes&amp;#34;,&amp;#34;data.table&amp;#34;, &amp;#34;GGally&amp;#34;,&amp;#34;precerec&amp;#34;) # For plots library(remotes) remotes::install_github(&amp;#34;mlr-org/mlr3&amp;#34;) remotes::install_github(&amp;#34;mlr-org/mlr3viz&amp;#34;) remotes::install_github(&amp;#34;mlr-org/mlr3learners&amp;#34;) Load ISLR and other libraries.
-libsUsed&amp;lt;-c(&amp;#34;dplyr&amp;#34;,&amp;#34;ggplot2&amp;#34;,&amp;#34;tidyverse&amp;#34;, &amp;#34;ISLR&amp;#34;,&amp;#34;caret&amp;#34;,&amp;#34;MASS&amp;#34;, &amp;#34;pROC&amp;#34;,&amp;#34;mlr3&amp;#34;,&amp;#34;data.table&amp;#34;, &amp;#34;mlr3viz&amp;#34;,&amp;#34;mlr3learners&amp;#34;) invisible(lapply(libsUsed, library, character.only = TRUE)) Question 5."><meta name=keywords content=",solutions,R,ISLR"><meta name=robots content="noodp"><meta name=theme-color content><link rel=canonical href=https://rgoswami.me/posts/islr-ch5/><title>ISLR :: Resampling Methods :: Rohit Goswami — Reflections</title><link href=https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css rel=stylesheet type=text/css><link rel=stylesheet href=/main.min.b6dbce0fdf6c61563a0c2226e857d5dadd8e5afa2c4f73ec9ea55abd831f9a72.css><meta itemprop=name content="ISLR :: Resampling Methods"><meta itemprop=description content="Chapter V - Resampling Methods All the questions are as per the ISL seventh printing of the First edition1.
+libsUsed&amp;lt;-c(&amp;#34;dplyr&amp;#34;,&amp;#34;ggplot2&amp;#34;,&amp;#34;tidyverse&amp;#34;, &amp;#34;ISLR&amp;#34;,&amp;#34;caret&amp;#34;,&amp;#34;MASS&amp;#34;, &amp;#34;pROC&amp;#34;,&amp;#34;mlr3&amp;#34;,&amp;#34;data.table&amp;#34;, &amp;#34;mlr3viz&amp;#34;,&amp;#34;mlr3learners&amp;#34;) invisible(lapply(libsUsed, library, character.only = TRUE)) Question 5.">
+<meta name=keywords content=",solutions,R,ISLR">
+<meta name=robots content="noodp">
+<meta name=theme-color content>
+<link rel=canonical href=https://rgoswami.me/posts/islr-ch5/>
+<title>
+ISLR :: Resampling Methods :: Rohit Goswami — Reflections
+</title>
+<link href=https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css rel=stylesheet type=text/css>
+<link rel=stylesheet href=/main.min.b6dbce0fdf6c61563a0c2226e857d5dadd8e5afa2c4f73ec9ea55abd831f9a72.css>
+<meta itemprop=name content="ISLR :: Resampling Methods">
+<meta itemprop=description content="Chapter V - Resampling Methods All the questions are as per the ISL seventh printing of the First edition1.
 Common Instead of using the standard functions, we will leverage the mlr3 package2.
 #install.packages(&#34;mlr3&#34;,&#34;data.table&#34;,&#34;mlr3viz&#34;,&#34;mlr3learners&#34;) Actually for R version 3.6.2, the steps to get it working were a bit more involved.
 install.packages(&#34;remotes&#34;,&#34;data.table&#34;, &#34;GGally&#34;,&#34;precerec&#34;) # For plots library(remotes) remotes::install_github(&#34;mlr-org/mlr3&#34;) remotes::install_github(&#34;mlr-org/mlr3viz&#34;) remotes::install_github(&#34;mlr-org/mlr3learners&#34;) Load ISLR and other libraries.
-libsUsed<-c(&#34;dplyr&#34;,&#34;ggplot2&#34;,&#34;tidyverse&#34;, &#34;ISLR&#34;,&#34;caret&#34;,&#34;MASS&#34;, &#34;pROC&#34;,&#34;mlr3&#34;,&#34;data.table&#34;, &#34;mlr3viz&#34;,&#34;mlr3learners&#34;) invisible(lapply(libsUsed, library, character.only = TRUE)) Question 5."><meta itemprop=datePublished content="2020-02-18T22:00:00+00:00"><meta itemprop=dateModified content="2020-02-18T22:00:00+00:00"><meta itemprop=wordCount content="5182"><meta itemprop=image content="https://rgoswami.me/images/RG.png"><meta itemprop=keywords content="solutions,R,ISLR,"><meta property="og:title" content="ISLR :: Resampling Methods"><meta property="og:description" content="Chapter V - Resampling Methods All the questions are as per the ISL seventh printing of the First edition1.
+libsUsed<-c(&#34;dplyr&#34;,&#34;ggplot2&#34;,&#34;tidyverse&#34;, &#34;ISLR&#34;,&#34;caret&#34;,&#34;MASS&#34;, &#34;pROC&#34;,&#34;mlr3&#34;,&#34;data.table&#34;, &#34;mlr3viz&#34;,&#34;mlr3learners&#34;) invisible(lapply(libsUsed, library, character.only = TRUE)) Question 5."><meta itemprop=datePublished content="2020-02-18T22:00:00+00:00">
+<meta itemprop=dateModified content="2020-02-18T22:00:00+00:00">
+<meta itemprop=wordCount content="5182"><meta itemprop=image content="https://rgoswami.me/images/RG.png">
+<meta itemprop=keywords content="solutions,R,ISLR,"><meta property="og:title" content="ISLR :: Resampling Methods">
+<meta property="og:description" content="Chapter V - Resampling Methods All the questions are as per the ISL seventh printing of the First edition1.
 Common Instead of using the standard functions, we will leverage the mlr3 package2.
 #install.packages(&#34;mlr3&#34;,&#34;data.table&#34;,&#34;mlr3viz&#34;,&#34;mlr3learners&#34;) Actually for R version 3.6.2, the steps to get it working were a bit more involved.
 install.packages(&#34;remotes&#34;,&#34;data.table&#34;, &#34;GGally&#34;,&#34;precerec&#34;) # For plots library(remotes) remotes::install_github(&#34;mlr-org/mlr3&#34;) remotes::install_github(&#34;mlr-org/mlr3viz&#34;) remotes::install_github(&#34;mlr-org/mlr3learners&#34;) Load ISLR and other libraries.
-libsUsed<-c(&#34;dplyr&#34;,&#34;ggplot2&#34;,&#34;tidyverse&#34;, &#34;ISLR&#34;,&#34;caret&#34;,&#34;MASS&#34;, &#34;pROC&#34;,&#34;mlr3&#34;,&#34;data.table&#34;, &#34;mlr3viz&#34;,&#34;mlr3learners&#34;) invisible(lapply(libsUsed, library, character.only = TRUE)) Question 5."><meta property="og:type" content="article"><meta property="og:url" content="https://rgoswami.me/posts/islr-ch5/"><meta property="og:image" content="https://rgoswami.me/images/RG.png"><meta property="article:section" content="posts"><meta property="article:published_time" content="2020-02-18T22:00:00+00:00"><meta property="article:modified_time" content="2020-02-18T22:00:00+00:00"><meta property="og:site_name" content="Rohit Goswami"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://rgoswami.me/images/RG.png"><meta name=twitter:title content="ISLR :: Resampling Methods"><meta name=twitter:description content="Chapter V - Resampling Methods All the questions are as per the ISL seventh printing of the First edition1.
+libsUsed<-c(&#34;dplyr&#34;,&#34;ggplot2&#34;,&#34;tidyverse&#34;, &#34;ISLR&#34;,&#34;caret&#34;,&#34;MASS&#34;, &#34;pROC&#34;,&#34;mlr3&#34;,&#34;data.table&#34;, &#34;mlr3viz&#34;,&#34;mlr3learners&#34;) invisible(lapply(libsUsed, library, character.only = TRUE)) Question 5.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://rgoswami.me/posts/islr-ch5/"><meta property="og:image" content="https://rgoswami.me/images/RG.png"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2020-02-18T22:00:00+00:00">
+<meta property="article:modified_time" content="2020-02-18T22:00:00+00:00"><meta property="og:site_name" content="Rohit Goswami">
+<meta name=twitter:card content="summary_large_image">
+<meta name=twitter:image content="https://rgoswami.me/images/RG.png">
+<meta name=twitter:title content="ISLR :: Resampling Methods">
+<meta name=twitter:description content="Chapter V - Resampling Methods All the questions are as per the ISL seventh printing of the First edition1.
 Common Instead of using the standard functions, we will leverage the mlr3 package2.
 #install.packages(&#34;mlr3&#34;,&#34;data.table&#34;,&#34;mlr3viz&#34;,&#34;mlr3learners&#34;) Actually for R version 3.6.2, the steps to get it working were a bit more involved.
 install.packages(&#34;remotes&#34;,&#34;data.table&#34;, &#34;GGally&#34;,&#34;precerec&#34;) # For plots library(remotes) remotes::install_github(&#34;mlr-org/mlr3&#34;) remotes::install_github(&#34;mlr-org/mlr3viz&#34;) remotes::install_github(&#34;mlr-org/mlr3learners&#34;) Load ISLR and other libraries.
-libsUsed<-c(&#34;dplyr&#34;,&#34;ggplot2&#34;,&#34;tidyverse&#34;, &#34;ISLR&#34;,&#34;caret&#34;,&#34;MASS&#34;, &#34;pROC&#34;,&#34;mlr3&#34;,&#34;data.table&#34;, &#34;mlr3viz&#34;,&#34;mlr3learners&#34;) invisible(lapply(libsUsed, library, character.only = TRUE)) Question 5."><meta property="article:section" content="programming"><meta property="article:published_time" content="2020-02-18 22:00:00 +0000 UTC"></head><body><div class=container><header class=header><div class=header__inner><div class=header__left><div class=logo><a href=/ style=text-decoration:none><img src=/images/home.png alt></a></div></div><div class=header__mid><button class=button><div class=button__text><a href=https://rgoswami.me//search>Search</a></div></button></div><div class=header__right><nav class=menu><ul class=menu__inner><li><a href=https://rgoswami.me/about>About</a></li><li><a href=https://rgoswami.me/posts>Blog</a></li></ul><ul class=menu__inner><li><a href=https://rgoswami.me/categories>Categories</a></li><li><a href=https://rgoswami.me/tags>Tags</a></li></ul></nav><button id=toggleMenu><div class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></div></button>
-<button class=theme-toggle id=toggleTheme><svg class="theme-toggler" width="32" height="32" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41c10.4934.0 19-8.5066 19-19C41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg></button></div></div></header><script src=https://rgoswami.me/js/mathjax-config.js></script><script id=MathJax-script async src=https://unpkg.com/mathjax@3/es5/tex-chtml.js></script><aside class=sidebar><div class=hideTOC><button id=tocTog>TOC</button><div class="sideTOC m-fadeOut"><nav id=TableOfContents><ul><li><a href=#chapter-v---resampling-methods>Chapter V - Resampling Methods</a><ul><li><a href=#common>Common</a></li></ul></li><li><a href=#question-5.5---page-198>Question 5.5 - Page 198</a><ul><li><a href=#answer>Answer</a></li></ul></li><li><a href=#question-5.6---page-199>Question 5.6 - Page 199</a><ul><li><a href=#answer-1>Answer</a></li></ul></li><li><a href=#question-5.8---page-200>Question 5.8 - Page 200</a><ul><li><a href=#answer-2>Answer</a></li></ul></li><li><a href=#question-5.9---page-201>Question 5.9 - Page 201</a><ul><li><a href=#answer-3>Answer</a></li></ul></li></ul></nav></div></div></aside><main class=post><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>25 minutes<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Written: 2020-02-18 22:00 +0000</p></p></div><article class=h-entry><h1 class="post-title p-name"><a class=u-url href=https://rgoswami.me/posts/islr-ch5/>ISLR :: Resampling Methods</a></h1><div class=post-info><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pen-tool"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg><span class="author u-author p-author"><a href=https://rgoswami.me/author/rohit-goswami>Rohit Goswami</a></span></div><hr><aside id=toc class=sidebar><div class=toc-title>Table of Contents</div><nav id=TableOfContents><ul><li><a href=#chapter-v---resampling-methods>Chapter V - Resampling Methods</a><ul><li><a href=#common>Common</a></li></ul></li><li><a href=#question-5.5---page-198>Question 5.5 - Page 198</a><ul><li><a href=#answer>Answer</a></li></ul></li><li><a href=#question-5.6---page-199>Question 5.6 - Page 199</a><ul><li><a href=#answer-1>Answer</a></li></ul></li><li><a href=#question-5.8---page-200>Question 5.8 - Page 200</a><ul><li><a href=#answer-2>Answer</a></li></ul></li><li><a href=#question-5.9---page-201>Question 5.9 - Page 201</a><ul><li><a href=#answer-3>Answer</a></li></ul></li></ul></nav></aside><hr><div class="post-content e-content"><h2 id=chapter-v---resampling-methods>Chapter V - Resampling Methods</h2><p>All the questions are as per the
+libsUsed<-c(&#34;dplyr&#34;,&#34;ggplot2&#34;,&#34;tidyverse&#34;, &#34;ISLR&#34;,&#34;caret&#34;,&#34;MASS&#34;, &#34;pROC&#34;,&#34;mlr3&#34;,&#34;data.table&#34;, &#34;mlr3viz&#34;,&#34;mlr3learners&#34;) invisible(lapply(libsUsed, library, character.only = TRUE)) Question 5.">
+<meta property="article:section" content="programming">
+<meta property="article:published_time" content="2020-02-18 22:00:00 +0000 +0000">
+</head>
+<body>
+<div class=container>
+<header class=header>
+<div class=header__inner>
+<div class=header__left>
+<div class=logo>
+<a href=/ style=text-decoration:none>
+<img src=/images/home.png alt>
+</a>
+</div>
+</div>
+<div class=header__mid>
+<button class=button>
+<div class=button__text>
+<a href=https://rgoswami.me//search>
+Search
+</a>
+</div>
+</button>
+</div>
+<div class=header__right>
+<nav class=menu>
+<ul class=menu__inner><li><a href=https://rgoswami.me/about>About</a></li><li><a href=https://rgoswami.me/posts>Blog</a></li>
+</ul>
+<ul class=menu__inner><li><a href=https://rgoswami.me/categories>Categories</a></li><li><a href=https://rgoswami.me/tags>Tags</a></li>
+</ul>
+</nav>
+<button id=toggleMenu>
+<div class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+</div>
+</button>
+<button class=theme-toggle id=toggleTheme><svg class="theme-toggler" width="32" height="32" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41c10.4934.0 19-8.5066 19-19C41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg>
+</button>
+</div>
+</div>
+</header>
+<script src=https://rgoswami.me/js/mathjax-config.js></script>
+<script id=MathJax-script async src=https://unpkg.com/mathjax@3/es5/tex-chtml.js></script>
+<aside class=sidebar>
+<div class=hideTOC>
+<button id=tocTog>TOC</button>
+<div class="sideTOC m-fadeOut">
+<nav id=TableOfContents>
+<ul>
+<li><a href=#chapter-v---resampling-methods>Chapter V - Resampling Methods</a>
+<ul>
+<li><a href=#common>Common</a></li>
+</ul>
+</li>
+<li><a href=#question-5.5---page-198>Question 5.5 - Page 198</a>
+<ul>
+<li><a href=#answer>Answer</a></li>
+</ul>
+</li>
+<li><a href=#question-5.6---page-199>Question 5.6 - Page 199</a>
+<ul>
+<li><a href=#answer-1>Answer</a></li>
+</ul>
+</li>
+<li><a href=#question-5.8---page-200>Question 5.8 - Page 200</a>
+<ul>
+<li><a href=#answer-2>Answer</a></li>
+</ul>
+</li>
+<li><a href=#question-5.9---page-201>Question 5.9 - Page 201</a>
+<ul>
+<li><a href=#answer-3>Answer</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</aside>
+<main class=post>
+<div class=post-info>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>25 minutes
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Written: 2020-02-18 22:00 +0000</p>
+</p>
+</div>
+<article class=h-entry>
+<h1 class="post-title p-name">
+<a class=u-url href=https://rgoswami.me/posts/islr-ch5/>ISLR :: Resampling Methods</a>
+</h1>
+<div class=post-info><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pen-tool"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+<span class="author u-author p-author"><a href=https://rgoswami.me/author/rohit-goswami>Rohit Goswami</a></span>
+</div>
+<hr>
+<aside id=toc class=sidebar>
+<div class=toc-title>Table of Contents</div>
+<nav id=TableOfContents>
+<ul>
+<li><a href=#chapter-v---resampling-methods>Chapter V - Resampling Methods</a>
+<ul>
+<li><a href=#common>Common</a></li>
+</ul>
+</li>
+<li><a href=#question-5.5---page-198>Question 5.5 - Page 198</a>
+<ul>
+<li><a href=#answer>Answer</a></li>
+</ul>
+</li>
+<li><a href=#question-5.6---page-199>Question 5.6 - Page 199</a>
+<ul>
+<li><a href=#answer-1>Answer</a></li>
+</ul>
+</li>
+<li><a href=#question-5.8---page-200>Question 5.8 - Page 200</a>
+<ul>
+<li><a href=#answer-2>Answer</a></li>
+</ul>
+</li>
+<li><a href=#question-5.9---page-201>Question 5.9 - Page 201</a>
+<ul>
+<li><a href=#answer-3>Answer</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</aside>
+<hr>
+<div class="post-content e-content">
+<h2 id=chapter-v---resampling-methods>Chapter V - Resampling Methods</h2>
+<p>All the questions are as per the
 <a href=https://www.statlearning.com/>ISL seventh
-printing of the First edition</a><sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup>.</p><h3 id=common>Common</h3><p>Instead of using the standard functions, we will leverage the <code>mlr3</code>
-package<sup id=fnref:2><a href=#fn:2 class=footnote-ref role=doc-noteref>2</a></sup>.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=c1>#install.packages(&#34;mlr3&#34;,&#34;data.table&#34;,&#34;mlr3viz&#34;,&#34;mlr3learners&#34;)</span>
+printing of the First edition</a><sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup>.</p>
+<h3 id=common>Common</h3>
+<p>Instead of using the standard functions, we will leverage the <code>mlr3</code>
+package<sup id=fnref:2><a href=#fn:2 class=footnote-ref role=doc-noteref>2</a></sup>.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=c1>#install.packages(&#34;mlr3&#34;,&#34;data.table&#34;,&#34;mlr3viz&#34;,&#34;mlr3learners&#34;)</span>
 </code></pre></div><p>Actually for <code>R</code> version <code>3.6.2</code>, the steps to get it working were a bit
-more involved.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>install.packages</span><span class=p>(</span><span class=s>&#34;remotes&#34;</span><span class=p>,</span><span class=s>&#34;data.table&#34;</span><span class=p>,</span>
+more involved.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>install.packages</span><span class=p>(</span><span class=s>&#34;remotes&#34;</span><span class=p>,</span><span class=s>&#34;data.table&#34;</span><span class=p>,</span>
                  <span class=s>&#34;GGally&#34;</span><span class=p>,</span><span class=s>&#34;precerec&#34;</span><span class=p>)</span> <span class=c1># For plots</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>library</span><span class=p>(</span><span class=n>remotes</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>library</span><span class=p>(</span><span class=n>remotes</span><span class=p>)</span>
 <span class=n>remotes</span><span class=o>::</span><span class=nf>install_github</span><span class=p>(</span><span class=s>&#34;mlr-org/mlr3&#34;</span><span class=p>)</span>
 <span class=n>remotes</span><span class=o>::</span><span class=nf>install_github</span><span class=p>(</span><span class=s>&#34;mlr-org/mlr3viz&#34;</span><span class=p>)</span>
 <span class=n>remotes</span><span class=o>::</span><span class=nf>install_github</span><span class=p>(</span><span class=s>&#34;mlr-org/mlr3learners&#34;</span><span class=p>)</span>
-</code></pre></div><p>Load <code>ISLR</code> and other libraries.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>libsUsed</span><span class=o>&lt;-</span><span class=nf>c</span><span class=p>(</span><span class=s>&#34;dplyr&#34;</span><span class=p>,</span><span class=s>&#34;ggplot2&#34;</span><span class=p>,</span><span class=s>&#34;tidyverse&#34;</span><span class=p>,</span>
+</code></pre></div><p>Load <code>ISLR</code> and other libraries.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>libsUsed</span><span class=o>&lt;-</span><span class=nf>c</span><span class=p>(</span><span class=s>&#34;dplyr&#34;</span><span class=p>,</span><span class=s>&#34;ggplot2&#34;</span><span class=p>,</span><span class=s>&#34;tidyverse&#34;</span><span class=p>,</span>
             <span class=s>&#34;ISLR&#34;</span><span class=p>,</span><span class=s>&#34;caret&#34;</span><span class=p>,</span><span class=s>&#34;MASS&#34;</span><span class=p>,</span>
             <span class=s>&#34;pROC&#34;</span><span class=p>,</span><span class=s>&#34;mlr3&#34;</span><span class=p>,</span><span class=s>&#34;data.table&#34;</span><span class=p>,</span>
             <span class=s>&#34;mlr3viz&#34;</span><span class=p>,</span><span class=s>&#34;mlr3learners&#34;</span><span class=p>)</span>
 <span class=nf>invisible</span><span class=p>(</span><span class=nf>lapply</span><span class=p>(</span><span class=n>libsUsed</span><span class=p>,</span> <span class=n>library</span><span class=p>,</span> <span class=n>character.only</span> <span class=o>=</span> <span class=kc>TRUE</span><span class=p>))</span>
-</code></pre></div><h2 id=question-5.5---page-198>Question 5.5 - Page 198</h2><p>In Chapter 4, we used logistic regression to predict the probability of
+</code></pre></div><h2 id=question-5.5---page-198>Question 5.5 - Page 198</h2>
+<p>In Chapter 4, we used logistic regression to predict the probability of
 <code>default</code> using <code>income</code> and <code>balance</code> on the <code>Default</code> data set. We
 will now estimate the test error of this logistic regression model using
 the validation set approach. Do not forget to set a random seed before
-beginning your analysis.</p><p><strong>(a)</strong> Fit a logistic regression model that uses income and balance to
-predict <code>default</code>.</p><p><strong>(b)</strong> Using the validation set approach, estimate the test error of this
-model. In order to do this, you must perform the following steps:</p><ol><li><p>Split the sample set into a training set and a validation set.</p></li><li><p>Fit a multiple logistic regression model using only the training
-observations.</p></li><li><p>Obtain a prediction of default status for each individual in the
+beginning your analysis.</p>
+<p><strong>(a)</strong> Fit a logistic regression model that uses income and balance to
+predict <code>default</code>.</p>
+<p><strong>(b)</strong> Using the validation set approach, estimate the test error of this
+model. In order to do this, you must perform the following steps:</p>
+<ol>
+<li>
+<p>Split the sample set into a training set and a validation set.</p>
+</li>
+<li>
+<p>Fit a multiple logistic regression model using only the training
+observations.</p>
+</li>
+<li>
+<p>Obtain a prediction of default status for each individual in the
 validation set by computing the posterior probability of default for
 that individual, and classifying the individual to the <code>default</code>
-category if the posterior probability is greater than \(0.5\).</p></li><li><p>Compute the validation set error, which is the fraction of the
-observations in the validation set that are misclassified.</p></li></ol><p><strong>(c)</strong> Repeat the process in (b) three times, using three different
+category if the posterior probability is greater than \(0.5\).</p>
+</li>
+<li>
+<p>Compute the validation set error, which is the fraction of the
+observations in the validation set that are misclassified.</p>
+</li>
+</ol>
+<p><strong>(c)</strong> Repeat the process in (b) three times, using three different
 splits of the observations into a training set and a validation set.
-Comment on the results obtained.</p><p><strong>(d)</strong> Now consider a logistic regression model that predicts the prob-
+Comment on the results obtained.</p>
+<p><strong>(d)</strong> Now consider a logistic regression model that predicts the prob-
 ability of <code>default</code> using <code>income</code> , <code>balance</code> , and a dummy variable
 for <code>student</code>. Estimate the test error for this model using the
 validation set approach. Comment on whether or not including a dummy
-variable for <code>student</code> leads to a reduction in the test error rate.</p><h3 id=answer>Answer</h3><p>We will need our data.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>defDat</span><span class=o>&lt;-</span><span class=n>ISLR</span><span class=o>::</span><span class=n>Default</span>
-</code></pre></div><ul><li>Very quick peek</li></ul><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>defDat</span> <span class=o>%&gt;%</span> <span class=n>summary</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>##  default    student       balance           income
+variable for <code>student</code> leads to a reduction in the test error rate.</p>
+<h3 id=answer>Answer</h3>
+<p>We will need our data.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>defDat</span><span class=o>&lt;-</span><span class=n>ISLR</span><span class=o>::</span><span class=n>Default</span>
+</code></pre></div><ul>
+<li>Very quick peek</li>
+</ul>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>defDat</span> <span class=o>%&gt;%</span> <span class=n>summary</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>##  default    student       balance           income
 ##  No :9667   No :7056   Min.   :   0.0   Min.   :  772
 ##  Yes: 333   Yes:2944   1st Qu.: 481.7   1st Qu.:21340
 ##                        Median : 823.6   Median :34553
 ##                        Mean   : 835.4   Mean   :33517
 ##                        3rd Qu.:1166.3   3rd Qu.:43808
 ##                        Max.   :2654.3   Max.   :73554
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>defDat</span> <span class=o>%&gt;%</span> <span class=n>str</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## &#39;data.frame&#39;:    10000 obs. of  4 variables:
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>defDat</span> <span class=o>%&gt;%</span> <span class=n>str</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## &#39;data.frame&#39;:    10000 obs. of  4 variables:
 ##  $ default: Factor w/ 2 levels &#34;No&#34;,&#34;Yes&#34;: 1 1 1 1 1 1 1 1 1 1 ...
 ##  $ student: Factor w/ 2 levels &#34;No&#34;,&#34;Yes&#34;: 1 2 1 1 1 2 1 2 1 1 ...
 ##  $ balance: num  730 817 1074 529 786 ...
 ##  $ income : num  44362 12106 31767 35704 38463 ...
-</code></pre></div><h4 id=a-logistic-model-with-mlr3>a) Logistic Model with mlr3</h4><p>Following the <a href=https://mlr3book.mlr-org.com/tasks.html>new approach</a>
+</code></pre></div><h4 id=a-logistic-model-with-mlr3>a) Logistic Model with mlr3</h4>
+<p>Following the <a href=https://mlr3book.mlr-org.com/tasks.html>new approach</a>
 which leverages R6 features leads us to define a classification task
 first. As far as I can tell, the data needs to be filtered to contain
 only the things we need to predict with, in this case we are required to
-use only income and balance so we will do so.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>set.seed</span><span class=p>(</span><span class=m>1984</span><span class=p>)</span>
+use only income and balance so we will do so.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>set.seed</span><span class=p>(</span><span class=m>1984</span><span class=p>)</span>
 <span class=n>redDat</span><span class=o>&lt;-</span><span class=n>defDat</span> <span class=o>%&gt;%</span> <span class=nf>subset</span><span class=p>(</span><span class=n>select</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=n>income</span><span class=p>,</span><span class=n>balance</span><span class=p>,</span><span class=n>default</span><span class=p>))</span>
 <span class=n>tskLogiFull</span><span class=o>=</span><span class=n>TaskClassif</span><span class=o>$</span><span class=nf>new</span><span class=p>(</span><span class=n>id</span><span class=o>=</span><span class=s>&#34;credit&#34;</span><span class=p>,</span><span class=n>backend</span><span class=o>=</span><span class=n>redDat</span><span class=p>,</span><span class=n>target</span><span class=o>=</span><span class=s>&#34;default&#34;</span><span class=p>)</span>
 <span class=nf>print</span><span class=p>(</span><span class=n>tskLogiFull</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## &lt;TaskClassif:credit&gt; (10000 x 3)
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## &lt;TaskClassif:credit&gt; (10000 x 3)
 ## * Target: default
 ## * Properties: twoclass
 ## * Features (2):
 ##   - dbl (2): balance, income
-</code></pre></div><p>This can be visualized neatly as well.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>autoplot</span><span class=p>(</span><span class=n>tskLogiFull</span><span class=p>)</span>
-</code></pre></div><figure><img src=/islr/sol3/unnamed-chunk-8-1.png alt="Figure 1: MLR3 Visualizations"><figcaption><p>Figure 1: MLR3 Visualizations</p></figcaption></figure><p>We have a pretty imbalanced data-set.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>autoplot</span><span class=p>(</span><span class=n>tskLogiFull</span><span class=p>,</span><span class=n>type</span><span class=o>=</span><span class=s>&#34;pairs&#34;</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Registered S3 method overwritten by &#39;GGally&#39;:
+</code></pre></div><p>This can be visualized neatly as well.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>autoplot</span><span class=p>(</span><span class=n>tskLogiFull</span><span class=p>)</span>
+</code></pre></div><figure><img src=/islr/sol3/unnamed-chunk-8-1.png alt="Figure 1: MLR3 Visualizations"><figcaption>
+<p>Figure 1: MLR3 Visualizations</p>
+</figcaption>
+</figure>
+<p>We have a pretty imbalanced data-set.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>autoplot</span><span class=p>(</span><span class=n>tskLogiFull</span><span class=p>,</span><span class=n>type</span><span class=o>=</span><span class=s>&#34;pairs&#34;</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Registered S3 method overwritten by &#39;GGally&#39;:
 ##   method from
 ##   +.gg   ggplot2
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-</code></pre></div><figure><img src=/islr/sol3/unnamed-chunk-9-1.png alt="Figure 2: Paired mlr3 data"><figcaption><p>Figure 2: Paired mlr3 data</p></figcaption></figure><p>We can use any of the learners implemented, so it is a good idea to take
-a quick peek at them all.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>as.data.table</span><span class=p>(</span><span class=n>mlr_learners</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>##                     key                                    feature_types
+</code></pre></div><figure><img src=/islr/sol3/unnamed-chunk-9-1.png alt="Figure 2: Paired mlr3 data"><figcaption>
+<p>Figure 2: Paired mlr3 data</p>
+</figcaption>
+</figure>
+<p>We can use any of the learners implemented, so it is a good idea to take
+a quick peek at them all.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>as.data.table</span><span class=p>(</span><span class=n>mlr_learners</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>##                     key                                    feature_types
 ##  1:       classif.debug logical,integer,numeric,character,factor,ordered
 ##  2: classif.featureless logical,integer,numeric,character,factor,ordered
 ##  3:      classif.glmnet                          logical,integer,numeric
@@ -179,22 +377,26 @@ a quick peek at them all.</p><div class=highlight><pre class=chroma><code class=
 ##     predict_types
 </code></pre></div><p>We can now pick the logistic one.
 <a href=https://github.com/mlr-org/mlr3learners/>Note that</a> this essentially
-proxies our requests down to the <code>stats</code> package.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>learner</span> <span class=o>=</span> <span class=n>mlr_learners</span><span class=o>$</span><span class=nf>get</span><span class=p>(</span><span class=s>&#34;classif.log_reg&#34;</span><span class=p>)</span>
+proxies our requests down to the <code>stats</code> package.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>learner</span> <span class=o>=</span> <span class=n>mlr_learners</span><span class=o>$</span><span class=nf>get</span><span class=p>(</span><span class=s>&#34;classif.log_reg&#34;</span><span class=p>)</span>
 </code></pre></div><p>Now we can final solve the question, which is to simply use the model on
-all our data and return the accuracy metrics.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>trainFullCred</span><span class=o>=</span><span class=n>learner</span><span class=o>$</span><span class=nf>train</span><span class=p>(</span><span class=n>tskLogiFull</span><span class=p>)</span>
+all our data and return the accuracy metrics.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>trainFullCred</span><span class=o>=</span><span class=n>learner</span><span class=o>$</span><span class=nf>train</span><span class=p>(</span><span class=n>tskLogiFull</span><span class=p>)</span>
 <span class=nf>print</span><span class=p>(</span><span class=n>learner</span><span class=o>$</span><span class=nf>predict</span><span class=p>(</span><span class=n>tskLogiFull</span><span class=p>)</span><span class=o>$</span><span class=n>confusion</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>##         truth
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>##         truth
 ## response   No  Yes
 ##      No  9629  225
 ##      Yes   38  108
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>measure</span> <span class=o>=</span> <span class=nf>msr</span><span class=p>(</span><span class=s>&#34;classif.acc&#34;</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>measure</span> <span class=o>=</span> <span class=nf>msr</span><span class=p>(</span><span class=s>&#34;classif.acc&#34;</span><span class=p>)</span>
 <span class=nf>print</span><span class=p>(</span><span class=n>learner</span><span class=o>$</span><span class=nf>predict</span><span class=p>(</span><span class=n>tskLogiFull</span><span class=p>)</span><span class=o>$</span><span class=nf>score</span><span class=p>(</span><span class=n>measure</span><span class=p>))</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## classif.acc
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## classif.acc
 ##      0.9737
 </code></pre></div><p>Note that this style of working with objects does not really utilize the
-familiar <code>%>%</code> interface.</p><p>The <code>caret</code> package still has neater default metrics so we will use that
-as well.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>confusionMatrix</span><span class=p>(</span><span class=n>learner</span><span class=o>$</span><span class=nf>predict</span><span class=p>(</span><span class=n>tskLogiFull</span><span class=p>)</span><span class=o>$</span><span class=n>response</span><span class=p>,</span><span class=n>defDat</span><span class=o>$</span><span class=n>default</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Confusion Matrix and Statistics
+familiar <code>%>%</code> interface.</p>
+<p>The <code>caret</code> package still has neater default metrics so we will use that
+as well.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>confusionMatrix</span><span class=p>(</span><span class=n>learner</span><span class=o>$</span><span class=nf>predict</span><span class=p>(</span><span class=n>tskLogiFull</span><span class=p>)</span><span class=o>$</span><span class=n>response</span><span class=p>,</span><span class=n>defDat</span><span class=o>$</span><span class=n>default</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Confusion Matrix and Statistics
 ##
 ##           Reference
 ## Prediction   No  Yes
@@ -221,18 +423,29 @@ as well.</p><div class=highlight><pre class=chroma><code class=language-R data-l
 ##
 ##        &#39;Positive&#39; Class : No
 ##
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>autoplot</span><span class=p>(</span><span class=n>learner</span><span class=o>$</span><span class=nf>predict</span><span class=p>(</span><span class=n>tskLogiFull</span><span class=p>))</span>
-</code></pre></div><figure><img src=/islr/sol3/unnamed-chunk-14-1.png alt="Figure 3: Autoplot results"><figcaption><p>Figure 3: Autoplot results</p></figcaption></figure><p>We can get some other plots as well, but we need our probabilities to be
-returned.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=c1># For ROC curves</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>autoplot</span><span class=p>(</span><span class=n>learner</span><span class=o>$</span><span class=nf>predict</span><span class=p>(</span><span class=n>tskLogiFull</span><span class=p>))</span>
+</code></pre></div><figure><img src=/islr/sol3/unnamed-chunk-14-1.png alt="Figure 3: Autoplot results"><figcaption>
+<p>Figure 3: Autoplot results</p>
+</figcaption>
+</figure>
+<p>We can get some other plots as well, but we need our probabilities to be
+returned.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=c1># For ROC curves</span>
 <span class=n>lrnprob</span> <span class=o>=</span> <span class=nf>lrn</span><span class=p>(</span><span class=s>&#34;classif.log_reg&#34;</span><span class=p>,</span><span class=n>predict_type</span><span class=o>=</span><span class=s>&#34;prob&#34;</span><span class=p>)</span>
 <span class=n>lrnprob</span><span class=o>$</span><span class=nf>train</span><span class=p>(</span><span class=n>tskLogiFull</span><span class=p>)</span>
 <span class=nf>autoplot</span><span class=p>(</span><span class=n>lrnprob</span><span class=o>$</span><span class=nf>predict</span><span class=p>(</span><span class=n>tskLogiFull</span><span class=p>),</span><span class=n>type</span><span class=o>=</span><span class=s>&#34;roc&#34;</span><span class=p>)</span>
-</code></pre></div><figure><img src=/islr/sol3/unnamed-chunk-15-1.png alt="Figure 4: ROC curve"><figcaption><p>Figure 4: ROC curve</p></figcaption></figure><h4 id=b-validation-sets-with-mlr3>b) Validation Sets with mlr3</h4><p>Though the question seems to require a manual validation set generation
-and thresholding, we can simply use the defaults.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>train_set</span> <span class=o>=</span> <span class=nf>sample</span><span class=p>(</span><span class=n>tskLogiFull</span><span class=o>$</span><span class=n>nrow</span><span class=p>,</span> <span class=m>0.8</span> <span class=o>*</span> <span class=n>tskLogiFull</span><span class=o>$</span><span class=n>nrow</span><span class=p>)</span>
+</code></pre></div><figure><img src=/islr/sol3/unnamed-chunk-15-1.png alt="Figure 4: ROC curve"><figcaption>
+<p>Figure 4: ROC curve</p>
+</figcaption>
+</figure>
+<h4 id=b-validation-sets-with-mlr3>b) Validation Sets with mlr3</h4>
+<p>Though the question seems to require a manual validation set generation
+and thresholding, we can simply use the defaults.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>train_set</span> <span class=o>=</span> <span class=nf>sample</span><span class=p>(</span><span class=n>tskLogiFull</span><span class=o>$</span><span class=n>nrow</span><span class=p>,</span> <span class=m>0.8</span> <span class=o>*</span> <span class=n>tskLogiFull</span><span class=o>$</span><span class=n>nrow</span><span class=p>)</span>
 <span class=n>test_set</span> <span class=o>=</span> <span class=nf>setdiff</span><span class=p>(</span><span class=nf>seq_len</span><span class=p>(</span><span class=n>tskLogiFull</span><span class=o>$</span><span class=n>nrow</span><span class=p>),</span> <span class=n>train_set</span><span class=p>)</span>
 <span class=n>learner</span><span class=o>$</span><span class=nf>train</span><span class=p>(</span><span class=n>tskLogiFull</span><span class=p>,</span><span class=n>row_ids</span><span class=o>=</span><span class=n>train_set</span><span class=p>)</span>
 <span class=nf>confusionMatrix</span><span class=p>(</span><span class=n>learner</span><span class=o>$</span><span class=nf>predict</span><span class=p>(</span><span class=n>tskLogiFull</span><span class=p>,</span> <span class=n>row_ids</span><span class=o>=</span><span class=n>test_set</span><span class=p>)</span><span class=o>$</span><span class=n>response</span><span class=p>,</span><span class=n>defDat[</span><span class=o>-</span><span class=n>train_set</span><span class=p>,</span><span class=n>]</span><span class=o>$</span><span class=n>default</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Confusion Matrix and Statistics
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Confusion Matrix and Statistics
 ##
 ##           Reference
 ## Prediction   No  Yes
@@ -262,12 +475,13 @@ and thresholding, we can simply use the defaults.</p><div class=highlight><pre c
 </code></pre></div><p>For a reasonable comparison, we will demonstrate a standard approach as
 well. In this instance we will not use <code>caret</code> to ensure that our class
 distribution in the train and test sets are not sampled to remain the
-same.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>trainNoCaret</span><span class=o>&lt;-</span><span class=nf>sample</span><span class=p>(</span><span class=nf>nrow</span><span class=p>(</span><span class=n>defDat</span><span class=p>),</span> <span class=n>size</span> <span class=o>=</span> <span class=nf>floor</span><span class=p>(</span><span class=m>.8</span><span class=o>*</span><span class=nf>nrow</span><span class=p>(</span><span class=n>defDat</span><span class=p>)),</span> <span class=n>replace</span> <span class=o>=</span> <span class=bp>F</span><span class=p>)</span>
+same.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>trainNoCaret</span><span class=o>&lt;-</span><span class=nf>sample</span><span class=p>(</span><span class=nf>nrow</span><span class=p>(</span><span class=n>defDat</span><span class=p>),</span> <span class=n>size</span> <span class=o>=</span> <span class=nf>floor</span><span class=p>(</span><span class=m>.8</span><span class=o>*</span><span class=nf>nrow</span><span class=p>(</span><span class=n>defDat</span><span class=p>)),</span> <span class=n>replace</span> <span class=o>=</span> <span class=bp>F</span><span class=p>)</span>
 <span class=n>glm.fit</span><span class=o>=</span><span class=nf>glm</span><span class=p>(</span><span class=n>default</span><span class=o>~</span><span class=n>income</span><span class=o>+</span><span class=n>balance</span><span class=p>,</span><span class=n>data</span><span class=o>=</span><span class=n>defDat</span><span class=p>,</span><span class=n>family</span><span class=o>=</span><span class=n>binomial</span><span class=p>,</span><span class=n>subset</span><span class=o>=</span><span class=n>trainNoCaret</span><span class=p>)</span>
 <span class=n>glm.probs</span><span class=o>&lt;-</span><span class=nf>predict</span><span class=p>(</span><span class=n>glm.fit</span><span class=p>,</span><span class=n>defDat[</span><span class=o>-</span><span class=n>trainNoCaret</span><span class=p>,</span><span class=n>]</span><span class=p>,</span><span class=n>type</span><span class=o>=</span><span class=s>&#34;response&#34;</span><span class=p>)</span>
 <span class=n>glm.preds</span><span class=o>&lt;-</span><span class=nf>ifelse</span><span class=p>(</span><span class=n>glm.probs</span> <span class=o>&lt;</span> <span class=m>0.5</span><span class=p>,</span> <span class=s>&#34;No&#34;</span><span class=p>,</span> <span class=s>&#34;Yes&#34;</span><span class=p>)</span>
 <span class=nf>confusionMatrix</span><span class=p>(</span><span class=n>glm.preds</span> <span class=o>%&gt;%</span> <span class=n>factor</span><span class=p>,</span><span class=n>defDat[</span><span class=o>-</span><span class=n>trainNoCaret</span><span class=p>,</span><span class=n>]</span><span class=o>$</span><span class=n>default</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Confusion Matrix and Statistics
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Confusion Matrix and Statistics
 ##
 ##           Reference
 ## Prediction   No  Yes
@@ -295,33 +509,48 @@ same.</p><div class=highlight><pre class=chroma><code class=language-R data-lang
 ##        &#39;Positive&#39; Class : No
 ##
 </code></pre></div><p>Since the two approaches use different samples there is a little
-variation, but we can see that the accuracy is essentially the same.</p><h4 id=c-3-fold-cross-validation>c) 3-fold cross validation</h4><p>As per the question, we can repeat the block above three times, or
+variation, but we can see that the accuracy is essentially the same.</p>
+<h4 id=c-3-fold-cross-validation>c) 3-fold cross validation</h4>
+<p>As per the question, we can repeat the block above three times, or
 extract it into a function which takes a seed value and run that three
 times. Either way, here we will present the <code>mlr3</code> approach to cross
-validation and resampling.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>rr</span> <span class=o>=</span> <span class=nf>resample</span><span class=p>(</span><span class=n>tskLogiFull</span><span class=p>,</span> <span class=n>lrnprob</span><span class=p>,</span> <span class=nf>rsmp</span><span class=p>(</span><span class=s>&#34;cv&#34;</span><span class=p>,</span> <span class=n>folds</span> <span class=o>=</span> <span class=m>3</span><span class=p>))</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## INFO  [22:12:30.025] Applying learner &#39;classif.log_reg&#39; on task &#39;credit&#39; (iter 1/3)
+validation and resampling.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>rr</span> <span class=o>=</span> <span class=nf>resample</span><span class=p>(</span><span class=n>tskLogiFull</span><span class=p>,</span> <span class=n>lrnprob</span><span class=p>,</span> <span class=nf>rsmp</span><span class=p>(</span><span class=s>&#34;cv&#34;</span><span class=p>,</span> <span class=n>folds</span> <span class=o>=</span> <span class=m>3</span><span class=p>))</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## INFO  [22:12:30.025] Applying learner &#39;classif.log_reg&#39; on task &#39;credit&#39; (iter 1/3)
 ## INFO  [22:12:30.212] Applying learner &#39;classif.log_reg&#39; on task &#39;credit&#39; (iter 2/3)
 ## INFO  [22:12:30.360] Applying learner &#39;classif.log_reg&#39; on task &#39;credit&#39; (iter 3/3)
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>autoplot</span><span class=p>(</span><span class=n>rr</span><span class=p>,</span><span class=n>type</span><span class=o>=</span><span class=s>&#34;roc&#34;</span><span class=p>)</span>
-</code></pre></div><figure><img src=/islr/sol3/unnamed-chunk-18-1.png alt="Figure 5: Resampled ROC curve"><figcaption><p>Figure 5: Resampled ROC curve</p></figcaption></figure><p>We might want the average as well.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>rr</span><span class=o>$</span><span class=nf>aggregate</span><span class=p>(</span><span class=nf>msr</span><span class=p>(</span><span class=s>&#34;classif.ce&#34;</span><span class=p>))</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## classif.ce
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>autoplot</span><span class=p>(</span><span class=n>rr</span><span class=p>,</span><span class=n>type</span><span class=o>=</span><span class=s>&#34;roc&#34;</span><span class=p>)</span>
+</code></pre></div><figure><img src=/islr/sol3/unnamed-chunk-18-1.png alt="Figure 5: Resampled ROC curve"><figcaption>
+<p>Figure 5: Resampled ROC curve</p>
+</figcaption>
+</figure>
+<p>We might want the average as well.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>rr</span><span class=o>$</span><span class=nf>aggregate</span><span class=p>(</span><span class=nf>msr</span><span class=p>(</span><span class=s>&#34;classif.ce&#34;</span><span class=p>))</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## classif.ce
 ## 0.02630035
-</code></pre></div><h4 id=adding-student-as-a-dummy-variable>Adding Student as a dummy variable</h4><p>We will stick to the <code>mlr3</code> approach because it is faster.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>redDat2</span><span class=o>&lt;-</span><span class=n>defDat</span> <span class=o>%&gt;%</span> <span class=nf>mutate</span><span class=p>(</span><span class=n>student</span><span class=o>=</span><span class=nf>as.numeric</span><span class=p>(</span><span class=n>defDat</span><span class=o>$</span><span class=n>student</span><span class=p>))</span>
+</code></pre></div><h4 id=adding-student-as-a-dummy-variable>Adding Student as a dummy variable</h4>
+<p>We will stick to the <code>mlr3</code> approach because it is faster.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>redDat2</span><span class=o>&lt;-</span><span class=n>defDat</span> <span class=o>%&gt;%</span> <span class=nf>mutate</span><span class=p>(</span><span class=n>student</span><span class=o>=</span><span class=nf>as.numeric</span><span class=p>(</span><span class=n>defDat</span><span class=o>$</span><span class=n>student</span><span class=p>))</span>
 <span class=n>tskLogi2</span><span class=o>=</span><span class=n>TaskClassif</span><span class=o>$</span><span class=nf>new</span><span class=p>(</span><span class=n>id</span><span class=o>=</span><span class=s>&#34;credit&#34;</span><span class=p>,</span><span class=n>backend</span><span class=o>=</span><span class=n>redDat2</span><span class=p>,</span><span class=n>target</span><span class=o>=</span><span class=s>&#34;default&#34;</span><span class=p>)</span>
 <span class=nf>print</span><span class=p>(</span><span class=n>tskLogi2</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## &lt;TaskClassif:credit&gt; (10000 x 4)
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## &lt;TaskClassif:credit&gt; (10000 x 4)
 ## * Target: default
 ## * Properties: twoclass
 ## * Features (3):
 ##   - dbl (3): balance, income, student
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>autoplot</span><span class=p>(</span><span class=n>tskLogi2</span><span class=p>,</span><span class=n>type</span><span class=o>=</span><span class=s>&#34;pairs&#34;</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>autoplot</span><span class=p>(</span><span class=n>tskLogi2</span><span class=p>,</span><span class=n>type</span><span class=o>=</span><span class=s>&#34;pairs&#34;</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-</code></pre></div><figure><img src=/islr/sol3/unnamed-chunk-21-1.png alt="Figure 6: Logistic regression pairs data"><figcaption><p>Figure 6: Logistic regression pairs data</p></figcaption></figure><p>This gives us a visual indicator and premonition that we might not be
+</code></pre></div><figure><img src=/islr/sol3/unnamed-chunk-21-1.png alt="Figure 6: Logistic regression pairs data"><figcaption>
+<p>Figure 6: Logistic regression pairs data</p>
+</figcaption>
+</figure>
+<p>This gives us a visual indicator and premonition that we might not be
 getting incredible results with our new variable in the mix, but we
-should still work it through.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>confusionMatrix</span><span class=p>(</span><span class=n>lrnprob</span><span class=o>$</span><span class=nf>predict</span><span class=p>(</span><span class=n>tskLogi2</span><span class=p>)</span><span class=o>$</span><span class=n>response</span><span class=p>,</span><span class=n>defDat</span><span class=o>$</span><span class=n>default</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Confusion Matrix and Statistics
+should still work it through.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>confusionMatrix</span><span class=p>(</span><span class=n>lrnprob</span><span class=o>$</span><span class=nf>predict</span><span class=p>(</span><span class=n>tskLogi2</span><span class=p>)</span><span class=o>$</span><span class=n>response</span><span class=p>,</span><span class=n>defDat</span><span class=o>$</span><span class=n>default</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Confusion Matrix and Statistics
 ##
 ##           Reference
 ## Prediction   No  Yes
@@ -348,43 +577,67 @@ should still work it through.</p><div class=highlight><pre class=chroma><code cl
 ##
 ##        &#39;Positive&#39; Class : No
 ##
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>autoplot</span><span class=p>(</span><span class=n>lrnprob</span><span class=o>$</span><span class=nf>predict</span><span class=p>(</span><span class=n>tskLogi2</span><span class=p>))</span>
-</code></pre></div><figure><img src=/islr/sol3/unnamed-chunk-23-1.png alt="Figure 7: Autoplot figure"><figcaption><p>Figure 7: Autoplot figure</p></figcaption></figure><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>lrnprob</span><span class=o>$</span><span class=nf>train</span><span class=p>(</span><span class=n>tskLogi2</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>autoplot</span><span class=p>(</span><span class=n>lrnprob</span><span class=o>$</span><span class=nf>predict</span><span class=p>(</span><span class=n>tskLogi2</span><span class=p>))</span>
+</code></pre></div><figure><img src=/islr/sol3/unnamed-chunk-23-1.png alt="Figure 7: Autoplot figure"><figcaption>
+<p>Figure 7: Autoplot figure</p>
+</figcaption>
+</figure>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>lrnprob</span><span class=o>$</span><span class=nf>train</span><span class=p>(</span><span class=n>tskLogi2</span><span class=p>)</span>
 <span class=nf>autoplot</span><span class=p>(</span><span class=n>lrnprob</span><span class=o>$</span><span class=nf>predict</span><span class=p>(</span><span class=n>tskLogi2</span><span class=p>),</span><span class=n>type</span><span class=o>=</span><span class=s>&#34;roc&#34;</span><span class=p>)</span>
-</code></pre></div><figure><img src=/islr/sol3/unnamed-chunk-24-1.png alt="Figure 8: ROC plot"><figcaption><p>Figure 8: ROC plot</p></figcaption></figure><p>Although we have slightly better accuracy with the new variable, it
-needs to be compared to determine if it is worth further investigation.</p><p>With a three-fold validation approach,</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>library</span><span class=p>(</span><span class=s>&#34;gridExtra&#34;</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>##
+</code></pre></div><figure><img src=/islr/sol3/unnamed-chunk-24-1.png alt="Figure 8: ROC plot"><figcaption>
+<p>Figure 8: ROC plot</p>
+</figcaption>
+</figure>
+<p>Although we have slightly better accuracy with the new variable, it
+needs to be compared to determine if it is worth further investigation.</p>
+<p>With a three-fold validation approach,</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>library</span><span class=p>(</span><span class=s>&#34;gridExtra&#34;</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>##
 ## Attaching package: &#39;gridExtra&#39;
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## The following object is masked from &#39;package:dplyr&#39;:
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## The following object is masked from &#39;package:dplyr&#39;:
 ##
 ##     combine
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>rr2</span> <span class=o>=</span> <span class=nf>resample</span><span class=p>(</span><span class=n>tskLogi2</span><span class=p>,</span> <span class=n>lrnprob</span><span class=p>,</span> <span class=nf>rsmp</span><span class=p>(</span><span class=s>&#34;cv&#34;</span><span class=p>,</span> <span class=n>folds</span> <span class=o>=</span> <span class=m>3</span><span class=p>))</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## INFO  [22:12:39.670] Applying learner &#39;classif.log_reg&#39; on task &#39;credit&#39; (iter 1/3)
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>rr2</span> <span class=o>=</span> <span class=nf>resample</span><span class=p>(</span><span class=n>tskLogi2</span><span class=p>,</span> <span class=n>lrnprob</span><span class=p>,</span> <span class=nf>rsmp</span><span class=p>(</span><span class=s>&#34;cv&#34;</span><span class=p>,</span> <span class=n>folds</span> <span class=o>=</span> <span class=m>3</span><span class=p>))</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## INFO  [22:12:39.670] Applying learner &#39;classif.log_reg&#39; on task &#39;credit&#39; (iter 1/3)
 ## INFO  [22:12:39.731] Applying learner &#39;classif.log_reg&#39; on task &#39;credit&#39; (iter 2/3)
 ## INFO  [22:12:39.780] Applying learner &#39;classif.log_reg&#39; on task &#39;credit&#39; (iter 3/3)
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>wS</span><span class=o>&lt;-</span><span class=nf>autoplot</span><span class=p>(</span><span class=n>rr2</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>wS</span><span class=o>&lt;-</span><span class=nf>autoplot</span><span class=p>(</span><span class=n>rr2</span><span class=p>)</span>
 <span class=n>nS</span><span class=o>&lt;-</span><span class=nf>autoplot</span><span class=p>(</span><span class=n>rr</span><span class=p>)</span>
 <span class=nf>grid.arrange</span><span class=p>(</span><span class=n>wS</span><span class=p>,</span><span class=n>nS</span><span class=p>,</span><span class=n>ncol</span><span class=o>=</span><span class=m>2</span><span class=p>,</span><span class=n>bottom</span><span class=o>=</span><span class=s>&#34;With student (left) and without (right)&#34;</span><span class=p>)</span>
-</code></pre></div><figure><img src=/islr/sol3/unnamed-chunk-25-1.png alt="Figure 9: Plot of accuracy"><figcaption><p>Figure 9: Plot of accuracy</p></figcaption></figure><p>Given the results, it is fair to say that adding the student data is
-useful in general.</p><h2 id=question-5.6---page-199>Question 5.6 - Page 199</h2><p>We continue to consider the use of a logistic regression model to
+</code></pre></div><figure><img src=/islr/sol3/unnamed-chunk-25-1.png alt="Figure 9: Plot of accuracy"><figcaption>
+<p>Figure 9: Plot of accuracy</p>
+</figcaption>
+</figure>
+<p>Given the results, it is fair to say that adding the student data is
+useful in general.</p>
+<h2 id=question-5.6---page-199>Question 5.6 - Page 199</h2>
+<p>We continue to consider the use of a logistic regression model to
 predict the probability of <code>default</code> using <code>income</code> and <code>balance</code> on the
 <code>Default</code> data set. In particular, we will now compute estimates for the
 standard errors of the <code>income</code> and <code>balance</code> logistic regression
 coefficients in two different ways: (1) using the bootstrap, and (2)
 using the standard formula for computing the standard errors in the
 <code>glm()</code> function. Do not forget to set a random seed before beginning
-your analysis.</p><p><strong>(a)</strong> Using the <code>summary()</code> and <code>glm()</code> functions, determine the
+your analysis.</p>
+<p><strong>(a)</strong> Using the <code>summary()</code> and <code>glm()</code> functions, determine the
 estimated standard errors for the coefficients associated with <code>income</code>
 and <code>balance</code> in a multiple logistic regression model that uses both
-predictors.</p><p><strong>(b)</strong> Write a function, <code>boot.fn()</code> , that takes as input the <code>Default</code>
+predictors.</p>
+<p><strong>(b)</strong> Write a function, <code>boot.fn()</code> , that takes as input the <code>Default</code>
 data set as well as an index of the observations, and that outputs the
 coefficient estimates for <code>income</code> and <code>balance</code> in the multiple
-logistic regression model.</p><p><strong>(c)</strong> Use the <code>boot()</code> function together with your <code>boot.fn()</code> function
+logistic regression model.</p>
+<p><strong>(c)</strong> Use the <code>boot()</code> function together with your <code>boot.fn()</code> function
 to estimate the standard errors of the logistic regression coefficients
-for <code>income</code> and <code>balance</code>.</p><p><strong>(d)</strong> Comment on the estimated standard errors obtained using the
-<code>glm()</code> function and using your bootstrap function.</p><h3 id=answer-1>Answer</h3><p>This question is slightly more specific to the packages in the book so
-we will use them.</p><h4 id=a-fit-summary>a) Fit summary</h4><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>glm.fit</span> <span class=o>%&gt;%</span> <span class=n>summary</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>##
+for <code>income</code> and <code>balance</code>.</p>
+<p><strong>(d)</strong> Comment on the estimated standard errors obtained using the
+<code>glm()</code> function and using your bootstrap function.</p>
+<h3 id=answer-1>Answer</h3>
+<p>This question is slightly more specific to the packages in the book so
+we will use them.</p>
+<h4 id=a-fit-summary>a) Fit summary</h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>glm.fit</span> <span class=o>%&gt;%</span> <span class=n>summary</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>##
 ## Call:
 ## glm(formula = default ~ income + balance, family = binomial,
 ##     data = defDat, subset = trainNoCaret)
@@ -408,12 +661,13 @@ we will use them.</p><h4 id=a-fit-summary>a) Fit summary</h4><div class=highligh
 ## AIC: 1289.6
 ##
 ## Number of Fisher Scoring iterations: 8
-</code></pre></div><h4 id=b-function>b) Function</h4><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>boot.fn</span><span class=o>=</span><span class=nf>function</span><span class=p>(</span><span class=n>data</span><span class=p>,</span><span class=n>subs</span><span class=p>){</span><span class=nf>return</span><span class=p>(</span><span class=nf>coef</span><span class=p>(</span><span class=nf>glm</span><span class=p>(</span><span class=n>default</span><span class=o>~</span><span class=n>income</span><span class=o>+</span><span class=n>balance</span><span class=p>,</span><span class=n>data</span><span class=o>=</span><span class=n>data</span><span class=p>,</span> <span class=n>family</span><span class=o>=</span><span class=n>binomial</span><span class=p>,</span><span class=n>subset</span><span class=o>=</span><span class=n>subs</span><span class=p>)))}</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>boot.fn</span><span class=p>(</span><span class=n>defDat</span><span class=p>,</span><span class=n>train_set</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>##   (Intercept)        income       balance
+</code></pre></div><h4 id=b-function>b) Function</h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>boot.fn</span><span class=o>=</span><span class=nf>function</span><span class=p>(</span><span class=n>data</span><span class=p>,</span><span class=n>subs</span><span class=p>){</span><span class=nf>return</span><span class=p>(</span><span class=nf>coef</span><span class=p>(</span><span class=nf>glm</span><span class=p>(</span><span class=n>default</span><span class=o>~</span><span class=n>income</span><span class=o>+</span><span class=n>balance</span><span class=p>,</span><span class=n>data</span><span class=o>=</span><span class=n>data</span><span class=p>,</span> <span class=n>family</span><span class=o>=</span><span class=n>binomial</span><span class=p>,</span><span class=n>subset</span><span class=o>=</span><span class=n>subs</span><span class=p>)))}</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>boot.fn</span><span class=p>(</span><span class=n>defDat</span><span class=p>,</span><span class=n>train_set</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>##   (Intercept)        income       balance
 ## -1.136824e+01  1.846153e-05  5.576468e-03
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>glm</span><span class=p>(</span><span class=n>default</span><span class=o>~</span><span class=n>income</span><span class=o>+</span><span class=n>balance</span><span class=p>,</span><span class=n>data</span><span class=o>=</span><span class=n>defDat</span><span class=p>,</span><span class=n>family</span><span class=o>=</span><span class=n>binomial</span><span class=p>,</span><span class=n>subset</span><span class=o>=</span><span class=n>train_set</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>summary</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>##
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>glm</span><span class=p>(</span><span class=n>default</span><span class=o>~</span><span class=n>income</span><span class=o>+</span><span class=n>balance</span><span class=p>,</span><span class=n>data</span><span class=o>=</span><span class=n>defDat</span><span class=p>,</span><span class=n>family</span><span class=o>=</span><span class=n>binomial</span><span class=p>,</span><span class=n>subset</span><span class=o>=</span><span class=n>train_set</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>summary</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>##
 ## Call:
 ## glm(formula = default ~ income + balance, family = binomial,
 ##     data = defDat, subset = train_set)
@@ -437,15 +691,18 @@ we will use them.</p><h4 id=a-fit-summary>a) Fit summary</h4><div class=highligh
 ## AIC: 1272.4
 ##
 ## Number of Fisher Scoring iterations: 8
-</code></pre></div><p>We see that the statistics obtained from both are the same.</p><h4 id=c-bootstrap>c) Bootstrap</h4><p>The old fashioned way. <code>R</code> is the resample rate, <code>boot.fn</code> is the
-statistic used.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>library</span><span class=p>(</span><span class=n>boot</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>##
+</code></pre></div><p>We see that the statistics obtained from both are the same.</p>
+<h4 id=c-bootstrap>c) Bootstrap</h4>
+<p>The old fashioned way. <code>R</code> is the resample rate, <code>boot.fn</code> is the
+statistic used.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>library</span><span class=p>(</span><span class=n>boot</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>##
 ## Attaching package: &#39;boot&#39;
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## The following object is masked from &#39;package:lattice&#39;:
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## The following object is masked from &#39;package:lattice&#39;:
 ##
 ##     melanoma
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>boot</span><span class=p>(</span><span class=n>defDat</span><span class=p>,</span><span class=n>boot.fn</span><span class=p>,</span><span class=n>R</span><span class=o>=</span><span class=m>184</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>##
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>boot</span><span class=p>(</span><span class=n>defDat</span><span class=p>,</span><span class=n>boot.fn</span><span class=p>,</span><span class=n>R</span><span class=o>=</span><span class=m>184</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>##
 ## ORDINARY NONPARAMETRIC BOOTSTRAP
 ##
 ##
@@ -458,32 +715,84 @@ statistic used.</p><div class=highlight><pre class=chroma><code class=language-R
 ## t1* -1.154047e+01 -1.407368e-02 4.073453e-01
 ## t2*  2.080898e-05 -6.386634e-08 4.720109e-06
 ## t3*  5.647103e-03  1.350950e-05 2.111547e-04
-</code></pre></div><h4 id=d-comparison>d) Comparison</h4><ul><li>Clearly, there is not much difference in the standard error estimates</li></ul><p class=verse>Var | Bootstrap | Summary |<br>| :---------: | --------- |<br>Intercept | 4.428026e-01 | 4.883e-01 |<br>income | 2.797011e-06 | 5.548e-06 |<br>balance | 2.423002e-04 | 2.591e-04 |<br></p><h2 id=question-5.8---page-200>Question 5.8 - Page 200</h2><p>We will now perform cross-validation on a simulated data set. <strong>(a)</strong>
-Generate a simulated data set as follows:</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=o>&gt;</span> <span class=n>set</span> <span class=nf>. seed </span><span class=p>(</span><span class=m>1</span><span class=p>)</span>
+</code></pre></div><h4 id=d-comparison>d) Comparison</h4>
+<ul>
+<li>Clearly, there is not much difference in the standard error estimates</li>
+</ul>
+<p class=verse>
+Var | Bootstrap | Summary |<br>
+| :---------: | --------- |<br>
+Intercept | 4.428026e-01 | 4.883e-01 |<br>
+income | 2.797011e-06 | 5.548e-06 |<br>
+balance | 2.423002e-04 | 2.591e-04 |<br>
+</p>
+<h2 id=question-5.8---page-200>Question 5.8 - Page 200</h2>
+<p>We will now perform cross-validation on a simulated data set. <strong>(a)</strong>
+Generate a simulated data set as follows:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=o>&gt;</span> <span class=n>set</span> <span class=nf>. seed </span><span class=p>(</span><span class=m>1</span><span class=p>)</span>
 <span class=o>&gt;</span> <span class=n>y</span> <span class=o>=</span> <span class=nf>rnorm </span><span class=p>(</span><span class=m>100</span><span class=p>)</span>
 <span class=o>&gt;</span> <span class=n>x</span> <span class=o>=</span> <span class=nf>rnorm </span><span class=p>(</span><span class=m>100</span><span class=p>)</span>
 <span class=o>&gt;</span> <span class=n>y</span> <span class=o>=</span><span class=n>x</span> <span class=m>-2</span><span class=n>\</span><span class=o>*</span> <span class=n>x</span> <span class=n>^2</span><span class=o>+</span> <span class=nf>rnorm </span><span class=p>(</span><span class=m>100</span><span class=p>)</span>
 </code></pre></div><p>In this data set, what is n and what is p? Write out the model used to
-generate the data in equation form.</p><p><strong>(b)</strong> Create a scatterplot of \(X\) against \(Y\). Comment on what you find.</p><p><strong>(c)</strong> Set a random seed, and then compute the LOOCV errors that result
-from fitting the following four models using least squares:</p><ol><li><p>\(Y=\beta_0+\beta_1X+\eta\)</p></li><li><p>\(Y=\beta_0+\beta_1X+\beta_2X^2+\eta\)</p></li><li><p>\(Y=\beta_0+\beta_1X+\beta_2X^2+\beta_{3}X^{3}+\eta\)</p></li><li><p>\(Y=\beta_0+\beta_1X+\beta_2X^2+\beta_{3}X^{3}+\beta_{4}X^{4}+\eta\)</p></li></ol><p>Note you may find it helpful to use the <code>data.frame()</code> function to
-create a single data set containing both \(X\) and \(Y\).</p><p><strong>(d)</strong> Repeat (c) using another random seed, and report your results. Are
-your results the same as what you got in (c)? Why?</p><p><strong>(e)</strong> Which of the models in (c) had the smallest LOOCV error? Is this
-what you expected? Explain your answer.</p><p><strong>(f)</strong> Comment on the statistical significance of the coefficient esti-
+generate the data in equation form.</p>
+<p><strong>(b)</strong> Create a scatterplot of \(X\) against \(Y\). Comment on what you find.</p>
+<p><strong>(c)</strong> Set a random seed, and then compute the LOOCV errors that result
+from fitting the following four models using least squares:</p>
+<ol>
+<li>
+<p>\(Y=\beta_0+\beta_1X+\eta\)</p>
+</li>
+<li>
+<p>\(Y=\beta_0+\beta_1X+\beta_2X^2+\eta\)</p>
+</li>
+<li>
+<p>\(Y=\beta_0+\beta_1X+\beta_2X^2+\beta_{3}X^{3}+\eta\)</p>
+</li>
+<li>
+<p>\(Y=\beta_0+\beta_1X+\beta_2X^2+\beta_{3}X^{3}+\beta_{4}X^{4}+\eta\)</p>
+</li>
+</ol>
+<p>Note you may find it helpful to use the <code>data.frame()</code> function to
+create a single data set containing both \(X\) and \(Y\).</p>
+<p><strong>(d)</strong> Repeat (c) using another random seed, and report your results. Are
+your results the same as what you got in (c)? Why?</p>
+<p><strong>(e)</strong> Which of the models in (c) had the smallest LOOCV error? Is this
+what you expected? Explain your answer.</p>
+<p><strong>(f)</strong> Comment on the statistical significance of the coefficient esti-
 mates that results from fitting each of the models in (c) using least
 squares. Do these results agree with the conclusions drawn based on the
-cross-validation results?</p><h3 id=answer-2>Answer</h3><h4 id=a-modeling-data>a) Modeling data</h4><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>set.seed</span><span class=p>(</span><span class=m>1</span><span class=p>)</span>
+cross-validation results?</p>
+<h3 id=answer-2>Answer</h3>
+<h4 id=a-modeling-data>a) Modeling data</h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>set.seed</span><span class=p>(</span><span class=m>1</span><span class=p>)</span>
 <span class=n>y</span> <span class=o>&lt;-</span> <span class=nf>rnorm</span><span class=p>(</span><span class=m>100</span><span class=p>)</span>
 <span class=n>x</span> <span class=o>&lt;-</span> <span class=nf>rnorm</span><span class=p>(</span><span class=m>100</span><span class=p>)</span>
 <span class=n>y</span> <span class=o>&lt;-</span> <span class=n>x</span> <span class=o>-</span> <span class=m>2</span><span class=o>*</span><span class=n>x^2</span> <span class=o>+</span> <span class=nf>rnorm</span><span class=p>(</span><span class=m>100</span><span class=p>)</span>
-</code></pre></div><p>Clearly:</p><ul><li>Our equation is \(y=x-2x^{2}+\epsilon\) where \(epsilon\) is normally
-distributed from 100 samples</li><li>We have \(n=100\) observations</li><li>\(p=2\) where \(p\) is the number of features</li></ul><h4 id=b-visual-inspection>b) Visual inspection</h4><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>qplot</span><span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=n>y</span><span class=p>)</span>
-</code></pre></div><figure><img src=/islr/sol3/unnamed-chunk-31-1.png alt="Figure 10: Model data plot"><figcaption><p>Figure 10: Model data plot</p></figcaption></figure><p>We observe that the data is quadratic, as we also know from the
+</code></pre></div><p>Clearly:</p>
+<ul>
+<li>Our equation is \(y=x-2x^{2}+\epsilon\) where \(epsilon\) is normally
+distributed from 100 samples</li>
+<li>We have \(n=100\) observations</li>
+<li>\(p=2\) where \(p\) is the number of features</li>
+</ul>
+<h4 id=b-visual-inspection>b) Visual inspection</h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>qplot</span><span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=n>y</span><span class=p>)</span>
+</code></pre></div><figure><img src=/islr/sol3/unnamed-chunk-31-1.png alt="Figure 10: Model data plot"><figcaption>
+<p>Figure 10: Model data plot</p>
+</figcaption>
+</figure>
+<p>We observe that the data is quadratic, as we also know from the
 generating function, which was a quadratic equation plus normally
-distributed noise.</p><h4 id=c-least-squares-fits>c) Least squares fits</h4><p>Not very important, but here we use the <code>caret</code> form.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>pow</span><span class=o>=</span><span class=nf>function</span><span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=n>y</span><span class=p>){</span><span class=nf>return</span><span class=p>(</span><span class=n>x^y</span><span class=p>)}</span>
+distributed noise.</p>
+<h4 id=c-least-squares-fits>c) Least squares fits</h4>
+<p>Not very important, but here we use the <code>caret</code> form.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>pow</span><span class=o>=</span><span class=nf>function</span><span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=n>y</span><span class=p>){</span><span class=nf>return</span><span class=p>(</span><span class=n>x^y</span><span class=p>)}</span>
 <span class=n>dfDat</span> <span class=o>&lt;-</span> <span class=nf>data.frame</span><span class=p>(</span><span class=n>y</span><span class=p>,</span><span class=n>x</span><span class=p>,</span><span class=n>x2</span><span class=o>=</span><span class=nf>pow</span><span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=m>2</span><span class=p>),</span><span class=n>x3</span><span class=o>=</span><span class=nf>pow</span><span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=m>3</span><span class=p>),</span><span class=n>x4</span><span class=o>=</span><span class=nf>pow</span><span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=m>4</span><span class=p>))</span>
-</code></pre></div><p>We might have also just used <code>poly(x,n)</code> to skip making the data frame.</p><p>We will set our resampling method as follows:</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>fitControl</span><span class=o>&lt;-</span><span class=nf>trainControl</span><span class=p>(</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;LOOCV&#34;</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>train</span><span class=p>(</span><span class=n>y</span><span class=o>~</span><span class=n>x</span><span class=p>,</span><span class=n>data</span><span class=o>=</span><span class=n>dfDat</span><span class=p>,</span><span class=n>trControl</span><span class=o>=</span><span class=n>fitControl</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;lm&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Linear Regression
+</code></pre></div><p>We might have also just used <code>poly(x,n)</code> to skip making the data frame.</p>
+<p>We will set our resampling method as follows:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>fitControl</span><span class=o>&lt;-</span><span class=nf>trainControl</span><span class=p>(</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;LOOCV&#34;</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>train</span><span class=p>(</span><span class=n>y</span><span class=o>~</span><span class=n>x</span><span class=p>,</span><span class=n>data</span><span class=o>=</span><span class=n>dfDat</span><span class=p>,</span><span class=n>trControl</span><span class=o>=</span><span class=n>fitControl</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;lm&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Linear Regression
 ##
 ## 100 samples
 ##   1 predictor
@@ -497,8 +806,8 @@ distributed noise.</p><h4 id=c-least-squares-fits>c) Least squares fits</h4><p>N
 ##   2.427134  0.05389864  1.878566
 ##
 ## Tuning parameter &#39;intercept&#39; was held constant at a value of TRUE
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>train</span><span class=p>(</span><span class=n>y</span><span class=o>~</span><span class=n>x</span><span class=o>+</span><span class=n>x2</span><span class=p>,</span><span class=n>data</span><span class=o>=</span><span class=n>dfDat</span><span class=p>,</span><span class=n>trControl</span><span class=o>=</span><span class=n>fitControl</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;lm&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Linear Regression
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>train</span><span class=p>(</span><span class=n>y</span><span class=o>~</span><span class=n>x</span><span class=o>+</span><span class=n>x2</span><span class=p>,</span><span class=n>data</span><span class=o>=</span><span class=n>dfDat</span><span class=p>,</span><span class=n>trControl</span><span class=o>=</span><span class=n>fitControl</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;lm&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Linear Regression
 ##
 ## 100 samples
 ##   2 predictor
@@ -512,8 +821,8 @@ distributed noise.</p><h4 id=c-least-squares-fits>c) Least squares fits</h4><p>N
 ##   1.042399  0.8032414  0.8029942
 ##
 ## Tuning parameter &#39;intercept&#39; was held constant at a value of TRUE
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>train</span><span class=p>(</span><span class=n>y</span><span class=o>~</span><span class=n>x</span><span class=o>+</span><span class=n>x2</span><span class=o>+</span><span class=n>x3</span><span class=p>,</span><span class=n>data</span><span class=o>=</span><span class=n>dfDat</span><span class=p>,</span><span class=n>trControl</span><span class=o>=</span><span class=n>fitControl</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;lm&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Linear Regression
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>train</span><span class=p>(</span><span class=n>y</span><span class=o>~</span><span class=n>x</span><span class=o>+</span><span class=n>x2</span><span class=o>+</span><span class=n>x3</span><span class=p>,</span><span class=n>data</span><span class=o>=</span><span class=n>dfDat</span><span class=p>,</span><span class=n>trControl</span><span class=o>=</span><span class=n>fitControl</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;lm&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Linear Regression
 ##
 ## 100 samples
 ##   3 predictor
@@ -527,8 +836,8 @@ distributed noise.</p><h4 id=c-least-squares-fits>c) Least squares fits</h4><p>N
 ##   1.050041  0.8003517  0.8073024
 ##
 ## Tuning parameter &#39;intercept&#39; was held constant at a value of TRUE
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>train</span><span class=p>(</span><span class=n>y</span><span class=o>~</span><span class=n>x</span><span class=o>+</span><span class=n>x2</span><span class=o>+</span><span class=n>x3</span><span class=o>+</span><span class=n>x4</span><span class=p>,</span><span class=n>data</span><span class=o>=</span><span class=n>dfDat</span><span class=p>,</span><span class=n>trControl</span><span class=o>=</span><span class=n>fitControl</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;lm&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Linear Regression
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>train</span><span class=p>(</span><span class=n>y</span><span class=o>~</span><span class=n>x</span><span class=o>+</span><span class=n>x2</span><span class=o>+</span><span class=n>x3</span><span class=o>+</span><span class=n>x4</span><span class=p>,</span><span class=n>data</span><span class=o>=</span><span class=n>dfDat</span><span class=p>,</span><span class=n>trControl</span><span class=o>=</span><span class=n>fitControl</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;lm&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Linear Regression
 ##
 ## 100 samples
 ##   4 predictor
@@ -542,9 +851,10 @@ distributed noise.</p><h4 id=c-least-squares-fits>c) Least squares fits</h4><p>N
 ##   1.055828  0.7982111  0.8150296
 ##
 ## Tuning parameter &#39;intercept&#39; was held constant at a value of TRUE
-</code></pre></div><h4 id=d-seeding-effects>d) Seeding effects</h4><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>set.seed</span><span class=p>(</span><span class=m>1995</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>train</span><span class=p>(</span><span class=n>y</span><span class=o>~</span><span class=n>x</span><span class=p>,</span><span class=n>data</span><span class=o>=</span><span class=n>dfDat</span><span class=p>,</span><span class=n>trControl</span><span class=o>=</span><span class=n>fitControl</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;lm&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Linear Regression
+</code></pre></div><h4 id=d-seeding-effects>d) Seeding effects</h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>set.seed</span><span class=p>(</span><span class=m>1995</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>train</span><span class=p>(</span><span class=n>y</span><span class=o>~</span><span class=n>x</span><span class=p>,</span><span class=n>data</span><span class=o>=</span><span class=n>dfDat</span><span class=p>,</span><span class=n>trControl</span><span class=o>=</span><span class=n>fitControl</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;lm&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Linear Regression
 ##
 ## 100 samples
 ##   1 predictor
@@ -558,8 +868,8 @@ distributed noise.</p><h4 id=c-least-squares-fits>c) Least squares fits</h4><p>N
 ##   2.427134  0.05389864  1.878566
 ##
 ## Tuning parameter &#39;intercept&#39; was held constant at a value of TRUE
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>train</span><span class=p>(</span><span class=n>y</span><span class=o>~</span><span class=n>x</span><span class=o>+</span><span class=n>x2</span><span class=p>,</span><span class=n>data</span><span class=o>=</span><span class=n>dfDat</span><span class=p>,</span><span class=n>trControl</span><span class=o>=</span><span class=n>fitControl</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;lm&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Linear Regression
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>train</span><span class=p>(</span><span class=n>y</span><span class=o>~</span><span class=n>x</span><span class=o>+</span><span class=n>x2</span><span class=p>,</span><span class=n>data</span><span class=o>=</span><span class=n>dfDat</span><span class=p>,</span><span class=n>trControl</span><span class=o>=</span><span class=n>fitControl</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;lm&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Linear Regression
 ##
 ## 100 samples
 ##   2 predictor
@@ -573,8 +883,8 @@ distributed noise.</p><h4 id=c-least-squares-fits>c) Least squares fits</h4><p>N
 ##   1.042399  0.8032414  0.8029942
 ##
 ## Tuning parameter &#39;intercept&#39; was held constant at a value of TRUE
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>train</span><span class=p>(</span><span class=n>y</span><span class=o>~</span><span class=n>x</span><span class=o>+</span><span class=n>x2</span><span class=o>+</span><span class=n>x3</span><span class=p>,</span><span class=n>data</span><span class=o>=</span><span class=n>dfDat</span><span class=p>,</span><span class=n>trControl</span><span class=o>=</span><span class=n>fitControl</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;lm&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Linear Regression
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>train</span><span class=p>(</span><span class=n>y</span><span class=o>~</span><span class=n>x</span><span class=o>+</span><span class=n>x2</span><span class=o>+</span><span class=n>x3</span><span class=p>,</span><span class=n>data</span><span class=o>=</span><span class=n>dfDat</span><span class=p>,</span><span class=n>trControl</span><span class=o>=</span><span class=n>fitControl</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;lm&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Linear Regression
 ##
 ## 100 samples
 ##   3 predictor
@@ -588,8 +898,8 @@ distributed noise.</p><h4 id=c-least-squares-fits>c) Least squares fits</h4><p>N
 ##   1.050041  0.8003517  0.8073024
 ##
 ## Tuning parameter &#39;intercept&#39; was held constant at a value of TRUE
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>train</span><span class=p>(</span><span class=n>y</span><span class=o>~</span><span class=n>x</span><span class=o>+</span><span class=n>x2</span><span class=o>+</span><span class=n>x3</span><span class=o>+</span><span class=n>x4</span><span class=p>,</span><span class=n>data</span><span class=o>=</span><span class=n>dfDat</span><span class=p>,</span><span class=n>trControl</span><span class=o>=</span><span class=n>fitControl</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;lm&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Linear Regression
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>train</span><span class=p>(</span><span class=n>y</span><span class=o>~</span><span class=n>x</span><span class=o>+</span><span class=n>x2</span><span class=o>+</span><span class=n>x3</span><span class=o>+</span><span class=n>x4</span><span class=p>,</span><span class=n>data</span><span class=o>=</span><span class=n>dfDat</span><span class=p>,</span><span class=n>trControl</span><span class=o>=</span><span class=n>fitControl</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;lm&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Linear Regression
 ##
 ## 100 samples
 ##   4 predictor
@@ -604,8 +914,10 @@ distributed noise.</p><h4 id=c-least-squares-fits>c) Least squares fits</h4><p>N
 ##
 ## Tuning parameter &#39;intercept&#39; was held constant at a value of TRUE
 </code></pre></div><p>We note that there is no change on varying the seed because LOOCV is
-exhaustive and uses n folds for each observation.</p><h4 id=e-analysis>e) Analysis</h4><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>train</span><span class=p>(</span><span class=n>y</span><span class=o>~</span><span class=n>x</span><span class=p>,</span><span class=n>data</span><span class=o>=</span><span class=n>dfDat</span> <span class=o>%&gt;%</span> <span class=nf>subset</span><span class=p>(</span><span class=n>select</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=n>y</span><span class=p>,</span><span class=n>x</span><span class=p>)),</span><span class=n>trControl</span><span class=o>=</span><span class=n>fitControl</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;lm&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Linear Regression
+exhaustive and uses n folds for each observation.</p>
+<h4 id=e-analysis>e) Analysis</h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>train</span><span class=p>(</span><span class=n>y</span><span class=o>~</span><span class=n>x</span><span class=p>,</span><span class=n>data</span><span class=o>=</span><span class=n>dfDat</span> <span class=o>%&gt;%</span> <span class=nf>subset</span><span class=p>(</span><span class=n>select</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=n>y</span><span class=p>,</span><span class=n>x</span><span class=p>)),</span><span class=n>trControl</span><span class=o>=</span><span class=n>fitControl</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;lm&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Linear Regression
 ##
 ## 100 samples
 ##   1 predictor
@@ -619,8 +931,8 @@ exhaustive and uses n folds for each observation.</p><h4 id=e-analysis>e) Analys
 ##   2.427134  0.05389864  1.878566
 ##
 ## Tuning parameter &#39;intercept&#39; was held constant at a value of TRUE
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>train</span><span class=p>(</span><span class=n>y</span><span class=o>~</span><span class=nf>poly</span><span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=m>2</span><span class=p>),</span><span class=n>data</span><span class=o>=</span><span class=n>dfDat</span> <span class=o>%&gt;%</span> <span class=nf>subset</span><span class=p>(</span><span class=n>select</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=n>y</span><span class=p>,</span><span class=n>x</span><span class=p>)),</span><span class=n>trControl</span><span class=o>=</span><span class=n>fitControl</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;lm&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Linear Regression
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>train</span><span class=p>(</span><span class=n>y</span><span class=o>~</span><span class=nf>poly</span><span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=m>2</span><span class=p>),</span><span class=n>data</span><span class=o>=</span><span class=n>dfDat</span> <span class=o>%&gt;%</span> <span class=nf>subset</span><span class=p>(</span><span class=n>select</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=n>y</span><span class=p>,</span><span class=n>x</span><span class=p>)),</span><span class=n>trControl</span><span class=o>=</span><span class=n>fitControl</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;lm&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Linear Regression
 ##
 ## 100 samples
 ##   1 predictor
@@ -634,8 +946,8 @@ exhaustive and uses n folds for each observation.</p><h4 id=e-analysis>e) Analys
 ##   1.042399  0.8032414  0.8029942
 ##
 ## Tuning parameter &#39;intercept&#39; was held constant at a value of TRUE
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>train</span><span class=p>(</span><span class=n>y</span><span class=o>~</span><span class=nf>poly</span><span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=m>3</span><span class=p>),</span><span class=n>data</span><span class=o>=</span><span class=n>dfDat</span> <span class=o>%&gt;%</span> <span class=nf>subset</span><span class=p>(</span><span class=n>select</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=n>y</span><span class=p>,</span><span class=n>x</span><span class=p>)),</span><span class=n>trControl</span><span class=o>=</span><span class=n>fitControl</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;lm&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Linear Regression
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>train</span><span class=p>(</span><span class=n>y</span><span class=o>~</span><span class=nf>poly</span><span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=m>3</span><span class=p>),</span><span class=n>data</span><span class=o>=</span><span class=n>dfDat</span> <span class=o>%&gt;%</span> <span class=nf>subset</span><span class=p>(</span><span class=n>select</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=n>y</span><span class=p>,</span><span class=n>x</span><span class=p>)),</span><span class=n>trControl</span><span class=o>=</span><span class=n>fitControl</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;lm&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Linear Regression
 ##
 ## 100 samples
 ##   1 predictor
@@ -649,8 +961,8 @@ exhaustive and uses n folds for each observation.</p><h4 id=e-analysis>e) Analys
 ##   1.050041  0.8003517  0.8073024
 ##
 ## Tuning parameter &#39;intercept&#39; was held constant at a value of TRUE
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>train</span><span class=p>(</span><span class=n>y</span><span class=o>~</span><span class=nf>poly</span><span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=m>4</span><span class=p>),</span><span class=n>data</span><span class=o>=</span><span class=n>dfDat</span> <span class=o>%&gt;%</span> <span class=nf>subset</span><span class=p>(</span><span class=n>select</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=n>y</span><span class=p>,</span><span class=n>x</span><span class=p>)),</span><span class=n>trControl</span><span class=o>=</span><span class=n>fitControl</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;lm&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## Linear Regression
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>train</span><span class=p>(</span><span class=n>y</span><span class=o>~</span><span class=nf>poly</span><span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=m>4</span><span class=p>),</span><span class=n>data</span><span class=o>=</span><span class=n>dfDat</span> <span class=o>%&gt;%</span> <span class=nf>subset</span><span class=p>(</span><span class=n>select</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=n>y</span><span class=p>,</span><span class=n>x</span><span class=p>)),</span><span class=n>trControl</span><span class=o>=</span><span class=n>fitControl</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;lm&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## Linear Regression
 ##
 ## 100 samples
 ##   1 predictor
@@ -665,8 +977,10 @@ exhaustive and uses n folds for each observation.</p><h4 id=e-analysis>e) Analys
 ##
 ## Tuning parameter &#39;intercept&#39; was held constant at a value of TRUE
 </code></pre></div><p>Clearly the quadratic polynomial has the lowest error, which makes sense
-given how the data was generated.</p><h4 id=f-statistical-significance>f) Statistical significance</h4><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>train</span><span class=p>(</span><span class=n>y</span><span class=o>~</span><span class=n>x</span><span class=p>,</span><span class=n>data</span><span class=o>=</span><span class=n>dfDat</span> <span class=o>%&gt;%</span> <span class=nf>subset</span><span class=p>(</span><span class=n>select</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=n>y</span><span class=p>,</span><span class=n>x</span><span class=p>)),</span><span class=n>trControl</span><span class=o>=</span><span class=n>fitControl</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;lm&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>summary</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>##
+given how the data was generated.</p>
+<h4 id=f-statistical-significance>f) Statistical significance</h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>train</span><span class=p>(</span><span class=n>y</span><span class=o>~</span><span class=n>x</span><span class=p>,</span><span class=n>data</span><span class=o>=</span><span class=n>dfDat</span> <span class=o>%&gt;%</span> <span class=nf>subset</span><span class=p>(</span><span class=n>select</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=n>y</span><span class=p>,</span><span class=n>x</span><span class=p>)),</span><span class=n>trControl</span><span class=o>=</span><span class=n>fitControl</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;lm&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>summary</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>##
 ## Call:
 ## lm(formula = .outcome ~ ., data = dat)
 ##
@@ -684,8 +998,8 @@ given how the data was generated.</p><h4 id=f-statistical-significance>f) Statis
 ## Residual standard error: 2.362 on 98 degrees of freedom
 ## Multiple R-squared:  0.009717,   Adjusted R-squared:  -0.0003881
 ## F-statistic: 0.9616 on 1 and 98 DF,  p-value: 0.3292
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>train</span><span class=p>(</span><span class=n>y</span><span class=o>~</span><span class=nf>poly</span><span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=m>2</span><span class=p>),</span><span class=n>data</span><span class=o>=</span><span class=n>dfDat</span> <span class=o>%&gt;%</span> <span class=nf>subset</span><span class=p>(</span><span class=n>select</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=n>y</span><span class=p>,</span><span class=n>x</span><span class=p>)),</span><span class=n>trControl</span><span class=o>=</span><span class=n>fitControl</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;lm&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>summary</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>##
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>train</span><span class=p>(</span><span class=n>y</span><span class=o>~</span><span class=nf>poly</span><span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=m>2</span><span class=p>),</span><span class=n>data</span><span class=o>=</span><span class=n>dfDat</span> <span class=o>%&gt;%</span> <span class=nf>subset</span><span class=p>(</span><span class=n>select</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=n>y</span><span class=p>,</span><span class=n>x</span><span class=p>)),</span><span class=n>trControl</span><span class=o>=</span><span class=n>fitControl</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;lm&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>summary</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>##
 ## Call:
 ## lm(formula = .outcome ~ ., data = dat)
 ##
@@ -704,8 +1018,8 @@ given how the data was generated.</p><h4 id=f-statistical-significance>f) Statis
 ## Residual standard error: 1.032 on 97 degrees of freedom
 ## Multiple R-squared:  0.8128, Adjusted R-squared:  0.8089
 ## F-statistic: 210.6 on 2 and 97 DF,  p-value: &lt; 2.2e-16
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>train</span><span class=p>(</span><span class=n>y</span><span class=o>~</span><span class=nf>poly</span><span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=m>3</span><span class=p>),</span><span class=n>data</span><span class=o>=</span><span class=n>dfDat</span> <span class=o>%&gt;%</span> <span class=nf>subset</span><span class=p>(</span><span class=n>select</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=n>y</span><span class=p>,</span><span class=n>x</span><span class=p>)),</span><span class=n>trControl</span><span class=o>=</span><span class=n>fitControl</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;lm&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>summary</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>##
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>train</span><span class=p>(</span><span class=n>y</span><span class=o>~</span><span class=nf>poly</span><span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=m>3</span><span class=p>),</span><span class=n>data</span><span class=o>=</span><span class=n>dfDat</span> <span class=o>%&gt;%</span> <span class=nf>subset</span><span class=p>(</span><span class=n>select</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=n>y</span><span class=p>,</span><span class=n>x</span><span class=p>)),</span><span class=n>trControl</span><span class=o>=</span><span class=n>fitControl</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;lm&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>summary</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>##
 ## Call:
 ## lm(formula = .outcome ~ ., data = dat)
 ##
@@ -725,8 +1039,8 @@ given how the data was generated.</p><h4 id=f-statistical-significance>f) Statis
 ## Residual standard error: 1.037 on 96 degrees of freedom
 ## Multiple R-squared:  0.813,  Adjusted R-squared:  0.8071
 ## F-statistic: 139.1 on 3 and 96 DF,  p-value: &lt; 2.2e-16
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>train</span><span class=p>(</span><span class=n>y</span><span class=o>~</span><span class=nf>poly</span><span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=m>4</span><span class=p>),</span><span class=n>data</span><span class=o>=</span><span class=n>dfDat</span> <span class=o>%&gt;%</span> <span class=nf>subset</span><span class=p>(</span><span class=n>select</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=n>y</span><span class=p>,</span><span class=n>x</span><span class=p>)),</span><span class=n>trControl</span><span class=o>=</span><span class=n>fitControl</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;lm&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>summary</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>##
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>train</span><span class=p>(</span><span class=n>y</span><span class=o>~</span><span class=nf>poly</span><span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=m>4</span><span class=p>),</span><span class=n>data</span><span class=o>=</span><span class=n>dfDat</span> <span class=o>%&gt;%</span> <span class=nf>subset</span><span class=p>(</span><span class=n>select</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=n>y</span><span class=p>,</span><span class=n>x</span><span class=p>)),</span><span class=n>trControl</span><span class=o>=</span><span class=n>fitControl</span><span class=p>,</span><span class=n>method</span><span class=o>=</span><span class=s>&#34;lm&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>summary</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>##
 ## Call:
 ## lm(formula = .outcome ~ ., data = dat)
 ##
@@ -747,25 +1061,42 @@ given how the data was generated.</p><h4 id=f-statistical-significance>f) Statis
 ## Residual standard error: 1.041 on 95 degrees of freedom
 ## Multiple R-squared:  0.8134, Adjusted R-squared:  0.8055
 ## F-statistic: 103.5 on 4 and 95 DF,  p-value: &lt; 2.2e-16
-</code></pre></div><ul><li>Clearly, the second order terms are the most significant, as expected</li></ul><h2 id=question-5.9---page-201>Question 5.9 - Page 201</h2><p>We will now consider the Boston housing data set, from the MASS library.</p><p><strong>(a)</strong> Based on this data set, provide an estimate for the population
-mean of <code>medv</code>. Call this estimate \(\hat{\mu}\).</p><p><strong>(b)</strong> Provide an estimate of the standard error of \(\hat{\mu}\).
+</code></pre></div><ul>
+<li>Clearly, the second order terms are the most significant, as expected</li>
+</ul>
+<h2 id=question-5.9---page-201>Question 5.9 - Page 201</h2>
+<p>We will now consider the Boston housing data set, from the MASS library.</p>
+<p><strong>(a)</strong> Based on this data set, provide an estimate for the population
+mean of <code>medv</code>. Call this estimate \(\hat{\mu}\).</p>
+<p><strong>(b)</strong> Provide an estimate of the standard error of \(\hat{\mu}\).
 Interpret this result. <em>Hint: We can compute the standard error of the
 sample mean by dividing the sample standard deviation by the square root
-of the number of observations.</em></p><p><strong>(c)</strong> Now estimate the standard error of \(\hat{\mu}\) using the
-bootstrap. How does this compare to your answer from (b)?</p><p><strong>(d)</strong> Based on your bootstrap estimate from (c), provide a 95 %
+of the number of observations.</em></p>
+<p><strong>(c)</strong> Now estimate the standard error of \(\hat{\mu}\) using the
+bootstrap. How does this compare to your answer from (b)?</p>
+<p><strong>(d)</strong> Based on your bootstrap estimate from (c), provide a 95 %
 confidence interval for the mean of <code>medv</code>. Compare it to the results
 obtained using <code>t.test(Boston\$medv)</code>. <em>Hint: You can approximate a 95 %
 confidence interval using the formula
-\([\hat{\mu} − 2SE(\hat{\mu}), \hat{\mu} + 2SE(\hat{\mu})]\).</em></p><p><strong>(e)</strong> Based on this data set, provide an estimate, \(\hat{\mu_{med}}\),
-for the median value of <code>medv</code> in the population.</p><p><strong>(f)</strong> We now would like to estimate the standard error of \(\hat{\mu}\)
+\([\hat{\mu} − 2SE(\hat{\mu}), \hat{\mu} + 2SE(\hat{\mu})]\).</em></p>
+<p><strong>(e)</strong> Based on this data set, provide an estimate, \(\hat{\mu_{med}}\),
+for the median value of <code>medv</code> in the population.</p>
+<p><strong>(f)</strong> We now would like to estimate the standard error of \(\hat{\mu}\)
 med. Unfortunately, there is no simple formula for computing the
 standard error of the median. Instead, estimate the standard error of
-the median using the bootstrap. Comment on your findings.</p><p><strong>(g)</strong> Based on this data set, provide an estimate for the tenth
+the median using the bootstrap. Comment on your findings.</p>
+<p><strong>(g)</strong> Based on this data set, provide an estimate for the tenth
 percentile of <code>medv</code> in Boston suburbs. Call this quantity
-\(\hat{\mu_{0.1}}\). (You can use the <code>quantile()</code> function.)</p><p><strong>(h)</strong> Use the bootstrap to estimate the standard error of
-\(\hat{\mu_{0.1}}\). Comment on your findings.</p><h3 id=answer-3>Answer</h3><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>boston</span><span class=o>&lt;-</span><span class=n>MASS</span><span class=o>::</span><span class=n>Boston</span>
-</code></pre></div><ul><li>Reminder</li></ul><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>boston</span> <span class=o>%&gt;%</span> <span class=n>summary</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>##       crim                zn             indus            chas
+\(\hat{\mu_{0.1}}\). (You can use the <code>quantile()</code> function.)</p>
+<p><strong>(h)</strong> Use the bootstrap to estimate the standard error of
+\(\hat{\mu_{0.1}}\). Comment on your findings.</p>
+<h3 id=answer-3>Answer</h3>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>boston</span><span class=o>&lt;-</span><span class=n>MASS</span><span class=o>::</span><span class=n>Boston</span>
+</code></pre></div><ul>
+<li>Reminder</li>
+</ul>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>boston</span> <span class=o>%&gt;%</span> <span class=n>summary</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>##       crim                zn             indus            chas
 ##  Min.   : 0.00632   Min.   :  0.00   Min.   : 0.46   Min.   :0.00000
 ##  1st Qu.: 0.08204   1st Qu.:  0.00   1st Qu.: 5.19   1st Qu.:0.00000
 ##  Median : 0.25651   Median :  0.00   Median : 9.69   Median :0.00000
@@ -793,8 +1124,8 @@ percentile of <code>medv</code> in Boston suburbs. Call this quantity
 ##  Mean   :12.65   Mean   :22.53
 ##  3rd Qu.:16.95   3rd Qu.:25.00
 ##  Max.   :37.97   Max.   :50.00
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>boston</span> <span class=o>%&gt;%</span> <span class=n>str</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## &#39;data.frame&#39;:    506 obs. of  14 variables:
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>boston</span> <span class=o>%&gt;%</span> <span class=n>str</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## &#39;data.frame&#39;:    506 obs. of  14 variables:
 ##  $ crim   : num  0.00632 0.02731 0.02729 0.03237 0.06905 ...
 ##  $ zn     : num  18 0 0 0 0 0 12.5 12.5 12.5 12.5 ...
 ##  $ indus  : num  2.31 7.07 7.07 2.18 2.18 2.18 7.87 7.87 7.87 7.87 ...
@@ -810,16 +1141,20 @@ percentile of <code>medv</code> in Boston suburbs. Call this quantity
 ##  $ lstat  : num  4.98 9.14 4.03 2.94 5.33 ...
 ##  $ medv   : num  24 21.6 34.7 33.4 36.2 28.7 22.9 27.1 16.5 18.9 ...
 ## NULL
-</code></pre></div><h4 id=a-mean>a) Mean</h4><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>muhat</span><span class=o>=</span><span class=n>boston</span><span class=o>$</span><span class=n>medv</span> <span class=o>%&gt;%</span> <span class=nf>mean</span><span class=p>()</span>
+</code></pre></div><h4 id=a-mean>a) Mean</h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>muhat</span><span class=o>=</span><span class=n>boston</span><span class=o>$</span><span class=n>medv</span> <span class=o>%&gt;%</span> <span class=nf>mean</span><span class=p>()</span>
 <span class=nf>print</span><span class=p>(</span><span class=n>muhat</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## [1] 22.53281
-</code></pre></div><h4 id=b-standard-error>b) Standard error</h4><p>Recall that \(SE=\frac{SD}{\sqrt{N_{obs}}}\)</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>boston</span><span class=o>$</span><span class=n>medv</span> <span class=o>%&gt;%</span> <span class=n>sd</span><span class=o>/</span><span class=p>(</span><span class=nf>nrow</span><span class=p>(</span><span class=n>boston</span><span class=p>)</span><span class=n>^0.5</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## [1] 22.49444
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## [1] 0.4088611
-</code></pre></div><h4 id=c-bootstrap-estimate>c) Bootstrap estimate</h4><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>library</span><span class=p>(</span><span class=n>boot</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## [1] 22.53281
+</code></pre></div><h4 id=b-standard-error>b) Standard error</h4>
+<p>Recall that \(SE=\frac{SD}{\sqrt{N_{obs}}}\)</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>boston</span><span class=o>$</span><span class=n>medv</span> <span class=o>%&gt;%</span> <span class=n>sd</span><span class=o>/</span><span class=p>(</span><span class=nf>nrow</span><span class=p>(</span><span class=n>boston</span><span class=p>)</span><span class=n>^0.5</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## [1] 22.49444
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## [1] 0.4088611
+</code></pre></div><h4 id=c-bootstrap-estimate>c) Bootstrap estimate</h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>library</span><span class=p>(</span><span class=n>boot</span><span class=p>)</span>
 <span class=n>myMean</span><span class=o>&lt;-</span><span class=nf>function</span><span class=p>(</span><span class=n>frame</span><span class=p>,</span><span class=n>ind</span><span class=p>){</span><span class=nf>return</span><span class=p>(</span><span class=nf>mean</span><span class=p>(</span><span class=n>frame[ind]</span><span class=p>))}</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>boot</span><span class=p>(</span><span class=n>boston</span><span class=o>$</span><span class=n>medv</span><span class=p>,</span><span class=n>myMean</span><span class=p>,</span><span class=n>R</span><span class=o>=</span><span class=m>184</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>##
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>boot</span><span class=p>(</span><span class=n>boston</span><span class=o>$</span><span class=n>medv</span><span class=p>,</span><span class=n>myMean</span><span class=p>,</span><span class=n>R</span><span class=o>=</span><span class=m>184</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>##
 ## ORDINARY NONPARAMETRIC BOOTSTRAP
 ##
 ##
@@ -831,8 +1166,10 @@ percentile of <code>medv</code> in Boston suburbs. Call this quantity
 ##     original     bias    std. error
 ## t1* 22.53281 0.03451839    0.409621
 </code></pre></div><p>We see that the bootstrapped error over 184 samples is <code>0.4341499</code> while
-without it we had <code>0.4088611</code> which is similar enough.</p><h4 id=d-confidence-intervals-with-bootstrap-and-t.test>d) Confidence intervals with bootstrap and t.test</h4><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>boston</span><span class=o>$</span><span class=n>medv</span> <span class=o>%&gt;%</span> <span class=n>t.test</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>##
+without it we had <code>0.4088611</code> which is similar enough.</p>
+<h4 id=d-confidence-intervals-with-bootstrap-and-t.test>d) Confidence intervals with bootstrap and t.test</h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>boston</span><span class=o>$</span><span class=n>medv</span> <span class=o>%&gt;%</span> <span class=n>t.test</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>##
 ##  One Sample t-test
 ##
 ## data:  .
@@ -843,17 +1180,22 @@ without it we had <code>0.4088611</code> which is similar enough.</p><h4 id=d-co
 ## sample estimates:
 ## mean of x
 ##  22.53281
-</code></pre></div><p>We can approximate this with what we already have</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>bRes</span><span class=o>=</span><span class=nf>boot</span><span class=p>(</span><span class=n>boston</span><span class=o>$</span><span class=n>medv</span><span class=p>,</span><span class=n>myMean</span><span class=p>,</span><span class=n>R</span><span class=o>=</span><span class=m>184</span><span class=p>)</span>
+</code></pre></div><p>We can approximate this with what we already have</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>bRes</span><span class=o>=</span><span class=nf>boot</span><span class=p>(</span><span class=n>boston</span><span class=o>$</span><span class=n>medv</span><span class=p>,</span><span class=n>myMean</span><span class=p>,</span><span class=n>R</span><span class=o>=</span><span class=m>184</span><span class=p>)</span>
 <span class=n>seBoot</span><span class=o>&lt;-</span><span class=n>bRes</span><span class=o>$</span><span class=n>t</span> <span class=o>%&gt;%</span> <span class=n>var</span> <span class=o>%&gt;%</span> <span class=n>sqrt</span>
 <span class=n>xlow</span><span class=o>=</span><span class=n>muhat</span><span class=m>-2</span><span class=o>*</span><span class=p>(</span><span class=n>seBoot</span><span class=p>)</span>
 <span class=n>xhigh</span><span class=o>=</span><span class=n>muhat</span><span class=m>+2</span><span class=o>*</span><span class=p>(</span><span class=n>seBoot</span><span class=p>)</span>
 <span class=nf>c</span><span class=p>(</span><span class=n>xlow</span><span class=p>,</span><span class=n>xhigh</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## [1] 21.72675 23.33887
-</code></pre></div><p>Our intervals are also pretty close to each other.</p><h4 id=e-median>e) Median</h4><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>boston</span><span class=o>$</span><span class=n>medv</span> <span class=o>%&gt;%</span> <span class=n>sort</span> <span class=o>%&gt;%</span> <span class=n>median</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>## [1] 21.2
-</code></pre></div><h4 id=f-median-standard-error>f) Median standard error</h4><p>We can reuse the logic of the <code>myMean</code> function defined previously.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>myMedian</span><span class=o>=</span><span class=nf>function</span><span class=p>(</span><span class=n>data</span><span class=p>,</span><span class=n>ind</span><span class=p>){</span><span class=nf>return</span><span class=p>(</span><span class=nf>median</span><span class=p>(</span><span class=n>data[ind]</span><span class=p>))}</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>boston</span><span class=o>$</span><span class=n>medv</span> <span class=o>%&gt;%</span> <span class=nf>boot</span><span class=p>(</span><span class=n>myMedian</span><span class=p>,</span><span class=n>R</span><span class=o>=</span><span class=m>1500</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>##
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## [1] 21.72675 23.33887
+</code></pre></div><p>Our intervals are also pretty close to each other.</p>
+<h4 id=e-median>e) Median</h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>boston</span><span class=o>$</span><span class=n>medv</span> <span class=o>%&gt;%</span> <span class=n>sort</span> <span class=o>%&gt;%</span> <span class=n>median</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>## [1] 21.2
+</code></pre></div><h4 id=f-median-standard-error>f) Median standard error</h4>
+<p>We can reuse the logic of the <code>myMean</code> function defined previously.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>myMedian</span><span class=o>=</span><span class=nf>function</span><span class=p>(</span><span class=n>data</span><span class=p>,</span><span class=n>ind</span><span class=p>){</span><span class=nf>return</span><span class=p>(</span><span class=nf>median</span><span class=p>(</span><span class=n>data[ind]</span><span class=p>))}</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>boston</span><span class=o>$</span><span class=n>medv</span> <span class=o>%&gt;%</span> <span class=nf>boot</span><span class=p>(</span><span class=n>myMedian</span><span class=p>,</span><span class=n>R</span><span class=o>=</span><span class=m>1500</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>##
 ## ORDINARY NONPARAMETRIC BOOTSTRAP
 ##
 ##
@@ -864,13 +1206,17 @@ without it we had <code>0.4088611</code> which is similar enough.</p><h4 id=d-co
 ## Bootstrap Statistics :
 ##     original      bias    std. error
 ## t1*     21.2 -0.03773333    0.387315
-</code></pre></div><p>We see that the standard error is <code>0.3767072</code>.</p><h4 id=g-tenth-percentile>g) Tenth percentile</h4><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>mu0one</span><span class=o>&lt;-</span><span class=n>boston</span><span class=o>$</span><span class=n>medv</span> <span class=o>%&gt;%</span> <span class=nf>quantile</span><span class=p>(</span><span class=nf>c</span><span class=p>(</span><span class=m>0.1</span><span class=p>))</span>
+</code></pre></div><p>We see that the standard error is <code>0.3767072</code>.</p>
+<h4 id=g-tenth-percentile>g) Tenth percentile</h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>mu0one</span><span class=o>&lt;-</span><span class=n>boston</span><span class=o>$</span><span class=n>medv</span> <span class=o>%&gt;%</span> <span class=nf>quantile</span><span class=p>(</span><span class=nf>c</span><span class=p>(</span><span class=m>0.1</span><span class=p>))</span>
 <span class=nf>print</span><span class=p>(</span><span class=n>mu0one</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>##   10%
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>##   10%
 ## 12.75
-</code></pre></div><h4 id=h-bootstrap>h) Bootstrap</h4><p>Once again.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>myQuant</span><span class=o>=</span><span class=nf>function</span><span class=p>(</span><span class=n>data</span><span class=p>,</span><span class=n>ind</span><span class=p>){</span><span class=nf>return</span><span class=p>(</span><span class=nf>quantile</span><span class=p>(</span><span class=n>data[ind]</span><span class=p>,</span><span class=m>0.1</span><span class=p>))}</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>boston</span><span class=o>$</span><span class=n>medv</span> <span class=o>%&gt;%</span> <span class=nf>boot</span><span class=p>(</span><span class=n>myQuant</span><span class=p>,</span><span class=n>R</span><span class=o>=</span><span class=m>500</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>##
+</code></pre></div><h4 id=h-bootstrap>h) Bootstrap</h4>
+<p>Once again.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>myQuant</span><span class=o>=</span><span class=nf>function</span><span class=p>(</span><span class=n>data</span><span class=p>,</span><span class=n>ind</span><span class=p>){</span><span class=nf>return</span><span class=p>(</span><span class=nf>quantile</span><span class=p>(</span><span class=n>data[ind]</span><span class=p>,</span><span class=m>0.1</span><span class=p>))}</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>boston</span><span class=o>$</span><span class=n>medv</span> <span class=o>%&gt;%</span> <span class=nf>boot</span><span class=p>(</span><span class=n>myQuant</span><span class=p>,</span><span class=n>R</span><span class=o>=</span><span class=m>500</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>##
 ## ORDINARY NONPARAMETRIC BOOTSTRAP
 ##
 ##
@@ -881,10 +1227,106 @@ without it we had <code>0.4088611</code> which is similar enough.</p><h4 id=d-co
 ## Bootstrap Statistics :
 ##     original  bias    std. error
 ## t1*    12.75 -0.0095   0.4951415
-</code></pre></div><p>The standard error is <code>0.5024526</code></p><section class=footnotes role=doc-endnotes><hr><ol><li id=fn:1 role=doc-endnote><p>James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). An Introduction to Statistical Learning: with Applications in R. Berlin, Germany: Springer Science & Business Media.&#160;<a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li><li id=fn:2 role=doc-endnote><p>Lang et al., (2019). mlr3: A modern object-oriented machine learning framework in R. Journal of Open Source Software, 4(44), 1903, <a href=https://doi.org/10.21105/joss.01903>https://doi.org/10.21105/joss.01903</a>&#160;<a href=#fnref:2 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li></ol></section></div></article><hr><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7" y2="7"/></svg><span class=tag><a href=https://rgoswami.me/tags/solutions>solutions</a></span><span class=tag><a href=https://rgoswami.me/tags/r>R</a></span><span class=tag><a href=https://rgoswami.me/tags/islr>ISLR</a></span></p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6A2 2 0 004 4v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>5182 Words</p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Posted: <time class=dt-published>2020-02-18 22:00 +0000</time></p><a class=resp-sharing-button__link href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2frgoswami.me%2fposts%2fislr-ch5%2f" target=_blank rel=noopener aria-label=Facebook><div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.5"/><path d="M15.84 9.5H13.5V8.48c0-.53.35-.65.6-.65h1.4v-2.3h-2.35c-2.3.0-2.65 1.7-2.65 2.8V9.5h-2v2h2v7h3v-7h2.1l.24-2z"/></svg></div>Facebook</div></a><a class=resp-sharing-button__link href="https://twitter.com/intent/tweet/?text=%22ISLR%20%3a%3a%20Resampling%20Methods%22%20seems%20like%20an%20interesting%20read%20from%20%40rg0swami&url=https%3a%2f%2frgoswami.me%2fposts%2fislr-ch5%2f" target=_blank rel=noopener aria-label=Twitter><div class="resp-sharing-button resp-sharing-button--twitter resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.5 7.4l-2 .2c-.4-.5-1-.8-2-.8C13.3 6.8 12 8 12 9.4v.6c-2 0-4-1-5.4-2.7-.2.4-.3.8-.3 1.3.0 1 .4 1.7 1.2 2.2-.5.0-1 0-1.2-.3.0 1.3 1 2.3 2 2.6-.3.4-.7.4-1 0 .2 1.4 1.2 2 2.3 2-1 1-2.5 1.4-4 1 1.3 1 2.7 1.4 4.2 1.4 4.8.0 7.5-4 7.5-7.5v-.4c.5-.4.8-1.5 1.2-2z"/><circle cx="12" cy="12" r="11.5"/></svg></div>Twitter</div></a><a class=resp-sharing-button__link href="mailto:?subject=%22ISLR%20%3a%3a%20Resampling%20Methods%22%20seems%20interesting...&body=https%3a%2f%2frgoswami.me%2fposts%2fislr-ch5%2f" target=_self rel=noopener aria-label=E-Mail><div class="resp-sharing-button resp-sharing-button--email resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19.5 16c0 .8-.7 1.5-1.5 1.5H6c-.8.0-1.5-.7-1.5-1.5V8c0-.8.7-1.5 1.5-1.5h12c.8.0 1.5.7 1.5 1.5v8zm-2-7.5L12 13 6.5 8.5m11 6-4-2.5m-7 2.5 4-2.5"/><circle cx="12" cy="12" r="11.5"/></svg></div>E-Mail</div></a><a class=resp-sharing-button__link href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2frgoswami.me%2fposts%2fislr-ch5%2f&title=%22ISLR%20%3a%3a%20Resampling%20Methods%22%20seems%20interesting...&summary=%22ISLR%20%3a%3a%20Resampling%20Methods%22%20seems%20interesting...&source=https%3a%2f%2frgoswami.me%2fposts%2fislr-ch5%2f" target=_blank rel=noopener aria-label=LinkedIn><div class="resp-sharing-button resp-sharing-button--linkedin resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.5"/><path d="M15 12.5c-.28.0-.5.22-.5.5v3.5h-3s.03-6.48.0-7h3v.83s.46-.75 1.7-.75c1.56.0 2.3 1.12 2.3 3.3v3.62h-3V13c0-.28-.23-.5-.5-.5zm-7.5-3h2v7h-2z"/><circle cx="8.5" cy="6.5" r="1"/></svg></div>LinkedIn</div></a><a class=resp-sharing-button__link href="https://reddit.com/submit/?url=https%3a%2f%2frgoswami.me%2fposts%2fislr-ch5%2f&resubmit=true&title=%22ISLR%20%3a%3a%20Resampling%20Methods%22%20seems%20interesting..." target=_blank rel=noopener aria-label=Reddit><div class="resp-sharing-button resp-sharing-button--reddit resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.5"/><ellipse cx="12" cy="14.37" rx="6.2" ry="4.24"/><path d="M14.3 16.25c-.62.36-1.42.57-2.3.57s-1.7-.2-2.32-.58"/><circle cx="14.61" cy="13.39" r=".98"/><circle cx="9.39" cy="13.39" r=".98"/><path d="M16.4 11.38c.26-.55.82-.92 1.47-.92.9.0 1.63.73 1.63 1.63.0.8-.6 1.47-1.38 1.6"/><circle cx="17.22" cy="7.52" r="1.63"/><path d="M7.6 11.38c-.26-.54-.82-.92-1.47-.92-.9.0-1.63.73-1.63 1.63.0.8.6 1.47 1.38 1.6M12 10.12s-.08-4.82 3.6-2.6"/></svg></div>Reddit</div></a><a class=resp-sharing-button__link href="whatsapp://send?text=%22ISLR%20%3a%3a%20Resampling%20Methods%22%20seems%20interesting...%20https%3a%2f%2frgoswami.me%2fposts%2fislr-ch5%2f" target=_blank rel=noopener aria-label=WhatsApp><div class="resp-sharing-button resp-sharing-button--whatsapp resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle xmlns="http://www.w3.org/2000/svg" cx="12" cy="12" r="11.5"/><path stroke-width="1" d="M17.6 6.2c-1.5-1.5-3.4-2.3-5.5-2.3-4.3.0-7.8 3.5-7.8 7.8.0 1.4.4 2.7 1 3.9l-1.1 4 4.1-1.1c1.1.6 2.4.9 3.7.9 4.3.0 7.8-3.5 7.8-7.8.1-2-.7-3.9-2.2-5.4zm-5.5 11.9c-1.2.0-2.3-.3-3.3-.9l-.2-.1-2.4.6.7-2.4-.2-.2c-.6-1-1-2.2-1-3.4.0-3.6 2.9-6.5 6.5-6.5 1.7.0 3.3.7 4.6 1.9 1.2 1.2 1.9 2.8 1.9 4.6-.1 3.5-3 6.4-6.6 6.4zm3.5-4.8c-.2-.1-1.1-.6-1.3-.6-.2-.1-.3-.1-.4.1s-.5.6-.6.8c-.1.1-.2.1-.4.0s-.8-.3-1.6-1c-.6-.5-1-1.2-1.1-1.3-.1-.2.0-.3.1-.4l.3-.3s.1-.2.2-.3c.1-.1.0-.2.0-.3s-.4-1.1-.6-1.4c-.2-.4-.3-.3-.4-.3h-.4s-.3.0-.5.2-.7.7-.7 1.6c0 1 .7 1.9.8 2s1.4 2.1 3.3 2.9c.5.2.8.3 1.1.4.5.1.9.1 1.2.1.4-.1 1.1-.5 1.3-.9.2-.5.2-.8.1-.9.0-.2-.2-.3-.4-.4z"/></svg></div>WhatsApp</div></a></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://rgoswami.me/posts/islr-ch6/><span class=button__icon>←</span>
-<span class=button__text>ISLR :: Linear Model Selection and Regularization</span></a></span>
-<span class="button next"><a href=https://rgoswami.me/posts/islr-ch4/><span class=button__text>ISLR :: Classification</span>
-<span class=button__icon>→</span></a></span></div></div><div id=comments class=thin><div class=pagination__title><span class=pagination__title-h>Comments</span><hr></div><div id=remarkbox-div><noscript><iframe id=remarkbox-iframe src="https://my.remarkbox.com/embed?nojs=true" style=height:600px;width:100%;border:none!important tabindex=0></iframe></noscript></div><script src=https://my.remarkbox.com/static/js/iframe-resizer/iframeResizer.min.js></script><script>var rb_owner_key="8e660759-e7e6-11ea-9711-040140774501",thread_uri=window.location.href,thread_title=window.document.title,thread_fragment=window.location.hash,rb_src="https://my.remarkbox.com/embed?rb_owner_key="+rb_owner_key+"&thread_title="+encodeURI(thread_title)+"&thread_uri="+encodeURIComponent(thread_uri)+thread_fragment;function create_remarkbox_iframe(){var a=document.createElement("iframe");a.setAttribute("id","remarkbox-iframe"),a.setAttribute("scrolling","no"),a.setAttribute("src",rb_src),a.setAttribute("frameborder","0"),a.setAttribute("tabindex","0"),a.setAttribute("title","Remarkbox"),a.style.width="100%",document.getElementById("remarkbox-div").appendChild(a)}create_remarkbox_iframe(),iFrameResize({checkOrigin:["https://my.remarkbox.com"],inPageLinks:!0,initCallback:function(a){a.iFrameResizer.moveToAnchor(thread_fragment)}},document.getElementById("remarkbox-iframe"))</script></div></main><footer class=footer><p>&copy; 2021
+</code></pre></div><p>The standard error is <code>0.5024526</code></p>
+<section class=footnotes role=doc-endnotes>
+<hr>
+<ol>
+<li id=fn:1 role=doc-endnote>
+<p>James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). An Introduction to Statistical Learning: with Applications in R. Berlin, Germany: Springer Science & Business Media.&#160;<a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p>
+</li>
+<li id=fn:2 role=doc-endnote>
+<p>Lang et al., (2019). mlr3: A modern object-oriented machine learning framework in R. Journal of Open Source Software, 4(44), 1903, <a href=https://doi.org/10.21105/joss.01903>https://doi.org/10.21105/joss.01903</a>&#160;<a href=#fnref:2 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+</div>
+</article>
+<hr>
+<div class=post-info>
+<p>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7" y2="7"/></svg><span class=tag><a href=https://rgoswami.me/tags/solutions>solutions</a></span><span class=tag><a href=https://rgoswami.me/tags/r>R</a></span><span class=tag><a href=https://rgoswami.me/tags/islr>ISLR</a></span>
+</p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6A2 2 0 004 4v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>5182 Words</p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Posted: <time class=dt-published> 2020-02-18 22:00 +0000</time></p>
+<a class=resp-sharing-button__link href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2frgoswami.me%2fposts%2fislr-ch5%2f" target=_blank rel=noopener aria-label=Facebook>
+<div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.5"/><path d="M15.84 9.5H13.5V8.48c0-.53.35-.65.6-.65h1.4v-2.3h-2.35c-2.3.0-2.65 1.7-2.65 2.8V9.5h-2v2h2v7h3v-7h2.1l.24-2z"/></svg></div>Facebook</div>
+</a>
+<a class=resp-sharing-button__link href="https://twitter.com/intent/tweet/?text=%22ISLR%20%3a%3a%20Resampling%20Methods%22%20seems%20like%20an%20interesting%20read%20from%20%40rg0swami&url=https%3a%2f%2frgoswami.me%2fposts%2fislr-ch5%2f" target=_blank rel=noopener aria-label=Twitter>
+<div class="resp-sharing-button resp-sharing-button--twitter resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.5 7.4l-2 .2c-.4-.5-1-.8-2-.8C13.3 6.8 12 8 12 9.4v.6c-2 0-4-1-5.4-2.7-.2.4-.3.8-.3 1.3.0 1 .4 1.7 1.2 2.2-.5.0-1 0-1.2-.3.0 1.3 1 2.3 2 2.6-.3.4-.7.4-1 0 .2 1.4 1.2 2 2.3 2-1 1-2.5 1.4-4 1 1.3 1 2.7 1.4 4.2 1.4 4.8.0 7.5-4 7.5-7.5v-.4c.5-.4.8-1.5 1.2-2z"/><circle cx="12" cy="12" r="11.5"/></svg></div>Twitter</div>
+</a>
+<a class=resp-sharing-button__link href="mailto:?subject=%22ISLR%20%3a%3a%20Resampling%20Methods%22%20seems%20interesting...&body=https%3a%2f%2frgoswami.me%2fposts%2fislr-ch5%2f" target=_self rel=noopener aria-label=E-Mail>
+<div class="resp-sharing-button resp-sharing-button--email resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19.5 16c0 .8-.7 1.5-1.5 1.5H6c-.8.0-1.5-.7-1.5-1.5V8c0-.8.7-1.5 1.5-1.5h12c.8.0 1.5.7 1.5 1.5v8zm-2-7.5L12 13 6.5 8.5m11 6-4-2.5m-7 2.5 4-2.5"/><circle cx="12" cy="12" r="11.5"/></svg></div>E-Mail</div>
+</a>
+<a class=resp-sharing-button__link href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2frgoswami.me%2fposts%2fislr-ch5%2f&title=%22ISLR%20%3a%3a%20Resampling%20Methods%22%20seems%20interesting...&summary=%22ISLR%20%3a%3a%20Resampling%20Methods%22%20seems%20interesting...&source=https%3a%2f%2frgoswami.me%2fposts%2fislr-ch5%2f" target=_blank rel=noopener aria-label=LinkedIn>
+<div class="resp-sharing-button resp-sharing-button--linkedin resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.5"/><path d="M15 12.5c-.28.0-.5.22-.5.5v3.5h-3s.03-6.48.0-7h3v.83s.46-.75 1.7-.75c1.56.0 2.3 1.12 2.3 3.3v3.62h-3V13c0-.28-.23-.5-.5-.5zm-7.5-3h2v7h-2z"/><circle cx="8.5" cy="6.5" r="1"/></svg></div>LinkedIn</div>
+</a>
+<a class=resp-sharing-button__link href="https://reddit.com/submit/?url=https%3a%2f%2frgoswami.me%2fposts%2fislr-ch5%2f&resubmit=true&title=%22ISLR%20%3a%3a%20Resampling%20Methods%22%20seems%20interesting..." target=_blank rel=noopener aria-label=Reddit>
+<div class="resp-sharing-button resp-sharing-button--reddit resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.5"/><ellipse cx="12" cy="14.37" rx="6.2" ry="4.24"/><path d="M14.3 16.25c-.62.36-1.42.57-2.3.57s-1.7-.2-2.32-.58"/><circle cx="14.61" cy="13.39" r=".98"/><circle cx="9.39" cy="13.39" r=".98"/><path d="M16.4 11.38c.26-.55.82-.92 1.47-.92.9.0 1.63.73 1.63 1.63.0.8-.6 1.47-1.38 1.6"/><circle cx="17.22" cy="7.52" r="1.63"/><path d="M7.6 11.38c-.26-.54-.82-.92-1.47-.92-.9.0-1.63.73-1.63 1.63.0.8.6 1.47 1.38 1.6M12 10.12s-.08-4.82 3.6-2.6"/></svg></div>Reddit</div>
+</a>
+<a class=resp-sharing-button__link href="whatsapp://send?text=%22ISLR%20%3a%3a%20Resampling%20Methods%22%20seems%20interesting...%20https%3a%2f%2frgoswami.me%2fposts%2fislr-ch5%2f" target=_blank rel=noopener aria-label=WhatsApp>
+<div class="resp-sharing-button resp-sharing-button--whatsapp resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle xmlns="http://www.w3.org/2000/svg" cx="12" cy="12" r="11.5"/><path stroke-width="1" d="M17.6 6.2c-1.5-1.5-3.4-2.3-5.5-2.3-4.3.0-7.8 3.5-7.8 7.8.0 1.4.4 2.7 1 3.9l-1.1 4 4.1-1.1c1.1.6 2.4.9 3.7.9 4.3.0 7.8-3.5 7.8-7.8.1-2-.7-3.9-2.2-5.4zm-5.5 11.9c-1.2.0-2.3-.3-3.3-.9l-.2-.1-2.4.6.7-2.4-.2-.2c-.6-1-1-2.2-1-3.4.0-3.6 2.9-6.5 6.5-6.5 1.7.0 3.3.7 4.6 1.9 1.2 1.2 1.9 2.8 1.9 4.6-.1 3.5-3 6.4-6.6 6.4zm3.5-4.8c-.2-.1-1.1-.6-1.3-.6-.2-.1-.3-.1-.4.1s-.5.6-.6.8c-.1.1-.2.1-.4.0s-.8-.3-1.6-1c-.6-.5-1-1.2-1.1-1.3-.1-.2.0-.3.1-.4l.3-.3s.1-.2.2-.3c.1-.1.0-.2.0-.3s-.4-1.1-.6-1.4c-.2-.4-.3-.3-.4-.3h-.4s-.3.0-.5.2-.7.7-.7 1.6c0 1 .7 1.9.8 2s1.4 2.1 3.3 2.9c.5.2.8.3 1.1.4.5.1.9.1 1.2.1.4-.1 1.1-.5 1.3-.9.2-.5.2-.8.1-.9.0-.2-.2-.3-.4-.4z"/></svg></div>WhatsApp</div>
+</a>
+</div>
+<div class=pagination>
+<div class=pagination__title>
+<span class=pagination__title-h>Read other posts</span>
+<hr>
+</div>
+<div class=pagination__buttons>
+<span class="button previous">
+<a href=https://rgoswami.me/posts/islr-ch6/>
+<span class=button__icon>←</span>
+<span class=button__text>ISLR :: Linear Model Selection and Regularization</span>
+</a>
+</span>
+<span class="button next">
+<a href=https://rgoswami.me/posts/islr-ch4/>
+<span class=button__text>ISLR :: Classification</span>
+<span class=button__icon>→</span>
+</a>
+</span>
+</div>
+</div>
+<div id=comments class=thin><div class=pagination__title>
+<span class=pagination__title-h>Comments</span>
+<hr>
+</div>
+<div id=remarkbox-div>
+<noscript>
+<iframe id=remarkbox-iframe src="https://my.remarkbox.com/embed?nojs=true" style=height:600px;width:100%;border:none!important tabindex=0></iframe>
+</noscript>
+</div>
+<script src=https://my.remarkbox.com/static/js/iframe-resizer/iframeResizer.min.js></script>
+<script>var rb_owner_key="8e660759-e7e6-11ea-9711-040140774501",thread_uri=window.location.href,thread_title=window.document.title,thread_fragment=window.location.hash,rb_src="https://my.remarkbox.com/embed?rb_owner_key="+rb_owner_key+"&thread_title="+encodeURI(thread_title)+"&thread_uri="+encodeURIComponent(thread_uri)+thread_fragment;function create_remarkbox_iframe(){var a=document.createElement("iframe");a.setAttribute("id","remarkbox-iframe"),a.setAttribute("scrolling","no"),a.setAttribute("src",rb_src),a.setAttribute("frameborder","0"),a.setAttribute("tabindex","0"),a.setAttribute("title","Remarkbox"),a.style.width="100%",document.getElementById("remarkbox-div").appendChild(a)}create_remarkbox_iframe(),iFrameResize({checkOrigin:["https://my.remarkbox.com"],inPageLinks:!0,initCallback:function(a){a.iFrameResizer.moveToAnchor(thread_fragment)}},document.getElementById("remarkbox-iframe"))</script>
+</div>
+</main>
+<footer class=footer>
+<p>
+&copy; 2021
 <span><a href=https://rgoswami.me/>Rohit Goswami (HaoZeke)</a></span>
-<a href=https://rgoswami.me/posts/index.xml target=_blank title=rss><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 019 9"/><path d="M4 4a16 16 0 0116 16"/><circle cx="5" cy="19" r="1"/></svg></a><br><a rel=license href=http://creativecommons.org/licenses/by-nc-sa/4.0/>CC BY-NC-SA 4.0</a>.
-Powered by <a href=http://gohugo.io><u>Hugo</u></a> and <a href=https://github.com/HaoZeke/hugo-theme-hello-friend-ng-hz><u>this theme</u></a>.</br>Hosted with <u><a href=https://www.netlify.com/>Netlify</a></u>.</br><script src=https://liberapay.com/rohit/widgets/button.js></script><noscript><a href=https://liberapay.com/rohit/donate><img alt="Donate using Liberapay" src=https://liberapay.com/assets/widgets/donate.svg></a></noscript></p></footer></div><script src=/bundle.min.5fae9992ea406007408dc33b0b3a8376d61e2f1d6ac50ba1dad7580ac50afb5199bcef3bbc3677e77553a9980bf882cf71edc2f755687dd7725f12ece4304ac2.js></script><script>(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)})(window,document,'script','//www.google-analytics.com/analytics.js','ga'),ga('create','UA-109503488-16','auto'),ga('send','pageview')</script><script type=text/javascript>(function(a,e,b,f,g,c,d){a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},c=e.createElement(f),c.async=1,c.src="https://www.clarity.ms/tag/"+g,d=e.getElementsByTagName(f)[0],d.parentNode.insertBefore(c,d)})(window,document,"clarity","script","3z2xvwqu4u")</script><script data-goatcounter=https://rgoswami.goatcounter.com/count async src=//gc.zgo.at/count.js></script><script>var clicky_site_ids=clicky_site_ids||[];clicky_site_ids.push("101265002")</script><script async src=https://static.getclicky.com/js></script><script src=https://cdn.jsdelivr.net/npm/readmore-js@3.0.0-beta-1/dist/readmore.min.js></script><script src=/js/codefold.min.4a43062cb83308b55227adf937c91be79ff6d95df8bb821dfd71805ce54629ff8cffed3ae81d70fdee5f324fa0f39c5280ae785f165801885db074551a993a21.js></script></body></html>
+<a href=https://rgoswami.me/posts/index.xml target=_blank title=rss><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 019 9"/><path d="M4 4a16 16 0 0116 16"/><circle cx="5" cy="19" r="1"/></svg></a>
+<br>
+<a rel=license href=http://creativecommons.org/licenses/by-nc-sa/4.0/>CC BY-NC-SA 4.0</a>.
+Powered by <a href=http://gohugo.io><u>Hugo</u></a> and <a href=https://github.com/HaoZeke/hugo-theme-hello-friend-ng-hz><u>this theme</u></a>.</br>
+Hosted with <u><a href=https://www.netlify.com/>Netlify</a></u>.</br>
+<script src=https://liberapay.com/rohit/widgets/button.js></script>
+<noscript><a href=https://liberapay.com/rohit/donate><img alt="Donate using Liberapay" src=https://liberapay.com/assets/widgets/donate.svg></a></noscript>
+</p>
+</footer>
+</div>
+<script src=/bundle.min.5fae9992ea406007408dc33b0b3a8376d61e2f1d6ac50ba1dad7580ac50afb5199bcef3bbc3677e77553a9980bf882cf71edc2f755687dd7725f12ece4304ac2.js></script>
+<script>(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)})(window,document,'script','//www.google-analytics.com/analytics.js','ga'),ga('create','UA-109503488-16','auto'),ga('send','pageview')</script>
+<script type=text/javascript>(function(a,e,b,f,g,c,d){a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},c=e.createElement(f),c.async=1,c.src="https://www.clarity.ms/tag/"+g,d=e.getElementsByTagName(f)[0],d.parentNode.insertBefore(c,d)})(window,document,"clarity","script","3z2xvwqu4u")</script>
+<script data-goatcounter=https://rgoswami.goatcounter.com/count async src=//gc.zgo.at/count.js></script>
+<script>var clicky_site_ids=clicky_site_ids||[];clicky_site_ids.push("101265002")</script>
+<script async src=https://static.getclicky.com/js></script>
+<script src=https://cdn.jsdelivr.net/npm/readmore-js@3.0.0-beta-1/dist/readmore.min.js></script>
+<script src=/js/codefold.min.4a43062cb83308b55227adf937c91be79ff6d95df8bb821dfd71805ce54629ff8cffed3ae81d70fdee5f324fa0f39c5280ae785f165801885db074551a993a21.js></script>
+</body>
+</html>
