@@ -12266,6 +12266,7 @@ Results for the various approaches are collected below in Table [[tbl:bench][tbl
 #+name: tbl:bench
 #+caption: The results are for 25 runs with 5 warmup for ~np.empty(7)~ as the input
 | *Command*                     | *Mean [ms]*   | *Min [ms]* | *Max [ms]* |
+|-------------------------------+---------------+------------+------------|
 | *Handwritten NumPy-C-Fortran* | *146.6 ± 8.9* |    *125.8* |    *155.0* |
 | F2PY (F77)                    | 149.3 ± 1.7   |      146.1 |      152.7 |
 | Cython                        | 150.0 ± 13.1  |      141.6 |      198.0 |
