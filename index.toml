@@ -1,6 +1,11 @@
 # We use the generated html to prevent issues involving markdown frontmatter
 
 [[input.files]]
+path = "./posts/numpy-meson-f2py/index.html"
+url = "https://rgoswami.me/posts/numpy-meson-f2py/"
+title = "NumPy, Meson and f2py"
+
+[[input.files]]
 path = "./snippets/prog-lang-man/index.html"
 url = "https://rgoswami.me/snippets/prog-lang-man/"
 title = "Programming Language Management"
@@ -9,6 +14,126 @@ title = "Programming Language Management"
 path = "./snippets/watch-files/index.html"
 url = "https://rgoswami.me/snippets/watch-files/"
 title = "Watching Files"
+
+[[input.files]]
+path = "./posts/leshouches-2021-meta/index.html"
+url = "https://rgoswami.me/posts/leshouches-2021-meta/"
+title = "Presentation Supplements for Greens Function School"
+
+[[input.files]]
+path = "./posts/joining-quansight-labs21/index.html"
+url = "https://rgoswami.me/posts/joining-quansight-labs21/"
+title = "Regarding Quansight Labs"
+
+[[input.files]]
+path = "./posts/gsoc21-fin-reprot/index.html"
+url = "https://rgoswami.me/posts/gsoc21-fin-reprot/"
+title = "GSoC21 LFortran and Computational Chemistry"
+
+[[input.files]]
+path = "./posts/gsoc21-w10/index.html"
+url = "https://rgoswami.me/posts/gsoc21-w10/"
+title = "GSoC21 W10: LFortran Runtime Library Design"
+
+[[input.files]]
+path = "./posts/tug-2021-meta/index.html"
+url = "https://rgoswami.me/posts/tug-2021-meta/"
+title = "42nd Annual Confereence of the Tex Users Group"
+
+[[input.files]]
+path = "./posts/gsoc21-w9/index.html"
+url = "https://rgoswami.me/posts/gsoc21-w9/"
+title = "GSoC21 W9: LFortran Bug Hunting Bonanza"
+
+[[input.files]]
+path = "./posts/gsoc21-w8/index.html"
+url = "https://rgoswami.me/posts/gsoc21-w8/"
+title = "GSoC21 W8: LFortran Refactors, and Compile Time Evaluations"
+
+[[input.files]]
+path = "./posts/juliacon-remote-machines/index.html"
+url = "https://rgoswami.me/posts/juliacon-remote-machines/"
+title = "JuliaCon and Remote Machines"
+
+[[input.files]]
+path = "./posts/gsoc21-w7/index.html"
+url = "https://rgoswami.me/posts/gsoc21-w7/"
+title = "GSoC21 W7: LFortran Workflow Basics"
+
+[[input.files]]
+path = "./posts/keybindings-colevimhz-macos/index.html"
+url = "https://rgoswami.me/posts/keybindings-colevimhz-macos/"
+title = "Remapping Keys for ColemakVIM on MacOS"
+
+[[input.files]]
+path = "./posts/nix-channel-nur/index.html"
+url = "https://rgoswami.me/posts/nix-channel-nur/"
+title = "Nix, Channels and the NUR"
+
+[[input.files]]
+path = "./posts/emacs-lang-servers/index.html"
+url = "https://rgoswami.me/posts/emacs-lang-servers/"
+title = "Doom Emacs and Language Servers"
+
+[[input.files]]
+path = "./posts/seri-2021-meta/index.html"
+url = "https://rgoswami.me/posts/seri-2021-meta/"
+title = "Talk Supplements for SERI&#39;21"
+
+[[input.files]]
+path = "./posts/gsoc21-w6/index.html"
+url = "https://rgoswami.me/posts/gsoc21-w6/"
+title = "GSoC21 W6: LFortran ASR and Values"
+
+[[input.files]]
+path = "./posts/gsoc21-w5/index.html"
+url = "https://rgoswami.me/posts/gsoc21-w5/"
+title = "GSoC21 W5: LFortran Design Details and minidftatom"
+
+[[input.files]]
+path = "./posts/gsoc21-w4/index.html"
+url = "https://rgoswami.me/posts/gsoc21-w4/"
+title = "GSoC21 W4: LFortran, Backends and Bugs"
+
+[[input.files]]
+path = "./posts/iop-caps-webdev-2021-meta/index.html"
+url = "https://rgoswami.me/posts/iop-caps-webdev-2021-meta/"
+title = "Talk Supplements for IOP CAPS&#39;21 Webdev Workshop"
+
+[[input.files]]
+path = "./posts/gsoc21-w3/index.html"
+url = "https://rgoswami.me/posts/gsoc21-w3/"
+title = "GSoC21 W3: Kind, Characters, and Standards"
+
+[[input.files]]
+path = "./posts/gsoc21-w2/index.html"
+url = "https://rgoswami.me/posts/gsoc21-w2/"
+title = "GSoC21 W2: LFortran Unraveling"
+
+[[input.files]]
+path = "./posts/gsoc21-w1/index.html"
+url = "https://rgoswami.me/posts/gsoc21-w1/"
+title = "GSoC21 W1: LFortran Kickoff"
+
+[[input.files]]
+path = "./posts/cip-2021-slw-meta/index.html"
+url = "https://rgoswami.me/posts/cip-2021-slw-meta/"
+title = "Talk Supplements for Code In Place 2021 SL Workshop"
+
+[[input.files]]
+path = "./posts/zotero-biblatex-bibtex/index.html"
+url = "https://rgoswami.me/posts/zotero-biblatex-bibtex/"
+title = "Biblatex to Bibtex for Sphinx"
+
+[[input.files]]
+path = "./posts/fortran-gsoc-me/index.html"
+url = "https://rgoswami.me/posts/fortran-gsoc-me/"
+title = "Fortran, GSoC21 and Me"
+
+[[input.files]]
+path = "./posts/cip2021-fin/index.html"
+url = "https://rgoswami.me/posts/cip2021-fin/"
+title = "Wrapping Up Code in Place 2021"
 
 [[input.files]]
 path = "./snippets/forward-multiport/index.html"
@@ -21,6 +146,141 @@ url = "https://rgoswami.me/snippets/nix-collection-overwrite-attrs/"
 title = "Overwriting Attributes"
 
 [[input.files]]
+path = "./posts/dotfiles-dotgit-bombadil/index.html"
+url = "https://rgoswami.me/posts/dotfiles-dotgit-bombadil/"
+title = "Dotfiles from dotgit to bombadil"
+
+[[input.files]]
+path = "./posts/iop-cpp-2021-meta/index.html"
+url = "https://rgoswami.me/posts/iop-cpp-2021-meta/"
+title = "Talk Supplements for IOP&#39;s C&#43;&#43; Workshop"
+
+[[input.files]]
+path = "./posts/fsf-me-stallman/index.html"
+url = "https://rgoswami.me/posts/fsf-me-stallman/"
+title = "Free Software and Me"
+
+[[input.files]]
+path = "./posts/symengine-gsod20/index.html"
+url = "https://rgoswami.me/posts/symengine-gsod20/"
+title = "SymEngine and the Season of Docs"
+
+[[input.files]]
+path = "./posts/my-life-in-eink/index.html"
+url = "https://rgoswami.me/posts/my-life-in-eink/"
+title = "My Life in E-ink"
+
+[[input.files]]
+path = "./posts/reclaim-email-astroid/index.html"
+url = "https://rgoswami.me/posts/reclaim-email-astroid/"
+title = "Reclaiming Email with Astroid"
+
+[[input.files]]
+path = "./posts/priv-gh-actions/index.html"
+url = "https://rgoswami.me/posts/priv-gh-actions/"
+title = "Private Github Actions without PAT"
+
+[[input.files]]
+path = "./posts/nix-prj-spec-doc/index.html"
+url = "https://rgoswami.me/posts/nix-prj-spec-doc/"
+title = "Project Specific Expressions from Nixpkgs for Sphinx documentation"
+
+[[input.files]]
+path = "./posts/remap-keys-xkb-klfc/index.html"
+url = "https://rgoswami.me/posts/remap-keys-xkb-klfc/"
+title = "Remapping Keys with XKB and KLFC"
+
+[[input.files]]
+path = "./posts/anki-decks-orgmode/index.html"
+url = "https://rgoswami.me/posts/anki-decks-orgmode/"
+title = "Anki Decks with Orgmode"
+
+[[input.files]]
+path = "./posts/laptop-as-second-screens/index.html"
+url = "https://rgoswami.me/posts/laptop-as-second-screens/"
+title = "Old Laptops as Secondary Monitors"
+
+[[input.files]]
+path = "./posts/nixcon-in-2020-meta/index.html"
+url = "https://rgoswami.me/posts/nixcon-in-2020-meta/"
+title = "Talk Supplements for NixCon 2020"
+
+[[input.files]]
+path = "./posts/rep-zoom-obs/index.html"
+url = "https://rgoswami.me/posts/rep-zoom-obs/"
+title = "Replacing Zoom with Open Broadcaster Software"
+
+[[input.files]]
+path = "./posts/pycon-in-2020-meta/index.html"
+url = "https://rgoswami.me/posts/pycon-in-2020-meta/"
+title = "Talk Supplements for PyCon India 2020"
+
+[[input.files]]
+path = "./posts/pub-doc-cpp-dox-sph-nix/index.html"
+url = "https://rgoswami.me/posts/pub-doc-cpp-dox-sph-nix/"
+title = "Publishing Doxygen and Sphinx with Nix and Rake"
+
+[[input.files]]
+path = "./posts/doc-cpp-dox-sph-exhale/index.html"
+url = "https://rgoswami.me/posts/doc-cpp-dox-sph-exhale/"
+title = "Documenting C&#43;&#43; with Doxygen and Sphinx - Exhale"
+
+[[input.files]]
+path = "./posts/local-nix-no-root/index.html"
+url = "https://rgoswami.me/posts/local-nix-no-root/"
+title = "Local Nix without Root"
+
+[[input.files]]
+path = "./posts/mach-nix-niv-python/index.html"
+url = "https://rgoswami.me/posts/mach-nix-niv-python/"
+title = "Niv and Mach-Nix for Nix Python"
+
+[[input.files]]
+path = "./posts/nix-shell-node/index.html"
+url = "https://rgoswami.me/posts/nix-shell-node/"
+title = "Nix Shells for Node Projects"
+
+[[input.files]]
+path = "./posts/ccon-tut-nix/index.html"
+url = "https://rgoswami.me/posts/ccon-tut-nix/"
+title = "A Tutorial Introduction to Nix"
+
+[[input.files]]
+path = "./posts/hpc-dots-lmod/index.html"
+url = "https://rgoswami.me/posts/hpc-dots-lmod/"
+title = "HPC Dotfiles and LMod"
+
+[[input.files]]
+path = "./posts/expl-backlight-control/index.html"
+url = "https://rgoswami.me/posts/expl-backlight-control/"
+title = "Explorations with Backlight Controllers"
+
+[[input.files]]
+path = "./posts/some-sol-sr2/index.html"
+url = "https://rgoswami.me/posts/some-sol-sr2/"
+title = "A Short Guide to Statistical Rethinking²"
+
+[[input.files]]
+path = "./posts/grant-proposals/index.html"
+url = "https://rgoswami.me/posts/grant-proposals/"
+title = "Grant Proposals - I"
+
+[[input.files]]
+path = "./posts/multi-monitor-touch/index.html"
+url = "https://rgoswami.me/posts/multi-monitor-touch/"
+title = "Multiple Monitors with Touchscreens"
+
+[[input.files]]
+path = "./posts/goat-clicky/index.html"
+url = "https://rgoswami.me/posts/goat-clicky/"
+title = "Analytics II: Goat to Clicky"
+
+[[input.files]]
+path = "./posts/linos-maintainer-appre/index.html"
+url = "https://rgoswami.me/posts/linos-maintainer-appre/"
+title = "LineageOS Maintainer Appreciation"
+
+[[input.files]]
 path = "./posts/sr2-ch13-ch14/index.html"
 url = "https://rgoswami.me/posts/sr2-ch13-ch14/"
 title = "SR2 :: Solutions for Chapters {13,14}"
@@ -31,14 +291,89 @@ url = "https://rgoswami.me/posts/sr2-ch9-ch11-ch12/"
 title = "SR2 :: Solutions for Chapters {9,11,12}"
 
 [[input.files]]
+path = "./posts/org-arb-tex/index.html"
+url = "https://rgoswami.me/posts/org-arb-tex/"
+title = "Temporary LaTeX Documents with Orgmode"
+
+[[input.files]]
 path = "./posts/sr2-ch5-ch6-ch7/index.html"
 url = "https://rgoswami.me/posts/sr2-ch5-ch6-ch7/"
 title = "SR2 :: Solutions for Chapters {5,6,7}"
 
 [[input.files]]
+path = "./posts/emacs-nix-r/index.html"
+url = "https://rgoswami.me/posts/emacs-nix-r/"
+title = "Emacs for Nix-R"
+
+[[input.files]]
+path = "./posts/rethinking-r-nix/index.html"
+url = "https://rgoswami.me/posts/rethinking-r-nix/"
+title = "Statistical Rethinking and Nix"
+
+[[input.files]]
 path = "./posts/sr2-ch2-ch3-ch4/index.html"
 url = "https://rgoswami.me/posts/sr2-ch2-ch3-ch4/"
 title = "SR2 :: Solutions for Chapters {2,3,4}"
+
+[[input.files]]
+path = "./posts/nix-r-devtools/index.html"
+url = "https://rgoswami.me/posts/nix-r-devtools/"
+title = "Nix with R and devtools"
+
+[[input.files]]
+path = "./posts/losslesscut-zoom-ama/index.html"
+url = "https://rgoswami.me/posts/losslesscut-zoom-ama/"
+title = "LosslessCut, Zoom and an AMA for CS106A"
+
+[[input.files]]
+path = "./posts/compton-zoom-shadow/index.html"
+url = "https://rgoswami.me/posts/compton-zoom-shadow/"
+title = "Compton to Picom and Zoom Glitches"
+
+[[input.files]]
+path = "./posts/org-note-workflow/index.html"
+url = "https://rgoswami.me/posts/org-note-workflow/"
+title = "An Orgmode Note Workflow"
+
+[[input.files]]
+path = "./posts/colemak-dots-refactor/index.html"
+url = "https://rgoswami.me/posts/colemak-dots-refactor/"
+title = "Refactoring Dotfiles For Colemak"
+
+[[input.files]]
+path = "./posts/org-pandoc-babel/index.html"
+url = "https://rgoswami.me/posts/org-pandoc-babel/"
+title = "Pandoc to Orgmode with Babel"
+
+[[input.files]]
+path = "./posts/org-mathematica/index.html"
+url = "https://rgoswami.me/posts/org-mathematica/"
+title = "Using Mathematica with Orgmode"
+
+[[input.files]]
+path = "./posts/scp-smallgrp-trainig/index.html"
+url = "https://rgoswami.me/posts/scp-smallgrp-trainig/"
+title = "CS106A Small Group Training"
+
+[[input.files]]
+path = "./posts/scp-smallgrp-meet1/index.html"
+url = "https://rgoswami.me/posts/scp-smallgrp-meet1/"
+title = "CS106A Section Meeting I"
+
+[[input.files]]
+path = "./posts/scp-smallgrp/index.html"
+url = "https://rgoswami.me/posts/scp-smallgrp/"
+title = "Small Section On-boarding"
+
+[[input.files]]
+path = "./posts/scp-onboarding/index.html"
+url = "https://rgoswami.me/posts/scp-onboarding/"
+title = "On-boarding for Code in Place"
+
+[[input.files]]
+path = "./posts/goat-google/index.html"
+url = "https://rgoswami.me/posts/goat-google/"
+title = "Analytics: Google to Goat"
 
 [[input.files]]
 path = "./posts/trees-and-bags/index.html"
@@ -124,6 +459,16 @@ title = "Site Rationale"
 path = "./posts/islr-ch2-ch3/index.html"
 url = "https://rgoswami.me/posts/islr-ch2-ch3/"
 title = "ISLR :: Multiple Linear Regression"
+
+[[input.files]]
+path = "./about/index.html"
+url = "https://rgoswami.me/about/"
+title = "About"
+
+[[input.files]]
+path = "./posts/rg-collection-weblinks/index.html"
+url = "https://rgoswami.me/posts/rg-collection-weblinks/"
+title = "Collection of WebLinks"
 
 [[input.files]]
 path = "./search/index.html"

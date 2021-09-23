@@ -1,481 +1,70 @@
-<!doctype html><html lang=en itemscope itemtype=http://schema.org/WebPage>
-<head>
-<meta charset=utf-8>
-<meta http-equiv=x-ua-compatible content="ie=edge">
-<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
-<meta name=author content="[Rohit Goswami]">
-<meta name=description content="Setup details are described here, and the meta-post about these solutions is here.
+<!doctype html><html lang=en itemscope itemtype=http://schema.org/WebPage><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=author content="[Rohit Goswami]"><meta name=description content="Setup details are described here, and the meta-post about these solutions is here.
  Materials The summmer course1 is based off of the second edition of Statistical Rethinking by Richard McElreath. This post covers the following exercise questions:
- Chapter 5  E{1,2,3,4} M{1,2,3,5}   Chapter 6  E{1,2,3,4} M{1,2,3}   Chapter 7  E{1,2,3,4} M{1,2,3,4,5,6}    Packages A colophon with details is provided at the end, but the following packages and theme parameters are used throughout.">
-<meta name=keywords content=",solutions,R,SR2">
-<meta name=robots content="noodp">
-<meta name=theme-color content>
-<link rel=canonical href=https://rgoswami.me/posts/sr2-ch5-ch6-ch7/>
-<title>
-SR2 :: Solutions for Chapters {5,6,7} :: Rohit Goswami — Reflections
-</title>
-<link href=https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css rel=stylesheet type=text/css>
-<link rel=stylesheet href=/main.min.b6dbce0fdf6c61563a0c2226e857d5dadd8e5afa2c4f73ec9ea55abd831f9a72.css>
-<meta itemprop=name content="SR2 :: Solutions for Chapters {5,6,7}">
-<meta itemprop=description content="Setup details are described here, and the meta-post about these solutions is here.
+ Chapter 5  E{1,2,3,4} M{1,2,3,5}   Chapter 6  E{1,2,3,4} M{1,2,3}   Chapter 7  E{1,2,3,4} M{1,2,3,4,5,6}    Packages A colophon with details is provided at the end, but the following packages and theme parameters are used throughout."><meta name=keywords content=",solutions,R,SR2"><meta name=robots content="noodp"><meta name=theme-color content><link rel=canonical href=https://rgoswami.me/posts/sr2-ch5-ch6-ch7/><title>SR2 :: Solutions for Chapters {5,6,7} :: Rohit Goswami — Reflections</title><link href=https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css rel=stylesheet type=text/css><link rel=stylesheet href=/main.min.b6dbce0fdf6c61563a0c2226e857d5dadd8e5afa2c4f73ec9ea55abd831f9a72.css><meta itemprop=name content="SR2 :: Solutions for Chapters {5,6,7}"><meta itemprop=description content="Setup details are described here, and the meta-post about these solutions is here.
  Materials The summmer course1 is based off of the second edition of Statistical Rethinking by Richard McElreath. This post covers the following exercise questions:
- Chapter 5  E{1,2,3,4} M{1,2,3,5}   Chapter 6  E{1,2,3,4} M{1,2,3}   Chapter 7  E{1,2,3,4} M{1,2,3,4,5,6}    Packages A colophon with details is provided at the end, but the following packages and theme parameters are used throughout."><meta itemprop=datePublished content="2020-06-14T00:00:00+00:00">
-<meta itemprop=dateModified content="2020-08-18T23:28:27+00:00">
-<meta itemprop=wordCount content="5416"><meta itemprop=image content="https://rgoswami.me/images/RG.png">
-<meta itemprop=keywords content="solutions,R,SR2,"><meta property="og:title" content="SR2 :: Solutions for Chapters {5,6,7}">
-<meta property="og:description" content="Setup details are described here, and the meta-post about these solutions is here.
+ Chapter 5  E{1,2,3,4} M{1,2,3,5}   Chapter 6  E{1,2,3,4} M{1,2,3}   Chapter 7  E{1,2,3,4} M{1,2,3,4,5,6}    Packages A colophon with details is provided at the end, but the following packages and theme parameters are used throughout."><meta itemprop=datePublished content="2020-06-14T00:00:00+00:00"><meta itemprop=dateModified content="2020-08-18T23:28:27+00:00"><meta itemprop=wordCount content="5416"><meta itemprop=image content="https://rgoswami.me/images/RG.png"><meta itemprop=keywords content="solutions,R,SR2,"><meta property="og:title" content="SR2 :: Solutions for Chapters {5,6,7}"><meta property="og:description" content="Setup details are described here, and the meta-post about these solutions is here.
  Materials The summmer course1 is based off of the second edition of Statistical Rethinking by Richard McElreath. This post covers the following exercise questions:
- Chapter 5  E{1,2,3,4} M{1,2,3,5}   Chapter 6  E{1,2,3,4} M{1,2,3}   Chapter 7  E{1,2,3,4} M{1,2,3,4,5,6}    Packages A colophon with details is provided at the end, but the following packages and theme parameters are used throughout.">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://rgoswami.me/posts/sr2-ch5-ch6-ch7/"><meta property="og:image" content="https://rgoswami.me/images/RG.png"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2020-06-14T00:00:00+00:00">
-<meta property="article:modified_time" content="2020-08-18T23:28:27+00:00"><meta property="og:site_name" content="Rohit Goswami">
-<meta name=twitter:card content="summary_large_image">
-<meta name=twitter:image content="https://rgoswami.me/images/RG.png">
-<meta name=twitter:title content="SR2 :: Solutions for Chapters {5,6,7}">
-<meta name=twitter:description content="Setup details are described here, and the meta-post about these solutions is here.
+ Chapter 5  E{1,2,3,4} M{1,2,3,5}   Chapter 6  E{1,2,3,4} M{1,2,3}   Chapter 7  E{1,2,3,4} M{1,2,3,4,5,6}    Packages A colophon with details is provided at the end, but the following packages and theme parameters are used throughout."><meta property="og:type" content="article"><meta property="og:url" content="https://rgoswami.me/posts/sr2-ch5-ch6-ch7/"><meta property="og:image" content="https://rgoswami.me/images/RG.png"><meta property="article:section" content="posts"><meta property="article:published_time" content="2020-06-14T00:00:00+00:00"><meta property="article:modified_time" content="2020-08-18T23:28:27+00:00"><meta property="og:site_name" content="Rohit Goswami"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://rgoswami.me/images/RG.png"><meta name=twitter:title content="SR2 :: Solutions for Chapters {5,6,7}"><meta name=twitter:description content="Setup details are described here, and the meta-post about these solutions is here.
  Materials The summmer course1 is based off of the second edition of Statistical Rethinking by Richard McElreath. This post covers the following exercise questions:
- Chapter 5  E{1,2,3,4} M{1,2,3,5}   Chapter 6  E{1,2,3,4} M{1,2,3}   Chapter 7  E{1,2,3,4} M{1,2,3,4,5,6}    Packages A colophon with details is provided at the end, but the following packages and theme parameters are used throughout.">
-<meta property="article:section" content="programming">
-<meta property="article:published_time" content="2020-06-14 00:00:00 +0000 UTC">
-</head>
-<body>
-<div class=container>
-<header class=header>
-<div class=header__inner>
-<div class=header__left>
-<div class=logo>
-<a href=/ style=text-decoration:none>
-<img src=/images/home.png alt>
-</a>
-</div>
-</div>
-<div class=header__mid>
-<button class=button>
-<div class=button__text>
-<a href=https://rgoswami.me//search>
-Search
-</a>
-</div>
-</button>
-</div>
-<div class=header__right>
-<nav class=menu>
-<ul class=menu__inner><li><a href=https://rgoswami.me/about>About</a></li><li><a href=https://rgoswami.me/posts>Blog</a></li>
-</ul>
-<ul class=menu__inner><li><a href=https://rgoswami.me/categories>Categories</a></li><li><a href=https://rgoswami.me/tags>Tags</a></li>
-</ul>
-</nav>
-<button id=toggleMenu>
-<div class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
-</div>
-</button>
-<button class=theme-toggle id=toggleTheme><svg class="theme-toggler" width="32" height="32" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41c10.4934.0 19-8.5066 19-19C41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg>
-</button>
-</div>
-</div>
-</header>
-<script src=https://rgoswami.me/js/mathjax-config.js></script>
-<script id=MathJax-script async src=https://unpkg.com/mathjax@3/es5/tex-chtml.js></script>
-<aside class=sidebar>
-<div class=hideTOC>
-<button id=tocTog>TOC</button>
-<div class="sideTOC m-fadeOut">
-<nav id=TableOfContents>
-<ul>
-<li><a href=#materials>Materials</a>
-<ul>
-<li><a href=#packages>Packages</a></li>
-</ul>
-</li>
-<li><a href=#chapter-v-the-many-variables-and-the-spurious-waffles>Chapter V: The Many Variables & The Spurious Waffles</a>
-<ul>
-<li><a href=#easy-questions--ch5>Easy Questions (Ch5)</a></li>
-<li><a href=#questions-of-medium-complexity--ch5>Questions of Medium Complexity (Ch5)</a></li>
-</ul>
-</li>
-<li><a href=#chapter-vi-the-haunted-dag-and-the-causal-terror>Chapter VI: The Haunted DAG & The Causal Terror</a>
-<ul>
-<li><a href=#easy-questions--ch6>Easy Questions (Ch6)</a></li>
-<li><a href=#questions-of-medium-complexity--ch6>Questions of Medium Complexity (Ch6)</a></li>
-</ul>
-</li>
-<li><a href=#chapter-vii-ulysses-compass>Chapter VII: Ulysses' Compass</a>
-<ul>
-<li><a href=#easy-questions--ch7>Easy Questions (Ch7)</a></li>
-<li><a href=#questions-of-medium-complexity--ch7>Questions of Medium Complexity (Ch7)</a></li>
-</ul>
-</li>
-<li><a href=#a-colophon>A: Colophon</a></li>
-</ul>
-</nav>
-</div>
-</div>
-</aside>
-<main class=post>
-<div class=post-info>
-<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>26 minutes
-<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Written: 2020-06-14 00:00 +0000</p>
-<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Updated: 2020-08-18 23:28 +0000</p>
-</p>
-</div>
-<article class=h-entry>
-<h1 class="post-title p-name">
-<a class=u-url href=https://rgoswami.me/posts/sr2-ch5-ch6-ch7/>SR2 :: Solutions for Chapters {5,6,7}</a>
-</h1>
-<div class=post-info><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pen-tool"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
-<span class="author u-author p-author"><a href=https://rgoswami.me/author/rohit-goswami>Rohit Goswami</a></span>
-</div>
-<hr>
-<aside id=toc class=sidebar>
-<div class=toc-title>Table of Contents</div>
-<nav id=TableOfContents>
-<ul>
-<li><a href=#materials>Materials</a>
-<ul>
-<li><a href=#packages>Packages</a></li>
-</ul>
-</li>
-<li><a href=#chapter-v-the-many-variables-and-the-spurious-waffles>Chapter V: The Many Variables & The Spurious Waffles</a>
-<ul>
-<li><a href=#easy-questions--ch5>Easy Questions (Ch5)</a></li>
-<li><a href=#questions-of-medium-complexity--ch5>Questions of Medium Complexity (Ch5)</a></li>
-</ul>
-</li>
-<li><a href=#chapter-vi-the-haunted-dag-and-the-causal-terror>Chapter VI: The Haunted DAG & The Causal Terror</a>
-<ul>
-<li><a href=#easy-questions--ch6>Easy Questions (Ch6)</a></li>
-<li><a href=#questions-of-medium-complexity--ch6>Questions of Medium Complexity (Ch6)</a></li>
-</ul>
-</li>
-<li><a href=#chapter-vii-ulysses-compass>Chapter VII: Ulysses' Compass</a>
-<ul>
-<li><a href=#easy-questions--ch7>Easy Questions (Ch7)</a></li>
-<li><a href=#questions-of-medium-complexity--ch7>Questions of Medium Complexity (Ch7)</a></li>
-</ul>
-</li>
-<li><a href=#a-colophon>A: Colophon</a></li>
-</ul>
-</nav>
-</aside>
-<hr>
-<div class="post-content e-content">
-<blockquote>
-<p>Setup details <a href=https://rgoswami.me/posts/rethinking-r-nix/>are described here</a>, and the meta-post about these solutions <a href=https://rgoswami.me/posts/some-sol-sr2/>is here</a>.</p>
-</blockquote>
-<h2 id=materials>Materials</h2>
-<p>The <a href="https://ugla.hi.is/kennsluskra/index.php?sid=&tab=nam&chapter=namskeid&id=71055920203">summmer course</a><sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup> is based off of <a href=https://xcelab.net/rm/statistical-rethinking/>the second edition of
+ Chapter 5  E{1,2,3,4} M{1,2,3,5}   Chapter 6  E{1,2,3,4} M{1,2,3}   Chapter 7  E{1,2,3,4} M{1,2,3,4,5,6}    Packages A colophon with details is provided at the end, but the following packages and theme parameters are used throughout."><meta property="article:section" content="programming"><meta property="article:published_time" content="2020-06-14 00:00:00 +0000 UTC"></head><body><div class=container><header class=header><div class=header__inner><div class=header__left><div class=logo><a href=/ style=text-decoration:none><img src=/images/home.png alt></a></div></div><div class=header__mid><button class=button><div class=button__text><a href=https://rgoswami.me//search>Search</a></div></button></div><div class=header__right><nav class=menu><ul class=menu__inner><li><a href=https://rgoswami.me/about>About</a></li><li><a href=https://rgoswami.me/posts>Blog</a></li></ul><ul class=menu__inner><li><a href=https://rgoswami.me/categories>Categories</a></li><li><a href=https://rgoswami.me/tags>Tags</a></li></ul></nav><button id=toggleMenu><div class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></div></button>
+<button class=theme-toggle id=toggleTheme><svg class="theme-toggler" width="32" height="32" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41c10.4934.0 19-8.5066 19-19C41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg></button></div></div></header><script src=https://rgoswami.me/js/mathjax-config.js></script><script id=MathJax-script async src=https://unpkg.com/mathjax@3/es5/tex-chtml.js></script><aside class=sidebar><div class=hideTOC><button id=tocTog>TOC</button><div class="sideTOC m-fadeOut"><nav id=TableOfContents><ul><li><a href=#materials>Materials</a><ul><li><a href=#packages>Packages</a></li></ul></li><li><a href=#chapter-v-the-many-variables-and-the-spurious-waffles>Chapter V: The Many Variables & The Spurious Waffles</a><ul><li><a href=#easy-questions--ch5>Easy Questions (Ch5)</a></li><li><a href=#questions-of-medium-complexity--ch5>Questions of Medium Complexity (Ch5)</a></li></ul></li><li><a href=#chapter-vi-the-haunted-dag-and-the-causal-terror>Chapter VI: The Haunted DAG & The Causal Terror</a><ul><li><a href=#easy-questions--ch6>Easy Questions (Ch6)</a></li><li><a href=#questions-of-medium-complexity--ch6>Questions of Medium Complexity (Ch6)</a></li></ul></li><li><a href=#chapter-vii-ulysses-compass>Chapter VII: Ulysses' Compass</a><ul><li><a href=#easy-questions--ch7>Easy Questions (Ch7)</a></li><li><a href=#questions-of-medium-complexity--ch7>Questions of Medium Complexity (Ch7)</a></li></ul></li><li><a href=#a-colophon>A: Colophon</a></li></ul></nav></div></div></aside><main class=post><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>26 minutes<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Written: 2020-06-14 00:00 +0000</p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Updated: 2020-08-18 23:28 +0000</p></p></div><article class=h-entry><h1 class="post-title p-name"><a class=u-url href=https://rgoswami.me/posts/sr2-ch5-ch6-ch7/>SR2 :: Solutions for Chapters {5,6,7}</a></h1><div class=post-info><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pen-tool"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg><span class="author u-author p-author"><a href=https://rgoswami.me/author/rohit-goswami>Rohit Goswami</a></span></div><hr><aside id=toc class=sidebar><div class=toc-title>Table of Contents</div><nav id=TableOfContents><ul><li><a href=#materials>Materials</a><ul><li><a href=#packages>Packages</a></li></ul></li><li><a href=#chapter-v-the-many-variables-and-the-spurious-waffles>Chapter V: The Many Variables & The Spurious Waffles</a><ul><li><a href=#easy-questions--ch5>Easy Questions (Ch5)</a></li><li><a href=#questions-of-medium-complexity--ch5>Questions of Medium Complexity (Ch5)</a></li></ul></li><li><a href=#chapter-vi-the-haunted-dag-and-the-causal-terror>Chapter VI: The Haunted DAG & The Causal Terror</a><ul><li><a href=#easy-questions--ch6>Easy Questions (Ch6)</a></li><li><a href=#questions-of-medium-complexity--ch6>Questions of Medium Complexity (Ch6)</a></li></ul></li><li><a href=#chapter-vii-ulysses-compass>Chapter VII: Ulysses' Compass</a><ul><li><a href=#easy-questions--ch7>Easy Questions (Ch7)</a></li><li><a href=#questions-of-medium-complexity--ch7>Questions of Medium Complexity (Ch7)</a></li></ul></li><li><a href=#a-colophon>A: Colophon</a></li></ul></nav></aside><hr><div class="post-content e-content"><blockquote><p>Setup details <a href=https://rgoswami.me/posts/rethinking-r-nix/>are described here</a>, and the meta-post about these solutions <a href=https://rgoswami.me/posts/some-sol-sr2/>is here</a>.</p></blockquote><h2 id=materials>Materials</h2><p>The <a href="https://ugla.hi.is/kennsluskra/index.php?sid=&tab=nam&chapter=namskeid&id=71055920203">summmer course</a><sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup> is based off of <a href=https://xcelab.net/rm/statistical-rethinking/>the second edition of
 Statistical Rethinking</a> by <a href=https://twitter.com/rlmcelreath>Richard McElreath</a>.
-This post covers the following exercise questions:</p>
-<ul>
-<li><input checked disabled type=checkbox> Chapter 5
-<ul>
-<li><input checked disabled type=checkbox> E{1,2,3,4}</li>
-<li><input checked disabled type=checkbox> M{1,2,3,5}</li>
-</ul>
-</li>
-<li><input checked disabled type=checkbox> Chapter 6
-<ul>
-<li><input checked disabled type=checkbox> E{1,2,3,4}</li>
-<li><input checked disabled type=checkbox> M{1,2,3}</li>
-</ul>
-</li>
-<li><input checked disabled type=checkbox> Chapter 7
-<ul>
-<li><input checked disabled type=checkbox> E{1,2,3,4}</li>
-<li><input checked disabled type=checkbox> M{1,2,3,4,5,6}</li>
-</ul>
-</li>
-</ul>
-<h3 id=packages>Packages</h3>
-<p>A colophon with details is provided <a href=#a-colophon>at the end</a>, but the following packages and theme parameters are used throughout.</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>libsUsed</span><span class=o>&lt;-</span><span class=nf>c</span><span class=p>(</span><span class=s>&#34;tidyverse&#34;</span><span class=p>,</span><span class=s>&#34;tidybayes&#34;</span><span class=p>,</span><span class=s>&#34;orgutils&#34;</span><span class=p>,</span><span class=s>&#34;dagitty&#34;</span><span class=p>,</span>
+This post covers the following exercise questions:</p><ul><li><input checked disabled type=checkbox> Chapter 5<ul><li><input checked disabled type=checkbox> E{1,2,3,4}</li><li><input checked disabled type=checkbox> M{1,2,3,5}</li></ul></li><li><input checked disabled type=checkbox> Chapter 6<ul><li><input checked disabled type=checkbox> E{1,2,3,4}</li><li><input checked disabled type=checkbox> M{1,2,3}</li></ul></li><li><input checked disabled type=checkbox> Chapter 7<ul><li><input checked disabled type=checkbox> E{1,2,3,4}</li><li><input checked disabled type=checkbox> M{1,2,3,4,5,6}</li></ul></li></ul><h3 id=packages>Packages</h3><p>A colophon with details is provided <a href=#a-colophon>at the end</a>, but the following packages and theme parameters are used throughout.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>libsUsed</span><span class=o>&lt;-</span><span class=nf>c</span><span class=p>(</span><span class=s>&#34;tidyverse&#34;</span><span class=p>,</span><span class=s>&#34;tidybayes&#34;</span><span class=p>,</span><span class=s>&#34;orgutils&#34;</span><span class=p>,</span><span class=s>&#34;dagitty&#34;</span><span class=p>,</span>
             <span class=s>&#34;rethinking&#34;</span><span class=p>,</span><span class=s>&#34;tidybayes.rethinking&#34;</span><span class=p>,</span>
             <span class=s>&#34;ggplot2&#34;</span><span class=p>,</span><span class=s>&#34;kableExtra&#34;</span><span class=p>,</span><span class=s>&#34;dplyr&#34;</span><span class=p>,</span><span class=s>&#34;glue&#34;</span><span class=p>,</span>
             <span class=s>&#34;latex2exp&#34;</span><span class=p>,</span><span class=s>&#34;data.table&#34;</span><span class=p>,</span><span class=s>&#34;printr&#34;</span><span class=p>,</span><span class=s>&#34;devtools&#34;</span><span class=p>)</span>
 <span class=nf>invisible</span><span class=p>(</span><span class=nf>lapply</span><span class=p>(</span><span class=n>libsUsed</span><span class=p>,</span> <span class=n>library</span><span class=p>,</span> <span class=n>character.only</span> <span class=o>=</span> <span class=kc>TRUE</span><span class=p>));</span>
 <span class=nf>theme_set</span><span class=p>(</span><span class=nf>theme_grey</span><span class=p>(</span><span class=n>base_size</span><span class=o>=</span><span class=m>24</span><span class=p>))</span>
-</code></pre></div><h2 id=chapter-v-the-many-variables-and-the-spurious-waffles>Chapter V: The Many Variables & The Spurious Waffles</h2>
-<h3 id=easy-questions--ch5>Easy Questions (Ch5)</h3>
-<h4 id=5e1>5E1</h4>
-<p>Which of the linear models below are multiple linear regressions?</p>
-<ol>
-<li>\(μᵢ=α+βxᵢ\)</li>
-<li>\(μᵢ=βₓxᵢ+β_{z}zᵢ\)</li>
-<li>\(μᵢ=α+β(xᵢ-zᵢ)\)</li>
-<li>\(μᵢ=α+βₓxᵢ+β_{z}zᵢ\)</li>
-</ol>
-<h5 id=solution>Solution</h5>
-<p>A multiple regression problem is one with more than one predictor and
+</code></pre></div><h2 id=chapter-v-the-many-variables-and-the-spurious-waffles>Chapter V: The Many Variables & The Spurious Waffles</h2><h3 id=easy-questions--ch5>Easy Questions (Ch5)</h3><h4 id=5e1>5E1</h4><p>Which of the linear models below are multiple linear regressions?</p><ol><li>\(μᵢ=α+βxᵢ\)</li><li>\(μᵢ=βₓxᵢ+β_{z}zᵢ\)</li><li>\(μᵢ=α+β(xᵢ-zᵢ)\)</li><li>\(μᵢ=α+βₓxᵢ+β_{z}zᵢ\)</li></ol><h5 id=solution>Solution</h5><p>A multiple regression problem is one with more than one predictor and
 corresponding coefficients in an additive (hence &ldquo;linear&rdquo;) manner. By this
-logic, we can analyze the options as follows:</p>
-<ol>
-<li>Has one predictor variable, \(x\) thus is not a multiple regression</li>
-<li>Is a multiple linear regression since there are two independent variables, \(x\) and \(z\)</li>
-<li>Is not a multiple regression model, since only the difference of \(x\) and \(z\) enters the model (with slope \(\beta\))</li>
-<li>This is a multiple linear regression problem, since there are two predictor variables \(x\) and \(z\)</li>
-</ol>
-<p>Thus options <strong>two</strong> and <strong>four</strong> are correct.</p>
-<h4 id=5e2>5E2</h4>
-<p>Write down a multiple regression to evaluate the claim: <em>Animal diversity is
+logic, we can analyze the options as follows:</p><ol><li>Has one predictor variable, \(x\) thus is not a multiple regression</li><li>Is a multiple linear regression since there are two independent variables, \(x\) and \(z\)</li><li>Is not a multiple regression model, since only the difference of \(x\) and \(z\) enters the model (with slope \(\beta\))</li><li>This is a multiple linear regression problem, since there are two predictor variables \(x\) and \(z\)</li></ol><p>Thus options <strong>two</strong> and <strong>four</strong> are correct.</p><h4 id=5e2>5E2</h4><p>Write down a multiple regression to evaluate the claim: <em>Animal diversity is
 linearly related to latitude, but only after controlling for plant diversity</em>.
-You just need to write down the model definition.</p>
-<h5 id=solution>Solution</h5>
-<p>Without any further information, we can simply write a model for diversity as:</p>
-<p>\[D_{A}\sim\mathrm{Log-Normal}(μᵢ,σ)\]
-\[μᵢ=α+β_{L}Lᵢ+β_{D_P}D_{Pᵢ}\]</p>
-<p>Where:</p>
-<ul>
-<li>\(D_{A}\) is the animal diversity</li>
-<li>\(D_{P}\) is the plant diversity</li>
-<li>\(L\) is the latitude</li>
-</ul>
-<p>We have used a log-normal distribution for the animal diversity, since negative
+You just need to write down the model definition.</p><h5 id=solution>Solution</h5><p>Without any further information, we can simply write a model for diversity as:</p><p>\[D_{A}\sim\mathrm{Log-Normal}(μᵢ,σ)\]
+\[μᵢ=α+β_{L}Lᵢ+β_{D_P}D_{Pᵢ}\]</p><p>Where:</p><ul><li>\(D_{A}\) is the animal diversity</li><li>\(D_{P}\) is the plant diversity</li><li>\(L\) is the latitude</li></ul><p>We have used a log-normal distribution for the animal diversity, since negative
 values for diversity are meaningless. This arises from the understanding that
 the diversity is on an ordinal scale with classes. The linear model posits a linear model
 which has two predictors, the latitude and plant diversity. Thus this model
-allows for &ldquo;control&rdquo; of the plant diversity.</p>
-<p>Further details would be relegated to the choice of priors instead of the model.</p>
-<h4 id=5e3>5E3</h4>
-<p>Write down a multiple regression to evaluate the claim: <em>Neither amount of funding nor size of laboratory is by itself a good predictor of time to PhD degree; but together these variables are both positively associated with time to degree</em>. Write down the model definition and indicate which side of zero each slope parameter should be on.</p>
-<h5 id=solution>Solution</h5>
-<p>Without considering priors, we would like to write a linear model with two
+allows for &ldquo;control&rdquo; of the plant diversity.</p><p>Further details would be relegated to the choice of priors instead of the model.</p><h4 id=5e3>5E3</h4><p>Write down a multiple regression to evaluate the claim: <em>Neither amount of funding nor size of laboratory is by itself a good predictor of time to PhD degree; but together these variables are both positively associated with time to degree</em>. Write down the model definition and indicate which side of zero each slope parameter should be on.</p><h5 id=solution>Solution</h5><p>Without considering priors, we would like to write a linear model with two
 variables, funding and the lab size. To allow for extensions later regarding the
 type of funding, we will use &ldquo;money&rdquo; and &ldquo;time&rdquo; as inputs for the model. Again,
 since the time to a PhD cannot be negative, we will posit a log-normal
-distribution.</p>
-<p>\[Tᵢ∼\mathrm{Log-Normal}(μᵢ,σ)\]
-\[μᵢ=α+β_{M}M_{i}+β_{S}Sᵢ\]</p>
-<p>Where:</p>
-<ul>
-<li>\(Tᵢ\) is the time to completion</li>
-<li>\(M\) corresponds to money</li>
-<li>\(S\) corresponds to the size of the lab</li>
-</ul>
-<p>Since we are told that the variables considered jointly have a positive association with the time, we note that <strong>the slope parameters for both should be positive</strong>.</p>
-<h4 id=5e4>5E4</h4>
-<p>Suppose you have a single categorical predictor with 4 levels (unique values), labeled A,B,C and D. Let \(Aᵢ\) be an indicator variable that is \(1\) where case \(i\) is in category A. Also suppose \(Bᵢ\), \(Cᵢ\) and \(Dᵢ\) for the other categories. Now which of the following linear models are inferentially equivalent ways to include the categorical variable in a regression? Models are inferentially equivalent when it&rsquo;s possible to compute one posterior distribution from the posterior distribution of another model.</p>
-<ol>
-<li>\(μᵢ=α+β_{A}Aᵢ+β_{B}Bᵢ+β_{D}Dᵢ\)</li>
-<li>\(μᵢ=α+β_{A}Aᵢ+β_{B}Bᵢ+β_{C}Cᵢ+β_{D}Dᵢ\)</li>
-<li>\(μᵢ=α+β_{A}Aᵢ+β_{C}Cᵢ+β_{D}Dᵢ\)</li>
-<li>\(μᵢ=α_{A}Aᵢ+α_{B}Bᵢ+α_{C}Cᵢ+α_{D}Dᵢ\)</li>
-<li>\(μᵢ=α(1-Bᵢ-Cᵢ-Dᵢ)+α_{B}Bᵢ+α_{C}Cᵢ+α_{D}Dᵢ\)</li>
-</ol>
-<h5 id=solution>Solution</h5>
-<p>Without the priors, it is difficult to infer much from these models. For the
+distribution.</p><p>\[Tᵢ∼\mathrm{Log-Normal}(μᵢ,σ)\]
+\[μᵢ=α+β_{M}M_{i}+β_{S}Sᵢ\]</p><p>Where:</p><ul><li>\(Tᵢ\) is the time to completion</li><li>\(M\) corresponds to money</li><li>\(S\) corresponds to the size of the lab</li></ul><p>Since we are told that the variables considered jointly have a positive association with the time, we note that <strong>the slope parameters for both should be positive</strong>.</p><h4 id=5e4>5E4</h4><p>Suppose you have a single categorical predictor with 4 levels (unique values), labeled A,B,C and D. Let \(Aᵢ\) be an indicator variable that is \(1\) where case \(i\) is in category A. Also suppose \(Bᵢ\), \(Cᵢ\) and \(Dᵢ\) for the other categories. Now which of the following linear models are inferentially equivalent ways to include the categorical variable in a regression? Models are inferentially equivalent when it&rsquo;s possible to compute one posterior distribution from the posterior distribution of another model.</p><ol><li>\(μᵢ=α+β_{A}Aᵢ+β_{B}Bᵢ+β_{D}Dᵢ\)</li><li>\(μᵢ=α+β_{A}Aᵢ+β_{B}Bᵢ+β_{C}Cᵢ+β_{D}Dᵢ\)</li><li>\(μᵢ=α+β_{A}Aᵢ+β_{C}Cᵢ+β_{D}Dᵢ\)</li><li>\(μᵢ=α_{A}Aᵢ+α_{B}Bᵢ+α_{C}Cᵢ+α_{D}Dᵢ\)</li><li>\(μᵢ=α(1-Bᵢ-Cᵢ-Dᵢ)+α_{B}Bᵢ+α_{C}Cᵢ+α_{D}Dᵢ\)</li></ol><h5 id=solution>Solution</h5><p>Without the priors, it is difficult to infer much from these models. For the
 rest of the answer to make sense, we can assume indifferent priors, and enough
-data to overwhelm our priors (i.e., they are weakly informative).</p>
-<p>All the models listed have an intercept term, and several variables. We will
-therefore only consider the number of independent variables and their nature.</p>
-<table>
-<thead>
-<tr>
-<th>Model</th>
-<th>Variables</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>(1) \(μᵢ=α+β_{A}Aᵢ+β_{B}Bᵢ+β_{D}Dᵢ\)</td>
-<td>4</td>
-</tr>
-<tr>
-<td>(2) \(μᵢ=α+β_{A}Aᵢ+β_{B}Bᵢ+β_{C}Cᵢ+β_{D}Dᵢ\)</td>
-<td>5</td>
-</tr>
-<tr>
-<td>(3) \(μᵢ=α+β_{A}Aᵢ+β_{C}Cᵢ+β_{D}Dᵢ\)</td>
-<td>4</td>
-</tr>
-<tr>
-<td>(4) \(μᵢ=α_{A}Aᵢ+α_{B}Bᵢ+α_{C}Cᵢ+α_{D}Dᵢ\)</td>
-<td>4</td>
-</tr>
-<tr>
-<td>(5) \(μᵢ=α(1-Bᵢ-Cᵢ-Dᵢ)+α_{B}Bᵢ+α_{C}Cᵢ+α_{D}Dᵢ\)</td>
-<td>4</td>
-</tr>
-</tbody>
-</table>
-<p>Thus we can infer that of the models, after fitting, only <strong>option two</strong> will have inferences which cannot be computed from the others.</p>
-<h3 id=questions-of-medium-complexity--ch5>Questions of Medium Complexity (Ch5)</h3>
-<h4 id=hold-5m1>HOLD 5M1</h4>
-<p>Invent your own example of a spurious correlation. An outcome variable should be correlated with both predictor variables. But when both predictors are entered in the same model, the correlation between the outcome and one of the predictors should mostly vanish (or at least be greatly reduced).</p>
-<h5 id=solution>Solution</h5>
-<p>For this example, consider the total potential energy of a molecular system. We will recall that this can be written as follows:
+data to overwhelm our priors (i.e., they are weakly informative).</p><p>All the models listed have an intercept term, and several variables. We will
+therefore only consider the number of independent variables and their nature.</p><table><thead><tr><th>Model</th><th>Variables</th></tr></thead><tbody><tr><td>(1) \(μᵢ=α+β_{A}Aᵢ+β_{B}Bᵢ+β_{D}Dᵢ\)</td><td>4</td></tr><tr><td>(2) \(μᵢ=α+β_{A}Aᵢ+β_{B}Bᵢ+β_{C}Cᵢ+β_{D}Dᵢ\)</td><td>5</td></tr><tr><td>(3) \(μᵢ=α+β_{A}Aᵢ+β_{C}Cᵢ+β_{D}Dᵢ\)</td><td>4</td></tr><tr><td>(4) \(μᵢ=α_{A}Aᵢ+α_{B}Bᵢ+α_{C}Cᵢ+α_{D}Dᵢ\)</td><td>4</td></tr><tr><td>(5) \(μᵢ=α(1-Bᵢ-Cᵢ-Dᵢ)+α_{B}Bᵢ+α_{C}Cᵢ+α_{D}Dᵢ\)</td><td>4</td></tr></tbody></table><p>Thus we can infer that of the models, after fitting, only <strong>option two</strong> will have inferences which cannot be computed from the others.</p><h3 id=questions-of-medium-complexity--ch5>Questions of Medium Complexity (Ch5)</h3><h4 id=hold-5m1>HOLD 5M1</h4><p>Invent your own example of a spurious correlation. An outcome variable should be correlated with both predictor variables. But when both predictors are entered in the same model, the correlation between the outcome and one of the predictors should mostly vanish (or at least be greatly reduced).</p><h5 id=solution>Solution</h5><p>For this example, consider the total potential energy of a molecular system. We will recall that this can be written as follows:
 \[ E_{total}=E_{electrostatics}+E_{1B}+E_{2B} + \cdots\]
 Where the \(B\) terms indicate the correction terms. When predicting the total
 energy, if the electrostatic energy is a function of the atomic descriptors, and
 is entered in a model, then it masks the effect of the correction terms which
 also rely on the atomic descriptors. This means that correction terms to the
 total energy can also be thought of as a correction to the electrostatics, thus
-following the pattern of the divorce rate and waffles example in the chapter.</p>
-<p>To put this is more context, let us introduce more explicit variables.</p>
-<p>\[ E_{T}=E_{Elec}(\theta)+E_{1B}(\theta)+E_{2B}(\theta)+\cdots\]</p>
-<p>In this setting it is clear to see that the masking of variables is artificially induced.</p>
-<p>Another possible example is from textcite:wainerMostDangerousEquation, where the utility of having smaller schools is a function of school size and the average number of achievements. The school size also affects the average number of achievements, as well as the actual utility. This then implies that there is a spurious correlation which does not exist when the variances are taken into account.</p>
-<h4 id=hold-5m2>HOLD 5M2</h4>
-<p>Invent your own example of a masked relationship. An outcome variable should be correlated with both predictor variables, but in opposite directions. And the two predictor variables should be correlated with one another.</p>
-<h5 id=solution>Solution</h5>
-<p>Let us consider a simple case of student completion rate based on the influences of college tuition and faculty members. Assuming that college tuition is negatively correlated, and the number of faculty is positively correlated. However, since there are more wealthy people who can afford college, a chosen sample may show a spurious where examining either variable shows a weak correlation with completion rate, due to the positive association in the wealthy population.</p>
-<p>It is important to note that masked relationships usually arise when the population is incorrectly sampled.</p>
-<h4 id=5m3>5M3</h4>
-<p>It is sometimes observed that the best predictor of fire risk is the presence of firefighters-States and localities with many firefighters also have more fires. Presumably firefighters do not <em>cause</em> fires. Nevertheless, this is not a spurious correlation. Instead fires cause firefighters. Consider the same reversal of causal inferences in the context of the divorce and marriage data. How might a high divorce rate cause a higher marriage rate? Can you think of a way to evaluate this relationship, using multiple regression?</p>
-<h5 id=solution>Solution</h5>
-<p>The example given simply allows for the inference that areas with a higher
+following the pattern of the divorce rate and waffles example in the chapter.</p><p>To put this is more context, let us introduce more explicit variables.</p><p>\[ E_{T}=E_{Elec}(\theta)+E_{1B}(\theta)+E_{2B}(\theta)+\cdots\]</p><p>In this setting it is clear to see that the masking of variables is artificially induced.</p><p>Another possible example is from textcite:wainerMostDangerousEquation, where the utility of having smaller schools is a function of school size and the average number of achievements. The school size also affects the average number of achievements, as well as the actual utility. This then implies that there is a spurious correlation which does not exist when the variances are taken into account.</p><h4 id=hold-5m2>HOLD 5M2</h4><p>Invent your own example of a masked relationship. An outcome variable should be correlated with both predictor variables, but in opposite directions. And the two predictor variables should be correlated with one another.</p><h5 id=solution>Solution</h5><p>Let us consider a simple case of student completion rate based on the influences of college tuition and faculty members. Assuming that college tuition is negatively correlated, and the number of faculty is positively correlated. However, since there are more wealthy people who can afford college, a chosen sample may show a spurious where examining either variable shows a weak correlation with completion rate, due to the positive association in the wealthy population.</p><p>It is important to note that masked relationships usually arise when the population is incorrectly sampled.</p><h4 id=5m3>5M3</h4><p>It is sometimes observed that the best predictor of fire risk is the presence of firefighters-States and localities with many firefighters also have more fires. Presumably firefighters do not <em>cause</em> fires. Nevertheless, this is not a spurious correlation. Instead fires cause firefighters. Consider the same reversal of causal inferences in the context of the divorce and marriage data. How might a high divorce rate cause a higher marriage rate? Can you think of a way to evaluate this relationship, using multiple regression?</p><h5 id=solution>Solution</h5><p>The example given simply allows for the inference that areas with a higher
 incidence of fires do tend to allocated more money and resources to prevent
 them, hence the observed larger number of firefighters. Similarly, a reversal of
 the divorce and marriage data might be focused on the possibility that divorcees
 tend to get married more often than other singles. However, to understand this
 further, more categorical variables would be required, though this information
 might also be best represented by a time series of life events. We can posit the
-following:</p>
-<p>\[M\sim\mathrm{Normal}(μᵢ,σ)\]
-\[μᵢ=α+β_{L}Lᵢ+β_{R}Rᵢ\]</p>
-<p>Where:</p>
-<ul>
-<li>\(M\) is the marriage rate</li>
-<li>\(L\) is the probability of being married based on &ldquo;love&rdquo;</li>
-<li>\(R\) is the variable accounting for remarriage</li>
-</ul>
-<h4 id=5m5>5M5</h4>
-<p>One way to reason through multiple causation hypotheses is to imagine detailed mechanisms through which predictor variables may influence outcomes. For example, it is sometimes argued that the price of gasoline (predictor variable) is positively associated with lower obesity rates (outcome variable). However, there are at least two important mechanisms by which the price of gas could reduce obesity. First, it could lead to less driving and therefore more exercise. Second, it could lead to less driving, which leads to less eating out, which leads to less consumption of huge restaurant meals. Can you outline one or more multiple regressions that address these two mechanisms? Assume you can have any predictor data you need.</p>
-<h5 id=solution>Solution</h5>
-<p>We adopt the following notation:</p>
-<ul>
-<li>\(P\) is price (predictor)</li>
-<li>\(O\) is obesity (outcome)</li>
-<li>\(D\) is for driving</li>
-<li>\(E\) for eating out</li>
-<li>\(E_{x}\) for exercise</li>
-</ul>
-<p>Let us try to put this in the form of a DAG.</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>dag5m5</span><span class=o>&lt;-</span> <span class=nf>dagitty</span><span class=p>(</span><span class=s>&#34;dag{
+following:</p><p>\[M\sim\mathrm{Normal}(μᵢ,σ)\]
+\[μᵢ=α+β_{L}Lᵢ+β_{R}Rᵢ\]</p><p>Where:</p><ul><li>\(M\) is the marriage rate</li><li>\(L\) is the probability of being married based on &ldquo;love&rdquo;</li><li>\(R\) is the variable accounting for remarriage</li></ul><h4 id=5m5>5M5</h4><p>One way to reason through multiple causation hypotheses is to imagine detailed mechanisms through which predictor variables may influence outcomes. For example, it is sometimes argued that the price of gasoline (predictor variable) is positively associated with lower obesity rates (outcome variable). However, there are at least two important mechanisms by which the price of gas could reduce obesity. First, it could lead to less driving and therefore more exercise. Second, it could lead to less driving, which leads to less eating out, which leads to less consumption of huge restaurant meals. Can you outline one or more multiple regressions that address these two mechanisms? Assume you can have any predictor data you need.</p><h5 id=solution>Solution</h5><p>We adopt the following notation:</p><ul><li>\(P\) is price (predictor)</li><li>\(O\) is obesity (outcome)</li><li>\(D\) is for driving</li><li>\(E\) for eating out</li><li>\(E_{x}\) for exercise</li></ul><p>Let us try to put this in the form of a DAG.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>dag5m5</span><span class=o>&lt;-</span> <span class=nf>dagitty</span><span class=p>(</span><span class=s>&#34;dag{
 </span><span class=s>P -&gt; D -&gt; E -&gt; O
 </span><span class=s>P -&gt; D -&gt; Ex -&gt; O
 </span><span class=s>}&#34;</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>dag5m5</span> <span class=o>%&gt;%</span> <span class=n>graphLayout</span> <span class=o>%&gt;%</span> <span class=n>plot</span>
-</code></pre></div><figure><img src=/ox-hugo/dag5m5.png>
-</figure>
-<p>We should note that it seems straightforward, but it is nice to check as well.</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>dag5m5</span> <span class=o>%&gt;%</span> <span class=nf>adjustmentSets</span><span class=p>(</span><span class=n>exposure</span><span class=o>=</span><span class=s>&#34;P&#34;</span><span class=p>,</span><span class=n>outcome</span><span class=o>=</span><span class=s>&#34;O&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>dag5m5</span> <span class=o>%&gt;%</span> <span class=n>graphLayout</span> <span class=o>%&gt;%</span> <span class=n>plot</span>
+</code></pre></div><figure><img src=/ox-hugo/dag5m5.png></figure><p>We should note that it seems straightforward, but it is nice to check as well.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>dag5m5</span> <span class=o>%&gt;%</span> <span class=nf>adjustmentSets</span><span class=p>(</span><span class=n>exposure</span><span class=o>=</span><span class=s>&#34;P&#34;</span><span class=p>,</span><span class=n>outcome</span><span class=o>=</span><span class=s>&#34;O&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>
  {}
-</code></pre></div><p>Now we can start working our way through the set of regressions by the most basic walk through the DAG.</p>
-<ul>
-<li>
-<p>Path One</p>
-<ol>
-<li>\(D(P)\) decreases</li>
-<li>\(E_{x}(D)\) increases</li>
-<li>\(O(E_{x})\) decreases</li>
-</ol>
-</li>
-</ul>
-<ul>
-<li>
-<p>Path Two</p>
-<ol>
-<li>\(D(P)\) decreases</li>
-<li>\(E(D)\) decreases</li>
-<li>\(O(E)\) decreases</li>
-</ol>
-</li>
-</ul>
-<h2 id=chapter-vi-the-haunted-dag-and-the-causal-terror>Chapter VI: The Haunted DAG & The Causal Terror</h2>
-<h3 id=easy-questions--ch6>Easy Questions (Ch6)</h3>
-<h4 id=6e1>6E1</h4>
-<p>List three mechanisms by which multiple regression can produce false inferences about causal effects.</p>
-<h5 id=solution>Solution</h5>
-<p>As per chapter five and six, we have three mechanisms:</p>
-<dl>
-<dt>Confounding</dt>
-<dd>Where there exists an additional variable which influences exposure and outcome values</dd>
-<dt>Multicollinearity</dt>
-<dd>Strong associations between two or more predictor variables, which will cause the posterior distribution to suggest that none of variables are associated with the outcome even if they all actually are</dd>
-<dt>Post-treatment variables</dt>
-<dd>This is a form of included variable bias</dd>
-<dt>Collider Bias</dt>
-<dd>Conditioning on collider variables creates statistical but not causal associations between its causes</dd>
-</dl>
-<h4 id=hold-6e2>HOLD 6E2</h4>
-<p>For one of the mechanisms in the previous problem, provide an example of your choice, perhaps from your own research.</p>
-<h5 id=solution>Solution</h5>
-<p>One of the core tenets of the field of computational chemistry is the act of fitting empirical potential models to more accurate potential data (or even experiments).</p>
-<dl>
-<dt>Multicollinearity</dt>
-<dd>When dealing with decreasing effects, then using strongly correlated variables (like distance and effective distance measures like centeroid densities) cause the overall model to suggest that none of the measures are useful</dd>
-<dt>Post-treatment variables</dt>
-<dd>Often while finding minima and saddle points on a potential energy surface, adding information of the existing minima values will impede training a model which actually fits to the whole potential energy surface instead of being concentrated around the known minima</dd>
-</dl>
-<h4 id=6e3>6E3</h4>
-<p>List the four elemental confounds. Can you explain the conditional dependencies of each?</p>
-<h5 id=solution>Solution</h5>
-<p>The four elemental confounds are enumerated in Figure <a href=#orga9a60e8>1</a>.</p>
-<p><a id=orga9a60e8></a></p>
-<figure><img src=/ox-hugo/2020-06-13_18-16-22_screenshot.png alt="Figure 1: The four elemental confounds"><figcaption>
-<p>Figure 1: The four elemental confounds</p>
-</figcaption>
-</figure>
-<p>In symbolic notation, we can express this as:</p>
-<table>
-<thead>
-<tr>
-<th><strong>Confound</strong></th>
-<th><strong>Symbolic Form</strong></th>
-<th><strong>Conditional Independencies</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Forks</strong></td>
-<td>\(X←Z→Y\)</td>
-<td>\(Y⫫ X\vert Z\)</td>
-</tr>
-<tr>
-<td><strong>Pipes</strong></td>
-<td>\(X → Z → Y\)</td>
-<td>\(Y⫫ X\vert Z\)</td>
-</tr>
-<tr>
-<td><strong>Colliders</strong></td>
-<td>\(X→Z←Y\)</td>
-<td>\(Y \not⫫ X\vert Z\)</td>
-</tr>
-<tr>
-<td><strong>Descendants</strong></td>
-<td>See Figure <a href=#orga9a60e8>1</a></td>
-<td>Weakly conditions on parent</td>
-</tr>
-</tbody>
-</table>
-<h4 id=6e4>6E4</h4>
-<p>How is a biased sample like conditioning on a collider? Think of the example at the open of the chapter.</p>
-<h5 id=solution>Solution</h5>
-<p>Recall that the biased sample in the introduction to the chapter was:</p>
-<blockquote>
-<p>It seems like the most newsworthy scientific studies are the least trustworthy.
+</code></pre></div><p>Now we can start working our way through the set of regressions by the most basic walk through the DAG.</p><ul><li><p>Path One</p><ol><li>\(D(P)\) decreases</li><li>\(E_{x}(D)\) increases</li><li>\(O(E_{x})\) decreases</li></ol></li></ul><ul><li><p>Path Two</p><ol><li>\(D(P)\) decreases</li><li>\(E(D)\) decreases</li><li>\(O(E)\) decreases</li></ol></li></ul><h2 id=chapter-vi-the-haunted-dag-and-the-causal-terror>Chapter VI: The Haunted DAG & The Causal Terror</h2><h3 id=easy-questions--ch6>Easy Questions (Ch6)</h3><h4 id=6e1>6E1</h4><p>List three mechanisms by which multiple regression can produce false inferences about causal effects.</p><h5 id=solution>Solution</h5><p>As per chapter five and six, we have three mechanisms:</p><dl><dt>Confounding</dt><dd>Where there exists an additional variable which influences exposure and outcome values</dd><dt>Multicollinearity</dt><dd>Strong associations between two or more predictor variables, which will cause the posterior distribution to suggest that none of variables are associated with the outcome even if they all actually are</dd><dt>Post-treatment variables</dt><dd>This is a form of included variable bias</dd><dt>Collider Bias</dt><dd>Conditioning on collider variables creates statistical but not causal associations between its causes</dd></dl><h4 id=hold-6e2>HOLD 6E2</h4><p>For one of the mechanisms in the previous problem, provide an example of your choice, perhaps from your own research.</p><h5 id=solution>Solution</h5><p>One of the core tenets of the field of computational chemistry is the act of fitting empirical potential models to more accurate potential data (or even experiments).</p><dl><dt>Multicollinearity</dt><dd>When dealing with decreasing effects, then using strongly correlated variables (like distance and effective distance measures like centeroid densities) cause the overall model to suggest that none of the measures are useful</dd><dt>Post-treatment variables</dt><dd>Often while finding minima and saddle points on a potential energy surface, adding information of the existing minima values will impede training a model which actually fits to the whole potential energy surface instead of being concentrated around the known minima</dd></dl><h4 id=6e3>6E3</h4><p>List the four elemental confounds. Can you explain the conditional dependencies of each?</p><h5 id=solution>Solution</h5><p>The four elemental confounds are enumerated in Figure <a href=#orgdbead27>1</a>.</p><p><a id=orgdbead27></a></p><figure><img src=/ox-hugo/2020-06-13_18-16-22_screenshot.png alt="Figure 1: The four elemental confounds"><figcaption><p>Figure 1: The four elemental confounds</p></figcaption></figure><p>In symbolic notation, we can express this as:</p><table><thead><tr><th><strong>Confound</strong></th><th><strong>Symbolic Form</strong></th><th><strong>Conditional Independencies</strong></th></tr></thead><tbody><tr><td><strong>Forks</strong></td><td>\(X←Z→Y\)</td><td>\(Y⫫ X\vert Z\)</td></tr><tr><td><strong>Pipes</strong></td><td>\(X → Z → Y\)</td><td>\(Y⫫ X\vert Z\)</td></tr><tr><td><strong>Colliders</strong></td><td>\(X→Z←Y\)</td><td>\(Y \not⫫ X\vert Z\)</td></tr><tr><td><strong>Descendants</strong></td><td>See Figure <a href=#orgdbead27>1</a></td><td>Weakly conditions on parent</td></tr></tbody></table><h4 id=6e4>6E4</h4><p>How is a biased sample like conditioning on a collider? Think of the example at the open of the chapter.</p><h5 id=solution>Solution</h5><p>Recall that the biased sample in the introduction to the chapter was:</p><blockquote><p>It seems like the most newsworthy scientific studies are the least trustworthy.
 The more likely it is to kill you, if true, the less likely it is to be true.
 The more boring the topic, the more rigorous the results. How could this widely
 believed negative correlation exist? There doesn’t seem to be any reason for
 studies of topics that people care about to produce less reliable results. Maybe
 popular topics attract more and worse researchers, like flies drawn to the smell
-of honey?</p>
-</blockquote>
-<p>Note that this can also be expressed as a collider in a causal DAG as:</p>
-<p>\[\mathrm{newsworthiness}→\mathrm{acceptance}←\mathrm{trustworthiness}\]</p>
-<p>The idea is
+of honey?</p></blockquote><p>Note that this can also be expressed as a collider in a causal DAG as:</p><p>\[\mathrm{newsworthiness}→\mathrm{acceptance}←\mathrm{trustworthiness}\]</p><p>The idea is
 that a proposal will be accepted if either the newsworthiness or the
 trustworthiness is high. There is thus on average a negative association between
-these criteria <strong>among the selected set of proposals</strong>.</p>
-<p>In essence the association in the sub-samples is not the same as the total sample, and this causes wrong inferences on the <strong>total sample set</strong>, when conditioning on collider variables.</p>
-<h3 id=questions-of-medium-complexity--ch6>Questions of Medium Complexity (Ch6)</h3>
-<h4 id=6m1>6M1</h4>
-<p>Modify the DAG on page \(186\) to include the variable \(V\), an unobserved cause of \(C\) and \(Y:C\gets V \to Y\). Reanalyze the DAG. How many paths connect \(X\) to \(Y\)? Which must be closed? Which variables should you condition on now?</p>
-<h5 id=solution>Solution</h5>
-<p>Let us outline this DAG.</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>dag6m1</span><span class=o>&lt;-</span> <span class=nf>dagitty</span><span class=p>(</span><span class=s>&#34;dag{
+these criteria <strong>among the selected set of proposals</strong>.</p><p>In essence the association in the sub-samples is not the same as the total sample, and this causes wrong inferences on the <strong>total sample set</strong>, when conditioning on collider variables.</p><h3 id=questions-of-medium-complexity--ch6>Questions of Medium Complexity (Ch6)</h3><h4 id=6m1>6M1</h4><p>Modify the DAG on page \(186\) to include the variable \(V\), an unobserved cause of \(C\) and \(Y:C\gets V \to Y\). Reanalyze the DAG. How many paths connect \(X\) to \(Y\)? Which must be closed? Which variables should you condition on now?</p><h5 id=solution>Solution</h5><p>Let us outline this DAG.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>dag6m1</span><span class=o>&lt;-</span> <span class=nf>dagitty</span><span class=p>(</span><span class=s>&#34;dag{
 </span><span class=s>U [unobserved]
 </span><span class=s>V [unobserved]
 </span><span class=s>X -&gt; Y
@@ -487,39 +76,21 @@ these criteria <strong>among the selected set of proposals</strong>.</p>
   <span class=n>x</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=n>X</span><span class=o>=</span><span class=m>0</span><span class=p>,</span><span class=n>Y</span><span class=o>=</span><span class=m>2</span><span class=p>,</span><span class=n>U</span><span class=o>=</span><span class=m>0</span><span class=p>,</span><span class=n>A</span><span class=o>=</span><span class=m>1</span><span class=p>,</span><span class=n>B</span><span class=o>=</span><span class=m>1</span><span class=p>,</span><span class=n>C</span><span class=o>=</span><span class=m>2</span><span class=p>,</span><span class=n>V</span><span class=o>=</span><span class=m>2.5</span><span class=p>),</span>
   <span class=n>y</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=n>X</span><span class=o>=</span><span class=m>2</span><span class=p>,</span><span class=n>Y</span><span class=o>=</span><span class=m>2</span><span class=p>,</span><span class=n>U</span><span class=o>=</span><span class=m>1</span><span class=p>,</span><span class=n>A</span><span class=o>=</span><span class=m>0.2</span><span class=p>,</span><span class=n>B</span><span class=o>=</span><span class=m>1.5</span><span class=p>,</span><span class=n>C</span><span class=o>=</span><span class=m>1</span><span class=p>,</span><span class=n>V</span><span class=o>=</span><span class=m>1.5</span><span class=p>)</span>
 <span class=p>)</span>
-</code></pre></div><p>We can visualize this with:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>dag6m1</span> <span class=o>%&gt;%</span> <span class=n>drawdag</span>
-</code></pre></div><figure><img src=/ox-hugo/dag6m1coord.png>
-</figure>
-<p>The paths between \(X\) and \(Y\) are:</p>
-<ol>
-<li>\(X→Y\)</li>
-<li>\(X←U→A←C→Y\)</li>
-<li>\(X←U→A←C←V→Y\)</li>
-<li>\(X←U→B←C→Y\)</li>
-<li>\(X←U→B←C←V→Y\)</li>
-</ol>
-<p>We can leverage <code>dagitty</code> to check which paths should be closed.</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>dag6m1</span> <span class=o>%&gt;%</span> <span class=nf>adjustmentSets</span><span class=p>(</span><span class=n>exposure</span><span class=o>=</span><span class=s>&#34;X&#34;</span><span class=p>,</span><span class=n>outcome</span><span class=o>=</span><span class=s>&#34;Y&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text> { A }
+</code></pre></div><p>We can visualize this with:</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>dag6m1</span> <span class=o>%&gt;%</span> <span class=n>drawdag</span>
+</code></pre></div><figure><img src=/ox-hugo/dag6m1coord.png></figure><p>The paths between \(X\) and \(Y\) are:</p><ol><li>\(X→Y\)</li><li>\(X←U→A←C→Y\)</li><li>\(X←U→A←C←V→Y\)</li><li>\(X←U→B←C→Y\)</li><li>\(X←U→B←C←V→Y\)</li></ol><p>We can leverage <code>dagitty</code> to check which paths should be closed.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>dag6m1</span> <span class=o>%&gt;%</span> <span class=nf>adjustmentSets</span><span class=p>(</span><span class=n>exposure</span><span class=o>=</span><span class=s>&#34;X&#34;</span><span class=p>,</span><span class=n>outcome</span><span class=o>=</span><span class=s>&#34;Y&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text> { A }
 </code></pre></div><p>Logically, conditioning on \(A\) to close non-causal paths makes sense as it
 consistent with the understanding that only (1) is a causal path, and the rest
-will confound paths.</p>
-<h4 id=6m2>6M2</h4>
-<p>Sometimes in order to avoid multicollinearity, people inspect pairwise correlations among predictors before including them in a model. This is a bad procedure, because what matters is the conditional association, not the association before the variables are included in the model. To highlight this, consider the DAG \(X\to Z\to Y\). Simulate data from this DAG so that the correlation between \(X\) and \(Z\) is very large. Then include both in a model prediction \(Y\). Do you observe any multicollinearity? Why or why not? What is different from the legs example in the chapter?</p>
-<h5 id=solution>Solution</h5>
-<p>The DAG under consideration is:
+will confound paths.</p><h4 id=6m2>6M2</h4><p>Sometimes in order to avoid multicollinearity, people inspect pairwise correlations among predictors before including them in a model. This is a bad procedure, because what matters is the conditional association, not the association before the variables are included in the model. To highlight this, consider the DAG \(X\to Z\to Y\). Simulate data from this DAG so that the correlation between \(X\) and \(Z\) is very large. Then include both in a model prediction \(Y\). Do you observe any multicollinearity? Why or why not? What is different from the legs example in the chapter?</p><h5 id=solution>Solution</h5><p>The DAG under consideration is:
 \[ X\to Z\to Y \]
-We will simulate data first.</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>N</span><span class=o>&lt;-</span><span class=m>5000</span>
+We will simulate data first.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>N</span><span class=o>&lt;-</span><span class=m>5000</span>
 <span class=n>X</span><span class=o>&lt;-</span><span class=n>N</span> <span class=o>%&gt;%</span> <span class=nf>rnorm</span><span class=p>(</span><span class=n>mean</span><span class=o>=</span><span class=m>0</span><span class=p>,</span><span class=n>sd</span><span class=o>=</span><span class=m>1</span><span class=p>)</span>
 <span class=n>Z</span><span class=o>&lt;-</span><span class=n>N</span> <span class=o>%&gt;%</span> <span class=nf>rnorm</span><span class=p>(</span><span class=n>mean</span><span class=o>=</span><span class=n>X</span><span class=p>,</span><span class=n>sd</span><span class=o>=</span><span class=m>0.5</span><span class=p>)</span>
 <span class=n>Y</span><span class=o>&lt;-</span><span class=n>N</span> <span class=o>%&gt;%</span> <span class=nf>rnorm</span><span class=p>(</span><span class=n>mean</span><span class=o>=</span><span class=n>Z</span><span class=p>,</span><span class=n>sd</span><span class=o>=</span><span class=m>1</span><span class=p>)</span>
 <span class=nf>cor</span><span class=p>(</span><span class=n>X</span><span class=p>,</span><span class=n>Z</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>
 [1] 0.9987166
-</code></pre></div><p>The variables \(X\) and \(Z\) are highly correlated. We can check with a regression model for this.</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>m6m2</span><span class=o>&lt;-</span><span class=nf>quap</span><span class=p>(</span>
+</code></pre></div><p>The variables \(X\) and \(Z\) are highly correlated. We can check with a regression model for this.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>m6m2</span><span class=o>&lt;-</span><span class=nf>quap</span><span class=p>(</span>
   <span class=nf>alist</span><span class=p>(</span>
     <span class=n>Y</span> <span class=o>~</span> <span class=nf>dnorm</span><span class=p>(</span><span class=n>mu</span><span class=p>,</span><span class=n>sigma</span><span class=p>),</span>
     <span class=n>mu</span><span class=o>&lt;-</span><span class=n>a</span><span class=o>+</span><span class=n>bX</span><span class=o>*</span><span class=n>X</span><span class=o>+</span><span class=n>bZ</span><span class=o>*</span><span class=n>Z</span><span class=p>,</span>
@@ -527,22 +98,14 @@ We will simulate data first.</p>
     <span class=n>sigma</span><span class=o>~</span><span class=nf>dexp</span><span class=p>(</span><span class=m>1</span><span class=p>)</span>
   <span class=p>),</span> <span class=n>data</span><span class=o>=</span><span class=nf>list</span><span class=p>(</span><span class=n>X</span><span class=o>=</span><span class=n>X</span><span class=p>,</span><span class=n>Y</span><span class=o>=</span><span class=n>Y</span><span class=p>,</span><span class=n>Z</span><span class=o>=</span><span class=n>Z</span><span class=p>)</span>
 <span class=p>)</span>
-</code></pre></div><p>The regression fit is essentially.</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>m6m2</span> <span class=o>%&gt;%</span> <span class=n>precis</span>
-</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>       mean   sd  5.5% 94.5%
+</code></pre></div><p>The regression fit is essentially.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>m6m2</span> <span class=o>%&gt;%</span> <span class=n>precis</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>       mean   sd  5.5% 94.5%
 a     -0.01 0.01 -0.03  0.01
 bX     0.06 0.03  0.00  0.11
 bZ     0.95 0.03  0.90  1.00
 sigma  1.02 0.01  1.00  1.04
 </code></pre></div><p>The fit shows how \(X\) is not a useful variable, due to the addition of \(Z\),
-which is a post-treatment variable, and thus should not have been included. In effect, we also realize from this that multicollinearity is a data-driven property, and has no interpretation outside specific model instances.</p>
-<h4 id=6m3>6M3</h4>
-<p>Learning to analyze DAGs requires practice. For each of the four DAGs below, state which variables, if any, you must adjust for (condition on) to estimate the total causal influence of \(X\) on \(Y\).</p>
-<figure><img src=/ox-hugo/2020-06-12_19-11-22_screenshot.png>
-</figure>
-<h5 id=solution>Solution</h5>
-<p>We can leverage the <code>dagitty</code> package as well to figure out which variables should be conditioned on.</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>dag6m3a</span><span class=o>&lt;-</span> <span class=nf>dagitty</span><span class=p>(</span><span class=s>&#34;dag{
+which is a post-treatment variable, and thus should not have been included. In effect, we also realize from this that multicollinearity is a data-driven property, and has no interpretation outside specific model instances.</p><h4 id=6m3>6M3</h4><p>Learning to analyze DAGs requires practice. For each of the four DAGs below, state which variables, if any, you must adjust for (condition on) to estimate the total causal influence of \(X\) on \(Y\).</p><figure><img src=/ox-hugo/2020-06-12_19-11-22_screenshot.png></figure><h5 id=solution>Solution</h5><p>We can leverage the <code>dagitty</code> package as well to figure out which variables should be conditioned on.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>dag6m3a</span><span class=o>&lt;-</span> <span class=nf>dagitty</span><span class=p>(</span><span class=s>&#34;dag{
 </span><span class=s>X -&gt; Y
 </span><span class=s>X &lt;- Z -&gt; Y
 </span><span class=s>X &lt;- Z &lt;- A -&gt; Y
@@ -562,96 +125,31 @@ which is a post-treatment variable, and thus should not have been included. In e
 </span><span class=s>X -&gt; Z -&gt; Y
 </span><span class=s>X &lt;- A -&gt; Z -&gt; Y
 </span><span class=s>}&#34;</span><span class=p>)</span>
-</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>dag6m3a</span> <span class=o>%&gt;%</span> <span class=nf>adjustmentSets</span><span class=p>(</span><span class=n>exposure</span><span class=o>=</span><span class=s>&#34;X&#34;</span><span class=p>,</span><span class=n>outcome</span><span class=o>=</span><span class=s>&#34;Y&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>dag6m3a</span> <span class=o>%&gt;%</span> <span class=nf>adjustmentSets</span><span class=p>(</span><span class=n>exposure</span><span class=o>=</span><span class=s>&#34;X&#34;</span><span class=p>,</span><span class=n>outcome</span><span class=o>=</span><span class=s>&#34;Y&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
 <span class=n>dag6m3b</span> <span class=o>%&gt;%</span> <span class=nf>adjustmentSets</span><span class=p>(</span><span class=n>exposure</span><span class=o>=</span><span class=s>&#34;X&#34;</span><span class=p>,</span><span class=n>outcome</span><span class=o>=</span><span class=s>&#34;Y&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
 <span class=n>dag6m3c</span> <span class=o>%&gt;%</span> <span class=nf>adjustmentSets</span><span class=p>(</span><span class=n>exposure</span><span class=o>=</span><span class=s>&#34;X&#34;</span><span class=p>,</span><span class=n>outcome</span><span class=o>=</span><span class=s>&#34;Y&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
 <span class=n>dag6m3d</span> <span class=o>%&gt;%</span> <span class=nf>adjustmentSets</span><span class=p>(</span><span class=n>exposure</span><span class=o>=</span><span class=s>&#34;X&#34;</span><span class=p>,</span><span class=n>outcome</span><span class=o>=</span><span class=s>&#34;Y&#34;</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text> { Z }
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text> { Z }
 
  {}
 
  {}
 
  { A }
-</code></pre></div><p>Clearly the upper left and lower right DAGs need to be conditioned on Z and A respectively to close non-causal paths.</p>
-<p>We can further rationalize this as follows:</p>
-<dl>
-<dt>Upper Left</dt>
-<dd>\(X\gets Z\to Y\) and \(X\gets Z \gets A \to Y\) are open, non-causal paths which need to be closed</dd>
-<dt>Upper Right</dt>
-<dd>\(Z\) is a collider which ensures that only causal paths are open</dd>
-<dt>Lower Left</dt>
-<dd>There is a collider \(Z\) which ensures that the non-causal paths are closed</dd>
-<dt>Lower Right</dt>
-<dd>This figure is more complicated, so we will consider all the paths, i.e. \(X \to Y\), \(X \to Z \to Y\), \(X\gets A \to Z\to Y\), and we clearly need to condition on either \(A\) or \(Z\). \(Z\) is also part of a causal path, so only \(A\) is to be conditioned on</dd>
-</dl>
-<p>A more canonical way to do this is to enumerate all paths for every option, but <code>dagitty</code> is more elegant.</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>dag6m3d</span> <span class=o>%&gt;%</span> <span class=n>graphLayout</span> <span class=o>%&gt;%</span> <span class=n>plot</span>
-</code></pre></div><h2 id=chapter-vii-ulysses-compass>Chapter VII: Ulysses' Compass</h2>
-<h3 id=easy-questions--ch7>Easy Questions (Ch7)</h3>
-<h4 id=hold-7e1>HOLD 7E1</h4>
-<p>State the three motivating criteria that define information entropy. Try to express each in your own words.</p>
-<h5 id=solution>Solution</h5>
-<p>The motivating criteria for defining informational entropy or &ldquo;uncertainity&rdquo; are:</p>
-<dl>
-<dt>Continuity</dt>
-<dd>It is preferable to have a continuous function to define our informational criteria, since we can always discretize a continuous function (by binning) later, but a discrete function does not have a full range of values which can correspond to all the possible models. As a metric then, it is preferable to have a minimum and maximum bound, but define it such that it is continuous for representing arbitrary models</dd>
-<dt>Positive and Monotonic</dt>
-<dd>The monotonicity constraint is simply to ensure that as the number of events increases, given no other changes in the system, the uncertainity will increase. Since the function is already continuous, the incerasing nature is really by construction. It should be noted that a monotonously decreasing function would also satisfy the motivating criteria, but will change the interpretation completely</dd>
-<dt>Additivity</dt>
-<dd>As mentioned for continuity, it is possible always to bin continuous functions or discretize it. Similarly, it is desirable to keep the amount of uncertainity constant and add or subtract values to redefine categories</dd>
-</dl>
-<h4 id=7e2>7E2</h4>
-<p>Suppose a coin is weighted such that, when it is tossed and lands on a table, it comes up heads \(70%\) of the time. What is the entropy of this coin?</p>
-<h5 id=solution>Solution</h5>
-<p>We can simulate this system easily.</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>p</span><span class=o>&lt;-</span><span class=nf>c</span><span class=p>(</span><span class=m>0.7</span><span class=p>,</span><span class=m>0.3</span><span class=p>)</span>
+</code></pre></div><p>Clearly the upper left and lower right DAGs need to be conditioned on Z and A respectively to close non-causal paths.</p><p>We can further rationalize this as follows:</p><dl><dt>Upper Left</dt><dd>\(X\gets Z\to Y\) and \(X\gets Z \gets A \to Y\) are open, non-causal paths which need to be closed</dd><dt>Upper Right</dt><dd>\(Z\) is a collider which ensures that only causal paths are open</dd><dt>Lower Left</dt><dd>There is a collider \(Z\) which ensures that the non-causal paths are closed</dd><dt>Lower Right</dt><dd>This figure is more complicated, so we will consider all the paths, i.e. \(X \to Y\), \(X \to Z \to Y\), \(X\gets A \to Z\to Y\), and we clearly need to condition on either \(A\) or \(Z\). \(Z\) is also part of a causal path, so only \(A\) is to be conditioned on</dd></dl><p>A more canonical way to do this is to enumerate all paths for every option, but <code>dagitty</code> is more elegant.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>dag6m3d</span> <span class=o>%&gt;%</span> <span class=n>graphLayout</span> <span class=o>%&gt;%</span> <span class=n>plot</span>
+</code></pre></div><h2 id=chapter-vii-ulysses-compass>Chapter VII: Ulysses' Compass</h2><h3 id=easy-questions--ch7>Easy Questions (Ch7)</h3><h4 id=hold-7e1>HOLD 7E1</h4><p>State the three motivating criteria that define information entropy. Try to express each in your own words.</p><h5 id=solution>Solution</h5><p>The motivating criteria for defining informational entropy or &ldquo;uncertainity&rdquo; are:</p><dl><dt>Continuity</dt><dd>It is preferable to have a continuous function to define our informational criteria, since we can always discretize a continuous function (by binning) later, but a discrete function does not have a full range of values which can correspond to all the possible models. As a metric then, it is preferable to have a minimum and maximum bound, but define it such that it is continuous for representing arbitrary models</dd><dt>Positive and Monotonic</dt><dd>The monotonicity constraint is simply to ensure that as the number of events increases, given no other changes in the system, the uncertainity will increase. Since the function is already continuous, the incerasing nature is really by construction. It should be noted that a monotonously decreasing function would also satisfy the motivating criteria, but will change the interpretation completely</dd><dt>Additivity</dt><dd>As mentioned for continuity, it is possible always to bin continuous functions or discretize it. Similarly, it is desirable to keep the amount of uncertainity constant and add or subtract values to redefine categories</dd></dl><h4 id=7e2>7E2</h4><p>Suppose a coin is weighted such that, when it is tossed and lands on a table, it comes up heads \(70%\) of the time. What is the entropy of this coin?</p><h5 id=solution>Solution</h5><p>We can simulate this system easily.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>p</span><span class=o>&lt;-</span><span class=nf>c</span><span class=p>(</span><span class=m>0.7</span><span class=p>,</span><span class=m>0.3</span><span class=p>)</span>
 <span class=o>-</span><span class=nf>sum</span><span class=p>(</span><span class=n>p</span><span class=o>*</span><span class=nf>log</span><span class=p>(</span><span class=n>p</span><span class=p>))</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>[1] 0.6108643
-</code></pre></div><h4 id=7e3>7E3</h4>
-<p>Suppose a four-sided die is loaded such that, when tossed onto a table, it shows &ldquo;1&rdquo; \(20%\), &ldquo;2&rdquo;, \(25%\), and &ldquo;4&rdquo; \(30%\) of the time. What is the entropy of this die?</p>
-<h5 id=solution>Solution</h5>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>p</span><span class=o>&lt;-</span><span class=nf>c</span><span class=p>(</span><span class=m>0.2</span><span class=p>,</span><span class=m>0.25</span><span class=p>,</span><span class=m>0.25</span><span class=p>,</span><span class=m>0.3</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>[1] 0.6108643
+</code></pre></div><h4 id=7e3>7E3</h4><p>Suppose a four-sided die is loaded such that, when tossed onto a table, it shows &ldquo;1&rdquo; \(20%\), &ldquo;2&rdquo;, \(25%\), and &ldquo;4&rdquo; \(30%\) of the time. What is the entropy of this die?</p><h5 id=solution>Solution</h5><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>p</span><span class=o>&lt;-</span><span class=nf>c</span><span class=p>(</span><span class=m>0.2</span><span class=p>,</span><span class=m>0.25</span><span class=p>,</span><span class=m>0.25</span><span class=p>,</span><span class=m>0.3</span><span class=p>)</span>
 <span class=o>-</span><span class=nf>sum</span><span class=p>(</span><span class=n>p</span><span class=o>*</span><span class=nf>log</span><span class=p>(</span><span class=n>p</span><span class=p>))</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>[1] 1.376227
-</code></pre></div><h4 id=7e4>7E4</h4>
-<p>Suppose another four-sided die is loaded such that it never shows &ldquo;4&rdquo;. The other three sides show equally often. What is the entropy of this die?</p>
-<h5 id=solution>Solution</h5>
-<p>We will not consider impossible events in our simulation.</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>p</span><span class=o>&lt;-</span> <span class=nf>c</span><span class=p>(</span><span class=m>1</span><span class=o>/</span><span class=m>3</span><span class=p>,</span><span class=m>1</span><span class=o>/</span><span class=m>3</span><span class=p>,</span><span class=m>1</span><span class=o>/</span><span class=m>3</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>[1] 1.376227
+</code></pre></div><h4 id=7e4>7E4</h4><p>Suppose another four-sided die is loaded such that it never shows &ldquo;4&rdquo;. The other three sides show equally often. What is the entropy of this die?</p><h5 id=solution>Solution</h5><p>We will not consider impossible events in our simulation.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>p</span><span class=o>&lt;-</span> <span class=nf>c</span><span class=p>(</span><span class=m>1</span><span class=o>/</span><span class=m>3</span><span class=p>,</span><span class=m>1</span><span class=o>/</span><span class=m>3</span><span class=p>,</span><span class=m>1</span><span class=o>/</span><span class=m>3</span><span class=p>)</span>
 <span class=o>-</span><span class=nf>sum</span><span class=p>(</span><span class=n>p</span><span class=o>*</span><span class=nf>log</span><span class=p>(</span><span class=n>p</span><span class=p>))</span> <span class=o>%&gt;%</span> <span class=n>print</span>
-</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>[1] 1.098612
-</code></pre></div><h3 id=questions-of-medium-complexity--ch7>Questions of Medium Complexity (Ch7)</h3>
-<h4 id=hold-7m1>HOLD 7M1</h4>
-<p>Write down and compare the definitions of AIC and WAIC. Which of these criteria is most general? Which assumptions are required to transform the more general criterion into a less general one?</p>
-<h5 id=solution>Solution</h5>
-<p>We know that AIC or &ldquo;Akaike Information Criterion&rdquo; is defined as:</p>
-<p>Where \(k\) is the number of parameters in the model.</p>
-<p>The WAIC or &ldquo;Widely Applicable Information Criterion&rdquo; is given by:
-\[\mathrm{WAIC}=-2\left(\sum_{i}\log\Pr(y_{i})-\sum_{i}V(y_{i})\right)\]</p>
-<p>WAIC is more general than the AIC. WAIC and AIC will be approximately equivalent
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>[1] 1.098612
+</code></pre></div><h3 id=questions-of-medium-complexity--ch7>Questions of Medium Complexity (Ch7)</h3><h4 id=hold-7m1>HOLD 7M1</h4><p>Write down and compare the definitions of AIC and WAIC. Which of these criteria is most general? Which assumptions are required to transform the more general criterion into a less general one?</p><h5 id=solution>Solution</h5><p>We know that AIC or &ldquo;Akaike Information Criterion&rdquo; is defined as:</p><p>Where \(k\) is the number of parameters in the model.</p><p>The WAIC or &ldquo;Widely Applicable Information Criterion&rdquo; is given by:
+\[\mathrm{WAIC}=-2\left(\sum_{i}\log\Pr(y_{i})-\sum_{i}V(y_{i})\right)\]</p><p>WAIC is more general than the AIC. WAIC and AIC will be approximately equivalent
 when the priors are effectively flat or when there is enough data to render the
-priors redundant. This is because the WAIC makes no assumptions about the shape of the posterior, while AIC is an approximation depending on:</p>
-<ul>
-<li>A flat prior (or one overwhelmed by the likelihood)</li>
-<li>A posterior distribution which is approximately a multivariate Gaussian</li>
-<li>Sample size \(N\) with more parameters (\(p\))</li>
-</ul>
-<p>Furthermore, we note that the AIC simply estimates that the penalty term is twice the number of parameters, while the WAIC fits uses the <code>lppd</code> or the sum of variances of each log-likelihood.</p>
-<h4 id=hold-7m2>HOLD 7M2</h4>
-<p>Explain the difference between model <em>selection</em> and model <em>comparison</em>. What information is lost under model selection?</p>
-<h5 id=solution>Solution</h5>
-<p>Model selection involves choosing one model over the others. Ideally this occurs after appropriate model comparision. However, the chapter does mention that it is common to use heuristics like &ldquo;stargazing&rdquo; which uses frequentist tools to estimate which variables are important, then choose a model (or causal salad)a which has the highest number of significant variables.</p>
-<p>Model comparision in theory should be based off entropic measures for the information used. The models should be trained on the same data-set for the metrics to be meaningful.</p>
-<p>Model selection loses information regarding the uncertainity quantifications of the models which do not necessarily have the (relatively) optimal values of the metric used for comparision. This is important, especially since models which are parameterized for prediction, often perform better without being useful for causal analysis.</p>
-<h4 id=7m3>7M3</h4>
-<p>When comparing models with an information criterion, why must all models be fit to exactly the same observations? What would happen to the information criterion values, if the models were fit to different numbers of observations? Perform some experiments, if you are not sure.</p>
-<h5 id=solution>Solution</h5>
-<p>When using an information criterion, it is important to understand that different values define different &ldquo;small worlds&rdquo;.</p>
-<p>This is why when working on gauging the information criterion, which work on the basis of the accumulated deviance values, having a varying number of training values will effectively be comparing apples and oranges. Each training data-set essentially fits one model, and comparing models trained on different data-sets (even subsets of the same data) will not lead to a fundamentally sound comparison.</p>
-<p>We also know that in general, fewer data-points will have fewer deviance terms, and therefore artificially seem to be better.</p>
-<p>We will prove this with an artificial data-set.</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>ySmallDat</span> <span class=o>&lt;-</span> <span class=nf>rnorm</span><span class=p>(</span><span class=m>100</span><span class=p>)</span>
+priors redundant. This is because the WAIC makes no assumptions about the shape of the posterior, while AIC is an approximation depending on:</p><ul><li>A flat prior (or one overwhelmed by the likelihood)</li><li>A posterior distribution which is approximately a multivariate Gaussian</li><li>Sample size \(N\) with more parameters (\(p\))</li></ul><p>Furthermore, we note that the AIC simply estimates that the penalty term is twice the number of parameters, while the WAIC fits uses the <code>lppd</code> or the sum of variances of each log-likelihood.</p><h4 id=hold-7m2>HOLD 7M2</h4><p>Explain the difference between model <em>selection</em> and model <em>comparison</em>. What information is lost under model selection?</p><h5 id=solution>Solution</h5><p>Model selection involves choosing one model over the others. Ideally this occurs after appropriate model comparision. However, the chapter does mention that it is common to use heuristics like &ldquo;stargazing&rdquo; which uses frequentist tools to estimate which variables are important, then choose a model (or causal salad)a which has the highest number of significant variables.</p><p>Model comparision in theory should be based off entropic measures for the information used. The models should be trained on the same data-set for the metrics to be meaningful.</p><p>Model selection loses information regarding the uncertainity quantifications of the models which do not necessarily have the (relatively) optimal values of the metric used for comparision. This is important, especially since models which are parameterized for prediction, often perform better without being useful for causal analysis.</p><h4 id=7m3>7M3</h4><p>When comparing models with an information criterion, why must all models be fit to exactly the same observations? What would happen to the information criterion values, if the models were fit to different numbers of observations? Perform some experiments, if you are not sure.</p><h5 id=solution>Solution</h5><p>When using an information criterion, it is important to understand that different values define different &ldquo;small worlds&rdquo;.</p><p>This is why when working on gauging the information criterion, which work on the basis of the accumulated deviance values, having a varying number of training values will effectively be comparing apples and oranges. Each training data-set essentially fits one model, and comparing models trained on different data-sets (even subsets of the same data) will not lead to a fundamentally sound comparison.</p><p>We also know that in general, fewer data-points will have fewer deviance terms, and therefore artificially seem to be better.</p><p>We will prove this with an artificial data-set.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>ySmallDat</span> <span class=o>&lt;-</span> <span class=nf>rnorm</span><span class=p>(</span><span class=m>100</span><span class=p>)</span>
 <span class=n>yLargeDat</span> <span class=o>&lt;-</span> <span class=nf>rnorm</span><span class=p>(</span><span class=m>1000</span><span class=p>)</span>
 <span class=n>m7m3S</span> <span class=o>&lt;-</span> <span class=nf>quap</span><span class=p>(</span>
   <span class=nf>alist</span><span class=p>(</span>
@@ -665,41 +163,8 @@ priors redundant. This is because the WAIC makes no assumptions about the shape 
     <span class=n>mu</span> <span class=o>~</span> <span class=nf>dnorm</span><span class=p>(</span><span class=m>0</span><span class=p>,</span><span class=n>sigma</span><span class=p>)</span>
   <span class=p>),</span><span class=n>data</span><span class=o>=</span><span class=nf>list</span><span class=p>(</span><span class=n>y</span><span class=o>=</span><span class=n>yLargeDat</span><span class=p>,</span><span class=n>sigma</span><span class=o>=</span><span class=m>1</span><span class=p>)</span>
 <span class=p>)</span>
-</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>WAIC</span><span class=p>(</span><span class=n>m7m3S</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=nf>rbind</span><span class=p>(</span><span class=nf>WAIC</span><span class=p>(</span><span class=n>m7m3L</span><span class=p>))</span> <span class=o>%&gt;%</span> <span class=nf>mutate</span><span class=p>(</span><span class=n>numSamples</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=m>100</span><span class=p>,</span><span class=m>1000</span><span class=p>))</span> <span class=o>%&gt;%</span> <span class=n>toOrg</span>
-</code></pre></div><table>
-<thead>
-<tr>
-<th>WAIC</th>
-<th>lppd</th>
-<th>penalty</th>
-<th>std_err</th>
-<th>numSamples</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>278.876677095335</td>
-<td>-138.576629006818</td>
-<td>0.861709540849766</td>
-<td>11.1055429875975</td>
-<td>100</td>
-</tr>
-<tr>
-<td>2898.5831283182</td>
-<td>-1448.20174278015</td>
-<td>1.08982137894866</td>
-<td>49.5298847525459</td>
-<td>1000</td>
-</tr>
-</tbody>
-</table>
-<p>We see that apparently, the model with fewer data-points is superior, but from the discussion above, as well as by construction, we know that the models are the same, so the effect is clearly spurious, and caused by training on different data-sets.</p>
-<h4 id=7m4>7M4</h4>
-<p>What happens to the effective number of parameters as measured by PSIS or WAIC, as a prior becomes more concentrated? Why? Perform some experiments, if you are not sure.</p>
-<h5 id=solution>Solution</h5>
-<p>Since a strength of a prior is directly related to the process of regularization, it is clear that as a prior becomes more concentrated, the model tends to be more critical of new data, and therefore the effective number of parameters will drop proportionately. Another approach to the same problem is to understand that the prior encodes our previous beliefs which in effect represents additional data which the model a-priori has been trained with.</p>
-<p>We can test this simply by re-using the models we defined for 7M3.</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>yDat</span> <span class=o>&lt;-</span> <span class=nf>rnorm</span><span class=p>(</span><span class=m>5</span><span class=p>)</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>WAIC</span><span class=p>(</span><span class=n>m7m3S</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=nf>rbind</span><span class=p>(</span><span class=nf>WAIC</span><span class=p>(</span><span class=n>m7m3L</span><span class=p>))</span> <span class=o>%&gt;%</span> <span class=nf>mutate</span><span class=p>(</span><span class=n>numSamples</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=m>100</span><span class=p>,</span><span class=m>1000</span><span class=p>))</span> <span class=o>%&gt;%</span> <span class=n>toOrg</span>
+</code></pre></div><table><thead><tr><th>WAIC</th><th>lppd</th><th>penalty</th><th>std_err</th><th>numSamples</th></tr></thead><tbody><tr><td>278.876677095335</td><td>-138.576629006818</td><td>0.861709540849766</td><td>11.1055429875975</td><td>100</td></tr><tr><td>2898.5831283182</td><td>-1448.20174278015</td><td>1.08982137894866</td><td>49.5298847525459</td><td>1000</td></tr></tbody></table><p>We see that apparently, the model with fewer data-points is superior, but from the discussion above, as well as by construction, we know that the models are the same, so the effect is clearly spurious, and caused by training on different data-sets.</p><h4 id=7m4>7M4</h4><p>What happens to the effective number of parameters as measured by PSIS or WAIC, as a prior becomes more concentrated? Why? Perform some experiments, if you are not sure.</p><h5 id=solution>Solution</h5><p>Since a strength of a prior is directly related to the process of regularization, it is clear that as a prior becomes more concentrated, the model tends to be more critical of new data, and therefore the effective number of parameters will drop proportionately. Another approach to the same problem is to understand that the prior encodes our previous beliefs which in effect represents additional data which the model a-priori has been trained with.</p><p>We can test this simply by re-using the models we defined for 7M3.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>yDat</span> <span class=o>&lt;-</span> <span class=nf>rnorm</span><span class=p>(</span><span class=m>5</span><span class=p>)</span>
 <span class=n>sigL</span><span class=o>&lt;-</span><span class=m>1000</span>
 <span class=n>sigS</span><span class=o>&lt;-</span><span class=m>1</span>
 <span class=n>m7m4S</span> <span class=o>&lt;-</span> <span class=nf>quap</span><span class=p>(</span>
@@ -714,57 +179,9 @@ priors redundant. This is because the WAIC makes no assumptions about the shape 
     <span class=n>mu</span> <span class=o>~</span> <span class=nf>dnorm</span><span class=p>(</span><span class=m>0</span><span class=p>,</span><span class=n>sigma</span><span class=p>)</span>
   <span class=p>),</span><span class=n>data</span><span class=o>=</span><span class=nf>list</span><span class=p>(</span><span class=n>y</span><span class=o>=</span><span class=n>yDat</span><span class=p>,</span><span class=n>sigma</span><span class=o>=</span><span class=n>sigL</span><span class=p>)</span>
 <span class=p>)</span>
-</code></pre></div><p>Recall that the WAIC is defined by:</p>
-<p>\[ WAIC = -2(lppd-pWAIC) \]</p>
-<p>Where <code>pWAIC</code> is the effective number of parameters. So we note that:</p>
-<p>\[ pWAIC=lppd-0.5*WAIC \]</p>
-<p>This is reported by <code>WAIC</code> as the <code>penalty</code> parameter.</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=nf>WAIC</span><span class=p>(</span><span class=n>m7m4S</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=nf>rbind</span><span class=p>(</span><span class=nf>WAIC</span><span class=p>(</span><span class=n>m7m4L</span><span class=p>))</span> <span class=o>%&gt;%</span> <span class=nf>mutate</span><span class=p>(</span><span class=n>sigma</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=n>sigS</span><span class=p>,</span><span class=n>sigL</span><span class=p>))</span> <span class=o>%&gt;%</span> <span class=n>toOrg</span>
-</code></pre></div><table>
-<thead>
-<tr>
-<th>WAIC</th>
-<th>lppd</th>
-<th>penalty</th>
-<th>std_err</th>
-<th>sigma</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>16.4098404638955</td>
-<td>-7.31440324407321</td>
-<td>0.890516987874561</td>
-<td>2.31086161575483</td>
-<td>1</td>
-</tr>
-<tr>
-<td>16.9915093637752</td>
-<td>-7.3011838990595</td>
-<td>1.19457078282808</td>
-<td>2.5268591022024</td>
-<td>1000</td>
-</tr>
-</tbody>
-</table>
-<p>Though the effect is not too strong, it is clear that having a denser prior (a.k.a smaller <code>sigma</code>) has a smaller number of effective paramters, as expected.</p>
-<h4 id=hold-7m5>HOLD 7M5</h4>
-<p>Provide an informal explanation of why informative priors reduce overfitting.</p>
-<h5 id=solution>Solution</h5>
-<p>Overfitting is easier to understand in the context of data-compression. Essentially, when overfitting occurs, the data is represented in a different encoding, instead of being compressed.</p>
-<p>We can also look at the overfitting process to be a trade off between simply fitting to every data-point (low bias, high variance) and being completely oblivious to the data (high bias, low variance). In another sense, overfitting occurs when the model is &ldquo;overly eager&rdquo; to learn from the data.</p>
-<p>Given this understanding, informative priors essentially regularize the model, by ensuring that the likelihood is closer to the posterior, and hence prevents the model from &ldquo;learning&rdquo; from data-points which are not actually relevant to the prior.</p>
-<p>This implies that overfitting reduces the model by lowering the sensitivity of the model to a sample, which implicitly implies that the data contains points which are not actually a feature of the process which will generate future data.</p>
-<h4 id=hold-7m6>HOLD 7M6</h4>
-<p>Provide an informal explanation of why overly informative priors result in underfitting.</p>
-<h5 id=solution>Solution</h5>
-<p>Underfitting occurs when the model is insensitive to newer samples of the data. In classical terms, this means that the model has a very high bias, and typically has a correspondingly low variance.</p>
-<p>With the understanding that priors cause regularization, which enforces sparsity of features, it is easier to see that very strong priors ensure that the model is overly sparse and incapable of picking up relevant trends in the training data.</p>
-<p>Overly informative priors, essentially imply that the model has &ldquo;seen&rdquo; a large amount of data previously, which then means that it is less sensitive to newer samples of data. This means that features present in the training data which are relevant to future data will be ignored in favor of the prior predictions.</p>
-<h2 id=a-colophon>A: Colophon</h2>
-<p>To ensure that this document is fully reproducible at a later date, we will record the session info.</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=n>devtools</span><span class=o>::</span><span class=nf>session_info</span><span class=p>()</span>
-</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text>- Session info ---------------------------------------------------------------
+</code></pre></div><p>Recall that the WAIC is defined by:</p><p>\[ WAIC = -2(lppd-pWAIC) \]</p><p>Where <code>pWAIC</code> is the effective number of parameters. So we note that:</p><p>\[ pWAIC=lppd-0.5*WAIC \]</p><p>This is reported by <code>WAIC</code> as the <code>penalty</code> parameter.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=nf>WAIC</span><span class=p>(</span><span class=n>m7m4S</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=nf>rbind</span><span class=p>(</span><span class=nf>WAIC</span><span class=p>(</span><span class=n>m7m4L</span><span class=p>))</span> <span class=o>%&gt;%</span> <span class=nf>mutate</span><span class=p>(</span><span class=n>sigma</span><span class=o>=</span><span class=nf>c</span><span class=p>(</span><span class=n>sigS</span><span class=p>,</span><span class=n>sigL</span><span class=p>))</span> <span class=o>%&gt;%</span> <span class=n>toOrg</span>
+</code></pre></div><table><thead><tr><th>WAIC</th><th>lppd</th><th>penalty</th><th>std_err</th><th>sigma</th></tr></thead><tbody><tr><td>16.4098404638955</td><td>-7.31440324407321</td><td>0.890516987874561</td><td>2.31086161575483</td><td>1</td></tr><tr><td>16.9915093637752</td><td>-7.3011838990595</td><td>1.19457078282808</td><td>2.5268591022024</td><td>1000</td></tr></tbody></table><p>Though the effect is not too strong, it is clear that having a denser prior (a.k.a smaller <code>sigma</code>) has a smaller number of effective paramters, as expected.</p><h4 id=hold-7m5>HOLD 7M5</h4><p>Provide an informal explanation of why informative priors reduce overfitting.</p><h5 id=solution>Solution</h5><p>Overfitting is easier to understand in the context of data-compression. Essentially, when overfitting occurs, the data is represented in a different encoding, instead of being compressed.</p><p>We can also look at the overfitting process to be a trade off between simply fitting to every data-point (low bias, high variance) and being completely oblivious to the data (high bias, low variance). In another sense, overfitting occurs when the model is &ldquo;overly eager&rdquo; to learn from the data.</p><p>Given this understanding, informative priors essentially regularize the model, by ensuring that the likelihood is closer to the posterior, and hence prevents the model from &ldquo;learning&rdquo; from data-points which are not actually relevant to the prior.</p><p>This implies that overfitting reduces the model by lowering the sensitivity of the model to a sample, which implicitly implies that the data contains points which are not actually a feature of the process which will generate future data.</p><h4 id=hold-7m6>HOLD 7M6</h4><p>Provide an informal explanation of why overly informative priors result in underfitting.</p><h5 id=solution>Solution</h5><p>Underfitting occurs when the model is insensitive to newer samples of the data. In classical terms, this means that the model has a very high bias, and typically has a correspondingly low variance.</p><p>With the understanding that priors cause regularization, which enforces sparsity of features, it is easier to see that very strong priors ensure that the model is overly sparse and incapable of picking up relevant trends in the training data.</p><p>Overly informative priors, essentially imply that the model has &ldquo;seen&rdquo; a large amount of data previously, which then means that it is less sensitive to newer samples of data. This means that features present in the training data which are relevant to future data will be ignored in favor of the prior predictions.</p><h2 id=a-colophon>A: Colophon</h2><p>To ensure that this document is fully reproducible at a later date, we will record the session info.</p><div class=highlight><pre class=chroma><code class=language-R data-lang=R><span class=n>devtools</span><span class=o>::</span><span class=nf>session_info</span><span class=p>()</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-text data-lang=text>- Session info ---------------------------------------------------------------
  setting  value
  version  R version 4.0.0 (2020-04-24)
  os       Arch Linux
@@ -1124,103 +541,10 @@ priors redundant. This is because the WAIC makes no assumptions about the shape 
 [245] /nix/store/3zj4dkjbdwgf3mdsl9nf9jkicpz1nwgc-r-V8-3.0.2/library
 [246] /nix/store/qiqsh62w69b5xgj2i4wjamibzxxji0mf-r-tidybayes.rethinking/library
 [247] /nix/store/4j6byy1klyk4hm2k6g3657682cf3wxcj-R-4.0.0/lib/R/library
-</code></pre></div><section class=footnotes role=doc-endnotes>
-<hr>
-<ol>
-<li id=fn:1 role=doc-endnote>
-<p>Summer of 2020&#160;<a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p>
-</li>
-</ol>
-</section>
-</div>
-</article>
-<hr>
-<div class=post-info>
-<p>
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7" y2="7"/></svg><span class=tag><a href=https://rgoswami.me/tags/solutions>solutions</a></span><span class=tag><a href=https://rgoswami.me/tags/r>R</a></span><span class=tag><a href=https://rgoswami.me/tags/sr2>SR2</a></span>
-</p>
-<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6A2 2 0 004 4v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>5416 Words</p>
-<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Posted: <time class=dt-published> 2020-06-14 00:00 +0000</time></p>
-<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-git-commit"><circle cx="12" cy="12" r="4"/><line x1="1.05" y1="12" x2="7" y2="12"/><line x1="17.01" y1="12" x2="22.96" y2="12"/></svg><a href=1a65162fa819405896008ca9ca347b406d62da0d target=_blank rel=noopener>1a65162</a> @ 2020-08-18</p>
-<a class=resp-sharing-button__link href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2frgoswami.me%2fposts%2fsr2-ch5-ch6-ch7%2f" target=_blank rel=noopener aria-label=Facebook>
-<div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.5"/><path d="M15.84 9.5H13.5V8.48c0-.53.35-.65.6-.65h1.4v-2.3h-2.35c-2.3.0-2.65 1.7-2.65 2.8V9.5h-2v2h2v7h3v-7h2.1l.24-2z"/></svg></div>Facebook</div>
-</a>
-<a class=resp-sharing-button__link href="https://twitter.com/intent/tweet/?text=%22SR2%20%3a%3a%20Solutions%20for%20Chapters%20%7b5%2c6%2c7%7d%22%20seems%20like%20an%20interesting%20read%20from%20%40rg0swami&url=https%3a%2f%2frgoswami.me%2fposts%2fsr2-ch5-ch6-ch7%2f" target=_blank rel=noopener aria-label=Twitter>
-<div class="resp-sharing-button resp-sharing-button--twitter resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.5 7.4l-2 .2c-.4-.5-1-.8-2-.8C13.3 6.8 12 8 12 9.4v.6c-2 0-4-1-5.4-2.7-.2.4-.3.8-.3 1.3.0 1 .4 1.7 1.2 2.2-.5.0-1 0-1.2-.3.0 1.3 1 2.3 2 2.6-.3.4-.7.4-1 0 .2 1.4 1.2 2 2.3 2-1 1-2.5 1.4-4 1 1.3 1 2.7 1.4 4.2 1.4 4.8.0 7.5-4 7.5-7.5v-.4c.5-.4.8-1.5 1.2-2z"/><circle cx="12" cy="12" r="11.5"/></svg></div>Twitter</div>
-</a>
-<a class=resp-sharing-button__link href="mailto:?subject=%22SR2%20%3a%3a%20Solutions%20for%20Chapters%20%7b5%2c6%2c7%7d%22%20seems%20interesting...&body=https%3a%2f%2frgoswami.me%2fposts%2fsr2-ch5-ch6-ch7%2f" target=_self rel=noopener aria-label=E-Mail>
-<div class="resp-sharing-button resp-sharing-button--email resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19.5 16c0 .8-.7 1.5-1.5 1.5H6c-.8.0-1.5-.7-1.5-1.5V8c0-.8.7-1.5 1.5-1.5h12c.8.0 1.5.7 1.5 1.5v8zm-2-7.5L12 13 6.5 8.5m11 6-4-2.5m-7 2.5 4-2.5"/><circle cx="12" cy="12" r="11.5"/></svg></div>E-Mail</div>
-</a>
-<a class=resp-sharing-button__link href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2frgoswami.me%2fposts%2fsr2-ch5-ch6-ch7%2f&title=%22SR2%20%3a%3a%20Solutions%20for%20Chapters%20%7b5%2c6%2c7%7d%22%20seems%20interesting...&summary=%22SR2%20%3a%3a%20Solutions%20for%20Chapters%20%7b5%2c6%2c7%7d%22%20seems%20interesting...&source=https%3a%2f%2frgoswami.me%2fposts%2fsr2-ch5-ch6-ch7%2f" target=_blank rel=noopener aria-label=LinkedIn>
-<div class="resp-sharing-button resp-sharing-button--linkedin resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.5"/><path d="M15 12.5c-.28.0-.5.22-.5.5v3.5h-3s.03-6.48.0-7h3v.83s.46-.75 1.7-.75c1.56.0 2.3 1.12 2.3 3.3v3.62h-3V13c0-.28-.23-.5-.5-.5zm-7.5-3h2v7h-2z"/><circle cx="8.5" cy="6.5" r="1"/></svg></div>LinkedIn</div>
-</a>
-<a class=resp-sharing-button__link href="https://reddit.com/submit/?url=https%3a%2f%2frgoswami.me%2fposts%2fsr2-ch5-ch6-ch7%2f&resubmit=true&title=%22SR2%20%3a%3a%20Solutions%20for%20Chapters%20%7b5%2c6%2c7%7d%22%20seems%20interesting..." target=_blank rel=noopener aria-label=Reddit>
-<div class="resp-sharing-button resp-sharing-button--reddit resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.5"/><ellipse cx="12" cy="14.37" rx="6.2" ry="4.24"/><path d="M14.3 16.25c-.62.36-1.42.57-2.3.57s-1.7-.2-2.32-.58"/><circle cx="14.61" cy="13.39" r=".98"/><circle cx="9.39" cy="13.39" r=".98"/><path d="M16.4 11.38c.26-.55.82-.92 1.47-.92.9.0 1.63.73 1.63 1.63.0.8-.6 1.47-1.38 1.6"/><circle cx="17.22" cy="7.52" r="1.63"/><path d="M7.6 11.38c-.26-.54-.82-.92-1.47-.92-.9.0-1.63.73-1.63 1.63.0.8.6 1.47 1.38 1.6M12 10.12s-.08-4.82 3.6-2.6"/></svg></div>Reddit</div>
-</a>
-<a class=resp-sharing-button__link href="whatsapp://send?text=%22SR2%20%3a%3a%20Solutions%20for%20Chapters%20%7b5%2c6%2c7%7d%22%20seems%20interesting...%20https%3a%2f%2frgoswami.me%2fposts%2fsr2-ch5-ch6-ch7%2f" target=_blank rel=noopener aria-label=WhatsApp>
-<div class="resp-sharing-button resp-sharing-button--whatsapp resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle xmlns="http://www.w3.org/2000/svg" cx="12" cy="12" r="11.5"/><path stroke-width="1" d="M17.6 6.2c-1.5-1.5-3.4-2.3-5.5-2.3-4.3.0-7.8 3.5-7.8 7.8.0 1.4.4 2.7 1 3.9l-1.1 4 4.1-1.1c1.1.6 2.4.9 3.7.9 4.3.0 7.8-3.5 7.8-7.8.1-2-.7-3.9-2.2-5.4zm-5.5 11.9c-1.2.0-2.3-.3-3.3-.9l-.2-.1-2.4.6.7-2.4-.2-.2c-.6-1-1-2.2-1-3.4.0-3.6 2.9-6.5 6.5-6.5 1.7.0 3.3.7 4.6 1.9 1.2 1.2 1.9 2.8 1.9 4.6-.1 3.5-3 6.4-6.6 6.4zm3.5-4.8c-.2-.1-1.1-.6-1.3-.6-.2-.1-.3-.1-.4.1s-.5.6-.6.8c-.1.1-.2.1-.4.0s-.8-.3-1.6-1c-.6-.5-1-1.2-1.1-1.3-.1-.2.0-.3.1-.4l.3-.3s.1-.2.2-.3c.1-.1.0-.2.0-.3s-.4-1.1-.6-1.4c-.2-.4-.3-.3-.4-.3h-.4s-.3.0-.5.2-.7.7-.7 1.6c0 1 .7 1.9.8 2s1.4 2.1 3.3 2.9c.5.2.8.3 1.1.4.5.1.9.1 1.2.1.4-.1 1.1-.5 1.3-.9.2-.5.2-.8.1-.9.0-.2-.2-.3-.4-.4z"/></svg></div>WhatsApp</div>
-</a>
-</div>
-<div class=pagination>
-<div class=pagination__title>
-<span class=pagination__title-h>Read other posts</span>
-<hr>
-</div>
-<div class=pagination__buttons>
-<span class="button previous">
-<a href=https://rgoswami.me/posts/sr2-ch9-ch11-ch12/>
-<span class=button__icon>←</span>
-<span class=button__text>SR2 :: Solutions for Chapters {9,11,12}</span>
-</a>
-</span>
-<span class="button next">
-<a href=https://rgoswami.me/posts/sr2-ch2-ch3-ch4/>
-<span class=button__text>SR2 :: Solutions for Chapters {2,3,4}</span>
-<span class=button__icon>→</span>
-</a>
-</span>
-</div>
-</div>
-<div id=comments class=thin><div class=pagination__title>
-<span class=pagination__title-h>Comments</span>
-<hr>
-</div>
-<div id=remarkbox-div>
-<noscript>
-<iframe id=remarkbox-iframe src="https://my.remarkbox.com/embed?nojs=true" style=height:600px;width:100%;border:none!important tabindex=0></iframe>
-</noscript>
-</div>
-<script src=https://my.remarkbox.com/static/js/iframe-resizer/iframeResizer.min.js></script>
-<script>var rb_owner_key="8e660759-e7e6-11ea-9711-040140774501",thread_uri=window.location.href,thread_title=window.document.title,thread_fragment=window.location.hash,rb_src="https://my.remarkbox.com/embed?rb_owner_key="+rb_owner_key+"&thread_title="+encodeURI(thread_title)+"&thread_uri="+encodeURIComponent(thread_uri)+thread_fragment;function create_remarkbox_iframe(){var a=document.createElement("iframe");a.setAttribute("id","remarkbox-iframe"),a.setAttribute("scrolling","no"),a.setAttribute("src",rb_src),a.setAttribute("frameborder","0"),a.setAttribute("tabindex","0"),a.setAttribute("title","Remarkbox"),a.style.width="100%",document.getElementById("remarkbox-div").appendChild(a)}create_remarkbox_iframe(),iFrameResize({checkOrigin:["https://my.remarkbox.com"],inPageLinks:!0,initCallback:function(a){a.iFrameResizer.moveToAnchor(thread_fragment)}},document.getElementById("remarkbox-iframe"))</script>
-</div>
-</main>
-<footer class=footer>
-<p>
-&copy; 2021
+</code></pre></div><section class=footnotes role=doc-endnotes><hr><ol><li id=fn:1 role=doc-endnote><p>Summer of 2020&#160;<a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li></ol></section></div></article><hr><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7" y2="7"/></svg><span class=tag><a href=https://rgoswami.me/tags/solutions>solutions</a></span><span class=tag><a href=https://rgoswami.me/tags/r>R</a></span><span class=tag><a href=https://rgoswami.me/tags/sr2>SR2</a></span></p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6A2 2 0 004 4v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>5416 Words</p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Posted: <time class=dt-published>2020-06-14 00:00 +0000</time></p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-git-commit"><circle cx="12" cy="12" r="4"/><line x1="1.05" y1="12" x2="7" y2="12"/><line x1="17.01" y1="12" x2="22.96" y2="12"/></svg><a href=1a65162fa819405896008ca9ca347b406d62da0d target=_blank rel=noopener>1a65162</a> @ 2020-08-18</p><a class=resp-sharing-button__link href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2frgoswami.me%2fposts%2fsr2-ch5-ch6-ch7%2f" target=_blank rel=noopener aria-label=Facebook><div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.5"/><path d="M15.84 9.5H13.5V8.48c0-.53.35-.65.6-.65h1.4v-2.3h-2.35c-2.3.0-2.65 1.7-2.65 2.8V9.5h-2v2h2v7h3v-7h2.1l.24-2z"/></svg></div>Facebook</div></a><a class=resp-sharing-button__link href="https://twitter.com/intent/tweet/?text=%22SR2%20%3a%3a%20Solutions%20for%20Chapters%20%7b5%2c6%2c7%7d%22%20seems%20like%20an%20interesting%20read%20from%20%40rg0swami&url=https%3a%2f%2frgoswami.me%2fposts%2fsr2-ch5-ch6-ch7%2f" target=_blank rel=noopener aria-label=Twitter><div class="resp-sharing-button resp-sharing-button--twitter resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.5 7.4l-2 .2c-.4-.5-1-.8-2-.8C13.3 6.8 12 8 12 9.4v.6c-2 0-4-1-5.4-2.7-.2.4-.3.8-.3 1.3.0 1 .4 1.7 1.2 2.2-.5.0-1 0-1.2-.3.0 1.3 1 2.3 2 2.6-.3.4-.7.4-1 0 .2 1.4 1.2 2 2.3 2-1 1-2.5 1.4-4 1 1.3 1 2.7 1.4 4.2 1.4 4.8.0 7.5-4 7.5-7.5v-.4c.5-.4.8-1.5 1.2-2z"/><circle cx="12" cy="12" r="11.5"/></svg></div>Twitter</div></a><a class=resp-sharing-button__link href="mailto:?subject=%22SR2%20%3a%3a%20Solutions%20for%20Chapters%20%7b5%2c6%2c7%7d%22%20seems%20interesting...&body=https%3a%2f%2frgoswami.me%2fposts%2fsr2-ch5-ch6-ch7%2f" target=_self rel=noopener aria-label=E-Mail><div class="resp-sharing-button resp-sharing-button--email resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19.5 16c0 .8-.7 1.5-1.5 1.5H6c-.8.0-1.5-.7-1.5-1.5V8c0-.8.7-1.5 1.5-1.5h12c.8.0 1.5.7 1.5 1.5v8zm-2-7.5L12 13 6.5 8.5m11 6-4-2.5m-7 2.5 4-2.5"/><circle cx="12" cy="12" r="11.5"/></svg></div>E-Mail</div></a><a class=resp-sharing-button__link href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2frgoswami.me%2fposts%2fsr2-ch5-ch6-ch7%2f&title=%22SR2%20%3a%3a%20Solutions%20for%20Chapters%20%7b5%2c6%2c7%7d%22%20seems%20interesting...&summary=%22SR2%20%3a%3a%20Solutions%20for%20Chapters%20%7b5%2c6%2c7%7d%22%20seems%20interesting...&source=https%3a%2f%2frgoswami.me%2fposts%2fsr2-ch5-ch6-ch7%2f" target=_blank rel=noopener aria-label=LinkedIn><div class="resp-sharing-button resp-sharing-button--linkedin resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.5"/><path d="M15 12.5c-.28.0-.5.22-.5.5v3.5h-3s.03-6.48.0-7h3v.83s.46-.75 1.7-.75c1.56.0 2.3 1.12 2.3 3.3v3.62h-3V13c0-.28-.23-.5-.5-.5zm-7.5-3h2v7h-2z"/><circle cx="8.5" cy="6.5" r="1"/></svg></div>LinkedIn</div></a><a class=resp-sharing-button__link href="https://reddit.com/submit/?url=https%3a%2f%2frgoswami.me%2fposts%2fsr2-ch5-ch6-ch7%2f&resubmit=true&title=%22SR2%20%3a%3a%20Solutions%20for%20Chapters%20%7b5%2c6%2c7%7d%22%20seems%20interesting..." target=_blank rel=noopener aria-label=Reddit><div class="resp-sharing-button resp-sharing-button--reddit resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.5"/><ellipse cx="12" cy="14.37" rx="6.2" ry="4.24"/><path d="M14.3 16.25c-.62.36-1.42.57-2.3.57s-1.7-.2-2.32-.58"/><circle cx="14.61" cy="13.39" r=".98"/><circle cx="9.39" cy="13.39" r=".98"/><path d="M16.4 11.38c.26-.55.82-.92 1.47-.92.9.0 1.63.73 1.63 1.63.0.8-.6 1.47-1.38 1.6"/><circle cx="17.22" cy="7.52" r="1.63"/><path d="M7.6 11.38c-.26-.54-.82-.92-1.47-.92-.9.0-1.63.73-1.63 1.63.0.8.6 1.47 1.38 1.6M12 10.12s-.08-4.82 3.6-2.6"/></svg></div>Reddit</div></a><a class=resp-sharing-button__link href="whatsapp://send?text=%22SR2%20%3a%3a%20Solutions%20for%20Chapters%20%7b5%2c6%2c7%7d%22%20seems%20interesting...%20https%3a%2f%2frgoswami.me%2fposts%2fsr2-ch5-ch6-ch7%2f" target=_blank rel=noopener aria-label=WhatsApp><div class="resp-sharing-button resp-sharing-button--whatsapp resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle xmlns="http://www.w3.org/2000/svg" cx="12" cy="12" r="11.5"/><path stroke-width="1" d="M17.6 6.2c-1.5-1.5-3.4-2.3-5.5-2.3-4.3.0-7.8 3.5-7.8 7.8.0 1.4.4 2.7 1 3.9l-1.1 4 4.1-1.1c1.1.6 2.4.9 3.7.9 4.3.0 7.8-3.5 7.8-7.8.1-2-.7-3.9-2.2-5.4zm-5.5 11.9c-1.2.0-2.3-.3-3.3-.9l-.2-.1-2.4.6.7-2.4-.2-.2c-.6-1-1-2.2-1-3.4.0-3.6 2.9-6.5 6.5-6.5 1.7.0 3.3.7 4.6 1.9 1.2 1.2 1.9 2.8 1.9 4.6-.1 3.5-3 6.4-6.6 6.4zm3.5-4.8c-.2-.1-1.1-.6-1.3-.6-.2-.1-.3-.1-.4.1s-.5.6-.6.8c-.1.1-.2.1-.4.0s-.8-.3-1.6-1c-.6-.5-1-1.2-1.1-1.3-.1-.2.0-.3.1-.4l.3-.3s.1-.2.2-.3c.1-.1.0-.2.0-.3s-.4-1.1-.6-1.4c-.2-.4-.3-.3-.4-.3h-.4s-.3.0-.5.2-.7.7-.7 1.6c0 1 .7 1.9.8 2s1.4 2.1 3.3 2.9c.5.2.8.3 1.1.4.5.1.9.1 1.2.1.4-.1 1.1-.5 1.3-.9.2-.5.2-.8.1-.9.0-.2-.2-.3-.4-.4z"/></svg></div>WhatsApp</div></a></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://rgoswami.me/posts/org-arb-tex/><span class=button__icon>←</span>
+<span class=button__text>Temporary LaTeX Documents with Orgmode</span></a></span>
+<span class="button next"><a href=https://rgoswami.me/posts/emacs-nix-r/><span class=button__text>Emacs for Nix-R</span>
+<span class=button__icon>→</span></a></span></div></div><div id=comments class=thin><div class=pagination__title><span class=pagination__title-h>Comments</span><hr></div><div id=remarkbox-div><noscript><iframe id=remarkbox-iframe src="https://my.remarkbox.com/embed?nojs=true" style=height:600px;width:100%;border:none!important tabindex=0></iframe></noscript></div><script src=https://my.remarkbox.com/static/js/iframe-resizer/iframeResizer.min.js></script><script>var rb_owner_key="8e660759-e7e6-11ea-9711-040140774501",thread_uri=window.location.href,thread_title=window.document.title,thread_fragment=window.location.hash,rb_src="https://my.remarkbox.com/embed?rb_owner_key="+rb_owner_key+"&thread_title="+encodeURI(thread_title)+"&thread_uri="+encodeURIComponent(thread_uri)+thread_fragment;function create_remarkbox_iframe(){var a=document.createElement("iframe");a.setAttribute("id","remarkbox-iframe"),a.setAttribute("scrolling","no"),a.setAttribute("src",rb_src),a.setAttribute("frameborder","0"),a.setAttribute("tabindex","0"),a.setAttribute("title","Remarkbox"),a.style.width="100%",document.getElementById("remarkbox-div").appendChild(a)}create_remarkbox_iframe(),iFrameResize({checkOrigin:["https://my.remarkbox.com"],inPageLinks:!0,initCallback:function(a){a.iFrameResizer.moveToAnchor(thread_fragment)}},document.getElementById("remarkbox-iframe"))</script></div></main><footer class=footer><p>&copy; 2021
 <span><a href=https://rgoswami.me/>Rohit Goswami (HaoZeke)</a></span>
-<a href=https://rgoswami.me/posts/index.xml target=_blank title=rss><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 019 9"/><path d="M4 4a16 16 0 0116 16"/><circle cx="5" cy="19" r="1"/></svg></a>
-<br>
-<a rel=license href=http://creativecommons.org/licenses/by-nc-sa/4.0/>CC BY-NC-SA 4.0</a>.
-Powered by <a href=http://gohugo.io><u>Hugo</u></a> and <a href=https://github.com/HaoZeke/hugo-theme-hello-friend-ng-hz><u>this theme</u></a>.</br>
-Hosted with <u><a href=https://www.netlify.com/>Netlify</a></u>.</br>
-<script src=https://liberapay.com/rohit/widgets/button.js></script>
-<noscript><a href=https://liberapay.com/rohit/donate><img alt="Donate using Liberapay" src=https://liberapay.com/assets/widgets/donate.svg></a></noscript>
-</p>
-</footer>
-</div>
-<script src=/bundle.min.5fae9992ea406007408dc33b0b3a8376d61e2f1d6ac50ba1dad7580ac50afb5199bcef3bbc3677e77553a9980bf882cf71edc2f755687dd7725f12ece4304ac2.js></script>
-<script>(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)})(window,document,'script','//www.google-analytics.com/analytics.js','ga'),ga('create','UA-109503488-16','auto'),ga('send','pageview')</script>
-<script type=text/javascript>(function(a,e,b,f,g,c,d){a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},c=e.createElement(f),c.async=1,c.src="https://www.clarity.ms/tag/"+g,d=e.getElementsByTagName(f)[0],d.parentNode.insertBefore(c,d)})(window,document,"clarity","script","3z2xvwqu4u")</script>
-<script data-goatcounter=https://rgoswami.goatcounter.com/count async src=//gc.zgo.at/count.js></script>
-<script>var clicky_site_ids=clicky_site_ids||[];clicky_site_ids.push("101265002")</script>
-<script async src=https://static.getclicky.com/js></script>
-<script src=https://cdn.jsdelivr.net/npm/readmore-js@3.0.0-beta-1/dist/readmore.min.js></script>
-<script src=/js/codefold.min.4a43062cb83308b55227adf937c91be79ff6d95df8bb821dfd71805ce54629ff8cffed3ae81d70fdee5f324fa0f39c5280ae785f165801885db074551a993a21.js></script>
-</body>
-</html>
+<a href=https://rgoswami.me/posts/index.xml target=_blank title=rss><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 019 9"/><path d="M4 4a16 16 0 0116 16"/><circle cx="5" cy="19" r="1"/></svg></a><br><a rel=license href=http://creativecommons.org/licenses/by-nc-sa/4.0/>CC BY-NC-SA 4.0</a>.
+Powered by <a href=http://gohugo.io><u>Hugo</u></a> and <a href=https://github.com/HaoZeke/hugo-theme-hello-friend-ng-hz><u>this theme</u></a>.</br>Hosted with <u><a href=https://www.netlify.com/>Netlify</a></u>.</br><script src=https://liberapay.com/rohit/widgets/button.js></script><noscript><a href=https://liberapay.com/rohit/donate><img alt="Donate using Liberapay" src=https://liberapay.com/assets/widgets/donate.svg></a></noscript></p></footer></div><script src=/bundle.min.5fae9992ea406007408dc33b0b3a8376d61e2f1d6ac50ba1dad7580ac50afb5199bcef3bbc3677e77553a9980bf882cf71edc2f755687dd7725f12ece4304ac2.js></script><script>(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)})(window,document,'script','//www.google-analytics.com/analytics.js','ga'),ga('create','UA-109503488-16','auto'),ga('send','pageview')</script><script type=text/javascript>(function(a,e,b,f,g,c,d){a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},c=e.createElement(f),c.async=1,c.src="https://www.clarity.ms/tag/"+g,d=e.getElementsByTagName(f)[0],d.parentNode.insertBefore(c,d)})(window,document,"clarity","script","3z2xvwqu4u")</script><script data-goatcounter=https://rgoswami.goatcounter.com/count async src=//gc.zgo.at/count.js></script><script>var clicky_site_ids=clicky_site_ids||[];clicky_site_ids.push("101265002")</script><script async src=https://static.getclicky.com/js></script><script src=https://cdn.jsdelivr.net/npm/readmore-js@3.0.0-beta-1/dist/readmore.min.js></script><script src=/js/codefold.min.4a43062cb83308b55227adf937c91be79ff6d95df8bb821dfd71805ce54629ff8cffed3ae81d70fdee5f324fa0f39c5280ae785f165801885db074551a993a21.js></script></body></html>
