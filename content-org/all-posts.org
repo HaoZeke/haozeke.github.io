@@ -12247,6 +12247,12 @@ This has the lowest lines of code too.
 wc -l fibbyhand.c
       85 fibbyhand.c
 #+end_src
+It is rather remarkable since the ~C~ code here is not optimized in the least.
+The twin ~for~ loops can almost certainly be handled more efficiently, and also
+from the point of view of the Fortran-C interface too, this is lacking.
+Nevertheless, it will suffice for our purpose here, which has more to do with
+wrapping automatically (and therefore rather naively) than generating optimal
+code (but that would be great).
 ** Benchmarks
 We can use [[https://lib.rs/crates/hyperfine][hyperfine]] for basic benchmarks.
 #+begin_src bash
@@ -12259,17 +12265,20 @@ Results for the various approaches are collected below in Table [[tbl:bench][tbl
 
 #+name: tbl:bench
 #+caption: The results are for 25 runs with 5 warmup for ~np.empty(7)~ as the input
-| *Command*                   | *Mean [ms]*  | *Min [ms]* | *Max [ms]* |
-| Handwritten NumPy-C-Fortran | 146.6 ± 8.9  |      125.8 |      155.0 |
-| F2PY (F77)                  | 149.3 ± 1.7  |      146.1 |      152.7 |
-| Cython                      | 150.0 ± 13.1 |      141.6 |      198.0 |
-| F2PY (F90)                  | 150.2 ± 2.4  |      145.3 |      155.1 |
-| ctypes                      | 150.5 ± 2.8  |      147.1 |      158.8 |
+| *Command*                     | *Mean [ms]*   | *Min [ms]* | *Max [ms]* |
+| *Handwritten NumPy-C-Fortran* | *146.6 ± 8.9* |    *125.8* |    *155.0* |
+| F2PY (F77)                    | 149.3 ± 1.7   |      146.1 |      152.7 |
+| Cython                        | 150.0 ± 13.1  |      141.6 |      198.0 |
+| F2PY (F90)                    | 150.2 ± 2.4   |      145.3 |      155.1 |
+| ctypes                        | 150.5 ± 2.8   |      147.1 |      158.8 |
 
-As expected, ~ctypes~ is the slowest, since it requires the most machinery from
-the Python side. Surprisingly, loading the free form file with ~f2py~ was quite
-a bit slower than the ~f77~ file. Given the complexity of the files involved, it
-is also not surprising that the handwritten wrapper has higher performance.
+As expected, ~ctypes~ is the slowest, since it requires the most massaging of
+inputs on the Python side. Surprisingly, loading the free form file with ~f2py~
+was quite a bit slower than the ~f77~ file. Given the complexity of the files
+involved, it is actually surprising that the handwritten wrapper shows a rather
+clear gain in performance; given its implementation; but nonetheless it supports
+the hypothesis that advances in the NumPy-C API and the Fortran-C
+interoperability has improved significantly over time.
 ** Conclusions
 ~f2py~, like ~Fortran~, is here to stay. As the standards strive towards better
 compliance with ~C~ however, it also gets larger and rather more
