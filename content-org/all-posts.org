@@ -12287,13 +12287,14 @@ complicated [fn:reallylarger]. One thing which was not covered here was the
 actual ~ISO_Fortran_binding.h~[fn:findex] and other modifications to the ~C~
 code while interpolating with Fortran itself.
 
-To hold its place in the larger ecosystem, ~f2py~
-will be essential in protecting the average user from the standard itself,
-automatically providing optimal bindings for users as initially planned by [[https://github.com/pearu][Pearu
-Peterson]]. Modernization efforts with  [[https://melissawm.github.io/about-me/][Melissa Weber Mendonça]] and others at
-Quansight (including [[https://rgoswami.me/about][me]]) are sure to gravitate towards generating better, more
-reliable interfaces to bridge the gaps between Fortran and Python as supported
-by the NumPy core developers[fn:spthanks]. Clearly, the way forward is to work in lockstep with the NumPy-C API and recent Fortran standards.
+To hold its place in the larger ecosystem, ~f2py~ will be essential in
+protecting the average user from the standard itself, automatically providing
+optimal bindings for users as initially planned by [[https://github.com/pearu][Pearu Peterson]]. Modernization
+efforts with  [[https://melissawm.github.io/about-me/][Melissa Weber Mendonça]], Ralf, Pearu, and others at Quansight
+(including the rest of the community and [[https://rgoswami.me/about][me]]) are sure to gravitate towards generating better, more reliable
+interfaces to bridge the gaps between Fortran and Python as supported by the
+NumPy core developers[fn:spthanks]. Clearly, the way forward is to work in
+lockstep with the NumPy-C API and recent Fortran standards.
 
 [fn:wherecomplexity] This is a bit unfair, the complexity has been offloaded to the compiler, and they're notorious for not supporting newer Fortran standards
 [fn:findex] Some examples from the community [[https://fortran-lang.discourse.group/t/iso-c-binding-pass-an-array-from-c-to-fortran-edit-python-interop-content/514][are here]]
