@@ -11791,7 +11791,7 @@ Computational spectroscopy and the Fortran community
 I recently spent two weeks at the Les Houches School of Physics for a workshop on Multiple Scattering Green's Functions for Electronic Structure and Spectroscopy. Apart from being a fantastic place to work, I became acquainted with several Fortran programs for the same. This post pays homage to them.
 ** Conclusions
 The school was an enriching experience, as I mentioned in passing to one of the more senior members, while stupid questions in person are still alright, online the ability to ask basic dumb big picture questions is severely reduced. It was also exhausting, due to my many existing commitments.
-* DONE NumPy, Meson and F2PY :@notes:python:fortran:rambling:
+* DONE NumPy, Meson and ~f2py~ :@notes:python:fortran:rambling:
 CLOSED: [2021-09-23 Thu 05:45]
 :PROPERTIES:
 :EXPORT_FILE_NAME: numpy-meson-f2py
@@ -11924,11 +11924,8 @@ ag -g .so
 However this does not scale very well with more general build systems, though a
 custom command approach for ~CMake~ and ~scikit-build~ is a [[https://github.com/Nicholaswogan/skbuild-f2py-examples][nice workaround by
 Nick Wogan]].
-** Meson
-As ~scipy~ [[https://labs.quansight.org/blog/2021/07/moving-scipy-to-meson/][moves towards meson]] mainly driven by [[https://rgommers.github.io/][Ralf Gommers]], it makes sense to look into its use to drive the compilation of an extension module as well.
-*** Python C Extensions
-*** ~f2py~ Wrapper
-We start by generating the files for the interface.
+** Meson and F2PY
+As ~scipy~ [[https://labs.quansight.org/blog/2021/07/moving-scipy-to-meson/][moves towards meson]] mainly driven by [[https://rgommers.github.io/][Ralf Gommers]], it makes sense to look into its use to drive the compilation of an extension module as well. We start by generating the files for the interface.
 #+begin_src bash
 f2py fib1.f -m fib
 Reading fortran codes...
