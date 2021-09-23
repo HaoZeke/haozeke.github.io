@@ -12064,7 +12064,7 @@ We have gone from over a $1000$ lines of ~C~ to *one line*[fn:wherecomplexity]
 *** Cython wrapper
 
 However, we can skip even the one line of ~C~, by using ~cython~.
-#+begin_src python
+#+begin_src cython
 # fibby.pyx
 from numpy cimport ndarray
 import numpy as np
