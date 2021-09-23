@@ -12117,10 +12117,10 @@ seems pretty unattractive.
 
 *** Python-C API
 Neither ~ctypes~ nor ~cpython~ is as friendly/clean as loading an extension
-module, although so it makes more sense to actually write a proper ~Python-C~
+module, so it makes more sense to actually write a proper ~Python-C~
 extension module for a more fair comparison. This however, involves quite some
 reference counting and familiarity with the [[https://numpy.org/devdocs/user/c-info.how-to-extend.html][NumPy-C API]]. Actually it is not too
-bad for the function we are considering. Even the well commented hand crafted
+bad for the function we are considering. Even a well commented and naive hand crafted
 version clocks in below 90 lines of code.
 #+begin_src C
 #ifndef PY_SSIZE_T_CLEAN
