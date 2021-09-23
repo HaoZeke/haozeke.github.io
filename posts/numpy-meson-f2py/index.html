@@ -214,7 +214,7 @@ gcc -fPIC -shared -o libfib.so cfib.c fib1.o
 </code></pre></div><p>As before.</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>meson setup bdircython
 meson compile -C bdircython
 <span class=nb>cd</span> bdircython
-python -c <span class=s2>&#34;import fibby; import numpy as np; b=np.empty(7); fibby.fib(a); print(b); exit();&#34;</span>
+python -c <span class=s2>&#34;import fibby; import numpy as np; a=np.empty(7); b=fibby.fib(a); print(b); exit();&#34;</span>
 </code></pre></div><p>Note the difference in the calling semantics here. Also, recall that <code>.pyx</code> files are actually used to generate <code>C</code> code.</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>cython fibby.pyx
 wc -l fibby.c
     <span class=m>6376</span> fibby.c
