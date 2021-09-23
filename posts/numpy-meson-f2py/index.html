@@ -195,7 +195,7 @@ gcc -fPIC -shared -o libfib.so cfib.c fib1.o
 
 <span class=k>def</span> <span class=nf>fib</span><span class=p>(</span><span class=n>double</span> <span class=n>a</span><span class=p>,</span> <span class=nb>int</span> <span class=n>n</span><span class=p>):</span>
     <span class=k>cdef</span> <span class=kt>ndarray</span>[<span class=nf>double</span><span class=p>,</span> <span class=nf>mode</span><span class=o>=</span><span class=s>&#34;c&#34;</span><span class=p>]</span> <span class=n>ret</span> <span class=o>=</span> <span class=n>np</span><span class=o>.</span><span class=n>zeros</span><span class=p>(</span><span class=n>n</span><span class=p>)</span>
-    <span class=n>c_fib</span><span class=p>(</span><span class=o>&amp;</span><span class=n>ret</span><span class=p>[</span><span class=mf>0</span><span class=p>],</span><span class=n>n</span><span class=p>)</span>
+    <span class=n>c_fib</span><span class=p>(</span><span class=o>&amp;</span><span class=n>ret</span><span class=p>,</span><span class=n>n</span><span class=p>)</span>
     <span class=k>return</span> <span class=n>ret</span>
 </code></pre></div><p>This is closer to <code>f2py</code> in the sense that the <code>C</code> code is simply hidden. It requires a compilation step typically done via <code>setuptools.py</code>, but, this is much nicer with <code>meson</code> since from <code>0.59.0</code>, <a href=https://mesonbuild.com/Cython.html%20>Cython is supported</a>.</p><div class=highlight><pre class=chroma><code class=language-python data-lang=python><span class=n>project</span><span class=p>(</span><span class=s1>&#39;test_builds&#39;</span><span class=p>,</span> <span class=s1>&#39;c&#39;</span><span class=p>,</span>
   <span class=n>version</span> <span class=p>:</span> <span class=s1>&#39;0.1&#39;</span><span class=p>,</span>
@@ -214,7 +214,7 @@ gcc -fPIC -shared -o libfib.so cfib.c fib1.o
 </code></pre></div><p>As before.</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>meson setup bdircython
 meson compile -C bdircython
 <span class=nb>cd</span> bdircython
-python -c <span class=s2>&#34;import fibby; import numpy as np; a=np.empty(15); fibby.fib(a[0],15); print(a); exit();&#34;</span>
+python -c <span class=s2>&#34;import fibby; import numpy as np; b=np.empty(7); fibby.fib(a); print(b); exit();&#34;</span>
 </code></pre></div><p>Note the difference in the calling semantics here. Also, recall that <code>.pyx</code> files are actually used to generate <code>C</code> code.</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>cython fibby.pyx
 wc -l fibby.c
     <span class=m>6376</span> fibby.c

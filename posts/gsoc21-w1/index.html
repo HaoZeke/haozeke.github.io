@@ -89,7 +89,7 @@ find . -name <span class=s2>&#34;*.f90&#34;</span> -exec lfortran fmt -i <span c
 representation <sup id=fnref:3><a href=#fn:3 class=footnote-ref role=doc-noteref>3</a></sup>.</p><h2 id=testing-the-asr>Testing the ASR</h2><p>To start testing the ASR with <code>lfortran -c fname.f90 -o fname.o</code> and
 variations thereof, a good starting point is to set up a dependency
 graph. A logical one is provided in the repository itself as seen in
-Fig. <a href=#org82eb74c>1</a>.</p><p><a id=org82eb74c></a></p><figure><img src=/ox-hugo/dftatom_depgraph_git.png alt="Figure 1: dftatom logical layout"><figcaption><p>Figure 1: <code>dftatom</code> logical layout</p></figcaption></figure><p>However, this is not exactly the order in which things are built.
+Fig. <a href=#org26f46e5>1</a>.</p><p><a id=org26f46e5></a></p><figure><img src=/ox-hugo/dftatom_depgraph_git.png alt="Figure 1: dftatom logical layout"><figcaption><p>Figure 1: <code>dftatom</code> logical layout</p></figcaption></figure><p>However, this is not exactly the order in which things are built.
 Thankfully, the fantastic <code>fortdepend</code> tool <a href=https://github.com/ZedThree/fort%5Fdepend.py>from Peter
 Hill</a> can speed things up
 considerably.</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=c1># in the conda environment</span>
@@ -100,7 +100,7 @@ fortdepend -o Makefile.dep
 dependencies into <a href=https://gitlab.com/lfortran/lfortran/-/issues/319>the
 issue</a>. Here we will
 conclude with the visual details instead of dumping the entire
-dependency tree.</p><p><a id=orgbcc3f5b></a></p><figure><img src=/ox-hugo/dftatom_depgraph_fdep.svg alt="Figure 2: dftatom compilation dependency graph"><figcaption><p>Figure 2: <code>dftatom</code> compilation dependency graph</p></figcaption></figure><h2 id=conclusions>Conclusions</h2><p>That leads us to the end of this week&rsquo;s effectively mid-week update. For
+dependency tree.</p><p><a id=orga447519></a></p><figure><img src=/ox-hugo/dftatom_depgraph_fdep.svg alt="Figure 2: dftatom compilation dependency graph"><figcaption><p>Figure 2: <code>dftatom</code> compilation dependency graph</p></figcaption></figure><h2 id=conclusions>Conclusions</h2><p>That leads us to the end of this week&rsquo;s effectively mid-week update. For
 the remainder of the week, until the meeting with Ondrej I shall work
 through parts of the dependency graph and write some more about
 <code>dftatom</code> and the <code>lfortran</code> terminology which will be used for the
