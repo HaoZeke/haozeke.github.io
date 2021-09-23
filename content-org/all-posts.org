@@ -12265,13 +12265,13 @@ Results for the various approaches are collected below in Table [[tbl:bench][tbl
 
 #+name: tbl:bench
 #+caption: The results are for 25 runs with 5 warmup for ~np.empty(7)~ as the input
-| *Command*                     | *Mean [ms]*   | *Min [ms]* | *Max [ms]* |
-|-------------------------------+---------------+------------+------------|
-| *Handwritten NumPy-C-Fortran* | *126.0 ± 3.9* |    *119.8* |    *136.8* |
-| F2PY (F77)                    | 129.1 ± 4.0   |      125.1 |      140.4 |
-| Cython                        | 129.5 ± 6.8   |      121.4 |      149.1 |
-| F2PY (F90)                    | 129.9 ± 5.1   |      123.9 |      145.8 |
-| ctypes                        | 128.3 ± 7.8   |      122.7 |      159.8 |
+| *Command*                   | *Mean [ms]* | *Min [ms]* | *Max [ms]* |
+|-----------------------------+-------------+------------+------------|
+| Handwritten NumPy-C-Fortran | 126.0 ± 3.9 |      119.8 |      136.8 |
+| F2PY (F77)                  | 129.1 ± 4.0 |      125.1 |      140.4 |
+| Cython                      | 129.5 ± 6.8 |      121.4 |      149.1 |
+| F2PY (F90)                  | 129.9 ± 5.1 |      123.9 |      145.8 |
+| ctypes                      | 128.3 ± 7.8 |      122.7 |      159.8 |
 
 As expected, ~ctypes~ is the slowest, since it requires the most massaging of
 inputs on the Python side. Surprisingly, loading the free form file with ~f2py~
