@@ -1,6 +1,11 @@
 # We use the generated html to prevent issues involving markdown frontmatter
 
 [[input.files]]
+path = "./posts/numpy-meson-f2py/index.html"
+url = "https://rgoswami.me/posts/numpy-meson-f2py/"
+title = "NumPy, Meson and F2PY"
+
+[[input.files]]
 path = "./snippets/prog-lang-man/index.html"
 url = "https://rgoswami.me/snippets/prog-lang-man/"
 title = "Programming Language Management"
