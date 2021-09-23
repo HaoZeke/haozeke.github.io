@@ -12074,7 +12074,7 @@ cdef extern:
 
 def fib(double a, int n):
     cdef ndarray[double, mode="c"] ret = np.zeros(n)
-    c_fib(&ret[0],n)
+    c_fib(&ret,n)
     return ret
 #+end_src
 
@@ -12101,7 +12101,7 @@ As before.
 meson setup bdircython
 meson compile -C bdircython
 cd bdircython
-python -c "import fibby; import numpy as np; a=np.empty(15); fibby.fib(a[0],15); print(a); exit();"
+python -c "import fibby; import numpy as np; b=np.empty(7); fibby.fib(a); print(b); exit();"
 #+end_src
 
 Note the difference in the calling semantics here. Also, recall that ~.pyx~ files are actually used to generate ~C~ code.
