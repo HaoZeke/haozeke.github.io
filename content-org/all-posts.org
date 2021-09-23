@@ -11791,6 +11791,509 @@ Computational spectroscopy and the Fortran community
 I recently spent two weeks at the Les Houches School of Physics for a workshop on Multiple Scattering Green's Functions for Electronic Structure and Spectroscopy. Apart from being a fantastic place to work, I became acquainted with several Fortran programs for the same. This post pays homage to them.
 ** Conclusions
 The school was an enriching experience, as I mentioned in passing to one of the more senior members, while stupid questions in person are still alright, online the ability to ask basic dumb big picture questions is severely reduced. It was also exhausting, due to my many existing commitments.
+* DONE NumPy, Meson and F2PY :@notes:python:fortran:rambling:
+CLOSED: [2021-09-23 Thu 05:45]
+:PROPERTIES:
+:EXPORT_FILE_NAME: numpy-meson-f2py
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+begin_quote
+Exploring ~meson~ for interfacing ~fortran~ and ~python~ via ~f2py~ and standard techniques, with benchmarks.
+#+end_quote
+** Background
+A [[https://fortran-lang.discourse.group/t/about-f2py-ipc-and-wrappers/1838][recent post]] gauging community interest in ~f2py~ brought to light (among other
+aspects) the fact that the build systems of ~f2py~ are rather opaque to the end
+user. There are good reasons for this, since many of the tools discussed in this
+post were not around / in any shape to be used during the active development of
+~f2py~[fn:whynomake]. Nevertheless, build systems have come a long way from the early 2000s
+and the next two decades of ~f2py~, will certainly involve less dependence on
+the soon-to-be-gone ~numpy.distutils~ approach to building extension modules.
+** The Fibonacci example
+Though rather contrived and overused[fn:whyover], for the rest of this post I will assume the following Fortran program, in a variety of guises.
+#+begin_src fortran
+C FILE: FIB1.F
+      SUBROUTINE FIB(A,N)
+C
+C     CALCULATE FIRST N FIBONACCI NUMBERS
+C
+      INTEGER N
+      REAL*8 A(N)
+      DO I=1,N
+         IF (I.EQ.1) THEN
+            A(I) = 0.0D0
+         ELSEIF (I.EQ.2) THEN
+            A(I) = 1.0D0
+         ELSE
+            A(I) = A(I-1) + A(I-2)
+         ENDIF
+      ENDDO
+      END
+C END FILE FIB1.F
+#+end_src
+
+Keeping in mind the fact that the fixed form syntax is deprecated, we will also consider the more standard compliant and modern form:
+#+begin_src f90
+module fib1
+  implicit none
+  contains
+    subroutine fib(a,n)
+      integer, intent(in) :: n
+      integer :: i
+      real(8) :: a(n)
+      do i=1, n
+         if (i==1) then
+            a(i) = 0.0d0
+         else if (i==2) then
+            a(i) = 1.0d0
+        else
+            a(i) = a(i-1) + a(i-2)
+         end if
+      end do
+      end subroutine
+end module fib1
+#+end_src
+Note that this program in its current form is not really an executable, as it is essentially a subprogram; and needs to be coupled to a ~main~ program to work from ~fortran~. This does not concern us really since we will be primarily using ~python~ to drive user interaction. However, for completeness (~gfortran main.f fib1.f~):
+#+begin_src fortran
+      PROGRAM MAIN
+      INTEGER, PARAMETER :: N=7
+      REAL(8) :: A(N)
+      CALL FIB(A,N)
+      PRINT*, A
+      END PROGRAM
+#+end_src
+
+Along with the non-scream-case version (~gfortran main.f90 fib1.f90~):
+#+begin_src f90
+program main
+  use fib1, only: fib
+  implicit none
+  integer, parameter :: n = 7
+  real(8) :: a(n)
+  call fib(a,n)
+  print*, a
+end program main
+#+end_src
+
+** NumPy Distutils
+It would be remiss to not cover the most basic example of working with this. We can compile and try this out with the following:
+#+begin_src bash
+f2py -m fib -c fib1.f
+python -c "import fib; import numpy as np; a=np.zeros(7); fib.fib(a); print(a); exit();"
+#+end_src
+This is good enough, and there are standard extensions to expose more information to the binding, detailed [[https://numpy.org/devdocs/f2py/f2py.getting-started.html][in the documentation]]. That, however isn't the point. The ~-c~ flag, convenient in many ways though it is, is a proxy for a rather more involved set of files.
+#+begin_src bash
+mkdir blah
+f2py -m fib -c fib1.f --build-dir blah
+tree blah
+blah
+├── blah
+│   └── src.macosx-10.9-x86_64-3.9
+│       ├── blah
+│       │   └── src.macosx-10.9-x86_64-3.9
+│       │       ├── fortranobject.o
+│       │       └── fortranobject.o.d
+│       ├── fibmodule.o
+│       └── fibmodule.o.d
+├── fib1.o
+└── src.macosx-10.9-x86_64-3.9
+    ├── blah
+    │   └── src.macosx-10.9-x86_64-3.9
+    │       ├── fortranobject.c
+    │       └── fortranobject.h
+    └── fibmodule.c
+
+7 directories, 8 files
+#+end_src
+
+Indeed, the standard usage is to use a ~setup.py~:
+#+begin_src python
+from numpy.distutils.core import Extension, setup
+fibby = Extension(name = 'fib',
+                  sources = ['fib1.f'])
+if __name__ == "__main__":
+    setup(name = 'fib', ext_modules = [ fibby ])
+#+end_src
+
+Which can then be built simply with:
+#+begin_src bash
+python setup.py build
+ag -g .so
+# build/lib.macosx-10.9-x86_64-3.9/fib.cpython-39-darwin.so
+#+end_src
+
+However this does not scale very well with more general build systems, though a
+custom command approach for ~CMake~ and ~scikit-build~ is a [[https://github.com/Nicholaswogan/skbuild-f2py-examples][nice workaround by
+Nick Wogan]].
+** Meson
+As ~scipy~ [[https://labs.quansight.org/blog/2021/07/moving-scipy-to-meson/][moves towards meson]] mainly driven by [[https://rgommers.github.io/][Ralf Gommers]], it makes sense to look into its use to drive the compilation of an extension module as well.
+*** Python C Extensions
+*** ~f2py~ Wrapper
+We start by generating the files for the interface.
+#+begin_src bash
+f2py fib1.f -m fib
+Reading fortran codes...
+	Reading file 'fib1.f' (format:fix,strict)
+Post-processing...
+	Block: fib
+			Block: FIB
+Post-processing (stage 2)...
+Building modules...
+	Building module "fib"...
+		Constructing wrapper function "FIB"...
+		  FIB(A,[N])
+	Wrote C/API module "fib" to file "./fibmodule.c"
+#+end_src
+Before we can compile this with ~meson~ we need to make a few changes:
+- Replace ~FIB~ with ~fib~ in ~fibmodule.c~ (since ~C~ is case-sensitive)
+- Copy ~f2py~'s Fortran-C-Python translation unit and header files ~fortranobject.{c,h}~
+With these in place, we can now setup our ~meson.build~.
+#+begin_src meson
+project('test_builds', 'c',
+  version : '0.1',
+  default_options : ['warning_level=3'])
+
+add_languages('fortran')
+
+# https://mesonbuild.com/Python-module.html
+# requires atleast 0.46.0
+py_mod = import('python')
+py3 = py_mod.find_installation()
+py3_dep = py3.dependency()
+
+incdir_numpy = run_command(py3,
+  ['-c', 'import os; os.chdir(".."); import numpy; print(numpy.get_include())'],
+  check : true
+).stdout().strip()
+
+inc_np = include_directories(incdir_numpy)
+
+py3.extension_module('fib1',
+           'fib1.f',
+           'fib1module.c',
+           'fortranobject.c',
+           include_directories: inc_np,
+           dependencies : py3_dep,
+           install : true)
+#+end_src
+
+Now we're all set.
+#+begin_src bash
+meson setup builddir
+meson compile -C builddir
+cd builddir
+python -c "import fib1; import numpy as np; a=np.empty(7); fib1.fib(a); print(a); exit();"
+#+end_src
+This makes for a far more pleasant experience, since ~meson~ works well with larger projects as well. However, note the sizes (and complexities) of the ~C~ portions.
+#+begin_src bash
+wc -l fortranobject.c fortranobject.h fibmodule.c
+    1107 fortranobject.c
+     132 fortranobject.h
+     372 fibmodule.c
+    1611 total
+#+end_src
+Not something we'd probably like to mess around with. Standardization reduces the burden of user-code, as we will see in the next section.
+** Standard Bindings
+The standard compliant approach was aptly covered almost a decade ago by [[https://ondrejcertik.com/][Ondřej Čertík]] and codified in [[https://www.fortran90.org/src/best-practices.html#python-interface][fortran90's best practices guide]]. We start by updating our free-form code to be compliant with newer ~ISO_C_BINDING~ guidelines.
+#+begin_src f90
+module fib1
+  use iso_c_binding
+  implicit none
+  contains
+    subroutine fib(a,n) bind(c,name='c_fib')
+      integer(c_int), intent(in), value :: n
+      integer(c_int) :: i
+      real(c_double) :: a(n)
+      do i=1, n
+         if (i==1) then
+            a(i) = 0.0d0
+         else if (i==2) then
+            a(i) = 1.0d0
+        else
+            a(i) = a(i-1) + a(i-2)
+         end if
+      end do
+      end subroutine
+end module fib1
+#+end_src
+The key differences are the ~c_type~ declarations and the ~bind(c,name='blah')~ attribute. Also, to reduce the number of pointers for easy to copy types, we used ~value~; which causes behavior similar to the pass-by-value paradigm. With this, the a ~C~ driver can be as simple as:
+#+begin_src C
+/* fibby.c */
+#include<stdlib.h>
+#include<stdio.h>
+
+void c_fib(double *a, int n);
+
+int main(int argc, char* argv[argc+1]) {
+    puts("Fortran fib from C:");
+    int n=7;
+    double a[n];
+    c_fib(&a, n);
+    for (int i=0; i<n; i++) {
+        printf("%f ",a[i]);
+    };
+    return EXIT_SUCCESS;
+}
+#+end_src
+This can now be built via:
+#+begin_src bash
+gfortran -c fib1.f90
+gcc fibby.c fib1.o
+#+end_src
+*** ~ctypes~ Wrapper
+To wrap this over to ~python~ we have a few options. We can omit ~main~ altogether and rely on ~ctypes~. So with:
+#+begin_src C
+/* cfib.c */
+void c_fib(double *a, int n);
+#+end_src
+Followed by:
+#+begin_src bash
+gfortran -c fib1.f90
+gcc -fPIC -shared -o libfib.so cfib.c fib1.o
+#+end_src
+We can work with this in ~python~ as:
+#+begin_src python
+from ctypes import CDLL, POINTER, c_int, c_double
+import numpy as np
+fibby = CDLL("libfib.so")
+a = np.zeros(7)
+fibby.c_fib(a.ctypes.data_as(POINTER(c_double)), c_int(7))
+print(a)
+#+end_src
+Which works in the same exact way as the previous approaches.
+
+#+begin_quote
+We have gone from over a $1000$ lines of ~C~ to *one line*[fn:wherecomplexity]
+#+end_quote
+*** Cython wrapper
+
+However, we can skip even the one line of ~C~, by using ~cython~.
+#+begin_src python
+# fibby.pyx
+from numpy cimport ndarray
+import numpy as np
+
+cdef extern:
+    void c_fib(double *a, int n)
+
+def fib(double a, int n):
+    cdef ndarray[double, mode="c"] ret = np.zeros(n)
+    c_fib(&ret[0],n)
+    return ret
+#+end_src
+
+This however, is closer to ~f2py~ in the sense that the ~C~ code is simply hidden. It requires a compilation step typically done via ~setuptools.py~, however this is much nicer with ~meson~ since from ~0.59.0~, [[https://mesonbuild.com/Cython.html
+][Cython is supported]].
+#+begin_src python
+project('test_builds', 'c',
+  version : '0.1',
+  default_options : ['warning_level=3'])
+
+add_languages('fortran', 'cython')
+
+py_mod = import('python')
+py3 = py_mod.find_installation()
+py3_dep = py3.dependency()
+
+py3.extension_module('fibby',
+  'fibby.pyx',
+  dependencies : py3_dep
+)
+#+end_src
+As before.
+#+begin_src bash
+meson setup bdircython
+meson compile -C bdircython
+cd bdircython
+python -c "import fibby; import numpy as np; a=np.empty(15); fibby.fib(a[0],15); print(a); exit();"
+#+end_src
+
+Note the difference in the calling semantics here. Also, recall that ~.pyx~ files are actually used to generate ~C~ code.
+
+#+begin_src bash
+cython fibby.pyx
+wc -l fibby.c
+    6376 fibby.c
+#+end_src
+
+This is vastly more code compared to the ~f2py~ generated wrapper code; which
+seems pretty unattractive.
+
+*** Python-C API
+Neither ~ctypes~ nor ~cpython~ is as friendly/clean as loading an extension
+module, although so it makes more sense to actually write a proper ~Python-C~ as
+a more fair comparison. This however, involves quite some reference counting and
+familiarity with the [[https://numpy.org/devdocs/user/c-info.how-to-extend.html][NumPy-C API]]. Actually it is not too bad for the function we
+are considering. Even the well commented hand crafted version clocks in below 90
+lines of code.
+#+begin_src C
+#ifndef PY_SSIZE_T_CLEAN
+#define PY_SSIZE_T_CLEAN
+#endif /* PY_SSIZE_T_CLEAN */
+
+#include "Python.h"
+#include "numpy/ndarrayobject.h"
+#include "numpy/ufuncobject.h"
+
+static PyMethodDef FibbyMethods[] = {
+        {NULL, NULL, 0, NULL}
+};
+
+void c_fib(double *a, int n);
+
+/* The loop definition must precede the PyMODINIT_FUNC. */
+
+static void double_fib(char **args, npy_intp *dimensions,
+                            npy_intp* steps, void* data)
+{
+    int i; // Standard integer is fine here
+    npy_intp n = dimensions[0];
+    char *in = args[0], *out = args[1];
+    npy_intp in_step = steps[0], out_step = steps[1];
+
+    double apointer[n];
+
+    for (i = 0; i < n; i++) {
+        apointer[i]=(double)in[i];
+    }
+
+    // Call the Fortran function
+    c_fib(apointer, n);
+
+    for (i = 0; i < n; i++) {
+        /*BEGIN main ufunc computation*/
+        *((double *)out) = apointer[i];
+        /*END main ufunc computation*/
+
+        in += in_step;
+        out += out_step;
+    }
+}
+
+/*This a pointer to the above function*/
+PyUFuncGenericFunction funcs[1] = {&double_fib};
+
+/* These are the input and return dtypes of fib.*/
+static char types[2] = {NPY_DOUBLE, NPY_DOUBLE};
+
+static void *data[1] = {NULL};
+
+static struct PyModuleDef moduledef = {
+    PyModuleDef_HEAD_INIT,
+    "fibby",
+    NULL,
+    -1,
+    FibbyMethods,
+    NULL,
+    NULL,
+    NULL,
+    NULL
+};
+
+PyMODINIT_FUNC PyInit_fibby(void)
+{
+    PyObject *m, *fib, *d;
+    m = PyModule_Create(&moduledef);
+    if (!m) {
+        return NULL;
+    }
+
+    import_array();
+    import_umath();
+
+    fib = PyUFunc_FromFuncAndData(funcs, data, types, 1, 1, 1,
+                                    PyUFunc_None, "fib",
+                                    "Calls the fib.f90 Fibonacci subroutine", 0);
+
+    d = PyModule_GetDict(m);
+
+    PyDict_SetItemString(d, "fib", fib);
+    Py_DECREF(fib);
+
+    return m;
+}
+#+end_src
+Compiling this with ~meson~ is a snap.
+#+begin_src python
+project('test_builds', 'c',
+  version : '0.1',
+  default_options : ['warning_level=3'])
+
+add_languages('fortran', 'cython')
+
+py_mod = import('python')
+py3 = py_mod.find_installation()
+py3_dep = py3.dependency()
+
+incdir_numpy = run_command(py3,
+  ['-c', 'import os; os.chdir(".."); import numpy; print(numpy.get_include())'],
+  check : true
+).stdout().strip()
+
+inc_np = include_directories(incdir_numpy)
+
+py3.extension_module('fibby',
+  'fib1.f90',
+  'fibbyhand.c',
+  include_directories: inc_np,
+  dependencies : py3_dep
+)
+#+end_src
+We can compile this much the same as the others.
+#+begin_src bash
+meson setup bdircythonhand
+meson compile -C bdircythonhand
+cd bdircythonhand
+python -c "import fibby; import numpy as np; a=np.empty(7); b=fibby.fib(a); print(b); exit();"
+#+end_src
+This has the lowest lines of code too.
+#+begin_src bash
+wc -l fibbyhand.c
+      85 fibbyhand.c
+#+end_src
+** Benchmarks
+We can use [[https://lib.rs/crates/hyperfine][hyperfine]] for basic benchmarks.
+#+begin_src bash
+hyperfine 'python -c "import fibby; import numpy as np; a=np.empty(7); b=fibby.fib(a); print(b); exit();"' --warmup 5 -s full -r 25
+Benchmark #1: python -c "import fibby; import numpy as np; a=np.empty(7); b=fibby.fib(a); print(b); exit();"
+  Time (mean ± σ):     155.4 ms ±   9.7 ms    [User: 133.1 ms, System: 40.2 ms]
+  Range (min … max):   145.6 ms … 190.4 ms    25 runs
+#+end_src
+Results for the various approaches are collected below in Table [[tbl:bench][tbl:bench]].
+
+#+name: tbl:bench
+#+caption: The results are for 25 runs with 5 warmup for ~np.empty(7)~ as the input
+| *Command*                   | *Mean [ms]*  | *Min [ms]* | *Max [ms]* |
+| Handwritten NumPy-C-Fortran | 146.6 ± 8.9  |      125.8 |      155.0 |
+| F2PY (F77)                  | 149.3 ± 1.7  |      146.1 |      152.7 |
+| Cython                      | 150.0 ± 13.1 |      141.6 |      198.0 |
+| F2PY (F90)                  | 150.2 ± 2.4  |      145.3 |      155.1 |
+| ctypes                      | 150.5 ± 2.8  |      147.1 |      158.8 |
+
+As expected, ~ctypes~ is the slowest, since it requires the most machinery from
+the Python side. Surprisingly, loading the free form file with ~f2py~ was quite
+a bit slower than the ~f77~ file. Given the complexity of the files involved, it
+is also not surprising that the handwritten wrapper has higher performance.
+** Conclusions
+~f2py~, like ~Fortran~, is here to stay. As the standards strive towards better
+compliance with ~C~ however, it also gets larger and rather more
+complicated [fn:reallylarger]. One thing which was not covered here was the
+actual ~ISO_Fortran_binding.h~[fn:findex] and other modifications to the ~C~
+code while interpolating with Fortran itself.
+
+To hold its place in the larger ecosystem, ~f2py~
+will be essential in protecting the average user from the standard itself,
+automatically providing optimal bindings for users as initially planned by [[https://github.com/pearu][Pearu
+Peterson]]. Modernization efforts with  [[https://melissawm.github.io/about-me/][Melissa Weber Mendonça]] and others at
+Quansight (including [[https://rgoswami.me/about][me]]) are sure to gravitate towards generating better, more
+reliable interfaces to bridge the gaps between Fortran and Python as supported
+by the NumPy core developers[fn:spthanks]. Clearly, the way forward is to work in lockstep with the NumPy-C API and recent Fortran standards.
+
+[fn:wherecomplexity] This is a bit unfair, the complexity has been offloaded to the compiler, and they're notorious for not supporting newer Fortran standards
+[fn:findex] Some examples from the community [[https://fortran-lang.discourse.group/t/iso-c-binding-pass-an-array-from-c-to-fortran-edit-python-interop-content/514][are here]]
+[fn:whynomake] ~Make~, ~autotools~ and the like are definitely worse than ~np.distutils~
+[fn:whyover] It is the first example from the [[https://numpy.org/devdocs/f2py/f2py.getting-started.html][canonical reference]]
+[fn:reallylarger] Though it is and will remain far more svelte compared to ~C++~
+[fn:spthanks] Including a special shout out to [[https://github.com/charris][Charles Harris]] for reviewing unreasonably large DOC PRs
 * DONE 42nd Annual Confereence of the Tex Users Group :@conferences:presentations:ramblings:docs:
 CLOSED: [2021-08-07 Sat 15:39]
 :PROPERTIES:
