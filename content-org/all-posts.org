@@ -11990,7 +11990,7 @@ wc -l fortranobject.c fortranobject.h fibmodule.c
 #+end_src
 Not something we'd probably like to mess around with. Standardization reduces the burden of user-code, as we will see in the next section.
 ** Standard Bindings
-The standard compliant approach was aptly covered almost a decade ago by [[https://ondrejcertik.com/][Ondřej Čertík]] and codified in [[https://www.fortran90.org/src/best-practices.html#python-interface][fortran90's best practices guide]]. We start by updating our free-form code to be compliant with newer ~ISO_C_BINDING~ guidelines.
+The standard compliant approach was aptly covered almost a decade ago by [[https://ondrejcertik.com/][Ondřej Čertík]] and codified in his [[https://www.fortran90.org/src/best-practices.html#python-interface][fortran90 best practices guide]]. We start by updating our free-form code to be compliant with newer ~ISO_C_BINDING~ guidelines.
 #+begin_src f90
 module fib1
   use iso_c_binding
@@ -12078,7 +12078,7 @@ def fib(double a, int n):
     return ret
 #+end_src
 
-This however, is closer to ~f2py~ in the sense that the ~C~ code is simply hidden. It requires a compilation step typically done via ~setuptools.py~, however this is much nicer with ~meson~ since from ~0.59.0~, [[https://mesonbuild.com/Cython.html
+This is closer to ~f2py~ in the sense that the ~C~ code is simply hidden. It requires a compilation step typically done via ~setuptools.py~, but, this is much nicer with ~meson~ since from ~0.59.0~, [[https://mesonbuild.com/Cython.html
 ][Cython is supported]].
 #+begin_src python
 project('test_builds', 'c',
