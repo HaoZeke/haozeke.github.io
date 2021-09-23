@@ -3,7 +3,7 @@
 [[input.files]]
 path = "./posts/numpy-meson-f2py/index.html"
 url = "https://rgoswami.me/posts/numpy-meson-f2py/"
-title = "NumPy, Meson and F2PY"
+title = "NumPy, Meson and f2py"
 
 [[input.files]]
 path = "./snippets/prog-lang-man/index.html"
