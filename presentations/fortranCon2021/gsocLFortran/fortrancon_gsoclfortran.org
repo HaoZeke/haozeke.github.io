@@ -1,0 +1,398 @@
+#+TITLE: Implementing Fortran Standardese within LFortran
+#+SUBTITLE: FortranCon 2021 Minisymposium
+#+AUTHOR: Rohit Goswami ~.and.~ Ondřej Čertík
+# I need the footnotes to be inlined
+#+STARTUP: fninline
+#+EXCLUDE_TAGS: noexport
+
+#+BEGIN_SRC emacs-lisp :exports none :eval always
+(require 'ox-extra)
+(ox-extras-activate '(ignore-headlines))
+(eval unpackaged/org-export-html-with-useful-ids-mode)
+;; Stop using citeproc-org by default
+(setq org-export-before-parsing-hook '(org-ref-acronyms-before-parsing org-ref-glossary-before-parsing org-attach-expand-links))
+#+END_SRC
+
+#+RESULTS:
+| org-ref-acronyms-before-parsing | org-ref-glossary-before-parsing | org-attach-expand-links |
+
+
+* Configuration :ignoreheading:ignore:
+:PROPERTIES:
+:VISIBILITY: folded
+:END:
+
+# Kanged from https://gitlab.com/oer/oer-reveal/blob/master/org/config.org
+# Also https://gitlab.com/oer/emacs-reveal-howto/-/blob/master/howto.org
+** General Options :ignoreheading:ignore:
+# No Table of contents, no section numbers
+#+OPTIONS: toc:nil num:nil
+
+# Enable smart quotes
+#+OPTIONS: ':t
+** RevealJS Options :ignoreheading:ignore:
+
+# Enable: browser history, fragment IDs in URLs, mouse wheel, links between presentations
+#+OPTIONS: reveal_history:t reveal_fragmentinurl:t
+#+OPTIONS: reveal_mousewheel:t reveal_inter_presentation_links:t
+
+# Disable separate PDF pages for each fragment.  Just use one per slide.
+#+OPTIONS: reveal_pdfseparatefragments:nil
+
+# Display notes on separate page for PDF export.
+#+REVEAL_EXPORT_NOTES_TO_PDF: separate-page
+
+# Transition styles: none/fade/slide/convex/concave/zoom/cube
+#+REVEAL_TRANS: fade
+# Set a base theme, then override
+#+REVEAL_THEME: robot-lung
+#+REVEAL_EXTRA_CSS: /Users/rohitgoswami/.config/doom/reveal/extras/rlExtras.css
+#+REVEAL_EXTRA_CSS: /Users/rohitgoswami/.config/doom/reveal/extras/oerFragments.css
+#+REVEAL_EXTRA_CSS: /Users/rohitgoswami/.config/doom/reveal/extras/noImgBoxes.css
+#+REVEAL_EXTRA_CSS: /Users/rohitgoswami/.config/doom/reveal/extras/betterCite.css
+#+REVEAL_EXTRA_CSS: /Users/rohitgoswami/.config/doom/reveal/extras/moreCode.css
+#+REVEAL_MARGIN: 0.2
+#+REVEAL_PREAMBLE: <div class="line top"></div> <div class="line bottom"></div> <div class="line left"></div> <div class="line right"></div>
+
+#+REVEAL_PLUGINS: (notes search zoom)
+# The following variables are non-standard.
+# Do not display TOC-progress on title slide.
+
+#+REVEAL_TITLE_SLIDE_STATE: no-toc-progress
+# Do not display TOC-progress on TOC slide.
+#+REVEAL_TOC_SLIDE_STATE: no-toc-progress
+# Do not include TOC slide in TOC-progress.
+#+REVEAL_TOC_SLIDE_CLASS: no-toc-progress
+# Use different heading for TOC.
+#+REVEAL_TOC_SLIDE_TITLE: Agenda
+
+** External Resources :ignoreheading:ignore:
+# Note that doom-emacs sets this variable
+# https://github.com/hlissner/doom-emacs/blob/develop/modules/lang/org/contrib/present.el
+#+REVEAL_EXTRA_CSS: /Users/rohitgoswami/.config/doom/reveal/rjs/plugin/accessibility/helper.css
+#+REVEAL_EXTRA_CSS: /Users/rohitgoswami/.config/doom/reveal/rjs/plugin/toc-progress/toc-progress.css
+#+REVEAL_EXTRA_CSS: /Users/rohitgoswami/.config/doom/reveal/rjs/dist/theme/toc-style.css
+#+REVEAL_EXTRA_CSS: /Users/rohitgoswami/.config/doom/reveal/rjs/dist/theme/fonts/source-sans-pro/source-sans-pro.css
+
+# Allow to selectively hide links.
+# #+REVEAL_EXTRA_SCRIPTS: ("/Users/rohitgoswami/.config/doom/reveal/rjs/dist/theme/hidelinks.js")
+#+REVEAL_EXTRA_SCRIPTS: ("/Users/rohitgoswami/.config/doom/reveal/rjs/dist/theme/hidelinks.js" "/Users/rohitgoswami/.config/doom/reveal/sfeir-school-theme/dist/js/sfeir-theme.js")
+
+# The following creates an empty footer, for which the css style defines
+# a height that agrees with the TOC-progress footer’s height.
+# In this way, the footer’s height is taken into account by reveal.js’s
+# size calculations.
+#+REVEAL_SLIDE_FOOTER: <br>
+#+OPTIONS: reveal_toc_footer:t
+
+** Macros :ignoreheading:ignore:
+# Set a default bib file.
+
+# Macros to display square brackets (in texts of hyperlinks).
+# Based on: https://emacs.stackexchange.com/questions/7792/can-i-make-links-in-org-mode-that-contain-brackets-or
+# Square Bracket Open [
+#+MACRO: BO @@latex:\char91{}@@@@html:&#91;@@
+# Square Bracket Close ]
+#+MACRO: BC @@latex:\char93{}@@@@html:&#93;@@
+
+# Macro for forced line break, e.g., in titles.
+#+MACRO: BR @@latex:\\@@@@html:<br />@@
+
+# Macro to generate abbr element in HTML.  If a second argument is given, it
+# defines the title attribute.  For LaTeX, output first attribute as is and
+# ignore second one.
+#+MACRO: abbr (eval (concat "@@latex:" Modern Documentation across languages "@@@@html:<abbr" (if (< 0 (length Linguistic and Programmatic Variants)) (concat " title=\"" Linguistic and Programmatic Variants "\"") "") ">" Modern Documentation across languages "</abbr>@@"))
+
+# Macros to display code in different colors.
+#+MACRO: blackcode (eval (format "@@html:<code><span style=\"color:black; font-size:smaller;\">%s</span></code>@@ @@latex:\\verb|%s|@@" (org-html-encode-plain-text Modern Documentation across languages) Modern Documentation across languages))
+#+MACRO: redcode (eval (format "@@html:<code><span style=\"color:darkred; font-size:smaller;\">%s</span></code>@@ @@latex:\\rverb|%s|@@" (org-html-encode-plain-text Modern Documentation across languages) Modern Documentation across languages))
+#+MACRO: greencode (eval (format "@@html:<code><span style=\"color:darkgreen; font-size:smaller;\">%s</span></code>@@ @@latex:\\gverb|%s|@@" (org-html-encode-plain-text Modern Documentation across languages) Modern Documentation across languages))
+#+MACRO: bluecode (eval (format "@@html:<code><span style=\"color:darkblue; font-size:smaller;\">%s</span></code>@@ @@latex:\\bverb|%s|@@" (org-html-encode-plain-text Modern Documentation across languages) Modern Documentation across languages))
+
+** References :ignoreheading:ignore:
+bibliographystyle:unsrt
+#+LATEX_HEADER: \addbibresource{./refs.bib}
+
+** LaTeX Options :ignoreheading:ignore:
+# Setup for PDF generation via LaTeX export.
+#+LATEX_CLASS_OPTIONS: [a4paper]
+#+LATEX_HEADER: \usepackage[backend=biber,style=alphabetic]{biblatex}
+#+LATEX_HEADER: \newenvironment{notes}{\par\footnotesize}{\par}
+#+LATEX_HEADER: \newenvironment{NOTES}{\par\footnotesize}{\par}
+#+LATEX_HEADER: \newenvironment{leftcol}{\begin{minipage}{.49\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol}{\begin{minipage}{.49\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{leftcol30}{\begin{minipage}{.29\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{leftcol40}{\begin{minipage}{.39\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{leftcol60}{\begin{minipage}{.59\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{leftcol70}{\begin{minipage}{.69\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol30}{\begin{minipage}{.29\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol40}{\begin{minipage}{.39\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol60}{\begin{minipage}{.59\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol70}{\begin{minipage}{.69\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \usepackage{newunicodechar}
+#+LATEX_HEADER: \newunicodechar{≈}{$\approx$}
+#+LATEX_HEADER: \newunicodechar{⋮}{\vdots}
+#+LATEX_HEADER: \newunicodechar{ }{~}
+#+LATEX_HEADER: \usepackage{xcolor}
+#+LATEX_HEADER: \definecolor{darkred}{rgb}{0.3, 0.0, 0.0}
+#+LATEX_HEADER: \definecolor{darkgreen}{rgb}{0.0, 0.3, 0.1}
+#+LATEX_HEADER: \definecolor{darkblue}{rgb}{0.0, 0.1, 0.3}
+#+LATEX_HEADER: \definecolor{darkorange}{rgb}{1.0, 0.55, 0.0}
+#+LATEX_HEADER: \definecolor{sienna}{rgb}{0.53, 0.18, 0.09}
+#+LATEX_HEADER: \hypersetup{colorlinks,linkcolor=darkblue,citecolor=darkblue,urlcolor=darkgreen}
+#+LATEX_HEADER: \usepackage{newverbs}
+#+LATEX_HEADER: \newverbcommand{\rverb}{\color{darkred}}{}
+#+LATEX_HEADER: \newverbcommand{\gverb}{\color{darkgreen}}{}
+#+LATEX_HEADER: \newverbcommand{\bverb}{\color{darkblue}}{}
+
+* Start Here :ignoreheading:ignore:
+* Brief Introduction
+** Hello!
+- Find me here: https://rgoswami.me
+- Who?
+  + *Rohit Goswami* MInstP
+    - Doctoral Researcher, University of Iceland, Faculty of Physical Sciences
+#+begin_leftcol
+[[file:logos/physUoI.png]]
+#+ATTR_HTML: :width 50% :height 50%
+file:logos/rannisLogo.png
+#+ATTR_HTML: :width 40% :height 40%
+[[file:logos/ccLogo.png]]
+#+end_leftcol
+#+begin_rightcol
+#+ATTR_HTML: :width 60% :height 40%
+[[file:logos/fcon21.png]]
+#+ATTR_HTML: :width 50% :height 40%
+[[file:logos/quansightlabs.jpeg]]
+#+end_rightcol
+** Logistics
+#+ATTR_REVEAL: :frag appear
+- All contents are [[https://github.com/HaoZeke/haozeke.github.io][hosted on GitHub]]
+  + Slides are in ~presentations/fortranCon2021/gsocLFortran~
+#+ATTR_REVEAL: :frag appear
+- Questions are welcome *anytime*
+* LFortran
+** Introduction
+#+DOWNLOADED: screenshot @ 2021-09-09 00:50:56
+[[file:images/Introduction/2021-09-09_00-50-56_screenshot.png]]
+
+| *Language* | *Files* | *Lines* |  *Code* | *Comments* | *Blanks* |
+|------------+---------+---------+---------+------------+----------|
+| C          |       3 |    1023 |     694 |        191 |      138 |
+| C Header   |      57 |   14237 |   11416 |       1041 |     1780 |
+| CMake      |      11 |     430 |     361 |         16 |       53 |
+| C++        |      54 |   30745 |   26911 |       1560 |     2274 |
+| C++ Header |       1 |    8938 |    8297 |        348 |      293 |
+| FORTRAN    |      20 |    1738 |    1344 |        174 |      220 |
+| Python     |       2 |     224 |     191 |          4 |       29 |
+|------------+---------+---------+---------+------------+----------|
+| *Total*    |   *148* | *57335* | *49214* |     *3334* |   *4787* |
+** Structure
+
+#+BEGIN_SRC ditaa :file images/hello-lfortran.png :cmdline -r -s 3.5 :cache yes
++------+     +-----------+     +----------------+
+| Code | --> | Abstract  | --> | (ASR) Abstract | ---+
+|      |     | Syntax    |     |       Semantic |    |
+|      |     | Tree (AST)|     | Representation |    |
++------+     +-----------+     +----------------+    |
+                                                     |
+          +--------+                                 |
++---------| Passes |--------------<------------------+
+|         +--------+
+|
+|                        +--------+
+|                    +-->| Python |
+|                    |   +--------+
+|                    |
+|     +----------+   |   +------+
++---> | Backends | --+-->| LLVM |
+      +----------+   |   +------+
+                     |
+                     |   +-----+
+                     +-->| C++ |
+                         +-----+
+#+END_SRC
+
+#+RESULTS[e593bcddd9ca0862ed60f7f70716ce54612ef366]:
+[[file:images/hello-lfortran.png]]
+
+** Features
+- Runtime Libraries :: Pure Fortran | Impure
+- ASR :: Guarantees compilation --> Wrappers
+- Parser :: Currently almost all of F2018; including F77
+- LLVM :: Canonical backend, includes compile time evaluated expressions
+- Jupyter :: Native execution as a kernel
+
+* Representations
+** Reading Code I
+#+begin_leftcol
+#+ATTR_REVEAL: :frag appear
+#+begin_src cpp
+__attribute__((externally_visible))
+main (integer(kind=4) argc,
+character(kind=1) * * argv)
+{integer(kind=4) D.3878;
+static integer(kind=4)
+ options.1[7] = {2116, 4095,
+    0, 1, 1, 0, 31};
+_gfortran_set_args (argc, argv);
+_gfortran_set_options (7,
+                 &options.1[0]);
+  MAIN__ ();
+D.3878 = 0;
+return D.3878;}
+#+end_src
+#+end_leftcol
+
+#+begin_rightcol
+#+ATTR_REVEAL: :frag appear
+#+begin_src cpp
+MAIN__ ()
+{static integer(kind=4) i = 3;
+{struct __st_parameter_dt dt_parm.0;
+try
+{dt_parm.0.common.filename
+    = &"hi.f90"[1]{lb: 1 sz: 1};
+dt_parm.0.common.line = 3;
+dt_parm.0.common.flags = 128;
+dt_parm.0.common.unit = 6;
+_gfortran_st_write (&dt_parm.0);
+_gfortran_transfer_integer_write
+    (&dt_parm.0, &i, 4);
+_gfortran_transfer_character_write
+    (&dt_parm.0,
+     &"Hello World"[1]{lb: 1 sz: 1}, 11);
+_gfortran_st_write_done
+    (&dt_parm.0);}
+finally {dt_parm.0 = {CLOBBER};}}}
+#+end_src
+#+end_rightcol
+#+ATTR_REVEAL: :frag appear
+- GIMPLE is an *internal* ~gfortran~ representation...
+** Reading Code II
+#+begin_leftcol
+#+ATTR_REVEAL: :frag appear
+
+#+DOWNLOADED: screenshot @ 2021-09-23 22:02:07
+[[file:images/Reading_Code_II/2021-09-23_22-02-07_screenshot.png]]
+
+#+end_leftcol
+
+#+ATTR_REVEAL: :frag appear
+#+begin_rightcol
+
+#+DOWNLOADED: screenshot @ 2021-09-23 22:02:53
+[[file:images/Reading_Code_II/2021-09-23_22-02-53_screenshot.png]]
+
+#+end_rightcol
+
+#+ATTR_REVEAL: :frag appear
+- AST on the left
+- ASR on the right
+** Reading Code III
+#+begin_leftcol
+#+ATTR_REVEAL: :frag appear
+#+begin_src fortran
+program main
+ integer :: i=3
+ print*, i, "Hello World"
+end program
+#+end_src
+#+end_leftcol
+
+#+begin_rightcol
+
+#+ATTR_REVEAL: :frag appear
+- ~lfortran~ has a nicer intermediate structure
+#+ATTR_REVEAL: :frag appear
+#+begin_src bash
+conda create -n lf
+conda activate lf
+conda install lfortran \
+    -c conda-forge
+lfortran --show-asr hi.f90
+#+end_src
+#+end_rightcol
+
+* Fortran and Standardese
+- The ASR can be used to implement the standard verbatim
+** Real Definition
+#+DOWNLOADED: screenshot @ 2021-09-23 22:31:24
+[[file:images/Real_Definition/2021-09-23_22-31-24_screenshot.png]]
+
+** Real Arguments
+#+begin_src cpp
+if (func_name == "real") {
+    if (args.n == 1) {
+        ASR::expr_t* real_expr = args[0];
+        int real_kind = LFortran::ASRUtils::extract_kind_from_ttype_t
+            (func_type);
+        if (LFortran::ASR::is_a<LFortran::ASR::Real_t>(*func_type)) {
+            if (real_kind == 4){
+                float rr = ASR::down_cast<ASR::ConstantReal_t>
+                    (LFortran::ASRUtils::expr_value(real_expr))->m_r;
+                value = ASR::down_cast<ASR::expr_t>
+                    (ASR::make_ConstantReal_t(al,
+                                   x.base.base.loc, rr, func_type));
+            } else {
+                double rr = ASR::down_cast<ASR::ConstantReal_t>
+                    (LFortran::ASRUtils::expr_value(real_expr))->m_r;
+                value = ASR::down_cast<ASR::expr_t>
+                    (ASR::make_ConstantReal_t(al,
+                                     x.base.base.loc, rr, func_type));
+            }
+        } // TODO: Handle BOZ later
+    } else {
+        throw SemanticError("REAL must have only one argument",
+                            x.base.base.loc); }
+#+end_src
+** Integer Arguments
+#+begin_src cpp
+else if (LFortran::ASR::is_a<LFortran::ASR::Integer_t>(*func_type)) {
+    if (real_kind == 4){
+        int64_t rv = ASR::down_cast<ASR::ConstantInteger_t>(
+            LFortran::ASRUtils::expr_value(real_expr))->m_n;
+        float rr = static_cast<float>(rv);
+        value = ASR::down_cast<ASR::expr_t>
+            (ASR::make_ConstantReal_t(al,
+                            x.base.base.loc, rr, func_type));
+            } else {
+                double rr = static_cast<double>(ASR::down_cast
+    <ASR::ConstantInteger_t>(LFortran::ASRUtils::
+                             expr_value(real_expr))->m_n);
+                value = ASR::down_cast<ASR::expr_t>
+                    (ASR::make_ConstantReal_t
+                     (al, x.base.base.loc, rr, func_type));
+    }
+}
+#+end_src
+* Conclusions
+** Omitted Topics
+- [[https://rgoswami.me/tags/gsoc21/][Details here]]
+
+#+DOWNLOADED: screenshot @ 2021-09-23 22:35:03
+[[file:images/Omitted_Topics/2021-09-23_22-35-03_screenshot.png]]
+
+* The End
+** Acknowledgements
+#+DOWNLOADED: screenshot @ 2021-09-09 00:22:06
+[[file:images/Acknowledgements/2021-09-09_00-22-06_screenshot.png]]
+- [[https://notendur.hi.is//~hj/indexE.html][Prof. Hannes Jónsson]] as my supervisor, [[https://english.hi.is/staff/birgirhr][Prof. Birgir Hrafnkelsson]] as my co-supervisor, and my committee member [[https://english.hi.is/staff/elvarorn][Dr. Elvar Jonsson]]
+- [[https://ondrejcertik.com/][Dr. Ondřej Čertík]] at Los Alamos National Laboratory
+- [[https://quansight.com/labs][Quansight Labs]] ([[https://rgommers.github.io/][Dr. Ralf Gommers]], [[https://melissawm.github.io/about-me/][Dr. Melissa Weber Mendonça]] and [[https://github.com/pearu][Dr. Pearu Peterson]])
+- Family, pets, Groupmembers, *audience*
+# ** Bibliography
+# :PROPERTIES:
+# :CUSTOM_ID: bibliography
+# :END:
+
+# printbibliography:refs.bib
+
+** Thanks!
+:PROPERTIES:
+:reveal_background: #A39B91
+:END:
+# Local Variables:
+# indent-tabs-mode: nil
+# org-src-preserve-indentation: t
+# End:
