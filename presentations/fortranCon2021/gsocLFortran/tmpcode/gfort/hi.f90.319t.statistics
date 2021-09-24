@@ -1,0 +1,63 @@
+38 fre "RPO num lattice == 9" "MAIN__" 1
+38 fre "RPO blocks" "MAIN__" 1
+38 fre "RPO iterations == 10" "MAIN__" 1
+38 fre "RPO blocks visited" "MAIN__" 1
+38 fre "RPO max_rpo iterations == 0" "MAIN__" 1
+38 fre "RPO blocks executable" "MAIN__" 1
+38 fre "RPO block visited times == 1" "MAIN__" 1
+38 fre "RPO num avail == 0" "MAIN__" 1
+38 fre "RPO num values == 0" "MAIN__" 1
+33 ccp "Constants propagated" "main" 1
+33 ccp "Statements deleted" "main" 1
+38 fre "RPO blocks" "main" 1
+38 fre "RPO iterations == 10" "main" 1
+38 fre "RPO blocks visited" "main" 1
+38 fre "RPO max_rpo iterations == 0" "main" 1
+38 fre "RPO blocks executable" "main" 1
+38 fre "RPO block visited times == 1" "main" 1
+38 fre "RPO num avail == 0" "main" 1
+38 fre "RPO num lattice == 3" "main" 1
+38 fre "RPO num values == 0" "main" 1
+51 release_ssa "SSA names released" "main" 1
+51 release_ssa "SSA name holes removed" "main" 1
+104 fre "RPO num lattice == 9" "MAIN__" 1
+104 fre "RPO blocks" "MAIN__" 1
+104 fre "RPO iterations == 10" "MAIN__" 1
+104 fre "RPO blocks visited" "MAIN__" 1
+104 fre "RPO max_rpo iterations == 0" "MAIN__" 1
+104 fre "RPO blocks executable" "MAIN__" 1
+104 fre "RPO block visited times == 1" "MAIN__" 1
+104 fre "RPO num avail == 0" "MAIN__" 1
+104 fre "RPO num values == 0" "MAIN__" 1
+135 pre "RPO num lattice == 9" "MAIN__" 1
+135 pre "RPO blocks" "MAIN__" 1
+135 pre "RPO iterations == 10" "MAIN__" 1
+135 pre "compute_antic iterations == 2" "MAIN__" 1
+135 pre "RPO blocks visited" "MAIN__" 1
+135 pre "RPO max_rpo iterations == 0" "MAIN__" 1
+135 pre "RPO blocks executable" "MAIN__" 1
+135 pre "RPO block visited times == 1" "MAIN__" 1
+135 pre "RPO num avail == 0" "MAIN__" 1
+135 pre "insert iterations == 1" "MAIN__" 1
+135 pre "RPO num values == 0" "MAIN__" 1
+269 combine "two-insn combine" "MAIN__" 2
+104 fre "RPO blocks" "main" 1
+104 fre "RPO iterations == 10" "main" 1
+104 fre "RPO blocks visited" "main" 1
+104 fre "RPO max_rpo iterations == 0" "main" 1
+104 fre "RPO blocks executable" "main" 1
+104 fre "RPO block visited times == 1" "main" 1
+104 fre "RPO num avail == 0" "main" 1
+104 fre "RPO num lattice == 3" "main" 1
+104 fre "RPO num values == 0" "main" 1
+135 pre "RPO blocks" "main" 1
+135 pre "RPO iterations == 10" "main" 1
+135 pre "compute_antic iterations == 2" "main" 1
+135 pre "RPO blocks visited" "main" 1
+135 pre "RPO max_rpo iterations == 0" "main" 1
+135 pre "RPO blocks executable" "main" 1
+135 pre "RPO block visited times == 1" "main" 1
+135 pre "RPO num avail == 0" "main" 1
+135 pre "RPO num lattice == 3" "main" 1
+135 pre "insert iterations == 1" "main" 1
+135 pre "RPO num values == 0" "main" 1

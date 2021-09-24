@@ -1,0 +1,229 @@
+
+;; Function MAIN__ (MAIN__, funcdef_no=0, decl_uid=3869, cgraph_uid=1, symbol_order=0) (executed once)
+
+Points-to analysis
+
+Constraints:
+
+ANYTHING = &ANYTHING
+ESCAPED = *ESCAPED
+ESCAPED = ESCAPED + UNKNOWN
+*ESCAPED = NONLOCAL
+NONLOCAL = &NONLOCAL
+NONLOCAL = &ESCAPED
+INTEGER = &ANYTHING
+dt_parm.0.64+64 = &STRING
+dt_parm.0.128+32 = &NONLOCAL
+dt_parm.0.0+64 = &NONLOCAL
+dt_parm.0.0+64 = &NONLOCAL
+callarg(40) = &dt_parm.0.0+64
+callarg(40) = callarg(40) + UNKNOWN
+callarg(40) = *callarg(40) + UNKNOWN
+CALLUSED(38) = callarg(40)
+CALLCLOBBERED(39) = callarg(40)
+*callarg(40) = NONLOCAL
+callarg(44) = &dt_parm.0.0+64
+callarg(44) = callarg(44) + UNKNOWN
+callarg(44) = *callarg(44) + UNKNOWN
+CALLUSED(42) = callarg(44)
+CALLCLOBBERED(43) = callarg(44)
+*callarg(44) = NONLOCAL
+i.3871 = NONLOCAL
+callarg(45) = &i.3871
+callarg(45) = callarg(45) + UNKNOWN
+CALLUSED(42) = callarg(45)
+ESCAPED = &NONLOCAL
+callarg(50) = &dt_parm.0.0+64
+callarg(50) = callarg(50) + UNKNOWN
+callarg(50) = *callarg(50) + UNKNOWN
+CALLUSED(48) = callarg(50)
+CALLCLOBBERED(49) = callarg(50)
+*callarg(50) = NONLOCAL
+callarg(51) = &STRING
+callarg(51) = callarg(51) + UNKNOWN
+CALLUSED(48) = callarg(51)
+ESCAPED = &NONLOCAL
+callarg(55) = &dt_parm.0.0+64
+callarg(55) = callarg(55) + UNKNOWN
+callarg(55) = *callarg(55) + UNKNOWN
+CALLUSED(53) = callarg(55)
+CALLCLOBBERED(54) = callarg(55)
+*callarg(55) = NONLOCAL
+
+Collapsing static cycles and doing variable substitution
+Building predecessor graph
+Detecting pointer and location equivalences
+Rewriting constraints and unifying variables
+Uniting pointer but not location equivalent variables
+Finding indirect cycles
+Solving graph
+
+Points-to sets
+
+ANYTHING = { ANYTHING }
+ESCAPED = { ESCAPED NONLOCAL }
+NONLOCAL = { ESCAPED NONLOCAL }
+STOREDANYTHING = { }
+INTEGER = { ANYTHING }
+dt_parm.0.0+64 = { ESCAPED NONLOCAL }
+dt_parm.0.64+64 = { STRING ESCAPED NONLOCAL }
+dt_parm.0.128+32 = { ESCAPED NONLOCAL }
+dt_parm.0.192+64 = { ESCAPED NONLOCAL }
+dt_parm.0.256+64 = { ESCAPED NONLOCAL }
+dt_parm.0.320+64 = { ESCAPED NONLOCAL }
+dt_parm.0.384+64 = { ESCAPED NONLOCAL }
+dt_parm.0.448+64 = { ESCAPED NONLOCAL }
+dt_parm.0.512+64 = { ESCAPED NONLOCAL }
+dt_parm.0.576+64 = { ESCAPED NONLOCAL }
+dt_parm.0.640+64 = { ESCAPED NONLOCAL }
+dt_parm.0.704+128 = { ESCAPED NONLOCAL }
+dt_parm.0.832+64 = { ESCAPED NONLOCAL }
+dt_parm.0.896+64 = { ESCAPED NONLOCAL }
+dt_parm.0.960+128 = { ESCAPED NONLOCAL }
+dt_parm.0.1088+64 = { ESCAPED NONLOCAL }
+dt_parm.0.1152+64 = { ESCAPED NONLOCAL }
+dt_parm.0.1216+64 = { ESCAPED NONLOCAL }
+dt_parm.0.1280+64 = { ESCAPED NONLOCAL }
+dt_parm.0.1344+128 = { ESCAPED NONLOCAL }
+dt_parm.0.1472+64 = { ESCAPED NONLOCAL }
+dt_parm.0.1536+64 = { ESCAPED NONLOCAL }
+dt_parm.0.1600+128 = { ESCAPED NONLOCAL }
+dt_parm.0.1728+64 = { ESCAPED NONLOCAL }
+dt_parm.0.1792+64 = { ESCAPED NONLOCAL }
+dt_parm.0.1856+128 = { ESCAPED NONLOCAL }
+dt_parm.0.1984+64 = { ESCAPED NONLOCAL }
+dt_parm.0.2048+64 = { ESCAPED NONLOCAL }
+dt_parm.0.2112+2112 = { ESCAPED NONLOCAL }
+_gfortran_st_write = { }
+_gfortran_transfer_integer_write = { }
+i.3871 = { ESCAPED NONLOCAL }
+_gfortran_transfer_character_write = { }
+_gfortran_st_write_done = { }
+CALLUSED(38) = { STRING ESCAPED NONLOCAL dt_parm.0.0+64 dt_parm.0.64+64 dt_parm.0.128+32 dt_parm.0.192+64 dt_parm.0.256+64 dt_parm.0.320+64 dt_parm.0.384+64 dt_parm.0.448+64 dt_parm.0.512+64 dt_parm.0.576+64 dt_parm.0.640+64 dt_parm.0.704+128 dt_parm.0.832+64 dt_parm.0.896+64 dt_parm.0.960+128 dt_parm.0.1088+64 dt_parm.0.1152+64 dt_parm.0.1216+64 dt_parm.0.1280+64 dt_parm.0.1344+128 dt_parm.0.1472+64 dt_parm.0.1536+64 dt_parm.0.1600+128 dt_parm.0.1728+64 dt_parm.0.1792+64 dt_parm.0.1856+128 dt_parm.0.1984+64 dt_parm.0.2048+64 dt_parm.0.2112+2112 } same as callarg(40)
+CALLCLOBBERED(39) = { STRING ESCAPED NONLOCAL dt_parm.0.0+64 dt_parm.0.64+64 dt_parm.0.128+32 dt_parm.0.192+64 dt_parm.0.256+64 dt_parm.0.320+64 dt_parm.0.384+64 dt_parm.0.448+64 dt_parm.0.512+64 dt_parm.0.576+64 dt_parm.0.640+64 dt_parm.0.704+128 dt_parm.0.832+64 dt_parm.0.896+64 dt_parm.0.960+128 dt_parm.0.1088+64 dt_parm.0.1152+64 dt_parm.0.1216+64 dt_parm.0.1280+64 dt_parm.0.1344+128 dt_parm.0.1472+64 dt_parm.0.1536+64 dt_parm.0.1600+128 dt_parm.0.1728+64 dt_parm.0.1792+64 dt_parm.0.1856+128 dt_parm.0.1984+64 dt_parm.0.2048+64 dt_parm.0.2112+2112 } same as callarg(40)
+callarg(40) = { STRING ESCAPED NONLOCAL dt_parm.0.0+64 dt_parm.0.64+64 dt_parm.0.128+32 dt_parm.0.192+64 dt_parm.0.256+64 dt_parm.0.320+64 dt_parm.0.384+64 dt_parm.0.448+64 dt_parm.0.512+64 dt_parm.0.576+64 dt_parm.0.640+64 dt_parm.0.704+128 dt_parm.0.832+64 dt_parm.0.896+64 dt_parm.0.960+128 dt_parm.0.1088+64 dt_parm.0.1152+64 dt_parm.0.1216+64 dt_parm.0.1280+64 dt_parm.0.1344+128 dt_parm.0.1472+64 dt_parm.0.1536+64 dt_parm.0.1600+128 dt_parm.0.1728+64 dt_parm.0.1792+64 dt_parm.0.1856+128 dt_parm.0.1984+64 dt_parm.0.2048+64 dt_parm.0.2112+2112 }
+CALLUSED(42) = { STRING ESCAPED NONLOCAL dt_parm.0.0+64 dt_parm.0.64+64 dt_parm.0.128+32 dt_parm.0.192+64 dt_parm.0.256+64 dt_parm.0.320+64 dt_parm.0.384+64 dt_parm.0.448+64 dt_parm.0.512+64 dt_parm.0.576+64 dt_parm.0.640+64 dt_parm.0.704+128 dt_parm.0.832+64 dt_parm.0.896+64 dt_parm.0.960+128 dt_parm.0.1088+64 dt_parm.0.1152+64 dt_parm.0.1216+64 dt_parm.0.1280+64 dt_parm.0.1344+128 dt_parm.0.1472+64 dt_parm.0.1536+64 dt_parm.0.1600+128 dt_parm.0.1728+64 dt_parm.0.1792+64 dt_parm.0.1856+128 dt_parm.0.1984+64 dt_parm.0.2048+64 dt_parm.0.2112+2112 i.3871 }
+CALLCLOBBERED(43) = { STRING ESCAPED NONLOCAL dt_parm.0.0+64 dt_parm.0.64+64 dt_parm.0.128+32 dt_parm.0.192+64 dt_parm.0.256+64 dt_parm.0.320+64 dt_parm.0.384+64 dt_parm.0.448+64 dt_parm.0.512+64 dt_parm.0.576+64 dt_parm.0.640+64 dt_parm.0.704+128 dt_parm.0.832+64 dt_parm.0.896+64 dt_parm.0.960+128 dt_parm.0.1088+64 dt_parm.0.1152+64 dt_parm.0.1216+64 dt_parm.0.1280+64 dt_parm.0.1344+128 dt_parm.0.1472+64 dt_parm.0.1536+64 dt_parm.0.1600+128 dt_parm.0.1728+64 dt_parm.0.1792+64 dt_parm.0.1856+128 dt_parm.0.1984+64 dt_parm.0.2048+64 dt_parm.0.2112+2112 } same as callarg(44)
+callarg(44) = { STRING ESCAPED NONLOCAL dt_parm.0.0+64 dt_parm.0.64+64 dt_parm.0.128+32 dt_parm.0.192+64 dt_parm.0.256+64 dt_parm.0.320+64 dt_parm.0.384+64 dt_parm.0.448+64 dt_parm.0.512+64 dt_parm.0.576+64 dt_parm.0.640+64 dt_parm.0.704+128 dt_parm.0.832+64 dt_parm.0.896+64 dt_parm.0.960+128 dt_parm.0.1088+64 dt_parm.0.1152+64 dt_parm.0.1216+64 dt_parm.0.1280+64 dt_parm.0.1344+128 dt_parm.0.1472+64 dt_parm.0.1536+64 dt_parm.0.1600+128 dt_parm.0.1728+64 dt_parm.0.1792+64 dt_parm.0.1856+128 dt_parm.0.1984+64 dt_parm.0.2048+64 dt_parm.0.2112+2112 }
+callarg(45) = { i.3871 }
+CALLUSED(48) = { STRING ESCAPED NONLOCAL dt_parm.0.0+64 dt_parm.0.64+64 dt_parm.0.128+32 dt_parm.0.192+64 dt_parm.0.256+64 dt_parm.0.320+64 dt_parm.0.384+64 dt_parm.0.448+64 dt_parm.0.512+64 dt_parm.0.576+64 dt_parm.0.640+64 dt_parm.0.704+128 dt_parm.0.832+64 dt_parm.0.896+64 dt_parm.0.960+128 dt_parm.0.1088+64 dt_parm.0.1152+64 dt_parm.0.1216+64 dt_parm.0.1280+64 dt_parm.0.1344+128 dt_parm.0.1472+64 dt_parm.0.1536+64 dt_parm.0.1600+128 dt_parm.0.1728+64 dt_parm.0.1792+64 dt_parm.0.1856+128 dt_parm.0.1984+64 dt_parm.0.2048+64 dt_parm.0.2112+2112 }
+CALLCLOBBERED(49) = { STRING ESCAPED NONLOCAL dt_parm.0.0+64 dt_parm.0.64+64 dt_parm.0.128+32 dt_parm.0.192+64 dt_parm.0.256+64 dt_parm.0.320+64 dt_parm.0.384+64 dt_parm.0.448+64 dt_parm.0.512+64 dt_parm.0.576+64 dt_parm.0.640+64 dt_parm.0.704+128 dt_parm.0.832+64 dt_parm.0.896+64 dt_parm.0.960+128 dt_parm.0.1088+64 dt_parm.0.1152+64 dt_parm.0.1216+64 dt_parm.0.1280+64 dt_parm.0.1344+128 dt_parm.0.1472+64 dt_parm.0.1536+64 dt_parm.0.1600+128 dt_parm.0.1728+64 dt_parm.0.1792+64 dt_parm.0.1856+128 dt_parm.0.1984+64 dt_parm.0.2048+64 dt_parm.0.2112+2112 } same as callarg(50)
+callarg(50) = { STRING ESCAPED NONLOCAL dt_parm.0.0+64 dt_parm.0.64+64 dt_parm.0.128+32 dt_parm.0.192+64 dt_parm.0.256+64 dt_parm.0.320+64 dt_parm.0.384+64 dt_parm.0.448+64 dt_parm.0.512+64 dt_parm.0.576+64 dt_parm.0.640+64 dt_parm.0.704+128 dt_parm.0.832+64 dt_parm.0.896+64 dt_parm.0.960+128 dt_parm.0.1088+64 dt_parm.0.1152+64 dt_parm.0.1216+64 dt_parm.0.1280+64 dt_parm.0.1344+128 dt_parm.0.1472+64 dt_parm.0.1536+64 dt_parm.0.1600+128 dt_parm.0.1728+64 dt_parm.0.1792+64 dt_parm.0.1856+128 dt_parm.0.1984+64 dt_parm.0.2048+64 dt_parm.0.2112+2112 }
+callarg(51) = { STRING }
+CALLUSED(53) = { STRING ESCAPED NONLOCAL dt_parm.0.0+64 dt_parm.0.64+64 dt_parm.0.128+32 dt_parm.0.192+64 dt_parm.0.256+64 dt_parm.0.320+64 dt_parm.0.384+64 dt_parm.0.448+64 dt_parm.0.512+64 dt_parm.0.576+64 dt_parm.0.640+64 dt_parm.0.704+128 dt_parm.0.832+64 dt_parm.0.896+64 dt_parm.0.960+128 dt_parm.0.1088+64 dt_parm.0.1152+64 dt_parm.0.1216+64 dt_parm.0.1280+64 dt_parm.0.1344+128 dt_parm.0.1472+64 dt_parm.0.1536+64 dt_parm.0.1600+128 dt_parm.0.1728+64 dt_parm.0.1792+64 dt_parm.0.1856+128 dt_parm.0.1984+64 dt_parm.0.2048+64 dt_parm.0.2112+2112 } same as callarg(55)
+CALLCLOBBERED(54) = { STRING ESCAPED NONLOCAL dt_parm.0.0+64 dt_parm.0.64+64 dt_parm.0.128+32 dt_parm.0.192+64 dt_parm.0.256+64 dt_parm.0.320+64 dt_parm.0.384+64 dt_parm.0.448+64 dt_parm.0.512+64 dt_parm.0.576+64 dt_parm.0.640+64 dt_parm.0.704+128 dt_parm.0.832+64 dt_parm.0.896+64 dt_parm.0.960+128 dt_parm.0.1088+64 dt_parm.0.1152+64 dt_parm.0.1216+64 dt_parm.0.1280+64 dt_parm.0.1344+128 dt_parm.0.1472+64 dt_parm.0.1536+64 dt_parm.0.1600+128 dt_parm.0.1728+64 dt_parm.0.1792+64 dt_parm.0.1856+128 dt_parm.0.1984+64 dt_parm.0.2048+64 dt_parm.0.2112+2112 } same as callarg(55)
+callarg(55) = { STRING ESCAPED NONLOCAL dt_parm.0.0+64 dt_parm.0.64+64 dt_parm.0.128+32 dt_parm.0.192+64 dt_parm.0.256+64 dt_parm.0.320+64 dt_parm.0.384+64 dt_parm.0.448+64 dt_parm.0.512+64 dt_parm.0.576+64 dt_parm.0.640+64 dt_parm.0.704+128 dt_parm.0.832+64 dt_parm.0.896+64 dt_parm.0.960+128 dt_parm.0.1088+64 dt_parm.0.1152+64 dt_parm.0.1216+64 dt_parm.0.1280+64 dt_parm.0.1344+128 dt_parm.0.1472+64 dt_parm.0.1536+64 dt_parm.0.1600+128 dt_parm.0.1728+64 dt_parm.0.1792+64 dt_parm.0.1856+128 dt_parm.0.1984+64 dt_parm.0.2048+64 dt_parm.0.2112+2112 }
+
+
+Alias information for MAIN__
+
+Aliased symbols
+
+dt_parm.0, UID D.3872, struct __st_parameter_dt, is addressable
+i, UID D.3871, integer(kind=4), is addressable, is global, initial: 3
+
+Call clobber information
+
+ESCAPED, points-to non-local, points-to vars: { }
+
+Flow-insensitive points-to information
+
+
+MAIN__ ()
+{
+  struct __st_parameter_dt dt_parm.0;
+  static integer(kind=4) i = 3;
+
+  <bb 2> [local count: 1073741824]:
+  dt_parm.0.common.filename = &"hi.f90"[1]{lb: 1 sz: 1};
+  dt_parm.0.common.line = 3;
+  dt_parm.0.common.flags = 128;
+  dt_parm.0.common.unit = 6;
+  _gfortran_st_write (&dt_parm.0);
+  _gfortran_transfer_integer_write (&dt_parm.0, &i, 4);
+  _gfortran_transfer_character_write (&dt_parm.0, &"Hello World"[1]{lb: 1 sz: 1}, 11);
+  _gfortran_st_write_done (&dt_parm.0);
+  dt_parm.0 ={v} {CLOBBER};
+  return;
+
+}
+
+
+
+;; Function main (main, funcdef_no=1, decl_uid=3873, cgraph_uid=2, symbol_order=1) (executed once)
+
+Points-to analysis
+
+Constraints:
+
+ANYTHING = &ANYTHING
+ESCAPED = *ESCAPED
+ESCAPED = ESCAPED + UNKNOWN
+*ESCAPED = NONLOCAL
+NONLOCAL = &NONLOCAL
+NONLOCAL = &ESCAPED
+INTEGER = &ANYTHING
+argc = &NONLOCAL
+argv = &NONLOCAL
+ESCAPED = argc
+ESCAPED = argv
+ESCAPED = &NONLOCAL
+options.1.3877 = NONLOCAL
+callarg(14) = &options.1.3877
+callarg(14) = callarg(14) + UNKNOWN
+CALLUSED(12) = callarg(14)
+ESCAPED = &NULL
+
+Collapsing static cycles and doing variable substitution
+Building predecessor graph
+Detecting pointer and location equivalences
+Rewriting constraints and unifying variables
+Uniting pointer but not location equivalent variables
+Finding indirect cycles
+Solving graph
+
+Points-to sets
+
+ANYTHING = { ANYTHING }
+ESCAPED = { NULL ESCAPED NONLOCAL }
+NONLOCAL = { ESCAPED NONLOCAL }
+STOREDANYTHING = { }
+INTEGER = { ANYTHING }
+argc = { NONLOCAL }
+argv = { NONLOCAL } same as argc
+_gfortran_set_args = { }
+_gfortran_set_options = { }
+options.1.3877 = { ESCAPED NONLOCAL }
+MAIN__ = { }
+CALLUSED(12) = { options.1.3877 } same as callarg(14)
+CALLCLOBBERED(13) = { }
+callarg(14) = { options.1.3877 }
+
+
+Alias information for main
+
+Aliased symbols
+
+
+Call clobber information
+
+ESCAPED, points-to non-local, points-to NULL, points-to vars: { }
+
+Flow-insensitive points-to information
+
+argv_3(D), points-to non-local, points-to NULL, points-to vars: { }
+
+__attribute__((externally_visible))
+main (integer(kind=4) argc, character(kind=1) * * argv)
+{
+  static integer(kind=4) options.1[7] = {2116, 4095, 0, 1, 1, 0, 31};
+
+  <bb 2> [local count: 1073741824]:
+  _gfortran_set_args (argc_2(D), argv_3(D));
+  _gfortran_set_options (7, &options.1[0]);
+  MAIN__ ();
+  return 0;
+
+}
+
+

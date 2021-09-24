@@ -1,0 +1,92 @@
+
+;; Function MAIN__ (MAIN__, funcdef_no=0, decl_uid=3869, cgraph_uid=1, symbol_order=0)
+
+
+Analyzing function body size: MAIN__
+
+IPA function summary for MAIN__/0 inlinable
+  global time:     54.000000
+  self size:       19
+  global size:     0
+  min size:       0
+  self stack:      528
+  global stack:    528
+    size:4.000000, time:4.000000
+    size:3.000000, time:2.000000,  executed if:(not inlined)
+  calls:
+    _gfortran_st_write_done/9 function body not available
+      loop depth: 0 freq:1.00 size: 2 time: 11
+       op0 is compile time invariant
+    _gfortran_transfer_character_write/8 function body not available
+      loop depth: 0 freq:1.00 size: 4 time: 13
+       op0 is compile time invariant
+       op1 is compile time invariant
+       op2 is compile time invariant
+    _gfortran_transfer_integer_write/6 function body not available
+      loop depth: 0 freq:1.00 size: 4 time: 13
+       op0 is compile time invariant
+       op1 is compile time invariant
+       op2 is compile time invariant
+    _gfortran_st_write/5 function body not available
+      loop depth: 0 freq:1.00 size: 2 time: 11
+       op0 is compile time invariant
+
+MAIN__ ()
+{
+  struct __st_parameter_dt dt_parm.0;
+  static integer(kind=4) i = 3;
+
+  <bb 2> [local count: 1073741824]:
+  dt_parm.0.common.filename = &"hi.f90"[1]{lb: 1 sz: 1};
+  dt_parm.0.common.line = 3;
+  dt_parm.0.common.flags = 128;
+  dt_parm.0.common.unit = 6;
+  _gfortran_st_write (&dt_parm.0);
+  _gfortran_transfer_integer_write (&dt_parm.0, &i, 4);
+  _gfortran_transfer_character_write (&dt_parm.0, &"Hello World"[1]{lb: 1 sz: 1}, 11);
+  _gfortran_st_write_done (&dt_parm.0);
+  dt_parm.0 ={v} {CLOBBER};
+  return;
+
+}
+
+
+
+;; Function main (main, funcdef_no=1, decl_uid=3873, cgraph_uid=2, symbol_order=1) (executed once)
+
+
+Analyzing function body size: main
+
+IPA function summary for main/1 inlinable
+  global time:     36.000000
+  self size:       10
+  global size:     0
+  min size:       0
+  self stack:      0
+  global stack:    0
+    size:0.000000, time:0.000000
+    size:3.000000, time:2.000000,  executed if:(not inlined)
+  calls:
+    MAIN__/0 function not considered for inlining
+      loop depth: 0 freq:1.00 size: 1 time: 10callee size: 9 stack:528
+    _gfortran_set_options/3 function body not available
+      loop depth: 0 freq:1.00 size: 3 time: 12
+       op0 is compile time invariant
+       op1 is compile time invariant
+    _gfortran_set_args/2 function body not available
+      loop depth: 0 freq:1.00 size: 3 time: 12
+
+__attribute__((externally_visible))
+main (integer(kind=4) argc, character(kind=1) * * argv)
+{
+  static integer(kind=4) options.1[7] = {2116, 4095, 0, 1, 1, 0, 31};
+
+  <bb 2> [local count: 1073741824]:
+  _gfortran_set_args (argc_2(D), argv_3(D));
+  _gfortran_set_options (7, &options.1[0]);
+  MAIN__ ();
+  return 0;
+
+}
+
+
