@@ -240,7 +240,7 @@ The information is converted to Markdown format and copied to the
 kill ring.  The same information is displayed in the Messages
 buffer and returned as a string in Org format." t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ox-hugo" '("org-hugo-")))
+(register-definition-prefixes "ox-hugo" '("org-hugo-"))
 
 ;;;***
 
@@ -248,7 +248,7 @@ buffer and returned as a string in Org format." t nil)
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from ox-hugo-pandoc-cite.el
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ox-hugo-pandoc-cite" '("org-hugo-pandoc-cite-")))
+(register-definition-prefixes "ox-hugo-pandoc-cite" '("org-hugo-pandoc-cite-"))
 
 ;;;***
 

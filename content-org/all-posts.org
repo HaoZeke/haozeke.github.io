@@ -13142,6 +13142,7 @@ I had the honor and pleasure to have two presentations at the [[https://tcevents
 f2py is the gold standard for interfacing Fortran and Python. The most famous downstream consumer of the generated wrappers is undoubtedly the scipy ecosystem. Crucially, f2py is not a compiler, and generates a best effort set of wrappers, aided by special comment lines. One of the key inter-operable approaches to compilation of the subsequent wrappers relies on numpy.distutils. Given the planned obsolescence of this module; we discuss the methodology by which the build phase can be split into a two phase process and document better the pyf enhancements made to facilitate callbacks. A brief outline of test suites and documentation within the numpy ecosystem and proposed enhancement proposals will be discussed as well. We lay out the roadmap towards f2py remaining relevant beyond f77 by implementing derived types and newer features like parallelism with co-arrays. Playing to its strengths as a code-enhancer and leveraging the flexibility of not being constrained by the actual compilation process allows for the reimagining of f2py as a tool and library.
 #+END_QUOTE
 **** Other Content
+- [[https://rgoswami.me/posts/numpy-meson-f2py/][NumPy, Meson and ~f2py~]]
 *** Slides
 - [[file:/revealjs/fortrancon21/quansight/f2py2declater.html][Best viewed here]] using a browser (in a new tab)
 - A ~pdf~ copy of the slides are embedded below
