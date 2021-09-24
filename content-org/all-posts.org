@@ -13143,7 +13143,7 @@ f2py is the gold standard for interfacing Fortran and Python. The most famous do
 #+END_QUOTE
 **** Other Content
 *** Slides
-- [[file:/revealjs/lesHouches21/f2py2declater.html][Best viewed here]] using a browser (in a new tab)
+- [[file:/revealjs/fortrancon21/quansight/f2py2declater.html][Best viewed here]] using a browser (in a new tab)
 - A ~pdf~ copy of the slides are embedded below
 - The ~orgmode~ source [[https://raw.githubusercontent.com/HaoZeke/haozeke.github.io/src/presentations/fortranCon21/quansightF2PY/fortrancon_quansightf2py.org][is here on the site's GH repo]]
 #+BEGIN_EXPORT html
