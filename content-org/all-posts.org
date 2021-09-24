@@ -13133,7 +13133,7 @@ CLOSED: [2021-09-24 Fri 01:37]
 A meta-post on twin presentations on F2PY and LFortran at FortranCon'21
 #+END_QUOTE
 ** Background
-I had the honor and pleasure to have two presentations at the [[https://tcevents.chem.uzh.ch/event/14/overview][second annual FortranCon]] in 2021. The fun part was both talks featured the language standard prominently, but were meant to form two sides of a coin. This was biased
+I had the honor and pleasure to have two presentations at the [[https://tcevents.chem.uzh.ch/event/14/overview][second annual FortranCon]] in 2021. The fun part was both talks featured the language standard prominently, but were meant to form two sides of a coin.
 ** f2py: Two Decades Later
 - Co-Authors :: [[https://rgommers.github.io/][Dr. Ralf Gommers]] (Quansight Labs), [[https://melissawm.github.io/][Dr. Melissa Mendonca]] (Quansight Labs), [[https://github.com/pearu][Dr. Pearu Peterson]] (Quansight Labs)
 - Duration :: 20 minutes (15 + 5)
