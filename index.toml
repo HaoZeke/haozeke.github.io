@@ -1,6 +1,11 @@
 # We use the generated html to prevent issues involving markdown frontmatter
 
 [[input.files]]
+path = "./posts/fortrancon-2021-meta/index.html"
+url = "https://rgoswami.me/posts/fortrancon-2021-meta/"
+title = "Presentation Supplements for FortranCon&#39;21"
+
+[[input.files]]
 path = "./posts/numpy-meson-f2py/index.html"
 url = "https://rgoswami.me/posts/numpy-meson-f2py/"
 title = "NumPy, Meson and f2py"
