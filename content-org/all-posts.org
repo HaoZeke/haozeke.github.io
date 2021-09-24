@@ -13123,6 +13123,78 @@ Anything tagged Fortran on this site.
 TBD
 ** Thoughts
 This was the first time in a long while since I gave an in-person short presentation. I should have used a timer.
+* DONE Presentation Supplements for FortranCon'21 :@conferences:presentations:ramblings:fortran:
+CLOSED: [2021-09-24 Fri 01:37]
+:PROPERTIES:
+:EXPORT_FILE_NAME: fortrancon-2021-meta
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments false
+:END:
+#+BEGIN_QUOTE
+A meta-post on twin presentations on F2PY and LFortran at FortranCon'21
+#+END_QUOTE
+** Background
+I had the honor and pleasure to have two presentations at the [[https://tcevents.chem.uzh.ch/event/14/overview][second annual FortranCon]] in 2021. The fun part was both talks featured the language standard prominently, but were meant to form two sides of a coin. This was biased
+** f2py: Two Decades Later
+- Co-Authors :: [[https://rgommers.github.io/][Dr. Ralf Gommers]] (Quansight Labs), [[https://melissawm.github.io/][Dr. Melissa Mendonca]] (Quansight Labs), [[https://github.com/pearu][Dr. Pearu Peterson]] (Quansight Labs)
+- Duration :: 20 minutes (15 + 5)
+*** Abstract
+#+BEGIN_QUOTE
+f2py is the gold standard for interfacing Fortran and Python. The most famous downstream consumer of the generated wrappers is undoubtedly the scipy ecosystem. Crucially, f2py is not a compiler, and generates a best effort set of wrappers, aided by special comment lines. One of the key inter-operable approaches to compilation of the subsequent wrappers relies on numpy.distutils. Given the planned obsolescence of this module; we discuss the methodology by which the build phase can be split into a two phase process and document better the pyf enhancements made to facilitate callbacks. A brief outline of test suites and documentation within the numpy ecosystem and proposed enhancement proposals will be discussed as well. We lay out the roadmap towards f2py remaining relevant beyond f77 by implementing derived types and newer features like parallelism with co-arrays. Playing to its strengths as a code-enhancer and leveraging the flexibility of not being constrained by the actual compilation process allows for the reimagining of f2py as a tool and library.
+#+END_QUOTE
+**** Other Content
+*** Slides
+- [[file:/revealjs/lesHouches21/f2py2declater.html][Best viewed here]] using a browser (in a new tab)
+- A ~pdf~ copy of the slides are embedded below
+- The ~orgmode~ source [[https://raw.githubusercontent.com/HaoZeke/haozeke.github.io/src/presentations/fortranCon21/quansightF2PY/fortrancon_quansightf2py.org][is here on the site's GH repo]]
+#+BEGIN_EXPORT html
+<script async class="speakerdeck-embed" data-id="d3840612af464e5baea5ee5e6dcd6692" data-ratio="1.37081659973226" src="//speakerdeck.com/assets/embed.js"></script>
+#+END_EXPORT
+*** Video
+TBD
+** Implementing Fortran Standardese within LFortran
+- Co-Author(s) :: [[https://ondrejcertik.com/][Dr. Ondřej Čertík]] (Los Alamos National Laboratory)
+- Duration :: 5 minutes
+*** Abstract
+#+BEGIN_QUOTE
+The Fortran standard is a rather imposing document; though with F2018 at around 600 pages it is significantly lighter than its C++ counterpart. The standard itself is rarely cited as a beginner resource, with a cottage industry of books designed to shed light on the dry prose and foreboding technical rigor. However, with LFortran, particularly viewed through the lens of the Abstract Semantic Representation (ASR) of any Fortran code, the standard suddenly gains clarity and rigor. Being as it is a Fortran-first representation, unlike GCC's internal representations (parse trees and lowered GIMPLE) or opaque (proprietary) middle-layers of NAG/Intel; the ASR is meant to concretely represent the syntax in a way to make the Standard seem eminently rational. Implementing the intrinsic functions and standard computing models become pleasant C++ puzzles instead of pidgin nightmares of progressively lower representations. In this presentation, I will discuss the process of implementing Standard intrinsic functions, the lifeline of any applied physical science researcher. LFortran allows for further flexibility at runtime, which will come up briefly, but most of the focus for this short talk will be on the compile time evaluation of intrinsic functions and future directions.
+#+END_QUOTE
+**** Other Content
+The whole GSoC series.
+0. [[Fortran, GSoC21 and Me][Fortran, GSoC21 and Me]]
+
+1. [[GSoC21 W1: LFortran Kickoff][GSoC21 W1: LFortran Kickoff]]
+
+2. [[GSoC21 W2: LFortran Unraveling][GSoC21 W2: LFortran Unraveling]]
+
+3. [[GSoC21 W3: Kind, Characters, and Standards][GSoC21 W3: Kind, Characters, and Standards]]
+
+4. [[GSoC21 W4: LFortran, Backends and Bugs][GSoC21 W4: LFortran, Backends and Bugs]]
+
+5. [[GSoC21 W5: LFortran Design Details and ~minidftatom~][GSoC21 W5: LFortran Design Details and ~minidftatom~]]
+
+6. [[GSoC21 W6: LFortran ASR and Values][GSoC21 W6: LFortran ASR and Values]]
+
+7. [[GSoC21 W7: LFortran Workflow Basics][GSoC21 W7: LFortran Workflow Basics]]
+
+8. [[GSoC21 W8: LFortran Refactors, and Compile Time Evaluations][GSoC21 W8: LFortran Refactors, and Compile Time Evaluations]]
+
+9. [[GSoC21 W9: LFortran Bug Hunting Bonanza][GSoC21 W9: LFortran Bug Hunting Bonanza]]
+
+10. [[GSoC21 W10: LFortran Runtime Library Design][GSoC21 W10: LFortran Runtime Library Design]]
+
+11. [[GSoC21 LFortran and Computational Chemistry][GSoC21 LFortran and Computational Chemistry]]
+
+*** Slides
+- [[file:/revealjs/fortrancon21/gsoc/implFSLFortran.html][Best viewed here]] using a browser (in a new tab)
+- A ~pdf~ copy of the slides are embedded below
+- The ~orgmode~ source [[https://raw.githubusercontent.com/HaoZeke/haozeke.github.io/src/presentations/fortranCon21/gsocLFortran/fortrancon_gsoclfortran.org][is here on the site's GH repo]]
+#+BEGIN_EXPORT html
+<script async class="speakerdeck-embed" data-id="b663e416185f43d88a9598ab0c221901" data-ratio="1.37081659973226" src="//speakerdeck.com/assets/embed.js"></script>
+#+END_EXPORT
+*** Video
+TBD
+** Thoughts
+I could go on about these topics all day, thankfully for the most part, I do.
 * Important Note :ignoreheading:ignore:
 # ALWAYS at the bottom, to ensure fresh builds do not break
 * DONE About
