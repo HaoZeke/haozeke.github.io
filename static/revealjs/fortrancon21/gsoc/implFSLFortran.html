@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<!-- saved from url=(0155)file:///Users/rohitgoswami/Git/Github/WebDev/Mine/haozeke.github.io/presentations/fortranCon2021/gsocLFortran/fortrancon_gsoclfortran.html#/sec-title-slide -->
+<html lang="en" class="reveal-full-page"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>Implementing Fortran Standardese within LFortran</title>
+<meta name="author" content="Rohit Goswami ~.and.~ Ondřej Čertík">
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="./implFSLFortran_files/reveal.css">
+
+<link rel="stylesheet" href="./implFSLFortran_files/robot-lung.css" id="theme">
+
+<link rel="stylesheet" href="./implFSLFortran_files/rlExtras.css">
+
+<link rel="stylesheet" href="./implFSLFortran_files/oerFragments.css">
+
+<link rel="stylesheet" href="./implFSLFortran_files/noImgBoxes.css">
+
+<link rel="stylesheet" href="./implFSLFortran_files/betterCite.css">
+
+<link rel="stylesheet" href="./implFSLFortran_files/moreCode.css">
+
+<link rel="stylesheet" href="file:///Users/rohitgoswami/.config/doom/reveal/rjs/plugin/accessibility/helper.css">
+
+<link rel="stylesheet" href="file:///Users/rohitgoswami/.config/doom/reveal/rjs/plugin/toc-progress/toc-progress.css">
+
+<link rel="stylesheet" href="file:///Users/rohitgoswami/.config/doom/reveal/rjs/dist/theme/toc-style.css">
+
+<link rel="stylesheet" href="./implFSLFortran_files/source-sans-pro.css">
+<link type="image/x-icon" rel="shortcut icon" sizes="16x16" href="file:///Users/rohitgoswami/.config/doom/reveal/sfeir-school-theme/dist/images/favicon-16x16.png"><link type="image/x-icon" rel="shortcut icon" sizes="32x32" href="file:///Users/rohitgoswami/.config/doom/reveal/sfeir-school-theme/dist/images/favicon-32x32.png"><link type="image/x-icon" rel="shortcut icon" sizes="96x96" href="file:///Users/rohitgoswami/.config/doom/reveal/sfeir-school-theme/dist/images/favicon-96x96.png"><link type="image/x-icon" rel="shortcut icon" href="file:///Users/rohitgoswami/.config/doom/reveal/sfeir-school-theme/dist/images/favicon.ico"></head>
+<body class="reveal-viewport no-toc-progress" style="transition: -webkit-transform 0.8s ease 0s; --slide-width:960px; --slide-height:700px;">
+<div class="line top"></div> <div class="line bottom"></div> <div class="line left"></div> <div class="line right"></div>
+<div class="reveal fade center focused has-vertical-slides has-horizontal-slides ready" role="application" data-transition-speed="default" data-background-transition="fade" style="">
+<div class="slides" style="width: 960px; height: 700px; inset: 50% auto auto 50%; transform: translate(-50%, -50%) scale(0.989714);">
+<section id="sec-title-slide" data-state="no-toc-progress" style="top: 35px; display: block;" class="present sfeir-basic-slide">
+<h1 class="title">Implementing Fortran Standardese within LFortran</h1><h2 class="author">Rohit Goswami <code>.and.</code> Ondřej Čertík</h2><p class="date">Created: 2021-09-24 Fri 01:14</p>
+</section>
+
+
+
+
+<p>
+
+</p>
+
+
+<section style="top: 0px; display: block;" hidden="" aria-hidden="true" class="stack future sfeir-basic-slide">
+<section id="slide-org09ae6ff" style="top: 300.5px; display: block;" class="sfeir-basic-slide">
+<h2 id="org09ae6ff">Brief Introduction</h2>
+<div class="outline-text-2" id="text-org09ae6ff">
+</div>
+</section>
+<section id="slide-orge718e12" class="future sfeir-basic-slide" aria-hidden="true" style="top: 0px; display: block;">
+<h3 id="orge718e12">Hello!</h3>
+<ul>
+<li>Find me here: <a href="https://rgoswami.me/">https://rgoswami.me</a></li>
+<li>Who?
+<ul>
+<li><b>Rohit Goswami</b> MInstP
+<ul>
+<li>Doctoral Researcher, University of Iceland, Faculty of Physical Sciences</li>
+
+</ul></li>
+
+</ul></li>
+
+</ul>
+<div class="leftcol" id="org07d8867">
+
+<div id="org54b6fef" class="figure">
+<p><img src="./implFSLFortran_files/physUoI.png" alt="physUoI.png">
+</p>
+</div>
+
+<div id="org42b67cd" class="figure">
+<p><img src="./implFSLFortran_files/rannisLogo.png" alt="rannisLogo.png" width="50%" height="50%">
+</p>
+</div>
+
+<div id="org43f89a6" class="figure">
+<p><img src="./implFSLFortran_files/ccLogo.png" alt="ccLogo.png" width="40%" height="40%">
+</p>
+</div>
+
+</div>
+<div class="rightcol" id="org9ca4f13">
+
+<div id="org426f874" class="figure">
+<p><img src="./implFSLFortran_files/fcon21.png" alt="fcon21.png" width="60%" height="40%">
+</p>
+</div>
+
+<div id="orge6d78a8" class="figure">
+<p><img src="./implFSLFortran_files/quansightlabs.jpeg" alt="quansightlabs.jpeg" width="50%" height="40%">
+</p>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org9cff8c2" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="org9cff8c2">Logistics</h3>
+<ul class="fragment appear" data-fragment-index="0">
+<li>All contents are <a href="https://github.com/HaoZeke/haozeke.github.io">hosted on GitHub</a>
+<ul>
+<li>Slides are in <code>presentations/fortranCon2021/gsocLFortran</code></li>
+
+</ul></li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="1">
+<li>Questions are welcome <b>anytime</b></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section style="top: 0px; display: block;" hidden="" aria-hidden="true" class="stack future sfeir-basic-slide">
+<section id="slide-org7158b5c" style="top: 300.5px; display: block;" class="sfeir-basic-slide">
+<h2 id="org7158b5c">LFortran</h2>
+<div class="outline-text-2" id="text-org7158b5c">
+</div>
+</section>
+<section id="slide-org5030b73" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="org5030b73">Introduction</h3>
+
+<div id="org69ea63a" class="figure">
+<p><img src="./implFSLFortran_files/2021-09-09_00-50-56_screenshot.png" alt="2021-09-09_00-50-56_screenshot.png">
+</p>
+</div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col class="org-left">
+
+<col class="org-right">
+
+<col class="org-right">
+
+<col class="org-right">
+
+<col class="org-right">
+
+<col class="org-right">
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left"><b>Language</b></th>
+<th scope="col" class="org-right"><b>Files</b></th>
+<th scope="col" class="org-right"><b>Lines</b></th>
+<th scope="col" class="org-right"><b>Code</b></th>
+<th scope="col" class="org-right"><b>Comments</b></th>
+<th scope="col" class="org-right"><b>Blanks</b></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">C</td>
+<td class="org-right">3</td>
+<td class="org-right">1023</td>
+<td class="org-right">694</td>
+<td class="org-right">191</td>
+<td class="org-right">138</td>
+</tr>
+
+<tr>
+<td class="org-left">C Header</td>
+<td class="org-right">57</td>
+<td class="org-right">14237</td>
+<td class="org-right">11416</td>
+<td class="org-right">1041</td>
+<td class="org-right">1780</td>
+</tr>
+
+<tr>
+<td class="org-left">CMake</td>
+<td class="org-right">11</td>
+<td class="org-right">430</td>
+<td class="org-right">361</td>
+<td class="org-right">16</td>
+<td class="org-right">53</td>
+</tr>
+
+<tr>
+<td class="org-left">C++</td>
+<td class="org-right">54</td>
+<td class="org-right">30745</td>
+<td class="org-right">26911</td>
+<td class="org-right">1560</td>
+<td class="org-right">2274</td>
+</tr>
+
+<tr>
+<td class="org-left">C++ Header</td>
+<td class="org-right">1</td>
+<td class="org-right">8938</td>
+<td class="org-right">8297</td>
+<td class="org-right">348</td>
+<td class="org-right">293</td>
+</tr>
+
+<tr>
+<td class="org-left">FORTRAN</td>
+<td class="org-right">20</td>
+<td class="org-right">1738</td>
+<td class="org-right">1344</td>
+<td class="org-right">174</td>
+<td class="org-right">220</td>
+</tr>
+
+<tr>
+<td class="org-left">Python</td>
+<td class="org-right">2</td>
+<td class="org-right">224</td>
+<td class="org-right">191</td>
+<td class="org-right">4</td>
+<td class="org-right">29</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left"><b>Total</b></td>
+<td class="org-right"><b>148</b></td>
+<td class="org-right"><b>57335</b></td>
+<td class="org-right"><b>49214</b></td>
+<td class="org-right"><b>3334</b></td>
+<td class="org-right"><b>4787</b></td>
+</tr>
+</tbody>
+</table>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org889b64b" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="org889b64b">Structure</h3>
+
+<div id="org64b7d1d" class="figure">
+<p><img src="./implFSLFortran_files/hello-lfortran.png" alt="hello-lfortran.png">
+</p>
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-org230f258" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="org230f258">Features</h3>
+<dl>
+<dt>Runtime Libraries</dt><dd>Pure Fortran | Impure</dd>
+<dt>ASR</dt><dd>Guarantees compilation –&gt; Wrappers</dd>
+<dt>Parser</dt><dd>Currently almost all of F2018; including F77</dd>
+<dt>LLVM</dt><dd>Canonical backend, includes compile time evaluated expressions</dd>
+<dt>Jupyter</dt><dd>Native execution as a kernel</dd>
+
+</dl>
+<div class="slide-footer"><br></div>
+
+</section>
+</section>
+<section style="top: 350px; display: none;" hidden="" aria-hidden="true" class="stack future sfeir-basic-slide">
+<section id="slide-org2470b80" style="top: 350px; display: none;" class="sfeir-basic-slide">
+<h2 id="org2470b80">Representations</h2>
+<div class="outline-text-2" id="text-org2470b80">
+</div>
+</section>
+<section id="slide-orgd002731" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="orgd002731">Reading Code I</h3>
+<div class="leftcol" id="orgc510b9b">
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="0"><span style="color: #b294bb;">__attribute__</span><span style="color: #b294bb;">(</span><span style="color: #81a2be;">(</span>externally_visible<span style="color: #81a2be;">)</span><span style="color: #b294bb;">)</span>
+<span style="color: #81a2be;">main</span> <span style="color: #b294bb;">(</span>integer<span style="color: #81a2be;">(</span>kind=<span style="color: #de935f; font-weight: bold;">4</span><span style="color: #81a2be;">)</span> argc,
+character<span style="color: #81a2be;">(</span>kind=<span style="color: #de935f; font-weight: bold;">1</span><span style="color: #81a2be;">)</span> * * argv<span style="color: #b294bb;">)</span>
+<span style="color: #b294bb;">{</span>integer<span style="color: #81a2be;">(</span>kind=<span style="color: #de935f; font-weight: bold;">4</span><span style="color: #81a2be;">)</span> D.<span style="color: #de935f; font-weight: bold;">3878</span>;
+<span style="color: #b294bb;">static</span> <span style="color: #cc6666;">integer</span><span style="color: #81a2be;">(</span>kind=<span style="color: #de935f; font-weight: bold;">4</span><span style="color: #81a2be;">)</span>
+ options.<span style="color: #de935f; font-weight: bold;">1</span><span style="color: #81a2be;">[</span><span style="color: #de935f; font-weight: bold;">7</span><span style="color: #81a2be;">]</span> = <span style="color: #81a2be;">{</span><span style="color: #de935f; font-weight: bold;">2116</span>, <span style="color: #de935f; font-weight: bold;">4095</span>,
+    <span style="color: #de935f; font-weight: bold;">0</span>, <span style="color: #de935f; font-weight: bold;">1</span>, <span style="color: #de935f; font-weight: bold;">1</span>, <span style="color: #de935f; font-weight: bold;">0</span>, <span style="color: #de935f; font-weight: bold;">31</span><span style="color: #81a2be;">}</span>;
+_gfortran_set_args <span style="color: #81a2be;">(</span>argc, argv<span style="color: #81a2be;">)</span>;
+_gfortran_set_options <span style="color: #81a2be;">(</span><span style="color: #de935f; font-weight: bold;">7</span>,
+                 &amp;options.<span style="color: #de935f; font-weight: bold;">1</span><span style="color: #de935f;">[</span><span style="color: #de935f; font-weight: bold;">0</span><span style="color: #de935f;">]</span><span style="color: #81a2be;">)</span>;
+  <span style="color: #de935f;">MAIN__</span> <span style="color: #81a2be;">()</span>;
+D.<span style="color: #de935f; font-weight: bold;">3878</span> = <span style="color: #de935f; font-weight: bold;">0</span>;
+<span style="color: #b294bb;">return</span> D.<span style="color: #de935f; font-weight: bold;">3878</span>;<span style="color: #b294bb;">}</span>
+</pre>
+</div>
+
+</div>
+
+<div class="rightcol" id="orge940a81">
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="1"><span style="color: #81a2be;">MAIN__</span> <span style="color: #b294bb;">()</span>
+<span style="color: #b294bb;">{</span><span style="color: #b294bb;">static</span> <span style="color: #cc6666;">integer</span><span style="color: #81a2be;">(</span>kind=<span style="color: #de935f; font-weight: bold;">4</span><span style="color: #81a2be;">)</span> i = <span style="color: #de935f; font-weight: bold;">3</span>;
+<span style="color: #81a2be;">{</span><span style="color: #b294bb;">struct</span> <span style="color: #f0c674;">__st_parameter_dt</span> <span style="color: #cc6666;">dt_parm</span>.<span style="color: #de935f; font-weight: bold;">0</span>;
+<span style="color: #b294bb;">try</span>
+<span style="color: #de935f;">{</span>dt_parm.<span style="color: #de935f; font-weight: bold;">0.common</span>.filename
+    = &amp;<span style="color: #b5bd68;">"hi.f90"</span><span style="color: #b5bd68;">[</span><span style="color: #de935f; font-weight: bold;">1</span><span style="color: #b5bd68;">]{</span><span style="color: #de935f;">lb</span>: <span style="color: #de935f; font-weight: bold;">1</span> sz: <span style="color: #de935f; font-weight: bold;">1</span><span style="color: #b5bd68;">}</span>;
+dt_parm.<span style="color: #de935f; font-weight: bold;">0.common</span>.line = <span style="color: #de935f; font-weight: bold;">3</span>;
+dt_parm.<span style="color: #de935f; font-weight: bold;">0.common</span>.flags = <span style="color: #de935f; font-weight: bold;">128</span>;
+dt_parm.<span style="color: #de935f; font-weight: bold;">0.common</span>.unit = <span style="color: #de935f; font-weight: bold;">6</span>;
+_gfortran_st_write <span style="color: #b5bd68;">(</span>&amp;dt_parm.<span style="color: #de935f; font-weight: bold;">0</span><span style="color: #b5bd68;">)</span>;
+_gfortran_transfer_integer_write
+    <span style="color: #b5bd68;">(</span>&amp;dt_parm.<span style="color: #de935f; font-weight: bold;">0</span>, &amp;i, <span style="color: #de935f; font-weight: bold;">4</span><span style="color: #b5bd68;">)</span>;
+_gfortran_transfer_character_write
+    <span style="color: #b5bd68;">(</span>&amp;dt_parm.<span style="color: #de935f; font-weight: bold;">0</span>,
+     &amp;<span style="color: #b5bd68;">"Hello World"</span><span style="color: #b294bb;">[</span><span style="color: #de935f; font-weight: bold;">1</span><span style="color: #b294bb;">]{</span><span style="color: #de935f;">lb</span>: <span style="color: #de935f; font-weight: bold;">1</span> sz: <span style="color: #de935f; font-weight: bold;">1</span><span style="color: #b294bb;">}</span>, <span style="color: #de935f; font-weight: bold;">11</span><span style="color: #b5bd68;">)</span>;
+_gfortran_st_write_done
+    <span style="color: #b5bd68;">(</span>&amp;dt_parm.<span style="color: #de935f; font-weight: bold;">0</span><span style="color: #b5bd68;">)</span>;<span style="color: #de935f;">}</span>
+finally <span style="color: #de935f;">{</span>dt_parm.<span style="color: #de935f; font-weight: bold;">0</span> = <span style="color: #b5bd68;">{</span><span style="color: #de935f;">CLOBBER</span><span style="color: #b5bd68;">}</span>;<span style="color: #de935f;">}</span><span style="color: #81a2be;">}</span><span style="color: #b294bb;">}</span>
+</pre>
+</div>
+
+</div>
+<ul class="fragment appear" data-fragment-index="2">
+<li>GIMPLE is an <b>internal</b> <code>gfortran</code> representation…</li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org45bc93c" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="org45bc93c">Reading Code II</h3>
+<div class="leftcol" id="orgfdf0714">
+
+<div id="orgc92de36" class="figure">
+<p><img src="./implFSLFortran_files/2021-09-23_22-02-07_screenshot.png" alt="2021-09-23_22-02-07_screenshot.png">
+</p>
+</div>
+
+</div>
+
+<div class="fragment appear rightcol" id="org9e20172" data-fragment-index="0">
+<p>
+
+</p>
+
+
+<div id="org1a649ed" class="figure">
+<p><img src="./implFSLFortran_files/2021-09-23_22-02-53_screenshot.png" alt="2021-09-23_22-02-53_screenshot.png">
+</p>
+</div>
+
+</div>
+
+<ul class="fragment appear" data-fragment-index="1">
+<li>AST on the left</li>
+<li>ASR on the right</li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgac6c04a" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="orgac6c04a">Reading Code III</h3>
+<div class="leftcol" id="orgecd86a4">
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="0"><span style="color: #b294bb;">program</span> <span style="color: #81a2be;">main</span>
+ <span style="color: #f0c674;">integer</span> :: i=<span style="color: #de935f; font-weight: bold;">3</span>
+ <span style="color: #b294bb;">print</span>*, i, <span style="color: #b5bd68;">"Hello World"</span>
+<span style="color: #b294bb;">end</span> <span style="color: #b294bb;">program</span>
+</pre>
+</div>
+
+</div>
+
+<div class="rightcol" id="org1773787">
+<p>
+
+</p>
+
+<ul class="fragment appear" data-fragment-index="1">
+<li><code>lfortran</code> has a nicer intermediate structure</li>
+
+</ul>
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="2">conda create -n lf
+conda activate lf
+conda install lfortran <span style="color: #b5bd68;">\</span>
+    -c conda-forge
+lfortran --show-asr hi.f90
+</pre>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+</section>
+<section style="top: 350px; display: none;" hidden="" aria-hidden="true" class="stack future sfeir-basic-slide">
+<section id="slide-org79fbebf" style="top: 350px; display: none;" class="sfeir-basic-slide">
+<h2 id="org79fbebf">Fortran and Standardese</h2>
+<ul>
+<li>The ASR can be used to implement the standard verbatim</li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org9f35f23" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="org9f35f23">Real Definition</h3>
+
+<div id="org4ab575c" class="figure">
+<p><img src="./implFSLFortran_files/2021-09-23_22-31-24_screenshot.png" alt="2021-09-23_22-31-24_screenshot.png">
+</p>
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-orga14f606" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="orga14f606">Real Arguments</h3>
+<div class="org-src-container">
+
+<pre class="src src-cpp"><span style="color: #b294bb;">if</span> <span style="color: #b294bb;">(</span>func_name == <span style="color: #b5bd68;">"real"</span><span style="color: #b294bb;">)</span> <span style="color: #b294bb;">{</span>
+    <span style="color: #b294bb;">if</span> <span style="color: #81a2be;">(</span>args.n == <span style="color: #de935f; font-weight: bold;">1</span><span style="color: #81a2be;">)</span> <span style="color: #81a2be;">{</span>
+        <span style="color: #de935f;">ASR</span>::<span style="color: #f0c674;">expr_t</span>* <span style="color: #cc6666;">real_expr</span> = args<span style="color: #de935f;">[</span><span style="color: #de935f; font-weight: bold;">0</span><span style="color: #de935f;">]</span>;
+        <span style="color: #f0c674;">int</span> <span style="color: #cc6666;">real_kind</span> = <span style="color: #de935f;">LFortran</span>::<span style="color: #de935f;">ASRUtils</span>::extract_kind_from_ttype_t
+            <span style="color: #de935f;">(</span>func_type<span style="color: #de935f;">)</span>;
+        <span style="color: #b294bb;">if</span> <span style="color: #de935f;">(</span><span style="color: #de935f;">LFortran</span>::<span style="color: #de935f;">ASR</span>::is_a<span style="color: #b5bd68;">&lt;</span><span style="color: #de935f;">LFortran</span>::<span style="color: #de935f;">ASR</span>::Real_t<span style="color: #b5bd68;">&gt;(</span>*func_type<span style="color: #b5bd68;">)</span><span style="color: #de935f;">)</span> <span style="color: #de935f;">{</span>
+            <span style="color: #b294bb;">if</span> <span style="color: #b5bd68;">(</span>real_kind == <span style="color: #de935f; font-weight: bold;">4</span><span style="color: #b5bd68;">){</span>
+                <span style="color: #f0c674;">float</span> <span style="color: #cc6666;">rr</span> = <span style="color: #de935f;">ASR</span>::down_cast<span style="color: #b294bb;">&lt;</span><span style="color: #de935f;">ASR</span>::ConstantReal_t<span style="color: #b294bb;">&gt;</span>
+                    <span style="color: #b294bb;">(</span><span style="color: #de935f;">LFortran</span>::<span style="color: #de935f;">ASRUtils</span>::expr_value<span style="color: #81a2be;">(</span>real_expr<span style="color: #81a2be;">)</span><span style="color: #b294bb;">)</span>-&gt;m_r;
+                value = <span style="color: #de935f;">ASR</span>::down_cast<span style="color: #b294bb;">&lt;</span><span style="color: #de935f;">ASR</span>::<span style="color: #f0c674;">expr_t</span><span style="color: #b294bb;">&gt;</span>
+                    <span style="color: #b294bb;">(</span><span style="color: #de935f;">ASR</span>::make_ConstantReal_t<span style="color: #81a2be;">(</span>al,
+                                   x.base.base.loc, rr, func_type<span style="color: #81a2be;">)</span><span style="color: #b294bb;">)</span>;
+            <span style="color: #b5bd68;">}</span> <span style="color: #b294bb;">else</span> <span style="color: #b5bd68;">{</span>
+                <span style="color: #f0c674;">double</span> <span style="color: #cc6666;">rr</span> = <span style="color: #de935f;">ASR</span>::down_cast<span style="color: #b294bb;">&lt;</span><span style="color: #de935f;">ASR</span>::ConstantReal_t<span style="color: #b294bb;">&gt;</span>
+                    <span style="color: #b294bb;">(</span><span style="color: #de935f;">LFortran</span>::<span style="color: #de935f;">ASRUtils</span>::expr_value<span style="color: #81a2be;">(</span>real_expr<span style="color: #81a2be;">)</span><span style="color: #b294bb;">)</span>-&gt;m_r;
+                value = <span style="color: #de935f;">ASR</span>::down_cast<span style="color: #b294bb;">&lt;</span><span style="color: #de935f;">ASR</span>::<span style="color: #f0c674;">expr_t</span><span style="color: #b294bb;">&gt;</span>
+                    <span style="color: #b294bb;">(</span><span style="color: #de935f;">ASR</span>::make_ConstantReal_t<span style="color: #81a2be;">(</span>al,
+                                     x.base.base.loc, rr, func_type<span style="color: #81a2be;">)</span><span style="color: #b294bb;">)</span>;
+            <span style="color: #b5bd68;">}</span>
+        <span style="color: #de935f;">}</span> <span style="color: #5a5b5a;">// </span><span style="color: #f0c674; font-weight: bold;">TODO:</span><span style="color: #5a5b5a;"> Handle BOZ later</span>
+    <span style="color: #81a2be;">}</span> <span style="color: #b294bb;">else</span> <span style="color: #81a2be;">{</span>
+        <span style="color: #b294bb;">throw</span> SemanticError<span style="color: #de935f;">(</span><span style="color: #b5bd68;">"REAL must have only one argument"</span>,
+                            x.base.base.loc<span style="color: #de935f;">)</span>; <span style="color: #81a2be;">}</span>
+</pre>
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org2c4e8c7" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="org2c4e8c7">Integer Arguments</h3>
+<div class="org-src-container">
+
+<pre class="src src-cpp"><span style="color: #b294bb;">else</span> <span style="color: #b294bb;">if</span> <span style="color: #b294bb;">(</span><span style="color: #de935f;">LFortran</span>::<span style="color: #de935f;">ASR</span>::is_a<span style="color: #81a2be;">&lt;</span><span style="color: #de935f;">LFortran</span>::<span style="color: #de935f;">ASR</span>::Integer_t<span style="color: #81a2be;">&gt;(</span>*func_type<span style="color: #81a2be;">)</span><span style="color: #b294bb;">)</span> <span style="color: #b294bb;">{</span>
+    <span style="color: #b294bb;">if</span> <span style="color: #81a2be;">(</span>real_kind == <span style="color: #de935f; font-weight: bold;">4</span><span style="color: #81a2be;">){</span>
+        <span style="color: #f0c674;">int64_t</span> <span style="color: #cc6666;">rv</span> = <span style="color: #de935f;">ASR</span>::down_cast<span style="color: #de935f;">&lt;</span><span style="color: #de935f;">ASR</span>::ConstantInteger_t<span style="color: #de935f;">&gt;(</span>
+            <span style="color: #de935f;">LFortran</span>::<span style="color: #de935f;">ASRUtils</span>::expr_value<span style="color: #b5bd68;">(</span>real_expr<span style="color: #b5bd68;">)</span><span style="color: #de935f;">)</span>-&gt;m_n;
+        <span style="color: #f0c674;">float</span> <span style="color: #cc6666;">rr</span> = <span style="color: #b294bb;">static_cast</span><span style="color: #de935f;">&lt;</span><span style="color: #f0c674;">float</span><span style="color: #de935f;">&gt;(</span>rv<span style="color: #de935f;">)</span>;
+        value = <span style="color: #de935f;">ASR</span>::down_cast<span style="color: #de935f;">&lt;</span><span style="color: #de935f;">ASR</span>::expr_t<span style="color: #de935f;">&gt;</span>
+            <span style="color: #de935f;">(</span><span style="color: #de935f;">ASR</span>::make_ConstantReal_t<span style="color: #b5bd68;">(</span>al,
+                            x.base.base.loc, rr, func_type<span style="color: #b5bd68;">)</span><span style="color: #de935f;">)</span>;
+            <span style="color: #81a2be;">}</span> <span style="color: #b294bb;">else</span> <span style="color: #81a2be;">{</span>
+                <span style="color: #f0c674;">double</span> <span style="color: #cc6666;">rr</span> = <span style="color: #b294bb;">static_cast</span><span style="color: #de935f;">&lt;</span><span style="color: #f0c674;">double</span><span style="color: #de935f;">&gt;(</span><span style="color: #de935f;">ASR</span>::down_cast
+    <span style="color: #b5bd68;">&lt;</span><span style="color: #de935f;">ASR</span>::ConstantInteger_t<span style="color: #b5bd68;">&gt;(</span><span style="color: #de935f;">LFortran</span>::<span style="color: #de935f;">ASRUtils</span>::
+                             expr_value<span style="color: #b294bb;">(</span>real_expr<span style="color: #b294bb;">)</span><span style="color: #b5bd68;">)</span>-&gt;m_n<span style="color: #de935f;">)</span>;
+                value = <span style="color: #de935f;">ASR</span>::down_cast<span style="color: #de935f;">&lt;</span><span style="color: #de935f;">ASR</span>::expr_t<span style="color: #de935f;">&gt;</span>
+                    <span style="color: #de935f;">(</span><span style="color: #de935f;">ASR</span>::make_ConstantReal_t
+                     <span style="color: #b5bd68;">(</span>al, x.base.base.loc, rr, func_type<span style="color: #b5bd68;">)</span><span style="color: #de935f;">)</span>;
+    <span style="color: #81a2be;">}</span>
+<span style="color: #b294bb;">}</span>
+</pre>
+</div>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section style="top: 350px; display: none;" hidden="" aria-hidden="true" class="stack future sfeir-basic-slide">
+<section id="slide-orgd0c58d2" style="top: 350px; display: none;" class="sfeir-basic-slide">
+<h2 id="orgd0c58d2">Conclusions</h2>
+<div class="outline-text-2" id="text-orgd0c58d2">
+</div>
+</section>
+<section id="slide-orgc1c96f9" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="orgc1c96f9">Omitted Topics</h3>
+<ul>
+<li><a href="https://rgoswami.me/tags/gsoc21/">Details here</a></li>
+
+</ul>
+
+
+<div id="orga460a45" class="figure">
+<p><img src="./implFSLFortran_files/2021-09-23_22-35-03_screenshot.png" alt="2021-09-23_22-35-03_screenshot.png">
+</p>
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+</section>
+<section style="top: 350px; display: none;" hidden="" aria-hidden="true" class="stack future sfeir-basic-slide">
+<section id="slide-org452050d" style="top: 350px; display: none;" class="sfeir-basic-slide">
+<h2 id="org452050d">The End</h2>
+<div class="outline-text-2" id="text-org452050d">
+</div>
+</section>
+<section id="slide-orgc3b83cd" class="future sfeir-basic-slide" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="orgc3b83cd">Acknowledgements</h3>
+
+<div id="org2d9c7f0" class="figure">
+<p><img src="./implFSLFortran_files/2021-09-09_00-22-06_screenshot.png" alt="2021-09-09_00-22-06_screenshot.png">
+</p>
+</div>
+<ul>
+<li><a href="https://notendur.hi.is//~hj/indexE.html">Prof. Hannes Jónsson</a> as my supervisor, <a href="https://english.hi.is/staff/birgirhr">Prof. Birgir Hrafnkelsson</a> as my co-supervisor, and my committee member <a href="https://english.hi.is/staff/elvarorn">Dr. Elvar Jonsson</a></li>
+<li><a href="https://ondrejcertik.com/">Dr. Ondřej Čertík</a> at Los Alamos National Laboratory</li>
+<li><a href="https://quansight.com/labs">Quansight Labs</a> (<a href="https://rgommers.github.io/">Dr. Ralf Gommers</a>, <a href="https://melissawm.github.io/about-me/">Dr. Melissa Weber Mendonça</a> and <a href="https://github.com/pearu">Dr. Pearu Peterson</a>)</li>
+<li>Family, pets, Groupmembers, <b>audience</b></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-orgbd17ef9" data-background="#A39B91" class="future has-light-background" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="orgbd17ef9">Thanks!</h3>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+</div>
+<div class="backgrounds"><div class="slide-background sfeir-basic-slide present" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background stack sfeir-basic-slide future" data-loaded="true" style="display: block;"><div class="slide-background-content"></div><div class="slide-background sfeir-basic-slide present" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-background stack sfeir-basic-slide future" data-loaded="true" style="display: block;"><div class="slide-background-content"></div><div class="slide-background sfeir-basic-slide present" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-background stack sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div><div class="slide-background sfeir-basic-slide present" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-background stack sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div><div class="slide-background sfeir-basic-slide present" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-background stack sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div><div class="slide-background sfeir-basic-slide present" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-background stack sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div><div class="slide-background sfeir-basic-slide present" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background sfeir-basic-slide future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background has-light-background future" data-background-hash="#A39B91nullnullnullnullnullnullnullnullnull" style="background: rgb(163, 155, 145); display: none;"><div class="slide-background-content"></div></div></div></div><div class="slide-number" style="display: block;"><a href="file:///Users/rohitgoswami/Git/Github/WebDev/Mine/haozeke.github.io/presentations/fortranCon2021/gsocLFortran/fortrancon_gsoclfortran.html#/sec-title-slide">
+					<span class="slide-number-a">1</span>
+					</a></div><aside class="controls" data-controls-layout="bottom-right" data-controls-back-arrows="faded" style="display: block;"><button class="navigate-left" aria-label="previous slide" disabled="disabled"><div class="controls-arrow"></div></button>
+			<button class="navigate-right highlight enabled" aria-label="next slide"><div class="controls-arrow"></div></button>
+			<button class="navigate-up" aria-label="above slide" disabled="disabled"><div class="controls-arrow"></div></button>
+			<button class="navigate-down" aria-label="below slide" disabled="disabled"><div class="controls-arrow"></div></button></aside><div class="progress" style="display: block;"><span style="transform: scaleX(0);"></span></div><div class="speaker-notes" data-prevent-swipe="" tabindex="0"></div><div class="pause-overlay"><button class="resume-button">Resume presentation</button></div><div class="aria-status" aria-live="polite" aria-atomic="true" style="position: absolute; height: 1px; width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px);">Implementing Fortran Standardese within LFortran Rohit Goswami .and. Ondřej Čertík Created: 2021-09-24 Fri 01:14 </div></div>
+<script src="./implFSLFortran_files/reveal.js"></script>
+<script src="./implFSLFortran_files/notes.js"></script>
+<script src="./implFSLFortran_files/search.js"></script>
+<script src="./implFSLFortran_files/zoom.js"></script>
+<script src="file:///Users/rohitgoswami/.config/doom/reveal/rjs/dist/theme/hidelinks.js"></script>
+<script src="./implFSLFortran_files/sfeir-theme.js"></script>
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: true,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+mouseWheel: true,
+fragmentInURL: true,
+hashOneBasedIndex: false,
+pdfSeparateFragments: false,
+overview: true,
+margin: 0.20,
+
+transition: 'fade',
+transitionSpeed: 'default',
+showNotes: window.location.search.match( /print-pdf/gi ) ? 'separate-page' : false,
+
+// Plugins with reveal.js 4.x
+plugins: [ RevealNotes, RevealSearch, RevealZoom ],
+
+// Optional libraries used to extend reveal.js
+dependencies: [
+]
+
+});
+</script>
+
+
+</body></html>
