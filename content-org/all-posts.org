@@ -12176,14 +12176,14 @@ static void *data[1] = {NULL};
 
 static struct PyModuleDef moduledef = {
     PyModuleDef_HEAD_INIT,
-    "fibby",
-    NULL,
-    -1,
-    FibbyMethods,
-    NULL,
-    NULL,
-    NULL,
-    NULL
+    "fibby", /* module name */
+    NULL, /* module docstring */
+    -1, /* -1 means global state, no sub-interpreters */
+    FibbyMethods, /* Module level functions */
+    NULL, /* single phase initialization, NULL slots*/
+    NULL, /* traversal function for GC */
+    NULL, /* clear function for the GC */
+    NULL /* deallocation function for the GC */
 };
 
 PyMODINIT_FUNC PyInit_fibby(void)
