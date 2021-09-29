@@ -18,7 +18,7 @@
   "homepage": "https://github.com/HaoZeke/haozeke.github.io#readme",
   "dependencies": {
     "autoprefixer": "^10.2.5",
-    "glob-parent": ">=5.1.2",
+    "glob-parent": ">=6.0.2",
     "normalize-url": ">=4.5.1",
     "npm-check-updates": "^11.5.11",
     "postcss": "^8.3.7",
