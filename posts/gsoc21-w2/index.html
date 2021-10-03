@@ -52,7 +52,7 @@ syntax.</p><h3 id=c-plus-plus>C++</h3><p>This is a newer back-end, perfect for r
 selected by passing the <code>--backend=cpp</code> flag to <code>lfortran</code> (e.g. with
 <code>FFLAGS</code>). This is easier to work with in that many features boil down
 to <code>stdlib</code> calls. However, this back-end requires KOKKOS. It also has
-uglier error handling as shown in Fig. <a href=#org1fa068e>1</a>. Since this is
+uglier error handling as shown in Fig. <a href=#org06e5202>1</a>. Since this is
 more attractive as a candidate for the math intrinsics as a first
 approximation, it is of considerable interest to me.</p><p>It is however, still fairly straightforward to work with.</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> <span class=nv>$LFROOT</span> <span class=c1># LFortran root</span>
 <span class=nb>export</span> <span class=nv>LFORTRAN_KOKKOS_DIR</span><span class=o>=</span><span class=nv>$LFROOT</span>/ext/kokkos
@@ -68,7 +68,7 @@ ln -sf lib64/ lib
 <span class=nv>FC</span><span class=o>=</span>lfortran <span class=nv>FFLAGS</span><span class=o>=</span><span class=s2>&#34;--backend=cpp&#34;</span> cmake .
 make
 ./project1 <span class=c1># Profit</span>
-</code></pre></div><p><a id=org1fa068e></a></p><figure><img src=/ox-hugo/2021-06-16_20-01-03_screenshot.png alt="Figure 1: Contrasting backends"><figcaption><p>Figure 1: Contrasting backends</p></figcaption></figure><h2 id=inspecting-intermediates>Inspecting intermediates</h2><p>The module files cannot currently be read or queried from <code>lfortran</code>,
+</code></pre></div><p><a id=org06e5202></a></p><figure><img src=/ox-hugo/2021-06-16_20-01-03_screenshot.png alt="Figure 1: Contrasting backends"><figcaption><p>Figure 1: Contrasting backends</p></figcaption></figure><h2 id=inspecting-intermediates>Inspecting intermediates</h2><p>The module files cannot currently be read or queried from <code>lfortran</code>,
 however a representation of what gets compressed into these files can be
 obtained with the <code>--show-asr</code> flag. Additionally, a very <code>python</code>
 inspired <code>--show-stacktrace</code> is implemented to help narrow down areas
