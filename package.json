@@ -21,7 +21,7 @@
     "glob-parent": ">=5.1.2",
     "normalize-url": ">=4.5.1",
     "npm-check-updates": "^11.5.11",
-    "postcss": "^8.3.7",
+    "postcss": "^8.3.10",
     "postcss-cli": "^8.3.1",
     "svgo": "^2.4.0"
   }
