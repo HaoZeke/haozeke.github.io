@@ -13641,6 +13641,30 @@ these. In terms of derived types of simple structures, without allocatable
 arrays, the extensions appear to be straightforward.
 
 [fn:sowhat] This is more surprising with each passing year
+* TODO Revisiting Wayland for ArchLinux
+# :PROPERTIES:
+# :EXPORT_FILE_NAME: revisiting-wayland
+# :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+# :END:
+#+begin_quote
+Fluff post about returning to ArchLinux
+#+end_quote
+** Background
+[[https://grimoire.science/working-with-wayland-and-sway/][Many years ago]], I found time to make an attempt to switch away from the X11
+Window system to Wayland. At the time, I ended up switching back to Xorg, but I
+did want to revisit it. Since I visited home recently and was gifted a [[https://www.lenovo.com/us/en/p/laptops/thinkpad/thinkpadx1/thinkpad-x1-carbon-(6th-gen)/22tp2txx16g][Gen 6
+ThinkPad X1 Carbon]], I thought this would be a good time.
+
+Part of this post will be interspersed with generic non-Wayland observations,
+but it has been a few years since my last setup and things have changed.
+** Networking
+The days of ~wifi-menu~ are gone. The new ~iwd~ interface is the newest, swankiest kid on the block [fn:potificate].
+** Sway basics
+*** High DPI
+An interesting quirk of ~sway~ is that Hi-DPI support is still [[https://github.com/swaywm/wlroots/pull/2064#issuecomment-622647075][at the draft stage]].
+** Login management
+
+[fn:potificate] Naturally I haven't really taken time to dive into why, as evidenced by the many many many adjectives
 * Logging and Argument Parsing for F2PY
 ** Background
 Part of the struggle of retaining users has to do with the fact that during the active development of ~f2py~ standard user friendly modules like ~logging~ and ~argparse~ were in their infancy. A natural remedy suggests itself.
