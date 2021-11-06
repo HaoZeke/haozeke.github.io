@@ -8867,12 +8867,13 @@ ml load nix/user # Hooray!
 *** Code Server
 The first of the selfhosted set is the [[https://github.com/cdr/code-server/][browser based IDE]] inspired by Visual Studio Code.
 #+begin_src bash
+export VERSION=3.12.0
 mkdir -p ~/.local/lib ~/.local/bin
-curl -fL https://github.com/cdr/code-server/releases/download/v3.11.1/code-server-3.11.1-linux-amd64.tar.gz \
+curl -fL "https://github.com/cdr/code-server/releases/download/v$VERSION/code-server-$VERSION-linux-amd64.tar.gz" \
   | tar -C ~/.local/lib -xz
-mv ~/.local/lib/code-server-3.11.1-linux-amd64 ~/.local/lib/code-server-3.11.1
-ln -s ~/.local/lib/code-server-3.11.1/bin/code-server ~/.local/bin/code-server
-PATH="~/.local/bin:$PATH"
+mv "$HOME/.local/lib/code-server-$VERSION-linux-amd64" "$HOME/.local/lib/code-server-$VERSION"
+ln -s "$HOME/.local/lib/code-server-$VERSION/bin/code-server" "$HOME/.local/bin/code-server"
+PATH="$HOME/.local/bin:$PATH"
 #+end_src
 
 This has the advantage of not needing any port forwarding (with ~--link~):
@@ -13640,6 +13641,42 @@ these. In terms of derived types of simple structures, without allocatable
 arrays, the extensions appear to be straightforward.
 
 [fn:sowhat] This is more surprising with each passing year
+* Logging and Argument Parsing for F2PY
+** Background
+Part of the struggle of retaining users has to do with the fact that during the active development of ~f2py~ standard user friendly modules like ~logging~ and ~argparse~ were in their infancy. A natural remedy suggests itself.
+** Command Line Interfaces
+There are a plethora of libraries for coloring and styling the output. Far too many to list or enumerate. Also, more importantly, none of them matter. A library like ~numpy~ can and should be averse to adding new dependencies. Instead we will work with the standard library's ~argparse~.
+*** F2PY CLI 101
+The ~f2py~ interface is meant to facilitate three different end-user cases:
+- Wrapper generation :: What it says on the tin, this generates some Fortran wrappers and also the ~.c~ files which are later built by any means into a python extension module
+- Signature file generation :: To fully unlock the power and uniqueness of ~f2py~ [fn:whatunique] [[https://numpy.org/devdocs/f2py/signature-file.html][a full grammar of extensions]] are defined, documented and can be used by either commenting codes or just generating the signature files
+- Compilation :: Via the ~-c~ flag, ~f2py~ becomes a sort of pimp for ~np.distutils~, producing the ~.so~ file without so much as a visible set of source headers and translation units
+
+So far so good. Now the older design will not be discussed here, but it was
+rather good for its time, being reminiscent of standard UNIX commands, perhaps
+with the exception of the ~-h~ flag which doesn't do what one might immediately
+expect.
+
+*** Enter ~argparse~
+The +three heads of Cerberus+ three end-user functionalities make for an almost
+perfect use case for the ~subparser~. Almost in the sense that, well, to ensure
+backwards compatibility [fn:lolback] we can't abruptly remove the flags ~f2py~
+used to take. So we end up with a rather odd structure.
+
+Another very fun fact is that actually the wrapper generation and signature file
+generation take the same options. This means there need be only two sub-parsers.
+
+**** Colors
+ANSI colors are easy, at-least they have been ever since Windows began stepping
+up their game and providing ANSI code support. In any case, a partial workaround
+is ~os.system("color")~ on these operating systems. Personally I was rather
+looking forward to using perhaps [[https://github.com/tartley/colorama][colorama]] or [[https://github.com/SuperMaZingCoder/colorit][color-it]]. In fact, since ~color-it~
+is MIT licensed and tiny, it might even get vendored in perhaps. Possibly.
+Anyway, back to the harsh unyielding present. Color support is essentially just
+an ANSI string.
+
+[fn:whatunique] Like perhaps wrapping ~.c~ code way [[https://scipy-cookbook.readthedocs.io/items/f2py_and_NumPy.html][back in 2006]], or exotic callbacks
+[fn:lolback] A wonderful endeavor, much like the way aeroplanes and horse driven sleighs are still compatible... *wait*..
 * Important Note :ignoreheading:ignore:
 # ALWAYS at the bottom, to ensure fresh builds do not break
 * DONE About
