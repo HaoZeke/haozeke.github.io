@@ -13643,27 +13643,117 @@ arrays, the extensions appear to be straightforward.
 [fn:sowhat] This is more surprising with each passing year
 * TODO Revisiting Wayland for ArchLinux
 # :PROPERTIES:
-# :EXPORT_FILE_NAME: revisiting-wayland
+# :EXPORT_FILE_NAME: revisiting-wayland-2021-archlinux
 # :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 # :END:
 #+begin_quote
-Fluff post about returning to ArchLinux
+Fluff post about returning to ArchLinux and reconfiguring for Wayland via Sway
 #+end_quote
 ** Background
 [[https://grimoire.science/working-with-wayland-and-sway/][Many years ago]], I found time to make an attempt to switch away from the X11
-Window system to Wayland. At the time, I ended up switching back to Xorg, but I
-did want to revisit it. Since I visited home recently and was gifted a [[https://www.lenovo.com/us/en/p/laptops/thinkpad/thinkpadx1/thinkpad-x1-carbon-(6th-gen)/22tp2txx16g][Gen 6
-ThinkPad X1 Carbon]], I thought this would be a good time.
+Window system [[https://wiki.archlinux.org/title/Wayland][to Wayland]]. At the time, I ended up switching back to Xorg, but I
+did want to revisit it. Since I returned from home recently and was gifted a [[https://www.lenovo.com/us/en/p/laptops/thinkpad/thinkpadx1/thinkpad-x1-carbon-(6th-gen)/22tp2txx16g][Gen 6 ThinkPad X1 Carbon]], I had a perfect opportunity to do so [fn:yeahright].
 
 Part of this post will be interspersed with generic non-Wayland observations,
-but it has been a few years since my last setup and things have changed.
-** Networking
-The days of ~wifi-menu~ are gone. The new ~iwd~ interface is the newest, swankiest kid on the block [fn:potificate].
+but it has been a few years since my last setup and things have changed. Rather
+than regurgitate the fantastic [[https://wiki.archlinux.org/title/installation_guide][ArchWiki installation guide]], a FAQ style
+short-doc seems more appropriate.
+
+As before, none of these configurations should be considered
+complete/recommended/normative; *use the installation guide* and _follow the
+Arch Way_.
+** Archlinux baseline
+- Networking :: The days of ~wifi-menu~ are gone. The new ~iwd~ interface ([[https://wiki.archlinux.org/title/Iwd][ArchWiki]]) is [[https://lwn.net/Articles/770991/][the newest, swankiest kid]] on the block [fn:potificate] and works great with ~NetworkManager~
+- Input devices :: ~loadkeys~ for the console, ~libinput~ configurations can be handled via the window manager under Wayland
+- Audio :: ~pulseaudio~ works well as always
+- Nix :: Via the [[https://nixos.org/guides/install-nix.html][multi-user install]]
+- Time :: Being as this is a laptop configuration, it is best to configure ~chrony~ ([[https://wiki.archlinux.org/title/Chrony][described here]]) as the ~ntp~ client and server of choice
+- AUR Helper :: ~trizen~, though I retain a soft spot for ~yay~
+- Portability :: Details are presented concisely on [[https://wiki.archlinux.org/title/Laptop][the ArchWiki]]
+- Device details :: The ArchWiki [[https://wiki.archlinux.org/title/Lenovo_ThinkPad_X1_Carbon_(Gen_6)][has an entry]]
+- Window and login :: sway, and
+*** Configurations
+**** Network and Time
+Networking with ~iwd~ is very well [[https://wiki.archlinux.org/title/Iwd][described on the ArchWiki]], with the exception of its interaction with NetworkManager which essentially involves configuring it to use the IWD backend via ~/etc/NetworkManager/NetworkManager.conf~:
+#+begin_src conf
+[device]
+wifi.backend=iwd
+#+end_src
+Now all that remains is to disable ~wpa~ and friends.
+#+begin_src bash
+systemctl stop wpa_supplicant
+systemctl disable wpa_supplicant
+systemctl start iwd
+systemctl start NetworkManager
+#+end_src
+Personally I combine this the [[https://aur.archlinux.org/packages/networkmanager-dispatcher-chrony/][NetworkManager dispatcher script]] for ~chrony~.
+**** Audio
+As [[https://grimoire.science/working-with-wayland-and-sway/][discussed earlier]], no special requirements need to be considered beyond
+setting up ~/etc/libao.conf~ which in itself is only needed for [[https://github.com/PromyLOPh/pianobar][pianobar]].
+#+begin_src src
+default_drive=pulse
+# dev=default
+quiet
+#+end_src
+** Window Managers
+~Weston~ remains the reference implementation, and GNOME has continued
+championing the cause of Wayland which is great. However, since my foray
+in 2018; tiling window managers have come a long way. Migrating away from the
+MacOS' "tiling managers" was seamless and very reminsicent of my older ~i3-gaps~
+setup.
+*** Login management
+To manage sessions, rather than relying soley on ~sway~, since
+*** Wayland
 ** Sway basics
 *** High DPI
 An interesting quirk of ~sway~ is that Hi-DPI support is still [[https://github.com/swaywm/wlroots/pull/2064#issuecomment-622647075][at the draft stage]].
-** Login management
 
+** Resilio
+Recall that:
+#+begin_quote
+  WebGUI can be accessed via following URL: http://localhost:8888
+
+  * Running rslsync system instance (using dedicated rslsync:rslsync account)
+
+      System instance of rslsync is preconfigured (configuration file located
+    at /etc/rslsync.conf) and can be used directly after installation.
+
+    Execute:
+
+      to reload system systemd modules:     systemctl daemon-reload
+      to start rslsync manually:             systemctl start rslsync
+      to autostart rslsync on system start:  systemctl enable rslsync
+
+  * Running rslsync user instance (using current user account)
+
+    User instance MUST be configured before use. To perform configuration,
+    install rslsync-autoconfig package or follow manual configuration steps:
+
+        1. Copy /etc/rslsync/rslsync.conf to ~/.config/rslsync/rslsync.conf for
+      the user you wish to configure rslsync:
+
+        mkdir -p ~/.config/rslsync
+        cp /etc/rslsync.conf ~/.config/rslsync/rslsync.conf
+
+      2. Replace user-specific references with the appropriate information,
+      including the following settings:
+
+        - storage_path
+        - pid_file
+        - webui.listen
+        - webui.login
+        - webui.password
+
+      3. Make sure folder you specified as storage_path and folder where pid_file will
+      be located both exist in the filesystem, since rslsync will not create it for you.
+
+    Execute:
+
+      to reload user systemd modules:       systemctl --user daemon-reload
+      to start rslsync manually:             systemctl --user start rslsync
+      to autostart rslsync on user login:    systemctl --user enable rslsync
+#+end_quote
+[fn:yeahright] This precludes any actual tasks I have, naturally, the color of the bike shed and the wool of a Llama take precedence
 [fn:potificate] Naturally I haven't really taken time to dive into why, as evidenced by the many many many adjectives
 * Logging and Argument Parsing for F2PY
 ** Background
