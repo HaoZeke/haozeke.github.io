@@ -13706,8 +13706,48 @@ To manage sessions, rather than relying soley on ~sway~, since
 *** Wayland
 ** Sway basics
 *** High DPI
-An interesting quirk of ~sway~ is that Hi-DPI support is still [[https://github.com/swaywm/wlroots/pull/2064#issuecomment-622647075][at the draft stage]].
+An interesting quirk of ~sway~ is that Hi-DPI support is still [[https://github.com/swaywm/wlroots/pull/2064#issuecomment-622647075][at the draft
+stage]]. For the most part this is becoming a non-issue as more applications
+support Wayland out of the box, or atleast optionally.
 
+However, certain applications are unusable without the HiDPI support patches,
+including most ~java~ packages. Thus it is best to grab the modified versions
+and configure them.
+*** Display management
+A reddit user ~WhyNotHugo~, has an excellent [[https://www.reddit.com/r/swaywm/comments/qiz4aa/comment/hin41hg/?utm_source=share&utm_medium=web2x&context=3][line of reasoning]] for why a display
+manager is needed, rephrased to be:
+- Enough system users / applications expect the existence of a ~display-manager~ including ~systemd-logind~ and ~plymouth~
+- No special handling needs to be done to ensure only ~tty1~ spawns a graphical session
+- The DM is meant to ensure that window manager crashes don't yield an unlocked desktop
+** Screenshots
+~slurm~ and ~grim~ still function well together, making this mostly painless.
+** Screen Recorders
+Unfortunately, the ~zoom~ desktop client [[https://github.com/swaywm/sway/issues/4358][does not support]] ~sway~ which is problematic.
+** Reference Management
+I've been a ~zotero~ user for many years now, however it suffers from the same
+UI scaling issues and cannot be fixed either by forcing ~xwayland~ execution nor
+by trying other scaling methods. The last resort is to set up a ~user.js~ file in ~$HOME/.zotero/zotero/$PROFILE/user.js~ with:
+#+begin_src js
+user_pref('layout.css.devPixelsPerPx', '2');
+user_pref("extensions.zotero.fontSize", "0.3");
+#+end_src
+
+With this, the toolbar text is still too large, as are all the preference text elements, however it is still moderately usable.
+** Browsers
+Firefox's ~wayland~ build on the AUR remains a nightmare to compile and work with. As of this post the stable branch of ~google-chrome~ does indeed support Wayland with a switch:
+#+begin_src bash
+google-chrome-stable --enable-features=UseOzonePlatform --ozone-platform=wayland
+#+end_src
+The stable branch is rather boring anyway, on Arch Linux atleast, the launchers support ~$XDG_CONFIG_HOME/chrome-dev-flags.conf~ or its equivalents.
+#+begin_src conf
+--enable-features=UseOzonePlatform
+--ozone-platform=wayland
+#+end_src
+** RStudio
+No ~wayland~ support. Needs to be forced into ~xwayland~ and have the fonts scaled via:
+#+begin_src bash
+Exec=env WAYLAND_DISPLAY= QT_DEVICE_PIXEL_RATIO=2 /usr/bin/rstudio-bin %F
+#+end_src
 ** Resilio
 Recall that:
 #+begin_quote
@@ -13753,6 +13793,19 @@ Recall that:
       to start rslsync manually:             systemctl --user start rslsync
       to autostart rslsync on user login:    systemctl --user enable rslsync
 #+end_quote
+** Conclusions
+Things have definitely improved in three years, however the overall aggravation
+and microaggressions which come with working around window manager issues seem
+to be too high a price for the potential battery / quality of life savings. In
+particular, as before, forcing programs to run in ~xwayland~ makes them
+effectively worse than their ~x11~ counterparts and requires far more
+maintainence load. It seems likely then, that inspite of great progress it is
+still probably best to stick to X11; especially for new users who might not
+immediately suspect the display server as a source of buggy UX elements (or
+screensharing woes).
+
+To be perfectly fair, a lot of this post reads as a rant against HiDPI support, which makes sense given that it is rather poorly supported.
+
 [fn:yeahright] This precludes any actual tasks I have, naturally, the color of the bike shed and the wool of a Llama take precedence
 [fn:potificate] Naturally I haven't really taken time to dive into why, as evidenced by the many many many adjectives
 * Logging and Argument Parsing for F2PY
