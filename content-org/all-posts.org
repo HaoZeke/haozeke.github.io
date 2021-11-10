@@ -13221,7 +13221,8 @@ and just for the heck of it. Simple in the context of the title means that we co
 Without intending it to be so, it appears that a series has been established,
 though not in strict order, the progression of the standards and their modern
 equivalents for Fortran-Python can be traced as seen in:
-1. NumPy Meson Fortran
+1. [[NumPy, Meson and ~f2py~][NumPy Meson Fortran]]
+2. *Simple Fortran Derived Types and Python* <-- You are here!
 ** C Structures and Derived Types - I
 Consider, first an example of what shall be a rather simple collection of records, the prototypical darling of most simulations, the point in Euclidean space, $\mathbb{R}^{3}$.
 #+begin_src f90
