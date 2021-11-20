@@ -13642,6 +13642,37 @@ these. In terms of derived types of simple structures, without allocatable
 arrays, the extensions appear to be straightforward.
 
 [fn:sowhat] This is more surprising with each passing year
+* TODO Fortran OOP and Python :@notes:python:fortran:numpy:f2py:rambling:
+# :PROPERTIES:
+# :EXPORT_FILE_NAME: fortran-oop-python
+# :EXPORT_HUGO_PANDOC_CITATIONS: t
+# :EXPORT_BIBLIOGRAPHY: biblio/Quansight.bib, biblio/refs.bib
+# :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
+# :END:
+#+begin_quote
+Explorations beyond standardized interoperability with ~C~ for object oriented ~Fortran~
+#+end_quote
+** Background
+Derived types. Probably one of the most divisive of the Fortran features. Rather
+than rehash the history and details of their standardized interop with
+structures which [[Simple Fortran Derived Types and Python][has been covered previously]] this post attempts to bridge more
+traditional OOP patterns with C and by extension C-Python.
+
+For those new to the language, some terminology:
+| Fortran                 | Closest C/C++ equivalent |
+| derived type            | struct                   |
+| extends type            | inherited class          |
+| final                   | destructor               |
+| not standard conforming | undefined behaviour      |
+
+Unfortunately only the first of these are actually covered in terms of
+interoperability with ~C~ as of the [[https://gitlab.com/lfortran/lfortran/uploads/973db2bfcc64cd2a397f823c32718b39/18-007r1.pdf][F2018 draft standard]]. A little deviation
+from the standards never hurt anyone though (much).
+** The class
+The failings of the OOP pattern, many though there may be, are easily hidden
+behind a contrived geometric shape example. So following along in that grand
+tradition, we will devise a derived type with functions defining a *Square* and
+then generalize to a *Shape* and an extended (a.k.a. inherited) type.
 * TODO Revisiting Wayland for ArchLinux
 # :PROPERTIES:
 # :EXPORT_FILE_NAME: revisiting-wayland-2021-archlinux
@@ -13661,19 +13692,46 @@ than regurgitate the fantastic [[https://wiki.archlinux.org/title/installation_g
 short-doc seems more appropriate.
 
 As before, none of these configurations should be considered
-complete/recommended/normative; *use the installation guide* and _follow the
-Arch Way_.
-** Archlinux baseline
+complete/recommended/normative; *use the installation guide* and _follow the Arch Way_. These are install notes, not tutorials.
+** ArchLinux baseline
 - Networking :: The days of ~wifi-menu~ are gone. The new ~iwd~ interface ([[https://wiki.archlinux.org/title/Iwd][ArchWiki]]) is [[https://lwn.net/Articles/770991/][the newest, swankiest kid]] on the block [fn:potificate] and works great with ~NetworkManager~
 - Input devices :: ~loadkeys~ for the console, ~libinput~ configurations can be handled via the window manager under Wayland
-- Audio :: ~pulseaudio~ works well as always
+- Audio :: ~pulseaudio~ works well as always, though ~pipewire~ is pretty neat as well
 - Nix :: Via the [[https://nixos.org/guides/install-nix.html][multi-user install]]
 - Time :: Being as this is a laptop configuration, it is best to configure ~chrony~ ([[https://wiki.archlinux.org/title/Chrony][described here]]) as the ~ntp~ client and server of choice
 - AUR Helper :: ~trizen~, though I retain a soft spot for ~yay~
 - Portability :: Details are presented concisely on [[https://wiki.archlinux.org/title/Laptop][the ArchWiki]]
-- Device details :: The ArchWiki [[https://wiki.archlinux.org/title/Lenovo_ThinkPad_X1_Carbon_(Gen_6)][has an entry]]
+- Device details :: The ArchWiki [[https://wiki.archlinux.org/title/Lenovo_ThinkPad_X1_Carbon_(Gen_6)][has an entry]], notably including modem setup woes and also ~throttled~ details for better power management
 - Window and login :: sway, and
 *** Configurations
+In general the idea is to run as few services as possible so ~systemctl
+--type=service~ is very helpful.
+#+begin_src bash
+systemctl --type=service
+ UNIT                                                 LOAD   ACTIVE SUB     DESCRIPTION
+  bolt.service                                         loaded active running Thunderbolt system service
+  chronyd.service                                      loaded active running NTP client/server
+  dbus.service                                         loaded active running D-Bus System Message Bus
+  greetd.service                                       loaded active running Greeter daemon
+  iwd.service                                          loaded active running Wireless service
+  kmod-static-nodes.service                            loaded active exited  Create List of Static Device Nodes
+  lenovo_fix.service                                   loaded active running Stop Intel throttling
+  lvm2-monitor.service                                 loaded active exited  Monitoring of LVM2 mirrors, snapshots etc. using dmeventd or progress polling
+  NetworkManager.service                               loaded active running Network Manager
+  open-fprintd.service                                 loaded active running Open FPrint Daemon
+...
+#+end_src
+**** rEFInd Stanzas
+Some things I forgot which I should not have, and which should be taken in more of a RTFM vein.
+- ~boot/refind_linux.conf~ :: for kernel parameters used with auto-detected stanzas, e.g. enabling app-armor everywhere via ~lsm=landlock,lockdown,yama,apparmor,bpf~
+  - This *is not* where boot stanzas are to be defined
+- ~boot/EFI/refind/refind.conf~ :: for manual stanzas, settings, themes and other things
+
+Also random observations.
+- ~/etc/fstab~ is completely useless for booting, but should mount ~boot~ correctly otherwise updates get messed up
+- ~cat /proc/cmdline~ will dump the current kernel parameters
+- ~root=UUID=BLAH~ or ~root=PARTUUID=BLAH~ is meant to be the *arch* root, not the *boot* partition
+  - ~volume~ is the *boot* partition and should be set to ~root=~
 **** Network and Time
 Networking with ~iwd~ is very well [[https://wiki.archlinux.org/title/Iwd][described on the ArchWiki]], with the exception of its interaction with NetworkManager which essentially involves configuring it to use the IWD backend via ~/etc/NetworkManager/NetworkManager.conf~:
 #+begin_src conf
@@ -13688,6 +13746,23 @@ systemctl start iwd
 systemctl start NetworkManager
 #+end_src
 Personally I combine this the [[https://aur.archlinux.org/packages/networkmanager-dispatcher-chrony/][NetworkManager dispatcher script]] for ~chrony~.
+***** Eduroam
+For the most part, auto configuration works. However, for ~eduroam~ I needed to setup ~/var/lib/iwd/eduroam.8021x~ with the following:
+#+begin_src toml
+[Security]
+EAP-Method=TTLS
+EAP-Identity=$BLAH@DOMAIN
+EAP-TTLS-Phase2-Method=MSCHAPV2
+EAP-TTLS-Phase2-Identity=$BLAH@DOMAIN
+
+[Settings]
+Autoconnect=true
+#+end_src
+
+With this ~iwctl~ works well enough:
+#+begin_src bash
+station wlan0 connect eduroam
+#+end_src
 **** Audio
 As [[https://grimoire.science/working-with-wayland-and-sway/][discussed earlier]], no special requirements need to be considered beyond
 setting up ~/etc/libao.conf~ which in itself is only needed for [[https://github.com/PromyLOPh/pianobar][pianobar]].
@@ -13696,30 +13771,109 @@ default_drive=pulse
 # dev=default
 quiet
 #+end_src
-** Window Managers
+Actually this also holds true for ~pipewire~ and that's pretty much what I
+decided to go with this time around.
+**** Snap and AppArmor
+In general, it seems that ~snap~ packages have better support for ~wayland~,
+like for Telegram. Setting this up involves working out ~apparmor~ as well via
+the kernel parameters. However, for me and [[https://forum.peppermintos.com/index.php?topic=4338.0][some other people]] apparently,
+enabling ~apparmor.service~ corresponds to taking a few seconds of added boot
+time. Unacceptable for me at any rate. So no ~snapd~ either.
+
+Flatpak uses namespaces, but honestly on an ArchLinux machine it is always
+better to just build things.
+** Window / Session Management
+Window and session managers are not exactly a dime a dozen. The X window system
+has served me well for many many years yet, for this post, of the X window
+system, the [[https://www.x.org/archive/X11R6.8.0/doc/xorg.conf.5.html#sect8][less said the better]]. Wayland on the other hand, is fast, shiny, and
+doesn't as yet have [[https://www.explainxkcd.com/wiki/index.php/963:_X11][233 configuration flags]].
+*** Login management
+To manage sessions, rather than relying soley on ~sway~, since
+*** Wayland
 ~Weston~ remains the reference implementation, and GNOME has continued
 championing the cause of Wayland which is great. However, since my foray
 in 2018; tiling window managers have come a long way. Migrating away from the
 MacOS' "tiling managers" was seamless and very reminsicent of my older ~i3-gaps~
 setup.
-*** Login management
-To manage sessions, rather than relying soley on ~sway~, since
-*** Wayland
 ** Sway basics
 *** High DPI
 An interesting quirk of ~sway~ is that Hi-DPI support is still [[https://github.com/swaywm/wlroots/pull/2064#issuecomment-622647075][at the draft
 stage]]. For the most part this is becoming a non-issue as more applications
-support Wayland out of the box, or atleast optionally.
+support Wayland out of the box, or at-least optionally.
 
 However, certain applications are unusable without the HiDPI support patches,
-including most ~java~ packages. Thus it is best to grab the modified versions
-and configure them.
+including most ~java~ packages like ~cryptomator~. Thus it is best to grab the
+modified versions and configure them.
+#+begin_src bash
+trizen -S sway-hidpi-git wlroots-hidpi-git xorg-xwayland-hidpi-git
+#+end_src
+
+Note that by default ~sway~ supports fractional scaling too via, ~swaymsg output
+$MON scale 1.5~ and also when in the configuration. However, the patches are
+required for ~xwayland force scale 2~ and sundry commands.
+
+**** Icons
 *** Display management
-A reddit user ~WhyNotHugo~, has an excellent [[https://www.reddit.com/r/swaywm/comments/qiz4aa/comment/hin41hg/?utm_source=share&utm_medium=web2x&context=3][line of reasoning]] for why a display
+A Reddit user ~WhyNotHugo~, has an excellent [[https://www.reddit.com/r/swaywm/comments/qiz4aa/comment/hin41hg/?utm_source=share&utm_medium=web2x&context=3][line of reasoning]] for why a display
 manager is needed, rephrased to be:
 - Enough system users / applications expect the existence of a ~display-manager~ including ~systemd-logind~ and ~plymouth~
 - No special handling needs to be done to ensure only ~tty1~ spawns a graphical session
 - The DM is meant to ensure that window manager crashes don't yield an unlocked desktop
+
+Anyway, the basic ~agreety~ should suffice for the most part; though a more
+pleasant setup is with ~greetd-tuigreet~.
+
+More importantly, the session itself should include the appropriate environment
+variables as [[https://man.sr.ht/~kennylevinsen/greetd/#how-to-set-xdg_session_typewayland][described here]] and reproduced below. Essentially this involves using a runner script, ~/usr/local/bin/sway-run.sh~ which ensures the correct variables are setup.
+#+begin_src bash
+#!/bin/sh
+
+# Session
+export XDG_SESSION_TYPE=wayland
+export XDG_SESSION_DESKTOP=sway
+export XDG_CURRENT_DESKTOP=sway
+
+source /usr/local/bin/wayland_enablement.sh
+
+systemd-cat --identifier=sway sway $@
+#+end_src
+
+Where the sourced file is:
+#+begin_src bash
+#!/bin/sh
+export GDK_BACKEND=wayland,x11
+export MOZ_ENABLE_WAYLAND=1
+export CLUTTER_BACKEND=wayland
+export QT_QPA_PLATFORM=wayland-egl
+export ECORE_EVAS_ENGINE=wayland-egl
+export ELM_ENGINE=wayland_egl
+export SDL_VIDEODRIVER=wayland
+export _JAVA_AWT_WM_NONREPARENTING=1
+export NO_AT_BRIDGE=1
+export BEMENU_BACKEND=wayland
+#+end_src
+
+Now instead of using ~tuigreet --cmd sway~ in ~/etc/greetd/config.toml~ we can
+use ~sway-run~ as the ~cmd~.
+
+It is important to optionally provide ~GDK_BACKEND~ with a fallback option
+otherwise ~zotero~ and others might fail with ~Error: cannot open display: :0~.
+
+This still breaks for a bunch of special cases for which I went with a
+specialized ~desktop~ file in ~$HOME/.local/share/applications/BLAH~. For example, consider the ~enpass~ file (since it only supports ~xcb~):
+
+#+begin_src bash
+[Desktop Entry]
+Type=Application
+Name=Enpass XCB
+Exec=env QT_QPA_PLATFORM=xcb QT_SCALE_FACTOR=2 enpass
+Icon=enpass
+#+end_src
+
+** Terminal Emulators
+Though ~kitty~ and a few other stalwarts do support ~wayland~, foot seems to be
+the fastest, especially since it has a server client mode much like ~emacs~ with
+~foot -s~ and ~footclient~.
 ** Screenshots
 ~slurm~ and ~grim~ still function well together, making this mostly painless.
 ** Screen Recorders
@@ -13734,8 +13888,20 @@ user_pref("extensions.zotero.fontSize", "0.3");
 #+end_src
 
 With this, the toolbar text is still too large, as are all the preference text elements, however it is still moderately usable.
+** Mail Clients
+The mail client story is increasingly complicated on Linux machines in general.
+Since Thunderbird tanked with XUL ecosystem eons ago there haven't been many
+contenders. Given the situation with window management, a ~localserver~ approach
+to web-clients like Mailpile [fn:welldesc] would have been perfect... Except it is still based around ~python2~ and shows no sign of moving forward. I really like
+Astroid.
 ** Browsers
-Firefox's ~wayland~ build on the AUR remains a nightmare to compile and work with. As of this post the stable branch of ~google-chrome~ does indeed support Wayland with a switch:
+Personally I prefer ~firefox~ in-spite of its shitty tendencies on the regular editions (e.g. not allowing unsigned extensions).
+*** Firefox
+Firefox's ~wayland~ build on the AUR remains a nightmare to compile and work
+with. The developer version can leverage the ~MOZ_ENABLE_WAYLAND=1~ to get
+reasonably good results.
+*** Chrome
+As of this post the stable branch of ~google-chrome~ does indeed support Wayland with a switch:
 #+begin_src bash
 google-chrome-stable --enable-features=UseOzonePlatform --ozone-platform=wayland
 #+end_src
@@ -13809,6 +13975,14 @@ To be perfectly fair, a lot of this post reads as a rant against HiDPI support, 
 
 [fn:yeahright] This precludes any actual tasks I have, naturally, the color of the bike shed and the wool of a Llama take precedence
 [fn:potificate] Naturally I haven't really taken time to dive into why, as evidenced by the many many many adjectives
+[fn:welldesc] A good initial set of thoughts on this are provided by [[https://emeraldreverie.org/2018/10/03/first-impressions-of-mailpile/][this post]]
+* Migrating to Home Manager
+#+begin_quote
+Leveraging ~nix~ and ~flakes~ in conjunction with ~home-manager~
+#+end_quote
+** Background
+Configuration can be painful.
+
 * Logging and Argument Parsing for F2PY
 ** Background
 Part of the struggle of retaining users has to do with the fact that during the active development of ~f2py~ standard user friendly modules like ~logging~ and ~argparse~ were in their infancy. A natural remedy suggests itself.
