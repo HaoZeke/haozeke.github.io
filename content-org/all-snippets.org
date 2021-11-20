@@ -165,6 +165,55 @@ However this hasn't been updated in a while now *and fails* on newer versions of
 cargo install watchexec-cli
 watchexec -w source/f2py 'make html'
 #+end_src
+** TODO Docker Development Envs
+Very quick set of ugly commands to grab build environments. A much better
+approach is to make a custom Dockerfile or even better, use ~nix~.
+
+However it does work in a pinch.
+#+begin_src bash
+docker pull IMG:TAG
+sudo docker run -v LOCALDIR:DIRINDOCKER -it debian:experimental-20211115 bash
+# Don't be root for long
+apt update
+apt install sudo vim zsh
+# Use the same username --> easier to manage permissions
+useradd -m -s /bin/zsh $USER -G sudo
+passwd $USER # Some crap
+# Or just add to the sudoers file
+echo "$USER ALL=(ALL:ALL) ALL" >> /etc/sudoers
+su $USER
+# numpy stuff
+sudo apt install gcc gfortran libopenblas-dev python3.10-dev python3.10-dbg git python3-distutils python3-setuptools libx11-dev build-essential pkg-config python3-pip python3-pytest python3-hypothesis
+python3.10-dbg runtests.py -s f2py -vvv
+#+end_src
+** TODO SSH Port Forwarding
+Whenever I need to access a server running on an HPC which does not support ~ngrok~ or ~localtunnel~ or even ~gsocket~; the fallback approach is always to rely on SSH port forwarding.
+
+The sample problem here is running an HTTP server for viewing graphics in R via ~httpgd~.
+#+begin_src bash
+# Local
+ssh -L 9899:localhost:9899 rog32@krafla.rhi.hi.is -N -L 9899:localhost:9899 elja
+# New tab
+ssh krafla
+ssh elja
+radian # or R
+#+end_src
+Now in ~R~.
+#+begin_src R
+library("httpgd")
+# else install.packages(c("httpgd"), repos='https://cran.hafro.is/')
+hgd(port=9899)
+#+end_src
+*** Conda and R
+Annoyingly if you are depending on ~conda~ or ~micromamba~ or some variant thereof on the remote sever then ~install.packages~ will fail and instead the environment needs to have the corresponding ~R~ packages installed after searching [[https://anaconda.org/][anaconda.org]].
+#+begin_src bash
+# minimal
+micromamba create -p $(pwd)/.tmp -c conda-forge r-tidyverse  git R
+micromamba activate $(pwd)/.tmp
+micromamba install -c nclibz r-httpgd
+#+end_src
+
+These issues are not present when using a ~nix-shell~.
 ** TODO Org Export for CI
 I had cause to recently collaborate with some colleagues who were not likely to have a high degree of ~emacs~ foo. Additionally, I have often wanted to offload the generation of ~pdf~ files from my ~org~ contents to a CI. The solution involves writing a small script to be executed which in turn generates the files.
 ** TODO Caching LaTeX on a CI
