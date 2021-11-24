@@ -165,7 +165,13 @@ However this hasn't been updated in a while now *and fails* on newer versions of
 cargo install watchexec-cli
 watchexec -w source/f2py 'make html'
 #+end_src
-** TODO Docker Development Envs
+** DONE Docker Development Envs
+CLOSED: [2021-11-24 Wed 16:20]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: docker-dev-envs
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
 Very quick set of ugly commands to grab build environments. A much better
 approach is to make a custom Dockerfile or even better, use ~nix~.
 
@@ -186,13 +192,19 @@ su $USER
 sudo apt install gcc gfortran libopenblas-dev python3.10-dev python3.10-dbg git python3-distutils python3-setuptools libx11-dev build-essential pkg-config python3-pip python3-pytest python3-hypothesis
 python3.10-dbg runtests.py -s f2py -vvv
 #+end_src
-** TODO SSH Port Forwarding
+** DONE SSH Port Forwarding
+CLOSED: [2021-11-24 Wed 16:20]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: ssh-port-forwarding
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
 Whenever I need to access a server running on an HPC which does not support ~ngrok~ or ~localtunnel~ or even ~gsocket~; the fallback approach is always to rely on SSH port forwarding.
 
 The sample problem here is running an HTTP server for viewing graphics in R via ~httpgd~.
 #+begin_src bash
 # Local
-ssh -L 9899:localhost:9899 rog32@krafla.rhi.hi.is -N -L 9899:localhost:9899 elja
+export PORT=9899 && ssh -L "${PORT}:localhost:${PORT}" "rog32@krafla.rhi.hi.is" -N -L "${PORT}:localhost:${PORT}" elja
 # New tab
 ssh krafla
 ssh elja
