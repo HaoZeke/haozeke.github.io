@@ -1,6 +1,16 @@
 # We use the generated html to prevent issues involving markdown frontmatter
 
 [[input.files]]
+path = "./snippets/docker-dev-envs/index.html"
+url = "https://rgoswami.me/snippets/docker-dev-envs/"
+title = "Docker Development Envs"
+
+[[input.files]]
+path = "./snippets/ssh-port-forwarding/index.html"
+url = "https://rgoswami.me/snippets/ssh-port-forwarding/"
+title = "SSH Port Forwarding"
+
+[[input.files]]
 path = "./posts/cython-derivedtype-f2py/index.html"
 url = "https://rgoswami.me/posts/cython-derivedtype-f2py/"
 title = "Simple Fortran Derived Types and Python"
