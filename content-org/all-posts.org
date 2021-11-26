@@ -13152,7 +13152,9 @@ f2py is the gold standard for interfacing Fortran and Python. The most famous do
 <script async class="speakerdeck-embed" data-id="d3840612af464e5baea5ee5e6dcd6692" data-ratio="1.37081659973226" src="//speakerdeck.com/assets/embed.js"></script>
 #+END_EXPORT
 *** Video
-TBD
+
+{{< youtube 9nMSKcRimuw >}}
+
 ** Implementing Fortran Standardese within LFortran
 - Co-Author(s) :: [[https://ondrejcertik.com/][Dr. Ondřej Čertík]] (Los Alamos National Laboratory)
 - Duration :: 5 minutes
@@ -13194,7 +13196,10 @@ The whole GSoC series.
 <script async class="speakerdeck-embed" data-id="b663e416185f43d88a9598ab0c221901" data-ratio="1.37081659973226" src="//speakerdeck.com/assets/embed.js"></script>
 #+END_EXPORT
 *** Video
-TBD
+From around 10:43 in.
+
+{{< youtube 4236hgpMBLY >}}
+
 ** Thoughts
 I could go on about these topics all day, thankfully for the most part, I do.
 * DONE Simple Fortran Derived Types and Python :@notes:python:fortran:numpy:f2py:rambling:
