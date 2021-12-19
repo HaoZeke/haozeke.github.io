@@ -14039,7 +14039,7 @@ nm vec.o
 0000000000000010 T unit_move
 0000000000000000 T vec._
 #+end_src
-** Type-bound proceedures
+** Type-bound procedures
 We would like to extend the discussion to beyond where the light of
 the standard reaches, that is to consider calling type-bound
 procedures, which are not supported by the standard. We will begin by
@@ -14123,7 +14123,7 @@ error #8264: The passed-object dummy argument must be a polymorphic dummy data o
 
 In any case, we are now in a position to inspect the generated object.
 
-#+begin_src
+#+begin_src bash
 gfortran -c vec_typeb.f90
 nm vec_typeb.o
                  U _gfortran_st_write
