@@ -1,6 +1,11 @@
 # We use the generated html to prevent issues involving markdown frontmatter
 
 [[input.files]]
+path = "./posts/iso-c-type-bound-fortran/index.html"
+url = "https://rgoswami.me/posts/iso-c-type-bound-fortran/"
+title = "Exploring ISO_C_BINDING and type-bound procedures"
+
+[[input.files]]
 path = "./snippets/docker-dev-envs/index.html"
 url = "https://rgoswami.me/snippets/docker-dev-envs/"
 title = "Docker Development Envs"
