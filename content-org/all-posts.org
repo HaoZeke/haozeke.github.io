@@ -14579,6 +14579,7 @@ separate list of quotes, or other things I have something to say about.
 ** Intangible Positions
 This is a set of things which are primarily online and/or voluntary in a
 non-academic sense.
+- I serve [[https://nordic-rse.org/about/governance/][on the board]] of the [[https://nordic-rse.org/][Nordic Research Software Engineers association]]
 - I administer and design a bunch of websites, mostly verified [[https://keybase.io/HaoZeke][on Keybase]]
 - I am a certified Software Carpentries [[https://carpentries.org/instructors/#HaoZeke][instructor]]
 - I [[https://carpentries.org/maintainers/#HaoZeke][officially maintain]], for the Software Carpentries, the lesson on R ([[https://github.com/swcarpentry/r-novice-inflammation][r-novice-inflammation]])
