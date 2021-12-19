@@ -59,7 +59,7 @@ Host super
   LocalForward 8004 localhost:8004
 #+end_src
 This is good for interactive sessions with multiple servers. For single servers, reverse proxy tunnels are more efficient.
-** DONE Programming Language Management
+** DONE Programming Language Management :shell:lang:
 CLOSED: [2021-09-19 Sun 17:39]
 :PROPERTIES:
 :EXPORT_HUGO_BUNDLE: prog-lang-man
@@ -144,7 +144,7 @@ This method appears to be more robust than remembering the various idiosyncrasie
 
 [fn:whatwhy] This structure can be seen in [[https://github.com/HaoZeke/Dotfiles][my own Dotfiles]] as well
 [fn:whynot] This was during the [[https://github.com/Ericson2314/nix-rfcs/blob/plan-dynamism/rfcs/0000-plan-dynanism.md][build plan dynamism RFCs]] which themselves were symptomatic of the ~{yarn,composer,node,*}2nix~ issues
-** DONE Watching Files
+** DONE Watching Files :productivity:cmdline:ruby:rust:
 CLOSED: [2021-09-19 Sun 17:39]
 :PROPERTIES:
 :EXPORT_HUGO_BUNDLE: watch-files
@@ -165,7 +165,13 @@ However this hasn't been updated in a while now *and fails* on newer versions of
 cargo install watchexec-cli
 watchexec -w source/f2py 'make html'
 #+end_src
-** TODO Docker Development Envs
+** DONE Docker Development Envs :devenv:cmdline:
+CLOSED: [2021-11-24 Wed 16:20]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: docker-dev-envs
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
 Very quick set of ugly commands to grab build environments. A much better
 approach is to make a custom Dockerfile or even better, use ~nix~.
 
@@ -186,13 +192,19 @@ su $USER
 sudo apt install gcc gfortran libopenblas-dev python3.10-dev python3.10-dbg git python3-distutils python3-setuptools libx11-dev build-essential pkg-config python3-pip python3-pytest python3-hypothesis
 python3.10-dbg runtests.py -s f2py -vvv
 #+end_src
-** TODO SSH Port Forwarding
+** DONE SSH Port Forwarding :ssh:
+CLOSED: [2021-11-24 Wed 16:20]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: ssh-port-forwarding
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
 Whenever I need to access a server running on an HPC which does not support ~ngrok~ or ~localtunnel~ or even ~gsocket~; the fallback approach is always to rely on SSH port forwarding.
 
 The sample problem here is running an HTTP server for viewing graphics in R via ~httpgd~.
 #+begin_src bash
 # Local
-ssh -L 9899:localhost:9899 rog32@krafla.rhi.hi.is -N -L 9899:localhost:9899 elja
+export PORT=9899 && ssh -L "${PORT}:localhost:${PORT}" "rog32@krafla.rhi.hi.is" -N -L "${PORT}:localhost:${PORT}" elja
 # New tab
 ssh krafla
 ssh elja
@@ -214,6 +226,45 @@ micromamba install -c nclibz r-httpgd
 #+end_src
 
 These issues are not present when using a ~nix-shell~.
+** TODO Applying Patches Across Repositories :git:cmdline:patch:
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: git-commit-patch
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
+Consider a situation where one has inadvertently ripped out the guts of an
+existing ~python~ project, and decided to update it and recursively apply said
+updates upstream.
+#+begin_quote
+What?
+#+end_quote
+OK. Skip to the example.
+
+#+begin_src bash
+git log
+# Grab commit hash, $SHA
+git format-patch -1 $SHA
+# Outputs a cute filename.patch, we'll call it $FNAME
+#+end_src
+
+Now we can go to where we need to apply said patch and..
+
+#+begin_src bash
+patch -p1 < $FNAME
+#+end_src
+
+Which assumes that the leading directories are the same. Variants of this are:
+#+begin_src bash
+# For a range
+git format-patch $SHA1~1..$SHA2
+# For use in a git tree
+git apply --check $FNAME # dry-run
+git apply $FNAME # prod
+#+end_src
+
+*** Example
+For a concrete example, consider migrating refactored tests from a submodule into an upstream repository.
+
 ** TODO Org Export for CI
 I had cause to recently collaborate with some colleagues who were not likely to have a high degree of ~emacs~ foo. Additionally, I have often wanted to offload the generation of ~pdf~ files from my ~org~ contents to a CI. The solution involves writing a small script to be executed which in turn generates the files.
 ** TODO Caching LaTeX on a CI
