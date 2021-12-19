@@ -13647,6 +13647,118 @@ these. In terms of derived types of simple structures, without allocatable
 arrays, the extensions appear to be straightforward.
 
 [fn:sowhat] This is more surprising with each passing year
+* TODO F2PY and the Python Packaging Story :@notes:python:rambling:fortran:f2py:
+** Background
+One of the nicer aspects of working on the LFortran project and considering its
+long term viability with [[https://ondrejcertik.com/][Ondřej Čertík]] is its modular layout. This makes it
+possible for example, for a contributor to work on the frontend without worrying
+about the backend or the middle end and vice versa. This enviable position is
+purely one of good design, and one of the pain points in the F2PY ecosystem is
+that its embedding into NumPy is more grown in an adhoc way than actually
+designed.
+
+** Build systems
+No discussion about any Python packaging story can be considered complete
+without talking about [[https://www.python.org/dev/peps/pep-0517/][PEP 517]], [[https://www.python.org/dev/peps/pep-0518][PEP 518]] and a bunch of specification extensions
+like [[https://www.python.org/dev/peps/pep-0660][PEP 660]]. However, none of these really matter for the F2PY context. Readers
+are referred to [[https://snarky.ca/clarifying-pep-518/?utm_source=pocket_mylist][better explanations]] ([[https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html][including this]]) or just more [[https://discuss.python.org/t/pronouncement-on-peps-660-and-662-editable-installs/9450][opinionated
+ones]]. Suffice to say that there are [[https://discuss.python.org/t/building-extension-modules-the-2020-way/5950][very few overall success stories]] /
+directions for projects with a lot of Python-C API code, and projects still end
+up having to hack around ~setup.py~ files.
+
+That said, a relatively compliant method is to simply use [[https://thiblahute.gitlab.io/mesonpep517/][mesonpep517]] or
+[[https://pypi.org/project/cmake-build-extension/][cmake-build-extension]] or [[https://pypi.org/project/enscons/][enscons]]. Neither of these are foolproof, but while the
+standardisations keep moving towards abstract interfaces in the name of
+flexibility it seems likely that neither of these are going anywhere any time
+soon.
+
+** Design
+Originally intended to rip out the ~numpy~ namespace and provide a testbed for
+pure ~f2py~ content, I later realized that for ease of interoperability with the
+upstream would be to retain a "empty" namespace approach.
+*** Sidebar: NumPy Modules
+This is a good point at which to catch up with the design of NumPy itself (from
+a bird's eye perspective).
+
+All we really need to know is easily found out with ~tree~.
+#+begin_src bash
+/usr/bin/tree -P 'setup.py' --prune -L 2 numpy
+numpy
+├── array_api
+│   └── setup.py
+├── compat
+│   └── setup.py
+├── core
+│   └── setup.py
+├── distutils
+│   └── setup.py
+├── f2py
+│   └── setup.py
+├── fft
+│   └── setup.py
+├── lib
+│   └── setup.py
+├── linalg
+│   └── setup.py
+├── ma
+│   └── setup.py
+├── matrixlib
+│   └── setup.py
+├── polynomial
+│   └── setup.py
+├── random
+│   └── setup.py
+├── setup.py
+├── testing
+│   └── setup.py
+└── typing
+    └── setup.py
+
+14 directories, 15 files
+#+end_src
+
+In other words, there are 14 sub-modules within ~numpy~ of which ~f2py~ is one.
+It is slightly different than the rest in that it is both a library and a CLI,
+but that's a problem for the refactoring. The idiosyncrasies of the actual files
+can also be left for later. We only really care to check for this pattern since
+it encourages the possibility of a clean namespace implementation.
+
+* TODO Logging and Argument Parsing for F2PY
+Part of the struggle of retaining users has to do with the fact that during the active development of ~f2py~ standard user friendly modules like ~logging~ and ~argparse~ were in their infancy. A natural remedy suggests itself.
+** Command Line Interfaces
+There are a plethora of libraries for coloring and styling the output. Far too many to list or enumerate. Also, more importantly, none of them matter. A library like ~numpy~ can and should be averse to adding new dependencies. Instead we will work with the standard library's ~argparse~.
+*** F2PY CLI 101
+The ~f2py~ interface is meant to facilitate three different end-user cases:
+- Wrapper generation :: What it says on the tin, this generates some Fortran wrappers and also the ~.c~ files which are later built by any means into a python extension module
+- Signature file generation :: To fully unlock the power and uniqueness of ~f2py~ [fn:whatunique] [[https://numpy.org/devdocs/f2py/signature-file.html][a full grammar of extensions]] are defined, documented and can be used by either commenting codes or just generating the signature files
+- Compilation :: Via the ~-c~ flag, ~f2py~ becomes a sort of pimp for ~np.distutils~, producing the ~.so~ file without so much as a visible set of source headers and translation units
+
+So far so good. Now the older design will not be discussed here, but it was
+rather good for its time, being reminiscent of standard UNIX commands, perhaps
+with the exception of the ~-h~ flag which doesn't do what one might immediately
+expect.
+
+*** Enter ~argparse~
+The +three heads of Cerberus+ three end-user functionalities make for an almost
+perfect use case for the ~subparser~. Almost in the sense that, well, to ensure
+backwards compatibility [fn:lolback] we can't abruptly remove the flags ~f2py~
+used to take. So we end up with a rather odd structure.
+
+Another very fun fact is that actually the wrapper generation and signature file
+generation take the same options. This means there need be only two sub-parsers.
+
+**** Colors
+ANSI colors are easy, at-least they have been ever since Windows began stepping
+up their game and providing ANSI code support. In any case, a partial workaround
+is ~os.system("color")~ on these operating systems. Personally I was rather
+looking forward to using perhaps [[https://github.com/tartley/colorama][colorama]] or [[https://github.com/SuperMaZingCoder/colorit][color-it]]. In fact, since ~color-it~
+is MIT licensed and tiny, it might even get vendored in perhaps. Possibly.
+Anyway, back to the harsh unyielding present. Color support is essentially just
+an ANSI string.
+
+[fn:whatunique] Like perhaps wrapping ~.c~ code way [[https://scipy-cookbook.readthedocs.io/items/f2py_and_NumPy.html][back in 2006]], or exotic callbacks
+[fn:lolback] A wonderful endeavor, much like the way aeroplanes and horse driven sleighs are still compatible... *wait*..
+
 * TODO Fortran OOP and Python :@notes:python:fortran:numpy:f2py:rambling:
 # :PROPERTIES:
 # :EXPORT_FILE_NAME: fortran-oop-python
@@ -13988,42 +14100,6 @@ Leveraging ~nix~ and ~flakes~ in conjunction with ~home-manager~
 ** Background
 Configuration can be painful.
 
-* Logging and Argument Parsing for F2PY
-** Background
-Part of the struggle of retaining users has to do with the fact that during the active development of ~f2py~ standard user friendly modules like ~logging~ and ~argparse~ were in their infancy. A natural remedy suggests itself.
-** Command Line Interfaces
-There are a plethora of libraries for coloring and styling the output. Far too many to list or enumerate. Also, more importantly, none of them matter. A library like ~numpy~ can and should be averse to adding new dependencies. Instead we will work with the standard library's ~argparse~.
-*** F2PY CLI 101
-The ~f2py~ interface is meant to facilitate three different end-user cases:
-- Wrapper generation :: What it says on the tin, this generates some Fortran wrappers and also the ~.c~ files which are later built by any means into a python extension module
-- Signature file generation :: To fully unlock the power and uniqueness of ~f2py~ [fn:whatunique] [[https://numpy.org/devdocs/f2py/signature-file.html][a full grammar of extensions]] are defined, documented and can be used by either commenting codes or just generating the signature files
-- Compilation :: Via the ~-c~ flag, ~f2py~ becomes a sort of pimp for ~np.distutils~, producing the ~.so~ file without so much as a visible set of source headers and translation units
-
-So far so good. Now the older design will not be discussed here, but it was
-rather good for its time, being reminiscent of standard UNIX commands, perhaps
-with the exception of the ~-h~ flag which doesn't do what one might immediately
-expect.
-
-*** Enter ~argparse~
-The +three heads of Cerberus+ three end-user functionalities make for an almost
-perfect use case for the ~subparser~. Almost in the sense that, well, to ensure
-backwards compatibility [fn:lolback] we can't abruptly remove the flags ~f2py~
-used to take. So we end up with a rather odd structure.
-
-Another very fun fact is that actually the wrapper generation and signature file
-generation take the same options. This means there need be only two sub-parsers.
-
-**** Colors
-ANSI colors are easy, at-least they have been ever since Windows began stepping
-up their game and providing ANSI code support. In any case, a partial workaround
-is ~os.system("color")~ on these operating systems. Personally I was rather
-looking forward to using perhaps [[https://github.com/tartley/colorama][colorama]] or [[https://github.com/SuperMaZingCoder/colorit][color-it]]. In fact, since ~color-it~
-is MIT licensed and tiny, it might even get vendored in perhaps. Possibly.
-Anyway, back to the harsh unyielding present. Color support is essentially just
-an ANSI string.
-
-[fn:whatunique] Like perhaps wrapping ~.c~ code way [[https://scipy-cookbook.readthedocs.io/items/f2py_and_NumPy.html][back in 2006]], or exotic callbacks
-[fn:lolback] A wonderful endeavor, much like the way aeroplanes and horse driven sleighs are still compatible... *wait*..
 * Important Note :ignoreheading:ignore:
 # ALWAYS at the bottom, to ensure fresh builds do not break
 * DONE About
