@@ -13772,25 +13772,25 @@ A closer look at the standard Fortran C compatibility layer by
 exploring objects and linkers
 #+end_quote
 ** Background
-[[Simple Fortran Derived Types and Python][Derived types and their interoperability]] has been covered
+[[Simple Fortran Derived Types and Python][Derived types and their interoperability]] have been covered
 previously in the context of usage from Python. However, much of the
 focus of the previous approach revolved around the ~iso_c_binding~
-module. A closer inspection of the functionality provided therein is a
+intrinsic module. A closer inspection of the functionality provided therein is the
 first step towards extending beyond the standards to support calling type
-bound proceedures. This is an often overlooked aspect of the derived
+bound procedures. This is an often overlooked aspect of the derived
 type usage pattern, in terms of interoperability.
 
 *** Series
 Thoughts relating to interoperability of Fortran with things can be
-vaguely collected into the following series.
+vaguely collated into the following series.
 1. [[NumPy, Meson and ~f2py~][NumPy Meson Fortran]]
 2. [[Simple Fortran Derived Types and Python][Simple Fortran Derived Types and Python]]
 3. *Exploring ~ISO_C_BINDING~ and type-bound procedures* <-- You are here!
 
 ** Setup
-We will re-use at first the basic cartesian type of the previous
-post, along with a *non-type-bound* procedure which is to be called
-from ~C~.
+We would like to understand the effect of the intrinsic ~iso_c_binding~ module.
+So, we will re-use at first, the basic cartesian type of the previous post,
+along with a *non-type-bound* procedure which is to be called from ~C~.
 
 #+begin_src fortran
 ! vec.f90
@@ -13816,9 +13816,9 @@ end module vec
 
 There isn't a whole lot going on, except that the ~iso_c_binding~
 labels have been dropped, and correspondingly, instead of ~c_double~
-we now a (not strictly exact) probable ~kind~.
+we now have an approximate ~kind~ mapping.
 
-The corresponding ~C~ caller is exactly the same, though in this
+The associated ~C~ driver is exactly the same, though in this
 particular situation the function signature is optional.
 
 #+begin_src cpp
