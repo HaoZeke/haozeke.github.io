@@ -14182,22 +14182,22 @@ precisions become rather fluid.
 ** Conclusions
 This brief interlude on derived types and functions is more relevant
 in the context of automated binding generators like ~f2py~
-cite:petersonF2PYToolConnecting2009.
+@petersonF2PYToolConnecting2009.
 
 Perhaps a more formal approach to wrapper generation is the one elaborated upon in great
-detail in the literature by
-textcite:grayShadowobjectInterfaceFortran1999 which details the
+detail in the literature
+@grayShadowobjectInterfaceFortran1999 which details the
 concept of a logical interface and a physical interface.
 
 A similar but more pragmatic approach is the opaque pointer method used for derived
-types with pointers in textcite:pletzerExposingFortranDerived2008 and forms the basis
-for the implementation in ~f90wrap~ cite:kermodeF90wrapAutomatedTool2020.
+types with pointers in @pletzerExposingFortranDerived2008 and forms the basis
+for the implementation in ~f90wrap~ @kermodeF90wrapAutomatedTool2020.
 
 The (ab)use of type-bound procedures in the context of these binding
 generation methodologies is to follow at some point since none of them
 make any explicit mention of the same. Given that
 type-bound procedures were not introduced before 2003
-cite:reidNewFeaturesFortran2003, it is not surprising they have been
+@reidNewFeaturesFortran2003, it is not surprising they have been
 overlooked, however their usage is foundational for long-lasting,
 sustainable Fortran code.
 
