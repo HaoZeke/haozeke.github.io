@@ -14233,13 +14233,14 @@ The failings of the OOP pattern, many though there may be, are easily hidden
 behind a contrived geometric shape example. So following along in that grand
 tradition, we will devise a derived type with functions defining a *Square* and
 then generalize to a *Shape* and an extended (a.k.a. inherited) type.
-* TODO Revisiting Wayland for ArchLinux
-# :PROPERTIES:
-# :EXPORT_FILE_NAME: revisiting-wayland-2021-archlinux
-# :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
-# :END:
+* DONE Revisiting Wayland for ArchLinux :@notes:rambling:workflow:
+CLOSED: [2021-12-24 Fri 18:13]
+:PROPERTIES:
+:EXPORT_FILE_NAME: revisiting-wayland-2021-archlinux
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
 #+begin_quote
-Fluff post about returning to ArchLinux and reconfiguring for Wayland via Sway
+Ruminating on ~wayland~ and ~sway~ for daily use with ArchLinux
 #+end_quote
 ** Background
 [[https://grimoire.science/working-with-wayland-and-sway/][Many years ago]], I found time to make an attempt to switch away from the X11
@@ -14323,6 +14324,27 @@ With this ~iwctl~ works well enough:
 #+begin_src bash
 station wlan0 connect eduroam
 #+end_src
+***** Mobile broadband
+The Fibocom L850-GL hardware can be setup via the experimental native xmm7360-pci driver. Unfortunately, upstream has not processed a couple of important pull requests. So using my fork:
+#+begin_src bash
+git clone git@github.com:HaoZeke/xmm7360-pci.git
+cd xmm7360-pci
+sudo /usr/bin/pip install --user pyroute2 ConfigArgParse
+make && make load
+make && make load # first one doesn't take
+sudo /usr/bin/python rpc/open_xdatachannel.py --apn net.nova.is # or whatever your apn is
+#+end_src
+To test that everything is working, a new device should have shown up with ~ip addr~.
+#+begin_src bash
+6: wwan0: <POINTOPOINT,MULTICAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UNKNOWN group default qlen 1000
+    link/none
+#+end_src
+It should have some ~inet~ addresses as well. Unfortunately, the steps above need to be run every time, so whenever needed:
+#+begin_src bash
+make && make load
+make && make load # first one doesn't take
+sudo /usr/bin/python rpc/open_xdatachannel.py --apn net.nova.is
+#+end_src
 **** Audio
 As [[https://grimoire.science/working-with-wayland-and-sway/][discussed earlier]], no special requirements need to be considered beyond
 setting up ~/etc/libao.conf~ which in itself is only needed for [[https://github.com/PromyLOPh/pianobar][pianobar]].
@@ -14347,15 +14369,12 @@ Window and session managers are not exactly a dime a dozen. The X window system
 has served me well for many many years yet, for this post, of the X window
 system, the [[https://www.x.org/archive/X11R6.8.0/doc/xorg.conf.5.html#sect8][less said the better]]. Wayland on the other hand, is fast, shiny, and
 doesn't as yet have [[https://www.explainxkcd.com/wiki/index.php/963:_X11][233 configuration flags]].
-*** Login management
-To manage sessions, rather than relying soley on ~sway~, since
-*** Wayland
+** Sway basics
 ~Weston~ remains the reference implementation, and GNOME has continued
 championing the cause of Wayland which is great. However, since my foray
 in 2018; tiling window managers have come a long way. Migrating away from the
 MacOS' "tiling managers" was seamless and very reminsicent of my older ~i3-gaps~
 setup.
-** Sway basics
 *** High DPI
 An interesting quirk of ~sway~ is that Hi-DPI support is still [[https://github.com/swaywm/wlroots/pull/2064#issuecomment-622647075][at the draft
 stage]]. For the most part this is becoming a non-issue as more applications
@@ -14372,7 +14391,10 @@ Note that by default ~sway~ supports fractional scaling too via, ~swaymsg output
 $MON scale 1.5~ and also when in the configuration. However, the patches are
 required for ~xwayland force scale 2~ and sundry commands.
 
-**** Icons
+#+begin_quote
+This turned out to be a dead end, even though it worked reasonably well, the scaling of icons was messy and it still necessitated a set of environment variables for Desktop entries
+#+end_quote
+
 *** Display management
 A Reddit user ~WhyNotHugo~, has an excellent [[https://www.reddit.com/r/swaywm/comments/qiz4aa/comment/hin41hg/?utm_source=share&utm_medium=web2x&context=3][line of reasoning]] for why a display
 manager is needed, rephrased to be:
@@ -14430,15 +14452,62 @@ Exec=env QT_QPA_PLATFORM=xcb QT_SCALE_FACTOR=2 enpass
 Icon=enpass
 #+end_src
 
-** Terminal Emulators
+However, this is still not ideal.
+
+** XWayland proxies
+Rather than work with the patched ~sway~ and ~wlroots~ packages, a recent
+approach by [[https://roscidus.com/blog/blog/2021/10/30/xwayland/?utm_source=pocket_mylist][Thomas Leonard]] based on isolating the XWayland setup works a lot
+better for high DPI screens and systems. There are some caveats and still
+requires modified desktop files, but it works a lot better and has fewer bugs
+than the standard XWayland setup with ~sway~. However, ~xlsclients~ does not
+track the X11 applications started in the manner described here.
+#+begin_src bash
+git clone https://github.com/talex5/wayland-proxy-virtwl.git
+cd wayland-proxy-virtwl
+opam install .
+# Installs to $HOME/.opam/default/bin/wayland-proxy-virtwl
+#+end_src
+For my system, the corresponding service required both a change in DPI, and the "unscaling".
+#+begin_src bash
+[Unit]
+Description=Wayland-proxy-virtwl
+
+[Service]
+ExecStart=/home/$USER/.opam/default/bin/wayland-proxy-virtwl --tag="[my-vm] " --wayland-display wayland-0 --x-display=0 --xrdb Xft.dpi:150 --x-unscale=2
+
+[Install]
+WantedBy=default.target
+#+end_src
+
+Note that the service needs the full path, not the censored one in the snippet. Now any subsequent X11 applications can be used via:
+#+begin_src bash
+systemctl restart --user wayland-proxy-virtwl.service
+DISPLAY=":0"  WAYLAND_DISPLAY="wayland-1" QT_QPA_PLATFORM=xcb QT_SCALE_FACTOR=1.5 enpass
+DISPLAY=":0" GDK_BACKEND="x11"  WAYLAND_DISPLAY="wayland-1" gvim
+#+end_src
+When things work out, then the applications will have ~[my-vm]~ in the window title. This still requires that ~xorg-xwayland~ be installed, and in some situations it needs to be restarted, but by and large this is a seamless setup.
+** Miscellaneous
+*** Terminal Emulators
 Though ~kitty~ and a few other stalwarts do support ~wayland~, foot seems to be
 the fastest, especially since it has a server client mode much like ~emacs~ with
 ~foot -s~ and ~footclient~.
-** Screenshots
+*** Screenshots
 ~slurm~ and ~grim~ still function well together, making this mostly painless.
-** Screen Recorders
-Unfortunately, the ~zoom~ desktop client [[https://github.com/swaywm/sway/issues/4358][does not support]] ~sway~ which is problematic.
-** Reference Management
+#+begin_src bash
+slurp | grim -g - - | wl-copy
+#+end_src
+Typically this is bound to ~WIN+O~ for me.
+*** Screen Recorders
+Unfortunately, the ~zoom~ desktop client [[https://github.com/swaywm/sway/issues/4358][does not support]] ~sway~ which is
+problematic. However, with pipewire setup, Firefox passes the [[https://mozilla.github.io/webrtc-landing/gum_test.html][gUM test]] for
+screen-sharing which is good enough. For recording stuff, OBS has a plugin, but
+[[https://github.com/foxcpp/ssr-wlroots][simplescreenrecorder has a fork]] which works out of the box, with XWayland
+required for the UI though.
+#+begin_src bash
+trizen -S simplescreenrecorder-wlroots-git
+DISPLAY=":0"  WAYLAND_DISPLAY="wayland-1" simplescreenrecorder
+#+end_src
+*** Reference Management
 I've been a ~zotero~ user for many years now, however it suffers from the same
 UI scaling issues and cannot be fixed either by forcing ~xwayland~ execution nor
 by trying other scaling methods. The last resort is to set up a ~user.js~ file in ~$HOME/.zotero/zotero/$PROFILE/user.js~ with:
@@ -14448,19 +14517,28 @@ user_pref("extensions.zotero.fontSize", "0.3");
 #+end_src
 
 With this, the toolbar text is still too large, as are all the preference text elements, however it is still moderately usable.
-** Mail Clients
+
+Somehow this does conflict and error out with the proxied XWayland, but the regular settings work alright.
+*** Mail Clients
 The mail client story is increasingly complicated on Linux machines in general.
 Since Thunderbird tanked with XUL ecosystem eons ago there haven't been many
 contenders. Given the situation with window management, a ~localserver~ approach
-to web-clients like Mailpile [fn:welldesc] would have been perfect... Except it is still based around ~python2~ and shows no sign of moving forward. I really like
-Astroid.
-** Browsers
+to web-clients like Mailpile [fn:welldesc] would have been perfect... Except it
+is still based around ~python2~ and shows no sign of moving forward. I really
+[[Reclaiming Email with Astroid][like Astroid]], but it doesn't seem to have been updated in a while either. Thunderbird works fine too, and does not require XWayland which is a plus point.
+*** Electron
+Anything with a recent electron binary (around 13) will just need a few flags.
+#+begin_src bash
+code --enable-features=UseOzonePlatform --ozone-platform=wayland
+slack --enable-features=UseOzonePlatform --ozone-platform=wayland
+#+end_src
+*** Browsers
 Personally I prefer ~firefox~ in-spite of its shitty tendencies on the regular editions (e.g. not allowing unsigned extensions).
-*** Firefox
+**** Firefox
 Firefox's ~wayland~ build on the AUR remains a nightmare to compile and work
 with. The developer version can leverage the ~MOZ_ENABLE_WAYLAND=1~ to get
 reasonably good results.
-*** Chrome
+**** Chrome
 As of this post the stable branch of ~google-chrome~ does indeed support Wayland with a switch:
 #+begin_src bash
 google-chrome-stable --enable-features=UseOzonePlatform --ozone-platform=wayland
@@ -14470,68 +14548,26 @@ The stable branch is rather boring anyway, on Arch Linux atleast, the launchers 
 --enable-features=UseOzonePlatform
 --ozone-platform=wayland
 #+end_src
-** RStudio
+*** RStudio
 No ~wayland~ support. Needs to be forced into ~xwayland~ and have the fonts scaled via:
 #+begin_src bash
-Exec=env WAYLAND_DISPLAY= QT_DEVICE_PIXEL_RATIO=2 /usr/bin/rstudio-bin %F
+# For the hidpi setup
+Exec=env WAYLAND_DISPLAY= QT_SCALE_FACTOR=2 /usr/bin/rstudio-bin %F
+# Or with the proxied xwayland
+DISPLAY=":0"  WAYLAND_DISPLAY="wayland-1" QT_SCALE_FACTOR=2 QT_QPA_PLATFORM=xcb /usr/bin/rstudio-bin
 #+end_src
-** Resilio
-Recall that:
-#+begin_quote
-  WebGUI can be accessed via following URL: http://localhost:8888
-
-  * Running rslsync system instance (using dedicated rslsync:rslsync account)
-
-      System instance of rslsync is preconfigured (configuration file located
-    at /etc/rslsync.conf) and can be used directly after installation.
-
-    Execute:
-
-      to reload system systemd modules:     systemctl daemon-reload
-      to start rslsync manually:             systemctl start rslsync
-      to autostart rslsync on system start:  systemctl enable rslsync
-
-  * Running rslsync user instance (using current user account)
-
-    User instance MUST be configured before use. To perform configuration,
-    install rslsync-autoconfig package or follow manual configuration steps:
-
-        1. Copy /etc/rslsync/rslsync.conf to ~/.config/rslsync/rslsync.conf for
-      the user you wish to configure rslsync:
-
-        mkdir -p ~/.config/rslsync
-        cp /etc/rslsync.conf ~/.config/rslsync/rslsync.conf
-
-      2. Replace user-specific references with the appropriate information,
-      including the following settings:
-
-        - storage_path
-        - pid_file
-        - webui.listen
-        - webui.login
-        - webui.password
-
-      3. Make sure folder you specified as storage_path and folder where pid_file will
-      be located both exist in the filesystem, since rslsync will not create it for you.
-
-    Execute:
-
-      to reload user systemd modules:       systemctl --user daemon-reload
-      to start rslsync manually:             systemctl --user start rslsync
-      to autostart rslsync on user login:    systemctl --user enable rslsync
-#+end_quote
 ** Conclusions
 Things have definitely improved in three years, however the overall aggravation
 and microaggressions which come with working around window manager issues seem
 to be too high a price for the potential battery / quality of life savings. In
 particular, as before, forcing programs to run in ~xwayland~ makes them
 effectively worse than their ~x11~ counterparts and requires far more
-maintainence load. It seems likely then, that inspite of great progress it is
+maintenance load. It seems likely then, that in-spite of great progress it is
 still probably best to stick to X11; especially for new users who might not
 immediately suspect the display server as a source of buggy UX elements (or
-screensharing woes).
+screen-sharing woes).
 
-To be perfectly fair, a lot of this post reads as a rant against HiDPI support, which makes sense given that it is rather poorly supported.
+Though the conclusions above are still valid, with the XWayland fixes, this is definitely viable and will remain my daily driver.
 
 [fn:yeahright] This precludes any actual tasks I have, naturally, the color of the bike shed and the wool of a Llama take precedence
 [fn:potificate] Naturally I haven't really taken time to dive into why, as evidenced by the many many many adjectives
