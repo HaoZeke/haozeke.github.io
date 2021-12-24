@@ -14257,15 +14257,15 @@ short-doc seems more appropriate.
 As before, none of these configurations should be considered
 complete/recommended/normative; *use the installation guide* and _follow the Arch Way_. These are install notes, not tutorials.
 ** ArchLinux baseline
-- Networking :: The days of ~wifi-menu~ are gone. The new ~iwd~ interface ([[https://wiki.archlinux.org/title/Iwd][ArchWiki]]) is [[https://lwn.net/Articles/770991/][the newest, swankiest kid]] on the block [fn:potificate] and works great with ~NetworkManager~
-- Input devices :: ~loadkeys~ for the console, ~libinput~ configurations can be handled via the window manager under Wayland
-- Audio :: ~pulseaudio~ works well as always, though ~pipewire~ is pretty neat as well
-- Nix :: Via the [[https://nixos.org/guides/install-nix.html][multi-user install]]
-- Time :: Being as this is a laptop configuration, it is best to configure ~chrony~ ([[https://wiki.archlinux.org/title/Chrony][described here]]) as the ~ntp~ client and server of choice
-- AUR Helper :: ~trizen~, though I retain a soft spot for ~yay~
-- Portability :: Details are presented concisely on [[https://wiki.archlinux.org/title/Laptop][the ArchWiki]]
-- Device details :: The ArchWiki [[https://wiki.archlinux.org/title/Lenovo_ThinkPad_X1_Carbon_(Gen_6)][has an entry]], notably including modem setup woes and also ~throttled~ details for better power management
-- Window and login :: sway, and
+- *Networking* :: The days of ~wifi-menu~ are gone. The new ~iwd~ interface ([[https://wiki.archlinux.org/title/Iwd][ArchWiki]]) is [[https://lwn.net/Articles/770991/][the newest, swankiest kid]] on the block [fn:potificate] and works great with ~NetworkManager~
+- *Input devices* :: ~loadkeys~ for the console, ~libinput~ configurations can be handled via the window manager under Wayland
+- *Audio* :: ~pulseaudio~ works well as always, though ~pipewire~ is pretty neat as well
+- *Nix* :: Via the [[https://nixos.org/guides/install-nix.html][multi-user install]]
+- *Time* :: Being as this is a laptop configuration, it is best to configure ~chrony~ ([[https://wiki.archlinux.org/title/Chrony][described here]]) as the ~ntp~ client and server of choice
+- *AUR Helper* :: ~trizen~, though I retain a soft spot for ~yay~
+- *Portability* :: Details are presented concisely on [[https://wiki.archlinux.org/title/Laptop][the ArchWiki]]
+- *Device details* :: The ArchWiki [[https://wiki.archlinux.org/title/Lenovo_ThinkPad_X1_Carbon_(Gen_6)][has an entry]], notably including modem setup woes and also ~throttled~ details for better power management
+- *Window and login* :: ~sway~, and ~greetd~
 *** Configurations
 In general the idea is to run as few services as possible so ~systemctl
 --type=service~ is very helpful.
