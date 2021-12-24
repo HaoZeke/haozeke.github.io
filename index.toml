@@ -1,6 +1,11 @@
 # We use the generated html to prevent issues involving markdown frontmatter
 
 [[input.files]]
+path = "./posts/revisiting-wayland-2021-archlinux/index.html"
+url = "https://rgoswami.me/posts/revisiting-wayland-2021-archlinux/"
+title = "Revisiting Wayland for ArchLinux"
+
+[[input.files]]
 path = "./posts/iso-c-type-bound-fortran/index.html"
 url = "https://rgoswami.me/posts/iso-c-type-bound-fortran/"
 title = "Exploring ISO_C_BINDING and type-bound procedures"
