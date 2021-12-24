@@ -8619,9 +8619,9 @@ The ones I use mostly are enumerated in Table [[tbl:rustalternates]].
 
 These are trivial to obtain:
 #+begin_src bash
-cargo install bottom ripgrep hyperfine navi skim mcfly
-# The following need some system libraries (OpenSSL) and shall be dealt with later
-# bat exa fd-find tealdeer starship sd procs zoxide bliss
+cargo install bottom ripgrep hyperfine skim mcfly
+# The following need some system libraries (OpenSSL) and shall be dealt with later, or with micromamba
+# bat exa fd-find tealdeer starship sd procs zoxide bliss navi
 #+end_src
 *** MicroMamba
 We will set up a ~micromamba~ installation to get ~git~ and other base utilities.
@@ -8637,11 +8637,13 @@ micromamba shell init -s bash -p $HOME/.micromamba
 Now we can use ~mamba~ to get a temporary interactive environment.
 #+begin_src bash
 # Spack requirements
-PKGS="git patch curl make tar gzip unzip bzip2 xz zstd subversion lsof m4"
+PKGS="git patch curl make tar gzip unzip bzip2 xz zstd subversion lsof m4 openssl pkg-config"
 mkdir ~/.mamba_venvs
 micromamba create -p ~/.mamba_venvs/intBase $PKGS
 micromamba activate ~/.mamba_venvs/intBase
 #+end_src
+
+What we need ~micromamba~ for is really the ~openssl~ library.
 **** Configuration
 A simple ~.condarc~ will suffice for the above.
 #+begin_src yaml
