@@ -14175,9 +14175,16 @@ Returned from Fortran
 4.000000 3.500000 7.200000%
 #+end_src
 
-It is useful to remember at this point, that Fortran passes arguments
+It is useful to at this point, that Fortran passes arguments
 by reference and not by value, so there are no additional copy related
 overheads incurred by this "wrapper" approach.
+
+#+begin_quote
+It was correctly pointed out on the [[https://fortran-lang.discourse.group/t/exploring-iso-c-binding-and-type-bound-procedures/2447/6?u=rgoswami][Fortran Discourse]] that the pass-by-reference
+calling convention is not mandated by the standards, though in practice many
+compilers do pass by reference when the ~VALUE~ attribute is missing.
+#+end_quote
+
 
 On the other hand, it does leave the programmer in a world bereft of
 the ~iso_c_binding~, which means also that the mapping of types and
