@@ -5,9 +5,7 @@
 (require 'package)
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("nongnu" . "https://elpa.nongnu.org/nongnu/")
-                         ("elpa" . "https://elpa.gnu.org/packages/")
-                         ("melpa" . "https://melpa.org/packages/")
-                         ))
+                         ("melpa" . "https://melpa.org/packages/")))
 (package-initialize)
 
 ;; load use-package and check if it's installed, if not downloads it
@@ -19,13 +17,11 @@
 ;; Install newer version of org-mode
 (use-package org
   :pin elpa
-  :ensure t
   :commands (org-mode org-capture org-agenda orgbl-mode)
   :mode (("\\.org$" . org-mode)))
 
 (use-package org-contrib
   :pin nongnu
-  :ensure t
   :after org)
 
 ;; Some sane settings
