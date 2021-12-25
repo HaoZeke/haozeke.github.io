@@ -3,8 +3,9 @@
 
 ;; package.el
 (require 'package)
+(setq package-user-dir (concat user-emacs-directory
+        (convert-standard-filename "elpa/")))
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ("nongnu" . "https://elpa.nongnu.org/nongnu/")
                          ("melpa" . "https://melpa.org/packages/")))
 (package-initialize)
 
@@ -14,15 +15,9 @@
       (package-refresh-contents)
       (package-install 'use-package)))
 (require 'use-package)
-;; Install newer version of org-mode
 (use-package org
-  :pin elpa
-  :commands (org-mode org-capture org-agenda orgbl-mode)
-  :mode (("\\.org$" . org-mode)))
-
-(use-package org-contrib
-  :pin nongnu
-  :after org)
+ :ensure t
+ :pin gnu)
 
 ;; Some sane settings
 (setq-default require-final-newline t)
