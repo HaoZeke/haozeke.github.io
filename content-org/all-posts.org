@@ -14181,7 +14181,7 @@ overheads incurred by this "wrapper" approach.
 
 #+begin_quote
 It was correctly pointed out on the [[https://fortran-lang.discourse.group/t/exploring-iso-c-binding-and-type-bound-procedures/2447/6?u=rgoswami][Fortran Discourse]] that the pass-by-reference
-calling convention is not mandated by the standards, though in practice many
+calling convention is not mandated by the standards, though [[https://gcc.gnu.org/onlinedocs/gfortran/Argument-passing-conventions.html][in practice]] many
 compilers do pass by reference when the ~VALUE~ attribute is missing.
 #+end_quote
 
