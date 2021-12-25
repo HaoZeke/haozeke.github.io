@@ -13799,9 +13799,10 @@ along with a *non-type-bound* procedure which is to be called from ~C~.
 ! vec.f90
 module vec
   implicit none
+  integer, parameter :: dd = selected_real_kind(15,9)
 
   type :: cartesian
-    real(kind=0.0d) :: x,y,z
+    real(kind=dd) :: x,y,z
   end type cartesian
 
 contains
@@ -13812,7 +13813,7 @@ contains
     vec%x = vec%x + 1
     vec%y = vec%y + 1
     vec%z = vec%z + 1
-  end subroutine vec
+  end subroutine unit_move
 
 end module vec
 #+end_src
