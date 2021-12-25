@@ -547,8 +547,9 @@ tail $HOME/proxychains.conf
 
 I actually use [[https://windscribe.com][Windscribe]] for my VPN needs, and they have a neat [[https://windscribe.com/getconfig/socks][SOCKS5 proxy
 setup]]. This works out to a line like ~socks5 $IP $PORT $USERNAME $PASS~ being
-added. The default generator gives you a pretty server name, but to get the IP
-I use ~ping $SERVER~ and put that in the ~conf~ file.
+added. The default generator gives you a pretty server name, but to get the IP I
+use ~ping $SERVER~ and put that in the ~conf~ file. Any online DNS resolver will
+also do the trick, like [[https://www.vedbex.com/dns/socks-us.windscribe.com][this one]].
 ** Pandora
 I use the excellent ~pianobar~ frontend.
 1. Get [[https://github.com/PromyLOPh/pianobar][pianobar]]
