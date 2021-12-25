@@ -14366,6 +14366,16 @@ time. Unacceptable for me at any rate. So no ~snapd~ either.
 
 Flatpak uses namespaces, but honestly on an ArchLinux machine it is always
 better to just build things.
+**** Intel graphics
+Following along the [[https://wiki.archlinux.org/title/Intel_graphics#Enable_GuC_/_HuC_firmware_loading][standard wiki page]], I ended up setting ~fastboot~ and ~enable_fbc~, verified with:
+#+begin_src bash
+sudo systool -m i915 -av
+#+end_src
+The settings can be passed through a kernel parameter or more simply via:
+#+begin_src bash
+# sudoedit /etc/modprobe.d/i915.conf
+options i915 enable_fbc=1 fastboot=1 intel_iommu=on,igfx_off
+#+end_src
 ** Window / Session Management
 Window and session managers are not exactly a dime a dozen. The X window system
 has served me well for many many years yet, for this post, of the X window
