@@ -1,23 +1,17 @@
 ;; Setup to export Org files to Hugo-compatible Markdown using
 ;; `ox-hugo' in an "emacs -Q" environment.
-
-;; package.el
+;; Newer ORG stuff
 (require 'package)
-(setq package-user-dir (concat user-emacs-directory
-        (convert-standard-filename "elpa/")))
-(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ("melpa" . "https://melpa.org/packages/")))
 (package-initialize)
+(unless package-archive-contents
+  (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/") t)
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+  (package-refresh-contents))
+(dolist (pkg '(org-contrib htmlize toml-mode lua-mode vimrc-mode))
+  (unless (package-installed-p pkg)
+    (package-install pkg)))
 
-;; load use-package and check if it's installed, if not downloads it
-(if (not (package-installed-p 'use-package))
-    (progn
-      (package-refresh-contents)
-      (package-install 'use-package)))
-(require 'use-package)
-(use-package org
- :ensure t
- :pin gnu)
+(require 'org)
 
 ;; Some sane settings
 (setq-default require-final-newline t)
