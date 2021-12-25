@@ -14090,7 +14090,7 @@ vec.f90:7:13:
     7 |      contains
       |             1
 Error: Derived-type ‘cartesian’ with BIND(C) must not have a CONTAINS section at (1)
-#end_src
+#+end_src
 
 Removing the attribute, from both the type and the subroutine and
 rearranging slightly, we get the following.
