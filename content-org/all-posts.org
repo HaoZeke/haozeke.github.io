@@ -14213,6 +14213,87 @@ overlooked, however their usage is foundational for long-lasting,
 sustainable Fortran code.
 
 [fn:whatnm] As in all things, ~info nm~ provides the details on interpreting the remaining symbols
+* DONE TinySSH for Docker Development Environments :@notes:tools:workflow:
+CLOSED: [2021-12-26 Sun 22:14]
+:PROPERTIES:
+:EXPORT_FILE_NAME: tinyssh-dockerdev-env
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+
+#+begin_quote
+Rootless SSH servers with TinySSH for local GitPod containers
+#+end_quote
+** Background
+~act~ works well enough for most Github Actions workflows, until something fails
+in the pipeline, or interactive debugging is required. Naturally this is beyond
+the purview of ~act~ itself, but it is easy enough to set up shop with a
+project's GitPod ~docker~ image being used. For the purposes of the post we'll
+consider ~numpy~.
+
+#+begin_src bash
+docker run -v $(pwd):/home/gitpod/f2py_skel --name f2py_npdev -it numpy/numpy-dev:latest
+#+end_src
+
+~docker attach~ can be used in tandem with ~docker stop~ and
+~docker start~, but these have the disadvantage of only providing one
+synchronous view of the machine.
+
+An *SSH server* seems like the most natural solution. Rather than cover OpenSSH
+and its superuser based configuration, we will instead consider the [[https://tinyssh.org/][TinySSH
+project]], which works well without superuser access.
+
+** TinySSH
+We also need to be able to listen for incoming TCP connections and run
+~tinysshd~ in response to a connection. This is a picture perfect scenario for
+~tcpserver~ which is part of the ~uscpi-tcp~ [[https://cr.yp.to/ucspi-tcp/tcpserver.html][set of tools]].
+
+#+begin_src bash
+sudo apt install tinysshd uscpi-tcp # for tcpserver
+# On focal its ucspi-tcp-ipv6
+#+end_src
+
+Although this assumes ~sudo~ access, compiling both [[https://www.bytereef.org/howto/djb/ucspi-tcp-install.html][uscpi-tcp]] and [[https://tinyssh.org/install.html][tinysshd]] from source is a remarkably simple process.
+
+As ~tinyssh~ [[https://github.com/janmojzis/tinyssh][does not implement RSA]] and older cryptography algorithms, it is easiest to make a new key pair on the host machine.
+#+begin_src bash
+# On the host
+ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519_tiny
+ssh-add ~/.ssh/id_ed25519_tiny
+# Copy the public key
+cat ~/.ssh/id_ed25519_tiny.pub | wl-copy # wayland
+# or
+cat ~/.ssh/id_ed25519_tiny.pub | xclip # X11
+#+end_src
+~tinyssh~ supports only key based authentication, we need to set up the ~authorized_keys~ correctly.
+#+begin_src bash
+# On the client
+mkdir $HOME/.ssh
+touch $HOME/.ssh/authorized_keys
+chmod 700 .ssh/
+echo $COPIED_KEY >> $HOME/.ssh/authorized_keys
+chmod 600 .ssh/authorized_keys
+#+end_src
+Finally we can setup server keys and run the server itself, on a port which does not require superuser privileges.
+#+begin_src bash
+tinysshd-makekey $HOME/tinysshkeydir
+tcpserver -HRDl0 0.0.0.0 2200 /usr/sbin/tinysshd -v $HOME/tinysshkeydir
+#+end_src
+From the host, we need to know the IP to connect to.
+#+begin_src bash
+docker inspect -f "{{ .NetworkSettings.IPAddress }}" $IMG_NAME
+ssh $USER@$IP -p 2200
+#+end_src
+** Conclusions
+Like many modern developers, I spend far too long messing around with continuous
+integration systems and jumping around different development environments.
+~numpy~ and other projects have opted into Gitpod as a lower barrier of entry
+method to aid contributors. Often the ~docker~ images backing these do not have
+~systemd~ or service management set up, and so local environments based off of
+such images can be a little off putting.
+
+Nothing in this post constitutes any kind of best practice. In an ideal world
+one would have either physical machines to access or well configured virtual
+machines. Nevertheless, for edge cases, this works well enough in practice.
 * TODO Fortran OOP and Python :@notes:python:fortran:numpy:f2py:rambling:
 # :PROPERTIES:
 # :EXPORT_FILE_NAME: fortran-oop-python
