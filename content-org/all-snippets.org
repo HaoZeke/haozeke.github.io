@@ -165,7 +165,7 @@ However this hasn't been updated in a while now *and fails* on newer versions of
 cargo install watchexec-cli
 watchexec -w source/f2py 'make html'
 #+end_src
-** DONE Docker Development Envs :devenv:cmdline:
+** DONE Docker Development Environments :devenv:cmdline:
 CLOSED: [2021-11-24 Wed 16:20]
 :PROPERTIES:
 :EXPORT_HUGO_BUNDLE: docker-dev-envs
