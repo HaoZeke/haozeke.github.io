@@ -14283,6 +14283,30 @@ From the host, we need to know the IP to connect to.
 docker inspect -f "{{ .NetworkSettings.IPAddress }}" $IMG_NAME
 ssh $USER@$IP -p 2200
 #+end_src
+** File Permissions
+A common issue with ~docker~ images is that the user and group permissions on the shared folders do not match the permissions within the container. The most obvious fix is to force the ~id~ by passing ~--user $(id -u):$(id -g)~ when creating the container. However, a better approach is to change the group and user ~id~ from within the container itself.
+#+begin_src bash
+id # On the host, note the uid and gid
+docker start f2py_npdev
+docker attach f2py_npdev
+# In docker container
+sudo groupmod -g $HOSTGID $USER
+sudo usermod -u $HOSTUID $USER
+exit # re-enter
+#+end_src
+When re-entering the container, the correct permissions will be set for the shared folder, but any existing files will need to be fixed up. We can also get the ~uid~ and ~gid~ of the shared folder directly with ~stat~.
+#+begin_src bash
+# in the container
+export HOSTGID=$(stat -c "%g" $SHARED_VOLUME)
+export HOSTUID=$(stat -c "%u" $SHARED_VOLUME)
+export DOCKERUID=$(stat -c "%u" $HOME)
+export DOCKERGID=$(stat -c "%g" $HOME)
+#+end_src
+For the fix-up, we can simply use the populated variables.
+#+begin_src bash
+sudo find / -xdev -user "$DOCKERUID"  -exec chown -h "$HOSTUID" {} \;
+sudo find / -xdev -group "$DOCKERGID"  -exec chgrp -h "$HOSTGID" {} \;
+#+end_src
 ** Conclusions
 Like many modern developers, I spend far too long messing around with continuous
 integration systems and jumping around different development environments.
