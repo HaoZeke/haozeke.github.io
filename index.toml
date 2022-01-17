@@ -1,6 +1,11 @@
 # We use the generated html to prevent issues involving markdown frontmatter
 
 [[input.files]]
+path = "./snippets/mach-nix-shell-env/index.html"
+url = "https://rgoswami.me/snippets/mach-nix-shell-env/"
+title = "Mach-Nix and Shell Environments"
+
+[[input.files]]
 path = "./posts/tinyssh-dockerdev-env/index.html"
 url = "https://rgoswami.me/posts/tinyssh-dockerdev-env/"
 title = "TinySSH for Docker Development Environments"
