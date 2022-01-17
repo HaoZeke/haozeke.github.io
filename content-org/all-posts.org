@@ -9222,6 +9222,26 @@ Though most browsers (Firefox and Chrome come to mind) have plenty of cloud sync
 
 Naturally, this is not meant to discuss each and every one of my addon choices, those are found [[Chrome Extensions][here for Chrome]]; and [[https://addons.mozilla.org/en-US/firefox/collections/13625553/rgff/?page=1&collection_sort=-added][here for Firefox]]. From a ~dotfiles~ perspective, addon configuration files like ~.tridactylrc~ are unified in a ~browsers~ target while the standard account sync is leveraged to keep track of installations (profile symlinking is no longer recommended as a viable method).
 
+
+** TST Setup
+#+begin_src css
+/* Hide tree style tabs header */
+#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] #sidebar-header {
+  display: none;
+}
+/* Hide horizontal tabs*/
+#main-window[tabsintitlebar="true"]:not([extradragspace="true"]) #TabsToolbar > .toolbar-items {
+  opacity: 0;
+  pointer-events: none;
+}
+#main-window:not([tabsintitlebar="true"]) #TabsToolbar {
+    visibility: collapse !important;
+}
+#main-window[tabsintitlebar="true"]:not([extradragspace="true"]) #TabsToolbar .titlebar-spacer {
+        border-inline-end: none;
+}
+#+end_src
+
 ** Appendix
 *** Chrome Extensions
 Generated [[https://chrome.google.com/webstore/detail/export-links-of-all-exten/cmeckkgeamghjhkepejgjockldoblhcb/related][with this extension]].
