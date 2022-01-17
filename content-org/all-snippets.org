@@ -226,6 +226,33 @@ micromamba install -c nclibz r-httpgd
 #+end_src
 
 These issues are not present when using a ~nix-shell~.
+** DONE Mach-Nix and Shell Environments :nix:python:cmdline:
+CLOSED: [2022-01-17 Mon 02:28]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: mach-nix-shell-env
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
+I often need to set up quick virtual environments. Unfortunately, the standard
+approach to work with this in ~nix~ deals with the local ~nixpkgs~ mechanism for
+~python~ dependencies:
+#+begin_src bash
+nix-shell -p "python38.withPackages(ps: [ ps.numpy ps.sh ])"
+#+end_src
+However there is a catch for packages which are not officially present upstream.
+#+begin_src bash
+# Fails!
+nix-shell -p "python38.withPackages(ps: [ ps.numpy ps.sh ps.lieer ])"
+#+end_src
+However, the ~mach-nix~ project can indeed be used to work around this, at the
+cost of a somewhat longer command.
+#+begin_src bash
+# Works
+nix-shell -p '(callPackage (fetchTarball https://github.com/DavHau/mach-nix/tarball/3.0.2) {python="python38";}).mkPython{requirements="numpy\n lieer\n ipython";}' --command ipython
+#+end_src
+~mkPythonShell~ does not generate an environment which can be used here, since
+that is not a derivation which can be built.  This is most useful in the context
+of systems which use ~asdf~ or other ~PATH~ shim approaches.
 ** TODO Applying Patches Across Repositories :git:cmdline:patch:
 :PROPERTIES:
 :EXPORT_HUGO_BUNDLE: git-commit-patch
