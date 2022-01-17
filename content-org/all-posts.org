@@ -14249,7 +14249,8 @@ We also need to be able to listen for incoming TCP connections and run
 
 #+begin_src bash
 sudo apt install tinysshd uscpi-tcp # for tcpserver
-# On focal its ucspi-tcp-ipv6
+# On focal it is:
+# sudo apt install tinysshd ucspi-tcp-ipv6
 #+end_src
 
 Although this assumes ~sudo~ access, compiling both [[https://www.bytereef.org/howto/djb/ucspi-tcp-install.html][uscpi-tcp]] and [[https://tinyssh.org/install.html][tinysshd]] from source is a remarkably simple process.
@@ -14344,11 +14345,22 @@ For those new to the language, some terminology:
 Unfortunately only the first of these are actually covered in terms of
 interoperability with ~C~ as of the [[https://gitlab.com/lfortran/lfortran/uploads/973db2bfcc64cd2a397f823c32718b39/18-007r1.pdf][F2018 draft standard]]. A little deviation
 from the standards never hurt anyone though (much).
+
+Type shadowing support with modern Fortran is in progress for ~numpy~, however,
+although there are no direct equivalents in ~C~ for the more OOP specific
+derived types, there are plenty of equivalent structures in ~Python~.
+
 ** The class
 The failings of the OOP pattern, many though there may be, are easily hidden
 behind a contrived geometric shape example. So following along in that grand
 tradition, we will devise a derived type with functions defining a *Square* and
 then generalize to a *Shape* and an extended (a.k.a. inherited) type.
+** General overview
+The general conception follows closely the work of
+@pletzerExposingFortranDerived2008, with the main difference being in the fact
+that instead of exposing a series of ~C~ functions which call ~Fortran~ methods,
+we will instead define a ~Python~ class to hide the dirty work from the user.
+
 * DONE Revisiting Wayland for ArchLinux :@notes:rambling:workflow:
 CLOSED: [2021-12-24 Fri 18:13]
 :PROPERTIES:
