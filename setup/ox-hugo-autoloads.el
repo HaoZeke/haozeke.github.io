@@ -240,7 +240,7 @@ The information is converted to Markdown format and copied to the
 kill ring.  The same information is displayed in the Messages
 buffer and returned as a string in Org format." t nil)
 
-(register-definition-prefixes "ox-hugo" '("org-hugo-"))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ox-hugo" '("org-hugo-")))
 
 ;;;***
 
