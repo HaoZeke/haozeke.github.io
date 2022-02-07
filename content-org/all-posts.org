@@ -14676,7 +14676,7 @@ is still based around ~python2~ and shows no sign of moving forward. I really
 Anything with a recent electron binary (around 13) will just need a few flags.
 #+begin_src bash
 code --enable-features=UseOzonePlatform --ozone-platform=wayland
-slack --enable-features=UseOzonePlatform --ozone-platform=wayland
+obsidian --enable-features=UseOzonePlatform --ozone-platform=wayland
 #+end_src
 *** Browsers
 Personally I prefer ~firefox~ in-spite of its shitty tendencies on the regular editions (e.g. not allowing unsigned extensions).
