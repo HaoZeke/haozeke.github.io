@@ -8624,7 +8624,7 @@ These are trivial to obtain:
 #+begin_src bash
 cargo install bottom ripgrep hyperfine skim mcfly
 # The following need some system libraries (OpenSSL) and shall be dealt with later, or with micromamba
-# bat exa fd-find tealdeer starship sd procs zoxide bliss navi
+# bat exa fd-find tealdeer starship sd procs zoxide bliss navi watchexec
 #+end_src
 *** MicroMamba
 We will set up a ~micromamba~ installation to get ~git~ and other base utilities.
@@ -13017,7 +13017,7 @@ micromamba create -p ./.jc21tmp pymatgen python==3.8 jupyterlab pip ipython
 micromamba activate $(pwd)/.jc21tmp
 #+end_src
 
-We need to grab a stable ~juia~ version which we will use ~jill.py~ for:
+We need to grab a stable ~julia~ version which we will use ~jill.py~ for:
 #+begin_src bash
 pip install jill
 jill install
