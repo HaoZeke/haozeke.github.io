@@ -2246,8 +2246,9 @@ set $up e
 set $right i
 #+END_SRC
 ** MailMate
-Sadly, one of the email clients I do use regularly of late is MailMate. It supports a rather rich set of keybindings placed, e.g. with ~"Library/Application Support/MailMate/Resources/KeyBindings/ColemakVIM.plist"~ configured as follows:
+Sadly, one of the email clients I do use regularly of late is MailMate. It supports a rather rich set of keybindings placed, e.g. with ~"~/Library/Application\ Support/MailMate/Resources/KeyBindings/"~ configured as follows:
 #+begin_src json
+{
 	"c"	= "newMessage:";
 	"/"	= "searchAllMessages:";
 	"n"	= "nextMessage:";
@@ -2267,6 +2268,7 @@ Sadly, one of the email clients I do use regularly of late is MailMate. It suppo
 	"R"	= "replyAll:";
 	"f"	= "forwardMessage:";
 	"^s"	= "saveDocument:";
+}
 #+end_src
 ** Conclusions
 That seems to be it for now. If I think of more programs I use regularly which
