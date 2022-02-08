@@ -2268,6 +2268,7 @@ Sadly, one of the email clients I do use regularly of late is MailMate. It suppo
 	"R"	= "replyAll:";
 	"f"	= "forwardMessage:";
 	"^s"	= "saveDocument:";
+	"u" = "toggleReadState:";
 }
 #+end_src
 ** Conclusions
