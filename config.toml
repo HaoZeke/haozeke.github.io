@@ -104,11 +104,11 @@ mediaType = "application/toml"
   enable = true
   backend = "fuse" # can be stork or fuse
 
-# [params.utterances]
-# issue = "pathname"
-# theme = "photon-dark"
-# repo  ="haozeke/haozeke.github.io"
-# label = "Utterance 💬"
+[params.utterances]
+issue = "pathname"
+theme = "photon-dark"
+repo  ="haozeke/haozeke.github.io"
+label = "Utterance 💬"
 
 # [params.intensedebate]
 # accountID = "03433eb5474ac59759898fb85454590c"
@@ -123,8 +123,8 @@ accountID = "rohit"
 # [params.graphcomments]
 # accountID = "rgoswami"
 
-[params.remarkbox]
-accountID = "8e660759-e7e6-11ea-9711-040140774501"
+# [params.remarkbox]
+# accountID = "8e660759-e7e6-11ea-9711-040140774501"
 
 # [params.commentbox]
 # accountID = "5662446949761024-proj"
