@@ -2246,8 +2246,9 @@ set $up e
 set $right i
 #+END_SRC
 ** MailMate
-Sadly, one of the email clients I do use regularly of late is MailMate. It supports a rather rich set of keybindings placed, e.g. with ~"Library/Application Support/MailMate/Resources/KeyBindings/ColemakVIM.plist"~ configured as follows:
+Sadly, one of the email clients I do use regularly of late is MailMate. It supports a rather rich set of keybindings placed, e.g. with ~"~/Library/Application\ Support/MailMate/Resources/KeyBindings/"~ configured as follows:
 #+begin_src json
+{
 	"c"	= "newMessage:";
 	"/"	= "searchAllMessages:";
 	"n"	= "nextMessage:";
@@ -2267,6 +2268,8 @@ Sadly, one of the email clients I do use regularly of late is MailMate. It suppo
 	"R"	= "replyAll:";
 	"f"	= "forwardMessage:";
 	"^s"	= "saveDocument:";
+	"u" = "toggleReadState:";
+}
 #+end_src
 ** Conclusions
 That seems to be it for now. If I think of more programs I use regularly which
@@ -8622,7 +8625,7 @@ These are trivial to obtain:
 #+begin_src bash
 cargo install bottom ripgrep hyperfine skim mcfly
 # The following need some system libraries (OpenSSL) and shall be dealt with later, or with micromamba
-# bat exa fd-find tealdeer starship sd procs zoxide bliss navi
+# bat exa fd-find tealdeer starship sd procs zoxide bliss navi watchexec
 #+end_src
 Not immediately obvious, but [[https://docs.rs/cargo-update/2.5.3/cargo_update/][easy to update]] as well.
 #+begin_src bash
@@ -13020,7 +13023,7 @@ micromamba create -p ./.jc21tmp pymatgen python==3.8 jupyterlab pip ipython
 micromamba activate $(pwd)/.jc21tmp
 #+end_src
 
-We need to grab a stable ~juia~ version which we will use ~jill.py~ for:
+We need to grab a stable ~julia~ version which we will use ~jill.py~ for:
 #+begin_src bash
 pip install jill
 jill install
