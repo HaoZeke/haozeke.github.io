@@ -8624,6 +8624,11 @@ cargo install bottom ripgrep hyperfine skim mcfly
 # The following need some system libraries (OpenSSL) and shall be dealt with later, or with micromamba
 # bat exa fd-find tealdeer starship sd procs zoxide bliss navi
 #+end_src
+Not immediately obvious, but [[https://docs.rs/cargo-update/2.5.3/cargo_update/][easy to update]] as well.
+#+begin_src bash
+cargo install cargo-update
+cargo install-update --all
+#+end_src
 *** MicroMamba
 We will set up a ~micromamba~ installation to get ~git~ and other base utilities.
 #+begin_src bash
@@ -14410,7 +14415,7 @@ complete/recommended/normative; *use the installation guide* and _follow the Arc
 - *Time* :: Being as this is a laptop configuration, it is best to configure ~chrony~ ([[https://wiki.archlinux.org/title/Chrony][described here]]) as the ~ntp~ client and server of choice
 - *AUR Helper* :: ~trizen~, though I retain a soft spot for ~yay~
 - *Portability* :: Details are presented concisely on [[https://wiki.archlinux.org/title/Laptop][the ArchWiki]]
-- *Device details* :: The ArchWiki [[https://wiki.archlinux.org/title/Lenovo_ThinkPad_X1_Carbon_(Gen_6)][has an entry]], notably including modem setup woes and also ~throttled~ details for better power management
+- *Device details* :: The ArchWiki [[https://wiki.archlinux.org/title/Lenovo_ThinkPad_X1_Carbon_(Gen_6)][has an entry]], notably including modem setup woes and also ~throttled~ details for better power management (I ended up using [[https://github.com/erpalma/throttled][throttled]] over ~thermald~)
 - *Window and login* :: ~sway~, and ~greetd~
 *** Configurations
 In general the idea is to run as few services as possible so ~systemctl
