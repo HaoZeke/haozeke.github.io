@@ -3,11 +3,13 @@
 ;; Newer ORG stuff
 (require 'package)
 (package-initialize)
+(package-install 'use-package)
+(package-install 'org)
 (unless package-archive-contents
   (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/") t)
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
   (package-refresh-contents))
-(dolist (pkg '(org-contrib htmlize toml-mode lua-mode vimrc-mode))
+(dolist (pkg '(org-contrib htmlize lua-mode))
   (unless (package-installed-p pkg)
     (package-install pkg)))
 
