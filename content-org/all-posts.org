@@ -14921,6 +14921,7 @@ the rest[fn:whereswaldo].
 - [[https://keybase.io/HaoZeke][Keybase]]
 ** Pages and Articles
 *** By Me
+- Articles written for the [[https://studentabladid.is/efni?author=6166dde6acb3ff544309ecd6][Student Paper of the University of Iceland]]
 - Everything on [[https://keybase.io/HaoZeke][any of my many websites]]
 - [[https://www.aiche.org/community/sites/committees/young-professionals/blog/fundamental-research-chemical-engineering-undergrad][Write-up on research with a ChemE undergraduate degree]] for the American Institute of Chemical Engineers (AIChE) Young Professionals Committee (YPC)
 - Hackernoon article on [[https://hackernoon.com/locking-and-encrypting-apps-with-encfs-c1484e77f479][Locking and Encrypting Apps with Encfs]]
