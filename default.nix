@@ -24,7 +24,8 @@ in pkgs.stdenv.mkDerivation {
 
   LANG = "en_US.UTF-8";
 
-  LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
+  LOCALE_ARCHIVE = pkgs.lib.optionalString stdenv.isLinux
+    "${pkgs.glibcLocales}/lib/locale/locale-archive";
 
   buildInputs = with pkgs; [
     # Shell
@@ -38,9 +39,10 @@ in pkgs.stdenv.mkDerivation {
     curl
     nodejs
     postcss-cli
+    which
+    sysctl
     # Ruby
     myGems
-    (lowPrio myGems.wrappedRuby)
     ]
  ++ [ hpkgs.pandoc ];
 
