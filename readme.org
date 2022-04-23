@@ -44,6 +44,10 @@ npm install -g npm-check-updates
 ncu -u # Might break!
 #+end_src
 ** Without Nix
+*** Conda Environments
+Most of the dependencies can be setup via ~micromamba~ or another equivalent. The exceptions are:
+- Hugo (the [[https://github.com/gohugoio/hugo/releases][extended release]])
+- Emacs (27.2)
 *** Ruby
 Track the ruby dependencies with ~rbenv~ and ~ruby-build~:
 #+begin_src bash
