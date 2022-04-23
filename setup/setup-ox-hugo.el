@@ -28,10 +28,10 @@
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package)
-  (eval-when-compile
-    (require 'use-package))
   )
 
+(eval-when-compile
+  (require 'use-package))
 ;; Always install things here
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
