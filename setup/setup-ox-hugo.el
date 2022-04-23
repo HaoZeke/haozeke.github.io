@@ -41,9 +41,8 @@
 (use-package org-contrib)
 (use-package htmlize)
 (use-package lua-mode)
+(org-reload) ;; Fixes the issue with collect-keywords
 (use-package ox-hugo)
-
-(require 'ox-hugo)
 ;; Some sane settings
 (setq-default require-final-newline t)
 (setq-default indent-tabs-mode nil)
