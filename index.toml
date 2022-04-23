@@ -1,2 +1,87 @@
 # We use the generated html to prevent issues involving markdown frontmatter
 
+[[input.files]]
+path = "./snippets/mach-nix-shell-env/index.html"
+url = "https://rgoswami.me/snippets/mach-nix-shell-env/"
+title = "Mach-Nix and Shell Environments"
+
+[[input.files]]
+path = "./snippets/docker-dev-envs/index.html"
+url = "https://rgoswami.me/snippets/docker-dev-envs/"
+title = "Docker Development Environments"
+
+[[input.files]]
+path = "./snippets/ssh-port-forwarding/index.html"
+url = "https://rgoswami.me/snippets/ssh-port-forwarding/"
+title = "SSH Port Forwarding"
+
+[[input.files]]
+path = "./snippets/prog-lang-man/index.html"
+url = "https://rgoswami.me/snippets/prog-lang-man/"
+title = "Programming Language Management"
+
+[[input.files]]
+path = "./snippets/watch-files/index.html"
+url = "https://rgoswami.me/snippets/watch-files/"
+title = "Watching Files"
+
+[[input.files]]
+path = "./snippets/forward-multiport/index.html"
+url = "https://rgoswami.me/snippets/forward-multiport/"
+title = "Forwarding Multiple Local Ports"
+
+[[input.files]]
+path = "./snippets/nix-collection-overwrite-attrs/index.html"
+url = "https://rgoswami.me/snippets/nix-collection-overwrite-attrs/"
+title = "Overwriting Attributes"
+
+[[input.files]]
+path = "./posts/sr2-ch13-ch14/index.html"
+url = "https://rgoswami.me/posts/sr2-ch13-ch14/"
+title = "SR2 :: Solutions for Chapters {13,14}"
+
+[[input.files]]
+path = "./posts/sr2-ch9-ch11-ch12/index.html"
+url = "https://rgoswami.me/posts/sr2-ch9-ch11-ch12/"
+title = "SR2 :: Solutions for Chapters {9,11,12}"
+
+[[input.files]]
+path = "./posts/sr2-ch5-ch6-ch7/index.html"
+url = "https://rgoswami.me/posts/sr2-ch5-ch6-ch7/"
+title = "SR2 :: Solutions for Chapters {5,6,7}"
+
+[[input.files]]
+path = "./posts/sr2-ch2-ch3-ch4/index.html"
+url = "https://rgoswami.me/posts/sr2-ch2-ch3-ch4/"
+title = "SR2 :: Solutions for Chapters {2,3,4}"
+
+[[input.files]]
+path = "./posts/mackay-all-a/index.html"
+url = "https://rgoswami.me/posts/mackay-all-a/"
+title = "Everyone Should Get an A - David MacKay"
+
+[[input.files]]
+path = "./posts/islr-ch7/index.html"
+url = "https://rgoswami.me/posts/islr-ch7/"
+title = "ISLR :: Moving Beyond Linearity"
+
+[[input.files]]
+path = "./posts/islr-ch6/index.html"
+url = "https://rgoswami.me/posts/islr-ch6/"
+title = "ISLR :: Linear Model Selection and Regularization"
+
+[[input.files]]
+path = "./posts/islr-ch5/index.html"
+url = "https://rgoswami.me/posts/islr-ch5/"
+title = "ISLR :: Resampling Methods"
+
+[[input.files]]
+path = "./posts/islr-ch4/index.html"
+url = "https://rgoswami.me/posts/islr-ch4/"
+title = "ISLR :: Classification"
+
+[[input.files]]
+path = "./posts/islr-ch2-ch3/index.html"
+url = "https://rgoswami.me/posts/islr-ch2-ch3/"
+title = "ISLR :: Multiple Linear Regression"
+
