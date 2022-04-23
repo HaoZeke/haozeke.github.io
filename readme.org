@@ -3,6 +3,10 @@
 - The theme is based off this [[https://themes.gohugo.io//theme/hugo-theme-hello-friend-ng/][theme]]
 - The rest of the site is configured to work well with doom-emacs, so it uses ~ox-hugo~
 * Running Locally
+This site uses modular Hugo themes so:
+#+begin_src bash
+git submodule update --init
+#+end_src
 After the dependencies are set up below the site can be built and served with ~rake~ tasks. [[https://gohugo.io/getting-started/installing/][Hugo]] is also expected.
 #+begin_src bash
 $ rake --tasks
