@@ -43,6 +43,7 @@
 (use-package lua-mode)
 (use-package ox-hugo)
 
+(require 'ox-hugo)
 ;; Some sane settings
 (setq-default require-final-newline t)
 (setq-default indent-tabs-mode nil)
