@@ -1,19 +1,46 @@
+;;; package --- Setup ox-hugo preliminaries
+
+;; Copyright (C) 2021 Rohit Goswami
+
+;; Author: Rohit Goswami <rohit[dot]goswami[at]aol[dot]com>
+;; Keywords: use-package, ox-hugo, org-mode
+;; License: MIT
+
+;;; Commentary:
+
 ;; Setup to export Org files to Hugo-compatible Markdown using
 ;; `ox-hugo' in an "emacs -Q" environment.
-;; Newer ORG stuff
-(require 'package)
-(package-initialize)
-(package-install 'use-package)
-(package-install 'org)
-(unless package-archive-contents
-  (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/") t)
-  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-  (package-refresh-contents))
-(dolist (pkg '(org-contrib htmlize lua-mode))
-  (unless (package-installed-p pkg)
-    (package-install pkg)))
 
-(require 'org)
+;;; Code:
+(require 'package)
+(setq package-enable-at-startup nil)
+(unless package-archive-contents
+  (setq package-archives
+        '(("melpa" . "https://melpa.org/packages/")
+          ("gnu" . "http://elpa.gnu.org/packages/")
+          ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+     ))
+  (package-refresh-contents)
+  )
+(package-initialize)
+
+;; Install and setup use-package
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package)
+  (eval-when-compile
+    (require 'use-package))
+  )
+
+;; Always install things here
+(require 'use-package-ensure)
+(setq use-package-always-ensure t)
+
+;; Get more dependencies
+(use-package org)
+(use-package org-contrib)
+(use-package htmlize)
+(use-package lua-mode)
 
 ;; Some sane settings
 (setq-default require-final-newline t)
@@ -249,3 +276,5 @@ Emacs installation.  If Emacs is installed using
 
   (with-eval-after-load 'ox
     (setq org-export-headline-levels 4))) ;default is 3
+(provide 'setup-ox-hugo)
+;;; setup-ox-hugo.el ends here
