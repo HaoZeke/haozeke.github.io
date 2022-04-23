@@ -1,6 +1,6 @@
 baseurl = "https://rgoswami.me/"
 languageCode = "en-us"
-theme = ["hello-friend-ng-hz"]
+theme = ["hugo-search-fuse-js", "hello-friend-ng-hz"]
 
 PygmentsCodeFences = true
 PygmentsStyle = "native"
