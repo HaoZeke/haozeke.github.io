@@ -27,7 +27,7 @@ jobs:
           NIXPKGS_ALLOW_UNFREE: 1
 
       - name: Build
-        run: nix-shell --run "rake hugoBuild"
+        run: nix-build .
         env:
           NIXPKGS_ALLOW_UNFREE: 1
 
@@ -38,5 +38,5 @@ jobs:
           deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
           enable_jekyll: true
           publish_branch: gh-pages
-          publish_dir: ./public
+          publish_dir: ./result
           keep_files: true
