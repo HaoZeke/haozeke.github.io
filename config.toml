@@ -104,7 +104,7 @@ mediaType = "application/toml"
   contentTypeName = "posts"
 
   # Default theme "light" or "dark"
-  defaultTheme = "light"
+  defaultTheme = "dark"
 
 [params.search]
   enable = true
