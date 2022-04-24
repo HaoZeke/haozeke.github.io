@@ -39,9 +39,6 @@ mediaType = "application/toml"
 [outputs]
   home = ["HTML", "RSS", "TOML", "JSON"]
 
-[blackfriday]
-  hrefTargetBlank = true
-
 [taxonomies]
   author   = "author"
   tag      = "tags"
