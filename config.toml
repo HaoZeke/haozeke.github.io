@@ -64,6 +64,15 @@ mediaType = "application/toml"
     ordered = false
     startLevel = 2
   [markup.goldmark]
+    [markup.goldmark.extensions]
+      definitionList = true
+      footnote = true
+      linkify = true
+      linkifyProtocol = 'https'
+      strikethrough = true
+      table = true
+      taskList = true
+      typographer = true
     [markup.goldmark.renderer]
       unsafe = true
 
