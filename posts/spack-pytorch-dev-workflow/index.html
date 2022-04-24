@@ -105,7 +105,7 @@ it would look like this diff:</p><div class=highlight><pre tabindex=0 class=chro
 </span></span></code></pre></div><p>This modified environment can now be enabled for use with the appropriate
 variants (details found with <code>spack info py-torch</code>).
 However, there is one rather important variant missing for local development,
-<code>DEBUG</code>. The application of this patch will rectify this until an upstream PR is
+<code>DEBUG</code>. The application of this patch will rectify this until <a href=https://github.com/spack/spack/pull/30267>an upstream PR</a> is
 merged.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-diff data-lang=diff><span class=line><span class=ln> 1</span><span class=cl><span class=gh>diff --git a/var/spack/repos/builtin/packages/py-torch/package.py b/var/spack/repos/builtin/packages/py-torch/package.py
 </span></span></span><span class=line><span class=ln> 2</span><span class=cl><span class=gh>index 8190e01102..d7b68ae4bd 100644
 </span></span></span><span class=line><span class=ln> 3</span><span class=cl><span class=gh></span><span class=gd>--- a/var/spack/repos/builtin/packages/py-torch/package.py
