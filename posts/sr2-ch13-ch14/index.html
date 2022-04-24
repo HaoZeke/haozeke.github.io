@@ -1,620 +1,620 @@
 <!doctype html><html lang=en itemscope itemtype=http://schema.org/WebPage><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=author content="[Rohit Goswami]"><meta name=description content="Setup details are described here, and the meta-post about these solutions is here.
  Materials The summmer course1 is based off of the second edition of Statistical Rethinking by Richard McElreath.
  Chapter 13  E{1,2,3,4,5}   Chapter 14  E{1,2,3}    Packages A colophon with details is provided at the end, but the following packages and theme parameters are used throughout.
-libsUsed&amp;lt;-c(&amp;#34;tidyverse&amp;#34;,&amp;#34;tidybayes&amp;#34;,&amp;#34;orgutils&amp;#34;,&amp;#34;dagitty&amp;#34;, &amp;#34;rethinking&amp;#34;,&amp;#34;tidybayes.rethinking&amp;#34;, &amp;#34;ggplot2&amp;#34;,&amp;#34;kableExtra&amp;#34;,&amp;#34;dplyr&amp;#34;,&amp;#34;glue&amp;#34;, &amp;#34;latex2exp&amp;#34;,&amp;#34;data.table&amp;#34;,&amp;#34;printr&amp;#34;,&amp;#34;devtools&amp;#34;) invisible(lapply(libsUsed, library, character."><meta name=keywords content=",solutions,R,SR2"><meta name=robots content="noodp"><meta name=theme-color content><link rel=canonical href=https://rgoswami.me/posts/sr2-ch13-ch14/><title>SR2 :: Solutions for Chapters {13,14} :: Rohit Goswami — Reflections</title><link href=https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css rel=stylesheet type=text/css><link rel=stylesheet href=/main.min.b6dbce0fdf6c61563a0c2226e857d5dadd8e5afa2c4f73ec9ea55abd831f9a72.css><meta itemprop=name content="SR2 :: Solutions for Chapters {13,14}"><meta itemprop=description content="Setup details are described here, and the meta-post about these solutions is here.
+1libsUsed&amp;lt;-c(&amp;#34;tidyverse&amp;#34;,&amp;#34;tidybayes&amp;#34;,&amp;#34;orgutils&amp;#34;,&amp;#34;dagitty&amp;#34;, 2&amp;#34;rethinking&amp;#34;,&amp;#34;tidybayes.rethinking&amp;#34;, 3&amp;#34;ggplot2&amp;#34;,&amp;#34;kableExtra&amp;#34;,&amp;#34;dplyr&amp;#34;,&amp;#34;glue&amp;#34;, 4&amp;#34;latex2exp&amp;#34;,&amp;#34;data.table&amp;#34;,&amp;#34;printr&amp;#34;,&amp;#34;devtools&amp;#34;) 5invisible(lapply(libsUsed, library, character."><meta name=keywords content=",solutions,R,SR2"><meta name=robots content="noodp"><meta name=theme-color content><link rel=canonical href=https://rgoswami.me/posts/sr2-ch13-ch14/><title>SR2 :: Solutions for Chapters {13,14} :: Rohit Goswami — Reflections</title><link href=https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css rel=stylesheet type=text/css><link rel=stylesheet href=/main.min.b6dbce0fdf6c61563a0c2226e857d5dadd8e5afa2c4f73ec9ea55abd831f9a72.css><meta itemprop=name content="SR2 :: Solutions for Chapters {13,14}"><meta itemprop=description content="Setup details are described here, and the meta-post about these solutions is here.
  Materials The summmer course1 is based off of the second edition of Statistical Rethinking by Richard McElreath.
  Chapter 13  E{1,2,3,4,5}   Chapter 14  E{1,2,3}    Packages A colophon with details is provided at the end, but the following packages and theme parameters are used throughout.
-libsUsed<-c(&#34;tidyverse&#34;,&#34;tidybayes&#34;,&#34;orgutils&#34;,&#34;dagitty&#34;, &#34;rethinking&#34;,&#34;tidybayes.rethinking&#34;, &#34;ggplot2&#34;,&#34;kableExtra&#34;,&#34;dplyr&#34;,&#34;glue&#34;, &#34;latex2exp&#34;,&#34;data.table&#34;,&#34;printr&#34;,&#34;devtools&#34;) invisible(lapply(libsUsed, library, character."><meta itemprop=datePublished content="2020-06-28T00:00:00+00:00"><meta itemprop=dateModified content="2020-06-28T00:00:00+00:00"><meta itemprop=wordCount content="3445"><meta itemprop=image content="https://rgoswami.me/images/RG.png"><meta itemprop=keywords content="solutions,R,SR2,"><meta property="og:title" content="SR2 :: Solutions for Chapters {13,14}"><meta property="og:description" content="Setup details are described here, and the meta-post about these solutions is here.
+1libsUsed<-c(&#34;tidyverse&#34;,&#34;tidybayes&#34;,&#34;orgutils&#34;,&#34;dagitty&#34;, 2&#34;rethinking&#34;,&#34;tidybayes.rethinking&#34;, 3&#34;ggplot2&#34;,&#34;kableExtra&#34;,&#34;dplyr&#34;,&#34;glue&#34;, 4&#34;latex2exp&#34;,&#34;data.table&#34;,&#34;printr&#34;,&#34;devtools&#34;) 5invisible(lapply(libsUsed, library, character."><meta itemprop=datePublished content="2020-06-28T00:00:00+00:00"><meta itemprop=dateModified content="2020-06-28T00:00:00+00:00"><meta itemprop=wordCount content="3445"><meta itemprop=image content="https://rgoswami.me/images/RG.png"><meta itemprop=keywords content="solutions,R,SR2,"><meta property="og:title" content="SR2 :: Solutions for Chapters {13,14}"><meta property="og:description" content="Setup details are described here, and the meta-post about these solutions is here.
  Materials The summmer course1 is based off of the second edition of Statistical Rethinking by Richard McElreath.
  Chapter 13  E{1,2,3,4,5}   Chapter 14  E{1,2,3}    Packages A colophon with details is provided at the end, but the following packages and theme parameters are used throughout.
-libsUsed<-c(&#34;tidyverse&#34;,&#34;tidybayes&#34;,&#34;orgutils&#34;,&#34;dagitty&#34;, &#34;rethinking&#34;,&#34;tidybayes.rethinking&#34;, &#34;ggplot2&#34;,&#34;kableExtra&#34;,&#34;dplyr&#34;,&#34;glue&#34;, &#34;latex2exp&#34;,&#34;data.table&#34;,&#34;printr&#34;,&#34;devtools&#34;) invisible(lapply(libsUsed, library, character."><meta property="og:type" content="article"><meta property="og:url" content="https://rgoswami.me/posts/sr2-ch13-ch14/"><meta property="og:image" content="https://rgoswami.me/images/RG.png"><meta property="article:section" content="posts"><meta property="article:published_time" content="2020-06-28T00:00:00+00:00"><meta property="article:modified_time" content="2020-06-28T00:00:00+00:00"><meta property="og:site_name" content="Rohit Goswami"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://rgoswami.me/images/RG.png"><meta name=twitter:title content="SR2 :: Solutions for Chapters {13,14}"><meta name=twitter:description content="Setup details are described here, and the meta-post about these solutions is here.
+1libsUsed<-c(&#34;tidyverse&#34;,&#34;tidybayes&#34;,&#34;orgutils&#34;,&#34;dagitty&#34;, 2&#34;rethinking&#34;,&#34;tidybayes.rethinking&#34;, 3&#34;ggplot2&#34;,&#34;kableExtra&#34;,&#34;dplyr&#34;,&#34;glue&#34;, 4&#34;latex2exp&#34;,&#34;data.table&#34;,&#34;printr&#34;,&#34;devtools&#34;) 5invisible(lapply(libsUsed, library, character."><meta property="og:type" content="article"><meta property="og:url" content="https://rgoswami.me/posts/sr2-ch13-ch14/"><meta property="og:image" content="https://rgoswami.me/images/RG.png"><meta property="article:section" content="posts"><meta property="article:published_time" content="2020-06-28T00:00:00+00:00"><meta property="article:modified_time" content="2020-06-28T00:00:00+00:00"><meta property="og:site_name" content="Rohit Goswami"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://rgoswami.me/images/RG.png"><meta name=twitter:title content="SR2 :: Solutions for Chapters {13,14}"><meta name=twitter:description content="Setup details are described here, and the meta-post about these solutions is here.
  Materials The summmer course1 is based off of the second edition of Statistical Rethinking by Richard McElreath.
  Chapter 13  E{1,2,3,4,5}   Chapter 14  E{1,2,3}    Packages A colophon with details is provided at the end, but the following packages and theme parameters are used throughout.
-libsUsed<-c(&#34;tidyverse&#34;,&#34;tidybayes&#34;,&#34;orgutils&#34;,&#34;dagitty&#34;, &#34;rethinking&#34;,&#34;tidybayes.rethinking&#34;, &#34;ggplot2&#34;,&#34;kableExtra&#34;,&#34;dplyr&#34;,&#34;glue&#34;, &#34;latex2exp&#34;,&#34;data.table&#34;,&#34;printr&#34;,&#34;devtools&#34;) invisible(lapply(libsUsed, library, character."><meta property="article:section" content="programming"><meta property="article:published_time" content="2020-06-28 00:00:00 +0000 UTC"></head><body><div class=container><header class=header><div class=header__inner><div class=header__left><div class=logo><a href=/ style=text-decoration:none><img src=/images/home.png alt></a></div></div><div class=header__mid><button class=button><div class=button__text><a href=https://rgoswami.me//search>Search</a></div></button></div><div class=header__right><nav class=menu><ul class=menu__inner><li><a href=https://rgoswami.me/about>About</a></li><li><a href=https://rgoswami.me/posts>Blog</a></li></ul><ul class=menu__inner><li><a href=https://rgoswami.me/categories>Categories</a></li><li><a href=https://rgoswami.me/tags>Tags</a></li></ul></nav><button id=toggleMenu><div class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></div></button>
+1libsUsed<-c(&#34;tidyverse&#34;,&#34;tidybayes&#34;,&#34;orgutils&#34;,&#34;dagitty&#34;, 2&#34;rethinking&#34;,&#34;tidybayes.rethinking&#34;, 3&#34;ggplot2&#34;,&#34;kableExtra&#34;,&#34;dplyr&#34;,&#34;glue&#34;, 4&#34;latex2exp&#34;,&#34;data.table&#34;,&#34;printr&#34;,&#34;devtools&#34;) 5invisible(lapply(libsUsed, library, character."><meta property="article:section" content="programming"><meta property="article:published_time" content="2020-06-28 00:00:00 +0000 UTC"></head><body class=dark-theme><div class=container><header class=header><div class=header__inner><div class=header__left><div class=logo><a href=/ style=text-decoration:none><img src=/images/home.png alt></a></div></div><div class=header__mid><button class=button><div class=button__text><a href=https://rgoswami.me//search>Search</a></div></button></div><div class=header__right><nav class=menu><ul class=menu__inner><li><a href=https://rgoswami.me/about>About</a></li><li><a href=https://rgoswami.me/posts>Blog</a></li></ul><ul class=menu__inner><li><a href=https://rgoswami.me/categories>Categories</a></li><li><a href=https://rgoswami.me/tags>Tags</a></li></ul></nav><button id=toggleMenu><div class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></div></button>
 <button class=theme-toggle id=toggleTheme><svg class="theme-toggler" width="32" height="32" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41c10.4934.0 19-8.5066 19-19C41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg></button></div></div></header><script src=https://rgoswami.me/js/mathjax-config.js></script>
 <script id=MathJax-script async src=https://unpkg.com/mathjax@3/es5/tex-chtml.js></script><aside class=sidebar><div class=hideTOC><button id=tocTog>TOC</button><div class="sideTOC m-fadeOut"><nav id=TableOfContents><ul><li><a href=#materials>Materials</a><ul><li><a href=#packages>Packages</a></li></ul></li><li><a href=#chapter-xiii-models-with-memory>Chapter XIII: Models With Memory</a><ul><li><a href=#easy-questions--ch13>Easy Questions (Ch13)</a></li></ul></li><li><a href=#chapter-xiv-adventures-in-covariance>Chapter XIV: Adventures in Covariance</a><ul><li><a href=#easy-questions--ch14>Easy Questions (Ch14)</a></li></ul></li><li><a href=#a-colophon>A: Colophon</a></li></ul></nav></div></div></aside><main class=post><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>17 minutes<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Written: 2020-06-28 00:00 +0000</p></p></div><article class=h-entry><h1 class="post-title p-name"><a class=u-url href=https://rgoswami.me/posts/sr2-ch13-ch14/>SR2 :: Solutions for Chapters {13,14}</a></h1><div class=post-info><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pen-tool"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg><span class="author u-author p-author"><a href=https://rgoswami.me/author/rohit-goswami>Rohit Goswami</a></span></div><hr><aside id=toc class=sidebar><div class=toc-title>Table of Contents</div><nav id=TableOfContents><ul><li><a href=#materials>Materials</a><ul><li><a href=#packages>Packages</a></li></ul></li><li><a href=#chapter-xiii-models-with-memory>Chapter XIII: Models With Memory</a><ul><li><a href=#easy-questions--ch13>Easy Questions (Ch13)</a></li></ul></li><li><a href=#chapter-xiv-adventures-in-covariance>Chapter XIV: Adventures in Covariance</a><ul><li><a href=#easy-questions--ch14>Easy Questions (Ch14)</a></li></ul></li><li><a href=#a-colophon>A: Colophon</a></li></ul></nav></aside><hr><div class="post-content e-content"><blockquote><p>Setup details <a href=https://rgoswami.me/posts/rethinking-r-nix/>are described here</a>, and the meta-post about these solutions <a href=https://rgoswami.me/posts/some-sol-sr2/>is here</a>.</p></blockquote><h2 id=materials>Materials</h2><p>The <a href="https://ugla.hi.is/kennsluskra/index.php?sid=&tab=nam&chapter=namskeid&id=71055920203">summmer course</a><sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup> is based off of <a href=https://xcelab.net/rm/statistical-rethinking/>the second edition of
-Statistical Rethinking</a> by <a href=https://twitter.com/rlmcelreath>Richard McElreath</a>.</p><ul><li><input checked disabled type=checkbox> Chapter 13<ul><li><input checked disabled type=checkbox> E{1,2,3,4,5}</li></ul></li><li><input checked disabled type=checkbox> Chapter 14<ul><li><input checked disabled type=checkbox> E{1,2,3}</li></ul></li></ul><h3 id=packages>Packages</h3><p>A colophon with details is provided <a href=#a-colophon>at the end</a>, but the following packages and theme parameters are used throughout.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=line><span class=cl><span class=n>libsUsed</span><span class=o>&lt;-</span><span class=nf>c</span><span class=p>(</span><span class=s>&#34;tidyverse&#34;</span><span class=p>,</span><span class=s>&#34;tidybayes&#34;</span><span class=p>,</span><span class=s>&#34;orgutils&#34;</span><span class=p>,</span><span class=s>&#34;dagitty&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>            <span class=s>&#34;rethinking&#34;</span><span class=p>,</span><span class=s>&#34;tidybayes.rethinking&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>            <span class=s>&#34;ggplot2&#34;</span><span class=p>,</span><span class=s>&#34;kableExtra&#34;</span><span class=p>,</span><span class=s>&#34;dplyr&#34;</span><span class=p>,</span><span class=s>&#34;glue&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>            <span class=s>&#34;latex2exp&#34;</span><span class=p>,</span><span class=s>&#34;data.table&#34;</span><span class=p>,</span><span class=s>&#34;printr&#34;</span><span class=p>,</span><span class=s>&#34;devtools&#34;</span><span class=p>)</span>
-</span></span><span class=line><span class=cl><span class=nf>invisible</span><span class=p>(</span><span class=nf>lapply</span><span class=p>(</span><span class=n>libsUsed</span><span class=p>,</span> <span class=n>library</span><span class=p>,</span> <span class=n>character.only</span> <span class=o>=</span> <span class=kc>TRUE</span><span class=p>));</span>
-</span></span><span class=line><span class=cl><span class=nf>theme_set</span><span class=p>(</span><span class=nf>theme_grey</span><span class=p>(</span><span class=n>base_size</span><span class=o>=</span><span class=m>24</span><span class=p>))</span>
-</span></span><span class=line><span class=cl><span class=nf>set.seed</span><span class=p>(</span><span class=m>1995</span><span class=p>)</span>
-</span></span></code></pre></div><h2 id=chapter-xiii-models-with-memory>Chapter XIII: Models With Memory</h2><h3 id=easy-questions--ch13>Easy Questions (Ch13)</h3><h4 id=hold-13e1>HOLD 13E1</h4><p>Which of the following priors will produce more <em>shrinkage</em> in the estimates? (a) \(α_{\mathrm{TANK}}∼\mathrm{Normal}(0,1)\); (b) \(α_{\mathrm{TANK}}∼\mathrm{Normal}(0,2)\).</p><h5 id=solution>Solution</h5><p>The normal distribution fits a probability distribution centered around the mean and the spread is given by the standard deviation. Thus the <strong>first option, (a)</strong> will produce more shrinkage in the estimates, as the prior will be more concentrated.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=line><span class=cl><span class=nf>curve</span><span class=p>(</span><span class=nf>dnorm</span><span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=m>0</span><span class=p>,</span><span class=m>1</span><span class=p>),</span><span class=n>from</span><span class=o>=</span><span class=m>-10</span><span class=p>,</span><span class=n>to</span><span class=o>=</span><span class=m>10</span><span class=p>,</span><span class=n>col</span><span class=o>=</span><span class=s>&#34;red&#34;</span><span class=p>,</span><span class=n>ylab</span><span class=o>=</span><span class=s>&#34;density&#34;</span><span class=p>)</span>
-</span></span><span class=line><span class=cl><span class=nf>curve</span><span class=p>(</span><span class=nf>dnorm</span><span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=m>0</span><span class=p>,</span><span class=m>2</span><span class=p>),</span><span class=n>add</span><span class=o>=</span><span class=kc>TRUE</span><span class=p>)</span>
-</span></span><span class=line><span class=cl><span class=nf>legend</span><span class=p>(</span><span class=s>&#34;topright&#34;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>       <span class=n>col</span> <span class=o>=</span> <span class=nf>c</span><span class=p>(</span><span class=s>&#34;red&#34;</span><span class=p>,</span><span class=s>&#34;black&#34;</span><span class=p>),</span>
-</span></span><span class=line><span class=cl>       <span class=n>pch</span> <span class=o>=</span> <span class=m>19</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>       <span class=n>legend</span> <span class=o>=</span> <span class=nf>c</span><span class=p>(</span><span class=s>&#34;Normal(0,1)&#34;</span><span class=p>,</span><span class=s>&#34;Normal(0,2)&#34;</span><span class=p>))</span>
+Statistical Rethinking</a> by <a href=https://twitter.com/rlmcelreath>Richard McElreath</a>.</p><ul><li><input checked disabled type=checkbox> Chapter 13<ul><li><input checked disabled type=checkbox> E{1,2,3,4,5}</li></ul></li><li><input checked disabled type=checkbox> Chapter 14<ul><li><input checked disabled type=checkbox> E{1,2,3}</li></ul></li></ul><h3 id=packages>Packages</h3><p>A colophon with details is provided <a href=#a-colophon>at the end</a>, but the following packages and theme parameters are used throughout.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=line><span class=ln>1</span><span class=cl><span class=n>libsUsed</span><span class=o>&lt;-</span><span class=nf>c</span><span class=p>(</span><span class=s>&#34;tidyverse&#34;</span><span class=p>,</span><span class=s>&#34;tidybayes&#34;</span><span class=p>,</span><span class=s>&#34;orgutils&#34;</span><span class=p>,</span><span class=s>&#34;dagitty&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=ln>2</span><span class=cl>            <span class=s>&#34;rethinking&#34;</span><span class=p>,</span><span class=s>&#34;tidybayes.rethinking&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=ln>3</span><span class=cl>            <span class=s>&#34;ggplot2&#34;</span><span class=p>,</span><span class=s>&#34;kableExtra&#34;</span><span class=p>,</span><span class=s>&#34;dplyr&#34;</span><span class=p>,</span><span class=s>&#34;glue&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=ln>4</span><span class=cl>            <span class=s>&#34;latex2exp&#34;</span><span class=p>,</span><span class=s>&#34;data.table&#34;</span><span class=p>,</span><span class=s>&#34;printr&#34;</span><span class=p>,</span><span class=s>&#34;devtools&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=ln>5</span><span class=cl><span class=nf>invisible</span><span class=p>(</span><span class=nf>lapply</span><span class=p>(</span><span class=n>libsUsed</span><span class=p>,</span> <span class=n>library</span><span class=p>,</span> <span class=n>character.only</span> <span class=o>=</span> <span class=kc>TRUE</span><span class=p>));</span>
+</span></span><span class=line><span class=ln>6</span><span class=cl><span class=nf>theme_set</span><span class=p>(</span><span class=nf>theme_grey</span><span class=p>(</span><span class=n>base_size</span><span class=o>=</span><span class=m>24</span><span class=p>))</span>
+</span></span><span class=line><span class=ln>7</span><span class=cl><span class=nf>set.seed</span><span class=p>(</span><span class=m>1995</span><span class=p>)</span>
+</span></span></code></pre></div><h2 id=chapter-xiii-models-with-memory>Chapter XIII: Models With Memory</h2><h3 id=easy-questions--ch13>Easy Questions (Ch13)</h3><h4 id=hold-13e1>HOLD 13E1</h4><p>Which of the following priors will produce more <em>shrinkage</em> in the estimates? (a) \(α_{\mathrm{TANK}}∼\mathrm{Normal}(0,1)\); (b) \(α_{\mathrm{TANK}}∼\mathrm{Normal}(0,2)\).</p><h5 id=solution>Solution</h5><p>The normal distribution fits a probability distribution centered around the mean and the spread is given by the standard deviation. Thus the <strong>first option, (a)</strong> will produce more shrinkage in the estimates, as the prior will be more concentrated.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=line><span class=ln>1</span><span class=cl><span class=nf>curve</span><span class=p>(</span><span class=nf>dnorm</span><span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=m>0</span><span class=p>,</span><span class=m>1</span><span class=p>),</span><span class=n>from</span><span class=o>=</span><span class=m>-10</span><span class=p>,</span><span class=n>to</span><span class=o>=</span><span class=m>10</span><span class=p>,</span><span class=n>col</span><span class=o>=</span><span class=s>&#34;red&#34;</span><span class=p>,</span><span class=n>ylab</span><span class=o>=</span><span class=s>&#34;density&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=ln>2</span><span class=cl><span class=nf>curve</span><span class=p>(</span><span class=nf>dnorm</span><span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=m>0</span><span class=p>,</span><span class=m>2</span><span class=p>),</span><span class=n>add</span><span class=o>=</span><span class=kc>TRUE</span><span class=p>)</span>
+</span></span><span class=line><span class=ln>3</span><span class=cl><span class=nf>legend</span><span class=p>(</span><span class=s>&#34;topright&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=ln>4</span><span class=cl>       <span class=n>col</span> <span class=o>=</span> <span class=nf>c</span><span class=p>(</span><span class=s>&#34;red&#34;</span><span class=p>,</span><span class=s>&#34;black&#34;</span><span class=p>),</span>
+</span></span><span class=line><span class=ln>5</span><span class=cl>       <span class=n>pch</span> <span class=o>=</span> <span class=m>19</span><span class=p>,</span>
+</span></span><span class=line><span class=ln>6</span><span class=cl>       <span class=n>legend</span> <span class=o>=</span> <span class=nf>c</span><span class=p>(</span><span class=s>&#34;Normal(0,1)&#34;</span><span class=p>,</span><span class=s>&#34;Normal(0,2)&#34;</span><span class=p>))</span>
 </span></span></code></pre></div><figure><img src=/ox-hugo/13e1.png></figure><h4 id=13e2>13E2</h4><p>Rewrite the following model as a multilevel model.</p><h5 id=solution>Solution</h5><p>The model can be expressed as:</p><p>The priors have been chosen to be essentially uninformative, as is appropriate for a situation where no further insight is present for the hyperparameters.</p><h4 id=13e3>13E3</h4><p>Rewrite the following model as a multilevel model.</p><h5 id=solution>Solution</h5><p>The model can be defined as:</p><h4 id=hold-13e4>HOLD 13E4</h4><p>Write a mathematical model formula for a Poisson regression with varying intercepts.</p><h5 id=solution>Solution</h5><h4 id=13e5>13E5</h4><p>Write a mathematical model formula for a Poisson regression with two different kinds of varying intercepts, a cross-classified model.</p><h5 id=solution>Solution</h5><p>We will use the non-centered form for the cross-classified model.</p><h2 id=chapter-xiv-adventures-in-covariance>Chapter XIV: Adventures in Covariance</h2><h3 id=easy-questions--ch14>Easy Questions (Ch14)</h3><h4 id=hold-14e1>HOLD 14E1</h4><p>Add to the following model varying slopes on the predictor \(x\).</p><h5 id=solution>Solution</h5><p>Following the convention in the physical sciences, I will use square brackets for matrices and parenthesis for vectors.</p><p>Where we do not have any information so have used a standard weakly informative <code>LKJcorr</code> prior for correlation matrices which is flat for all valid correlation matrices. We also use weakly uninformative priors for the standard deviations among slopes and intercepts.</p><h4 id=hold-14e2>HOLD 14E2</h4><p>Think up a context in which varying intercepts will be positively correlated with varying slopes. Provide a mechanistic explanation for the correlation.</p><h5 id=solution>Solution</h5><p>We note at the onset that the concept of varying intercepts is to account for blocks or sub-groups in our problem. This means that the clusters in our data which have higher average values will show a stronger positive association with predictor variables.
-To augment the example of the tadpoles in the book, if the data is arranged as:</p><ul><li>Tadpoles in tanks</li><li>Some tanks have larger tadpoles (different species) which grow faster</li></ul><p>For a repeated measurement in an interval of time, there will be a positive correlation between the initial height and the slope.</p><h4 id=hold-14e3>HOLD 14E3</h4><p>When is it possible for a varying slopes model to have fewer effective parameters (as estimated by WAIC or PSIS) than the corresponding model with fixed (unpooled) slopes? Explain.</p><h5 id=solution>Solution</h5><p>The varying effects essentially causes regularization or shrinkage towards the global mean to prevent overfitting to the individual data-points. Consider the example from the text, for the chimpanzee experiment.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=line><span class=cl><span class=nf>data</span><span class=p>(</span><span class=n>chimpanzees</span><span class=p>)</span>
-</span></span><span class=line><span class=cl><span class=n>d</span> <span class=o>&lt;-</span> <span class=n>chimpanzees</span>
-</span></span><span class=line><span class=cl><span class=n>d</span><span class=o>$</span><span class=n>block_id</span> <span class=o>&lt;-</span> <span class=n>d</span><span class=o>$</span><span class=n>block</span>
-</span></span><span class=line><span class=cl><span class=n>d</span><span class=o>$</span><span class=n>treatment</span> <span class=o>&lt;-</span> <span class=m>1L</span> <span class=o>+</span> <span class=n>d</span><span class=o>$</span><span class=n>prosoc_left</span> <span class=o>+</span> <span class=m>2L</span><span class=o>*</span><span class=n>d</span><span class=o>$</span><span class=n>condition</span>
-</span></span><span class=line><span class=cl><span class=n>dat</span> <span class=o>&lt;-</span> <span class=nf>list</span><span class=p>(</span>
-</span></span><span class=line><span class=cl><span class=n>L</span> <span class=o>=</span> <span class=n>d</span><span class=o>$</span><span class=n>pulled_left</span><span class=p>,</span>
-</span></span><span class=line><span class=cl><span class=n>tid</span> <span class=o>=</span> <span class=nf>as.integer</span><span class=p>(</span><span class=n>d</span><span class=o>$</span><span class=n>treatment</span><span class=p>),</span>
-</span></span><span class=line><span class=cl><span class=n>actor</span> <span class=o>=</span> <span class=n>d</span><span class=o>$</span><span class=n>actor</span> <span class=p>)</span>
-</span></span></code></pre></div><p>We will set up a simple fixed effects model.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=line><span class=cl><span class=n>m14fix</span> <span class=o>&lt;-</span> <span class=nf>ulam</span><span class=p>(</span>
-</span></span><span class=line><span class=cl><span class=nf>alist</span><span class=p>(</span>
-</span></span><span class=line><span class=cl><span class=n>L</span> <span class=o>~</span> <span class=nf>dbinom</span><span class=p>(</span> <span class=m>1</span> <span class=p>,</span> <span class=n>p</span> <span class=p>)</span> <span class=p>,</span>
-</span></span><span class=line><span class=cl><span class=nf>logit</span><span class=p>(</span><span class=n>p</span><span class=p>)</span> <span class=o>&lt;-</span> <span class=n>alpha[actor]</span> <span class=o>+</span> <span class=n>beta[tid]</span> <span class=p>,</span>
-</span></span><span class=line><span class=cl><span class=n>alpha[actor]</span> <span class=o>~</span> <span class=nf>dnorm</span><span class=p>(</span> <span class=m>0</span> <span class=p>,</span> <span class=m>5</span> <span class=p>),</span>
-</span></span><span class=line><span class=cl><span class=n>beta[tid]</span> <span class=o>~</span> <span class=nf>dnorm</span><span class=p>(</span> <span class=m>0</span> <span class=p>,</span> <span class=m>0.5</span> <span class=p>)</span>
-</span></span><span class=line><span class=cl><span class=p>)</span> <span class=p>,</span> <span class=n>data</span><span class=o>=</span><span class=n>dat</span> <span class=p>,</span> <span class=n>chains</span><span class=o>=</span><span class=m>4</span> <span class=p>,</span> <span class=n>log_lik</span><span class=o>=</span><span class=kc>TRUE</span> <span class=p>)</span>
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>SAMPLING FOR MODEL &#39;90fe1cae14bc2bf32f08b4d71c2d1f0d&#39; NOW (CHAIN 1).
-</span></span><span class=line><span class=cl>Chain 1:
-</span></span><span class=line><span class=cl>Chain 1: Gradient evaluation took 9.2e-05 seconds
-</span></span><span class=line><span class=cl>Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.92 seconds.
-</span></span><span class=line><span class=cl>Chain 1: Adjust your expectations accordingly!
-</span></span><span class=line><span class=cl>Chain 1:
-</span></span><span class=line><span class=cl>Chain 1:
-</span></span><span class=line><span class=cl>Chain 1: Iteration:   1 / 1000 [  0%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 1: Iteration: 100 / 1000 [ 10%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 1: Iteration: 200 / 1000 [ 20%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 1: Iteration: 300 / 1000 [ 30%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 1: Iteration: 400 / 1000 [ 40%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 1: Iteration: 500 / 1000 [ 50%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 1: Iteration: 501 / 1000 [ 50%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 1: Iteration: 600 / 1000 [ 60%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 1: Iteration: 700 / 1000 [ 70%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 1: Iteration: 800 / 1000 [ 80%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 1: Iteration: 900 / 1000 [ 90%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 1: Iteration: 1000 / 1000 [100%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 1:
-</span></span><span class=line><span class=cl>Chain 1:  Elapsed Time: 0.335488 seconds (Warm-up)
-</span></span><span class=line><span class=cl>Chain 1:                0.228533 seconds (Sampling)
-</span></span><span class=line><span class=cl>Chain 1:                0.564021 seconds (Total)
-</span></span><span class=line><span class=cl>Chain 1:
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>SAMPLING FOR MODEL &#39;90fe1cae14bc2bf32f08b4d71c2d1f0d&#39; NOW (CHAIN 2).
-</span></span><span class=line><span class=cl>Chain 2:
-</span></span><span class=line><span class=cl>Chain 2: Gradient evaluation took 3.4e-05 seconds
-</span></span><span class=line><span class=cl>Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.34 seconds.
-</span></span><span class=line><span class=cl>Chain 2: Adjust your expectations accordingly!
-</span></span><span class=line><span class=cl>Chain 2:
-</span></span><span class=line><span class=cl>Chain 2:
-</span></span><span class=line><span class=cl>Chain 2: Iteration:   1 / 1000 [  0%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 2: Iteration: 100 / 1000 [ 10%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 2: Iteration: 200 / 1000 [ 20%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 2: Iteration: 300 / 1000 [ 30%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 2: Iteration: 400 / 1000 [ 40%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 2: Iteration: 500 / 1000 [ 50%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 2: Iteration: 501 / 1000 [ 50%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 2: Iteration: 600 / 1000 [ 60%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 2: Iteration: 700 / 1000 [ 70%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 2: Iteration: 800 / 1000 [ 80%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 2: Iteration: 900 / 1000 [ 90%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 2: Iteration: 1000 / 1000 [100%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 2:
-</span></span><span class=line><span class=cl>Chain 2:  Elapsed Time: 0.365676 seconds (Warm-up)
-</span></span><span class=line><span class=cl>Chain 2:                0.330942 seconds (Sampling)
-</span></span><span class=line><span class=cl>Chain 2:                0.696618 seconds (Total)
-</span></span><span class=line><span class=cl>Chain 2:
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>SAMPLING FOR MODEL &#39;90fe1cae14bc2bf32f08b4d71c2d1f0d&#39; NOW (CHAIN 3).
-</span></span><span class=line><span class=cl>Chain 3:
-</span></span><span class=line><span class=cl>Chain 3: Gradient evaluation took 4.3e-05 seconds
-</span></span><span class=line><span class=cl>Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.43 seconds.
-</span></span><span class=line><span class=cl>Chain 3: Adjust your expectations accordingly!
-</span></span><span class=line><span class=cl>Chain 3:
-</span></span><span class=line><span class=cl>Chain 3:
-</span></span><span class=line><span class=cl>Chain 3: Iteration:   1 / 1000 [  0%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 3: Iteration: 100 / 1000 [ 10%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 3: Iteration: 200 / 1000 [ 20%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 3: Iteration: 300 / 1000 [ 30%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 3: Iteration: 400 / 1000 [ 40%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 3: Iteration: 500 / 1000 [ 50%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 3: Iteration: 501 / 1000 [ 50%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 3: Iteration: 600 / 1000 [ 60%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 3: Iteration: 700 / 1000 [ 70%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 3: Iteration: 800 / 1000 [ 80%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 3: Iteration: 900 / 1000 [ 90%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 3: Iteration: 1000 / 1000 [100%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 3:
-</span></span><span class=line><span class=cl>Chain 3:  Elapsed Time: 0.356879 seconds (Warm-up)
-</span></span><span class=line><span class=cl>Chain 3:                0.352045 seconds (Sampling)
-</span></span><span class=line><span class=cl>Chain 3:                0.708924 seconds (Total)
-</span></span><span class=line><span class=cl>Chain 3:
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>SAMPLING FOR MODEL &#39;90fe1cae14bc2bf32f08b4d71c2d1f0d&#39; NOW (CHAIN 4).
-</span></span><span class=line><span class=cl>Chain 4:
-</span></span><span class=line><span class=cl>Chain 4: Gradient evaluation took 4.5e-05 seconds
-</span></span><span class=line><span class=cl>Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.45 seconds.
-</span></span><span class=line><span class=cl>Chain 4: Adjust your expectations accordingly!
-</span></span><span class=line><span class=cl>Chain 4:
-</span></span><span class=line><span class=cl>Chain 4:
-</span></span><span class=line><span class=cl>Chain 4: Iteration:   1 / 1000 [  0%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 4: Iteration: 100 / 1000 [ 10%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 4: Iteration: 200 / 1000 [ 20%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 4: Iteration: 300 / 1000 [ 30%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 4: Iteration: 400 / 1000 [ 40%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 4: Iteration: 500 / 1000 [ 50%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 4: Iteration: 501 / 1000 [ 50%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 4: Iteration: 600 / 1000 [ 60%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 4: Iteration: 700 / 1000 [ 70%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 4: Iteration: 800 / 1000 [ 80%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 4: Iteration: 900 / 1000 [ 90%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 4: Iteration: 1000 / 1000 [100%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 4:
-</span></span><span class=line><span class=cl>Chain 4:  Elapsed Time: 0.296276 seconds (Warm-up)
-</span></span><span class=line><span class=cl>Chain 4:                0.261692 seconds (Sampling)
-</span></span><span class=line><span class=cl>Chain 4:                0.557968 seconds (Total)
-</span></span><span class=line><span class=cl>Chain 4:
-</span></span></code></pre></div><p>Now we can extend this to a varying slopes model, where we will consider varying slopes for actors.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=line><span class=cl><span class=n>m14ppool</span> <span class=o>&lt;-</span> <span class=nf>ulam</span><span class=p>(</span>
-</span></span><span class=line><span class=cl><span class=nf>alist</span><span class=p>(</span>
-</span></span><span class=line><span class=cl><span class=n>L</span> <span class=o>~</span> <span class=nf>dbinom</span><span class=p>(</span> <span class=m>1</span> <span class=p>,</span> <span class=n>p</span> <span class=p>)</span> <span class=p>,</span>
-</span></span><span class=line><span class=cl><span class=nf>logit</span><span class=p>(</span><span class=n>p</span><span class=p>)</span> <span class=o>&lt;-</span> <span class=n>alpha</span> <span class=o>+</span> <span class=n>a[actor]</span><span class=o>*</span><span class=n>vary_id</span> <span class=o>+</span> <span class=n>beta[tid]</span><span class=p>,</span>
-</span></span><span class=line><span class=cl><span class=n>alpha</span> <span class=o>~</span> <span class=nf>dnorm</span><span class=p>(</span> <span class=m>0</span> <span class=p>,</span> <span class=m>5</span> <span class=p>),</span>
-</span></span><span class=line><span class=cl><span class=n>a[actor]</span> <span class=o>~</span> <span class=nf>dnorm</span><span class=p>(</span> <span class=m>0</span> <span class=p>,</span> <span class=m>1</span> <span class=p>),</span>
-</span></span><span class=line><span class=cl><span class=n>beta[tid]</span> <span class=o>~</span> <span class=nf>dnorm</span><span class=p>(</span> <span class=m>0</span> <span class=p>,</span> <span class=m>0.5</span> <span class=p>),</span>
-</span></span><span class=line><span class=cl><span class=n>vary_id</span> <span class=o>~</span> <span class=nf>dexp</span><span class=p>(</span> <span class=m>1</span> <span class=p>)</span>
-</span></span><span class=line><span class=cl><span class=p>)</span> <span class=p>,</span> <span class=n>data</span><span class=o>=</span><span class=n>dat</span> <span class=p>,</span> <span class=n>chains</span><span class=o>=</span><span class=m>4</span> <span class=p>,</span> <span class=n>log_lik</span><span class=o>=</span><span class=kc>TRUE</span> <span class=p>)</span>
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>SAMPLING FOR MODEL &#39;d14d0bbe9399ac4de917b8e279a6e9e5&#39; NOW (CHAIN 1).
-</span></span><span class=line><span class=cl>Chain 1:
-</span></span><span class=line><span class=cl>Chain 1: Gradient evaluation took 0.000184 seconds
-</span></span><span class=line><span class=cl>Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.84 seconds.
-</span></span><span class=line><span class=cl>Chain 1: Adjust your expectations accordingly!
-</span></span><span class=line><span class=cl>Chain 1:
-</span></span><span class=line><span class=cl>Chain 1:
-</span></span><span class=line><span class=cl>Chain 1: Iteration:   1 / 1000 [  0%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 1: Iteration: 100 / 1000 [ 10%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 1: Iteration: 200 / 1000 [ 20%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 1: Iteration: 300 / 1000 [ 30%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 1: Iteration: 400 / 1000 [ 40%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 1: Iteration: 500 / 1000 [ 50%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 1: Iteration: 501 / 1000 [ 50%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 1: Iteration: 600 / 1000 [ 60%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 1: Iteration: 700 / 1000 [ 70%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 1: Iteration: 800 / 1000 [ 80%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 1: Iteration: 900 / 1000 [ 90%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 1: Iteration: 1000 / 1000 [100%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 1:
-</span></span><span class=line><span class=cl>Chain 1:  Elapsed Time: 1.63295 seconds (Warm-up)
-</span></span><span class=line><span class=cl>Chain 1:                1.18708 seconds (Sampling)
-</span></span><span class=line><span class=cl>Chain 1:                2.82003 seconds (Total)
-</span></span><span class=line><span class=cl>Chain 1:
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>SAMPLING FOR MODEL &#39;d14d0bbe9399ac4de917b8e279a6e9e5&#39; NOW (CHAIN 2).
-</span></span><span class=line><span class=cl>Chain 2:
-</span></span><span class=line><span class=cl>Chain 2: Gradient evaluation took 6.3e-05 seconds
-</span></span><span class=line><span class=cl>Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.63 seconds.
-</span></span><span class=line><span class=cl>Chain 2: Adjust your expectations accordingly!
-</span></span><span class=line><span class=cl>Chain 2:
-</span></span><span class=line><span class=cl>Chain 2:
-</span></span><span class=line><span class=cl>Chain 2: Iteration:   1 / 1000 [  0%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 2: Iteration: 100 / 1000 [ 10%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 2: Iteration: 200 / 1000 [ 20%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 2: Iteration: 300 / 1000 [ 30%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 2: Iteration: 400 / 1000 [ 40%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 2: Iteration: 500 / 1000 [ 50%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 2: Iteration: 501 / 1000 [ 50%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 2: Iteration: 600 / 1000 [ 60%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 2: Iteration: 700 / 1000 [ 70%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 2: Iteration: 800 / 1000 [ 80%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 2: Iteration: 900 / 1000 [ 90%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 2: Iteration: 1000 / 1000 [100%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 2:
-</span></span><span class=line><span class=cl>Chain 2:  Elapsed Time: 1.58303 seconds (Warm-up)
-</span></span><span class=line><span class=cl>Chain 2:                1.30156 seconds (Sampling)
-</span></span><span class=line><span class=cl>Chain 2:                2.88459 seconds (Total)
-</span></span><span class=line><span class=cl>Chain 2:
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>SAMPLING FOR MODEL &#39;d14d0bbe9399ac4de917b8e279a6e9e5&#39; NOW (CHAIN 3).
-</span></span><span class=line><span class=cl>Chain 3:
-</span></span><span class=line><span class=cl>Chain 3: Gradient evaluation took 6.4e-05 seconds
-</span></span><span class=line><span class=cl>Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.64 seconds.
-</span></span><span class=line><span class=cl>Chain 3: Adjust your expectations accordingly!
-</span></span><span class=line><span class=cl>Chain 3:
-</span></span><span class=line><span class=cl>Chain 3:
-</span></span><span class=line><span class=cl>Chain 3: Iteration:   1 / 1000 [  0%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 3: Iteration: 100 / 1000 [ 10%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 3: Iteration: 200 / 1000 [ 20%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 3: Iteration: 300 / 1000 [ 30%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 3: Iteration: 400 / 1000 [ 40%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 3: Iteration: 500 / 1000 [ 50%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 3: Iteration: 501 / 1000 [ 50%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 3: Iteration: 600 / 1000 [ 60%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 3: Iteration: 700 / 1000 [ 70%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 3: Iteration: 800 / 1000 [ 80%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 3: Iteration: 900 / 1000 [ 90%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 3: Iteration: 1000 / 1000 [100%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 3:
-</span></span><span class=line><span class=cl>Chain 3:  Elapsed Time: 1.37077 seconds (Warm-up)
-</span></span><span class=line><span class=cl>Chain 3:                1.12109 seconds (Sampling)
-</span></span><span class=line><span class=cl>Chain 3:                2.49186 seconds (Total)
-</span></span><span class=line><span class=cl>Chain 3:
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>SAMPLING FOR MODEL &#39;d14d0bbe9399ac4de917b8e279a6e9e5&#39; NOW (CHAIN 4).
-</span></span><span class=line><span class=cl>Chain 4:
-</span></span><span class=line><span class=cl>Chain 4: Gradient evaluation took 5.9e-05 seconds
-</span></span><span class=line><span class=cl>Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.59 seconds.
-</span></span><span class=line><span class=cl>Chain 4: Adjust your expectations accordingly!
-</span></span><span class=line><span class=cl>Chain 4:
-</span></span><span class=line><span class=cl>Chain 4:
-</span></span><span class=line><span class=cl>Chain 4: Iteration:   1 / 1000 [  0%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 4: Iteration: 100 / 1000 [ 10%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 4: Iteration: 200 / 1000 [ 20%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 4: Iteration: 300 / 1000 [ 30%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 4: Iteration: 400 / 1000 [ 40%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 4: Iteration: 500 / 1000 [ 50%]  (Warmup)
-</span></span><span class=line><span class=cl>Chain 4: Iteration: 501 / 1000 [ 50%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 4: Iteration: 600 / 1000 [ 60%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 4: Iteration: 700 / 1000 [ 70%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 4: Iteration: 800 / 1000 [ 80%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 4: Iteration: 900 / 1000 [ 90%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 4: Iteration: 1000 / 1000 [100%]  (Sampling)
-</span></span><span class=line><span class=cl>Chain 4:
-</span></span><span class=line><span class=cl>Chain 4:  Elapsed Time: 1.48561 seconds (Warm-up)
-</span></span><span class=line><span class=cl>Chain 4:                1.38809 seconds (Sampling)
-</span></span><span class=line><span class=cl>Chain 4:                2.8737 seconds (Total)
-</span></span><span class=line><span class=cl>Chain 4:
-</span></span></code></pre></div><p>Now we can test the number of parameters.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=line><span class=cl><span class=nf>compare</span><span class=p>(</span><span class=n>m14ppool</span><span class=p>,</span><span class=n>m14fix</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>toOrg</span>
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>| row.names |             WAIC |               SE |            dWAIC |              dSE |            pWAIC |            weight |
-</span></span><span class=line><span class=cl>|-----------+------------------+------------------+------------------+------------------+------------------+-------------------|
-</span></span><span class=line><span class=cl>| m14ppool  | 532.211705503729 | 19.5177343184252 |                0 |               NA | 9.12911563615787 | 0.796616007296431 |
-</span></span><span class=line><span class=cl>| m14fix    | 534.942259470042 | 18.0912938913487 | 2.73055396631241 | 1.66292448384092 | 8.10370201332515 | 0.203383992703568 |
-</span></span></code></pre></div><p>As we can see, the model with partial pooling has only one effective additional parameter, even though the model without pooling has \(n(\mathrm{actor})\) intercepts (one per actor) with a standard deviation, while the partial pooling parameter has an additional average intercept and a standard deviation parameter.</p><p>Both the models have around the same number of effective parameters, which mean that the additional parameters do not actually cause additional overfitting. This simply implies that for Bayesian models, the raw number of model parameters does not correspond necessarily to a model with more overfitting.</p><p>In general, we should keep in mind that the effective number of parameters, when the variation among clusters is <strong>high</strong>, is probably going to be lower than the total number of parameters, due to adaptive regularization.</p><h2 id=a-colophon>A: Colophon</h2><p>To ensure that this document is fully reproducible at a later date, we will record the session info.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=line><span class=cl><span class=n>devtools</span><span class=o>::</span><span class=nf>session_info</span><span class=p>()</span>
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>─ Session info ───────────────────────────────────────────────────────────────
-</span></span><span class=line><span class=cl> setting  value
-</span></span><span class=line><span class=cl> version  R version 4.0.0 (2020-04-24)
-</span></span><span class=line><span class=cl> os       Arch Linux
-</span></span><span class=line><span class=cl> system   x86_64, linux-gnu
-</span></span><span class=line><span class=cl> ui       X11
-</span></span><span class=line><span class=cl> language (EN)
-</span></span><span class=line><span class=cl> collate  en_US.UTF-8
-</span></span><span class=line><span class=cl> ctype    en_US.UTF-8
-</span></span><span class=line><span class=cl> tz       Iceland
-</span></span><span class=line><span class=cl> date     2020-06-27
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>─ Packages ───────────────────────────────────────────────────────────────────
-</span></span><span class=line><span class=cl> package              * version    date       lib   source
-</span></span><span class=line><span class=cl> arrayhelpers           1.1-0      2020-02-04 [167] CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> assertthat             0.2.1      2019-03-21 [34]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> backports              1.1.6      2020-04-05 [68]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> boot                   1.3-24     2019-12-20 [5]   CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> broom                  0.5.6      2020-04-20 [67]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> callr                  3.4.3      2020-03-28 [87]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> cellranger             1.1.0      2016-07-27 [55]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> cli                    2.0.2      2020-02-28 [33]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> coda                   0.19-3     2019-07-05 [169] CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> colorspace             1.4-1      2019-03-18 [97]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> crayon                 1.3.4      2017-09-16 [35]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> curl                   4.3        2019-12-02 [26]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> dagitty              * 0.2-2      2016-08-26 [244] CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> data.table           * 1.12.8     2019-12-09 [27]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> DBI                    1.1.0      2019-12-15 [77]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> dbplyr                 1.4.3      2020-04-19 [76]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> desc                   1.2.0      2018-05-01 [84]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> devtools             * 2.3.0      2020-04-10 [219] CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> digest                 0.6.25     2020-02-23 [42]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> dplyr                * 0.8.5      2020-03-07 [69]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> ellipsis               0.3.0      2019-09-20 [30]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> evaluate               0.14       2019-05-28 [82]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> fansi                  0.4.1      2020-01-08 [36]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> forcats              * 0.5.0      2020-03-01 [29]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> fs                     1.4.1      2020-04-04 [109] CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> generics               0.0.2      2018-11-29 [71]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> ggplot2              * 3.3.0      2020-03-05 [78]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> glue                 * 1.4.0      2020-04-03 [37]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> gridExtra              2.3        2017-09-09 [123] CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> gtable                 0.3.0      2019-03-25 [79]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> haven                  2.2.0      2019-11-08 [28]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> hms                    0.5.3      2020-01-08 [44]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> htmltools              0.4.0      2019-10-04 [112] CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> httr                   1.4.1      2019-08-05 [100] CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> inline                 0.3.15     2018-05-18 [162] CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> jsonlite               1.6.1      2020-02-02 [101] CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> kableExtra           * 1.1.0      2019-03-16 [212] CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> knitr                  1.28       2020-02-06 [113] CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> latex2exp            * 0.4.0      2015-11-30 [211] CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> lattice                0.20-41    2020-04-02 [6]   CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> lifecycle              0.2.0      2020-03-06 [38]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> loo                    2.2.0      2019-12-19 [163] CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> lubridate              1.7.8      2020-04-06 [106] CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> magrittr               1.5        2014-11-22 [21]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> MASS                   7.3-51.5   2019-12-20 [7]   CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> matrixStats            0.56.0     2020-03-13 [164] CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> memoise                1.1.0      2017-04-21 [229] CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> modelr                 0.1.6      2020-02-22 [107] CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> munsell                0.5.0      2018-06-12 [96]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> mvtnorm                1.1-0      2020-02-24 [243] CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> nlme                   3.1-147    2020-04-13 [11]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> orgutils             * 0.4-1      2017-03-21 [209] CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> pillar                 1.4.3      2019-12-20 [39]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> pkgbuild               1.0.6      2019-10-09 [86]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> pkgconfig              2.0.3      2019-09-22 [43]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> pkgload                1.0.2      2018-10-29 [83]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> plyr                   1.8.6      2020-03-03 [73]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> prettyunits            1.1.1      2020-01-24 [58]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> printr               * 0.1        2017-05-19 [214] CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> processx               3.4.2      2020-02-09 [88]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> ps                     1.3.2      2020-02-13 [89]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> purrr                * 0.3.4      2020-04-17 [50]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> R6                     2.4.1      2019-11-12 [48]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> Rcpp                   1.0.4.6    2020-04-09 [10]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> readr                * 1.3.1      2018-12-21 [45]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> readxl                 1.3.1      2019-03-13 [54]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> remotes                2.1.1      2020-02-15 [233] CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> reprex                 0.3.0      2019-05-16 [108] CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> rethinking           * 2.01       2020-06-06 [242] local
-</span></span><span class=line><span class=cl> rlang                  0.4.5      2020-03-01 [31]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> rmarkdown              2.1        2020-01-20 [110] CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> rprojroot              1.3-2      2018-01-03 [85]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> rstan                * 2.19.3     2020-02-11 [161] CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> rstudioapi             0.11       2020-02-07 [91]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> rvest                  0.3.5      2019-11-08 [120] CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> scales                 1.1.0      2019-11-18 [93]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> sessioninfo            1.1.1      2018-11-05 [231] CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> shape                  1.4.4      2018-02-07 [193] CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> StanHeaders          * 2.19.2     2020-02-11 [165] CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> stringi                1.4.6      2020-02-17 [52]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> stringr              * 1.4.0      2019-02-10 [74]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> svUnit                 1.0.3      2020-04-20 [168] CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> testthat               2.3.2      2020-03-02 [81]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> textutils              0.2-0      2020-01-07 [210] CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> tibble               * 3.0.1      2020-04-20 [32]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> tidybayes            * 2.0.3      2020-04-04 [166] CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> tidybayes.rethinking * 2.0.3.9000 2020-06-07 [246] local
-</span></span><span class=line><span class=cl> tidyr                * 1.0.2      2020-01-24 [75]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> tidyselect             1.0.0      2020-01-27 [49]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> tidyverse            * 1.3.0      2019-11-21 [66]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> usethis              * 1.6.0      2020-04-09 [238] CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> V8                     3.0.2      2020-03-14 [245] CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> vctrs                  0.2.4      2020-03-10 [41]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> viridisLite            0.3.0      2018-02-01 [99]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> webshot                0.5.2      2019-11-22 [213] CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> withr                  2.2.0      2020-04-20 [90]  CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> xfun                   0.13       2020-04-13 [116] CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl> xml2                   1.3.2      2020-04-23 [122] CRAN (R 4.0.0)
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>[1] /nix/store/xzd8h53xkyvfm3kvj5ab6znp685wi04w-r-car-3.0-7/library
-</span></span><span class=line><span class=cl>[2] /nix/store/mhr8zw9bmxarc3n821b83i0gz2j9zlrq-r-abind-1.4-5/library
-</span></span><span class=line><span class=cl>[3] /nix/store/hp86nhr0787vib3l8mkw0gf9nxwb45im-r-carData-3.0-3/library
-</span></span><span class=line><span class=cl>[4] /nix/store/vhw7s2h5ds6sp110z2yvilchv8j9jch5-r-lme4-1.1-23/library
-</span></span><span class=line><span class=cl>[5] /nix/store/987n8g0zy9sjvfvnsck1bkkcknw05yvb-r-boot-1.3-24/library
-</span></span><span class=line><span class=cl>[6] /nix/store/jxxxxyz4c1k5g3drd35gsrbjdg028d11-r-lattice-0.20-41/library
-</span></span><span class=line><span class=cl>[7] /nix/store/q9zfm5h53m8rd08xcsdcwaag31k4z1pf-r-MASS-7.3-51.5/library
-</span></span><span class=line><span class=cl>[8] /nix/store/kjkm50sr144yvrhl5axfgykbiy13pbmg-r-Matrix-1.2-18/library
-</span></span><span class=line><span class=cl>[9] /nix/store/8786z5lgy8h3akfjgj3yq5yq4s17rhjy-r-minqa-1.2.4/library
-</span></span><span class=line><span class=cl>[10] /nix/store/93wv3j0z1nzqp6fjsm9v7v8bf8d1xkm2-r-Rcpp-1.0.4.6/library
-</span></span><span class=line><span class=cl>[11] /nix/store/akfw6zsmawmz8lmjkww0rnqrazm4mqp0-r-nlme-3.1-147/library
-</span></span><span class=line><span class=cl>[12] /nix/store/rxs0d9bbn8qhw7wmkfb21yk5abp6lpq1-r-nloptr-1.2.2.1/library
-</span></span><span class=line><span class=cl>[13] /nix/store/8n0jfiqn4275i58qgld0dv8zdaihdzrk-r-RcppEigen-0.3.3.7.0/library
-</span></span><span class=line><span class=cl>[14] /nix/store/8vxrma33rhc96260zsi1jiw7dy3v2mm4-r-statmod-1.4.34/library
-</span></span><span class=line><span class=cl>[15] /nix/store/2y46pb5x9lh8m0hdmzajnx7sc1bk9ihl-r-maptools-0.9-9/library
-</span></span><span class=line><span class=cl>[16] /nix/store/iwf9nxx1v883wlv0p88q947hpz5lhfh7-r-foreign-0.8-78/library
-</span></span><span class=line><span class=cl>[17] /nix/store/rl9sjqply6rjbnz5k792ghm62ybv76px-r-sp-1.4-1/library
-</span></span><span class=line><span class=cl>[18] /nix/store/ws4bkzyv2vj5pyn1hgwyy6nlp48arz0n-r-mgcv-1.8-31/library
-</span></span><span class=line><span class=cl>[19] /nix/store/307dzxrmnqk4p86560a02r64x1fhhmxb-r-nnet-7.3-13/library
-</span></span><span class=line><span class=cl>[20] /nix/store/g2zpzkdb9hzkza1wpcbrk58119v1wyaf-r-pbkrtest-0.4-8.6/library
-</span></span><span class=line><span class=cl>[21] /nix/store/p0l503fr8960vld70w6ilmknxs5qwq77-r-magrittr-1.5/library
-</span></span><span class=line><span class=cl>[22] /nix/store/rmjpcaw3i446kwnjgcxcaid0yac36cj2-r-quantreg-5.55/library
-</span></span><span class=line><span class=cl>[23] /nix/store/10mzmnvc5jjgk2xzasia522pk60a30qz-r-MatrixModels-0.4-1/library
-</span></span><span class=line><span class=cl>[24] /nix/store/6qwdzvmnnmhjwdnvg2zmvv6wafd1vf91-r-SparseM-1.78/library
-</span></span><span class=line><span class=cl>[25] /nix/store/aa9c39a3yiqkh1h7pbngjlbr7czvc7yi-r-rio-0.5.16/library
-</span></span><span class=line><span class=cl>[26] /nix/store/2fx4vqlybgwp5rhhy6pssqx7h1a927fn-r-curl-4.3/library
-</span></span><span class=line><span class=cl>[27] /nix/store/k4m3fn1kqvvvn8y33kd57gq49hr3ar8y-r-data.table-1.12.8/library
-</span></span><span class=line><span class=cl>[28] /nix/store/651hfjylqzmsf565wyx474vyjny771gy-r-haven-2.2.0/library
-</span></span><span class=line><span class=cl>[29] /nix/store/a3rnz28irmqvmj8axj5x5j1am2c3gzs4-r-forcats-0.5.0/library
-</span></span><span class=line><span class=cl>[30] /nix/store/j8v4gzib137q2cml31hvvfkrc0f60pp5-r-ellipsis-0.3.0/library
-</span></span><span class=line><span class=cl>[31] /nix/store/xaswqlnamf4k8vwx0x3wav3l0x60sag0-r-rlang-0.4.5/library
-</span></span><span class=line><span class=cl>[32] /nix/store/dqm3xpix2jwhhhr67s6fgrwbw7hizap7-r-tibble-3.0.1/library
-</span></span><span class=line><span class=cl>[33] /nix/store/v7xfsq6d97wpn6m0hjrac78w5xawbr8a-r-cli-2.0.2/library
-</span></span><span class=line><span class=cl>[34] /nix/store/fikjasr98klhk9cf44x4lhi57vh3pmkg-r-assertthat-0.2.1/library
-</span></span><span class=line><span class=cl>[35] /nix/store/3fya6cd38vsqdj0gjb7bcsy00sirlyw1-r-crayon-1.3.4/library
-</span></span><span class=line><span class=cl>[36] /nix/store/payqi9bwh216rwhaq07jgc26l4fv1zsb-r-fansi-0.4.1/library
-</span></span><span class=line><span class=cl>[37] /nix/store/h6a61ghws7yrdxlg412xl1im37z5r28i-r-glue-1.4.0/library
-</span></span><span class=line><span class=cl>[38] /nix/store/y8mjbia1wbnq26dkigr0p3xxwrbzsc2r-r-lifecycle-0.2.0/library
-</span></span><span class=line><span class=cl>[39] /nix/store/kwaghh12cnifgvcbvlv2anx0hd5f4ild-r-pillar-1.4.3/library
-</span></span><span class=line><span class=cl>[40] /nix/store/k1phn8j10nni7gzvcgp0vc25dby6bb77-r-utf8-1.1.4/library
-</span></span><span class=line><span class=cl>[41] /nix/store/k3b77y8v7zsshpp1ccs8jwk2i2g4rm9a-r-vctrs-0.2.4/library
-</span></span><span class=line><span class=cl>[42] /nix/store/iibjmbh7vj0d0bfafz98yn29ymg43gkw-r-digest-0.6.25/library
-</span></span><span class=line><span class=cl>[43] /nix/store/aqsj4k3pgm80qk4jjg7sh3ac28n6alv0-r-pkgconfig-2.0.3/library
-</span></span><span class=line><span class=cl>[44] /nix/store/i7c5v8s4hd9rlqah3bbvy06yywjqwdgk-r-hms-0.5.3/library
-</span></span><span class=line><span class=cl>[45] /nix/store/2fyrk58cmcbrxid66rbwjli7y114lvrm-r-readr-1.3.1/library
-</span></span><span class=line><span class=cl>[46] /nix/store/163xq2g5nblqgh7qhvzb6mvgg6qdrirj-r-BH-1.72.0-3/library
-</span></span><span class=line><span class=cl>[47] /nix/store/dr27b6k49prwgrjs0v30b6mf5lxa36pk-r-clipr-0.7.0/library
-</span></span><span class=line><span class=cl>[48] /nix/store/bghvqg9mcaj2jkbwpy0di6c563v24acz-r-R6-2.4.1/library
-</span></span><span class=line><span class=cl>[49] /nix/store/nq8jdq7nlg9xns4xpgyj6sqv8p4ny1wz-r-tidyselect-1.0.0/library
-</span></span><span class=line><span class=cl>[50] /nix/store/zlwhf75qld7vmwx3d4bdws057ld4mqbp-r-purrr-0.3.4/library
-</span></span><span class=line><span class=cl>[51] /nix/store/0gbmmnbpqlr69l573ymkcx8154fvlaca-r-openxlsx-4.1.4/library
-</span></span><span class=line><span class=cl>[52] /nix/store/1m1q4rmwx56dvx9rdzfsfq0jpw3hw0yx-r-stringi-1.4.6/library
-</span></span><span class=line><span class=cl>[53] /nix/store/mhy5vnvbsl4q7dcinwx3vqlyywxphbfd-r-zip-2.0.4/library
-</span></span><span class=line><span class=cl>[54] /nix/store/88sp7f7q577i6l5jjanqiv5ak6nv5357-r-readxl-1.3.1/library
-</span></span><span class=line><span class=cl>[55] /nix/store/6q9zwivzalhmzdracc8ma932wirq8rl5-r-cellranger-1.1.0/library
-</span></span><span class=line><span class=cl>[56] /nix/store/jh2n6k2ancdzqych5ix8n4rq9w514qq9-r-rematch-1.0.1/library
-</span></span><span class=line><span class=cl>[57] /nix/store/22xjqikqd6q556absb5224sbx6q0kp0c-r-progress-1.2.2/library
-</span></span><span class=line><span class=cl>[58] /nix/store/9vp32wa1qvv6lkq6p70qlli5whrxzfbi-r-prettyunits-1.1.1/library
-</span></span><span class=line><span class=cl>[59] /nix/store/r9rhqb6fsk75shihmb7nagqb51pqwp0y-r-class-7.3-16/library
-</span></span><span class=line><span class=cl>[60] /nix/store/z1kad071y43wij1ml9lpghh7jbimmcli-r-cluster-2.1.0/library
-</span></span><span class=line><span class=cl>[61] /nix/store/i8wr965caf6j1rxs2dsvpzhlh4hyyb4y-r-codetools-0.2-16/library
-</span></span><span class=line><span class=cl>[62] /nix/store/8iglq3zr68a39hzswvzxqi2ffhpw9p51-r-KernSmooth-2.23-16/library
-</span></span><span class=line><span class=cl>[63] /nix/store/n3k50zv40i40drpdf8npbmy2y08gkr6w-r-rpart-4.1-15/library
-</span></span><span class=line><span class=cl>[64] /nix/store/b4r6adzcvpm8ivflsmis7ja7q4r5hkjy-r-spatial-7.3-11/library
-</span></span><span class=line><span class=cl>[65] /nix/store/zqg6hmrncl8ax3vn7z5drf4csddwnhcx-r-survival-3.1-12/library
-</span></span><span class=line><span class=cl>[66] /nix/store/4anrihkx11h8mzb269xdyi84yp5v7grl-r-tidyverse-1.3.0/library
-</span></span><span class=line><span class=cl>[67] /nix/store/945haq0w8nfm9ib7r0nfngn5lk2i15ix-r-broom-0.5.6/library
-</span></span><span class=line><span class=cl>[68] /nix/store/52viqxzrmxl7dk0zji293g5b0b9grwh8-r-backports-1.1.6/library
-</span></span><span class=line><span class=cl>[69] /nix/store/zp1k42sw2glqy51w4hnzsjs8rgi8xzx2-r-dplyr-0.8.5/library
-</span></span><span class=line><span class=cl>[70] /nix/store/mkjd98mnshch2pwnj6h31czclqdaph3f-r-plogr-0.2.0/library
-</span></span><span class=line><span class=cl>[71] /nix/store/kflrzax6y5pwfqwzgfvqz433a3q3hnhn-r-generics-0.0.2/library
-</span></span><span class=line><span class=cl>[72] /nix/store/xi1n5h5w17c33y6ax3dfhg2hgzjl9bxz-r-reshape2-1.4.4/library
-</span></span><span class=line><span class=cl>[73] /nix/store/vn63z92zkpbaxmmhzpb6mq2fvg0xa26h-r-plyr-1.8.6/library
-</span></span><span class=line><span class=cl>[74] /nix/store/wmpyxss67bj44rin7hlnr9qabx66p5hj-r-stringr-1.4.0/library
-</span></span><span class=line><span class=cl>[75] /nix/store/330qbgbvllwz3h0i2qidrlk50y0mbgph-r-tidyr-1.0.2/library
-</span></span><span class=line><span class=cl>[76] /nix/store/cx3x4pqb65l1mhss65780hbzv9jdrzl6-r-dbplyr-1.4.3/library
-</span></span><span class=line><span class=cl>[77] /nix/store/gsj49bp3hpw9jlli3894c49amddryqsq-r-DBI-1.1.0/library
-</span></span><span class=line><span class=cl>[78] /nix/store/kvymhwp4gac0343c2yi1qvdpavx4gdn2-r-ggplot2-3.3.0/library
-</span></span><span class=line><span class=cl>[79] /nix/store/knv51jvpairvibrkkq48b6f1l2pa1cv8-r-gtable-0.3.0/library
-</span></span><span class=line><span class=cl>[80] /nix/store/158dx0ddv20ikwag2860nlg9p3hbh1zc-r-isoband-0.2.1/library
-</span></span><span class=line><span class=cl>[81] /nix/store/fprs9rp1jlhxzj7fp6l79akyf8k3p7zd-r-testthat-2.3.2/library
-</span></span><span class=line><span class=cl>[82] /nix/store/0pmlnkyn0ir3k9bvxihi1r06jyl64w3i-r-evaluate-0.14/library
-</span></span><span class=line><span class=cl>[83] /nix/store/7210bjjqn5cjndxn5isnd4vip00xhkhy-r-pkgload-1.0.2/library
-</span></span><span class=line><span class=cl>[84] /nix/store/9a12ybd74b7dns40gcfs061wv7913qjy-r-desc-1.2.0/library
-</span></span><span class=line><span class=cl>[85] /nix/store/na9pb1apa787zp7vvyz1kzym0ywjwbj0-r-rprojroot-1.3-2/library
-</span></span><span class=line><span class=cl>[86] /nix/store/pa2n7bh61qxyarn5i2ynd62k6knb1np1-r-pkgbuild-1.0.6/library
-</span></span><span class=line><span class=cl>[87] /nix/store/1hxm1m7h4272zxk9bpsaq46mvnl0dbss-r-callr-3.4.3/library
-</span></span><span class=line><span class=cl>[88] /nix/store/bigvyk6ipglbiil93zkf442nv4y3xa1x-r-processx-3.4.2/library
-</span></span><span class=line><span class=cl>[89] /nix/store/370lr0wf7qlq0m72xnmasg2iahkp2n52-r-ps-1.3.2/library
-</span></span><span class=line><span class=cl>[90] /nix/store/rr72q61d8mkd42zc5fhcd2rqjghvc141-r-withr-2.2.0/library
-</span></span><span class=line><span class=cl>[91] /nix/store/9gw77p7fmz89fa8wi1d9rvril6hd4sxy-r-rstudioapi-0.11/library
-</span></span><span class=line><span class=cl>[92] /nix/store/9x4v4pbrgmykbz2801h77yz2l0nmm5nb-r-praise-1.0.0/library
-</span></span><span class=line><span class=cl>[93] /nix/store/pf8ssb0dliw5bzsncl227agc8przb7ic-r-scales-1.1.0/library
-</span></span><span class=line><span class=cl>[94] /nix/store/095z4wgjrxn63ixvyzrj1fm1rdv6ci95-r-farver-2.0.3/library
-</span></span><span class=line><span class=cl>[95] /nix/store/5aczj4s7i9prf5i32ik5ac5baqvjwdb1-r-labeling-0.3/library
-</span></span><span class=line><span class=cl>[96] /nix/store/wch26phipzz9gxd4vbr4fynh7v28349j-r-munsell-0.5.0/library
-</span></span><span class=line><span class=cl>[97] /nix/store/3w8fh756mszhsjx5fwgwydcpn8vkwady-r-colorspace-1.4-1/library
-</span></span><span class=line><span class=cl>[98] /nix/store/8cmaj81v2vm4f8p59ylbnsby8adkbmhd-r-RColorBrewer-1.1-2/library
-</span></span><span class=line><span class=cl>[99] /nix/store/h4x4ygax7gpz6f0c2v0xacr62080qwb8-r-viridisLite-0.3.0/library
-</span></span><span class=line><span class=cl>[100] /nix/store/qhx0i2nn5syb6vygdn8fdxgl7k56yj81-r-httr-1.4.1/library
-</span></span><span class=line><span class=cl>[101] /nix/store/lxnb4aniv02i4jhdvz02aaql1kznbpxb-r-jsonlite-1.6.1/library
-</span></span><span class=line><span class=cl>[102] /nix/store/13dcry4gad3vfwqzqb0ii4n06ybrxybr-r-mime-0.9/library
-</span></span><span class=line><span class=cl>[103] /nix/store/2can5l8gscc92a3bqlak8hfcg96v5hvf-r-openssl-1.4.1/library
-</span></span><span class=line><span class=cl>[104] /nix/store/piwsgxdz5w2ak8c6fcq0lc978qbxwdp1-r-askpass-1.1/library
-</span></span><span class=line><span class=cl>[105] /nix/store/3sj5h6dwa1l27d2hvdchclygk0pgffsr-r-sys-3.3/library
-</span></span><span class=line><span class=cl>[106] /nix/store/2z0p88g0c03gigl2ip60dlsfkdv1k30h-r-lubridate-1.7.8/library
-</span></span><span class=line><span class=cl>[107] /nix/store/1pkmj8nqjg2iinrkg2w0zkwq0ldc01za-r-modelr-0.1.6/library
-</span></span><span class=line><span class=cl>[108] /nix/store/bswkzvn8lczwbyw3y7n0p0qp2q472s0g-r-reprex-0.3.0/library
-</span></span><span class=line><span class=cl>[109] /nix/store/yid22gad8z49q52d225vfba2m4cgj2lx-r-fs-1.4.1/library
-</span></span><span class=line><span class=cl>[110] /nix/store/d185qiqaplm5br9fk1pf29y0srlabw83-r-rmarkdown-2.1/library
-</span></span><span class=line><span class=cl>[111] /nix/store/iszqviydsdj31c3ww095ndqy1ld3cibs-r-base64enc-0.1-3/library
-</span></span><span class=line><span class=cl>[112] /nix/store/i89wfw4cr0fz3wbd7cg44fk4dwz8b6h1-r-htmltools-0.4.0/library
-</span></span><span class=line><span class=cl>[113] /nix/store/qrl28laqwmhpwg3dpcf4nca8alv0px0g-r-knitr-1.28/library
-</span></span><span class=line><span class=cl>[114] /nix/store/jffaxc4a3bbf2g6ip0gdcya73dmg53mb-r-highr-0.8/library
-</span></span><span class=line><span class=cl>[115] /nix/store/717srph13qpnbzmgsvhx25q8pl51ivpj-r-markdown-1.1/library
-</span></span><span class=line><span class=cl>[116] /nix/store/mxqmyq3ybdfyc6p0anhfy2kfw0iz5k4n-r-xfun-0.13/library
-</span></span><span class=line><span class=cl>[117] /nix/store/b8g6hadva0359l6j1aq4dbvxlqf1acxc-r-yaml-2.2.1/library
-</span></span><span class=line><span class=cl>[118] /nix/store/rrl05vpv7cw58zi0k9ykm7m4rjb9gjv3-r-tinytex-0.22/library
-</span></span><span class=line><span class=cl>[119] /nix/store/2ziq8nzah6xy3dgmxgim9h2wszz1f89f-r-whisker-0.4/library
-</span></span><span class=line><span class=cl>[120] /nix/store/540wbw4p1g2qmnmbfk0rhvwvfnf657sj-r-rvest-0.3.5/library
-</span></span><span class=line><span class=cl>[121] /nix/store/n3prn77gd9sf3z4whqp86kghr55bf5w8-r-selectr-0.4-2/library
-</span></span><span class=line><span class=cl>[122] /nix/store/gv28yjk5isnglq087y7767xw64qa40cw-r-xml2-1.3.2/library
-</span></span><span class=line><span class=cl>[123] /nix/store/693czdcvkp6glyir0mi8cqvdc643whvc-r-gridExtra-2.3/library
-</span></span><span class=line><span class=cl>[124] /nix/store/3sykinp7lyy70dgzr0fxjb195nw864dv-r-future-1.17.0/library
-</span></span><span class=line><span class=cl>[125] /nix/store/bqi2l53jfxncks6diy0hr34bw8f86rvk-r-globals-0.12.5/library
-</span></span><span class=line><span class=cl>[126] /nix/store/dydyl209klklzh69w9q89f2dym9xycnp-r-listenv-0.8.0/library
-</span></span><span class=line><span class=cl>[127] /nix/store/lni0bi36r4swldkx7g4hql7gfz9b121b-r-gganimate-1.0.5/library
-</span></span><span class=line><span class=cl>[128] /nix/store/hh92jxs79kx7vxrxr6j6vin1icscl4k7-r-tweenr-1.0.1/library
-</span></span><span class=line><span class=cl>[129] /nix/store/0npx3srjnqgh7bib80xscjqvfyzjvimq-r-GGally-1.5.0/library
-</span></span><span class=line><span class=cl>[130] /nix/store/x5nzxklmacj6l162g7kg6ln9p25r3f17-r-reshape-0.8.8/library
-</span></span><span class=line><span class=cl>[131] /nix/store/q29z7ckdyhfmg1zlzrrg1nrm36ax756j-r-ggfortify-0.4.9/library
-</span></span><span class=line><span class=cl>[132] /nix/store/1rvm1w9iv2c5n22p4drbjq8lr9wa2q2r-r-cowplot-1.0.0/library
-</span></span><span class=line><span class=cl>[133] /nix/store/rp8jhnasaw1vbv5ny5zx0mw30zgcp796-r-ggrepel-0.8.2/library
-</span></span><span class=line><span class=cl>[134] /nix/store/wb7y931mm8nsj7w9xin83bvbaq8wvi4d-r-corrplot-0.84/library
-</span></span><span class=line><span class=cl>[135] /nix/store/gdzcqivfvgdrsz247v5kmnnw1v6p9c1p-r-rpart.plot-3.0.8/library
-</span></span><span class=line><span class=cl>[136] /nix/store/6yqg37108r0v22476cm2kv0536wyilki-r-caret-6.0-86/library
-</span></span><span class=line><span class=cl>[137] /nix/store/6fjdgcwgisiqz451sg5fszxnn9z8vxg6-r-foreach-1.5.0/library
-</span></span><span class=line><span class=cl>[138] /nix/store/c3ph5i341gk7jdinrkkqf6y631xli424-r-iterators-1.0.12/library
-</span></span><span class=line><span class=cl>[139] /nix/store/sjm1rxshlpakpxbrynfhsjnnp1sjvc3r-r-ModelMetrics-1.2.2.2/library
-</span></span><span class=line><span class=cl>[140] /nix/store/vgk4m131d057xglmrrb9rijhzdr2qhhp-r-pROC-1.16.2/library
-</span></span><span class=line><span class=cl>[141] /nix/store/bv1kvy1wc2jx3v55rzn3cg2qjbv7r8zp-r-recipes-0.1.10/library
-</span></span><span class=line><span class=cl>[142] /nix/store/001h42q4za01gli7avjxhq7shpv73n9k-r-gower-0.2.1/library
-</span></span><span class=line><span class=cl>[143] /nix/store/ssffpl6ydffqyn9phscnccxnj71chnzg-r-ipred-0.9-9/library
-</span></span><span class=line><span class=cl>[144] /nix/store/baliqip8m6p0ylqhqcgqak29d8ghral1-r-prodlim-2019.11.13/library
-</span></span><span class=line><span class=cl>[145] /nix/store/j4n2wsv98asw83qiffg6a74dymk8r2hl-r-lava-1.6.7/library
-</span></span><span class=line><span class=cl>[146] /nix/store/hf5wq5kpsf6p9slglq5iav09s4by0y5i-r-numDeriv-2016.8-1.1/library
-</span></span><span class=line><span class=cl>[147] /nix/store/s58hm38078mx4gyqffvv09zn575xn648-r-SQUAREM-2020.2/library
-</span></span><span class=line><span class=cl>[148] /nix/store/g63ydzd53586pvr9kdgk8kf5szq5f2bc-r-timeDate-3043.102/library
-</span></span><span class=line><span class=cl>[149] /nix/store/0jkarmlf1kjv4g8a3svkc7jfarpp77ny-r-mlr3-0.2.0/library
-</span></span><span class=line><span class=cl>[150] /nix/store/g1m0n1w7by213v773iyn7vnxr25pkf56-r-checkmate-2.0.0/library
-</span></span><span class=line><span class=cl>[151] /nix/store/fc2ah8cz2sj6j2jk7zldvjmsjn1yakpn-r-lgr-0.3.4/library
-</span></span><span class=line><span class=cl>[152] /nix/store/0i2hs088j1s0a6i61124my6vnzq8l27m-r-mlbench-2.1-1/library
-</span></span><span class=line><span class=cl>[153] /nix/store/vzcs6k21pqrli3ispqnvj5qwkv14srf5-r-mlr3measures-0.1.3/library
-</span></span><span class=line><span class=cl>[154] /nix/store/h2yqqaia46bk3b1d1a7bq35zf09p1b1a-r-mlr3misc-0.2.0/library
-</span></span><span class=line><span class=cl>[155] /nix/store/c9mrkc928cmsvvnib50l0jb8lsz59nyk-r-paradox-0.2.0/library
-</span></span><span class=line><span class=cl>[156] /nix/store/vqpbdipi4p4advl2vxrn765mmgcrabvk-r-uuid-0.1-4/library
-</span></span><span class=line><span class=cl>[157] /nix/store/xpclynxnfq4h9218gk4y62nmgyyga6zl-r-mlr3viz-0.1.1/library
-</span></span><span class=line><span class=cl>[158] /nix/store/7w6pld5vir3p9bybay67kq0qwl0gnx17-r-mlr3learners-0.2.0/library
-</span></span><span class=line><span class=cl>[159] /nix/store/ca50rp6ha5s51qmhb1gjlj62r19xfzxs-r-mlr3pipelines-0.1.3/library
-</span></span><span class=line><span class=cl>[160] /nix/store/9hg0xap4pir64mhbgq8r8cgrfjn8aiz5-r-mlr3filters-0.2.0/library
-</span></span><span class=line><span class=cl>[161] /nix/store/jgqcmfix0xxm3y90m8wy3xkgmqf2b996-r-rstan-2.19.3/library
-</span></span><span class=line><span class=cl>[162] /nix/store/mvv1gjyrrpvf47fn7a8x722wdwrf5azk-r-inline-0.3.15/library
-</span></span><span class=line><span class=cl>[163] /nix/store/zmkw51x4w4d1v1awcws0xihj4hnxfr09-r-loo-2.2.0/library
-</span></span><span class=line><span class=cl>[164] /nix/store/30xxalfwzxl05bbfvj5sy8k3ysys6z5y-r-matrixStats-0.56.0/library
-</span></span><span class=line><span class=cl>[165] /nix/store/fhkww2l0izx87bjnf0pl9ydl1wprp0xv-r-StanHeaders-2.19.2/library
-</span></span><span class=line><span class=cl>[166] /nix/store/aflck5pzxa8ym5q1dxchx5hisfmfghkr-r-tidybayes-2.0.3/library
-</span></span><span class=line><span class=cl>[167] /nix/store/jhlbhiv4fg0wsbxwjz8igc4hcg79vw94-r-arrayhelpers-1.1-0/library
-</span></span><span class=line><span class=cl>[168] /nix/store/fv089zrnvicnavbi08hnzqpi9g1z4inj-r-svUnit-1.0.3/library
-</span></span><span class=line><span class=cl>[169] /nix/store/xci2rgjizx1fyb33818jx5s1bgn8v8k6-r-coda-0.19-3/library
-</span></span><span class=line><span class=cl>[170] /nix/store/dch9asd38yldz0sdn8nsgk9ivjrkbhva-r-HDInterval-0.2.0/library
-</span></span><span class=line><span class=cl>[171] /nix/store/rs8dri2m5cqdmpiw187rvl4yhjn0jg2v-r-e1071-1.7-3/library
-</span></span><span class=line><span class=cl>[172] /nix/store/qs1zyh3sbvccgnqjzas3br6pak399zgc-r-pvclust-2.2-0/library
-</span></span><span class=line><span class=cl>[173] /nix/store/sh3zxvdazp7rkjn1iczrag1h2358ifm1-r-forecast-8.12/library
-</span></span><span class=line><span class=cl>[174] /nix/store/h67kaxqr2ppdpyj77wg5hm684jypznji-r-fracdiff-1.5-1/library
-</span></span><span class=line><span class=cl>[175] /nix/store/fh0z465ligbpqyam5l1fwiijc7334kbk-r-lmtest-0.9-37/library
-</span></span><span class=line><span class=cl>[176] /nix/store/0lnsbwfg0axr80h137q52pa50cllbjpf-r-zoo-1.8-7/library
-</span></span><span class=line><span class=cl>[177] /nix/store/p7k4s3ivf83dp2kcxr1cr0wlc1rfk6jx-r-RcppArmadillo-0.9.860.2.0/library
-</span></span><span class=line><span class=cl>[178] /nix/store/ssnxv5x6zid2w11v8k5yvnyxis6n1qfk-r-tseries-0.10-47/library
-</span></span><span class=line><span class=cl>[179] /nix/store/zrbskjwaz0bzz4v76j044d771m24g6h8-r-quadprog-1.5-8/library
-</span></span><span class=line><span class=cl>[180] /nix/store/2x3w5sjalrfm6hf1dxd951j8y94nh765-r-quantmod-0.4.17/library
-</span></span><span class=line><span class=cl>[181] /nix/store/7g55xshf49s9379ijm1zi1qnh1vbsifq-r-TTR-0.23-6/library
-</span></span><span class=line><span class=cl>[182] /nix/store/6ilyzph46q6ijyanq4p7f0ccyni0d7j0-r-xts-0.12-0/library
-</span></span><span class=line><span class=cl>[183] /nix/store/17xhqghcnqha7pwbf98dxsq1729slqd5-r-urca-1.3-0/library
-</span></span><span class=line><span class=cl>[184] /nix/store/722lyn0k8y27pj1alik56r4vpjnncd9z-r-swdft-1.0.0/library
-</span></span><span class=line><span class=cl>[185] /nix/store/36n0zgy10fsqcq76n0qmdwjxrwh7pn9n-r-xgboost-1.0.0.2/library
-</span></span><span class=line><span class=cl>[186] /nix/store/ac0ar7lf75qx84xsdjv6j02rkdgnhybz-r-ranger-0.12.1/library
-</span></span><span class=line><span class=cl>[187] /nix/store/i1ighkq42x10dirqmzgbx2mhbnz1ynkb-r-DALEX-1.2.0/library
-</span></span><span class=line><span class=cl>[188] /nix/store/28fqnhsfng1bkphl0wvr7lg5y3p6va46-r-iBreakDown-1.2.0/library
-</span></span><span class=line><span class=cl>[189] /nix/store/dpym77x9qc2ksr4mwjm3pb9ar1kvwhdl-r-ingredients-1.2.0/library
-</span></span><span class=line><span class=cl>[190] /nix/store/sp4d281w6dpr31as0xdjqizdx8hhb01q-r-DALEXtra-0.2.1/library
-</span></span><span class=line><span class=cl>[191] /nix/store/ckhp9kpmjcs0wxb113pxn25c2wip2d0n-r-ggdendro-0.1-20/library
-</span></span><span class=line><span class=cl>[192] /nix/store/f3k7dxj1dsmqri2gn0svq4c9fvvl9g7q-r-glmnet-3.0-2/library
-</span></span><span class=line><span class=cl>[193] /nix/store/l6ccj6mwkqybjvh6dr8qzalygp0i7jyb-r-shape-1.4.4/library
-</span></span><span class=line><span class=cl>[194] /nix/store/418mqfwlafh6984xld8lzhl7rv29qw68-r-reticulate-1.15/library
-</span></span><span class=line><span class=cl>[195] /nix/store/qwh982mgxd2mzrgbjk14irqbasywa1jk-r-rappdirs-0.3.1/library
-</span></span><span class=line><span class=cl>[196] /nix/store/6sxs76abll23c6372h6nf101wi8fcr4c-r-FactoMineR-2.3/library
-</span></span><span class=line><span class=cl>[197] /nix/store/39d2va10ydgyzddwr07xwdx11fwk191i-r-ellipse-0.4.1/library
-</span></span><span class=line><span class=cl>[198] /nix/store/4lxym5nxdn8hb7l8a566n5vg9paqcfi2-r-flashClust-1.01-2/library
-</span></span><span class=line><span class=cl>[199] /nix/store/wp161zbjjs41fq4kn4k3m244c7b8l2l2-r-leaps-3.1/library
-</span></span><span class=line><span class=cl>[200] /nix/store/irghsaplrpb3hg3y7j831bbklf2cqs6d-r-scatterplot3d-0.3-41/library
-</span></span><span class=line><span class=cl>[201] /nix/store/09ahkf50g1q9isxanbdykqgcdrp8mxl1-r-factoextra-1.0.7/library
-</span></span><span class=line><span class=cl>[202] /nix/store/zi9bq7amsgc6w2x7fvd62g9qxz69vjfm-r-dendextend-1.13.4/library
-</span></span><span class=line><span class=cl>[203] /nix/store/wcywb7ydglzlxg57jf354x31nmy63923-r-viridis-0.5.1/library
-</span></span><span class=line><span class=cl>[204] /nix/store/pvnpg4vdvv93pmwrlgmy51ihrb68j55f-r-ggpubr-0.2.5/library
-</span></span><span class=line><span class=cl>[205] /nix/store/qpapsc4l9pylzfhc72ha9d82hcbac41z-r-ggsci-2.9/library
-</span></span><span class=line><span class=cl>[206] /nix/store/h0zg4x3bmkc82ggx8h4q595ffckcqgx5-r-ggsignif-0.6.0/library
-</span></span><span class=line><span class=cl>[207] /nix/store/vn5svgbf8vsgv8iy8fdzlj0izp279q15-r-polynom-1.4-0/library
-</span></span><span class=line><span class=cl>[208] /nix/store/mc1mlsjx5h3gc8nkl7jlpd4vg145nk1z-r-lindia-0.9/library
-</span></span><span class=line><span class=cl>[209] /nix/store/z1k4c8lhabp9niwfg1xylg58pf99ld9r-r-orgutils-0.4-1/library
-</span></span><span class=line><span class=cl>[210] /nix/store/ybj4538v74wx4f1l064m0qn589vyjmzg-r-textutils-0.2-0/library
-</span></span><span class=line><span class=cl>[211] /nix/store/hhm5j0wvzjc0bfd53170bw8w7mij2wnh-r-latex2exp-0.4.0/library
-</span></span><span class=line><span class=cl>[212] /nix/store/njlv5mkxgjyx3x8p984nr84dwa2v1iqp-r-kableExtra-1.1.0/library
-</span></span><span class=line><span class=cl>[213] /nix/store/lf2sb84ylh259m421ljbj731a4prjhsl-r-webshot-0.5.2/library
-</span></span><span class=line><span class=cl>[214] /nix/store/n6b8ap54b78h8l70kyx9nvayp44rnfzf-r-printr-0.1/library
-</span></span><span class=line><span class=cl>[215] /nix/store/02g1v6d3ly8zylpckigwk6w3l1mx2i9d-r-microbenchmark-1.4-7/library
-</span></span><span class=line><span class=cl>[216] /nix/store/ri6qm0fp8cyx2qnysxjv2wsk0nndl1x9-r-webchem-0.5.0/library
-</span></span><span class=line><span class=cl>[217] /nix/store/cg95rqc1gmaqxf5kxja3cz8m5w4vl76l-r-RCurl-1.98-1.2/library
-</span></span><span class=line><span class=cl>[218] /nix/store/qbpinv148778fzdz8372x8gp34hspvy1-r-bitops-1.0-6/library
-</span></span><span class=line><span class=cl>[219] /nix/store/1g0lbrx6si76k282sxr9cj0mgknrw0lx-r-devtools-2.3.0/library
-</span></span><span class=line><span class=cl>[220] /nix/store/hnvww0128czlx6w8aipjn0zs7nvmvak9-r-covr-3.5.0/library
-</span></span><span class=line><span class=cl>[221] /nix/store/p4nv59przmb14sxi49jwqarkv0l40jsp-r-rex-1.2.0/library
-</span></span><span class=line><span class=cl>[222] /nix/store/vnysmc3vkgkligwah1zh9l4sahr533a8-r-lazyeval-0.2.2/library
-</span></span><span class=line><span class=cl>[223] /nix/store/d638w33ahybsa3sqr52fafvxs2b7w9x3-r-DT-0.13/library
-</span></span><span class=line><span class=cl>[224] /nix/store/35nqc34wy2nhd9bl7lv6wriw0l3cghsw-r-crosstalk-1.1.0.1/library
-</span></span><span class=line><span class=cl>[225] /nix/store/03838i63x5irvgmpgwj67ah0wi56k9d7-r-htmlwidgets-1.5.1/library
-</span></span><span class=line><span class=cl>[226] /nix/store/l4640jxlsjzqhw63c18fziar5vc0xyhk-r-promises-1.1.0/library
-</span></span><span class=line><span class=cl>[227] /nix/store/rxrb8p3dxzsg10v7yqaq5pi3y3gk6nqh-r-later-1.0.0/library
-</span></span><span class=line><span class=cl>[228] /nix/store/giprr32bl6k18b9n4qjckpf102flarly-r-git2r-0.26.1/library
-</span></span><span class=line><span class=cl>[229] /nix/store/bbkpkf44b13ig1pkz7af32kw5dzp12vb-r-memoise-1.1.0/library
-</span></span><span class=line><span class=cl>[230] /nix/store/m31vzssnfzapsapl7f8v4m15003lcc8r-r-rcmdcheck-1.3.3/library
-</span></span><span class=line><span class=cl>[231] /nix/store/hbiylknhxsin9hp9zaa6dwc2c9ai1mqx-r-sessioninfo-1.1.1/library
-</span></span><span class=line><span class=cl>[232] /nix/store/8vwlbx3s345gjccrkiqa6h1bm9wq4s9q-r-xopen-1.0.0/library
-</span></span><span class=line><span class=cl>[233] /nix/store/mjnwnlv60cn56ap0rrzvrkqlh5qisszx-r-remotes-2.1.1/library
-</span></span><span class=line><span class=cl>[234] /nix/store/1rq4zyzqymml7cc11q89rl5g514ml9na-r-roxygen2-7.1.0/library
-</span></span><span class=line><span class=cl>[235] /nix/store/2658mrn1hpkq0fv629rvags91qg65pbn-r-brew-1.0-6/library
-</span></span><span class=line><span class=cl>[236] /nix/store/nvjalws9lzva4pd4nz1z2131xsb9b5p6-r-commonmark-1.7/library
-</span></span><span class=line><span class=cl>[237] /nix/store/qx900vivd9s2zjrxc6868s92ljfwj5dv-r-rversions-2.0.1/library
-</span></span><span class=line><span class=cl>[238] /nix/store/1drg446wilq5fjnxkglxnnv8pbp1hllg-r-usethis-1.6.0/library
-</span></span><span class=line><span class=cl>[239] /nix/store/p3f3wa41d304zbs5cwvw7vy4j17zd6nq-r-gh-1.1.0/library
-</span></span><span class=line><span class=cl>[240] /nix/store/769g7jh93da8w15ad0wsbn2aqziwwx56-r-ini-0.3.1/library
-</span></span><span class=line><span class=cl>[241] /nix/store/p7kifw1l6z2zg68a71s4sdbfj8gdmnv5-r-rematch2-2.1.1/library
-</span></span><span class=line><span class=cl>[242] /nix/store/6zhdqip9ld9vl6pvifqcf4gsqy2f5wix-r-rethinking/library
-</span></span><span class=line><span class=cl>[243] /nix/store/496p28klmflihdkc83c8p1cywg85mgk4-r-mvtnorm-1.1-0/library
-</span></span><span class=line><span class=cl>[244] /nix/store/xb1zn7ab4nka7h1vm678ginzfwg4w9wf-r-dagitty-0.2-2/library
-</span></span><span class=line><span class=cl>[245] /nix/store/3zj4dkjbdwgf3mdsl9nf9jkicpz1nwgc-r-V8-3.0.2/library
-</span></span><span class=line><span class=cl>[246] /nix/store/qiqsh62w69b5xgj2i4wjamibzxxji0mf-r-tidybayes.rethinking/library
-</span></span><span class=line><span class=cl>[247] /nix/store/4j6byy1klyk4hm2k6g3657682cf3wxcj-R-4.0.0/lib/R/library
+To augment the example of the tadpoles in the book, if the data is arranged as:</p><ul><li>Tadpoles in tanks</li><li>Some tanks have larger tadpoles (different species) which grow faster</li></ul><p>For a repeated measurement in an interval of time, there will be a positive correlation between the initial height and the slope.</p><h4 id=hold-14e3>HOLD 14E3</h4><p>When is it possible for a varying slopes model to have fewer effective parameters (as estimated by WAIC or PSIS) than the corresponding model with fixed (unpooled) slopes? Explain.</p><h5 id=solution>Solution</h5><p>The varying effects essentially causes regularization or shrinkage towards the global mean to prevent overfitting to the individual data-points. Consider the example from the text, for the chimpanzee experiment.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=line><span class=ln>1</span><span class=cl><span class=nf>data</span><span class=p>(</span><span class=n>chimpanzees</span><span class=p>)</span>
+</span></span><span class=line><span class=ln>2</span><span class=cl><span class=n>d</span> <span class=o>&lt;-</span> <span class=n>chimpanzees</span>
+</span></span><span class=line><span class=ln>3</span><span class=cl><span class=n>d</span><span class=o>$</span><span class=n>block_id</span> <span class=o>&lt;-</span> <span class=n>d</span><span class=o>$</span><span class=n>block</span>
+</span></span><span class=line><span class=ln>4</span><span class=cl><span class=n>d</span><span class=o>$</span><span class=n>treatment</span> <span class=o>&lt;-</span> <span class=m>1L</span> <span class=o>+</span> <span class=n>d</span><span class=o>$</span><span class=n>prosoc_left</span> <span class=o>+</span> <span class=m>2L</span><span class=o>*</span><span class=n>d</span><span class=o>$</span><span class=n>condition</span>
+</span></span><span class=line><span class=ln>5</span><span class=cl><span class=n>dat</span> <span class=o>&lt;-</span> <span class=nf>list</span><span class=p>(</span>
+</span></span><span class=line><span class=ln>6</span><span class=cl><span class=n>L</span> <span class=o>=</span> <span class=n>d</span><span class=o>$</span><span class=n>pulled_left</span><span class=p>,</span>
+</span></span><span class=line><span class=ln>7</span><span class=cl><span class=n>tid</span> <span class=o>=</span> <span class=nf>as.integer</span><span class=p>(</span><span class=n>d</span><span class=o>$</span><span class=n>treatment</span><span class=p>),</span>
+</span></span><span class=line><span class=ln>8</span><span class=cl><span class=n>actor</span> <span class=o>=</span> <span class=n>d</span><span class=o>$</span><span class=n>actor</span> <span class=p>)</span>
+</span></span></code></pre></div><p>We will set up a simple fixed effects model.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=line><span class=ln>1</span><span class=cl><span class=n>m14fix</span> <span class=o>&lt;-</span> <span class=nf>ulam</span><span class=p>(</span>
+</span></span><span class=line><span class=ln>2</span><span class=cl><span class=nf>alist</span><span class=p>(</span>
+</span></span><span class=line><span class=ln>3</span><span class=cl><span class=n>L</span> <span class=o>~</span> <span class=nf>dbinom</span><span class=p>(</span> <span class=m>1</span> <span class=p>,</span> <span class=n>p</span> <span class=p>)</span> <span class=p>,</span>
+</span></span><span class=line><span class=ln>4</span><span class=cl><span class=nf>logit</span><span class=p>(</span><span class=n>p</span><span class=p>)</span> <span class=o>&lt;-</span> <span class=n>alpha[actor]</span> <span class=o>+</span> <span class=n>beta[tid]</span> <span class=p>,</span>
+</span></span><span class=line><span class=ln>5</span><span class=cl><span class=n>alpha[actor]</span> <span class=o>~</span> <span class=nf>dnorm</span><span class=p>(</span> <span class=m>0</span> <span class=p>,</span> <span class=m>5</span> <span class=p>),</span>
+</span></span><span class=line><span class=ln>6</span><span class=cl><span class=n>beta[tid]</span> <span class=o>~</span> <span class=nf>dnorm</span><span class=p>(</span> <span class=m>0</span> <span class=p>,</span> <span class=m>0.5</span> <span class=p>)</span>
+</span></span><span class=line><span class=ln>7</span><span class=cl><span class=p>)</span> <span class=p>,</span> <span class=n>data</span><span class=o>=</span><span class=n>dat</span> <span class=p>,</span> <span class=n>chains</span><span class=o>=</span><span class=m>4</span> <span class=p>,</span> <span class=n>log_lik</span><span class=o>=</span><span class=kc>TRUE</span> <span class=p>)</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=ln> 1</span><span class=cl>SAMPLING FOR MODEL &#39;90fe1cae14bc2bf32f08b4d71c2d1f0d&#39; NOW (CHAIN 1).
+</span></span><span class=line><span class=ln> 2</span><span class=cl>Chain 1:
+</span></span><span class=line><span class=ln> 3</span><span class=cl>Chain 1: Gradient evaluation took 9.2e-05 seconds
+</span></span><span class=line><span class=ln> 4</span><span class=cl>Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.92 seconds.
+</span></span><span class=line><span class=ln> 5</span><span class=cl>Chain 1: Adjust your expectations accordingly!
+</span></span><span class=line><span class=ln> 6</span><span class=cl>Chain 1:
+</span></span><span class=line><span class=ln> 7</span><span class=cl>Chain 1:
+</span></span><span class=line><span class=ln> 8</span><span class=cl>Chain 1: Iteration:   1 / 1000 [  0%]  (Warmup)
+</span></span><span class=line><span class=ln> 9</span><span class=cl>Chain 1: Iteration: 100 / 1000 [ 10%]  (Warmup)
+</span></span><span class=line><span class=ln>10</span><span class=cl>Chain 1: Iteration: 200 / 1000 [ 20%]  (Warmup)
+</span></span><span class=line><span class=ln>11</span><span class=cl>Chain 1: Iteration: 300 / 1000 [ 30%]  (Warmup)
+</span></span><span class=line><span class=ln>12</span><span class=cl>Chain 1: Iteration: 400 / 1000 [ 40%]  (Warmup)
+</span></span><span class=line><span class=ln>13</span><span class=cl>Chain 1: Iteration: 500 / 1000 [ 50%]  (Warmup)
+</span></span><span class=line><span class=ln>14</span><span class=cl>Chain 1: Iteration: 501 / 1000 [ 50%]  (Sampling)
+</span></span><span class=line><span class=ln>15</span><span class=cl>Chain 1: Iteration: 600 / 1000 [ 60%]  (Sampling)
+</span></span><span class=line><span class=ln>16</span><span class=cl>Chain 1: Iteration: 700 / 1000 [ 70%]  (Sampling)
+</span></span><span class=line><span class=ln>17</span><span class=cl>Chain 1: Iteration: 800 / 1000 [ 80%]  (Sampling)
+</span></span><span class=line><span class=ln>18</span><span class=cl>Chain 1: Iteration: 900 / 1000 [ 90%]  (Sampling)
+</span></span><span class=line><span class=ln>19</span><span class=cl>Chain 1: Iteration: 1000 / 1000 [100%]  (Sampling)
+</span></span><span class=line><span class=ln>20</span><span class=cl>Chain 1:
+</span></span><span class=line><span class=ln>21</span><span class=cl>Chain 1:  Elapsed Time: 0.335488 seconds (Warm-up)
+</span></span><span class=line><span class=ln>22</span><span class=cl>Chain 1:                0.228533 seconds (Sampling)
+</span></span><span class=line><span class=ln>23</span><span class=cl>Chain 1:                0.564021 seconds (Total)
+</span></span><span class=line><span class=ln>24</span><span class=cl>Chain 1:
+</span></span><span class=line><span class=ln>25</span><span class=cl>
+</span></span><span class=line><span class=ln>26</span><span class=cl>SAMPLING FOR MODEL &#39;90fe1cae14bc2bf32f08b4d71c2d1f0d&#39; NOW (CHAIN 2).
+</span></span><span class=line><span class=ln>27</span><span class=cl>Chain 2:
+</span></span><span class=line><span class=ln>28</span><span class=cl>Chain 2: Gradient evaluation took 3.4e-05 seconds
+</span></span><span class=line><span class=ln>29</span><span class=cl>Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.34 seconds.
+</span></span><span class=line><span class=ln>30</span><span class=cl>Chain 2: Adjust your expectations accordingly!
+</span></span><span class=line><span class=ln>31</span><span class=cl>Chain 2:
+</span></span><span class=line><span class=ln>32</span><span class=cl>Chain 2:
+</span></span><span class=line><span class=ln>33</span><span class=cl>Chain 2: Iteration:   1 / 1000 [  0%]  (Warmup)
+</span></span><span class=line><span class=ln>34</span><span class=cl>Chain 2: Iteration: 100 / 1000 [ 10%]  (Warmup)
+</span></span><span class=line><span class=ln>35</span><span class=cl>Chain 2: Iteration: 200 / 1000 [ 20%]  (Warmup)
+</span></span><span class=line><span class=ln>36</span><span class=cl>Chain 2: Iteration: 300 / 1000 [ 30%]  (Warmup)
+</span></span><span class=line><span class=ln>37</span><span class=cl>Chain 2: Iteration: 400 / 1000 [ 40%]  (Warmup)
+</span></span><span class=line><span class=ln>38</span><span class=cl>Chain 2: Iteration: 500 / 1000 [ 50%]  (Warmup)
+</span></span><span class=line><span class=ln>39</span><span class=cl>Chain 2: Iteration: 501 / 1000 [ 50%]  (Sampling)
+</span></span><span class=line><span class=ln>40</span><span class=cl>Chain 2: Iteration: 600 / 1000 [ 60%]  (Sampling)
+</span></span><span class=line><span class=ln>41</span><span class=cl>Chain 2: Iteration: 700 / 1000 [ 70%]  (Sampling)
+</span></span><span class=line><span class=ln>42</span><span class=cl>Chain 2: Iteration: 800 / 1000 [ 80%]  (Sampling)
+</span></span><span class=line><span class=ln>43</span><span class=cl>Chain 2: Iteration: 900 / 1000 [ 90%]  (Sampling)
+</span></span><span class=line><span class=ln>44</span><span class=cl>Chain 2: Iteration: 1000 / 1000 [100%]  (Sampling)
+</span></span><span class=line><span class=ln>45</span><span class=cl>Chain 2:
+</span></span><span class=line><span class=ln>46</span><span class=cl>Chain 2:  Elapsed Time: 0.365676 seconds (Warm-up)
+</span></span><span class=line><span class=ln>47</span><span class=cl>Chain 2:                0.330942 seconds (Sampling)
+</span></span><span class=line><span class=ln>48</span><span class=cl>Chain 2:                0.696618 seconds (Total)
+</span></span><span class=line><span class=ln>49</span><span class=cl>Chain 2:
+</span></span><span class=line><span class=ln>50</span><span class=cl>
+</span></span><span class=line><span class=ln>51</span><span class=cl>SAMPLING FOR MODEL &#39;90fe1cae14bc2bf32f08b4d71c2d1f0d&#39; NOW (CHAIN 3).
+</span></span><span class=line><span class=ln>52</span><span class=cl>Chain 3:
+</span></span><span class=line><span class=ln>53</span><span class=cl>Chain 3: Gradient evaluation took 4.3e-05 seconds
+</span></span><span class=line><span class=ln>54</span><span class=cl>Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.43 seconds.
+</span></span><span class=line><span class=ln>55</span><span class=cl>Chain 3: Adjust your expectations accordingly!
+</span></span><span class=line><span class=ln>56</span><span class=cl>Chain 3:
+</span></span><span class=line><span class=ln>57</span><span class=cl>Chain 3:
+</span></span><span class=line><span class=ln>58</span><span class=cl>Chain 3: Iteration:   1 / 1000 [  0%]  (Warmup)
+</span></span><span class=line><span class=ln>59</span><span class=cl>Chain 3: Iteration: 100 / 1000 [ 10%]  (Warmup)
+</span></span><span class=line><span class=ln>60</span><span class=cl>Chain 3: Iteration: 200 / 1000 [ 20%]  (Warmup)
+</span></span><span class=line><span class=ln>61</span><span class=cl>Chain 3: Iteration: 300 / 1000 [ 30%]  (Warmup)
+</span></span><span class=line><span class=ln>62</span><span class=cl>Chain 3: Iteration: 400 / 1000 [ 40%]  (Warmup)
+</span></span><span class=line><span class=ln>63</span><span class=cl>Chain 3: Iteration: 500 / 1000 [ 50%]  (Warmup)
+</span></span><span class=line><span class=ln>64</span><span class=cl>Chain 3: Iteration: 501 / 1000 [ 50%]  (Sampling)
+</span></span><span class=line><span class=ln>65</span><span class=cl>Chain 3: Iteration: 600 / 1000 [ 60%]  (Sampling)
+</span></span><span class=line><span class=ln>66</span><span class=cl>Chain 3: Iteration: 700 / 1000 [ 70%]  (Sampling)
+</span></span><span class=line><span class=ln>67</span><span class=cl>Chain 3: Iteration: 800 / 1000 [ 80%]  (Sampling)
+</span></span><span class=line><span class=ln>68</span><span class=cl>Chain 3: Iteration: 900 / 1000 [ 90%]  (Sampling)
+</span></span><span class=line><span class=ln>69</span><span class=cl>Chain 3: Iteration: 1000 / 1000 [100%]  (Sampling)
+</span></span><span class=line><span class=ln>70</span><span class=cl>Chain 3:
+</span></span><span class=line><span class=ln>71</span><span class=cl>Chain 3:  Elapsed Time: 0.356879 seconds (Warm-up)
+</span></span><span class=line><span class=ln>72</span><span class=cl>Chain 3:                0.352045 seconds (Sampling)
+</span></span><span class=line><span class=ln>73</span><span class=cl>Chain 3:                0.708924 seconds (Total)
+</span></span><span class=line><span class=ln>74</span><span class=cl>Chain 3:
+</span></span><span class=line><span class=ln>75</span><span class=cl>
+</span></span><span class=line><span class=ln>76</span><span class=cl>SAMPLING FOR MODEL &#39;90fe1cae14bc2bf32f08b4d71c2d1f0d&#39; NOW (CHAIN 4).
+</span></span><span class=line><span class=ln>77</span><span class=cl>Chain 4:
+</span></span><span class=line><span class=ln>78</span><span class=cl>Chain 4: Gradient evaluation took 4.5e-05 seconds
+</span></span><span class=line><span class=ln>79</span><span class=cl>Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.45 seconds.
+</span></span><span class=line><span class=ln>80</span><span class=cl>Chain 4: Adjust your expectations accordingly!
+</span></span><span class=line><span class=ln>81</span><span class=cl>Chain 4:
+</span></span><span class=line><span class=ln>82</span><span class=cl>Chain 4:
+</span></span><span class=line><span class=ln>83</span><span class=cl>Chain 4: Iteration:   1 / 1000 [  0%]  (Warmup)
+</span></span><span class=line><span class=ln>84</span><span class=cl>Chain 4: Iteration: 100 / 1000 [ 10%]  (Warmup)
+</span></span><span class=line><span class=ln>85</span><span class=cl>Chain 4: Iteration: 200 / 1000 [ 20%]  (Warmup)
+</span></span><span class=line><span class=ln>86</span><span class=cl>Chain 4: Iteration: 300 / 1000 [ 30%]  (Warmup)
+</span></span><span class=line><span class=ln>87</span><span class=cl>Chain 4: Iteration: 400 / 1000 [ 40%]  (Warmup)
+</span></span><span class=line><span class=ln>88</span><span class=cl>Chain 4: Iteration: 500 / 1000 [ 50%]  (Warmup)
+</span></span><span class=line><span class=ln>89</span><span class=cl>Chain 4: Iteration: 501 / 1000 [ 50%]  (Sampling)
+</span></span><span class=line><span class=ln>90</span><span class=cl>Chain 4: Iteration: 600 / 1000 [ 60%]  (Sampling)
+</span></span><span class=line><span class=ln>91</span><span class=cl>Chain 4: Iteration: 700 / 1000 [ 70%]  (Sampling)
+</span></span><span class=line><span class=ln>92</span><span class=cl>Chain 4: Iteration: 800 / 1000 [ 80%]  (Sampling)
+</span></span><span class=line><span class=ln>93</span><span class=cl>Chain 4: Iteration: 900 / 1000 [ 90%]  (Sampling)
+</span></span><span class=line><span class=ln>94</span><span class=cl>Chain 4: Iteration: 1000 / 1000 [100%]  (Sampling)
+</span></span><span class=line><span class=ln>95</span><span class=cl>Chain 4:
+</span></span><span class=line><span class=ln>96</span><span class=cl>Chain 4:  Elapsed Time: 0.296276 seconds (Warm-up)
+</span></span><span class=line><span class=ln>97</span><span class=cl>Chain 4:                0.261692 seconds (Sampling)
+</span></span><span class=line><span class=ln>98</span><span class=cl>Chain 4:                0.557968 seconds (Total)
+</span></span><span class=line><span class=ln>99</span><span class=cl>Chain 4:
+</span></span></code></pre></div><p>Now we can extend this to a varying slopes model, where we will consider varying slopes for actors.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=line><span class=ln>1</span><span class=cl><span class=n>m14ppool</span> <span class=o>&lt;-</span> <span class=nf>ulam</span><span class=p>(</span>
+</span></span><span class=line><span class=ln>2</span><span class=cl><span class=nf>alist</span><span class=p>(</span>
+</span></span><span class=line><span class=ln>3</span><span class=cl><span class=n>L</span> <span class=o>~</span> <span class=nf>dbinom</span><span class=p>(</span> <span class=m>1</span> <span class=p>,</span> <span class=n>p</span> <span class=p>)</span> <span class=p>,</span>
+</span></span><span class=line><span class=ln>4</span><span class=cl><span class=nf>logit</span><span class=p>(</span><span class=n>p</span><span class=p>)</span> <span class=o>&lt;-</span> <span class=n>alpha</span> <span class=o>+</span> <span class=n>a[actor]</span><span class=o>*</span><span class=n>vary_id</span> <span class=o>+</span> <span class=n>beta[tid]</span><span class=p>,</span>
+</span></span><span class=line><span class=ln>5</span><span class=cl><span class=n>alpha</span> <span class=o>~</span> <span class=nf>dnorm</span><span class=p>(</span> <span class=m>0</span> <span class=p>,</span> <span class=m>5</span> <span class=p>),</span>
+</span></span><span class=line><span class=ln>6</span><span class=cl><span class=n>a[actor]</span> <span class=o>~</span> <span class=nf>dnorm</span><span class=p>(</span> <span class=m>0</span> <span class=p>,</span> <span class=m>1</span> <span class=p>),</span>
+</span></span><span class=line><span class=ln>7</span><span class=cl><span class=n>beta[tid]</span> <span class=o>~</span> <span class=nf>dnorm</span><span class=p>(</span> <span class=m>0</span> <span class=p>,</span> <span class=m>0.5</span> <span class=p>),</span>
+</span></span><span class=line><span class=ln>8</span><span class=cl><span class=n>vary_id</span> <span class=o>~</span> <span class=nf>dexp</span><span class=p>(</span> <span class=m>1</span> <span class=p>)</span>
+</span></span><span class=line><span class=ln>9</span><span class=cl><span class=p>)</span> <span class=p>,</span> <span class=n>data</span><span class=o>=</span><span class=n>dat</span> <span class=p>,</span> <span class=n>chains</span><span class=o>=</span><span class=m>4</span> <span class=p>,</span> <span class=n>log_lik</span><span class=o>=</span><span class=kc>TRUE</span> <span class=p>)</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=ln> 1</span><span class=cl>SAMPLING FOR MODEL &#39;d14d0bbe9399ac4de917b8e279a6e9e5&#39; NOW (CHAIN 1).
+</span></span><span class=line><span class=ln> 2</span><span class=cl>Chain 1:
+</span></span><span class=line><span class=ln> 3</span><span class=cl>Chain 1: Gradient evaluation took 0.000184 seconds
+</span></span><span class=line><span class=ln> 4</span><span class=cl>Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.84 seconds.
+</span></span><span class=line><span class=ln> 5</span><span class=cl>Chain 1: Adjust your expectations accordingly!
+</span></span><span class=line><span class=ln> 6</span><span class=cl>Chain 1:
+</span></span><span class=line><span class=ln> 7</span><span class=cl>Chain 1:
+</span></span><span class=line><span class=ln> 8</span><span class=cl>Chain 1: Iteration:   1 / 1000 [  0%]  (Warmup)
+</span></span><span class=line><span class=ln> 9</span><span class=cl>Chain 1: Iteration: 100 / 1000 [ 10%]  (Warmup)
+</span></span><span class=line><span class=ln>10</span><span class=cl>Chain 1: Iteration: 200 / 1000 [ 20%]  (Warmup)
+</span></span><span class=line><span class=ln>11</span><span class=cl>Chain 1: Iteration: 300 / 1000 [ 30%]  (Warmup)
+</span></span><span class=line><span class=ln>12</span><span class=cl>Chain 1: Iteration: 400 / 1000 [ 40%]  (Warmup)
+</span></span><span class=line><span class=ln>13</span><span class=cl>Chain 1: Iteration: 500 / 1000 [ 50%]  (Warmup)
+</span></span><span class=line><span class=ln>14</span><span class=cl>Chain 1: Iteration: 501 / 1000 [ 50%]  (Sampling)
+</span></span><span class=line><span class=ln>15</span><span class=cl>Chain 1: Iteration: 600 / 1000 [ 60%]  (Sampling)
+</span></span><span class=line><span class=ln>16</span><span class=cl>Chain 1: Iteration: 700 / 1000 [ 70%]  (Sampling)
+</span></span><span class=line><span class=ln>17</span><span class=cl>Chain 1: Iteration: 800 / 1000 [ 80%]  (Sampling)
+</span></span><span class=line><span class=ln>18</span><span class=cl>Chain 1: Iteration: 900 / 1000 [ 90%]  (Sampling)
+</span></span><span class=line><span class=ln>19</span><span class=cl>Chain 1: Iteration: 1000 / 1000 [100%]  (Sampling)
+</span></span><span class=line><span class=ln>20</span><span class=cl>Chain 1:
+</span></span><span class=line><span class=ln>21</span><span class=cl>Chain 1:  Elapsed Time: 1.63295 seconds (Warm-up)
+</span></span><span class=line><span class=ln>22</span><span class=cl>Chain 1:                1.18708 seconds (Sampling)
+</span></span><span class=line><span class=ln>23</span><span class=cl>Chain 1:                2.82003 seconds (Total)
+</span></span><span class=line><span class=ln>24</span><span class=cl>Chain 1:
+</span></span><span class=line><span class=ln>25</span><span class=cl>
+</span></span><span class=line><span class=ln>26</span><span class=cl>SAMPLING FOR MODEL &#39;d14d0bbe9399ac4de917b8e279a6e9e5&#39; NOW (CHAIN 2).
+</span></span><span class=line><span class=ln>27</span><span class=cl>Chain 2:
+</span></span><span class=line><span class=ln>28</span><span class=cl>Chain 2: Gradient evaluation took 6.3e-05 seconds
+</span></span><span class=line><span class=ln>29</span><span class=cl>Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.63 seconds.
+</span></span><span class=line><span class=ln>30</span><span class=cl>Chain 2: Adjust your expectations accordingly!
+</span></span><span class=line><span class=ln>31</span><span class=cl>Chain 2:
+</span></span><span class=line><span class=ln>32</span><span class=cl>Chain 2:
+</span></span><span class=line><span class=ln>33</span><span class=cl>Chain 2: Iteration:   1 / 1000 [  0%]  (Warmup)
+</span></span><span class=line><span class=ln>34</span><span class=cl>Chain 2: Iteration: 100 / 1000 [ 10%]  (Warmup)
+</span></span><span class=line><span class=ln>35</span><span class=cl>Chain 2: Iteration: 200 / 1000 [ 20%]  (Warmup)
+</span></span><span class=line><span class=ln>36</span><span class=cl>Chain 2: Iteration: 300 / 1000 [ 30%]  (Warmup)
+</span></span><span class=line><span class=ln>37</span><span class=cl>Chain 2: Iteration: 400 / 1000 [ 40%]  (Warmup)
+</span></span><span class=line><span class=ln>38</span><span class=cl>Chain 2: Iteration: 500 / 1000 [ 50%]  (Warmup)
+</span></span><span class=line><span class=ln>39</span><span class=cl>Chain 2: Iteration: 501 / 1000 [ 50%]  (Sampling)
+</span></span><span class=line><span class=ln>40</span><span class=cl>Chain 2: Iteration: 600 / 1000 [ 60%]  (Sampling)
+</span></span><span class=line><span class=ln>41</span><span class=cl>Chain 2: Iteration: 700 / 1000 [ 70%]  (Sampling)
+</span></span><span class=line><span class=ln>42</span><span class=cl>Chain 2: Iteration: 800 / 1000 [ 80%]  (Sampling)
+</span></span><span class=line><span class=ln>43</span><span class=cl>Chain 2: Iteration: 900 / 1000 [ 90%]  (Sampling)
+</span></span><span class=line><span class=ln>44</span><span class=cl>Chain 2: Iteration: 1000 / 1000 [100%]  (Sampling)
+</span></span><span class=line><span class=ln>45</span><span class=cl>Chain 2:
+</span></span><span class=line><span class=ln>46</span><span class=cl>Chain 2:  Elapsed Time: 1.58303 seconds (Warm-up)
+</span></span><span class=line><span class=ln>47</span><span class=cl>Chain 2:                1.30156 seconds (Sampling)
+</span></span><span class=line><span class=ln>48</span><span class=cl>Chain 2:                2.88459 seconds (Total)
+</span></span><span class=line><span class=ln>49</span><span class=cl>Chain 2:
+</span></span><span class=line><span class=ln>50</span><span class=cl>
+</span></span><span class=line><span class=ln>51</span><span class=cl>SAMPLING FOR MODEL &#39;d14d0bbe9399ac4de917b8e279a6e9e5&#39; NOW (CHAIN 3).
+</span></span><span class=line><span class=ln>52</span><span class=cl>Chain 3:
+</span></span><span class=line><span class=ln>53</span><span class=cl>Chain 3: Gradient evaluation took 6.4e-05 seconds
+</span></span><span class=line><span class=ln>54</span><span class=cl>Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.64 seconds.
+</span></span><span class=line><span class=ln>55</span><span class=cl>Chain 3: Adjust your expectations accordingly!
+</span></span><span class=line><span class=ln>56</span><span class=cl>Chain 3:
+</span></span><span class=line><span class=ln>57</span><span class=cl>Chain 3:
+</span></span><span class=line><span class=ln>58</span><span class=cl>Chain 3: Iteration:   1 / 1000 [  0%]  (Warmup)
+</span></span><span class=line><span class=ln>59</span><span class=cl>Chain 3: Iteration: 100 / 1000 [ 10%]  (Warmup)
+</span></span><span class=line><span class=ln>60</span><span class=cl>Chain 3: Iteration: 200 / 1000 [ 20%]  (Warmup)
+</span></span><span class=line><span class=ln>61</span><span class=cl>Chain 3: Iteration: 300 / 1000 [ 30%]  (Warmup)
+</span></span><span class=line><span class=ln>62</span><span class=cl>Chain 3: Iteration: 400 / 1000 [ 40%]  (Warmup)
+</span></span><span class=line><span class=ln>63</span><span class=cl>Chain 3: Iteration: 500 / 1000 [ 50%]  (Warmup)
+</span></span><span class=line><span class=ln>64</span><span class=cl>Chain 3: Iteration: 501 / 1000 [ 50%]  (Sampling)
+</span></span><span class=line><span class=ln>65</span><span class=cl>Chain 3: Iteration: 600 / 1000 [ 60%]  (Sampling)
+</span></span><span class=line><span class=ln>66</span><span class=cl>Chain 3: Iteration: 700 / 1000 [ 70%]  (Sampling)
+</span></span><span class=line><span class=ln>67</span><span class=cl>Chain 3: Iteration: 800 / 1000 [ 80%]  (Sampling)
+</span></span><span class=line><span class=ln>68</span><span class=cl>Chain 3: Iteration: 900 / 1000 [ 90%]  (Sampling)
+</span></span><span class=line><span class=ln>69</span><span class=cl>Chain 3: Iteration: 1000 / 1000 [100%]  (Sampling)
+</span></span><span class=line><span class=ln>70</span><span class=cl>Chain 3:
+</span></span><span class=line><span class=ln>71</span><span class=cl>Chain 3:  Elapsed Time: 1.37077 seconds (Warm-up)
+</span></span><span class=line><span class=ln>72</span><span class=cl>Chain 3:                1.12109 seconds (Sampling)
+</span></span><span class=line><span class=ln>73</span><span class=cl>Chain 3:                2.49186 seconds (Total)
+</span></span><span class=line><span class=ln>74</span><span class=cl>Chain 3:
+</span></span><span class=line><span class=ln>75</span><span class=cl>
+</span></span><span class=line><span class=ln>76</span><span class=cl>SAMPLING FOR MODEL &#39;d14d0bbe9399ac4de917b8e279a6e9e5&#39; NOW (CHAIN 4).
+</span></span><span class=line><span class=ln>77</span><span class=cl>Chain 4:
+</span></span><span class=line><span class=ln>78</span><span class=cl>Chain 4: Gradient evaluation took 5.9e-05 seconds
+</span></span><span class=line><span class=ln>79</span><span class=cl>Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.59 seconds.
+</span></span><span class=line><span class=ln>80</span><span class=cl>Chain 4: Adjust your expectations accordingly!
+</span></span><span class=line><span class=ln>81</span><span class=cl>Chain 4:
+</span></span><span class=line><span class=ln>82</span><span class=cl>Chain 4:
+</span></span><span class=line><span class=ln>83</span><span class=cl>Chain 4: Iteration:   1 / 1000 [  0%]  (Warmup)
+</span></span><span class=line><span class=ln>84</span><span class=cl>Chain 4: Iteration: 100 / 1000 [ 10%]  (Warmup)
+</span></span><span class=line><span class=ln>85</span><span class=cl>Chain 4: Iteration: 200 / 1000 [ 20%]  (Warmup)
+</span></span><span class=line><span class=ln>86</span><span class=cl>Chain 4: Iteration: 300 / 1000 [ 30%]  (Warmup)
+</span></span><span class=line><span class=ln>87</span><span class=cl>Chain 4: Iteration: 400 / 1000 [ 40%]  (Warmup)
+</span></span><span class=line><span class=ln>88</span><span class=cl>Chain 4: Iteration: 500 / 1000 [ 50%]  (Warmup)
+</span></span><span class=line><span class=ln>89</span><span class=cl>Chain 4: Iteration: 501 / 1000 [ 50%]  (Sampling)
+</span></span><span class=line><span class=ln>90</span><span class=cl>Chain 4: Iteration: 600 / 1000 [ 60%]  (Sampling)
+</span></span><span class=line><span class=ln>91</span><span class=cl>Chain 4: Iteration: 700 / 1000 [ 70%]  (Sampling)
+</span></span><span class=line><span class=ln>92</span><span class=cl>Chain 4: Iteration: 800 / 1000 [ 80%]  (Sampling)
+</span></span><span class=line><span class=ln>93</span><span class=cl>Chain 4: Iteration: 900 / 1000 [ 90%]  (Sampling)
+</span></span><span class=line><span class=ln>94</span><span class=cl>Chain 4: Iteration: 1000 / 1000 [100%]  (Sampling)
+</span></span><span class=line><span class=ln>95</span><span class=cl>Chain 4:
+</span></span><span class=line><span class=ln>96</span><span class=cl>Chain 4:  Elapsed Time: 1.48561 seconds (Warm-up)
+</span></span><span class=line><span class=ln>97</span><span class=cl>Chain 4:                1.38809 seconds (Sampling)
+</span></span><span class=line><span class=ln>98</span><span class=cl>Chain 4:                2.8737 seconds (Total)
+</span></span><span class=line><span class=ln>99</span><span class=cl>Chain 4:
+</span></span></code></pre></div><p>Now we can test the number of parameters.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=line><span class=ln>1</span><span class=cl><span class=nf>compare</span><span class=p>(</span><span class=n>m14ppool</span><span class=p>,</span><span class=n>m14fix</span><span class=p>)</span> <span class=o>%&gt;%</span> <span class=n>toOrg</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=ln>1</span><span class=cl>| row.names |             WAIC |               SE |            dWAIC |              dSE |            pWAIC |            weight |
+</span></span><span class=line><span class=ln>2</span><span class=cl>|-----------+------------------+------------------+------------------+------------------+------------------+-------------------|
+</span></span><span class=line><span class=ln>3</span><span class=cl>| m14ppool  | 532.211705503729 | 19.5177343184252 |                0 |               NA | 9.12911563615787 | 0.796616007296431 |
+</span></span><span class=line><span class=ln>4</span><span class=cl>| m14fix    | 534.942259470042 | 18.0912938913487 | 2.73055396631241 | 1.66292448384092 | 8.10370201332515 | 0.203383992703568 |
+</span></span></code></pre></div><p>As we can see, the model with partial pooling has only one effective additional parameter, even though the model without pooling has \(n(\mathrm{actor})\) intercepts (one per actor) with a standard deviation, while the partial pooling parameter has an additional average intercept and a standard deviation parameter.</p><p>Both the models have around the same number of effective parameters, which mean that the additional parameters do not actually cause additional overfitting. This simply implies that for Bayesian models, the raw number of model parameters does not correspond necessarily to a model with more overfitting.</p><p>In general, we should keep in mind that the effective number of parameters, when the variation among clusters is <strong>high</strong>, is probably going to be lower than the total number of parameters, due to adaptive regularization.</p><h2 id=a-colophon>A: Colophon</h2><p>To ensure that this document is fully reproducible at a later date, we will record the session info.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-R data-lang=R><span class=line><span class=ln>1</span><span class=cl><span class=n>devtools</span><span class=o>::</span><span class=nf>session_info</span><span class=p>()</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=ln>  1</span><span class=cl>─ Session info ───────────────────────────────────────────────────────────────
+</span></span><span class=line><span class=ln>  2</span><span class=cl> setting  value
+</span></span><span class=line><span class=ln>  3</span><span class=cl> version  R version 4.0.0 (2020-04-24)
+</span></span><span class=line><span class=ln>  4</span><span class=cl> os       Arch Linux
+</span></span><span class=line><span class=ln>  5</span><span class=cl> system   x86_64, linux-gnu
+</span></span><span class=line><span class=ln>  6</span><span class=cl> ui       X11
+</span></span><span class=line><span class=ln>  7</span><span class=cl> language (EN)
+</span></span><span class=line><span class=ln>  8</span><span class=cl> collate  en_US.UTF-8
+</span></span><span class=line><span class=ln>  9</span><span class=cl> ctype    en_US.UTF-8
+</span></span><span class=line><span class=ln> 10</span><span class=cl> tz       Iceland
+</span></span><span class=line><span class=ln> 11</span><span class=cl> date     2020-06-27
+</span></span><span class=line><span class=ln> 12</span><span class=cl>
+</span></span><span class=line><span class=ln> 13</span><span class=cl>─ Packages ───────────────────────────────────────────────────────────────────
+</span></span><span class=line><span class=ln> 14</span><span class=cl> package              * version    date       lib   source
+</span></span><span class=line><span class=ln> 15</span><span class=cl> arrayhelpers           1.1-0      2020-02-04 [167] CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 16</span><span class=cl> assertthat             0.2.1      2019-03-21 [34]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 17</span><span class=cl> backports              1.1.6      2020-04-05 [68]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 18</span><span class=cl> boot                   1.3-24     2019-12-20 [5]   CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 19</span><span class=cl> broom                  0.5.6      2020-04-20 [67]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 20</span><span class=cl> callr                  3.4.3      2020-03-28 [87]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 21</span><span class=cl> cellranger             1.1.0      2016-07-27 [55]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 22</span><span class=cl> cli                    2.0.2      2020-02-28 [33]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 23</span><span class=cl> coda                   0.19-3     2019-07-05 [169] CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 24</span><span class=cl> colorspace             1.4-1      2019-03-18 [97]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 25</span><span class=cl> crayon                 1.3.4      2017-09-16 [35]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 26</span><span class=cl> curl                   4.3        2019-12-02 [26]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 27</span><span class=cl> dagitty              * 0.2-2      2016-08-26 [244] CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 28</span><span class=cl> data.table           * 1.12.8     2019-12-09 [27]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 29</span><span class=cl> DBI                    1.1.0      2019-12-15 [77]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 30</span><span class=cl> dbplyr                 1.4.3      2020-04-19 [76]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 31</span><span class=cl> desc                   1.2.0      2018-05-01 [84]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 32</span><span class=cl> devtools             * 2.3.0      2020-04-10 [219] CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 33</span><span class=cl> digest                 0.6.25     2020-02-23 [42]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 34</span><span class=cl> dplyr                * 0.8.5      2020-03-07 [69]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 35</span><span class=cl> ellipsis               0.3.0      2019-09-20 [30]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 36</span><span class=cl> evaluate               0.14       2019-05-28 [82]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 37</span><span class=cl> fansi                  0.4.1      2020-01-08 [36]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 38</span><span class=cl> forcats              * 0.5.0      2020-03-01 [29]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 39</span><span class=cl> fs                     1.4.1      2020-04-04 [109] CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 40</span><span class=cl> generics               0.0.2      2018-11-29 [71]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 41</span><span class=cl> ggplot2              * 3.3.0      2020-03-05 [78]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 42</span><span class=cl> glue                 * 1.4.0      2020-04-03 [37]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 43</span><span class=cl> gridExtra              2.3        2017-09-09 [123] CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 44</span><span class=cl> gtable                 0.3.0      2019-03-25 [79]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 45</span><span class=cl> haven                  2.2.0      2019-11-08 [28]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 46</span><span class=cl> hms                    0.5.3      2020-01-08 [44]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 47</span><span class=cl> htmltools              0.4.0      2019-10-04 [112] CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 48</span><span class=cl> httr                   1.4.1      2019-08-05 [100] CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 49</span><span class=cl> inline                 0.3.15     2018-05-18 [162] CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 50</span><span class=cl> jsonlite               1.6.1      2020-02-02 [101] CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 51</span><span class=cl> kableExtra           * 1.1.0      2019-03-16 [212] CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 52</span><span class=cl> knitr                  1.28       2020-02-06 [113] CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 53</span><span class=cl> latex2exp            * 0.4.0      2015-11-30 [211] CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 54</span><span class=cl> lattice                0.20-41    2020-04-02 [6]   CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 55</span><span class=cl> lifecycle              0.2.0      2020-03-06 [38]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 56</span><span class=cl> loo                    2.2.0      2019-12-19 [163] CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 57</span><span class=cl> lubridate              1.7.8      2020-04-06 [106] CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 58</span><span class=cl> magrittr               1.5        2014-11-22 [21]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 59</span><span class=cl> MASS                   7.3-51.5   2019-12-20 [7]   CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 60</span><span class=cl> matrixStats            0.56.0     2020-03-13 [164] CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 61</span><span class=cl> memoise                1.1.0      2017-04-21 [229] CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 62</span><span class=cl> modelr                 0.1.6      2020-02-22 [107] CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 63</span><span class=cl> munsell                0.5.0      2018-06-12 [96]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 64</span><span class=cl> mvtnorm                1.1-0      2020-02-24 [243] CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 65</span><span class=cl> nlme                   3.1-147    2020-04-13 [11]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 66</span><span class=cl> orgutils             * 0.4-1      2017-03-21 [209] CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 67</span><span class=cl> pillar                 1.4.3      2019-12-20 [39]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 68</span><span class=cl> pkgbuild               1.0.6      2019-10-09 [86]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 69</span><span class=cl> pkgconfig              2.0.3      2019-09-22 [43]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 70</span><span class=cl> pkgload                1.0.2      2018-10-29 [83]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 71</span><span class=cl> plyr                   1.8.6      2020-03-03 [73]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 72</span><span class=cl> prettyunits            1.1.1      2020-01-24 [58]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 73</span><span class=cl> printr               * 0.1        2017-05-19 [214] CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 74</span><span class=cl> processx               3.4.2      2020-02-09 [88]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 75</span><span class=cl> ps                     1.3.2      2020-02-13 [89]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 76</span><span class=cl> purrr                * 0.3.4      2020-04-17 [50]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 77</span><span class=cl> R6                     2.4.1      2019-11-12 [48]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 78</span><span class=cl> Rcpp                   1.0.4.6    2020-04-09 [10]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 79</span><span class=cl> readr                * 1.3.1      2018-12-21 [45]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 80</span><span class=cl> readxl                 1.3.1      2019-03-13 [54]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 81</span><span class=cl> remotes                2.1.1      2020-02-15 [233] CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 82</span><span class=cl> reprex                 0.3.0      2019-05-16 [108] CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 83</span><span class=cl> rethinking           * 2.01       2020-06-06 [242] local
+</span></span><span class=line><span class=ln> 84</span><span class=cl> rlang                  0.4.5      2020-03-01 [31]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 85</span><span class=cl> rmarkdown              2.1        2020-01-20 [110] CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 86</span><span class=cl> rprojroot              1.3-2      2018-01-03 [85]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 87</span><span class=cl> rstan                * 2.19.3     2020-02-11 [161] CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 88</span><span class=cl> rstudioapi             0.11       2020-02-07 [91]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 89</span><span class=cl> rvest                  0.3.5      2019-11-08 [120] CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 90</span><span class=cl> scales                 1.1.0      2019-11-18 [93]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 91</span><span class=cl> sessioninfo            1.1.1      2018-11-05 [231] CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 92</span><span class=cl> shape                  1.4.4      2018-02-07 [193] CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 93</span><span class=cl> StanHeaders          * 2.19.2     2020-02-11 [165] CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 94</span><span class=cl> stringi                1.4.6      2020-02-17 [52]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 95</span><span class=cl> stringr              * 1.4.0      2019-02-10 [74]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 96</span><span class=cl> svUnit                 1.0.3      2020-04-20 [168] CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 97</span><span class=cl> testthat               2.3.2      2020-03-02 [81]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 98</span><span class=cl> textutils              0.2-0      2020-01-07 [210] CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln> 99</span><span class=cl> tibble               * 3.0.1      2020-04-20 [32]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln>100</span><span class=cl> tidybayes            * 2.0.3      2020-04-04 [166] CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln>101</span><span class=cl> tidybayes.rethinking * 2.0.3.9000 2020-06-07 [246] local
+</span></span><span class=line><span class=ln>102</span><span class=cl> tidyr                * 1.0.2      2020-01-24 [75]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln>103</span><span class=cl> tidyselect             1.0.0      2020-01-27 [49]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln>104</span><span class=cl> tidyverse            * 1.3.0      2019-11-21 [66]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln>105</span><span class=cl> usethis              * 1.6.0      2020-04-09 [238] CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln>106</span><span class=cl> V8                     3.0.2      2020-03-14 [245] CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln>107</span><span class=cl> vctrs                  0.2.4      2020-03-10 [41]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln>108</span><span class=cl> viridisLite            0.3.0      2018-02-01 [99]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln>109</span><span class=cl> webshot                0.5.2      2019-11-22 [213] CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln>110</span><span class=cl> withr                  2.2.0      2020-04-20 [90]  CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln>111</span><span class=cl> xfun                   0.13       2020-04-13 [116] CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln>112</span><span class=cl> xml2                   1.3.2      2020-04-23 [122] CRAN (R 4.0.0)
+</span></span><span class=line><span class=ln>113</span><span class=cl>
+</span></span><span class=line><span class=ln>114</span><span class=cl>[1] /nix/store/xzd8h53xkyvfm3kvj5ab6znp685wi04w-r-car-3.0-7/library
+</span></span><span class=line><span class=ln>115</span><span class=cl>[2] /nix/store/mhr8zw9bmxarc3n821b83i0gz2j9zlrq-r-abind-1.4-5/library
+</span></span><span class=line><span class=ln>116</span><span class=cl>[3] /nix/store/hp86nhr0787vib3l8mkw0gf9nxwb45im-r-carData-3.0-3/library
+</span></span><span class=line><span class=ln>117</span><span class=cl>[4] /nix/store/vhw7s2h5ds6sp110z2yvilchv8j9jch5-r-lme4-1.1-23/library
+</span></span><span class=line><span class=ln>118</span><span class=cl>[5] /nix/store/987n8g0zy9sjvfvnsck1bkkcknw05yvb-r-boot-1.3-24/library
+</span></span><span class=line><span class=ln>119</span><span class=cl>[6] /nix/store/jxxxxyz4c1k5g3drd35gsrbjdg028d11-r-lattice-0.20-41/library
+</span></span><span class=line><span class=ln>120</span><span class=cl>[7] /nix/store/q9zfm5h53m8rd08xcsdcwaag31k4z1pf-r-MASS-7.3-51.5/library
+</span></span><span class=line><span class=ln>121</span><span class=cl>[8] /nix/store/kjkm50sr144yvrhl5axfgykbiy13pbmg-r-Matrix-1.2-18/library
+</span></span><span class=line><span class=ln>122</span><span class=cl>[9] /nix/store/8786z5lgy8h3akfjgj3yq5yq4s17rhjy-r-minqa-1.2.4/library
+</span></span><span class=line><span class=ln>123</span><span class=cl>[10] /nix/store/93wv3j0z1nzqp6fjsm9v7v8bf8d1xkm2-r-Rcpp-1.0.4.6/library
+</span></span><span class=line><span class=ln>124</span><span class=cl>[11] /nix/store/akfw6zsmawmz8lmjkww0rnqrazm4mqp0-r-nlme-3.1-147/library
+</span></span><span class=line><span class=ln>125</span><span class=cl>[12] /nix/store/rxs0d9bbn8qhw7wmkfb21yk5abp6lpq1-r-nloptr-1.2.2.1/library
+</span></span><span class=line><span class=ln>126</span><span class=cl>[13] /nix/store/8n0jfiqn4275i58qgld0dv8zdaihdzrk-r-RcppEigen-0.3.3.7.0/library
+</span></span><span class=line><span class=ln>127</span><span class=cl>[14] /nix/store/8vxrma33rhc96260zsi1jiw7dy3v2mm4-r-statmod-1.4.34/library
+</span></span><span class=line><span class=ln>128</span><span class=cl>[15] /nix/store/2y46pb5x9lh8m0hdmzajnx7sc1bk9ihl-r-maptools-0.9-9/library
+</span></span><span class=line><span class=ln>129</span><span class=cl>[16] /nix/store/iwf9nxx1v883wlv0p88q947hpz5lhfh7-r-foreign-0.8-78/library
+</span></span><span class=line><span class=ln>130</span><span class=cl>[17] /nix/store/rl9sjqply6rjbnz5k792ghm62ybv76px-r-sp-1.4-1/library
+</span></span><span class=line><span class=ln>131</span><span class=cl>[18] /nix/store/ws4bkzyv2vj5pyn1hgwyy6nlp48arz0n-r-mgcv-1.8-31/library
+</span></span><span class=line><span class=ln>132</span><span class=cl>[19] /nix/store/307dzxrmnqk4p86560a02r64x1fhhmxb-r-nnet-7.3-13/library
+</span></span><span class=line><span class=ln>133</span><span class=cl>[20] /nix/store/g2zpzkdb9hzkza1wpcbrk58119v1wyaf-r-pbkrtest-0.4-8.6/library
+</span></span><span class=line><span class=ln>134</span><span class=cl>[21] /nix/store/p0l503fr8960vld70w6ilmknxs5qwq77-r-magrittr-1.5/library
+</span></span><span class=line><span class=ln>135</span><span class=cl>[22] /nix/store/rmjpcaw3i446kwnjgcxcaid0yac36cj2-r-quantreg-5.55/library
+</span></span><span class=line><span class=ln>136</span><span class=cl>[23] /nix/store/10mzmnvc5jjgk2xzasia522pk60a30qz-r-MatrixModels-0.4-1/library
+</span></span><span class=line><span class=ln>137</span><span class=cl>[24] /nix/store/6qwdzvmnnmhjwdnvg2zmvv6wafd1vf91-r-SparseM-1.78/library
+</span></span><span class=line><span class=ln>138</span><span class=cl>[25] /nix/store/aa9c39a3yiqkh1h7pbngjlbr7czvc7yi-r-rio-0.5.16/library
+</span></span><span class=line><span class=ln>139</span><span class=cl>[26] /nix/store/2fx4vqlybgwp5rhhy6pssqx7h1a927fn-r-curl-4.3/library
+</span></span><span class=line><span class=ln>140</span><span class=cl>[27] /nix/store/k4m3fn1kqvvvn8y33kd57gq49hr3ar8y-r-data.table-1.12.8/library
+</span></span><span class=line><span class=ln>141</span><span class=cl>[28] /nix/store/651hfjylqzmsf565wyx474vyjny771gy-r-haven-2.2.0/library
+</span></span><span class=line><span class=ln>142</span><span class=cl>[29] /nix/store/a3rnz28irmqvmj8axj5x5j1am2c3gzs4-r-forcats-0.5.0/library
+</span></span><span class=line><span class=ln>143</span><span class=cl>[30] /nix/store/j8v4gzib137q2cml31hvvfkrc0f60pp5-r-ellipsis-0.3.0/library
+</span></span><span class=line><span class=ln>144</span><span class=cl>[31] /nix/store/xaswqlnamf4k8vwx0x3wav3l0x60sag0-r-rlang-0.4.5/library
+</span></span><span class=line><span class=ln>145</span><span class=cl>[32] /nix/store/dqm3xpix2jwhhhr67s6fgrwbw7hizap7-r-tibble-3.0.1/library
+</span></span><span class=line><span class=ln>146</span><span class=cl>[33] /nix/store/v7xfsq6d97wpn6m0hjrac78w5xawbr8a-r-cli-2.0.2/library
+</span></span><span class=line><span class=ln>147</span><span class=cl>[34] /nix/store/fikjasr98klhk9cf44x4lhi57vh3pmkg-r-assertthat-0.2.1/library
+</span></span><span class=line><span class=ln>148</span><span class=cl>[35] /nix/store/3fya6cd38vsqdj0gjb7bcsy00sirlyw1-r-crayon-1.3.4/library
+</span></span><span class=line><span class=ln>149</span><span class=cl>[36] /nix/store/payqi9bwh216rwhaq07jgc26l4fv1zsb-r-fansi-0.4.1/library
+</span></span><span class=line><span class=ln>150</span><span class=cl>[37] /nix/store/h6a61ghws7yrdxlg412xl1im37z5r28i-r-glue-1.4.0/library
+</span></span><span class=line><span class=ln>151</span><span class=cl>[38] /nix/store/y8mjbia1wbnq26dkigr0p3xxwrbzsc2r-r-lifecycle-0.2.0/library
+</span></span><span class=line><span class=ln>152</span><span class=cl>[39] /nix/store/kwaghh12cnifgvcbvlv2anx0hd5f4ild-r-pillar-1.4.3/library
+</span></span><span class=line><span class=ln>153</span><span class=cl>[40] /nix/store/k1phn8j10nni7gzvcgp0vc25dby6bb77-r-utf8-1.1.4/library
+</span></span><span class=line><span class=ln>154</span><span class=cl>[41] /nix/store/k3b77y8v7zsshpp1ccs8jwk2i2g4rm9a-r-vctrs-0.2.4/library
+</span></span><span class=line><span class=ln>155</span><span class=cl>[42] /nix/store/iibjmbh7vj0d0bfafz98yn29ymg43gkw-r-digest-0.6.25/library
+</span></span><span class=line><span class=ln>156</span><span class=cl>[43] /nix/store/aqsj4k3pgm80qk4jjg7sh3ac28n6alv0-r-pkgconfig-2.0.3/library
+</span></span><span class=line><span class=ln>157</span><span class=cl>[44] /nix/store/i7c5v8s4hd9rlqah3bbvy06yywjqwdgk-r-hms-0.5.3/library
+</span></span><span class=line><span class=ln>158</span><span class=cl>[45] /nix/store/2fyrk58cmcbrxid66rbwjli7y114lvrm-r-readr-1.3.1/library
+</span></span><span class=line><span class=ln>159</span><span class=cl>[46] /nix/store/163xq2g5nblqgh7qhvzb6mvgg6qdrirj-r-BH-1.72.0-3/library
+</span></span><span class=line><span class=ln>160</span><span class=cl>[47] /nix/store/dr27b6k49prwgrjs0v30b6mf5lxa36pk-r-clipr-0.7.0/library
+</span></span><span class=line><span class=ln>161</span><span class=cl>[48] /nix/store/bghvqg9mcaj2jkbwpy0di6c563v24acz-r-R6-2.4.1/library
+</span></span><span class=line><span class=ln>162</span><span class=cl>[49] /nix/store/nq8jdq7nlg9xns4xpgyj6sqv8p4ny1wz-r-tidyselect-1.0.0/library
+</span></span><span class=line><span class=ln>163</span><span class=cl>[50] /nix/store/zlwhf75qld7vmwx3d4bdws057ld4mqbp-r-purrr-0.3.4/library
+</span></span><span class=line><span class=ln>164</span><span class=cl>[51] /nix/store/0gbmmnbpqlr69l573ymkcx8154fvlaca-r-openxlsx-4.1.4/library
+</span></span><span class=line><span class=ln>165</span><span class=cl>[52] /nix/store/1m1q4rmwx56dvx9rdzfsfq0jpw3hw0yx-r-stringi-1.4.6/library
+</span></span><span class=line><span class=ln>166</span><span class=cl>[53] /nix/store/mhy5vnvbsl4q7dcinwx3vqlyywxphbfd-r-zip-2.0.4/library
+</span></span><span class=line><span class=ln>167</span><span class=cl>[54] /nix/store/88sp7f7q577i6l5jjanqiv5ak6nv5357-r-readxl-1.3.1/library
+</span></span><span class=line><span class=ln>168</span><span class=cl>[55] /nix/store/6q9zwivzalhmzdracc8ma932wirq8rl5-r-cellranger-1.1.0/library
+</span></span><span class=line><span class=ln>169</span><span class=cl>[56] /nix/store/jh2n6k2ancdzqych5ix8n4rq9w514qq9-r-rematch-1.0.1/library
+</span></span><span class=line><span class=ln>170</span><span class=cl>[57] /nix/store/22xjqikqd6q556absb5224sbx6q0kp0c-r-progress-1.2.2/library
+</span></span><span class=line><span class=ln>171</span><span class=cl>[58] /nix/store/9vp32wa1qvv6lkq6p70qlli5whrxzfbi-r-prettyunits-1.1.1/library
+</span></span><span class=line><span class=ln>172</span><span class=cl>[59] /nix/store/r9rhqb6fsk75shihmb7nagqb51pqwp0y-r-class-7.3-16/library
+</span></span><span class=line><span class=ln>173</span><span class=cl>[60] /nix/store/z1kad071y43wij1ml9lpghh7jbimmcli-r-cluster-2.1.0/library
+</span></span><span class=line><span class=ln>174</span><span class=cl>[61] /nix/store/i8wr965caf6j1rxs2dsvpzhlh4hyyb4y-r-codetools-0.2-16/library
+</span></span><span class=line><span class=ln>175</span><span class=cl>[62] /nix/store/8iglq3zr68a39hzswvzxqi2ffhpw9p51-r-KernSmooth-2.23-16/library
+</span></span><span class=line><span class=ln>176</span><span class=cl>[63] /nix/store/n3k50zv40i40drpdf8npbmy2y08gkr6w-r-rpart-4.1-15/library
+</span></span><span class=line><span class=ln>177</span><span class=cl>[64] /nix/store/b4r6adzcvpm8ivflsmis7ja7q4r5hkjy-r-spatial-7.3-11/library
+</span></span><span class=line><span class=ln>178</span><span class=cl>[65] /nix/store/zqg6hmrncl8ax3vn7z5drf4csddwnhcx-r-survival-3.1-12/library
+</span></span><span class=line><span class=ln>179</span><span class=cl>[66] /nix/store/4anrihkx11h8mzb269xdyi84yp5v7grl-r-tidyverse-1.3.0/library
+</span></span><span class=line><span class=ln>180</span><span class=cl>[67] /nix/store/945haq0w8nfm9ib7r0nfngn5lk2i15ix-r-broom-0.5.6/library
+</span></span><span class=line><span class=ln>181</span><span class=cl>[68] /nix/store/52viqxzrmxl7dk0zji293g5b0b9grwh8-r-backports-1.1.6/library
+</span></span><span class=line><span class=ln>182</span><span class=cl>[69] /nix/store/zp1k42sw2glqy51w4hnzsjs8rgi8xzx2-r-dplyr-0.8.5/library
+</span></span><span class=line><span class=ln>183</span><span class=cl>[70] /nix/store/mkjd98mnshch2pwnj6h31czclqdaph3f-r-plogr-0.2.0/library
+</span></span><span class=line><span class=ln>184</span><span class=cl>[71] /nix/store/kflrzax6y5pwfqwzgfvqz433a3q3hnhn-r-generics-0.0.2/library
+</span></span><span class=line><span class=ln>185</span><span class=cl>[72] /nix/store/xi1n5h5w17c33y6ax3dfhg2hgzjl9bxz-r-reshape2-1.4.4/library
+</span></span><span class=line><span class=ln>186</span><span class=cl>[73] /nix/store/vn63z92zkpbaxmmhzpb6mq2fvg0xa26h-r-plyr-1.8.6/library
+</span></span><span class=line><span class=ln>187</span><span class=cl>[74] /nix/store/wmpyxss67bj44rin7hlnr9qabx66p5hj-r-stringr-1.4.0/library
+</span></span><span class=line><span class=ln>188</span><span class=cl>[75] /nix/store/330qbgbvllwz3h0i2qidrlk50y0mbgph-r-tidyr-1.0.2/library
+</span></span><span class=line><span class=ln>189</span><span class=cl>[76] /nix/store/cx3x4pqb65l1mhss65780hbzv9jdrzl6-r-dbplyr-1.4.3/library
+</span></span><span class=line><span class=ln>190</span><span class=cl>[77] /nix/store/gsj49bp3hpw9jlli3894c49amddryqsq-r-DBI-1.1.0/library
+</span></span><span class=line><span class=ln>191</span><span class=cl>[78] /nix/store/kvymhwp4gac0343c2yi1qvdpavx4gdn2-r-ggplot2-3.3.0/library
+</span></span><span class=line><span class=ln>192</span><span class=cl>[79] /nix/store/knv51jvpairvibrkkq48b6f1l2pa1cv8-r-gtable-0.3.0/library
+</span></span><span class=line><span class=ln>193</span><span class=cl>[80] /nix/store/158dx0ddv20ikwag2860nlg9p3hbh1zc-r-isoband-0.2.1/library
+</span></span><span class=line><span class=ln>194</span><span class=cl>[81] /nix/store/fprs9rp1jlhxzj7fp6l79akyf8k3p7zd-r-testthat-2.3.2/library
+</span></span><span class=line><span class=ln>195</span><span class=cl>[82] /nix/store/0pmlnkyn0ir3k9bvxihi1r06jyl64w3i-r-evaluate-0.14/library
+</span></span><span class=line><span class=ln>196</span><span class=cl>[83] /nix/store/7210bjjqn5cjndxn5isnd4vip00xhkhy-r-pkgload-1.0.2/library
+</span></span><span class=line><span class=ln>197</span><span class=cl>[84] /nix/store/9a12ybd74b7dns40gcfs061wv7913qjy-r-desc-1.2.0/library
+</span></span><span class=line><span class=ln>198</span><span class=cl>[85] /nix/store/na9pb1apa787zp7vvyz1kzym0ywjwbj0-r-rprojroot-1.3-2/library
+</span></span><span class=line><span class=ln>199</span><span class=cl>[86] /nix/store/pa2n7bh61qxyarn5i2ynd62k6knb1np1-r-pkgbuild-1.0.6/library
+</span></span><span class=line><span class=ln>200</span><span class=cl>[87] /nix/store/1hxm1m7h4272zxk9bpsaq46mvnl0dbss-r-callr-3.4.3/library
+</span></span><span class=line><span class=ln>201</span><span class=cl>[88] /nix/store/bigvyk6ipglbiil93zkf442nv4y3xa1x-r-processx-3.4.2/library
+</span></span><span class=line><span class=ln>202</span><span class=cl>[89] /nix/store/370lr0wf7qlq0m72xnmasg2iahkp2n52-r-ps-1.3.2/library
+</span></span><span class=line><span class=ln>203</span><span class=cl>[90] /nix/store/rr72q61d8mkd42zc5fhcd2rqjghvc141-r-withr-2.2.0/library
+</span></span><span class=line><span class=ln>204</span><span class=cl>[91] /nix/store/9gw77p7fmz89fa8wi1d9rvril6hd4sxy-r-rstudioapi-0.11/library
+</span></span><span class=line><span class=ln>205</span><span class=cl>[92] /nix/store/9x4v4pbrgmykbz2801h77yz2l0nmm5nb-r-praise-1.0.0/library
+</span></span><span class=line><span class=ln>206</span><span class=cl>[93] /nix/store/pf8ssb0dliw5bzsncl227agc8przb7ic-r-scales-1.1.0/library
+</span></span><span class=line><span class=ln>207</span><span class=cl>[94] /nix/store/095z4wgjrxn63ixvyzrj1fm1rdv6ci95-r-farver-2.0.3/library
+</span></span><span class=line><span class=ln>208</span><span class=cl>[95] /nix/store/5aczj4s7i9prf5i32ik5ac5baqvjwdb1-r-labeling-0.3/library
+</span></span><span class=line><span class=ln>209</span><span class=cl>[96] /nix/store/wch26phipzz9gxd4vbr4fynh7v28349j-r-munsell-0.5.0/library
+</span></span><span class=line><span class=ln>210</span><span class=cl>[97] /nix/store/3w8fh756mszhsjx5fwgwydcpn8vkwady-r-colorspace-1.4-1/library
+</span></span><span class=line><span class=ln>211</span><span class=cl>[98] /nix/store/8cmaj81v2vm4f8p59ylbnsby8adkbmhd-r-RColorBrewer-1.1-2/library
+</span></span><span class=line><span class=ln>212</span><span class=cl>[99] /nix/store/h4x4ygax7gpz6f0c2v0xacr62080qwb8-r-viridisLite-0.3.0/library
+</span></span><span class=line><span class=ln>213</span><span class=cl>[100] /nix/store/qhx0i2nn5syb6vygdn8fdxgl7k56yj81-r-httr-1.4.1/library
+</span></span><span class=line><span class=ln>214</span><span class=cl>[101] /nix/store/lxnb4aniv02i4jhdvz02aaql1kznbpxb-r-jsonlite-1.6.1/library
+</span></span><span class=line><span class=ln>215</span><span class=cl>[102] /nix/store/13dcry4gad3vfwqzqb0ii4n06ybrxybr-r-mime-0.9/library
+</span></span><span class=line><span class=ln>216</span><span class=cl>[103] /nix/store/2can5l8gscc92a3bqlak8hfcg96v5hvf-r-openssl-1.4.1/library
+</span></span><span class=line><span class=ln>217</span><span class=cl>[104] /nix/store/piwsgxdz5w2ak8c6fcq0lc978qbxwdp1-r-askpass-1.1/library
+</span></span><span class=line><span class=ln>218</span><span class=cl>[105] /nix/store/3sj5h6dwa1l27d2hvdchclygk0pgffsr-r-sys-3.3/library
+</span></span><span class=line><span class=ln>219</span><span class=cl>[106] /nix/store/2z0p88g0c03gigl2ip60dlsfkdv1k30h-r-lubridate-1.7.8/library
+</span></span><span class=line><span class=ln>220</span><span class=cl>[107] /nix/store/1pkmj8nqjg2iinrkg2w0zkwq0ldc01za-r-modelr-0.1.6/library
+</span></span><span class=line><span class=ln>221</span><span class=cl>[108] /nix/store/bswkzvn8lczwbyw3y7n0p0qp2q472s0g-r-reprex-0.3.0/library
+</span></span><span class=line><span class=ln>222</span><span class=cl>[109] /nix/store/yid22gad8z49q52d225vfba2m4cgj2lx-r-fs-1.4.1/library
+</span></span><span class=line><span class=ln>223</span><span class=cl>[110] /nix/store/d185qiqaplm5br9fk1pf29y0srlabw83-r-rmarkdown-2.1/library
+</span></span><span class=line><span class=ln>224</span><span class=cl>[111] /nix/store/iszqviydsdj31c3ww095ndqy1ld3cibs-r-base64enc-0.1-3/library
+</span></span><span class=line><span class=ln>225</span><span class=cl>[112] /nix/store/i89wfw4cr0fz3wbd7cg44fk4dwz8b6h1-r-htmltools-0.4.0/library
+</span></span><span class=line><span class=ln>226</span><span class=cl>[113] /nix/store/qrl28laqwmhpwg3dpcf4nca8alv0px0g-r-knitr-1.28/library
+</span></span><span class=line><span class=ln>227</span><span class=cl>[114] /nix/store/jffaxc4a3bbf2g6ip0gdcya73dmg53mb-r-highr-0.8/library
+</span></span><span class=line><span class=ln>228</span><span class=cl>[115] /nix/store/717srph13qpnbzmgsvhx25q8pl51ivpj-r-markdown-1.1/library
+</span></span><span class=line><span class=ln>229</span><span class=cl>[116] /nix/store/mxqmyq3ybdfyc6p0anhfy2kfw0iz5k4n-r-xfun-0.13/library
+</span></span><span class=line><span class=ln>230</span><span class=cl>[117] /nix/store/b8g6hadva0359l6j1aq4dbvxlqf1acxc-r-yaml-2.2.1/library
+</span></span><span class=line><span class=ln>231</span><span class=cl>[118] /nix/store/rrl05vpv7cw58zi0k9ykm7m4rjb9gjv3-r-tinytex-0.22/library
+</span></span><span class=line><span class=ln>232</span><span class=cl>[119] /nix/store/2ziq8nzah6xy3dgmxgim9h2wszz1f89f-r-whisker-0.4/library
+</span></span><span class=line><span class=ln>233</span><span class=cl>[120] /nix/store/540wbw4p1g2qmnmbfk0rhvwvfnf657sj-r-rvest-0.3.5/library
+</span></span><span class=line><span class=ln>234</span><span class=cl>[121] /nix/store/n3prn77gd9sf3z4whqp86kghr55bf5w8-r-selectr-0.4-2/library
+</span></span><span class=line><span class=ln>235</span><span class=cl>[122] /nix/store/gv28yjk5isnglq087y7767xw64qa40cw-r-xml2-1.3.2/library
+</span></span><span class=line><span class=ln>236</span><span class=cl>[123] /nix/store/693czdcvkp6glyir0mi8cqvdc643whvc-r-gridExtra-2.3/library
+</span></span><span class=line><span class=ln>237</span><span class=cl>[124] /nix/store/3sykinp7lyy70dgzr0fxjb195nw864dv-r-future-1.17.0/library
+</span></span><span class=line><span class=ln>238</span><span class=cl>[125] /nix/store/bqi2l53jfxncks6diy0hr34bw8f86rvk-r-globals-0.12.5/library
+</span></span><span class=line><span class=ln>239</span><span class=cl>[126] /nix/store/dydyl209klklzh69w9q89f2dym9xycnp-r-listenv-0.8.0/library
+</span></span><span class=line><span class=ln>240</span><span class=cl>[127] /nix/store/lni0bi36r4swldkx7g4hql7gfz9b121b-r-gganimate-1.0.5/library
+</span></span><span class=line><span class=ln>241</span><span class=cl>[128] /nix/store/hh92jxs79kx7vxrxr6j6vin1icscl4k7-r-tweenr-1.0.1/library
+</span></span><span class=line><span class=ln>242</span><span class=cl>[129] /nix/store/0npx3srjnqgh7bib80xscjqvfyzjvimq-r-GGally-1.5.0/library
+</span></span><span class=line><span class=ln>243</span><span class=cl>[130] /nix/store/x5nzxklmacj6l162g7kg6ln9p25r3f17-r-reshape-0.8.8/library
+</span></span><span class=line><span class=ln>244</span><span class=cl>[131] /nix/store/q29z7ckdyhfmg1zlzrrg1nrm36ax756j-r-ggfortify-0.4.9/library
+</span></span><span class=line><span class=ln>245</span><span class=cl>[132] /nix/store/1rvm1w9iv2c5n22p4drbjq8lr9wa2q2r-r-cowplot-1.0.0/library
+</span></span><span class=line><span class=ln>246</span><span class=cl>[133] /nix/store/rp8jhnasaw1vbv5ny5zx0mw30zgcp796-r-ggrepel-0.8.2/library
+</span></span><span class=line><span class=ln>247</span><span class=cl>[134] /nix/store/wb7y931mm8nsj7w9xin83bvbaq8wvi4d-r-corrplot-0.84/library
+</span></span><span class=line><span class=ln>248</span><span class=cl>[135] /nix/store/gdzcqivfvgdrsz247v5kmnnw1v6p9c1p-r-rpart.plot-3.0.8/library
+</span></span><span class=line><span class=ln>249</span><span class=cl>[136] /nix/store/6yqg37108r0v22476cm2kv0536wyilki-r-caret-6.0-86/library
+</span></span><span class=line><span class=ln>250</span><span class=cl>[137] /nix/store/6fjdgcwgisiqz451sg5fszxnn9z8vxg6-r-foreach-1.5.0/library
+</span></span><span class=line><span class=ln>251</span><span class=cl>[138] /nix/store/c3ph5i341gk7jdinrkkqf6y631xli424-r-iterators-1.0.12/library
+</span></span><span class=line><span class=ln>252</span><span class=cl>[139] /nix/store/sjm1rxshlpakpxbrynfhsjnnp1sjvc3r-r-ModelMetrics-1.2.2.2/library
+</span></span><span class=line><span class=ln>253</span><span class=cl>[140] /nix/store/vgk4m131d057xglmrrb9rijhzdr2qhhp-r-pROC-1.16.2/library
+</span></span><span class=line><span class=ln>254</span><span class=cl>[141] /nix/store/bv1kvy1wc2jx3v55rzn3cg2qjbv7r8zp-r-recipes-0.1.10/library
+</span></span><span class=line><span class=ln>255</span><span class=cl>[142] /nix/store/001h42q4za01gli7avjxhq7shpv73n9k-r-gower-0.2.1/library
+</span></span><span class=line><span class=ln>256</span><span class=cl>[143] /nix/store/ssffpl6ydffqyn9phscnccxnj71chnzg-r-ipred-0.9-9/library
+</span></span><span class=line><span class=ln>257</span><span class=cl>[144] /nix/store/baliqip8m6p0ylqhqcgqak29d8ghral1-r-prodlim-2019.11.13/library
+</span></span><span class=line><span class=ln>258</span><span class=cl>[145] /nix/store/j4n2wsv98asw83qiffg6a74dymk8r2hl-r-lava-1.6.7/library
+</span></span><span class=line><span class=ln>259</span><span class=cl>[146] /nix/store/hf5wq5kpsf6p9slglq5iav09s4by0y5i-r-numDeriv-2016.8-1.1/library
+</span></span><span class=line><span class=ln>260</span><span class=cl>[147] /nix/store/s58hm38078mx4gyqffvv09zn575xn648-r-SQUAREM-2020.2/library
+</span></span><span class=line><span class=ln>261</span><span class=cl>[148] /nix/store/g63ydzd53586pvr9kdgk8kf5szq5f2bc-r-timeDate-3043.102/library
+</span></span><span class=line><span class=ln>262</span><span class=cl>[149] /nix/store/0jkarmlf1kjv4g8a3svkc7jfarpp77ny-r-mlr3-0.2.0/library
+</span></span><span class=line><span class=ln>263</span><span class=cl>[150] /nix/store/g1m0n1w7by213v773iyn7vnxr25pkf56-r-checkmate-2.0.0/library
+</span></span><span class=line><span class=ln>264</span><span class=cl>[151] /nix/store/fc2ah8cz2sj6j2jk7zldvjmsjn1yakpn-r-lgr-0.3.4/library
+</span></span><span class=line><span class=ln>265</span><span class=cl>[152] /nix/store/0i2hs088j1s0a6i61124my6vnzq8l27m-r-mlbench-2.1-1/library
+</span></span><span class=line><span class=ln>266</span><span class=cl>[153] /nix/store/vzcs6k21pqrli3ispqnvj5qwkv14srf5-r-mlr3measures-0.1.3/library
+</span></span><span class=line><span class=ln>267</span><span class=cl>[154] /nix/store/h2yqqaia46bk3b1d1a7bq35zf09p1b1a-r-mlr3misc-0.2.0/library
+</span></span><span class=line><span class=ln>268</span><span class=cl>[155] /nix/store/c9mrkc928cmsvvnib50l0jb8lsz59nyk-r-paradox-0.2.0/library
+</span></span><span class=line><span class=ln>269</span><span class=cl>[156] /nix/store/vqpbdipi4p4advl2vxrn765mmgcrabvk-r-uuid-0.1-4/library
+</span></span><span class=line><span class=ln>270</span><span class=cl>[157] /nix/store/xpclynxnfq4h9218gk4y62nmgyyga6zl-r-mlr3viz-0.1.1/library
+</span></span><span class=line><span class=ln>271</span><span class=cl>[158] /nix/store/7w6pld5vir3p9bybay67kq0qwl0gnx17-r-mlr3learners-0.2.0/library
+</span></span><span class=line><span class=ln>272</span><span class=cl>[159] /nix/store/ca50rp6ha5s51qmhb1gjlj62r19xfzxs-r-mlr3pipelines-0.1.3/library
+</span></span><span class=line><span class=ln>273</span><span class=cl>[160] /nix/store/9hg0xap4pir64mhbgq8r8cgrfjn8aiz5-r-mlr3filters-0.2.0/library
+</span></span><span class=line><span class=ln>274</span><span class=cl>[161] /nix/store/jgqcmfix0xxm3y90m8wy3xkgmqf2b996-r-rstan-2.19.3/library
+</span></span><span class=line><span class=ln>275</span><span class=cl>[162] /nix/store/mvv1gjyrrpvf47fn7a8x722wdwrf5azk-r-inline-0.3.15/library
+</span></span><span class=line><span class=ln>276</span><span class=cl>[163] /nix/store/zmkw51x4w4d1v1awcws0xihj4hnxfr09-r-loo-2.2.0/library
+</span></span><span class=line><span class=ln>277</span><span class=cl>[164] /nix/store/30xxalfwzxl05bbfvj5sy8k3ysys6z5y-r-matrixStats-0.56.0/library
+</span></span><span class=line><span class=ln>278</span><span class=cl>[165] /nix/store/fhkww2l0izx87bjnf0pl9ydl1wprp0xv-r-StanHeaders-2.19.2/library
+</span></span><span class=line><span class=ln>279</span><span class=cl>[166] /nix/store/aflck5pzxa8ym5q1dxchx5hisfmfghkr-r-tidybayes-2.0.3/library
+</span></span><span class=line><span class=ln>280</span><span class=cl>[167] /nix/store/jhlbhiv4fg0wsbxwjz8igc4hcg79vw94-r-arrayhelpers-1.1-0/library
+</span></span><span class=line><span class=ln>281</span><span class=cl>[168] /nix/store/fv089zrnvicnavbi08hnzqpi9g1z4inj-r-svUnit-1.0.3/library
+</span></span><span class=line><span class=ln>282</span><span class=cl>[169] /nix/store/xci2rgjizx1fyb33818jx5s1bgn8v8k6-r-coda-0.19-3/library
+</span></span><span class=line><span class=ln>283</span><span class=cl>[170] /nix/store/dch9asd38yldz0sdn8nsgk9ivjrkbhva-r-HDInterval-0.2.0/library
+</span></span><span class=line><span class=ln>284</span><span class=cl>[171] /nix/store/rs8dri2m5cqdmpiw187rvl4yhjn0jg2v-r-e1071-1.7-3/library
+</span></span><span class=line><span class=ln>285</span><span class=cl>[172] /nix/store/qs1zyh3sbvccgnqjzas3br6pak399zgc-r-pvclust-2.2-0/library
+</span></span><span class=line><span class=ln>286</span><span class=cl>[173] /nix/store/sh3zxvdazp7rkjn1iczrag1h2358ifm1-r-forecast-8.12/library
+</span></span><span class=line><span class=ln>287</span><span class=cl>[174] /nix/store/h67kaxqr2ppdpyj77wg5hm684jypznji-r-fracdiff-1.5-1/library
+</span></span><span class=line><span class=ln>288</span><span class=cl>[175] /nix/store/fh0z465ligbpqyam5l1fwiijc7334kbk-r-lmtest-0.9-37/library
+</span></span><span class=line><span class=ln>289</span><span class=cl>[176] /nix/store/0lnsbwfg0axr80h137q52pa50cllbjpf-r-zoo-1.8-7/library
+</span></span><span class=line><span class=ln>290</span><span class=cl>[177] /nix/store/p7k4s3ivf83dp2kcxr1cr0wlc1rfk6jx-r-RcppArmadillo-0.9.860.2.0/library
+</span></span><span class=line><span class=ln>291</span><span class=cl>[178] /nix/store/ssnxv5x6zid2w11v8k5yvnyxis6n1qfk-r-tseries-0.10-47/library
+</span></span><span class=line><span class=ln>292</span><span class=cl>[179] /nix/store/zrbskjwaz0bzz4v76j044d771m24g6h8-r-quadprog-1.5-8/library
+</span></span><span class=line><span class=ln>293</span><span class=cl>[180] /nix/store/2x3w5sjalrfm6hf1dxd951j8y94nh765-r-quantmod-0.4.17/library
+</span></span><span class=line><span class=ln>294</span><span class=cl>[181] /nix/store/7g55xshf49s9379ijm1zi1qnh1vbsifq-r-TTR-0.23-6/library
+</span></span><span class=line><span class=ln>295</span><span class=cl>[182] /nix/store/6ilyzph46q6ijyanq4p7f0ccyni0d7j0-r-xts-0.12-0/library
+</span></span><span class=line><span class=ln>296</span><span class=cl>[183] /nix/store/17xhqghcnqha7pwbf98dxsq1729slqd5-r-urca-1.3-0/library
+</span></span><span class=line><span class=ln>297</span><span class=cl>[184] /nix/store/722lyn0k8y27pj1alik56r4vpjnncd9z-r-swdft-1.0.0/library
+</span></span><span class=line><span class=ln>298</span><span class=cl>[185] /nix/store/36n0zgy10fsqcq76n0qmdwjxrwh7pn9n-r-xgboost-1.0.0.2/library
+</span></span><span class=line><span class=ln>299</span><span class=cl>[186] /nix/store/ac0ar7lf75qx84xsdjv6j02rkdgnhybz-r-ranger-0.12.1/library
+</span></span><span class=line><span class=ln>300</span><span class=cl>[187] /nix/store/i1ighkq42x10dirqmzgbx2mhbnz1ynkb-r-DALEX-1.2.0/library
+</span></span><span class=line><span class=ln>301</span><span class=cl>[188] /nix/store/28fqnhsfng1bkphl0wvr7lg5y3p6va46-r-iBreakDown-1.2.0/library
+</span></span><span class=line><span class=ln>302</span><span class=cl>[189] /nix/store/dpym77x9qc2ksr4mwjm3pb9ar1kvwhdl-r-ingredients-1.2.0/library
+</span></span><span class=line><span class=ln>303</span><span class=cl>[190] /nix/store/sp4d281w6dpr31as0xdjqizdx8hhb01q-r-DALEXtra-0.2.1/library
+</span></span><span class=line><span class=ln>304</span><span class=cl>[191] /nix/store/ckhp9kpmjcs0wxb113pxn25c2wip2d0n-r-ggdendro-0.1-20/library
+</span></span><span class=line><span class=ln>305</span><span class=cl>[192] /nix/store/f3k7dxj1dsmqri2gn0svq4c9fvvl9g7q-r-glmnet-3.0-2/library
+</span></span><span class=line><span class=ln>306</span><span class=cl>[193] /nix/store/l6ccj6mwkqybjvh6dr8qzalygp0i7jyb-r-shape-1.4.4/library
+</span></span><span class=line><span class=ln>307</span><span class=cl>[194] /nix/store/418mqfwlafh6984xld8lzhl7rv29qw68-r-reticulate-1.15/library
+</span></span><span class=line><span class=ln>308</span><span class=cl>[195] /nix/store/qwh982mgxd2mzrgbjk14irqbasywa1jk-r-rappdirs-0.3.1/library
+</span></span><span class=line><span class=ln>309</span><span class=cl>[196] /nix/store/6sxs76abll23c6372h6nf101wi8fcr4c-r-FactoMineR-2.3/library
+</span></span><span class=line><span class=ln>310</span><span class=cl>[197] /nix/store/39d2va10ydgyzddwr07xwdx11fwk191i-r-ellipse-0.4.1/library
+</span></span><span class=line><span class=ln>311</span><span class=cl>[198] /nix/store/4lxym5nxdn8hb7l8a566n5vg9paqcfi2-r-flashClust-1.01-2/library
+</span></span><span class=line><span class=ln>312</span><span class=cl>[199] /nix/store/wp161zbjjs41fq4kn4k3m244c7b8l2l2-r-leaps-3.1/library
+</span></span><span class=line><span class=ln>313</span><span class=cl>[200] /nix/store/irghsaplrpb3hg3y7j831bbklf2cqs6d-r-scatterplot3d-0.3-41/library
+</span></span><span class=line><span class=ln>314</span><span class=cl>[201] /nix/store/09ahkf50g1q9isxanbdykqgcdrp8mxl1-r-factoextra-1.0.7/library
+</span></span><span class=line><span class=ln>315</span><span class=cl>[202] /nix/store/zi9bq7amsgc6w2x7fvd62g9qxz69vjfm-r-dendextend-1.13.4/library
+</span></span><span class=line><span class=ln>316</span><span class=cl>[203] /nix/store/wcywb7ydglzlxg57jf354x31nmy63923-r-viridis-0.5.1/library
+</span></span><span class=line><span class=ln>317</span><span class=cl>[204] /nix/store/pvnpg4vdvv93pmwrlgmy51ihrb68j55f-r-ggpubr-0.2.5/library
+</span></span><span class=line><span class=ln>318</span><span class=cl>[205] /nix/store/qpapsc4l9pylzfhc72ha9d82hcbac41z-r-ggsci-2.9/library
+</span></span><span class=line><span class=ln>319</span><span class=cl>[206] /nix/store/h0zg4x3bmkc82ggx8h4q595ffckcqgx5-r-ggsignif-0.6.0/library
+</span></span><span class=line><span class=ln>320</span><span class=cl>[207] /nix/store/vn5svgbf8vsgv8iy8fdzlj0izp279q15-r-polynom-1.4-0/library
+</span></span><span class=line><span class=ln>321</span><span class=cl>[208] /nix/store/mc1mlsjx5h3gc8nkl7jlpd4vg145nk1z-r-lindia-0.9/library
+</span></span><span class=line><span class=ln>322</span><span class=cl>[209] /nix/store/z1k4c8lhabp9niwfg1xylg58pf99ld9r-r-orgutils-0.4-1/library
+</span></span><span class=line><span class=ln>323</span><span class=cl>[210] /nix/store/ybj4538v74wx4f1l064m0qn589vyjmzg-r-textutils-0.2-0/library
+</span></span><span class=line><span class=ln>324</span><span class=cl>[211] /nix/store/hhm5j0wvzjc0bfd53170bw8w7mij2wnh-r-latex2exp-0.4.0/library
+</span></span><span class=line><span class=ln>325</span><span class=cl>[212] /nix/store/njlv5mkxgjyx3x8p984nr84dwa2v1iqp-r-kableExtra-1.1.0/library
+</span></span><span class=line><span class=ln>326</span><span class=cl>[213] /nix/store/lf2sb84ylh259m421ljbj731a4prjhsl-r-webshot-0.5.2/library
+</span></span><span class=line><span class=ln>327</span><span class=cl>[214] /nix/store/n6b8ap54b78h8l70kyx9nvayp44rnfzf-r-printr-0.1/library
+</span></span><span class=line><span class=ln>328</span><span class=cl>[215] /nix/store/02g1v6d3ly8zylpckigwk6w3l1mx2i9d-r-microbenchmark-1.4-7/library
+</span></span><span class=line><span class=ln>329</span><span class=cl>[216] /nix/store/ri6qm0fp8cyx2qnysxjv2wsk0nndl1x9-r-webchem-0.5.0/library
+</span></span><span class=line><span class=ln>330</span><span class=cl>[217] /nix/store/cg95rqc1gmaqxf5kxja3cz8m5w4vl76l-r-RCurl-1.98-1.2/library
+</span></span><span class=line><span class=ln>331</span><span class=cl>[218] /nix/store/qbpinv148778fzdz8372x8gp34hspvy1-r-bitops-1.0-6/library
+</span></span><span class=line><span class=ln>332</span><span class=cl>[219] /nix/store/1g0lbrx6si76k282sxr9cj0mgknrw0lx-r-devtools-2.3.0/library
+</span></span><span class=line><span class=ln>333</span><span class=cl>[220] /nix/store/hnvww0128czlx6w8aipjn0zs7nvmvak9-r-covr-3.5.0/library
+</span></span><span class=line><span class=ln>334</span><span class=cl>[221] /nix/store/p4nv59przmb14sxi49jwqarkv0l40jsp-r-rex-1.2.0/library
+</span></span><span class=line><span class=ln>335</span><span class=cl>[222] /nix/store/vnysmc3vkgkligwah1zh9l4sahr533a8-r-lazyeval-0.2.2/library
+</span></span><span class=line><span class=ln>336</span><span class=cl>[223] /nix/store/d638w33ahybsa3sqr52fafvxs2b7w9x3-r-DT-0.13/library
+</span></span><span class=line><span class=ln>337</span><span class=cl>[224] /nix/store/35nqc34wy2nhd9bl7lv6wriw0l3cghsw-r-crosstalk-1.1.0.1/library
+</span></span><span class=line><span class=ln>338</span><span class=cl>[225] /nix/store/03838i63x5irvgmpgwj67ah0wi56k9d7-r-htmlwidgets-1.5.1/library
+</span></span><span class=line><span class=ln>339</span><span class=cl>[226] /nix/store/l4640jxlsjzqhw63c18fziar5vc0xyhk-r-promises-1.1.0/library
+</span></span><span class=line><span class=ln>340</span><span class=cl>[227] /nix/store/rxrb8p3dxzsg10v7yqaq5pi3y3gk6nqh-r-later-1.0.0/library
+</span></span><span class=line><span class=ln>341</span><span class=cl>[228] /nix/store/giprr32bl6k18b9n4qjckpf102flarly-r-git2r-0.26.1/library
+</span></span><span class=line><span class=ln>342</span><span class=cl>[229] /nix/store/bbkpkf44b13ig1pkz7af32kw5dzp12vb-r-memoise-1.1.0/library
+</span></span><span class=line><span class=ln>343</span><span class=cl>[230] /nix/store/m31vzssnfzapsapl7f8v4m15003lcc8r-r-rcmdcheck-1.3.3/library
+</span></span><span class=line><span class=ln>344</span><span class=cl>[231] /nix/store/hbiylknhxsin9hp9zaa6dwc2c9ai1mqx-r-sessioninfo-1.1.1/library
+</span></span><span class=line><span class=ln>345</span><span class=cl>[232] /nix/store/8vwlbx3s345gjccrkiqa6h1bm9wq4s9q-r-xopen-1.0.0/library
+</span></span><span class=line><span class=ln>346</span><span class=cl>[233] /nix/store/mjnwnlv60cn56ap0rrzvrkqlh5qisszx-r-remotes-2.1.1/library
+</span></span><span class=line><span class=ln>347</span><span class=cl>[234] /nix/store/1rq4zyzqymml7cc11q89rl5g514ml9na-r-roxygen2-7.1.0/library
+</span></span><span class=line><span class=ln>348</span><span class=cl>[235] /nix/store/2658mrn1hpkq0fv629rvags91qg65pbn-r-brew-1.0-6/library
+</span></span><span class=line><span class=ln>349</span><span class=cl>[236] /nix/store/nvjalws9lzva4pd4nz1z2131xsb9b5p6-r-commonmark-1.7/library
+</span></span><span class=line><span class=ln>350</span><span class=cl>[237] /nix/store/qx900vivd9s2zjrxc6868s92ljfwj5dv-r-rversions-2.0.1/library
+</span></span><span class=line><span class=ln>351</span><span class=cl>[238] /nix/store/1drg446wilq5fjnxkglxnnv8pbp1hllg-r-usethis-1.6.0/library
+</span></span><span class=line><span class=ln>352</span><span class=cl>[239] /nix/store/p3f3wa41d304zbs5cwvw7vy4j17zd6nq-r-gh-1.1.0/library
+</span></span><span class=line><span class=ln>353</span><span class=cl>[240] /nix/store/769g7jh93da8w15ad0wsbn2aqziwwx56-r-ini-0.3.1/library
+</span></span><span class=line><span class=ln>354</span><span class=cl>[241] /nix/store/p7kifw1l6z2zg68a71s4sdbfj8gdmnv5-r-rematch2-2.1.1/library
+</span></span><span class=line><span class=ln>355</span><span class=cl>[242] /nix/store/6zhdqip9ld9vl6pvifqcf4gsqy2f5wix-r-rethinking/library
+</span></span><span class=line><span class=ln>356</span><span class=cl>[243] /nix/store/496p28klmflihdkc83c8p1cywg85mgk4-r-mvtnorm-1.1-0/library
+</span></span><span class=line><span class=ln>357</span><span class=cl>[244] /nix/store/xb1zn7ab4nka7h1vm678ginzfwg4w9wf-r-dagitty-0.2-2/library
+</span></span><span class=line><span class=ln>358</span><span class=cl>[245] /nix/store/3zj4dkjbdwgf3mdsl9nf9jkicpz1nwgc-r-V8-3.0.2/library
+</span></span><span class=line><span class=ln>359</span><span class=cl>[246] /nix/store/qiqsh62w69b5xgj2i4wjamibzxxji0mf-r-tidybayes.rethinking/library
+</span></span><span class=line><span class=ln>360</span><span class=cl>[247] /nix/store/4j6byy1klyk4hm2k6g3657682cf3wxcj-R-4.0.0/lib/R/library
 </span></span></code></pre></div><section class=footnotes role=doc-endnotes><hr><ol><li id=fn:1 role=doc-endnote><p>Summer of 2020&#160;<a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li></ol></section></div></article><hr><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7" y2="7"/></svg><span class=tag><a href=https://rgoswami.me/tags/solutions>solutions</a></span><span class=tag><a href=https://rgoswami.me/tags/r>R</a></span><span class=tag><a href=https://rgoswami.me/tags/sr2>SR2</a></span></p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6A2 2 0 004 4v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>3445 Words</p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Posted: <time class=dt-published>2020-06-28 00:00 +0000</time></p><a class=resp-sharing-button__link href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2frgoswami.me%2fposts%2fsr2-ch13-ch14%2f" target=_blank rel=noopener aria-label=Facebook><div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.5"/><path d="M15.84 9.5H13.5V8.48c0-.53.35-.65.6-.65h1.4v-2.3h-2.35c-2.3.0-2.65 1.7-2.65 2.8V9.5h-2v2h2v7h3v-7h2.1l.24-2z"/></svg></div>Facebook</div></a><a class=resp-sharing-button__link href="https://twitter.com/intent/tweet/?text=%22SR2%20%3a%3a%20Solutions%20for%20Chapters%20%7b13%2c14%7d%22%20seems%20like%20an%20interesting%20read%20from%20%40rg0swami&url=https%3a%2f%2frgoswami.me%2fposts%2fsr2-ch13-ch14%2f" target=_blank rel=noopener aria-label=Twitter><div class="resp-sharing-button resp-sharing-button--twitter resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.5 7.4l-2 .2c-.4-.5-1-.8-2-.8C13.3 6.8 12 8 12 9.4v.6c-2 0-4-1-5.4-2.7-.2.4-.3.8-.3 1.3.0 1 .4 1.7 1.2 2.2-.5.0-1 0-1.2-.3.0 1.3 1 2.3 2 2.6-.3.4-.7.4-1 0 .2 1.4 1.2 2 2.3 2-1 1-2.5 1.4-4 1 1.3 1 2.7 1.4 4.2 1.4 4.8.0 7.5-4 7.5-7.5v-.4c.5-.4.8-1.5 1.2-2z"/><circle cx="12" cy="12" r="11.5"/></svg></div>Twitter</div></a><a class=resp-sharing-button__link href="mailto:?subject=%22SR2%20%3a%3a%20Solutions%20for%20Chapters%20%7b13%2c14%7d%22%20seems%20interesting...&body=https%3a%2f%2frgoswami.me%2fposts%2fsr2-ch13-ch14%2f" target=_self rel=noopener aria-label=E-Mail><div class="resp-sharing-button resp-sharing-button--email resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19.5 16c0 .8-.7 1.5-1.5 1.5H6c-.8.0-1.5-.7-1.5-1.5V8c0-.8.7-1.5 1.5-1.5h12c.8.0 1.5.7 1.5 1.5v8zm-2-7.5L12 13 6.5 8.5m11 6-4-2.5m-7 2.5 4-2.5"/><circle cx="12" cy="12" r="11.5"/></svg></div>E-Mail</div></a><a class=resp-sharing-button__link href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2frgoswami.me%2fposts%2fsr2-ch13-ch14%2f&title=%22SR2%20%3a%3a%20Solutions%20for%20Chapters%20%7b13%2c14%7d%22%20seems%20interesting...&summary=%22SR2%20%3a%3a%20Solutions%20for%20Chapters%20%7b13%2c14%7d%22%20seems%20interesting...&source=https%3a%2f%2frgoswami.me%2fposts%2fsr2-ch13-ch14%2f" target=_blank rel=noopener aria-label=LinkedIn><div class="resp-sharing-button resp-sharing-button--linkedin resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.5"/><path d="M15 12.5c-.28.0-.5.22-.5.5v3.5h-3s.03-6.48.0-7h3v.83s.46-.75 1.7-.75c1.56.0 2.3 1.12 2.3 3.3v3.62h-3V13c0-.28-.23-.5-.5-.5zm-7.5-3h2v7h-2z"/><circle cx="8.5" cy="6.5" r="1"/></svg></div>LinkedIn</div></a><a class=resp-sharing-button__link href="https://reddit.com/submit/?url=https%3a%2f%2frgoswami.me%2fposts%2fsr2-ch13-ch14%2f&resubmit=true&title=%22SR2%20%3a%3a%20Solutions%20for%20Chapters%20%7b13%2c14%7d%22%20seems%20interesting..." target=_blank rel=noopener aria-label=Reddit><div class="resp-sharing-button resp-sharing-button--reddit resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.5"/><ellipse cx="12" cy="14.37" rx="6.2" ry="4.24"/><path d="M14.3 16.25c-.62.36-1.42.57-2.3.57s-1.7-.2-2.32-.58"/><circle cx="14.61" cy="13.39" r=".98"/><circle cx="9.39" cy="13.39" r=".98"/><path d="M16.4 11.38c.26-.55.82-.92 1.47-.92.9.0 1.63.73 1.63 1.63.0.8-.6 1.47-1.38 1.6"/><circle cx="17.22" cy="7.52" r="1.63"/><path d="M7.6 11.38c-.26-.54-.82-.92-1.47-.92-.9.0-1.63.73-1.63 1.63.0.8.6 1.47 1.38 1.6M12 10.12s-.08-4.82 3.6-2.6"/></svg></div>Reddit</div></a><a class=resp-sharing-button__link href="whatsapp://send?text=%22SR2%20%3a%3a%20Solutions%20for%20Chapters%20%7b13%2c14%7d%22%20seems%20interesting...%20https%3a%2f%2frgoswami.me%2fposts%2fsr2-ch13-ch14%2f" target=_blank rel=noopener aria-label=WhatsApp><div class="resp-sharing-button resp-sharing-button--whatsapp resp-sharing-button--medium"><div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle xmlns="http://www.w3.org/2000/svg" cx="12" cy="12" r="11.5"/><path stroke-width="1" d="M17.6 6.2c-1.5-1.5-3.4-2.3-5.5-2.3-4.3.0-7.8 3.5-7.8 7.8.0 1.4.4 2.7 1 3.9l-1.1 4 4.1-1.1c1.1.6 2.4.9 3.7.9 4.3.0 7.8-3.5 7.8-7.8.1-2-.7-3.9-2.2-5.4zm-5.5 11.9c-1.2.0-2.3-.3-3.3-.9l-.2-.1-2.4.6.7-2.4-.2-.2c-.6-1-1-2.2-1-3.4.0-3.6 2.9-6.5 6.5-6.5 1.7.0 3.3.7 4.6 1.9 1.2 1.2 1.9 2.8 1.9 4.6-.1 3.5-3 6.4-6.6 6.4zm3.5-4.8c-.2-.1-1.1-.6-1.3-.6-.2-.1-.3-.1-.4.1s-.5.6-.6.8c-.1.1-.2.1-.4.0s-.8-.3-1.6-1c-.6-.5-1-1.2-1.1-1.3-.1-.2.0-.3.1-.4l.3-.3s.1-.2.2-.3c.1-.1.0-.2.0-.3s-.4-1.1-.6-1.4c-.2-.4-.3-.3-.4-.3h-.4s-.3.0-.5.2-.7.7-.7 1.6c0 1 .7 1.9.8 2s1.4 2.1 3.3 2.9c.5.2.8.3 1.1.4.5.1.9.1 1.2.1.4-.1 1.1-.5 1.3-.9.2-.5.2-.8.1-.9.0-.2-.2-.3-.4-.4z"/></svg></div>WhatsApp</div></a></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://rgoswami.me/posts/linos-maintainer-appre/><span class=button__icon>←</span>
 <span class=button__text>LineageOS Maintainer Appreciation</span></a></span>
 <span class="button next"><a href=https://rgoswami.me/posts/sr2-ch9-ch11-ch12/><span class=button__text>SR2 :: Solutions for Chapters {9,11,12}</span>

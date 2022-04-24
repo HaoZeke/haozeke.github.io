@@ -2,7 +2,7 @@
  Background For CarpentryCon@Home 2020, along with Amrita Goswami, I am to prepare and deliver a workshop on &amp;ldquo;Reproducible Environments with the Nix Packaging System&amp;rdquo;. In particular, as a community of practice lesson, the focus is not on packaging (as is typical of most Nix tutorials) nor on the Nix expression language itself, but instead on the use of Nix as a replacement for virtual environments using mkShell."><meta name=keywords content=",tools,nix,workflow,python"><meta name=robots content="noodp"><meta name=theme-color content><link rel=canonical href=https://rgoswami.me/posts/ccon-tut-nix/><title>A Tutorial Introduction to Nix :: Rohit Goswami — Reflections</title><link href=https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css rel=stylesheet type=text/css><link rel=stylesheet href=/main.min.b6dbce0fdf6c61563a0c2226e857d5dadd8e5afa2c4f73ec9ea55abd831f9a72.css><meta itemprop=name content="A Tutorial Introduction to Nix"><meta itemprop=description content="Brief introduction to a nix based project workflow.
  Background For CarpentryCon@Home 2020, along with Amrita Goswami, I am to prepare and deliver a workshop on &ldquo;Reproducible Environments with the Nix Packaging System&rdquo;. In particular, as a community of practice lesson, the focus is not on packaging (as is typical of most Nix tutorials) nor on the Nix expression language itself, but instead on the use of Nix as a replacement for virtual environments using mkShell."><meta itemprop=datePublished content="2020-08-18T16:18:00+00:00"><meta itemprop=dateModified content="2020-08-18T16:18:00+00:00"><meta itemprop=wordCount content="2022"><meta itemprop=image content="https://rgoswami.me/images/RG.png"><meta itemprop=keywords content="tools,nix,workflow,python,"><meta property="og:title" content="A Tutorial Introduction to Nix"><meta property="og:description" content="Brief introduction to a nix based project workflow.
  Background For CarpentryCon@Home 2020, along with Amrita Goswami, I am to prepare and deliver a workshop on &ldquo;Reproducible Environments with the Nix Packaging System&rdquo;. In particular, as a community of practice lesson, the focus is not on packaging (as is typical of most Nix tutorials) nor on the Nix expression language itself, but instead on the use of Nix as a replacement for virtual environments using mkShell."><meta property="og:type" content="article"><meta property="og:url" content="https://rgoswami.me/posts/ccon-tut-nix/"><meta property="og:image" content="https://rgoswami.me/images/RG.png"><meta property="article:section" content="posts"><meta property="article:published_time" content="2020-08-18T16:18:00+00:00"><meta property="article:modified_time" content="2020-08-18T16:18:00+00:00"><meta property="og:site_name" content="Rohit Goswami"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://rgoswami.me/images/RG.png"><meta name=twitter:title content="A Tutorial Introduction to Nix"><meta name=twitter:description content="Brief introduction to a nix based project workflow.
- Background For CarpentryCon@Home 2020, along with Amrita Goswami, I am to prepare and deliver a workshop on &ldquo;Reproducible Environments with the Nix Packaging System&rdquo;. In particular, as a community of practice lesson, the focus is not on packaging (as is typical of most Nix tutorials) nor on the Nix expression language itself, but instead on the use of Nix as a replacement for virtual environments using mkShell."><meta property="article:section" content="programming"><meta property="article:published_time" content="2020-08-18 16:18:00 +0000 UTC"></head><body><div class=container><header class=header><div class=header__inner><div class=header__left><div class=logo><a href=/ style=text-decoration:none><img src=/images/home.png alt></a></div></div><div class=header__mid><button class=button><div class=button__text><a href=https://rgoswami.me//search>Search</a></div></button></div><div class=header__right><nav class=menu><ul class=menu__inner><li><a href=https://rgoswami.me/about>About</a></li><li><a href=https://rgoswami.me/posts>Blog</a></li></ul><ul class=menu__inner><li><a href=https://rgoswami.me/categories>Categories</a></li><li><a href=https://rgoswami.me/tags>Tags</a></li></ul></nav><button id=toggleMenu><div class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></div></button>
+ Background For CarpentryCon@Home 2020, along with Amrita Goswami, I am to prepare and deliver a workshop on &ldquo;Reproducible Environments with the Nix Packaging System&rdquo;. In particular, as a community of practice lesson, the focus is not on packaging (as is typical of most Nix tutorials) nor on the Nix expression language itself, but instead on the use of Nix as a replacement for virtual environments using mkShell."><meta property="article:section" content="programming"><meta property="article:published_time" content="2020-08-18 16:18:00 +0000 UTC"></head><body class=dark-theme><div class=container><header class=header><div class=header__inner><div class=header__left><div class=logo><a href=/ style=text-decoration:none><img src=/images/home.png alt></a></div></div><div class=header__mid><button class=button><div class=button__text><a href=https://rgoswami.me//search>Search</a></div></button></div><div class=header__right><nav class=menu><ul class=menu__inner><li><a href=https://rgoswami.me/about>About</a></li><li><a href=https://rgoswami.me/posts>Blog</a></li></ul><ul class=menu__inner><li><a href=https://rgoswami.me/categories>Categories</a></li><li><a href=https://rgoswami.me/tags>Tags</a></li></ul></nav><button id=toggleMenu><div class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></div></button>
 <button class=theme-toggle id=toggleTheme><svg class="theme-toggler" width="32" height="32" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41c10.4934.0 19-8.5066 19-19C41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg></button></div></div></header><script src=https://rgoswami.me/js/mathjax-config.js></script>
 <script id=MathJax-script async src=https://unpkg.com/mathjax@3/es5/tex-chtml.js></script><aside class=sidebar><div class=hideTOC><button id=tocTog>TOC</button><div class="sideTOC m-fadeOut"><nav id=TableOfContents><ul><li><a href=#background>Background</a></li><li><a href=#materials>Materials</a></li><li><a href=#ten-seconds-into-nix>Ten seconds into Nix</a></li><li><a href=#setup>Setup</a></li><li><a href=#basic-helpers>Basic Helpers</a><ul><li><a href=#exercise-1>Exercise 1</a></li></ul></li><li><a href=#more-dependable-dependencies>More Dependable Dependencies</a><ul><li><a href=#standard-channels>Standard Channels</a></li><li><a href=#pinning-dependencies>Pinning Dependencies</a></li></ul></li><li><a href=#project-setup>Project Setup</a><ul><li><a href=#lorri-and-direnv>lorri and direnv</a></li><li><a href=#pinning-with-niv>Pinning with niv</a></li></ul></li><li><a href=#purity-and-environments>Purity and Environments</a></li><li><a href=#mkshell>mkShell</a><ul><li><a href=#shell-hooks>Shell Hooks</a></li></ul></li><li><a href=#overriding-global-packages>Overriding Global Packages</a></li><li><a href=#python-dependencies>Python Dependencies</a><ul><li><a href=#generic-environments>Generic Environments</a></li><li><a href=#project-local-pip>Project Local Pip</a></li></ul></li><li><a href=#non-standard-python>Non-Standard Python</a><ul><li><a href=#building-packages>Building Packages</a></li><li><a href=#setting-versions>Setting Versions</a></li></ul></li><li><a href=#build-helpers>Build Helpers</a></li><li><a href=#supplementary-reading-material>Supplementary Reading Material</a><ul><li><a href=#core-content>Core Content</a></li><li><a href=#learning-paths>Learning Paths</a></li><li><a href=#personal-correspondence>Personal Correspondence</a></li></ul></li><li><a href=#conclusions>Conclusions</a></li><li><a href=#references>References</a></li></ul></nav></div></div></aside><main class=post><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>10 minutes<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Written: 2020-08-18 16:18 +0000</p></p></div><article class=h-entry><h1 class="post-title p-name"><a class=u-url href=https://rgoswami.me/posts/ccon-tut-nix/>A Tutorial Introduction to Nix</a></h1><div class=post-info><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pen-tool"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg><span class="author u-author p-author"><a href=https://rgoswami.me/author/rohit-goswami>Rohit Goswami</a></span></div><hr><aside id=toc class=sidebar><div class=toc-title>Table of Contents</div><nav id=TableOfContents><ul><li><a href=#background>Background</a></li><li><a href=#materials>Materials</a></li><li><a href=#ten-seconds-into-nix>Ten seconds into Nix</a></li><li><a href=#setup>Setup</a></li><li><a href=#basic-helpers>Basic Helpers</a><ul><li><a href=#exercise-1>Exercise 1</a></li></ul></li><li><a href=#more-dependable-dependencies>More Dependable Dependencies</a><ul><li><a href=#standard-channels>Standard Channels</a></li><li><a href=#pinning-dependencies>Pinning Dependencies</a></li></ul></li><li><a href=#project-setup>Project Setup</a><ul><li><a href=#lorri-and-direnv>lorri and direnv</a></li><li><a href=#pinning-with-niv>Pinning with niv</a></li></ul></li><li><a href=#purity-and-environments>Purity and Environments</a></li><li><a href=#mkshell>mkShell</a><ul><li><a href=#shell-hooks>Shell Hooks</a></li></ul></li><li><a href=#overriding-global-packages>Overriding Global Packages</a></li><li><a href=#python-dependencies>Python Dependencies</a><ul><li><a href=#generic-environments>Generic Environments</a></li><li><a href=#project-local-pip>Project Local Pip</a></li></ul></li><li><a href=#non-standard-python>Non-Standard Python</a><ul><li><a href=#building-packages>Building Packages</a></li><li><a href=#setting-versions>Setting Versions</a></li></ul></li><li><a href=#build-helpers>Build Helpers</a></li><li><a href=#supplementary-reading-material>Supplementary Reading Material</a><ul><li><a href=#core-content>Core Content</a></li><li><a href=#learning-paths>Learning Paths</a></li><li><a href=#personal-correspondence>Personal Correspondence</a></li></ul></li><li><a href=#conclusions>Conclusions</a></li><li><a href=#references>References</a></li></ul></nav></aside><hr><div class="post-content e-content"><blockquote><p>Brief introduction to a nix based project workflow.</p></blockquote><h2 id=background>Background</h2><p>For <a href=https://2020.carpentrycon.org/>CarpentryCon@Home 2020</a>, along with
 <a href="https://scholar.google.com/citations?user=mviv92EAAAAJ&hl=en">Amrita
@@ -26,276 +26,276 @@ installed in <code>/nix</code></li></ul></li></ul><h2 id=setup>Setup</h2><p>For 
 installation proceedure, that is, one where the installer has root
 access to create the initial <code>/nix</code> directory and set up the build
 users<sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup>. This follows directly from the <a href=https://nixos.org/nix/manual/#chap-installation>Nix
-Manual</a>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># You need root permissions for this!!!</span>
-</span></span><span class=line><span class=cl>sh &lt;<span class=o>(</span>curl -L https://nixos.org/nix/install<span class=o>)</span> --daemon
+Manual</a>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=ln>1</span><span class=cl><span class=c1># You need root permissions for this!!!</span>
+</span></span><span class=line><span class=ln>2</span><span class=cl>sh &lt;<span class=o>(</span>curl -L https://nixos.org/nix/install<span class=o>)</span> --daemon
 </span></span></code></pre></div><p>At this point we will also install the canonnical first package, the
-<code>hello</code> package, which simply outputs a friendly greeting.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>nix-env -i hello
+<code>hello</code> package, which simply outputs a friendly greeting.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=ln>1</span><span class=cl>nix-env -i hello
 </span></span></code></pre></div><p>Note that the basic package search operation is <code>nix search</code> and it
 gives outputs which look like:</p><figure><img src=/ox-hugo/nixSearchSetup.png alt="Figure 1: The nix search emacs output"><figcaption><p><span class=figure-number>Figure 1: </span>The <code>nix search emacs</code> output</p></figcaption></figure><p>Though this is not bad by any standard, we will try to get a more
 interactive management tool.</p><h2 id=basic-helpers>Basic Helpers</h2><p>The first few things to obtain are:</p><dl><dt><a href=https://github.com/madjar/nox>nox</a></dt><dd>This is a better package management helper</dd><dt><a href=https://github.com/nmattia/niv>niv</a></dt><dd>For pinning dependencies as discussed later</dd><dt><a href=https://github.com/target/lorri>lorri</a></dt><dd>For working seamlessly with project environments</dd></dl><h3 id=exercise-1>Exercise 1</h3><blockquote><p>Try installing these and use <code>nox emacs</code> to test the output</p></blockquote><figure><img src=/ox-hugo/basicHelpers.png alt="Figure 2: The nox emacs output"><figcaption><p><span class=figure-number>Figure 2: </span>The <code>nox emacs</code> output</p></figcaption></figure><h2 id=more-dependable-dependencies>More Dependable Dependencies</h2><h3 id=standard-channels>Standard Channels</h3><p>Nix works by searching a repository (local or online) of package
 derivations. Indeed, we can pass <code>nix-env</code> any local fork of the main
-<a href=https://github.com/NixOS/nixpkgs>nixpkgs repo</a> as well.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># don&#39;t run this, it is a large repo</span>
-</span></span><span class=line><span class=cl>git clone https://github.com/NixOS/nixpkgs.git <span class=nv>$mynixdir</span>
-</span></span><span class=line><span class=cl><span class=c1># make changes..</span>
-</span></span><span class=line><span class=cl><span class=nv>$EDITOR</span> <span class=nv>$nixpkgs</span>/pkgs/applications/editors/emacs/default.nix
-</span></span><span class=line><span class=cl>nix-env -i emacs -f <span class=nv>$nixpkgs</span>
+<a href=https://github.com/NixOS/nixpkgs>nixpkgs repo</a> as well.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=ln>1</span><span class=cl><span class=c1># don&#39;t run this, it is a large repo</span>
+</span></span><span class=line><span class=ln>2</span><span class=cl>git clone https://github.com/NixOS/nixpkgs.git <span class=nv>$mynixdir</span>
+</span></span><span class=line><span class=ln>3</span><span class=cl><span class=c1># make changes..</span>
+</span></span><span class=line><span class=ln>4</span><span class=cl><span class=nv>$EDITOR</span> <span class=nv>$nixpkgs</span>/pkgs/applications/editors/emacs/default.nix
+</span></span><span class=line><span class=ln>5</span><span class=cl>nix-env -i emacs -f <span class=nv>$nixpkgs</span>
 </span></span></code></pre></div><ul><li>This might serve as a way to mass modify the <code>nixpkgs</code> in a pinch<ul><li>However, we will almost <strong>never</strong> use this in practice</li><li>The overlay approach is much better</li></ul></li><li>It is also useful if we need to build local derivations</li></ul><h3 id=pinning-dependencies>Pinning Dependencies</h3><p>Compared to globally tracking the branches of <code>nixpkgs</code> or even local
 changes and forks, for project oriented workflows it is better to use
 <code>niv</code> which we obtained previously. In a nutshell, <code>niv</code> will generate a
 <code>json</code> file to keep track of dependencies and wraps it in a <code>nix</code> file
 we can subsequently import and use.</p><h2 id=project-setup>Project Setup</h2><p>We are now in a position to start working with a project oriented
-workflow.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># Make directories</span>
-</span></span><span class=line><span class=cl>mkdir myFirstNix
-</span></span><span class=line><span class=cl><span class=nb>cd</span> myFirstNix
-</span></span><span class=line><span class=cl><span class=c1># Setup</span>
-</span></span><span class=line><span class=cl>niv init
-</span></span><span class=line><span class=cl>niv update nixpkgs -b nixpkgs-unstable
-</span></span></code></pre></div><p>At this stage your project should have the following structure:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>tree myFirstNix
+workflow.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=ln>1</span><span class=cl><span class=c1># Make directories</span>
+</span></span><span class=line><span class=ln>2</span><span class=cl>mkdir myFirstNix
+</span></span><span class=line><span class=ln>3</span><span class=cl><span class=nb>cd</span> myFirstNix
+</span></span><span class=line><span class=ln>4</span><span class=cl><span class=c1># Setup</span>
+</span></span><span class=line><span class=ln>5</span><span class=cl>niv init
+</span></span><span class=line><span class=ln>6</span><span class=cl>niv update nixpkgs -b nixpkgs-unstable
+</span></span></code></pre></div><p>At this stage your project should have the following structure:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=ln>1</span><span class=cl>tree myFirstNix
 </span></span></code></pre></div><table><thead><tr><th>myFirstNix</th><th></th><th></th><th></th></tr></thead><tbody><tr><td>└──</td><td>nix</td><td></td><td></td></tr><tr><td>├──</td><td>sources.json</td><td></td><td></td></tr><tr><td>└──</td><td>sources.nix</td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td>1</td><td>directory,</td><td>2</td><td>files</td></tr></tbody></table><p>We can now move on to the heart of this tutorial, the <code>nix-shell</code>. In a
 nutshell, running <code>nix-shell</code> when there is a defined <code>shell.nix</code> will
 spawn a virtual environment with the nix packages requested.</p><h3 id=lorri-and-direnv>lorri and direnv</h3><p>Though we haven&rsquo;t as yet generated a <code>shell.nix</code> we should point out
 that writing one by hand will mean that we need to rebuild the
 enviroment when we make changes using <code>nix-shell</code> every time. A more
 elegant approach is to offload the rebuilding of the environment to
-<code>lorri</code> which also has a neat <code>direnv</code> integrration. Let&rsquo;s try that out.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nb>cd</span> myFirstNix
-</span></span><span class=line><span class=cl>lorri init
-</span></span></code></pre></div><table><thead><tr><th>Aug</th><th>18</th><th>15:24:06.524</th><th>INFO</th><th>wrote</th><th>file,</th><th>path:</th><th>./shell.nix</th></tr></thead><tbody><tr><td>Aug</td><td>18</td><td>15:24:06.524</td><td>INFO</td><td>wrote</td><td>file,</td><td>path:</td><td>./.envrc</td></tr><tr><td>Aug</td><td>18</td><td>15:24:06.524</td><td>INFO</td><td>done</td><td></td><td></td><td></td></tr></tbody></table><p>At this point we should now have:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>tree -a myFirstNix
+<code>lorri</code> which also has a neat <code>direnv</code> integrration. Let&rsquo;s try that out.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=ln>1</span><span class=cl><span class=nb>cd</span> myFirstNix
+</span></span><span class=line><span class=ln>2</span><span class=cl>lorri init
+</span></span></code></pre></div><table><thead><tr><th>Aug</th><th>18</th><th>15:24:06.524</th><th>INFO</th><th>wrote</th><th>file,</th><th>path:</th><th>./shell.nix</th></tr></thead><tbody><tr><td>Aug</td><td>18</td><td>15:24:06.524</td><td>INFO</td><td>wrote</td><td>file,</td><td>path:</td><td>./.envrc</td></tr><tr><td>Aug</td><td>18</td><td>15:24:06.524</td><td>INFO</td><td>done</td><td></td><td></td><td></td></tr></tbody></table><p>At this point we should now have:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=ln>1</span><span class=cl>tree -a myFirstNix
 </span></span></code></pre></div><table><thead><tr><th>myFirstNix</th><th></th><th></th><th></th></tr></thead><tbody><tr><td>├──</td><td>.envrc</td><td></td><td></td></tr><tr><td>├──</td><td>nix</td><td></td><td></td></tr><tr><td>│  </td><td>├──</td><td>sources.json</td><td></td></tr><tr><td>│  </td><td>└──</td><td>sources.nix</td><td></td></tr><tr><td>└──</td><td>shell.nix</td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td>1</td><td>directory,</td><td>4</td><td>files</td></tr></tbody></table><p>We might want to take a quick look at what is being loaded into the
-environment and the <code>shell.nix</code> at this point.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-nix data-lang=nix><span class=line><span class=cl><span class=k>let</span>
-</span></span><span class=line><span class=cl>  <span class=n>pkgs</span> <span class=o>=</span> <span class=kn>import</span> <span class=sr>&lt;nixpkgs&gt;</span> <span class=p>{};</span>
-</span></span><span class=line><span class=cl><span class=k>in</span>
-</span></span><span class=line><span class=cl><span class=n>pkgs</span><span class=o>.</span><span class=n>mkShell</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>  <span class=n>buildInputs</span> <span class=o>=</span> <span class=p>[</span>
-</span></span><span class=line><span class=cl>    <span class=n>pkgs</span><span class=o>.</span><span class=n>hello</span>
-</span></span><span class=line><span class=cl>  <span class=p>];</span>
-</span></span><span class=line><span class=cl><span class=p>}</span>
+environment and the <code>shell.nix</code> at this point.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-nix data-lang=nix><span class=line><span class=ln>1</span><span class=cl><span class=k>let</span>
+</span></span><span class=line><span class=ln>2</span><span class=cl>  <span class=n>pkgs</span> <span class=o>=</span> <span class=kn>import</span> <span class=sr>&lt;nixpkgs&gt;</span> <span class=p>{};</span>
+</span></span><span class=line><span class=ln>3</span><span class=cl><span class=k>in</span>
+</span></span><span class=line><span class=ln>4</span><span class=cl><span class=n>pkgs</span><span class=o>.</span><span class=n>mkShell</span> <span class=p>{</span>
+</span></span><span class=line><span class=ln>5</span><span class=cl>  <span class=n>buildInputs</span> <span class=o>=</span> <span class=p>[</span>
+</span></span><span class=line><span class=ln>6</span><span class=cl>    <span class=n>pkgs</span><span class=o>.</span><span class=n>hello</span>
+</span></span><span class=line><span class=ln>7</span><span class=cl>  <span class=p>];</span>
+</span></span><span class=line><span class=ln>8</span><span class=cl><span class=p>}</span>
 </span></span></code></pre></div><div class=src-block-caption><p><span class=src-block-number>Code Snippet 1:</span>
-<code>shell.nix</code></p></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nb>eval</span> <span class=s2>&#34;</span><span class=k>$(</span>lorri direnv<span class=k>)</span><span class=s2>&#34;</span>
+<code>shell.nix</code></p></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=ln>1</span><span class=cl><span class=nb>eval</span> <span class=s2>&#34;</span><span class=k>$(</span>lorri direnv<span class=k>)</span><span class=s2>&#34;</span>
 </span></span></code></pre></div><div class=src-block-caption><p><span class=src-block-number>Code Snippet 2:</span>
 <code>.envrc</code></p></div><p>The <code>.envrc</code> output is not very useful at a glance, however when we cd
 into the directory it is very verbose and explicit about what is being
-set up.</p><figure><img src=/ox-hugo/prjSetup.png alt="Figure 3: Sample output of the evaluation"><figcaption><p><span class=figure-number>Figure 3: </span>Sample output of the evaluation</p></figcaption></figure><p>Note that in order to set <code>lorri</code> up, we will need to set up a daemon.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>systemctl --user start lorri
-</span></span><span class=line><span class=cl>direnv allow
+set up.</p><figure><img src=/ox-hugo/prjSetup.png alt="Figure 3: Sample output of the evaluation"><figcaption><p><span class=figure-number>Figure 3: </span>Sample output of the evaluation</p></figcaption></figure><p>Note that in order to set <code>lorri</code> up, we will need to set up a daemon.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=ln>1</span><span class=cl>systemctl --user start lorri
+</span></span><span class=line><span class=ln>2</span><span class=cl>direnv allow
 </span></span></code></pre></div><h3 id=pinning-with-niv>Pinning with niv</h3><p>Note that inspite of having set up <code>niv</code>, we have not yet used the
-sources defined therein. We will now fix this, by modifying <code>shell.nix</code>.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-nix data-lang=nix><span class=line><span class=cl><span class=k>let</span>
-</span></span><span class=line><span class=cl>  <span class=n>sources</span> <span class=o>=</span> <span class=kn>import</span> <span class=sr>./nix/sources.nix</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>  <span class=n>pkgs</span> <span class=o>=</span> <span class=kn>import</span> <span class=n>sources</span><span class=o>.</span><span class=n>nixpkgs</span> <span class=p>{</span> <span class=p>};</span>
-</span></span><span class=line><span class=cl>  <span class=k>inherit</span> <span class=p>(</span><span class=n>pkgs</span><span class=o>.</span><span class=n>lib</span><span class=p>)</span> <span class=n>optional</span> <span class=n>optionals</span><span class=p>;</span>
-</span></span><span class=line><span class=cl><span class=k>in</span>
-</span></span><span class=line><span class=cl><span class=n>pkgs</span><span class=o>.</span><span class=n>mkShell</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>  <span class=n>buildInputs</span> <span class=o>=</span> <span class=p>[</span>
-</span></span><span class=line><span class=cl>    <span class=n>pkgs</span><span class=o>.</span><span class=n>hello</span>
-</span></span><span class=line><span class=cl>  <span class=p>];</span>
-</span></span><span class=line><span class=cl><span class=p>}</span>
+sources defined therein. We will now fix this, by modifying <code>shell.nix</code>.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-nix data-lang=nix><span class=line><span class=ln> 1</span><span class=cl><span class=k>let</span>
+</span></span><span class=line><span class=ln> 2</span><span class=cl>  <span class=n>sources</span> <span class=o>=</span> <span class=kn>import</span> <span class=sr>./nix/sources.nix</span><span class=p>;</span>
+</span></span><span class=line><span class=ln> 3</span><span class=cl>  <span class=n>pkgs</span> <span class=o>=</span> <span class=kn>import</span> <span class=n>sources</span><span class=o>.</span><span class=n>nixpkgs</span> <span class=p>{</span> <span class=p>};</span>
+</span></span><span class=line><span class=ln> 4</span><span class=cl>  <span class=k>inherit</span> <span class=p>(</span><span class=n>pkgs</span><span class=o>.</span><span class=n>lib</span><span class=p>)</span> <span class=n>optional</span> <span class=n>optionals</span><span class=p>;</span>
+</span></span><span class=line><span class=ln> 5</span><span class=cl><span class=k>in</span>
+</span></span><span class=line><span class=ln> 6</span><span class=cl><span class=n>pkgs</span><span class=o>.</span><span class=n>mkShell</span> <span class=p>{</span>
+</span></span><span class=line><span class=ln> 7</span><span class=cl>  <span class=n>buildInputs</span> <span class=o>=</span> <span class=p>[</span>
+</span></span><span class=line><span class=ln> 8</span><span class=cl>    <span class=n>pkgs</span><span class=o>.</span><span class=n>hello</span>
+</span></span><span class=line><span class=ln> 9</span><span class=cl>  <span class=p>];</span>
+</span></span><span class=line><span class=ln>10</span><span class=cl><span class=p>}</span>
 </span></span></code></pre></div><div class=src-block-caption><p><span class=src-block-number>Code Snippet 3:</span>
 <code>shell.nix</code> with <code>niv</code></p></div><h2 id=purity-and-environments>Purity and Environments</h2><p>There are a couple of things to note about this setup.</p><ul><li>The default shell is <code>bash</code></li><li>On occasion, depending on your Dotfiles you might have paths
-overriden in an annoying way</li></ul><p>One workaround is to use nix shell with an argument:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>nix-shell --run <span class=s2>&#34;bash&#34;</span>
+overriden in an annoying way</li></ul><p>One workaround is to use nix shell with an argument:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=ln>1</span><span class=cl>nix-shell --run <span class=s2>&#34;bash&#34;</span>
 </span></span></code></pre></div><ul><li>We can also pass <code>--pure</code> to the function, but at the cost of having
 to define many more dependencies for our shell</li></ul><h2 id=mkshell>mkShell</h2><p>The <code>mkShell</code> function is the focus of our tutorial, and we will mostly
 work around passing in different environments and hooks. Let us start by
 defining a hook.</p><h3 id=shell-hooks>Shell Hooks</h3><p>Often, we will want to set an environment variable in our shell in
 advance. We should not use <code>direnv</code> for this, and instead we will focus
 on the <code>shellHook</code> option. Syntactically, we note that this is of the
-form:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-nix data-lang=nix><span class=line><span class=cl><span class=k>let</span>
-</span></span><span class=line><span class=cl>  <span class=n>hook</span> <span class=o>=</span> <span class=s1>&#39;&#39;
-</span></span></span><span class=line><span class=cl><span class=s1>  export myvar=&#34;Test&#34;
-</span></span></span><span class=line><span class=cl><span class=s1>  &#39;&#39;</span>
-</span></span><span class=line><span class=cl><span class=k>in</span> <span class=n>pkgs</span><span class=o>.</span><span class=n>mkShell</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>  <span class=n>shellHook</span> <span class=o>=</span> <span class=n>hook</span><span class=p>;</span>
-</span></span><span class=line><span class=cl><span class=p>}</span>
+form:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-nix data-lang=nix><span class=line><span class=ln>1</span><span class=cl><span class=k>let</span>
+</span></span><span class=line><span class=ln>2</span><span class=cl>  <span class=n>hook</span> <span class=o>=</span> <span class=s1>&#39;&#39;
+</span></span></span><span class=line><span class=ln>3</span><span class=cl><span class=s1>  export myvar=&#34;Test&#34;
+</span></span></span><span class=line><span class=ln>4</span><span class=cl><span class=s1>  &#39;&#39;</span>
+</span></span><span class=line><span class=ln>5</span><span class=cl><span class=k>in</span> <span class=n>pkgs</span><span class=o>.</span><span class=n>mkShell</span> <span class=p>{</span>
+</span></span><span class=line><span class=ln>6</span><span class=cl>  <span class=n>shellHook</span> <span class=o>=</span> <span class=n>hook</span><span class=p>;</span>
+</span></span><span class=line><span class=ln>7</span><span class=cl><span class=p>}</span>
 </span></span></code></pre></div><p>Often we will describe variables in the let section in favor of
 cluttering the actual function call itself.</p><h2 id=overriding-global-packages>Overriding Global Packages</h2><p>For overriding global packages, it is best to leverage the <code>config.nix</code>
 (which is commonly in <code>$HOME/.config/nixpkgs/config.nix</code>) file instead
 of the current environment, though it could be managed in a per-project
 setup as well. Consider the case where we need to disable tests for a
-particular packages, say <code>libuv</code>.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-nix data-lang=nix><span class=line><span class=cl><span class=p>{</span>
-</span></span><span class=line><span class=cl>  <span class=n>packageOverrides</span> <span class=o>=</span> <span class=n>pkgs</span><span class=p>:</span>
-</span></span><span class=line><span class=cl>    <span class=k>with</span> <span class=n>pkgs</span><span class=p>;</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>      <span class=n>libuv</span> <span class=o>=</span> <span class=n>libuv</span><span class=o>.</span><span class=n>overrideAttrs</span> <span class=p>(</span><span class=n>oldAttrs</span><span class=p>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>        <span class=n>doCheck</span> <span class=o>=</span> <span class=no>false</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>        <span class=n>doInstallCheck</span> <span class=o>=</span> <span class=no>false</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>      <span class=p>});</span>
-</span></span><span class=line><span class=cl>    <span class=p>};</span>
-</span></span><span class=line><span class=cl><span class=p>}</span>
+particular packages, say <code>libuv</code>.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-nix data-lang=nix><span class=line><span class=ln>1</span><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=ln>2</span><span class=cl>  <span class=n>packageOverrides</span> <span class=o>=</span> <span class=n>pkgs</span><span class=p>:</span>
+</span></span><span class=line><span class=ln>3</span><span class=cl>    <span class=k>with</span> <span class=n>pkgs</span><span class=p>;</span> <span class=p>{</span>
+</span></span><span class=line><span class=ln>4</span><span class=cl>      <span class=n>libuv</span> <span class=o>=</span> <span class=n>libuv</span><span class=o>.</span><span class=n>overrideAttrs</span> <span class=p>(</span><span class=n>oldAttrs</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=ln>5</span><span class=cl>        <span class=n>doCheck</span> <span class=o>=</span> <span class=no>false</span><span class=p>;</span>
+</span></span><span class=line><span class=ln>6</span><span class=cl>        <span class=n>doInstallCheck</span> <span class=o>=</span> <span class=no>false</span><span class=p>;</span>
+</span></span><span class=line><span class=ln>7</span><span class=cl>      <span class=p>});</span>
+</span></span><span class=line><span class=ln>8</span><span class=cl>    <span class=p>};</span>
+</span></span><span class=line><span class=ln>9</span><span class=cl><span class=p>}</span>
 </span></span></code></pre></div><div class=src-block-caption><p><span class=src-block-number>Code Snippet 4:</span> A sample
 <code>config.nix</code> file</p></div><h2 id=python-dependencies>Python Dependencies</h2><p>As R dependency management has been covered <a href=/posts/nix-r-devtools/>in an earlier post</a>, we will focus on the management of
 <code>python</code> environments.</p><h3 id=generic-environments>Generic Environments</h3><p>We can define existing packages as follows (and can check for existence
-with <code>nox</code>) using the <code>let..in</code> syntax.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-nix data-lang=nix><span class=line><span class=cl><span class=k>let</span>
-</span></span><span class=line><span class=cl>  <span class=c1># Niv</span>
-</span></span><span class=line><span class=cl>  <span class=n>sources</span> <span class=o>=</span> <span class=kn>import</span> <span class=sr>./nix/sources.nix</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>  <span class=n>pkgs</span> <span class=o>=</span> <span class=kn>import</span> <span class=n>sources</span><span class=o>.</span><span class=n>nixpkgs</span> <span class=p>{</span> <span class=p>};</span>
-</span></span><span class=line><span class=cl>  <span class=k>inherit</span> <span class=p>(</span><span class=n>pkgs</span><span class=o>.</span><span class=n>lib</span><span class=p>)</span> <span class=n>optional</span> <span class=n>optionals</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>  <span class=c1># Python</span>
-</span></span><span class=line><span class=cl>  <span class=n>pythonEnv</span> <span class=o>=</span> <span class=n>pkgs</span><span class=o>.</span><span class=n>python38</span><span class=o>.</span><span class=n>withPackages</span> <span class=p>(</span><span class=n>ps</span><span class=p>:</span> <span class=k>with</span> <span class=n>ps</span><span class=p>;[</span>
-</span></span><span class=line><span class=cl>    <span class=n>numpy</span>
-</span></span><span class=line><span class=cl>    <span class=n>toolz</span>
-</span></span><span class=line><span class=cl>  <span class=p>]);</span>
-</span></span><span class=line><span class=cl><span class=k>in</span> <span class=n>pkgs</span><span class=o>.</span><span class=n>mkShell</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>  <span class=n>buildInputs</span> <span class=o>=</span> <span class=k>with</span> <span class=n>pkgs</span><span class=p>;</span> <span class=p>[</span>
-</span></span><span class=line><span class=cl>    <span class=n>pythonEnv</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=n>black</span>
-</span></span><span class=line><span class=cl>    <span class=n>mypy</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=n>libffi</span>
-</span></span><span class=line><span class=cl>    <span class=n>openssl</span>
-</span></span><span class=line><span class=cl>  <span class=p>];</span>
-</span></span><span class=line><span class=cl><span class=p>}</span>
+with <code>nox</code>) using the <code>let..in</code> syntax.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-nix data-lang=nix><span class=line><span class=ln> 1</span><span class=cl><span class=k>let</span>
+</span></span><span class=line><span class=ln> 2</span><span class=cl>  <span class=c1># Niv</span>
+</span></span><span class=line><span class=ln> 3</span><span class=cl>  <span class=n>sources</span> <span class=o>=</span> <span class=kn>import</span> <span class=sr>./nix/sources.nix</span><span class=p>;</span>
+</span></span><span class=line><span class=ln> 4</span><span class=cl>  <span class=n>pkgs</span> <span class=o>=</span> <span class=kn>import</span> <span class=n>sources</span><span class=o>.</span><span class=n>nixpkgs</span> <span class=p>{</span> <span class=p>};</span>
+</span></span><span class=line><span class=ln> 5</span><span class=cl>  <span class=k>inherit</span> <span class=p>(</span><span class=n>pkgs</span><span class=o>.</span><span class=n>lib</span><span class=p>)</span> <span class=n>optional</span> <span class=n>optionals</span><span class=p>;</span>
+</span></span><span class=line><span class=ln> 6</span><span class=cl>  <span class=c1># Python</span>
+</span></span><span class=line><span class=ln> 7</span><span class=cl>  <span class=n>pythonEnv</span> <span class=o>=</span> <span class=n>pkgs</span><span class=o>.</span><span class=n>python38</span><span class=o>.</span><span class=n>withPackages</span> <span class=p>(</span><span class=n>ps</span><span class=p>:</span> <span class=k>with</span> <span class=n>ps</span><span class=p>;[</span>
+</span></span><span class=line><span class=ln> 8</span><span class=cl>    <span class=n>numpy</span>
+</span></span><span class=line><span class=ln> 9</span><span class=cl>    <span class=n>toolz</span>
+</span></span><span class=line><span class=ln>10</span><span class=cl>  <span class=p>]);</span>
+</span></span><span class=line><span class=ln>11</span><span class=cl><span class=k>in</span> <span class=n>pkgs</span><span class=o>.</span><span class=n>mkShell</span> <span class=p>{</span>
+</span></span><span class=line><span class=ln>12</span><span class=cl>  <span class=n>buildInputs</span> <span class=o>=</span> <span class=k>with</span> <span class=n>pkgs</span><span class=p>;</span> <span class=p>[</span>
+</span></span><span class=line><span class=ln>13</span><span class=cl>    <span class=n>pythonEnv</span>
+</span></span><span class=line><span class=ln>14</span><span class=cl>
+</span></span><span class=line><span class=ln>15</span><span class=cl>    <span class=n>black</span>
+</span></span><span class=line><span class=ln>16</span><span class=cl>    <span class=n>mypy</span>
+</span></span><span class=line><span class=ln>17</span><span class=cl>
+</span></span><span class=line><span class=ln>18</span><span class=cl>    <span class=n>libffi</span>
+</span></span><span class=line><span class=ln>19</span><span class=cl>    <span class=n>openssl</span>
+</span></span><span class=line><span class=ln>20</span><span class=cl>  <span class=p>];</span>
+</span></span><span class=line><span class=ln>21</span><span class=cl><span class=p>}</span>
 </span></span></code></pre></div><div class=src-block-caption><p><span class=src-block-number>Code Snippet 5:</span> Shell with basic
 <code>python</code> environment</p></div><h3 id=project-local-pip>Project Local Pip</h3><p>We can leverage a trick from
 <a href=https://churchman.nl/2019/01/22/using-nix-to-create-python-virtual-environments/>here</a>
 to set a local directory for <code>pip</code> installations, which boils down to
-some path hacking.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-nix data-lang=nix><span class=line><span class=cl><span class=k>let</span>
-</span></span><span class=line><span class=cl>  <span class=c1># Niv</span>
-</span></span><span class=line><span class=cl>  <span class=n>sources</span> <span class=o>=</span> <span class=kn>import</span> <span class=sr>./nix/sources.nix</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>  <span class=n>pkgs</span> <span class=o>=</span> <span class=kn>import</span> <span class=n>sources</span><span class=o>.</span><span class=n>nixpkgs</span> <span class=p>{</span> <span class=p>};</span>
-</span></span><span class=line><span class=cl>  <span class=k>inherit</span> <span class=p>(</span><span class=n>pkgs</span><span class=o>.</span><span class=n>lib</span><span class=p>)</span> <span class=n>optional</span> <span class=n>optionals</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>  <span class=c1># Python</span>
-</span></span><span class=line><span class=cl>  <span class=n>pythonEnv</span> <span class=o>=</span> <span class=n>pkgs</span><span class=o>.</span><span class=n>python38</span><span class=o>.</span><span class=n>withPackages</span> <span class=p>(</span><span class=n>ps</span><span class=p>:</span> <span class=k>with</span> <span class=n>ps</span><span class=p>;[</span>
-</span></span><span class=line><span class=cl>    <span class=n>numpy</span>
-</span></span><span class=line><span class=cl>    <span class=n>toolz</span>
-</span></span><span class=line><span class=cl>  <span class=p>]);</span>
-</span></span><span class=line><span class=cl>  <span class=n>hook</span> <span class=o>=</span> <span class=s1>&#39;&#39;
-</span></span></span><span class=line><span class=cl><span class=s1>     export PIP_PREFIX=&#34;$(pwd)/_build/pip_packages&#34;
-</span></span></span><span class=line><span class=cl><span class=s1>     export PYTHONPATH=&#34;$(pwd)/_build/pip_packages/lib/python3.8/site-packages:$PYTHONPATH&#34;
-</span></span></span><span class=line><span class=cl><span class=s1>     export PATH=&#34;$PIP_PREFIX/bin:$PATH&#34;
-</span></span></span><span class=line><span class=cl><span class=s1>     unset SOURCE_DATE_EPOCH
-</span></span></span><span class=line><span class=cl><span class=s1>  &#39;&#39;</span><span class=p>;</span>
-</span></span><span class=line><span class=cl><span class=k>in</span> <span class=n>pkgs</span><span class=o>.</span><span class=n>mkShell</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>  <span class=n>buildInputs</span> <span class=o>=</span> <span class=k>with</span> <span class=n>pkgs</span><span class=p>;</span> <span class=p>[</span>
-</span></span><span class=line><span class=cl>    <span class=n>pythonEnv</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=n>black</span>
-</span></span><span class=line><span class=cl>    <span class=n>mypy</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=n>libffi</span>
-</span></span><span class=line><span class=cl>    <span class=n>openssl</span>
-</span></span><span class=line><span class=cl>  <span class=p>];</span>
-</span></span><span class=line><span class=cl>  <span class=n>shellHook</span> <span class=o>=</span> <span class=n>hook</span><span class=p>;</span>
-</span></span><span class=line><span class=cl><span class=p>}</span>
+some path hacking.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-nix data-lang=nix><span class=line><span class=ln> 1</span><span class=cl><span class=k>let</span>
+</span></span><span class=line><span class=ln> 2</span><span class=cl>  <span class=c1># Niv</span>
+</span></span><span class=line><span class=ln> 3</span><span class=cl>  <span class=n>sources</span> <span class=o>=</span> <span class=kn>import</span> <span class=sr>./nix/sources.nix</span><span class=p>;</span>
+</span></span><span class=line><span class=ln> 4</span><span class=cl>  <span class=n>pkgs</span> <span class=o>=</span> <span class=kn>import</span> <span class=n>sources</span><span class=o>.</span><span class=n>nixpkgs</span> <span class=p>{</span> <span class=p>};</span>
+</span></span><span class=line><span class=ln> 5</span><span class=cl>  <span class=k>inherit</span> <span class=p>(</span><span class=n>pkgs</span><span class=o>.</span><span class=n>lib</span><span class=p>)</span> <span class=n>optional</span> <span class=n>optionals</span><span class=p>;</span>
+</span></span><span class=line><span class=ln> 6</span><span class=cl>  <span class=c1># Python</span>
+</span></span><span class=line><span class=ln> 7</span><span class=cl>  <span class=n>pythonEnv</span> <span class=o>=</span> <span class=n>pkgs</span><span class=o>.</span><span class=n>python38</span><span class=o>.</span><span class=n>withPackages</span> <span class=p>(</span><span class=n>ps</span><span class=p>:</span> <span class=k>with</span> <span class=n>ps</span><span class=p>;[</span>
+</span></span><span class=line><span class=ln> 8</span><span class=cl>    <span class=n>numpy</span>
+</span></span><span class=line><span class=ln> 9</span><span class=cl>    <span class=n>toolz</span>
+</span></span><span class=line><span class=ln>10</span><span class=cl>  <span class=p>]);</span>
+</span></span><span class=line><span class=ln>11</span><span class=cl>  <span class=n>hook</span> <span class=o>=</span> <span class=s1>&#39;&#39;
+</span></span></span><span class=line><span class=ln>12</span><span class=cl><span class=s1>     export PIP_PREFIX=&#34;$(pwd)/_build/pip_packages&#34;
+</span></span></span><span class=line><span class=ln>13</span><span class=cl><span class=s1>     export PYTHONPATH=&#34;$(pwd)/_build/pip_packages/lib/python3.8/site-packages:$PYTHONPATH&#34;
+</span></span></span><span class=line><span class=ln>14</span><span class=cl><span class=s1>     export PATH=&#34;$PIP_PREFIX/bin:$PATH&#34;
+</span></span></span><span class=line><span class=ln>15</span><span class=cl><span class=s1>     unset SOURCE_DATE_EPOCH
+</span></span></span><span class=line><span class=ln>16</span><span class=cl><span class=s1>  &#39;&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=ln>17</span><span class=cl><span class=k>in</span> <span class=n>pkgs</span><span class=o>.</span><span class=n>mkShell</span> <span class=p>{</span>
+</span></span><span class=line><span class=ln>18</span><span class=cl>  <span class=n>buildInputs</span> <span class=o>=</span> <span class=k>with</span> <span class=n>pkgs</span><span class=p>;</span> <span class=p>[</span>
+</span></span><span class=line><span class=ln>19</span><span class=cl>    <span class=n>pythonEnv</span>
+</span></span><span class=line><span class=ln>20</span><span class=cl>
+</span></span><span class=line><span class=ln>21</span><span class=cl>    <span class=n>black</span>
+</span></span><span class=line><span class=ln>22</span><span class=cl>    <span class=n>mypy</span>
+</span></span><span class=line><span class=ln>23</span><span class=cl>
+</span></span><span class=line><span class=ln>24</span><span class=cl>    <span class=n>libffi</span>
+</span></span><span class=line><span class=ln>25</span><span class=cl>    <span class=n>openssl</span>
+</span></span><span class=line><span class=ln>26</span><span class=cl>  <span class=p>];</span>
+</span></span><span class=line><span class=ln>27</span><span class=cl>  <span class=n>shellHook</span> <span class=o>=</span> <span class=n>hook</span><span class=p>;</span>
+</span></span><span class=line><span class=ln>28</span><span class=cl><span class=p>}</span>
 </span></span></code></pre></div><p><strong>Note that</strong> this is discouraged as we will lose the caching
 capabilities of nix.</p><h2 id=non-standard-python>Non-Standard Python</h2><p>For more control over the environment, we can define it in more detail
-with some overlays.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-nix data-lang=nix><span class=line><span class=cl><span class=k>let</span>
-</span></span><span class=line><span class=cl>  <span class=n>python</span> <span class=o>=</span> <span class=n>pkgs</span><span class=o>.</span><span class=n>python38</span><span class=o>.</span><span class=n>override</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>    <span class=n>packageOverrides</span> <span class=o>=</span> <span class=n>self</span><span class=p>:</span> <span class=n>super</span><span class=p>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>      <span class=n>pytest</span> <span class=o>=</span> <span class=n>super</span><span class=o>.</span><span class=n>pytest</span><span class=o>.</span><span class=n>overridePythonAttrs</span> <span class=p>(</span><span class=n>old</span><span class=p>:</span> <span class=k>rec</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>        <span class=n>doCheck</span> <span class=o>=</span> <span class=no>false</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>        <span class=n>doInstallCheck</span> <span class=o>=</span> <span class=no>false</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>      <span class=p>});</span>
-</span></span><span class=line><span class=cl>    <span class=p>};</span>
-</span></span><span class=line><span class=cl>  <span class=p>};</span>
-</span></span><span class=line><span class=cl>  <span class=n>myPy</span> <span class=o>=</span> <span class=n>python</span><span class=o>.</span><span class=n>withPackages</span>
-</span></span><span class=line><span class=cl>    <span class=p>(</span><span class=n>p</span><span class=p>:</span> <span class=k>with</span> <span class=n>p</span><span class=p>;</span> <span class=p>[</span> <span class=n>numpy</span> <span class=n>pip</span> <span class=n>pytest</span> <span class=p>]);</span>
-</span></span><span class=line><span class=cl><span class=k>in</span> <span class=n>pkgs</span><span class=o>.</span><span class=n>mkShell</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>  <span class=n>buildInputs</span> <span class=o>=</span> <span class=k>with</span> <span class=n>pkgs</span><span class=p>;</span> <span class=p>[</span>
-</span></span><span class=line><span class=cl>    <span class=n>myPy</span>
-</span></span><span class=line><span class=cl>  <span class=p>];</span>
-</span></span><span class=line><span class=cl><span class=p>}</span>
+with some overlays.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-nix data-lang=nix><span class=line><span class=ln> 1</span><span class=cl><span class=k>let</span>
+</span></span><span class=line><span class=ln> 2</span><span class=cl>  <span class=n>python</span> <span class=o>=</span> <span class=n>pkgs</span><span class=o>.</span><span class=n>python38</span><span class=o>.</span><span class=n>override</span> <span class=p>{</span>
+</span></span><span class=line><span class=ln> 3</span><span class=cl>    <span class=n>packageOverrides</span> <span class=o>=</span> <span class=n>self</span><span class=p>:</span> <span class=n>super</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=ln> 4</span><span class=cl>      <span class=n>pytest</span> <span class=o>=</span> <span class=n>super</span><span class=o>.</span><span class=n>pytest</span><span class=o>.</span><span class=n>overridePythonAttrs</span> <span class=p>(</span><span class=n>old</span><span class=p>:</span> <span class=k>rec</span> <span class=p>{</span>
+</span></span><span class=line><span class=ln> 5</span><span class=cl>        <span class=n>doCheck</span> <span class=o>=</span> <span class=no>false</span><span class=p>;</span>
+</span></span><span class=line><span class=ln> 6</span><span class=cl>        <span class=n>doInstallCheck</span> <span class=o>=</span> <span class=no>false</span><span class=p>;</span>
+</span></span><span class=line><span class=ln> 7</span><span class=cl>      <span class=p>});</span>
+</span></span><span class=line><span class=ln> 8</span><span class=cl>    <span class=p>};</span>
+</span></span><span class=line><span class=ln> 9</span><span class=cl>  <span class=p>};</span>
+</span></span><span class=line><span class=ln>10</span><span class=cl>  <span class=n>myPy</span> <span class=o>=</span> <span class=n>python</span><span class=o>.</span><span class=n>withPackages</span>
+</span></span><span class=line><span class=ln>11</span><span class=cl>    <span class=p>(</span><span class=n>p</span><span class=p>:</span> <span class=k>with</span> <span class=n>p</span><span class=p>;</span> <span class=p>[</span> <span class=n>numpy</span> <span class=n>pip</span> <span class=n>pytest</span> <span class=p>]);</span>
+</span></span><span class=line><span class=ln>12</span><span class=cl><span class=k>in</span> <span class=n>pkgs</span><span class=o>.</span><span class=n>mkShell</span> <span class=p>{</span>
+</span></span><span class=line><span class=ln>13</span><span class=cl>  <span class=n>buildInputs</span> <span class=o>=</span> <span class=k>with</span> <span class=n>pkgs</span><span class=p>;</span> <span class=p>[</span>
+</span></span><span class=line><span class=ln>14</span><span class=cl>    <span class=n>myPy</span>
+</span></span><span class=line><span class=ln>15</span><span class=cl>  <span class=p>];</span>
+</span></span><span class=line><span class=ln>16</span><span class=cl><span class=p>}</span>
 </span></span></code></pre></div><p>We have used both overriden packages and standard packages in the above
 formulation.</p><h3 id=building-packages>Building Packages</h3><p>For cases where we are certain that no existing package is present (use
 <code>nox</code>) we can also build them. Take <code>f90wrap</code> as an example, and we will
 use the Github version, rather than the PyPi version (the difference is
-in the source fetch function).</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-nix data-lang=nix><span class=line><span class=cl><span class=n>f90wrap</span> <span class=err>=</span> <span class=n>self</span><span class=o>.</span><span class=n>buildPythonPackage</span> <span class=k>rec</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>  <span class=n>pname</span> <span class=o>=</span> <span class=s2>&#34;f90wrap&#34;</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>  <span class=n>version</span> <span class=o>=</span> <span class=s2>&#34;0.2.3&#34;</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>  <span class=n>src</span> <span class=o>=</span> <span class=n>pkgs</span><span class=o>.</span><span class=n>fetchFromGitHub</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>    <span class=n>owner</span> <span class=o>=</span> <span class=s2>&#34;jameskermode&#34;</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>    <span class=n>repo</span> <span class=o>=</span> <span class=s2>&#34;f90wrap&#34;</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>    <span class=n>rev</span> <span class=o>=</span> <span class=s2>&#34;master&#34;</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>    <span class=n>sha256</span> <span class=o>=</span> <span class=s2>&#34;0d06nal4xzg8vv6sjdbmg2n88a8h8df5ajam72445mhzk08yin23&#34;</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>  <span class=p>};</span>
-</span></span><span class=line><span class=cl>  <span class=n>buildInputs</span> <span class=o>=</span> <span class=k>with</span> <span class=n>pkgs</span><span class=p>;</span> <span class=p>[</span> <span class=n>gfortran</span> <span class=n>stdenv</span> <span class=p>];</span>
-</span></span><span class=line><span class=cl>  <span class=n>propagatedBuildInputs</span> <span class=o>=</span> <span class=k>with</span> <span class=n>self</span><span class=p>;</span> <span class=p>[</span>
-</span></span><span class=line><span class=cl>    <span class=n>setuptools</span>
-</span></span><span class=line><span class=cl>    <span class=n>setuptools-git</span>
-</span></span><span class=line><span class=cl>    <span class=n>wheel</span>
-</span></span><span class=line><span class=cl>    <span class=n>numpy</span>
-</span></span><span class=line><span class=cl>  <span class=p>];</span>
-</span></span><span class=line><span class=cl>  <span class=n>preConfigure</span> <span class=o>=</span> <span class=s1>&#39;&#39;
-</span></span></span><span class=line><span class=cl><span class=s1>    export F90=</span><span class=si>${</span><span class=n>pkgs</span><span class=o>.</span><span class=n>gfortran</span><span class=si>}</span><span class=s1>/bin/gfortran
-</span></span></span><span class=line><span class=cl><span class=s1>  &#39;&#39;</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>  <span class=n>doCheck</span> <span class=o>=</span> <span class=no>false</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>  <span class=n>doIstallCheck</span> <span class=o>=</span> <span class=no>false</span><span class=p>;</span>
-</span></span><span class=line><span class=cl><span class=p>};</span>
+in the source fetch function).</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-nix data-lang=nix><span class=line><span class=ln> 1</span><span class=cl><span class=n>f90wrap</span> <span class=err>=</span> <span class=n>self</span><span class=o>.</span><span class=n>buildPythonPackage</span> <span class=k>rec</span> <span class=p>{</span>
+</span></span><span class=line><span class=ln> 2</span><span class=cl>  <span class=n>pname</span> <span class=o>=</span> <span class=s2>&#34;f90wrap&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=ln> 3</span><span class=cl>  <span class=n>version</span> <span class=o>=</span> <span class=s2>&#34;0.2.3&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=ln> 4</span><span class=cl>  <span class=n>src</span> <span class=o>=</span> <span class=n>pkgs</span><span class=o>.</span><span class=n>fetchFromGitHub</span> <span class=p>{</span>
+</span></span><span class=line><span class=ln> 5</span><span class=cl>    <span class=n>owner</span> <span class=o>=</span> <span class=s2>&#34;jameskermode&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=ln> 6</span><span class=cl>    <span class=n>repo</span> <span class=o>=</span> <span class=s2>&#34;f90wrap&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=ln> 7</span><span class=cl>    <span class=n>rev</span> <span class=o>=</span> <span class=s2>&#34;master&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=ln> 8</span><span class=cl>    <span class=n>sha256</span> <span class=o>=</span> <span class=s2>&#34;0d06nal4xzg8vv6sjdbmg2n88a8h8df5ajam72445mhzk08yin23&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=ln> 9</span><span class=cl>  <span class=p>};</span>
+</span></span><span class=line><span class=ln>10</span><span class=cl>  <span class=n>buildInputs</span> <span class=o>=</span> <span class=k>with</span> <span class=n>pkgs</span><span class=p>;</span> <span class=p>[</span> <span class=n>gfortran</span> <span class=n>stdenv</span> <span class=p>];</span>
+</span></span><span class=line><span class=ln>11</span><span class=cl>  <span class=n>propagatedBuildInputs</span> <span class=o>=</span> <span class=k>with</span> <span class=n>self</span><span class=p>;</span> <span class=p>[</span>
+</span></span><span class=line><span class=ln>12</span><span class=cl>    <span class=n>setuptools</span>
+</span></span><span class=line><span class=ln>13</span><span class=cl>    <span class=n>setuptools-git</span>
+</span></span><span class=line><span class=ln>14</span><span class=cl>    <span class=n>wheel</span>
+</span></span><span class=line><span class=ln>15</span><span class=cl>    <span class=n>numpy</span>
+</span></span><span class=line><span class=ln>16</span><span class=cl>  <span class=p>];</span>
+</span></span><span class=line><span class=ln>17</span><span class=cl>  <span class=n>preConfigure</span> <span class=o>=</span> <span class=s1>&#39;&#39;
+</span></span></span><span class=line><span class=ln>18</span><span class=cl><span class=s1>    export F90=</span><span class=si>${</span><span class=n>pkgs</span><span class=o>.</span><span class=n>gfortran</span><span class=si>}</span><span class=s1>/bin/gfortran
+</span></span></span><span class=line><span class=ln>19</span><span class=cl><span class=s1>  &#39;&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=ln>20</span><span class=cl>  <span class=n>doCheck</span> <span class=o>=</span> <span class=no>false</span><span class=p>;</span>
+</span></span><span class=line><span class=ln>21</span><span class=cl>  <span class=n>doIstallCheck</span> <span class=o>=</span> <span class=no>false</span><span class=p>;</span>
+</span></span><span class=line><span class=ln>22</span><span class=cl><span class=p>};</span>
 </span></span></code></pre></div><p>This is quite involved, <span class=underline>discuss</span>.</p><h3 id=setting-versions>Setting Versions</h3><p>We can finally generalize our <code>shell.nix</code> to default to <code>python 3.8</code> but
-also take a command through <code>--argstr</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>nix-shell --argstr pythonVersion <span class=m>36</span> --run <span class=s2>&#34;bash&#34;</span>
+also take a command through <code>--argstr</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=ln>1</span><span class=cl>nix-shell --argstr pythonVersion <span class=m>36</span> --run <span class=s2>&#34;bash&#34;</span>
 </span></span></code></pre></div><p>Where we need to simply define the option at the top of the file, with a
-default.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-nix data-lang=nix><span class=line><span class=cl><span class=p>{</span> <span class=n>pythonVersion</span> <span class=o>?</span> <span class=s2>&#34;38&#34;</span> <span class=p>}:</span>
-</span></span><span class=line><span class=cl><span class=c1># Define</span>
-</span></span><span class=line><span class=cl><span class=k>let</span>
-</span></span><span class=line><span class=cl>  <span class=n>sources</span> <span class=o>=</span> <span class=kn>import</span> <span class=sr>./nix/sources.nix</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>  <span class=n>pkgs</span> <span class=o>=</span> <span class=kn>import</span> <span class=n>sources</span><span class=o>.</span><span class=n>nixpkgs</span> <span class=p>{</span> <span class=p>};</span>
-</span></span><span class=line><span class=cl>  <span class=k>inherit</span> <span class=p>(</span><span class=n>pkgs</span><span class=o>.</span><span class=n>lib</span><span class=p>)</span> <span class=n>optional</span> <span class=n>optionals</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>  <span class=n>hook</span> <span class=o>=</span> <span class=s1>&#39;&#39;
-</span></span></span><span class=line><span class=cl><span class=s1>    # Python Stuff
-</span></span></span><span class=line><span class=cl><span class=s1>     export PIP_PREFIX=&#34;$(pwd)/_build/pip_packages&#34;
-</span></span></span><span class=line><span class=cl><span class=s1>     export PYTHONPATH=&#34;$(pwd)/_build/pip_packages/lib/python3.8/site-packages:$PYTHONPATH&#34;
-</span></span></span><span class=line><span class=cl><span class=s1>     export PATH=&#34;$PIP_PREFIX/bin:$PATH&#34;
-</span></span></span><span class=line><span class=cl><span class=s1>     unset SOURCE_DATE_EPOCH
-</span></span></span><span class=line><span class=cl><span class=s1>  &#39;&#39;</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>  <span class=c1># Apparently pip needs 1980 or above</span>
-</span></span><span class=line><span class=cl>  <span class=c1># https://github.com/ento/elm-doc/blob/master/shell.nix</span>
-</span></span><span class=line><span class=cl>  <span class=n>python</span> <span class=o>=</span> <span class=n>pkgs</span><span class=o>.</span><span class=s2>&#34;python</span><span class=si>${</span><span class=n>pythonVersion</span><span class=si>}</span><span class=s2>&#34;</span><span class=o>.</span><span class=n>override</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>    <span class=n>packageOverrides</span> <span class=o>=</span> <span class=n>self</span><span class=p>:</span> <span class=n>super</span><span class=p>:</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>      <span class=n>pytest</span> <span class=o>=</span> <span class=n>super</span><span class=o>.</span><span class=n>pytest</span><span class=o>.</span><span class=n>overridePythonAttrs</span> <span class=p>(</span><span class=n>old</span><span class=p>:</span> <span class=k>rec</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>        <span class=n>doCheck</span> <span class=o>=</span> <span class=no>false</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>        <span class=n>doInstallCheck</span> <span class=o>=</span> <span class=no>false</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>      <span class=p>});</span>
-</span></span><span class=line><span class=cl>      <span class=n>ase</span> <span class=o>=</span> <span class=n>super</span><span class=o>.</span><span class=n>ase</span><span class=o>.</span><span class=n>overridePythonAttrs</span> <span class=p>(</span><span class=n>old</span><span class=p>:</span> <span class=k>rec</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>        <span class=n>doCheck</span> <span class=o>=</span> <span class=no>false</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>        <span class=n>doInstallCheck</span> <span class=o>=</span> <span class=no>false</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>      <span class=p>});</span>
-</span></span><span class=line><span class=cl>      <span class=n>f90wrap</span> <span class=o>=</span> <span class=n>self</span><span class=o>.</span><span class=n>buildPythonPackage</span> <span class=k>rec</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>        <span class=n>pname</span> <span class=o>=</span> <span class=s2>&#34;f90wrap&#34;</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>        <span class=n>version</span> <span class=o>=</span> <span class=s2>&#34;0.2.3&#34;</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>        <span class=n>src</span> <span class=o>=</span> <span class=n>pkgs</span><span class=o>.</span><span class=n>fetchFromGitHub</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>          <span class=n>owner</span> <span class=o>=</span> <span class=s2>&#34;jameskermode&#34;</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>          <span class=n>repo</span> <span class=o>=</span> <span class=s2>&#34;f90wrap&#34;</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>          <span class=n>rev</span> <span class=o>=</span> <span class=s2>&#34;master&#34;</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>          <span class=n>sha256</span> <span class=o>=</span> <span class=s2>&#34;0d06nal4xzg8vv6sjdbmg2n88a8h8df5ajam72445mhzk08yin23&#34;</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>        <span class=p>};</span>
-</span></span><span class=line><span class=cl>        <span class=n>buildInputs</span> <span class=o>=</span> <span class=k>with</span> <span class=n>pkgs</span><span class=p>;</span> <span class=p>[</span> <span class=n>gfortran</span> <span class=n>stdenv</span> <span class=p>];</span>
-</span></span><span class=line><span class=cl>        <span class=n>propagatedBuildInputs</span> <span class=o>=</span> <span class=k>with</span> <span class=n>self</span><span class=p>;</span> <span class=p>[</span>
-</span></span><span class=line><span class=cl>          <span class=n>setuptools</span>
-</span></span><span class=line><span class=cl>          <span class=n>setuptools-git</span>
-</span></span><span class=line><span class=cl>          <span class=n>wheel</span>
-</span></span><span class=line><span class=cl>          <span class=n>numpy</span>
-</span></span><span class=line><span class=cl>        <span class=p>];</span>
-</span></span><span class=line><span class=cl>        <span class=n>preConfigure</span> <span class=o>=</span> <span class=s1>&#39;&#39;
-</span></span></span><span class=line><span class=cl><span class=s1>          export F90=</span><span class=si>${</span><span class=n>pkgs</span><span class=o>.</span><span class=n>gfortran</span><span class=si>}</span><span class=s1>/bin/gfortran
-</span></span></span><span class=line><span class=cl><span class=s1>        &#39;&#39;</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>        <span class=n>doCheck</span> <span class=o>=</span> <span class=no>false</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>        <span class=n>doInstallCheck</span> <span class=o>=</span> <span class=no>false</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>      <span class=p>};</span>
-</span></span><span class=line><span class=cl>    <span class=p>};</span>
-</span></span><span class=line><span class=cl>  <span class=p>};</span>
-</span></span><span class=line><span class=cl>  <span class=n>myPy</span> <span class=o>=</span> <span class=n>python</span><span class=o>.</span><span class=n>withPackages</span>
-</span></span><span class=line><span class=cl>    <span class=p>(</span><span class=n>p</span><span class=p>:</span> <span class=k>with</span> <span class=n>p</span><span class=p>;</span> <span class=p>[</span> <span class=n>ase</span> <span class=n>ipython</span> <span class=n>ipykernel</span> <span class=n>scipy</span> <span class=n>numpy</span> <span class=n>f90wrap</span> <span class=n>pip</span> <span class=p>]);</span>
-</span></span><span class=line><span class=cl><span class=k>in</span> <span class=n>pkgs</span><span class=o>.</span><span class=n>mkShell</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>  <span class=n>buildInputs</span> <span class=o>=</span> <span class=k>with</span> <span class=n>pkgs</span><span class=p>;</span> <span class=p>[</span>
-</span></span><span class=line><span class=cl>    <span class=c1># Required for the shell</span>
-</span></span><span class=line><span class=cl>    <span class=n>zsh</span>
-</span></span><span class=line><span class=cl>    <span class=n>perl</span>
-</span></span><span class=line><span class=cl>    <span class=n>git</span>
-</span></span><span class=line><span class=cl>    <span class=n>direnv</span>
-</span></span><span class=line><span class=cl>    <span class=n>fzf</span>
-</span></span><span class=line><span class=cl>    <span class=n>ag</span>
-</span></span><span class=line><span class=cl>    <span class=n>fd</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=c1># Building thigns</span>
-</span></span><span class=line><span class=cl>    <span class=n>gcc9</span>
-</span></span><span class=line><span class=cl>    <span class=n>gfortran</span>
-</span></span><span class=line><span class=cl>    <span class=n>openblas</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=n>myPy</span>
-</span></span><span class=line><span class=cl>    <span class=c1># https://github.com/sveitser/i-am-emotion/blob/294971493a8822940a153ba1bf211bad3ae396e6/gpt2/shell.nix</span>
-</span></span><span class=line><span class=cl>  <span class=p>];</span>
-</span></span><span class=line><span class=cl>  <span class=n>shellHook</span> <span class=o>=</span> <span class=n>hook</span><span class=p>;</span>
-</span></span><span class=line><span class=cl><span class=p>}</span>
+default.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-nix data-lang=nix><span class=line><span class=ln> 1</span><span class=cl><span class=p>{</span> <span class=n>pythonVersion</span> <span class=o>?</span> <span class=s2>&#34;38&#34;</span> <span class=p>}:</span>
+</span></span><span class=line><span class=ln> 2</span><span class=cl><span class=c1># Define</span>
+</span></span><span class=line><span class=ln> 3</span><span class=cl><span class=k>let</span>
+</span></span><span class=line><span class=ln> 4</span><span class=cl>  <span class=n>sources</span> <span class=o>=</span> <span class=kn>import</span> <span class=sr>./nix/sources.nix</span><span class=p>;</span>
+</span></span><span class=line><span class=ln> 5</span><span class=cl>  <span class=n>pkgs</span> <span class=o>=</span> <span class=kn>import</span> <span class=n>sources</span><span class=o>.</span><span class=n>nixpkgs</span> <span class=p>{</span> <span class=p>};</span>
+</span></span><span class=line><span class=ln> 6</span><span class=cl>  <span class=k>inherit</span> <span class=p>(</span><span class=n>pkgs</span><span class=o>.</span><span class=n>lib</span><span class=p>)</span> <span class=n>optional</span> <span class=n>optionals</span><span class=p>;</span>
+</span></span><span class=line><span class=ln> 7</span><span class=cl>  <span class=n>hook</span> <span class=o>=</span> <span class=s1>&#39;&#39;
+</span></span></span><span class=line><span class=ln> 8</span><span class=cl><span class=s1>    # Python Stuff
+</span></span></span><span class=line><span class=ln> 9</span><span class=cl><span class=s1>     export PIP_PREFIX=&#34;$(pwd)/_build/pip_packages&#34;
+</span></span></span><span class=line><span class=ln>10</span><span class=cl><span class=s1>     export PYTHONPATH=&#34;$(pwd)/_build/pip_packages/lib/python3.8/site-packages:$PYTHONPATH&#34;
+</span></span></span><span class=line><span class=ln>11</span><span class=cl><span class=s1>     export PATH=&#34;$PIP_PREFIX/bin:$PATH&#34;
+</span></span></span><span class=line><span class=ln>12</span><span class=cl><span class=s1>     unset SOURCE_DATE_EPOCH
+</span></span></span><span class=line><span class=ln>13</span><span class=cl><span class=s1>  &#39;&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=ln>14</span><span class=cl>  <span class=c1># Apparently pip needs 1980 or above</span>
+</span></span><span class=line><span class=ln>15</span><span class=cl>  <span class=c1># https://github.com/ento/elm-doc/blob/master/shell.nix</span>
+</span></span><span class=line><span class=ln>16</span><span class=cl>  <span class=n>python</span> <span class=o>=</span> <span class=n>pkgs</span><span class=o>.</span><span class=s2>&#34;python</span><span class=si>${</span><span class=n>pythonVersion</span><span class=si>}</span><span class=s2>&#34;</span><span class=o>.</span><span class=n>override</span> <span class=p>{</span>
+</span></span><span class=line><span class=ln>17</span><span class=cl>    <span class=n>packageOverrides</span> <span class=o>=</span> <span class=n>self</span><span class=p>:</span> <span class=n>super</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=ln>18</span><span class=cl>      <span class=n>pytest</span> <span class=o>=</span> <span class=n>super</span><span class=o>.</span><span class=n>pytest</span><span class=o>.</span><span class=n>overridePythonAttrs</span> <span class=p>(</span><span class=n>old</span><span class=p>:</span> <span class=k>rec</span> <span class=p>{</span>
+</span></span><span class=line><span class=ln>19</span><span class=cl>        <span class=n>doCheck</span> <span class=o>=</span> <span class=no>false</span><span class=p>;</span>
+</span></span><span class=line><span class=ln>20</span><span class=cl>        <span class=n>doInstallCheck</span> <span class=o>=</span> <span class=no>false</span><span class=p>;</span>
+</span></span><span class=line><span class=ln>21</span><span class=cl>      <span class=p>});</span>
+</span></span><span class=line><span class=ln>22</span><span class=cl>      <span class=n>ase</span> <span class=o>=</span> <span class=n>super</span><span class=o>.</span><span class=n>ase</span><span class=o>.</span><span class=n>overridePythonAttrs</span> <span class=p>(</span><span class=n>old</span><span class=p>:</span> <span class=k>rec</span> <span class=p>{</span>
+</span></span><span class=line><span class=ln>23</span><span class=cl>        <span class=n>doCheck</span> <span class=o>=</span> <span class=no>false</span><span class=p>;</span>
+</span></span><span class=line><span class=ln>24</span><span class=cl>        <span class=n>doInstallCheck</span> <span class=o>=</span> <span class=no>false</span><span class=p>;</span>
+</span></span><span class=line><span class=ln>25</span><span class=cl>      <span class=p>});</span>
+</span></span><span class=line><span class=ln>26</span><span class=cl>      <span class=n>f90wrap</span> <span class=o>=</span> <span class=n>self</span><span class=o>.</span><span class=n>buildPythonPackage</span> <span class=k>rec</span> <span class=p>{</span>
+</span></span><span class=line><span class=ln>27</span><span class=cl>        <span class=n>pname</span> <span class=o>=</span> <span class=s2>&#34;f90wrap&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=ln>28</span><span class=cl>        <span class=n>version</span> <span class=o>=</span> <span class=s2>&#34;0.2.3&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=ln>29</span><span class=cl>        <span class=n>src</span> <span class=o>=</span> <span class=n>pkgs</span><span class=o>.</span><span class=n>fetchFromGitHub</span> <span class=p>{</span>
+</span></span><span class=line><span class=ln>30</span><span class=cl>          <span class=n>owner</span> <span class=o>=</span> <span class=s2>&#34;jameskermode&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=ln>31</span><span class=cl>          <span class=n>repo</span> <span class=o>=</span> <span class=s2>&#34;f90wrap&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=ln>32</span><span class=cl>          <span class=n>rev</span> <span class=o>=</span> <span class=s2>&#34;master&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=ln>33</span><span class=cl>          <span class=n>sha256</span> <span class=o>=</span> <span class=s2>&#34;0d06nal4xzg8vv6sjdbmg2n88a8h8df5ajam72445mhzk08yin23&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=ln>34</span><span class=cl>        <span class=p>};</span>
+</span></span><span class=line><span class=ln>35</span><span class=cl>        <span class=n>buildInputs</span> <span class=o>=</span> <span class=k>with</span> <span class=n>pkgs</span><span class=p>;</span> <span class=p>[</span> <span class=n>gfortran</span> <span class=n>stdenv</span> <span class=p>];</span>
+</span></span><span class=line><span class=ln>36</span><span class=cl>        <span class=n>propagatedBuildInputs</span> <span class=o>=</span> <span class=k>with</span> <span class=n>self</span><span class=p>;</span> <span class=p>[</span>
+</span></span><span class=line><span class=ln>37</span><span class=cl>          <span class=n>setuptools</span>
+</span></span><span class=line><span class=ln>38</span><span class=cl>          <span class=n>setuptools-git</span>
+</span></span><span class=line><span class=ln>39</span><span class=cl>          <span class=n>wheel</span>
+</span></span><span class=line><span class=ln>40</span><span class=cl>          <span class=n>numpy</span>
+</span></span><span class=line><span class=ln>41</span><span class=cl>        <span class=p>];</span>
+</span></span><span class=line><span class=ln>42</span><span class=cl>        <span class=n>preConfigure</span> <span class=o>=</span> <span class=s1>&#39;&#39;
+</span></span></span><span class=line><span class=ln>43</span><span class=cl><span class=s1>          export F90=</span><span class=si>${</span><span class=n>pkgs</span><span class=o>.</span><span class=n>gfortran</span><span class=si>}</span><span class=s1>/bin/gfortran
+</span></span></span><span class=line><span class=ln>44</span><span class=cl><span class=s1>        &#39;&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=ln>45</span><span class=cl>        <span class=n>doCheck</span> <span class=o>=</span> <span class=no>false</span><span class=p>;</span>
+</span></span><span class=line><span class=ln>46</span><span class=cl>        <span class=n>doInstallCheck</span> <span class=o>=</span> <span class=no>false</span><span class=p>;</span>
+</span></span><span class=line><span class=ln>47</span><span class=cl>      <span class=p>};</span>
+</span></span><span class=line><span class=ln>48</span><span class=cl>    <span class=p>};</span>
+</span></span><span class=line><span class=ln>49</span><span class=cl>  <span class=p>};</span>
+</span></span><span class=line><span class=ln>50</span><span class=cl>  <span class=n>myPy</span> <span class=o>=</span> <span class=n>python</span><span class=o>.</span><span class=n>withPackages</span>
+</span></span><span class=line><span class=ln>51</span><span class=cl>    <span class=p>(</span><span class=n>p</span><span class=p>:</span> <span class=k>with</span> <span class=n>p</span><span class=p>;</span> <span class=p>[</span> <span class=n>ase</span> <span class=n>ipython</span> <span class=n>ipykernel</span> <span class=n>scipy</span> <span class=n>numpy</span> <span class=n>f90wrap</span> <span class=n>pip</span> <span class=p>]);</span>
+</span></span><span class=line><span class=ln>52</span><span class=cl><span class=k>in</span> <span class=n>pkgs</span><span class=o>.</span><span class=n>mkShell</span> <span class=p>{</span>
+</span></span><span class=line><span class=ln>53</span><span class=cl>  <span class=n>buildInputs</span> <span class=o>=</span> <span class=k>with</span> <span class=n>pkgs</span><span class=p>;</span> <span class=p>[</span>
+</span></span><span class=line><span class=ln>54</span><span class=cl>    <span class=c1># Required for the shell</span>
+</span></span><span class=line><span class=ln>55</span><span class=cl>    <span class=n>zsh</span>
+</span></span><span class=line><span class=ln>56</span><span class=cl>    <span class=n>perl</span>
+</span></span><span class=line><span class=ln>57</span><span class=cl>    <span class=n>git</span>
+</span></span><span class=line><span class=ln>58</span><span class=cl>    <span class=n>direnv</span>
+</span></span><span class=line><span class=ln>59</span><span class=cl>    <span class=n>fzf</span>
+</span></span><span class=line><span class=ln>60</span><span class=cl>    <span class=n>ag</span>
+</span></span><span class=line><span class=ln>61</span><span class=cl>    <span class=n>fd</span>
+</span></span><span class=line><span class=ln>62</span><span class=cl>
+</span></span><span class=line><span class=ln>63</span><span class=cl>    <span class=c1># Building thigns</span>
+</span></span><span class=line><span class=ln>64</span><span class=cl>    <span class=n>gcc9</span>
+</span></span><span class=line><span class=ln>65</span><span class=cl>    <span class=n>gfortran</span>
+</span></span><span class=line><span class=ln>66</span><span class=cl>    <span class=n>openblas</span>
+</span></span><span class=line><span class=ln>67</span><span class=cl>
+</span></span><span class=line><span class=ln>68</span><span class=cl>    <span class=n>myPy</span>
+</span></span><span class=line><span class=ln>69</span><span class=cl>    <span class=c1># https://github.com/sveitser/i-am-emotion/blob/294971493a8822940a153ba1bf211bad3ae396e6/gpt2/shell.nix</span>
+</span></span><span class=line><span class=ln>70</span><span class=cl>  <span class=p>];</span>
+</span></span><span class=line><span class=ln>71</span><span class=cl>  <span class=n>shellHook</span> <span class=o>=</span> <span class=n>hook</span><span class=p>;</span>
+</span></span><span class=line><span class=ln>72</span><span class=cl><span class=p>}</span>
 </span></span></code></pre></div><div class=src-block-caption><p><span class=src-block-number>Code Snippet 6:</span> Full
 <code>shell.nix</code></p></div><p>This is enough to cover almost all use-cases for <code>python</code> environments.</p><h2 id=build-helpers>Build Helpers</h2><p>Note that we can speed up some aspects of fetch with the prefetch
-commands:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>nix-prefetch-git <span class=nv>$giturl</span>
-</span></span><span class=line><span class=cl>nix-prefetch-url <span class=nv>$url</span>
+commands:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=ln>1</span><span class=cl>nix-prefetch-git <span class=nv>$giturl</span>
+</span></span><span class=line><span class=ln>2</span><span class=cl>nix-prefetch-url <span class=nv>$url</span>
 </span></span></code></pre></div><p>In practice, some trial and error is easier.</p><h2 id=supplementary-reading-material>Supplementary Reading Material</h2><p>Though these are in no means exhaustive, they may offer a slightly more
 advanced or different focus than the material covered here.</p><h3 id=core-content>Core Content</h3><ul><li>Manuals<ul><li><a href=https://nixos.org/nix/manual/>Nix</a> and Nixpkgs</li></ul></li><li><a href=https://nixos.wiki/>Nix Wiki</a><ul><li><a href="https://nixos.wiki/index.php?title=Cheatsheet&useskin=vector">Nix
 Cheatsheet</a></li></ul></li><li><a href=https://github.com/NixOS/nixpkgs/blob/master/doc/languages-frameworks/>Language
