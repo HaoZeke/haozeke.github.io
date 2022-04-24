@@ -14747,9 +14747,14 @@ Though the conclusions above are still valid, with the XWayland fixes, this is d
 [fn:yeahright] This precludes any actual tasks I have, naturally, the color of the bike shed and the wool of a Llama take precedence
 [fn:potificate] Naturally I haven't really taken time to dive into why, as evidenced by the many many many adjectives
 [fn:welldesc] A good initial set of thoughts on this are provided by [[https://emeraldreverie.org/2018/10/03/first-impressions-of-mailpile/][this post]]
-* TODO Spack and PyTorch Development Workflows :@notes:ramblings:pytorch:
+* DONE Spack and PyTorch Development Workflows :@notes:ramblings:pytorch:
+CLOSED: [2022-04-24 Sun 19:16]
+:PROPERTIES:
+:EXPORT_FILE_NAME: spack-pytorch-dev-workflow
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
 #+begin_quote
-~pytorch~ development without tears or ~spack dev-build~
+~pytorch~ local development environments without tears, root access or ~spack dev-build~
 #+end_quote
 ** Background
 Build systems are a bit of a nightmare. I spend most of my time SSH'ed into more
@@ -14759,10 +14764,9 @@ an option.
 
 However, ~micromamba~ doesn't allow a whole lot in the way of setting up
 environments which do not use packages already on ~conda-forge~. [[https://spack.readthedocs.io/en/latest/getting_started.html][Spack]] fills a
-nice niche for such situations[fn:whatelse] where the full complexity of
-[[https://spack.readthedocs.io/en/latest/build_systems/cudapackage.html][CudaPackage]] is necessary. Some details of replacing a ~conda~ -environment are
-[[https://spack.readthedocs.io/en/latest/replace_conda_homebrew.html][already documented]], as are the instructions for setting up [[https://spack-tutorial.readthedocs.io/en/latest/tutorial_developer_workflows.html][local
-development environments]].
+nice niche for such situations[fn:whatelse]. Additionally, it can be coerced
+into use for local development and the same cannot easily be said of ~conda~
+based workflows.
 ** Humble Origins
 We'll start from scratch, grabbing ~spack~ and bootstrapping ~clingo~ for its
 dependency resolution as per [[https://spack.readthedocs.io/en/latest/getting_started.html][the documentation]].
@@ -14770,67 +14774,65 @@ dependency resolution as per [[https://spack.readthedocs.io/en/latest/getting_st
 git clone -c feature.manyFiles=true https://github.com/spack/spack.git
 . spack/share/spack/setup-env.sh # Assumes zsh || bash
 spack spec zlib # Or anything really
-spack find -b # Should have clingo
+spack --bootstrap find # Should have clingo
 #+end_src
 *** Environments and Purity
 Unlike ~nix~, ~spack~ does not offer strong guarantees of purity. There are
 primarily two approaches to using environments in ~spack~, somewhat analogously
 to the ~conda~ environment logic.
 
-- Named Environments :: These are essentially equivalent to ~conda~ environments, and can be activated and deactivated at will. However, the folder structure in this case, along with the dependencies are localized within ~$SPACK_HOME/var/spack/environments/$ENV_NAME~
-- Anonymous Environments :: These can be setup inside any directory, and can be activated but not deactivated (~despacktivate~ will not work). These are useful for development environments.
+- *Named Environments* :: These are essentially equivalent to ~conda~ environments, and can be activated and deactivated at will. However, the folder structure in this case, along with the dependencies are localized within ~$SPACK_HOME/var/spack/environments/$ENV_NAME~
+- *Anonymous Environments* :: These can be setup inside any directory, and can be activated but not deactivated (~despacktivate~ will not work). These are useful for development environments.
 
 We will use both kinds of environments. Additionally, ~spack~ supports multiple
 ~variants~ which can be queried by ~spack info $PKG_NAME~. These are used to
 support various build configurations while providing a unified interface build
 through ~spack install~.
-** Baseline Environment
-For starters, we will setup a development environment to track PyTorch master.
-** Basic Development
-For starters we will need to setup a development environment. We will use a
-named environment instead of an anonymous one. The downside is that the path of
-our cloned local environment is now relative to ~$SPACK_ROOT~ but named
-environments have more visible pretty path helpers.
+** Basic Anonymous Environments
+For starters we will need to setup a development environment.
 #+begin_src bash
-mkdir spackEnvs
-cd spackEnvs
-spack env create pytorch-main
-# created in $SPACK_HOME/var/spack/environments/pytorch-main
+mkdir spackPyTorch
+cd spackPyTorch
+spack env create -d .
 #+end_src
 To ensure that the dependencies are resolved consistently, the ~concretization~
 option to needs to be set to ~together~. We will start by adding some packages.
 #+begin_src bash
-spack -e pytorch-main add python@3.8 py-numpy
-spack -e pytorch-main config edit # Make changes
+spack -e . add py-ipython
+spack -e . config edit # Make changes
 #+end_src
-At this point a bare-minimum near-empty environment is ready.
-#+begin_src yaml
+For ease of manual customization, it is best to lightly edit the ~spack.yaml~
+file to have each dependency on its own line. At this point a bare-minimum
+near-empty environment is ready.
+#+begin_src yaml :hl_lines 5
 spack:
-  specs: [python@3.10]
+  specs:
+    - py-ipython
   view: true
   concretization: together
 #+end_src
-There is no need to alter ~view~ as it has the effect of symlinking
-installations to ~$SPACK_HOME/var/spack/environments/$ENV_NAME/.spack-env/view~
-and this is fine since activating a ~spack~ environment ensures appropriate
-additions to ~PATH~ and friends. To ensure dependencies can be resolved, we will
-test with ~concretize~, and then activate the environment.
+To ensure dependencies are resolved simultaneously, ~concretize~ is set to
+~together~.
 #+begin_src bash
-spack -e pytorch-main concretize # doesn't install
-spack -e pytorch-main install
+spack -e . concretize # doesn't install
+spack -e . install
 spack env activate . # or spacktivate .
+# Can also use the fully qualified path instead of .
 #+end_src
 Recall that changes are propagated via:
 #+begin_src bash
-spack -e pytorch-main concretize --force
-spack -e pytorch-main install
+spack -e . concretize --force
+spack -e . install
 #+end_src
-** OpenBLAS and Compilers
-Setting up compiler toolchains like a ~fortran~ compiler for ~openblas~ can take
-a bit more effort. Although this discussion will focus on obtaining a ~fortran~
-compiler it is equally applicable to updating a version. For ~spack~, unlike
-many system package managers, ~gcc~ will install the ~C~, ~C++~ and ~Fortran~
-toolchains. Thus:
+This establishes baseline environments, but precludes setting up development
+workflows. Most packages can be included as described above, with the exception
+of compiler toolchains.
+*** Compiler Setups
+Setting up compiler toolchains like a ~fortran~ compiler (perhaps for
+~openblas~) can take a bit more effort. Although this discussion will focus on
+obtaining a ~fortran~ compiler it is equally applicable to updating a version.
+For ~spack~, unlike many system package managers, ~gcc~ will install the ~C~,
+~C++~ and ~Fortran~ toolchains. Thus:
 #+begin_src bash
 # outside the spack environment
 spack install gcc@11.2.0 # will take a while
@@ -14841,10 +14843,21 @@ spack compiler find $(spack location -i gcc@11.2.0)
 spack compilers # should now list GCC 11.2.0
 #+end_src
 Finally we can edit our ~spack.yml~ environment to reflect the new compiler toolchain.
-#+begin_src yaml
-
+#+begin_src yaml :hl_lines 2-3
+spack:
+  definitions:
+    - compilers: [gcc@11.2.0]
+  specs:
+    - py-ipython
+  view: true
+  concretization: together
 #+end_src
-** PyTorch Setup
+One of the nicer parts of ~spack~ being an HPC environment management tool is
+that there is first-class support for proprietary compiler toolchains like Intel
+and families of compilers can also be specified with the ~%intel~ syntax as
+well. Much [[https://spack-tutorial.readthedocs.io/en/latest/tutorial_configuration.html#yaml-format][more fine-tuning]] is also possible including registering system
+compilers if required.
+** PyTorch Local Development
 One of the caveats of local development with ~spack~ is that the base URL needs
 to be updated from within the local copy of ~spack~. This means editing:
 #+begin_src bash
@@ -14874,32 +14887,101 @@ index 8190e01102..c276009d10 100644
      version('master', branch='master', submodules=True)
      version('1.11.0', tag='v1.11.0', submodules=True)
      version('1.10.2', tag='v1.10.2', submodules=True)
+@@ -348,7 +349,8 @@ def enable_or_disable(variant, keyword='USE', var=None, newer=False):
+         elif '~onnx_ml' in self.spec:
+             env.set('ONNX_ML', 'OFF')
+
+-        if not self.spec.satisfies('@master'):
++        if not (self.spec.satisfies('@master') or
++                self.spec.satisfies('@npeye')):
+             env.set('PYTORCH_BUILD_VERSION', self.version)
+             env.set('PYTORCH_BUILD_NUMBER', 0)
 #+end_src
 Applying such a patch is straightforward.
 #+begin_src bash
 cd $SPACK_ROOT
 # Assuming it is named pytorchspack.diff
-git apply -3 pytorchspack.diff
+git apply pytorchspack.diff
 #+end_src
-This modified environment can now be used as:
+This modified environment can now be enabled for use with the appropriate
+variants (details found with ~spack info py-torch~).
+However, there is one rather important variant missing for local development,
+~DEBUG~. The application of this patch will rectify this until [[https://github.com/spack/spack/pull/30267][an upstream PR]] is
+merged.
+#+begin_src diff
+diff --git a/var/spack/repos/builtin/packages/py-torch/package.py b/var/spack/repos/builtin/packages/py-torch/package.py
+index 8190e01102..d7b68ae4bd 100644
+--- a/var/spack/repos/builtin/packages/py-torch/package.py
++++ b/var/spack/repos/builtin/packages/py-torch/package.py
+@@ -49,6 +49,7 @@ class PyTorch(PythonPackage, CudaPackage):
+
+     # All options are defined in CMakeLists.txt.
+     # Some are listed in setup.py, but not all.
++    variant('debug', default=False, description="Build with debugging support")
+     variant('caffe2', default=True, description='Build Caffe2', when='@1.7:')
+     variant('test', default=False, description='Build C++ test binaries')
+     variant('cuda', default=not is_darwin, description='Use CUDA')
+@@ -343,6 +344,12 @@ def enable_or_disable(variant, keyword='USE', var=None, newer=False):
+         enable_or_disable('gloo', newer=True)
+         enable_or_disable('tensorpipe')
+
++        if '+debug' in self.spec:
++            env.set('DEBUG', 1)
++        elif '-debug' or '~debug' in self.spec:
++            env.set('DEBUG', '0')
++
++
+         if '+onnx_ml' in self.spec:
+             env.set('ONNX_ML', 'ON')
+         elif '~onnx_ml' in self.spec:
+#+end_src
+All together now the variants can be used in conjunction with the development
+branch. To focus on the ~pytorch~ workflow, we will unpin ~python@3.10~ and add
+~ipython~ instead.
+*** CPU
+Normally, for a CPU build we would setup something like the following:
+#+begin_src bash
+DEBUG=1 USE_DISTRIBUTED=0 USE_MKLDNN=0 USE_CUDA=0 BUILD_TEST=0 USE_FBGEMM=0 USE_NNPACK=0 USE_QNNPACK=0 USE_XNNPACK=0 BUILD_CAFFE2=0 USE_KINETO=0 python setup.py develop
+#+end_src
+The rationale behind the build flags can be found in the [[https://github.com/pytorch/pytorch/blob/master/CONTRIBUTING.md][upstream contributing
+guide]].  In an appropriately defined environment. For us, this translates to
+(with the patch added for ~debug~):
 #+begin_src bash
 spacktivate .
-spack develop py-torch@npeye
+# CPU only, disable cuda
+# Also disable a bunch of optionals
+spack add py-torch@npeye -cuda -fbgemm -nnpack -mkldnn -test -qnnpack +debug
+spack concretize -f
+#+end_src
+However, we need to also register this package for development (with the branch
+setup previously), which is accomplished by:
+#+begin_src bash
+spack develop py-torch@npeye -cuda -fbgemm -nnpack -mkldnn -test -qnnpack +debug
 #+end_src
 This generates a sub-directory ~py-torch~ with the right branch checked out,
-along with most of the dependencies needed for the build. Additionally, the
-~python~ version is also localized to the ~spack~ installation spec. Some
-dependencies are weirdly not present, but they are easily obtained.
+along with the dependencies needed for the build. Additionally, the
+~python~ version is also localized to the ~spack~ installation spec.
 #+begin_src bash
-cd py-torch
-DEBUG=1 USE_DISTRIBUTED=0 USE_MKLDNN=0 USE_CUDA=0 BUILD_TEST=0 USE_FBGEMM=0 USE_NNPACK=0 USE_QNNPACK=0 USE_XNNPACK=0 BUILD_CAFFE2=0 USE_KINETO=0 python setup.py develop
-# oops, not found pyyaml
-spack add py-pyaml # will check dependencies
 spack install # concretizes and installs
 #+end_src
-The rationale behind the build flags can be found in the [[https://github.com/pytorch/pytorch/blob/master/CONTRIBUTING.md][upstream contributing guide]].
+If additional dependencies are required for testing or other purposes, they are
+easily obtained. After making changes ~spack install~ will rebuild with the
+appropriate flags.
 *** CUDA Setup
-The good news is that updating the build system to use CUDA is very straightforward.
+The good news is that updating the build system to use CUDA is very
+straightforward. While changing variants, it is occasionally necessary to
+forcibly clear out the cache.
+#+begin_src bash
+cd py-torch
+rm -rf build
+python setup.py clean
+# More extreme cases
+git submodule deinit -f .
+git clean -xdf
+python setup.py clean
+git submodule update --init --recursive --jobs 0
+python setup.py develop
+#+end_src
 We will require the CUDA version to install the appropriate tool-chain.
 #+begin_src bash
 export NVCC_CUDA_VERSION=$(nvidia-smi -q | awk -F': ' '/CUDA Version/ {print $2}')
@@ -14907,12 +14989,54 @@ spack add cuda@$NVCC_CUDA_VERSION
 spack concretize --force
 spack install
 #+end_src
-[fn:whatelse] It also integrates nicely with typical HPC modular workflows like LMod and has reasonable support for Windows
+One caveat of CUDA installations (which cannot be dealt with here) is that
+~spack~ needs to have read/write access to ~/tmp/cuda-installer.log~ because of
+a [[https://forums.developer.nvidia.com/t/change-the-path-of-install-log-when-installing-cuda-toolkit/183179][ridiculous upstream bug]].
+
+Finally we update the ~spack.yaml~ to reflect our new changes:
+#+begin_src yaml
+spack:
+  definitions:
+  - compilers: [gcc@11.2.0]
+    # add package specs to the `specs` list
+  specs:
+  - py-ipython
+  - cuda@11.3
+  - py-torch@npeye+cuda+debug~fbgemm~mkldnn~nnpack~qnnpack~test
+  view: true
+  concretization: together
+  develop:
+    py-torch:
+      spec: py-torch@npeye+cuda+debug~fbgemm~mkldnn~nnpack~qnnpack~test
+#+end_src
+Which now works seamlessly with ~spack install~.
+** Baseline Environment
+Finally, to test changes against the main branch upstream, it is useful to
+define an environment for the same. This can be named since it allows for better
+usage semantics with ~deactivate~.
+#+begin_src bash
+spack env create pytorchBaseline
+spack -e pytorchBaseline add py-torch@master -cuda -fbgemm -nnpack -mkldnn -test -qnnpack
+spack -e pytorchBaseline add py-ipython
+spack -e pytorchBaseline config edit
+# Add compilers, concretization
+spacktivate pytorchBaseline
+spack concretize --force
+spack install
+# Do tests, compare
+# ...
+# Wrap up and deactivate
+despacktivate pytorchBaseline
+#+end_src
 ** Conclusions
-Dependency management is always painful. CUDA management doubly so. Although the methodology described herein worked well, a disclaimer is appropriate:
-#+begin_quote
-Better workflows with [[https://spack-tutorial.readthedocs.io/en/sc20/tutorial_developer_workflows.html][spack dev-build]] are available for some packages, [[https://github.com/kokkos/kokkos/blob/master/Spack.md][like KOKKOS]], but ~spack dev-build~ doesn't work yet for ~pytorch~ (presumably) since it lacks install phases.
-#+end_quote
+Dependency management is always painful. CUDA management doubly so. Better
+workflows with [[https://spack-tutorial.readthedocs.io/en/sc20/tutorial_developer_workflows.html][spack dev-build]] are available for some packages, [[https://github.com/kokkos/kokkos/blob/master/Spack.md][like KOKKOS]], but
+~spack dev-build~ doesn't work yet for ~pytorch~, and also appears to be removed
+from the present set of tutorials. Personally, I'd still prefer ~nix~, but where
+~micromamba~ falls short in terms of source builds, ~spack~ is a good
+alternative, if one has the resources to rebuild everything needed.
+
+[fn:whatelse] It also integrates nicely with typical HPC modular workflows like LMod and has reasonable support for Windows
 * Migrating to Home Manager
 #+begin_quote
 Leveraging ~nix~ and ~flakes~ in conjunction with ~home-manager~
