@@ -328,12 +328,14 @@ title = "LineageOS Maintainer Appreciation"
 [[input.files]]
 path = "./posts/sr2-ch13-ch14/index.html"
 url = "https://rgoswami.me/posts/sr2-ch13-ch14/"
-title = "SR2 :: Solutions for Chapters {13,14}"
+title = "  &#34;SR2 :: Solutions for Chapters {13,14}&#34;
+  "
 
 [[input.files]]
 path = "./posts/sr2-ch9-ch11-ch12/index.html"
 url = "https://rgoswami.me/posts/sr2-ch9-ch11-ch12/"
-title = "SR2 :: Solutions for Chapters {9,11,12}"
+title = "  &#34;SR2 :: Solutions for Chapters {9,11,12}&#34;
+  "
 
 [[input.files]]
 path = "./posts/org-arb-tex/index.html"
@@ -343,7 +345,8 @@ title = "Temporary LaTeX Documents with Orgmode"
 [[input.files]]
 path = "./posts/sr2-ch5-ch6-ch7/index.html"
 url = "https://rgoswami.me/posts/sr2-ch5-ch6-ch7/"
-title = "SR2 :: Solutions for Chapters {5,6,7}"
+title = "  &#34;SR2 :: Solutions for Chapters {5,6,7}&#34;
+  "
 
 [[input.files]]
 path = "./posts/emacs-nix-r/index.html"
@@ -358,7 +361,8 @@ title = "Statistical Rethinking and Nix"
 [[input.files]]
 path = "./posts/sr2-ch2-ch3-ch4/index.html"
 url = "https://rgoswami.me/posts/sr2-ch2-ch3-ch4/"
-title = "SR2 :: Solutions for Chapters {2,3,4}"
+title = "  &#34;SR2 :: Solutions for Chapters {2,3,4}&#34;
+  "
 
 [[input.files]]
 path = "./posts/nix-r-devtools/index.html"
@@ -428,7 +432,8 @@ title = "Trees and Bags"
 [[input.files]]
 path = "./posts/mackay-all-a/index.html"
 url = "https://rgoswami.me/posts/mackay-all-a/"
-title = "Everyone Should Get an A - David MacKay"
+title = "  &#34;Everyone Should Get an A - David MacKay&#34;
+  "
 
 [[input.files]]
 path = "./posts/d3git/index.html"
@@ -458,22 +463,26 @@ title = "Bojack Horseman"
 [[input.files]]
 path = "./posts/islr-ch7/index.html"
 url = "https://rgoswami.me/posts/islr-ch7/"
-title = "ISLR :: Moving Beyond Linearity"
+title = "  &#34;ISLR :: Moving Beyond Linearity&#34;
+  "
 
 [[input.files]]
 path = "./posts/islr-ch6/index.html"
 url = "https://rgoswami.me/posts/islr-ch6/"
-title = "ISLR :: Linear Model Selection and Regularization"
+title = "  &#34;ISLR :: Linear Model Selection and Regularization&#34;
+  "
 
 [[input.files]]
 path = "./posts/islr-ch5/index.html"
 url = "https://rgoswami.me/posts/islr-ch5/"
-title = "ISLR :: Resampling Methods"
+title = "  &#34;ISLR :: Resampling Methods&#34;
+  "
 
 [[input.files]]
 path = "./posts/islr-ch4/index.html"
 url = "https://rgoswami.me/posts/islr-ch4/"
-title = "ISLR :: Classification"
+title = "  &#34;ISLR :: Classification&#34;
+  "
 
 [[input.files]]
 path = "./posts/pandora-proxychains/index.html"
@@ -503,7 +512,8 @@ title = "Site Rationale"
 [[input.files]]
 path = "./posts/islr-ch2-ch3/index.html"
 url = "https://rgoswami.me/posts/islr-ch2-ch3/"
-title = "ISLR :: Multiple Linear Regression"
+title = "  &#34;ISLR :: Multiple Linear Regression&#34;
+  "
 
 [[input.files]]
 path = "./about/index.html"
