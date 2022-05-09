@@ -1,6 +1,11 @@
 # We use the generated html to prevent issues involving markdown frontmatter
 
 [[input.files]]
+path = "./posts/fortran-oop-python/index.html"
+url = "https://rgoswami.me/posts/fortran-oop-python/"
+title = "Fortran OOP and Python"
+
+[[input.files]]
 path = "./posts/spack-pytorch-dev-workflow/index.html"
 url = "https://rgoswami.me/posts/spack-pytorch-dev-workflow/"
 title = "Spack and PyTorch Development Workflows"
