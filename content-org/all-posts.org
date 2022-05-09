@@ -14773,7 +14773,7 @@ exploratory purposes.
 To end on a rather provocative note [fn:whatprovoc], consider the timings for the wrapped
 derived type ~pycart~ and its equivalent pure-Python ~fakecart~ in Fig. 1 below:
 
-#+caption: Results of comparing the pure-python class to the C-extension class backed by a Fortran derived type
+#+caption: Results of comparing the pure-python class (~fakecart~) to the C-extension class backed by a Fortran derived type (~pycart~)
 [[file:./images/fdtclasstimings.png]]
 
 All the code for this post, along with other Fortran derived type
