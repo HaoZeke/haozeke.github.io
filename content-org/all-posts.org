@@ -14770,7 +14770,7 @@ Representing the module subroutine as a class member function is a design choice
 unlikely to be made when generating bindings from ~f2py~, but this was more for
 exploratory purposes.
 
-To end on a rather provocative note, consider the timings for the wrapped
+To end on a rather provocative note [fn:whatprovoc], consider the timings for the wrapped
 derived type ~pycart~ and its equivalent pure-Python ~fakecart~ in Fig. 1 below:
 
 #+caption: Results of comparing the pure-python class to the C-extension class backed by a Fortran derived type
@@ -14790,6 +14790,7 @@ on exposing a series of ~C~ functions which call ~Fortran~ methods.
 
 [fn:whosaidthat] Noted by [[https://github.com/cthulahoops][Adam Kelly]]
 [fn:whoelse] I also discussed this at a few NumPy meetings and also informally mentioned this during some LFortran meetings as well
+[fn:whatprovoc] Benchmarks are notoriously [[https://pythonspeed.com/articles/consistent-benchmarking-in-ci/][divisive and finicky]], and no attempt was made to ensure statistical stability of the results nor were the plotted points obtained on machines dedicated and isolated from spurious loads
 * DONE Revisiting Wayland for ArchLinux :@notes:rambling:workflow:
 CLOSED: [2021-12-24 Fri 18:13]
 :PROPERTIES:
