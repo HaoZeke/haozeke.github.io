@@ -14791,6 +14791,30 @@ on exposing a series of ~C~ functions which call ~Fortran~ methods.
 [fn:whosaidthat] Noted by [[https://github.com/cthulahoops][Adam Kelly]]
 [fn:whoelse] I also discussed this at a few NumPy meetings and also informally mentioned this during some LFortran meetings as well
 [fn:whatprovoc] Benchmarks are notoriously [[https://pythonspeed.com/articles/consistent-benchmarking-in-ci/][divisive and finicky]], and no attempt was made to ensure statistical stability of the results nor were the plotted points obtained on machines dedicated and isolated from spurious loads
+* TODO Fortran Derived Type Arrays and Python
+#+begin_quote
+Passing dynamic arrays of derived types from ~C~, ~Fortran~ and ~Python~
+#+end_quote
+** Background
+
+Appropos of nothing, we will assume that one is familiar with the rational for wanting to have arrays of record types passed between languages as efficiently as possible.
+
+We will liberally use features from the [[https://gitlab.com/lfortran/lfortran/uploads/973db2bfcc64cd2a397f823c32718b39/18-007r1.pdf][F2018 draft standard]], but will only
+focus concretely on 1D and 2D numeric data.
+
+For F2PY within ~numpy~, however, although there are no direct equivalents in
+~C~ for the more OOP specific derived types, there are plenty of equivalent
+structures in ~Python~. This post will bridge Fortran derived types to their
+logically equivalent Python class definitions.
+
+*** Series
+Thoughts relating to interoperability of Fortran with things can be
+vaguely collated into the following series.
+1. [[NumPy, Meson and ~f2py~][NumPy Meson Fortran]]
+2. [[Simple Fortran Derived Types and Python][Simple Fortran Derived Types and Python]]
+3. [[Exploring ~ISO_C_BINDING~ and type-bound procedures][Exploring ~ISO_C_BINDING~ and type-bound procedures]]
+4. [[Fortran OOP and Python][Fortran OOP and Python]]
+5. *Fortran Derived Type Arrays and Python* <-- You are here!
 * DONE Revisiting Wayland for ArchLinux :@notes:rambling:workflow:
 CLOSED: [2021-12-24 Fri 18:13]
 :PROPERTIES:
