@@ -12,6 +12,8 @@
 
 #+startup: logdone indent overview inlineimages
 
+#+macro: youtube @@html:<div class="org-youtube"><iframe src="https://www.youtube-nocookie.com/embed/$1" allowfullscreen title="YouTube Video"></iframe></div>@@
+
 #+BEGIN_SRC emacs-lisp :exports none :eval always
 (require 'ox-extra)
 (ox-extras-activate '(ignore-headlines))
@@ -1503,7 +1505,7 @@ clips for clarity[fn:howrec].
 
 The entire workflow will end up being something like this[fn:notrepro]:
 
-#+html: {{< youtube UWB6ZABRVq0 >}}
+{{{youtube(UWB6ZABRVq0)}}}
 
 ** Concept
 While working through ideas, it actually was more useful to describe the
@@ -1585,7 +1587,7 @@ The idea is to then have one top level ~.bib~ file in some handy location which
 you will set up to sync automatically. To make life easier, there is a tiny
 recording of the next steps.
 
-#+html: {{< youtube iDRpIo7mcKE >}}
+{{{youtube(iDRpIo7mcKE)}}}
 
 ** Helm-Bibtex
 This [[https://github.com/tmalsburg/helm-bibtex][venerable package]] is really good at interfacing with a variety of
@@ -2413,7 +2415,7 @@ onto the newly encoded file.
 I am not really sure how this will turn out, but it is a useful thing to keep in
 mind. The introductory video turned out to be:
 
-#+html: {{< youtube aOuqgyHHOK4 >}}
+{{{youtube(aOuqgyHHOK4)}}}
 
 [fn:whatsettings] For me, the Vimeo Youtube HQ 1080p60 preset worked out well
 * TODO FOSS Maintenance and Me :@personal:ramblings:explanations:thoughts:
@@ -6595,7 +6597,7 @@ The slides are embedded below. The ~orgmode~ source [[https://github.com/HaoZeke
 #+END_EXPORT
 ** Video
 
-#+html: {{< youtube 2GX9TK4uNfU >}}
+{{{youtube(2GX9TK4uNfU)}}}
 
 [fn:officialsite] One location I am going to be able to keep track of
 
@@ -8565,7 +8567,8 @@ Anything on this site [[https://rgoswami.me/tags/nix/][tagged with Nix]] or [[ht
 #+END_EXPORT
 ** Video
 
-#+html: {{< youtube jyA13tw3VKg >}}
+{{{youtube(jyA13tw3VKg)}}}
+
 ** Thoughts
 - Using the SHA commit IDs worked really well
   + Perfect for demonstrating refactors
@@ -9385,7 +9388,7 @@ Struggling to emulate ~klfc~ for VIM Colemak bindings on Darwin (macOS) systems 
 ** Background
 I have mentioned in the past my customized [[Refactoring Dotfiles For Colemak][Colemak dotfiles]] which I used with [[https://rgoswami.me/posts/remap-keys-xkb-klfc/][a customized keyboard layout]]. Unfortunately, the ~.keylayout~ system of MacOS is far more primitive than the elegant ~klfc~ setup [fn:nothinggood]. For an understanding of what we are trying to get at, the following poorly made video will suffice.
 
-#+html: {{< youtube BgqlUsenmKU  >}}
+{{{youtube(BgqlUsenmKU)}}}
 
 *** Series
 This post is part of a series on Colemak and keyboard management in general.
@@ -12952,7 +12955,7 @@ Social media might be here to stay, however, it is a poor medium to share expert
 #+END_EXPORT
 ** Video
 
-#+html: {{< youtube wsn8c5vSBD8 >}}
+{{{youtube(wsn8c5vSBD8)}}}
 
 [fn:officialsite] One location I am going to be able to keep track of
 
@@ -12981,7 +12984,7 @@ Much the same as the rationale behind my other presentation [[https://rgoswami.m
 #+END_EXPORT
 ** Video
 
-#+html: {{< youtube weEqpRUvNqk >}}
+{{{youtube(weEqpRUvNqk)}}}
 
 [fn:officialsite] One location I am going to be able to keep track of
 
@@ -13184,7 +13187,7 @@ f2py is the gold standard for interfacing Fortran and Python. The most famous do
 #+END_EXPORT
 *** Video
 
-#+html: {{< youtube 9nMSKcRimuw >}}
+{{{youtube(9nMSKcRimuw)}}}
 
 ** Implementing Fortran Standardese within LFortran
 - Co-Author(s) :: [[https://ondrejcertik.com/][Dr. Ondřej Čertík]] (Los Alamos National Laboratory)
@@ -13229,7 +13232,7 @@ The whole GSoC series.
 *** Video
 From around 10:43 in.
 
-#+html: {{< youtube 4236hgpMBLY >}}
+{{{youtube(4236hgpMBLY)}}}
 
 ** Thoughts
 I could go on about these topics all day, thankfully for the most part, I do.
