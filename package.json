@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/HaoZeke/haozeke.github.io#readme",
   "dependencies": {
-    "autoprefixer": "^10.2.5",
+    "autoprefixer": "^10.4.8",
     "glob-parent": ">=5.1.2",
     "normalize-url": ">=4.5.1",
     "npm-check-updates": "^11.5.11",
