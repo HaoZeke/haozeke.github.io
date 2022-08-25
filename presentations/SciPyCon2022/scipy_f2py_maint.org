@@ -1,0 +1,645 @@
+#+TITLE: Maintaining Fortran in Python in Perpetuity
+#+SUBTITLE: ~f2py~ and NumPy
+#+AUTHOR: Rohit Goswami ~.and.~ Melissa Mendonca ~.and.~ Ralf Gommers ~.and.~ Thirumalai Shaktivel ~.and.~ Pearu Peterson
+# I need the footnotes to be inlined
+#+STARTUP: fninline
+#+EXCLUDE_TAGS: noexport
+
+#+BEGIN_SRC emacs-lisp :exports none :eval always
+(require 'ox-extra)
+(ox-extras-activate '(ignore-headlines))
+(eval unpackaged/org-export-html-with-useful-ids-mode)
+;; Stop using citeproc-org by default
+(setq org-export-before-parsing-hook '(org-attach-expand-links))
+#+END_SRC
+
+#+RESULTS:
+
+* Configuration :ignoreheading:ignore:
+:PROPERTIES:
+:VISIBILITY: folded
+:END:
+
+# Kanged from https://gitlab.com/oer/oer-reveal/blob/master/org/config.org
+# Also https://gitlab.com/oer/emacs-reveal-howto/-/blob/master/howto.org
+** General Options :ignoreheading:ignore:
+# No Table of contents, no section numbers
+#+OPTIONS: toc:nil num:nil
+
+# Enable smart quotes
+#+OPTIONS: ':t
+** RevealJS Options :ignoreheading:ignore:
+
+# Enable: browser history, fragment IDs in URLs, mouse wheel, links between presentations
+#+OPTIONS: reveal_history:t reveal_fragmentinurl:t  reveal_slide_number:h/v
+#+OPTIONS: reveal_mousewheel:t reveal_inter_presentation_links:t
+
+# Disable separate PDF pages for each fragment.  Just use one per slide.
+#+OPTIONS: reveal_pdfseparatefragments:nil
+
+# Display notes on separate page for PDF export.
+#+REVEAL_EXPORT_NOTES_TO_PDF: separate-page
+
+# Transition styles: none/fade/slide/convex/concave/zoom/cube
+#+REVEAL_TRANS: fade
+# Set a base theme, then override
+#+REVEAL_THEME: robot-lung
+#+REVEAL_EXTRA_CSS: /Users/rgoswami/.config/doom/reveal/extras/rlExtras.css
+#+REVEAL_EXTRA_CSS: /Users/rgoswami/.config/doom/reveal/extras/oerFragments.css
+#+REVEAL_EXTRA_CSS: /Users/rgoswami/.config/doom/reveal/extras/noImgBoxes.css
+#+REVEAL_EXTRA_CSS: /Users/rgoswami/.config/doom/reveal/extras/betterCite.css
+#+REVEAL_EXTRA_CSS: /Users/rgoswami/.config/doom/reveal/extras/moreCode.css
+#+REVEAL_MARGIN: 0.2
+#+REVEAL_PREAMBLE: <div class="line top"></div> <div class="line bottom"></div> <div class="line left"></div> <div class="line right"></div>
+
+#+REVEAL_PLUGINS: (notes search zoom)
+# The following variables are non-standard.
+# Do not display TOC-progress on title slide.
+
+#+REVEAL_TITLE_SLIDE_STATE: no-toc-progress
+# Do not display TOC-progress on TOC slide.
+#+REVEAL_TOC_SLIDE_STATE: no-toc-progress
+# Do not include TOC slide in TOC-progress.
+#+REVEAL_TOC_SLIDE_CLASS: no-toc-progress
+# Use different heading for TOC.
+#+REVEAL_TOC_SLIDE_TITLE: Agenda
+
+** External Resources :ignoreheading:ignore:
+# Note that doom-emacs sets this variable
+# https://github.com/hlissner/doom-emacs/blob/develop/modules/lang/org/contrib/present.el
+#+REVEAL_EXTRA_CSS: /Users/rgoswami/.config/doom/reveal/rjs/plugin/accessibility/helper.css
+#+REVEAL_EXTRA_CSS: /Users/rgoswami/.config/doom/reveal/rjs/plugin/toc-progress/toc-progress.css
+#+REVEAL_EXTRA_CSS: /Users/rgoswami/.config/doom/reveal/rjs/dist/theme/toc-style.css
+#+REVEAL_EXTRA_CSS: /Users/rgoswami/.config/doom/reveal/rjs/dist/theme/fonts/source-sans-pro/source-sans-pro.css
+
+# Allow to selectively hide links.
+# #+REVEAL_EXTRA_SCRIPTS: ("/Users/rgoswami/.config/doom/reveal/rjs/dist/theme/hidelinks.js")
+#+REVEAL_EXTRA_SCRIPTS: ("/Users/rgoswami/.config/doom/reveal/rjs/dist/theme/hidelinks.js" "/Users/rgoswami/.config/doom/reveal/sfeir-school-theme/dist/js/sfeir-theme.js")
+
+# The following creates an empty footer, for which the css style defines
+# a height that agrees with the TOC-progress footer’s height.
+# In this way, the footer’s height is taken into account by reveal.js’s
+# size calculations.
+#+REVEAL_SLIDE_FOOTER: <br>
+#+OPTIONS: reveal_toc_footer:t
+
+** Macros :ignoreheading:ignore:
+# Set a default bib file.
+
+# Macros to display square brackets (in texts of hyperlinks).
+# Based on: https://emacs.stackexchange.com/questions/7792/can-i-make-links-in-org-mode-that-contain-brackets-or
+# Square Bracket Open [
+#+MACRO: BO @@latex:\char91{}@@@@html:&#91;@@
+# Square Bracket Close ]
+#+MACRO: BC @@latex:\char93{}@@@@html:&#93;@@
+
+# Macro for forced line break, e.g., in titles.
+#+MACRO: BR @@latex:\\@@@@html:<br />@@
+
+# Macro to generate abbr element in HTML.  If a second argument is given, it
+# defines the title attribute.  For LaTeX, output first attribute as is and
+# ignore second one.
+#+MACRO: abbr (eval (concat "@@latex:" Modern Documentation across languages "@@@@html:<abbr" (if (< 0 (length Linguistic and Programmatic Variants)) (concat " title=\"" Linguistic and Programmatic Variants "\"") "") ">" Modern Documentation across languages "</abbr>@@"))
+
+# Macros to display code in different colors.
+#+MACRO: blackcode (eval (format "@@html:<code><span style=\"color:black; font-size:smaller;\">%s</span></code>@@ @@latex:\\verb|%s|@@" (org-html-encode-plain-text Modern Documentation across languages) Modern Documentation across languages))
+#+MACRO: redcode (eval (format "@@html:<code><span style=\"color:darkred; font-size:smaller;\">%s</span></code>@@ @@latex:\\rverb|%s|@@" (org-html-encode-plain-text Modern Documentation across languages) Modern Documentation across languages))
+#+MACRO: greencode (eval (format "@@html:<code><span style=\"color:darkgreen; font-size:smaller;\">%s</span></code>@@ @@latex:\\gverb|%s|@@" (org-html-encode-plain-text Modern Documentation across languages) Modern Documentation across languages))
+#+MACRO: bluecode (eval (format "@@html:<code><span style=\"color:darkblue; font-size:smaller;\">%s</span></code>@@ @@latex:\\bverb|%s|@@" (org-html-encode-plain-text Modern Documentation across languages) Modern Documentation across languages))
+
+** References :ignoreheading:ignore:
+bibliographystyle:unsrt
+#+LATEX_HEADER: \addbibresource{./refs.bib}
+
+** LaTeX Options :ignoreheading:ignore:
+# Setup for PDF generation via LaTeX export.
+#+LATEX_CLASS_OPTIONS: [a4paper]
+#+LATEX_HEADER: \usepackage[backend=biber,style=alphabetic]{biblatex}
+#+LATEX_HEADER: \newenvironment{notes}{\par\footnotesize}{\par}
+#+LATEX_HEADER: \newenvironment{NOTES}{\par\footnotesize}{\par}
+#+LATEX_HEADER: \newenvironment{leftcol}{\begin{minipage}{.49\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol}{\begin{minipage}{.49\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{leftcol30}{\begin{minipage}{.29\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{leftcol40}{\begin{minipage}{.39\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{leftcol60}{\begin{minipage}{.59\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{leftcol70}{\begin{minipage}{.69\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol30}{\begin{minipage}{.29\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol40}{\begin{minipage}{.39\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol60}{\begin{minipage}{.59\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol70}{\begin{minipage}{.69\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \usepackage{newunicodechar}
+#+LATEX_HEADER: \newunicodechar{≈}{$\approx$}
+#+LATEX_HEADER: \newunicodechar{⋮}{\vdots}
+#+LATEX_HEADER: \newunicodechar{ }{~}
+#+LATEX_HEADER: \usepackage{xcolor}
+#+LATEX_HEADER: \definecolor{darkred}{rgb}{0.3, 0.0, 0.0}
+#+LATEX_HEADER: \definecolor{darkgreen}{rgb}{0.0, 0.3, 0.1}
+#+LATEX_HEADER: \definecolor{darkblue}{rgb}{0.0, 0.1, 0.3}
+#+LATEX_HEADER: \definecolor{darkorange}{rgb}{1.0, 0.55, 0.0}
+#+LATEX_HEADER: \definecolor{sienna}{rgb}{0.53, 0.18, 0.09}
+#+LATEX_HEADER: \hypersetup{colorlinks,linkcolor=darkblue,citecolor=darkblue,urlcolor=darkgreen}
+#+LATEX_HEADER: \usepackage{newverbs}
+#+LATEX_HEADER: \newverbcommand{\rverb}{\color{darkred}}{}
+#+LATEX_HEADER: \newverbcommand{\gverb}{\color{darkgreen}}{}
+#+LATEX_HEADER: \newverbcommand{\bverb}{\color{darkblue}}{}
+
+* Start Here :ignoreheading:ignore:
+* Brief Introduction
+** Hello!
+- Find me here: https://rgoswami.me
+- Who?
+  + *Rohit Goswami* MInstP
+    - Doctoral Researcher, Science Institute, University of Iceland
+    - Software Engineer, Quansight Labs, Austin TX
+#+begin_leftcol
+[[file:logos/physUoI.png]]
+#+ATTR_HTML: :width 50% :height 50%
+file:logos/rannisLogo.png
+#+ATTR_HTML: :width 40% :height 40%
+[[file:logos/ccLogo.png]]
+#+end_leftcol
+#+begin_rightcol
+#+ATTR_HTML: :width 60% :height 40%
+[[file:logos/scipyLogo22.png]]
+#+ATTR_HTML: :width 50% :height 40%
+[[file:logos/quansightlabs.jpeg]]
+#+end_rightcol
+** Logistics
+#+ATTR_REVEAL: :frag appear
+- All contents are [[https://github.com/HaoZeke/haozeke.github.io][hosted on GitHub]]
+  + Slides are in ~presentations/scipy22/F2PYmaint~
+# #+ATTR_REVEAL: :frag appear
+# - Questions are welcome *at the end*, or interrupt me
+* Programming Languages
+** Motivation
+#+begin_quote
+“If a program or package (the words are used interchangeably) is to *have a long life* and to be of *wide application* in its field, it is essential for it to be *easily moved* from one machine to another.
+
+It used to be common to dismiss such movement with the statement, *‘There is no such thing as a machine-independent program.’*
+
+Nonetheless, a great many packages *do now move* from one machine to another”cite:lyonUsingAnsFortran1980
+#+end_quote
+
+--> Through the magic of *automated coding* and *standards*
+** Language Standards
+#+begin_quote
+“The standard is the contract between the compiler writer and the application developer.”cite:clermanModernFortranStyle2012
+#+end_quote
+
+#+BEGIN_SRC ditaa :file images/hello-program.png :cmdline -r -s 2.5 :cache yes
++------+     +----------+  assembly   +-----------+
+| Code | --> | Compiler | ----------> | Assembler | ---+
++------+     +----------+             +-----------+    |
+  relocatable machine code                             |
++----------------------------<-------------------------+
+|
+|
+|     +--------+  executable  +--------+     +--------+
++---> | Linker | -----------> | Loader | --> | Memory |
+      +--------+              +--------+     +--------+
+#+END_SRC
+
+#+RESULTS[f1fc83b64fe81184a3a817828e6dd0aec3714f25]:
+[[file:images/hello-program.png]]
+
+** Changing Standards
+#+begin_leftcol
+#+begin_src fortran
+character(10) BLAH*8
+character*8 :: BLAH_ONE(10)
+character(8) :: BLAH_ONE(10)
+#+end_src
+
+#+begin_src python
+#!/usr/bin/env python
+print("Hello World")
+print "Hello World"
+#+end_src
+
+#+end_leftcol
+#+begin_rightcol
+
+#+DOWNLOADED: screenshot @ 2021-09-08 23:12:16
+[[file:images/Why_Care_About_New_Standards/2021-09-08_23-12-16_screenshot.png]]
+
+#+end_rightcol
+# ** F77 ∉ F90 always
+# #+ATTR_HTML: :width 70% :height 70%
+# [[file:images/Why_Care_About_New_Standards/2021-09-08_23-14-26_screenshot.png]]
+
+# #+ATTR_HTML: :width 70% :height 70%
+# [[file:images/Why_Care_About_New_Standards/2021-09-08_23-14-38_screenshot.png]]
+* Fortran, C, Python
+- F2003 :: Introduced the ~ISO_C_BINDING~
+- F2008 :: ~C_PTR~ for ~void *~ and more
+- F2018 :: Brought interop for exotic Fortran features which via ~C descriptors~
+- Interop :: Described in great detail on [[https://www.fortran90.org/src/best-practices.html#python-interface][fortran90.org]]:
+#+begin_src ditaa :file images/hello-stdfcpy.png :cmdline -r -s 1.5 :cache yes
++--------------+ iso_c_binding   +------------+
+| Fortran Code | --------------> | Call in C  |
++--------------+ compiler type   +------------+
+                  checking              |
+                                        v
+              +--------+               +--------+
+              | Python |               | Cython |
+              | Code   |<--------------| cffi   |
+              +--------+               +--------+
+#+end_src
+
+#+RESULTS[c649e6871e7d2b61cff7d210af3db78f85b0fcc5]:
+[[file:images/hello-stdfcpy.png]]
+
+* F2PY
+** History
+- Developed by Pearu Peterson cite:petersonF2PYToolConnecting2009
+  + July 9, 1999 :: ~f2py.py~ --> Fortran to Python Interface Generator (FPIG)
+  + January 22, 2000 :: ~f2py2e~ --> Fortran to Python Interface Generator, 2nd edition.
+  + July 19, 2007 :: ~numpy.f2py~ --> f2py2e moved to NumPy project. This is current stable code of f2py.
+- Used extensively for F77
+  + [[https://numpy.org/][NumPy]] cite:waltNumPyArrayStructure2011, [[https://scipy.org/][SciPy]] cite:virtanenSciPyFundamentalAlgorithms2020
+  + [[https://msspec.cnrs.fr/][MsSpec]] cite:sebilleauMsSpec1MultipleScattering2011 :)
+** Design
+#+BEGIN_SRC ditaa :file images/hello-f2py.png :cmdline -r -s 2.5 :cache yes
++------+     +--------------+  uses C syntax in pyf
+| Code | --> | crackfortran | ---------->----------+
++------+     +--------------+                      |
+    match rules, generate wrappers, build library  |
++----------------------------<---------------------+
+|     +---------+ callbacks +--------+
+|     | CPython | <---------| Python |
++---> | Library | --------->|  Code  |
+      +---------+           +--------+
+#+END_SRC
+
+#+RESULTS[7f80fadd5cfd09443054d3693a2d688d9a0b639d]:
+[[file:images/hello-f2py.png]]
+
+- A *best effort* wrapper
+  + Specifications via ~.pyf~ or inline comments
+  + *Not* a compiler
+    - Can rewrite code :)
+* Explorations in F77
+** Fibonacci
+#+begin_src fortran
+C FILE: FIB1.F
+      SUBROUTINE FIB(A,N)
+C     CALCULATE FIRST N FIBONACCI NUMBERS
+      INTEGER N
+      REAL*8 A(N)
+      DO I=1,N
+         IF (I.EQ.1) THEN
+            A(I) = 0.0D0
+         ELSEIF (I.EQ.2) THEN
+            A(I) = 1.0D0
+         ELSE
+            A(I) = A(I-1) + A(I-2)
+         ENDIF
+      ENDDO
+      END
+C END FILE FIB1.F
+#+end_src
+
+#+begin_src bash
+f2py -m fib -c fib1.f
+python -c "import fib; import numpy as np;
+   a=np.zeros(7); fib.fib(a); print(a); exit();"
+#+end_src
+** Up the magician's sleeve
+**** Generated files
+#+begin_src bash
+mkdir blah
+f2py -m fib -c fib1.f --build-dir blah
+tree blah
+blah
+├── blah
+│   └── src.macosx-10.9-x86_64-3.9
+│       ├── blah
+│       │   └── src.macosx-10.9-x86_64-3.9
+│       │       ├── fortranobject.o
+│       │       └── fortranobject.o.d
+│       ├── fibmodule.o
+│       └── fibmodule.o.d
+├── fib1.o
+└── src.macosx-10.9-x86_64-3.9
+    ├── blah
+    │   └── src.macosx-10.9-x86_64-3.9
+    │       ├── fortranobject.c
+    │       └── fortranobject.h
+    └── fibmodule.c
+
+7 directories, 8 files
+#+end_src
+*** Complexity
+#+begin_src bash
+wc -l fortranobject.c fortranobject.h fibmodule.c
+    1107 fortranobject.c
+     132 fortranobject.h
+     372 fibmodule.c
+    1611 total
+#+end_src
+**** NumPy Distutils
+#+begin_src python
+from numpy.distutils.core import Extension, setup
+fibby = Extension(name = 'fib',
+                  sources = ['fib1.f'])
+if __name__ == "__main__":
+    setup(name = 'fib', ext_modules = [ fibby ])
+#+end_src
+
+Which can then be built simply with:
+#+begin_src bash
+python setup.py build
+ag -g .so
+# build/lib.macosx-10.9-x86_64-3.9/fib.cpython-39-darwin.so
+#+end_src
+
+- Not fun for non ~python~ projects
+* (Some) Planned Features
+** Meson and ~f2py~
+#+begin_leftcol
+#+begin_src meson
+project('test_builds', 'c',
+  version : '0.1')
+
+add_languages('fortran')
+
+py_mod = import('python')
+py3 = py_mod.find_installation()
+py3_dep = py3.dependency()
+
+incnp = run_command(py3,
+  ['-c', 'import os; os.chdir("..");
+import numpy; print(numpy.get_include())'],
+  check : true
+).stdout().strip()
+#+end_src
+#+end_leftcol
+
+#+begin_rightcol
+#+begin_src meson
+inc_np = include_directories(incnp)
+
+py3.extension_module('fib1',
+           'fib1.f',
+           'fib1module.c',
+           'fortranobject.c',
+           include_directories: inc_np,
+           dependencies : py3_dep,
+           install : true)
+#+end_src
+#+end_rightcol
+** Command Line Interface
+- The F2PY UX is rather distinctive
+  + ~-c~ flag acts as a compiler / build-tool
+  + Otherwise works to generate ~C wrappers~ and Signature files
+- Rewrite ongoing *[GSoC]*
+  + Supports Namami Shankar
+  + ~argparse~ based design
+
+#+ATTR_HTML: :width 30% :height 30%
+[[file:images/namami.jpeg]]
+** Derived Types
+- Soon to be a NEP : https://github.com/HaoZeke/f2py_derived_nep
+- Tested by ~cmocka~
+- e.g. ~bind(c)~ types [[https://github.com/HaoZeke/f2py_derived_nep/blob/main/examples/bindc/pyclass/pyclassderived.c][map to classes]]
+#+begin_src bash
+meson setup bbdir
+meson compile -C bbdir
+python -c "import bbdir.pycart as pycart;
+        aak = pycart.pycart(1,10,2); print(aak);
+         aak.unitstep(); print(aak)"
+pycart(x: 1.000000, y: 10.000000, z: 2.000000)
+ Modifying derived type
+pycart(x: 2.000000, y: 11.000000, z: 3.000000)
+#+end_src
+** Moving beyond ~bind(c)~
+- Generate Fortran wrappers to manipulate types
+  + All allocations handled in Fortran
+- Python only calls wrappers to aforementioned types
+** Logical restructure
+#+ATTR_REVEAL: :frag appear
+- Current flat hierarchy --> intimidating
+  + Don't need much Fortran for front-end work
+#+ATTR_REVEAL: :frag appear
+- codegen :: Creates wrappers
+#+ATTR_REVEAL: :frag appear
+- csrcs :: ~fortranobject.{c,h}~ for builds
+#+ATTR_REVEAL: :frag appear
+- frontend :: Parser, type inference
+#+ATTR_REVEAL: :frag appear
+- stds :: Includes *f77*, *f90*, and *pyf* specs
+#+ATTR_REVEAL: :frag appear
+- utils :: For testing and more
+#+ATTR_REVEAL: :frag appear
+- tests :: For sanity
+
+- WIP : https://github.com/numpy/numpy/pull/20481
+* Maintenance
+** Concepts
+#+ATTR_REVEAL: :frag appear
+#+ATTR_HTML: :width 50% :height 50%
+file:images/blackSand.jpg
+
+#+ATTR_REVEAL: :frag appear
+- Fortran 202X standard :: 668 pages
+#+ATTR_REVEAL: :frag appear
+- Python-C API description :: 320 pages
+#+ATTR_REVEAL: :frag appear
+- NumPy-C API description :: 103 pages
+#+ATTR_REVEAL: :frag appear
+- C++ 2020 (N4849) standard :: 1815 pages
+#+ATTR_REVEAL: :frag appear
+- C11 (N1570) standard :: 701 pages
+** Test isolation
+#+ATTR_REVEAL: :frag appear
+- Write a test for each bug
+  + Typically already in the issue!
+#+begin_src python
+class TestNegativeBounds(util.F2PyTest):
+    # Check that negative bounds work correctly
+    sources = [util.getpath("tests", "src",
+                            "negative_bounds",
+                            "issue_20853.f90")]
+
+    @pytest.mark.slow
+    def test_negbound(self):
+        xvec = np.arange(12)
+        xlow = -6
+        xhigh = 4
+        # Calculate the upper bound,
+        # Keeping the 1 index in mind
+        def ubound(xl, xh):
+            return xh - xl + 1
+        rval = self.module.foo(is_=xlow, ie_=xhigh,
+                        arr=xvec[:ubound(xlow, xhigh)])
+        expval = np.arange(11, dtype = np.float32)
+        assert np.allclose(rval, expval)
+#+end_src
+** Front-end
+- Covers *(parser, code-gen)*
+- ~pdb~ and editable installs are good choices
+  + Tough otherwise (~global~ variables)
+#+begin_src python
+micromamba create -f environment.yml
+micromamba activate numpy-dev
+pip install -e . # EDITABLE MODE
+# Add a breakpoint anywhere
+breakpoint()
+# Profit
+f2py -m blah buggy.f90
+#+end_src
+#+ATTR_REVEAL: :frag appear
+- e.g. https://github.com/numpy/numpy/pull/21256/files --> Negative bounds
+** Back-end
+- Covers *(C wrappers, code-gen)*
+#+ATTR_REVEAL: :frag appear
+- ~gdb~ works well
+  + Sometimes with CPython extensions (see the *sprint*)
+#+ATTR_REVEAL: :frag appear
+- Manipulate the generated ~C~ code
+  + Then move back to code-gen in Python
+#+ATTR_REVEAL: :frag appear
+- e.g. https://github.com/numpy/numpy/pull/21807/files --> Respect ~value~
+** Supporting ~value~ attributes
+- Fortran 2003 supports call-by-value
+  + ~f2py~ wrappers pass by reference
+- Details [[https://github.com/numpy/numpy/issues/21665][here]]
+  + Very well reported issue
+** Verify Bug
+#+begin_leftcol
+#+begin_src bash
+# Make wrappers
+f2py -m foo blah.f90
+meson bbdir
+meson compile -C bbdir
+cd bbdir
+python -c "import foo;
+        print(
+        foo.fortfuncs.square(3)
+        );"
+170676880
+#+end_src
+#+end_leftcol
+#+begin_rightcol
+#+begin_src C
+static PyObject *f2py_rout_foo_fortfuncs_square(
+    const PyObject *capi_self,
+    PyObject *capi_args,
+    PyObject *capi_keywds,
+    void (*f2py_func)(int*,int*)) {
+(*f2py_func)(&x,&y); // Passed by reference!
+#+end_src
+#+end_rightcol
+** Fixup ~C~ wrapper
+#+begin_leftcol
+#+begin_src bash
+# Make wrappers
+meson compile -C bbdir
+cd bbdir
+python -c "import foo;
+        print(
+        foo.fortfuncs.square(3)
+        );"
+9
+#+end_src
+#+end_leftcol
+#+begin_rightcol
+#+begin_src C
+static PyObject *f2py_rout_foo_fortfuncs_square(
+    const PyObject *capi_self,
+    PyObject *capi_args,
+    PyObject *capi_keywds,
+    void (*f2py_func)(int,int*)) {
+(*f2py_func)(x,&y);
+#+end_src
+#+end_rightcol
+** Modify Parser
+- ~value~ should be recognized by ~crackfortran~
+  + Add a ~breakpoint~ and stare
+#+begin_src python
+    name_match = re.compile(r'[A-Za-z][\w$]*').match
+    breakpoint()
+    for v in list(vars.keys()):
+
+
+>>> c # till fortfuncs is processed
+>>> pp vars
+{'x': {'attrspec': ['intent(in)', 'value'], 'typespec': 'integer'},
+ 'y': {'attrspec': ['intent(out)'], 'typespec': 'integer'}}
+#+end_src
+- So it is already recognized..
+** Augment aux functions
+- Handle the attribute within ~aux.py~
+  + Also conditionally modify signatures + call conventions
+#+begin_src python
+def isattr_value(var):
+    return 'value' in var.get('attrspec', [])
+def getcallprotoargument(rout, cb_map={}):
+    ...
+    if not isattr_value(var):
+        ctype = ctype + '*'
+#+end_src
+** Generate wrappers
+- This is similar to the handling of the existing ~intent(c)~
+  + In ~rules.py~
+#+begin_src python
+'callfortran': {l_or(isintent_c, isattr_value): '#varname#,',
+                l_not(l_or(isintent_c, isattr_value)): '&#varname#,'},
+#+end_src
+** Final tasks
+- Add a test
+- Solicit reviews
+- Ask about a release note
+- *Profit!*
+* Conclusions
+** Road-map
+- Updating the test suite, using ~cmocka~
+- Rewriting the C wrappers for newer standards
+- Build tool support [Namami Shankar]
+  + ~np.distutils~ is going the way of the dodo
+- Implementing newer standards (90, 95, 2003, 2008, 2018, 2020Y)
+  + Automating guarantees
+- Documentation and more interop with NumPy-C
+- ~crackfortran~ works via dictionaries and strings..
+  + Perhaps a more abstract semantic representation...
+  + Or concepts from G3 F2PY [Pearu]
+- Handle parallelism (proposed)
+  + ~do concurrent~ and ~ufuncs~
+** Why does Fortran stay in Python anyway?
+:PROPERTIES:
+:reveal_background: #c9eae7
+:END:
+#+begin_quote
+To write *efficient* wrappers without being a language lawyer
+#+end_quote
+** How does Fortran stay in Python anyway?
+:PROPERTIES:
+:reveal_background: #c9eae7
+:END:
+#+begin_quote
+With *all your help* (Issues, users, developers, non-code contribs)
+#+end_quote
+* The End
+** Acknowledgments
+#+DOWNLOADED: screenshot @ 2021-09-09 00:22:06
+[[file:images/Acknowledgements/2021-09-09_00-22-06_screenshot.png]]
+- [[https://notendur.hi.is//~hj/indexE.html][Prof. Hannes Jónsson]] as my supervisor, [[https://english.hi.is/staff/birgirhr][Prof. Birgir Hrafnkelsson]] as my co-supervisor
+- [[https://ondrejcertik.com/][Dr. Ondřej Čertík]] at GSI Tech.
+- [[https://quansight.com/labs][Quansight Labs]] ([[https://rgommers.github.io/][Dr. Ralf Gommers]], [[https://melissawm.github.io/about-me/][Dr. Melissa Weber Mendonça]] and [[https://github.com/pearu][Dr. Pearu Peterson]])
+- NumPy Team (Matti, Ross, Sebastian, Chuck, Inessa, etc.)
+- Family, pets, Groupmembers, *audience*
+# ** Bibliography
+# :PROPERTIES:
+# :CUSTOM_ID: bibliography
+# :END:
+
+# printbibliography:refs.bib
+
+** Thanks!
+:PROPERTIES:
+:reveal_background: #c9eae7
+:END:
+# Local Variables:
+# indent-tabs-mode: nil
+# org-src-preserve-indentation: t
+# End:
