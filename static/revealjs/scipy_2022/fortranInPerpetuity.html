@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<!-- saved from url=(0129)file:///Users/rgoswami/Git/Github/WebDev/Mine/haozeke.github.io/presentations/SciPyCon2022/scipy_f2py_maint.html#/sec-title-slide -->
+<html lang="en" class="reveal-full-page"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>Maintaining Fortran in Python in Perpetuity</title>
+<meta name="author" content="Rohit Goswami ~.and.~ Melissa Mendonca ~.and.~ Ralf Gommers ~.and.~ Thirumalai Shaktivel ~.and.~ Pearu Peterson">
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="./fortranInPerpetuity_files/reveal.css">
+
+<link rel="stylesheet" href="./fortranInPerpetuity_files/robot-lung.css" id="theme">
+
+<link rel="stylesheet" href="./fortranInPerpetuity_files/rlExtras.css">
+
+<link rel="stylesheet" href="./fortranInPerpetuity_files/oerFragments.css">
+
+<link rel="stylesheet" href="./fortranInPerpetuity_files/noImgBoxes.css">
+
+<link rel="stylesheet" href="./fortranInPerpetuity_files/betterCite.css">
+
+<link rel="stylesheet" href="./fortranInPerpetuity_files/moreCode.css">
+
+<link rel="stylesheet" href="file:///Users/rgoswami/.config/doom/reveal/rjs/plugin/accessibility/helper.css">
+
+<link rel="stylesheet" href="file:///Users/rgoswami/.config/doom/reveal/rjs/plugin/toc-progress/toc-progress.css">
+
+<link rel="stylesheet" href="file:///Users/rgoswami/.config/doom/reveal/rjs/dist/theme/toc-style.css">
+
+<link rel="stylesheet" href="./fortranInPerpetuity_files/source-sans-pro.css">
+</head>
+<body class="reveal-viewport no-toc-progress" style="transition: -webkit-transform 0.8s ease 0s; --slide-width:960px; --slide-height:700px;">
+<div class="line top"></div> <div class="line bottom"></div> <div class="line left"></div> <div class="line right"></div>
+<div class="reveal fade center focused has-vertical-slides has-horizontal-slides ready" role="application" data-transition-speed="default" data-background-transition="fade" style="">
+<div class="slides" style="width: 960px; height: 700px; inset: 50% auto auto 50%; transform: translate(-50%, -50%) scale(0.987429);">
+<section id="sec-title-slide" data-state="no-toc-progress" style="top: 0px; display: block;" class="present">
+<h1 class="title">Maintaining Fortran in Python in Perpetuity</h1><h2 class="author">Rohit Goswami <code>.and.</code> Melissa Mendonca <code>.and.</code> Ralf Gommers <code>.and.</code> Thirumalai Shaktivel <code>.and.</code> Pearu Peterson</h2><p class="date">Created: 2022-07-15 Fri 12:39</p>
+</section>
+
+
+
+
+<p>
+
+</p>
+
+
+<section style="top: 0px; display: block;" hidden="" aria-hidden="true" class="stack future">
+<section id="slide-orgb697ea1" style="top: 300.5px; display: block;">
+<h2 id="orgb697ea1">Brief Introduction</h2>
+<div class="outline-text-2" id="text-orgb697ea1">
+</div>
+</section>
+<section id="slide-org0668424" class="future" aria-hidden="true" style="top: 0px; display: block;">
+<h3 id="org0668424">Hello!</h3>
+<ul>
+<li>Find me here: <a href="https://rgoswami.me/">https://rgoswami.me</a></li>
+<li>Who?
+<ul>
+<li><b>Rohit Goswami</b> MInstP
+<ul>
+<li>Doctoral Researcher, Science Institute, University of Iceland</li>
+<li>Software Engineer, Quansight Labs, Austin TX</li>
+
+</ul></li>
+
+</ul></li>
+
+</ul>
+<div class="leftcol" id="org26a19c0">
+
+<div id="org4befe9c" class="figure">
+<p><img src="./fortranInPerpetuity_files/physUoI.png" alt="physUoI.png">
+</p>
+</div>
+
+<div id="org50c7005" class="figure">
+<p><img src="./fortranInPerpetuity_files/rannisLogo.png" alt="rannisLogo.png" width="50%" height="50%">
+</p>
+</div>
+
+<div id="orgd2271d3" class="figure">
+<p><img src="./fortranInPerpetuity_files/ccLogo.png" alt="ccLogo.png" width="40%" height="40%">
+</p>
+</div>
+
+</div>
+<div class="rightcol" id="org0400757">
+
+<div id="orgd10e9e8" class="figure">
+<p><img src="./fortranInPerpetuity_files/scipyLogo22.png" alt="scipyLogo22.png" width="60%" height="40%">
+</p>
+</div>
+
+<div id="org2bccfd1" class="figure">
+<p><img src="./fortranInPerpetuity_files/quansightlabs.jpeg" alt="quansightlabs.jpeg" width="50%" height="40%">
+</p>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgc44cb69" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="orgc44cb69">Logistics</h3>
+<ul class="fragment appear" data-fragment-index="0">
+<li>All contents are <a href="https://github.com/HaoZeke/haozeke.github.io">hosted on GitHub</a>
+<ul>
+<li>Slides are in <code>presentations/scipy22/F2PYmaint</code></li>
+
+</ul></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section style="top: 0px; display: block;" hidden="" aria-hidden="true" class="stack future">
+<section id="slide-orgb08f56f" style="top: 300.5px; display: block;">
+<h2 id="orgb08f56f">Programming Languages</h2>
+<div class="outline-text-2" id="text-orgb08f56f">
+</div>
+</section>
+<section id="slide-org4ba24bf" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="org4ba24bf">Motivation</h3>
+<blockquote>
+<p>
+“If a program or package (the words are used interchangeably) is to <b>have a long life</b> and to be of <b>wide application</b> in its field, it is essential for it to be <b>easily moved</b> from one machine to another.
+</p>
+
+<p>
+It used to be common to dismiss such movement with the statement, <b>‘There is no such thing as a machine-independent program.’</b>
+</p>
+
+<p>
+Nonetheless, a great many packages <b>do now move</b> from one machine to another”<a href="file:///Users/rgoswami/Git/Github/WebDev/Mine/haozeke.github.io/presentations/SciPyCon2022/lyonUsingAnsFortran1980">lyonUsingAnsFortran1980</a>
+</p>
+</blockquote>
+
+<p>
+–&gt; Through the magic of <b>automated coding</b> and <b>standards</b>
+</p>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgcb48013" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="orgcb48013">Language Standards</h3>
+<blockquote>
+<p>
+“The standard is the contract between the compiler writer and the application developer.”<a href="file:///Users/rgoswami/Git/Github/WebDev/Mine/haozeke.github.io/presentations/SciPyCon2022/clermanModernFortranStyle2012">clermanModernFortranStyle2012</a>
+</p>
+</blockquote>
+
+
+<div id="org34eead0" class="figure">
+<p><img src="./fortranInPerpetuity_files/hello-program.png" alt="hello-program.png">
+</p>
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-org2689d39" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="org2689d39">Changing Standards</h3>
+<div class="leftcol" id="orge5f359a">
+<div class="org-src-container">
+
+<pre class="src src-fortran"><span style="color: #8D8D84;">c</span><span style="color: #8D8D84; font-style: italic;">haracter(10) BLAH*8</span>
+<span style="color: #8D8D84;">c</span><span style="color: #8D8D84; font-style: italic;">haracter*8 :: BLAH_ONE(10)</span>
+<span style="color: #8D8D84;">c</span><span style="color: #8D8D84; font-style: italic;">haracter(8) :: BLAH_ONE(10)</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-python"><span style="color: #8D8D84;">#</span><span style="color: #8D8D84; font-style: italic;">!/usr/bin/env python</span>
+<span style="color: #0000FF;">print</span>(<span style="color: #008000;">"Hello World"</span>)
+<span style="color: #0000FF;">print</span> <span style="color: #008000;">"Hello World"</span>
+</pre>
+</div>
+
+</div>
+<div class="rightcol" id="org2c27efa">
+<p>
+
+</p>
+
+
+<div id="org398679f" class="figure">
+<p><img src="./fortranInPerpetuity_files/2021-09-08_23-12-16_screenshot.png" alt="2021-09-08_23-12-16_screenshot.png">
+</p>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section style="top: 350px; display: none;" hidden="" aria-hidden="true" class="stack future">
+<section id="slide-orgcc5ad9b" style="top: 350px; display: none;">
+<h2 id="orgcc5ad9b">Fortran, C, Python</h2>
+<dl>
+<dt>F2003</dt><dd>Introduced the <code>ISO_C_BINDING</code></dd>
+<dt>F2008</dt><dd><code>C_PTR</code> for <code>void *</code> and more</dd>
+<dt>F2018</dt><dd>Brought interop for exotic Fortran features which via <code>C descriptors</code></dd>
+<dt>Interop</dt><dd>Described in great detail on <a href="https://www.fortran90.org/src/best-practices.html#python-interface">fortran90.org</a>:</dd>
+
+</dl>
+
+<div id="orgac09244" class="figure">
+<p><img src="./fortranInPerpetuity_files/hello-stdfcpy.png" alt="hello-stdfcpy.png">
+</p>
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+</section>
+<section style="top: 350px; display: none;" hidden="" aria-hidden="true" class="stack future">
+<section id="slide-orgada7706" style="top: 350px; display: none;">
+<h2 id="orgada7706">F2PY</h2>
+<div class="outline-text-2" id="text-orgada7706">
+</div>
+</section>
+<section id="slide-orgb75f5f5" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="orgb75f5f5">History</h3>
+<ul>
+<li>Developed by Pearu Peterson <a href="file:///Users/rgoswami/Git/Github/WebDev/Mine/haozeke.github.io/presentations/SciPyCon2022/petersonF2PYToolConnecting2009">petersonF2PYToolConnecting2009</a>
+<dl>
+<dt>July 9, 1999</dt><dd><code>f2py.py</code> –&gt; Fortran to Python Interface Generator (FPIG)</dd>
+<dt>January 22, 2000</dt><dd><code>f2py2e</code> –&gt; Fortran to Python Interface Generator, 2nd edition.</dd>
+<dt>July 19, 2007</dt><dd><code>numpy.f2py</code> –&gt; f2py2e moved to NumPy project. This is current stable code of f2py.</dd>
+
+</dl></li>
+<li>Used extensively for F77
+<ul>
+<li><a href="https://numpy.org/">NumPy</a> <a href="file:///Users/rgoswami/Git/Github/WebDev/Mine/haozeke.github.io/presentations/SciPyCon2022/waltNumPyArrayStructure2011">waltNumPyArrayStructure2011</a>, <a href="https://scipy.org/">SciPy</a> <a href="file:///Users/rgoswami/Git/Github/WebDev/Mine/haozeke.github.io/presentations/SciPyCon2022/virtanenSciPyFundamentalAlgorithms2020">virtanenSciPyFundamentalAlgorithms2020</a></li>
+<li><a href="https://msspec.cnrs.fr/">MsSpec</a> <a href="file:///Users/rgoswami/Git/Github/WebDev/Mine/haozeke.github.io/presentations/SciPyCon2022/sebilleauMsSpec1MultipleScattering2011">sebilleauMsSpec1MultipleScattering2011</a> :)</li>
+
+</ul></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org2bf3837" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="org2bf3837">Design</h3>
+
+<div id="org4ce6796" class="figure">
+<p><img src="./fortranInPerpetuity_files/hello-f2py.png" alt="hello-f2py.png">
+</p>
+</div>
+
+<ul>
+<li>A <b>best effort</b> wrapper
+<ul>
+<li>Specifications via <code>.pyf</code> or inline comments</li>
+<li><b>Not</b> a compiler
+<ul>
+<li>Can rewrite code :)</li>
+
+</ul></li>
+
+</ul></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section style="top: 350px; display: none;" hidden="" aria-hidden="true" class="stack future">
+<section id="slide-orgb86e850" style="top: 350px; display: none;">
+<h2 id="orgb86e850">Explorations in F77</h2>
+<div class="outline-text-2" id="text-orgb86e850">
+</div>
+</section>
+<section id="slide-orgdc2dd8c" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="orgdc2dd8c">Fibonacci</h3>
+<div class="org-src-container">
+
+<pre class="src src-fortran"><span style="color: #8D8D84;">C </span><span style="color: #8D8D84; font-style: italic;">FILE: FIB1.F</span>
+      <span style="color: #0000FF;">SUBROUTINE</span> <span style="color: #006699;">FIB</span>(A,N)
+<span style="color: #8D8D84;">C     </span><span style="color: #8D8D84; font-style: italic;">CALCULATE FIRST N FIBONACCI NUMBERS</span>
+      <span style="color: #6434A3;">INTEGER</span> <span style="color: #BA36A5;">N</span>
+      <span style="color: #6434A3;">REAL</span>*<span style="color: #D0372D;">8</span> <span style="color: #BA36A5;">A</span>(N)
+      <span style="color: #0000FF;">DO</span> I=<span style="color: #D0372D;">1</span>,N
+         <span style="color: #0000FF;">IF</span> (I<span style="color: #0000FF;">.EQ.</span>1) <span style="color: #0000FF;">THEN</span>
+            A(I) = 0.0D0
+         <span style="color: #0000FF;">ELSEIF</span> (I<span style="color: #0000FF;">.EQ.</span>2) <span style="color: #0000FF;">THEN</span>
+            A(I) = 1.0D0
+         <span style="color: #0000FF;">ELSE</span>
+            A(I) = A(I-<span style="color: #D0372D;">1</span>) + A(I-<span style="color: #D0372D;">2</span>)
+         <span style="color: #0000FF;">ENDIF</span>
+      <span style="color: #0000FF;">ENDDO</span>
+      <span style="color: #0000FF;">END</span>
+<span style="color: #8D8D84;">C </span><span style="color: #8D8D84; font-style: italic;">END FILE FIB1.F</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-bash">f2py -m fib -c fib1.f
+python -c <span style="color: #008000;">"import fib; import numpy as np;</span>
+<span style="color: #008000;">   a=np.zeros(7); fib.fib(a); print(a); exit();"</span>
+</pre>
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgdd3aa12" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="orgdd3aa12">Up the magician’s sleeve</h3>
+<div class="outline-text-3" id="text-orgdd3aa12">
+</div>
+<ul class="org-ul">
+<li><a id="org2a30af6"></a>Generated files<br>
+<div class="org-src-container">
+
+<pre class="src src-bash"><span style="color: #6434A3;">mkdir</span> blah
+f2py -m fib -c fib1.f --build-dir blah
+tree blah
+blah
+├── blah
+│&nbsp;&nbsp; └── src.macosx-10.9-x86_64-3.9
+│&nbsp;&nbsp;     ├── blah
+│&nbsp;&nbsp;     │&nbsp;&nbsp; └── src.macosx-10.9-x86_64-3.9
+│&nbsp;&nbsp;     │&nbsp;&nbsp;     ├── fortranobject.o
+│&nbsp;&nbsp;     │&nbsp;&nbsp;     └── fortranobject.o.d
+│&nbsp;&nbsp;     ├── fibmodule.o
+│&nbsp;&nbsp;     └── fibmodule.o.d
+├── fib1.o
+└── src.macosx-10.9-x86_64-3.9
+    ├── blah
+    │&nbsp;&nbsp; └── src.macosx-10.9-x86_64-3.9
+    │&nbsp;&nbsp;     ├── fortranobject.c
+    │&nbsp;&nbsp;     └── fortranobject.h
+    └── fibmodule.c
+
+<span style="color: #D0372D;">7</span> directories, <span style="color: #D0372D;">8</span> files
+</pre>
+</div>
+<div class="slide-footer"><br></div>
+</li>
+</ul>
+</section>
+<section id="slide-orgbc08cf9" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h4 id="orgbc08cf9">Complexity</h4>
+<div class="org-src-container">
+
+<pre class="src src-bash">wc -l fortranobject.c fortranobject.h fibmodule.c
+    <span style="color: #D0372D;">1107</span> fortranobject.c
+     <span style="color: #D0372D;">132</span> fortranobject.h
+     <span style="color: #D0372D;">372</span> fibmodule.c
+    <span style="color: #D0372D;">1611</span> total
+</pre>
+</div>
+<div class="slide-footer"><br></div>
+<ul class="org-ul">
+<li><a id="orgd450385"></a>NumPy Distutils<br>
+<div class="org-src-container">
+
+<pre class="src src-python"><span style="color: #0000FF;">from</span> numpy.distutils.core <span style="color: #0000FF;">import</span> Extension, setup
+<span style="color: #BA36A5;">fibby</span> = Extension(name = <span style="color: #008000;">'fib'</span>,
+                  sources = [<span style="color: #008000;">'fib1.f'</span>])
+<span style="color: #0000FF;">if</span> <span style="color: #006FE0;">__name__</span> == <span style="color: #008000;">"__main__"</span>:
+    setup(name = <span style="color: #008000;">'fib'</span>, ext_modules = [ fibby ])
+</pre>
+</div>
+
+<p>
+Which can then be built simply with:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-bash">python setup.py build
+ag -g .so
+<span style="color: #8D8D84;"># </span><span style="color: #8D8D84; font-style: italic;">build/lib.macosx-10.9-x86_64-3.9/fib.cpython-39-darwin.so</span>
+</pre>
+</div>
+
+<ul>
+<li>Not fun for non <code>python</code> projects</li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</li>
+</ul>
+</section>
+</section>
+<section style="top: 350px; display: none;" hidden="" aria-hidden="true" class="stack future">
+<section id="slide-org6a5849e" style="top: 350px; display: none;">
+<h2 id="org6a5849e">(Some) Planned Features</h2>
+<div class="outline-text-2" id="text-org6a5849e">
+</div>
+</section>
+<section id="slide-org09f0e1f" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="org09f0e1f">Meson and <code>f2py</code></h3>
+<div class="leftcol" id="orgbfeb866">
+<div class="org-src-container">
+
+<pre class="src src-meson"><span style="color: #006FE0;">project</span>(<span style="color: #008000;">'test_builds'</span>, <span style="color: #008000;">'c'</span>,
+  version : <span style="color: #008000;">'0.1'</span>)
+
+<span style="color: #006FE0;">add_languages</span>(<span style="color: #008000;">'fortran'</span>)
+
+<span style="color: #BA36A5;">py_mod</span> = <span style="color: #006FE0;">import</span>(<span style="color: #008000;">'python'</span>)
+<span style="color: #BA36A5;">py3</span> = py_mod.find_installation()
+<span style="color: #BA36A5;">py3_dep</span> = py3.dependency()
+
+<span style="color: #BA36A5;">incnp</span> = <span style="color: #006FE0;">run_command</span>(py3,
+  [<span style="color: #008000;">'-c'</span>, <span style="color: #008000;">'import os; os.chdir("..");</span>
+<span style="color: #008000;">import numpy; print(numpy.get_include())'</span>],
+  check : <span style="color: #0000FF;">true</span>
+).stdout().strip()
+</pre>
+</div>
+
+</div>
+
+<div class="rightcol" id="orgeea4b05">
+<div class="org-src-container">
+
+<pre class="src src-meson"><span style="color: #BA36A5;">inc_np</span> = <span style="color: #006FE0;">include_directories</span>(incnp)
+
+py3.extension_module(<span style="color: #008000;">'fib1'</span>,
+           <span style="color: #008000;">'fib1.f'</span>,
+           <span style="color: #008000;">'fib1module.c'</span>,
+           <span style="color: #008000;">'fortranobject.c'</span>,
+           include_directories: inc_np,
+           dependencies : py3_dep,
+           install : <span style="color: #0000FF;">true</span>)
+</pre>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org45f9edf" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="org45f9edf">Command Line Interface</h3>
+<ul>
+<li>The F2PY UX is rather distinctive
+<ul>
+<li><code>-c</code> flag acts as a compiler / build-tool</li>
+<li>Otherwise works to generate <code>C wrappers</code> and Signature files</li>
+
+</ul></li>
+<li>Rewrite ongoing <b>[GSoC]</b>
+<ul>
+<li>Supports Namami Shankar</li>
+<li><code>argparse</code> based design</li>
+
+</ul></li>
+
+</ul>
+
+
+<div id="org26ac411" class="figure">
+<p><img src="./fortranInPerpetuity_files/namami.jpeg" alt="namami.jpeg" width="30%" height="30%">
+</p>
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org760d2cc" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="org760d2cc">Derived Types</h3>
+<ul>
+<li>Soon to be a NEP : <a href="https://github.com/HaoZeke/f2py_derived_nep">https://github.com/HaoZeke/f2py_derived_nep</a></li>
+<li>Tested by <code>cmocka</code></li>
+<li>e.g. <code>bind(c)</code> types <a href="https://github.com/HaoZeke/f2py_derived_nep/blob/main/examples/bindc/pyclass/pyclassderived.c">map to classes</a></li>
+
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-bash">meson setup bbdir
+meson compile -C bbdir
+python -c <span style="color: #008000;">"import bbdir.pycart as pycart;</span>
+<span style="color: #008000;">        aak = pycart.pycart(1,10,2); print(aak);</span>
+<span style="color: #008000;">         aak.unitstep(); print(aak)"</span>
+<span style="color: #006699;">pycart</span><span style="color: #707183;">(</span>x: 1.000000, y: 10.000000, z: <span style="color: #D0372D;">2.000000</span><span style="color: #707183;">)</span>
+ Modifying derived type
+<span style="color: #006699;">pycart</span><span style="color: #707183;">(</span>x: 2.000000, y: 11.000000, z: <span style="color: #D0372D;">3.000000</span><span style="color: #707183;">)</span>
+</pre>
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgbe930d0" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="orgbe930d0">Moving beyond <code>bind(c)</code></h3>
+<ul>
+<li>Generate Fortran wrappers to manipulate types
+<ul>
+<li>All allocations handled in Fortran</li>
+
+</ul></li>
+<li>Python only calls wrappers to aforementioned types</li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orga01b451" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="orga01b451">Logical restructure</h3>
+<ul class="fragment appear" data-fragment-index="0">
+<li>Current flat hierarchy –&gt; intimidating
+<ul>
+<li>Don’t need much Fortran for front-end work</li>
+
+</ul></li>
+
+</ul>
+<dl class="fragment appear" data-fragment-index="1">
+<dt>codegen</dt><dd>Creates wrappers</dd>
+
+</dl>
+<dl class="fragment appear" data-fragment-index="2">
+<dt>csrcs</dt><dd><code>fortranobject.{c,h}</code> for builds</dd>
+
+</dl>
+<dl class="fragment appear" data-fragment-index="3">
+<dt>frontend</dt><dd>Parser, type inference</dd>
+
+</dl>
+<dl class="fragment appear" data-fragment-index="4">
+<dt>stds</dt><dd>Includes <b>f77</b>, <b>f90</b>, and <b>pyf</b> specs</dd>
+
+</dl>
+<dl class="fragment appear" data-fragment-index="5">
+<dt>utils</dt><dd>For testing and more</dd>
+
+</dl>
+<dl class="fragment appear" data-fragment-index="6">
+<dt>tests</dt><dd>For sanity</dd>
+
+<dt>(no term)</dt><dd>WIP : <a href="https://github.com/numpy/numpy/pull/20481">https://github.com/numpy/numpy/pull/20481</a></dd>
+
+</dl>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section style="top: 350px; display: none;" hidden="" aria-hidden="true" class="stack future">
+<section id="slide-orgc0bf830" style="top: 350px; display: none;">
+<h2 id="orgc0bf830">Maintenance</h2>
+<div class="outline-text-2" id="text-orgc0bf830">
+</div>
+</section>
+<section id="slide-orge92984a" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="orge92984a">Concepts</h3>
+
+<div id="orgedcb32f" class="figure">
+<p><img src="./fortranInPerpetuity_files/blackSand.jpg" alt="blackSand.jpg" width="50%" height="50%" class="fragment appear" data-fragment-index="0">
+</p>
+</div>
+
+<dl class="fragment appear" data-fragment-index="1">
+<dt>Fortran 202X standard</dt><dd>668 pages</dd>
+
+</dl>
+<dl class="fragment appear" data-fragment-index="2">
+<dt>Python-C API description</dt><dd>320 pages</dd>
+
+</dl>
+<dl class="fragment appear" data-fragment-index="3">
+<dt>NumPy-C API description</dt><dd>103 pages</dd>
+
+</dl>
+<dl class="fragment appear" data-fragment-index="4">
+<dt>C++ 2020 (N4849) standard</dt><dd>1815 pages</dd>
+
+</dl>
+<dl class="fragment appear" data-fragment-index="5">
+<dt>C11 (N1570) standard</dt><dd>701 pages</dd>
+
+</dl>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orga7ca702" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="orga7ca702">Test isolation</h3>
+<ul class="fragment appear" data-fragment-index="0">
+<li>Write a test for each bug
+<ul>
+<li>Typically already in the issue!</li>
+
+</ul></li>
+
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-python"><span style="color: #0000FF;">class</span> <span style="color: #6434A3;">TestNegativeBounds</span>(util.F2PyTest):
+    <span style="color: #8D8D84;"># </span><span style="color: #8D8D84; font-style: italic;">Check that negative bounds work correctly</span>
+    <span style="color: #BA36A5;">sources</span> = [util.getpath(<span style="color: #008000;">"tests"</span>, <span style="color: #008000;">"src"</span>,
+                            <span style="color: #008000;">"negative_bounds"</span>,
+                            <span style="color: #008000;">"issue_20853.f90"</span>)]
+
+    <span style="color: #6434A3;">@pytest.mark.slow</span>
+    <span style="color: #0000FF;">def</span> <span style="color: #006699;">test_negbound</span>(<span style="color: #0000FF;">self</span>):
+        <span style="color: #BA36A5;">xvec</span> = np.arange(<span style="color: #D0372D;">12</span>)
+        <span style="color: #BA36A5;">xlow</span> = -<span style="color: #D0372D;">6</span>
+        <span style="color: #BA36A5;">xhigh</span> = <span style="color: #D0372D;">4</span>
+        <span style="color: #8D8D84;"># </span><span style="color: #8D8D84; font-style: italic;">Calculate the upper bound,</span>
+        <span style="color: #8D8D84;"># </span><span style="color: #8D8D84; font-style: italic;">Keeping the 1 index in mind</span>
+        <span style="color: #0000FF;">def</span> <span style="color: #006699;">ubound</span>(xl, xh):
+            <span style="color: #0000FF;">return</span> xh - xl + <span style="color: #D0372D;">1</span>
+        <span style="color: #BA36A5;">rval</span> = <span style="color: #0000FF;">self</span>.module.foo(is_=xlow, ie_=xhigh,
+                        arr=xvec[:ubound(xlow, xhigh)])
+        expval = np.arange(<span style="color: #D0372D;">11</span>, dtype = np.float32)
+        <span style="color: #0000FF;">assert</span> np.allclose(rval, expval)
+</pre>
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org5e1e272" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="org5e1e272">Front-end</h3>
+<ul>
+<li>Covers <b>(parser, code-gen)</b></li>
+<li><code>pdb</code> and editable installs are good choices
+<ul>
+<li>Tough otherwise (<code>global</code> variables)</li>
+
+</ul></li>
+
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-python">micromamba create -f environment.yml
+micromamba activate numpy-dev
+pip install -e . <span style="color: #8D8D84;"># </span><span style="color: #8D8D84; font-style: italic;">EDITABLE MODE</span>
+<span style="color: #8D8D84;"># </span><span style="color: #8D8D84; font-style: italic;">Add a breakpoint anywhere</span>
+<span style="color: #006FE0;">breakpoint</span>()
+<span style="color: #8D8D84;"># </span><span style="color: #8D8D84; font-style: italic;">Profit</span>
+f2py -m blah buggy.f90
+</pre>
+</div>
+<ul class="fragment appear" data-fragment-index="0">
+<li>e.g. <a href="https://github.com/numpy/numpy/pull/21256/files">https://github.com/numpy/numpy/pull/21256/files</a> –&gt; Negative bounds</li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgcf83d0f" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="orgcf83d0f">Back-end</h3>
+<ul>
+<li>Covers <b>(C wrappers, code-gen)</b></li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="0">
+<li><code>gdb</code> works well
+<ul>
+<li>Sometimes with CPython extensions (see the <b>sprint</b>)</li>
+
+</ul></li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="1">
+<li>Manipulate the generated <code>C</code> code
+<ul>
+<li>Then move back to code-gen in Python</li>
+
+</ul></li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="2">
+<li>e.g. <a href="https://github.com/numpy/numpy/pull/21807/files">https://github.com/numpy/numpy/pull/21807/files</a> –&gt; Respect <code>value</code></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org492b589" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="org492b589">Supporting <code>value</code> attributes</h3>
+<ul>
+<li>Fortran 2003 supports call-by-value
+<ul>
+<li><code>f2py</code> wrappers pass by reference</li>
+
+</ul></li>
+<li>Details <a href="https://github.com/numpy/numpy/issues/21665">here</a>
+<ul>
+<li>Very well reported issue</li>
+
+</ul></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgc41e30c" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="orgc41e30c">Verify Bug</h3>
+<div class="leftcol" id="org99d7394">
+<div class="org-src-container">
+
+<pre class="src src-bash"><span style="color: #8D8D84;"># </span><span style="color: #8D8D84; font-style: italic;">Make wrappers</span>
+f2py -m foo blah.f90
+meson bbdir
+meson compile -C bbdir
+<span style="color: #6434A3;">cd</span> bbdir
+python -c <span style="color: #008000;">"import foo;</span>
+<span style="color: #008000;">        print(</span>
+<span style="color: #008000;">        foo.fortfuncs.square(3)</span>
+<span style="color: #008000;">        );"</span>
+<span style="color: #D0372D;">170676880</span>
+</pre>
+</div>
+
+</div>
+<div class="rightcol" id="org5c0f163">
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="color: #0000FF;">static</span> <span style="color: #6434A3;">PyObject</span> *<span style="color: #006699;">f2py_rout_foo_fortfuncs_square</span><span style="color: #707183;">(</span>
+    <span style="color: #0000FF;">const</span> <span style="color: #6434A3;">PyObject</span> *<span style="color: #BA36A5;">capi_self</span>,
+    <span style="color: #6434A3;">PyObject</span> *<span style="color: #BA36A5;">capi_args</span>,
+    <span style="color: #6434A3;">PyObject</span> *<span style="color: #BA36A5;">capi_keywds</span>,
+    <span style="color: #6434A3;">void</span> <span style="color: #7388D6;">(</span>*<span style="color: #006699;">f2py_func</span><span style="color: #7388D6;">)(</span><span style="color: #6434A3;">int</span>*,<span style="color: #6434A3;">int</span>*<span style="color: #7388D6;">)</span><span style="color: #707183;">)</span> <span style="color: #707183;">{</span>
+<span style="color: #7388D6;">(</span>*f2py_func<span style="color: #7388D6;">)(</span>&amp;x,&amp;y<span style="color: #7388D6;">)</span>; <span style="color: #8D8D84;">// </span><span style="color: #8D8D84; font-style: italic;">Passed by reference!</span>
+</pre>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgaa1c5b4" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="orgaa1c5b4">Fixup <code>C</code> wrapper</h3>
+<div class="leftcol" id="orgdeb60f7">
+<div class="org-src-container">
+
+<pre class="src src-bash"><span style="color: #8D8D84;"># </span><span style="color: #8D8D84; font-style: italic;">Make wrappers</span>
+meson compile -C bbdir
+<span style="color: #6434A3;">cd</span> bbdir
+python -c <span style="color: #008000;">"import foo;</span>
+<span style="color: #008000;">        print(</span>
+<span style="color: #008000;">        foo.fortfuncs.square(3)</span>
+<span style="color: #008000;">        );"</span>
+<span style="color: #D0372D;">9</span>
+</pre>
+</div>
+
+</div>
+<div class="rightcol" id="org31fa62e">
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="color: #0000FF;">static</span> <span style="color: #6434A3;">PyObject</span> *<span style="color: #006699;">f2py_rout_foo_fortfuncs_square</span><span style="color: #707183;">(</span>
+    <span style="color: #0000FF;">const</span> <span style="color: #6434A3;">PyObject</span> *<span style="color: #BA36A5;">capi_self</span>,
+    <span style="color: #6434A3;">PyObject</span> *<span style="color: #BA36A5;">capi_args</span>,
+    <span style="color: #6434A3;">PyObject</span> *<span style="color: #BA36A5;">capi_keywds</span>,
+    <span style="color: #6434A3;">void</span> <span style="color: #7388D6;">(</span>*<span style="color: #006699;">f2py_func</span><span style="color: #7388D6;">)(</span><span style="color: #6434A3;">int</span>,<span style="color: #6434A3;">int</span>*<span style="color: #7388D6;">)</span><span style="color: #707183;">)</span> <span style="color: #707183;">{</span>
+<span style="color: #7388D6;">(</span>*f2py_func<span style="color: #7388D6;">)(</span>x,&amp;y<span style="color: #7388D6;">)</span>;
+</pre>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org4bc62a8" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="org4bc62a8">Modify Parser</h3>
+<ul>
+<li><code>value</code> should be recognized by <code>crackfortran</code>
+<ul>
+<li>Add a <code>breakpoint</code> and stare</li>
+
+</ul></li>
+
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-python">    <span style="color: #BA36A5;">name_match</span> = re.<span style="color: #006FE0;">compile</span>(r<span style="color: #008000;">'[A-Za-z][\w$]*'</span>).match
+    <span style="color: #006FE0;">breakpoint</span>()
+    <span style="color: #0000FF;">for</span> v <span style="color: #0000FF;">in</span> <span style="color: #006FE0;">list</span>(<span style="color: #006FE0;">vars</span>.keys()):
+
+
+&gt;&gt;&gt; c <span style="color: #8D8D84;"># </span><span style="color: #8D8D84; font-style: italic;">till fortfuncs is processed</span>
+&gt;&gt;&gt; pp <span style="color: #006FE0;">vars</span>
+{<span style="color: #008000;">'x'</span>: {<span style="color: #008000;">'attrspec'</span>: [<span style="color: #008000;">'intent(in)'</span>, <span style="color: #008000;">'value'</span>], <span style="color: #008000;">'typespec'</span>: <span style="color: #008000;">'integer'</span>},
+ <span style="color: #008000;">'y'</span>: {<span style="color: #008000;">'attrspec'</span>: [<span style="color: #008000;">'intent(out)'</span>], <span style="color: #008000;">'typespec'</span>: <span style="color: #008000;">'integer'</span>}}
+</pre>
+</div>
+<ul>
+<li>So it is already recognized..</li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org0291dd0" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="org0291dd0">Augment aux functions</h3>
+<ul>
+<li>Handle the attribute within <code>aux.py</code>
+<ul>
+<li>Also conditionally modify signatures + call conventions</li>
+
+</ul></li>
+
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-python"><span style="color: #0000FF;">def</span> <span style="color: #006699;">isattr_value</span>(var):
+    <span style="color: #0000FF;">return</span> <span style="color: #008000;">'value'</span> <span style="color: #0000FF;">in</span> var.get(<span style="color: #008000;">'attrspec'</span>, [])
+<span style="color: #0000FF;">def</span> <span style="color: #006699;">getcallprotoargument</span>(rout, cb_map={}):
+    ...
+    <span style="color: #0000FF;">if</span> <span style="color: #0000FF;">not</span> isattr_value(var):
+        ctype = ctype + <span style="color: #008000;">'*'</span>
+</pre>
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org657fd41" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="org657fd41">Generate wrappers</h3>
+<ul>
+<li>This is similar to the handling of the existing <code>intent(c)</code>
+<ul>
+<li>In <code>rules.py</code></li>
+
+</ul></li>
+
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-python"><span style="color: #036A07;">'callfortran'</span>: {l_or(isintent_c, isattr_value): <span style="color: #036A07;">'#varname#,'</span>,
+                l_not(l_or(isintent_c, isattr_value)): <span style="color: #036A07;">'&amp;#varname#,'</span>},
+</pre>
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgca56d6b" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="orgca56d6b">Final tasks</h3>
+<ul>
+<li>Add a test</li>
+<li>Solicit reviews</li>
+<li>Ask about a release note</li>
+<li><b>Profit!</b></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section style="top: 350px; display: none;" hidden="" aria-hidden="true" class="stack future">
+<section id="slide-orgf326cc6" style="top: 350px; display: none;">
+<h2 id="orgf326cc6">Conclusions</h2>
+<div class="outline-text-2" id="text-orgf326cc6">
+</div>
+</section>
+<section id="slide-orgc4cb3fe" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="orgc4cb3fe">Road-map</h3>
+<ul>
+<li>Updating the test suite, using <code>cmocka</code></li>
+<li>Rewriting the C wrappers for newer standards</li>
+<li>Build tool support [Namami Shankar]
+<ul>
+<li><code>np.distutils</code> is going the way of the dodo</li>
+
+</ul></li>
+<li>Implementing newer standards (90, 95, 2003, 2008, 2018, 2020Y)
+<ul>
+<li>Automating guarantees</li>
+
+</ul></li>
+<li>Documentation and more interop with NumPy-C</li>
+<li><code>crackfortran</code> works via dictionaries and strings..
+<ul>
+<li>Perhaps a more abstract semantic representation…</li>
+<li>Or concepts from G3 F2PY [Pearu]</li>
+
+</ul></li>
+<li>Handle parallelism (proposed)
+<ul>
+<li><code>do concurrent</code> and <code>ufuncs</code></li>
+
+</ul></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org368143f" data-background="#c9eae7" class="future has-light-background" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="org368143f">Why does Fortran stay in Python anyway?</h3>
+<blockquote>
+<p>
+To write <b>efficient</b> wrappers without being a language lawyer
+</p>
+</blockquote>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org63df3b6" data-background="#c9eae7" class="future has-light-background" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="org63df3b6">How does Fortran stay in Python anyway?</h3>
+<blockquote>
+<p>
+With <b>all your help</b> (Issues, users, developers, non-code contribs)
+</p>
+</blockquote>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section style="top: 350px; display: none;" hidden="" aria-hidden="true" class="stack future">
+<section id="slide-org0034a95" style="top: 350px; display: none;">
+<h2 id="org0034a95">The End</h2>
+<div class="outline-text-2" id="text-org0034a95">
+</div>
+</section>
+<section id="slide-orgebe1c15" class="future" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="orgebe1c15">Acknowledgments</h3>
+
+<div id="org193a729" class="figure">
+<p><img src="./fortranInPerpetuity_files/2021-09-09_00-22-06_screenshot.png" alt="2021-09-09_00-22-06_screenshot.png">
+</p>
+</div>
+<ul>
+<li><a href="https://notendur.hi.is//~hj/indexE.html">Prof. Hannes Jónsson</a> as my supervisor, <a href="https://english.hi.is/staff/birgirhr">Prof. Birgir Hrafnkelsson</a> as my co-supervisor</li>
+<li><a href="https://ondrejcertik.com/">Dr. Ondřej Čertík</a> at GSI Tech.</li>
+<li><a href="https://quansight.com/labs">Quansight Labs</a> (<a href="https://rgommers.github.io/">Dr. Ralf Gommers</a>, <a href="https://melissawm.github.io/about-me/">Dr. Melissa Weber Mendonça</a> and <a href="https://github.com/pearu">Dr. Pearu Peterson</a>)</li>
+<li>NumPy Team (Matti, Ross, Sebastian, Chuck, Inessa, etc.)</li>
+<li>Family, pets, Groupmembers, <b>audience</b></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-org66bd1de" data-background="#c9eae7" class="future has-light-background" aria-hidden="true" style="top: 350px; display: none;">
+<h3 id="org66bd1de">Thanks!</h3>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+</div>
+<div class="backgrounds"><div class="slide-background present" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background stack future" data-loaded="true" style="display: block;"><div class="slide-background-content"></div><div class="slide-background present" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background future" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-background stack future" data-loaded="true" style="display: block;"><div class="slide-background-content"></div><div class="slide-background present" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-background stack future" style="display: none;"><div class="slide-background-content"></div><div class="slide-background present" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-background stack future" style="display: none;"><div class="slide-background-content"></div><div class="slide-background present" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-background stack future" style="display: none;"><div class="slide-background-content"></div><div class="slide-background present" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-background stack future" style="display: none;"><div class="slide-background-content"></div><div class="slide-background present" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-background stack future" style="display: none;"><div class="slide-background-content"></div><div class="slide-background present" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-background stack future" style="display: none;"><div class="slide-background-content"></div><div class="slide-background present" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" data-background-hash="#c9eae7nullnullnullnullnullnullnullnullnull" style="background: rgb(201, 234, 231); display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" data-background-hash="#c9eae7nullnullnullnullnullnullnullnullnull" style="background: rgb(201, 234, 231); display: none;"><div class="slide-background-content"></div></div></div><div class="slide-background stack future" style="display: none;"><div class="slide-background-content"></div><div class="slide-background present" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" data-background-hash="#c9eae7nullnullnullnullnullnullnullnullnull" style="background: rgb(201, 234, 231); display: none;"><div class="slide-background-content"></div></div></div></div><div class="slide-number" style="display: block;"><a href="file:///Users/rgoswami/Git/Github/WebDev/Mine/haozeke.github.io/presentations/SciPyCon2022/scipy_f2py_maint.html#/sec-title-slide">
+					<span class="slide-number-a">1</span>
+					</a></div><aside class="controls" data-controls-layout="bottom-right" data-controls-back-arrows="faded" style="display: block;"><button class="navigate-left" aria-label="previous slide" disabled="disabled"><div class="controls-arrow"></div></button>
+			<button class="navigate-right enabled highlight" aria-label="next slide"><div class="controls-arrow"></div></button>
+			<button class="navigate-up" aria-label="above slide" disabled="disabled"><div class="controls-arrow"></div></button>
+			<button class="navigate-down" aria-label="below slide" disabled="disabled"><div class="controls-arrow"></div></button></aside><div class="progress" style="display: block;"><span style="transform: scaleX(0);"></span></div><div class="speaker-notes" data-prevent-swipe="" tabindex="0"></div><div class="pause-overlay"><button class="resume-button">Resume presentation</button></div><div class="aria-status" aria-live="polite" aria-atomic="true" style="position: absolute; height: 1px; width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px);">Maintaining Fortran in Python in Perpetuity Rohit Goswami .and. Melissa Mendonca .and. Ralf Gommers .and. Thirumalai Shaktivel .and. Pearu Peterson Created: 2022-07-15 Fri 12:39 </div></div>
+<script src="./fortranInPerpetuity_files/reveal.js"></script>
+<script src="./fortranInPerpetuity_files/notes.js"></script>
+<script src="./fortranInPerpetuity_files/search.js"></script>
+<script src="./fortranInPerpetuity_files/zoom.js"></script>
+<script src="file:///Users/rgoswami/.config/doom/reveal/rjs/dist/theme/hidelinks.js"></script>
+<script src="file:///Users/rgoswami/.config/doom/reveal/sfeir-school-theme/dist/js/sfeir-theme.js"></script>
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: true,
+center: true,
+slideNumber: 'h/v',
+rollingLinks: false,
+keyboard: true,
+mouseWheel: true,
+fragmentInURL: true,
+hashOneBasedIndex: false,
+pdfSeparateFragments: false,
+overview: true,
+margin: 0.20,
+
+transition: 'fade',
+transitionSpeed: 'default',
+showNotes: window.location.search.match( /print-pdf/gi ) ? 'separate-page' : false,
+
+// Plugins with reveal.js 4.x
+plugins: [ RevealNotes, RevealSearch, RevealZoom ],
+
+// Optional libraries used to extend reveal.js
+dependencies: [
+]
+
+});
+</script>
+
+
+</body></html>
