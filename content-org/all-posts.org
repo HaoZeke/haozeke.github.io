@@ -15479,7 +15479,9 @@ LFortran spin-off) and a talk on F2PY (with a distinguished [[https://twitter.co
 - Medium :: Maintainers Track Talk
 
 #+begin_export html
-<a href="https://doi.org/10.5281/zenodo.7325023"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.7325023.svg" alt="DOI"></a>
+<a href="https://dx.doi.org/10.25080/majora-212e5952-021"><img src="https://img.shields.io/badge/Paper%20DOI-10.25080/majora--212e5952--021-blue?labelColor=gray&style=flat&link=https://dx.doi.org/10.25080/majora-212e5952-021" alt="Paper DOI" /></a>
+
+<a href="https://doi.org/10.5281/zenodo.7325023"><img src="https://img.shields.io/badge/Slides%20DOI-10.5281/zenodo.7325023-blue?labelColor=gray&style=flat&link=https://doi.org/10.5281/zenodo.7325023" alt="Slides DOI" /></a>
 #+end_export
 
 *** Abstract
