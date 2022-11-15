@@ -15502,7 +15502,11 @@ This talk covers recent advances to the ~f2py~ project, including preliminary de
 ** LPython: Interactive LLVM-based Python Compiler for Modern Architectures
 - Co-Authors :: [[https://ondrejcertik.com/][Ondřej Čertík]] (GSI Technology), [[https://www.linkedin.com/in/brianbeckman/][Brian Beckman]] (GSI Technology), [[https://www.linkedin.com/in/namannimmo/][Naman Gera]] (IIT Guwahati), [[https://in.linkedin.com/in/smit-lunagariya-356b93179][Smit Lunagariya]] (IIT BHU), [[https://github.com/czgdp1807][Gagandeep Singh]] (GSI Technology), [[https://github.com/Thirumalai-Shaktivel][Thirumalai Shaktivel]] (Fortran-Lang / LFortran), [[https://www.linkedin.com/in/dylon-edwards-0936bb39/][Dylon Edwards]] (GSI Technology)
 - Medium :: General Track Poster
+
+#+begin_export html
 <a href="https://doi.org/10.5281/zenodo.7325061"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.7325061.svg" alt="DOI"></a>
+#+end_export
+
 *** Abstract
 #+begin_quote
 We demonstrate to the community that it is possible to use Python in a modern
