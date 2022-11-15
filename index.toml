@@ -1,6 +1,11 @@
 # We use the generated html to prevent issues involving markdown frontmatter
 
 [[input.files]]
+path = "./posts/scipycon-2022-meta/index.html"
+url = "https://rgoswami.me/posts/scipycon-2022-meta/"
+title = "Supplements for SciPy 2022"
+
+[[input.files]]
 path = "./posts/fortran-oop-python/index.html"
 url = "https://rgoswami.me/posts/fortran-oop-python/"
 title = "Fortran OOP and Python"
