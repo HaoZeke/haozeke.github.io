@@ -15578,10 +15578,8 @@ discussions on LPython. Met with Sebastian and Inessa and Mars and Chuck among
 other NumPy folks. Reconnected with some people who've gone across the pond,
 like [[https://pyiron.org/][PyIron]]'s Dr. Jan Janssen. Interacted with a bunch of people from the
 computational chemistry minisymposium in-spite of originally planning to stay
-away from (comp-chem) shop talk. However, I also started a slow spiral into a
-long wound out slow burnout, and was struggling with some personal issues (since
-resolved, hopefully). This post is harder to write and after-all, SciPyCon was
-almost four months ago.  Nevertheless, this is a talk supplements post.
+away from (comp-chem) shop talk. This post is harder to write sinceafter-all,
+SciPyCon was almost four months ago. Nevertheless, this is a supplements post.
 Presentations of projects ought to be tracked, for posterity and the projects
 themselves. It was good to have the opportunity to highlight projects I believe
 in, and to introduce ~f2py~'s GSoC student ([[https://namamishanker.github.io/][Namami Shankar]]) to the community. I
