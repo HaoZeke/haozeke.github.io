@@ -1,0 +1,674 @@
+#+TITLE: Reproducible Environments on ~elja~ with ~nix~ and ~spack~
+#+AUTHOR: Rohit Goswami
+# I need the footnotes to be inlined
+#+STARTUP: fninline
+#+EXCLUDE_TAGS: noexport
+
+#+BEGIN_SRC emacs-lisp :exports none :eval always
+(require 'ox-extra)
+(ox-extras-activate '(ignore-headlines))
+(eval unpackaged/org-export-html-with-useful-ids-mode)
+;; Stop using citeproc-org by default
+(setq org-export-before-parsing-hook '(org-attach-expand-links))
+#+END_SRC
+
+* Configuration :ignoreheading:ignore:
+:PROPERTIES:
+:VISIBILITY: folded
+:END:
+
+# Kanged from https://gitlab.com/oer/oer-reveal/blob/master/org/config.org
+# Also https://gitlab.com/oer/emacs-reveal-howto/-/blob/master/howto.org
+** General Options :ignoreheading:ignore:
+# No Table of contents, no section numbers
+#+OPTIONS: toc:nil num:nil
+
+# Enable smart quotes
+#+OPTIONS: ':t
+** RevealJS Options :ignoreheading:ignore:
+
+# Enable: browser history, fragment IDs in URLs, mouse wheel, links between presentations
+#+OPTIONS: reveal_history:t reveal_fragmentinurl:t  reveal_slide_number:h/v
+#+OPTIONS: reveal_mousewheel:t reveal_inter_presentation_links:t
+
+# Disable separate PDF pages for each fragment.  Just use one per slide.
+#+OPTIONS: reveal_pdfseparatefragments:nil
+
+# Display notes on separate page for PDF export.
+#+REVEAL_EXPORT_NOTES_TO_PDF: separate-page
+
+# Transition styles: none/fade/slide/convex/concave/zoom/cube
+#+REVEAL_TRANS: fade
+# Set a base theme, then override
+#+REVEAL_THEME: robot-lung
+#+REVEAL_EXTRA_CSS: /Users/rgoswami/.config/doom/reveal/extras/rlExtras.css
+#+REVEAL_EXTRA_CSS: /Users/rgoswami/.config/doom/reveal/extras/oerFragments.css
+#+REVEAL_EXTRA_CSS: /Users/rgoswami/.config/doom/reveal/extras/noImgBoxes.css
+#+REVEAL_EXTRA_CSS: /Users/rgoswami/.config/doom/reveal/extras/betterCite.css
+#+REVEAL_EXTRA_CSS: /Users/rgoswami/.config/doom/reveal/extras/moreCode.css
+#+REVEAL_MARGIN: 0.2
+#+REVEAL_PREAMBLE: <div class="line top"></div> <div class="line bottom"></div> <div class="line left"></div> <div class="line right"></div>
+
+#+REVEAL_PLUGINS: (notes search zoom)
+# The following variables are non-standard.
+# Do not display TOC-progress on title slide.
+
+#+REVEAL_TITLE_SLIDE_STATE: no-toc-progress
+# Do not display TOC-progress on TOC slide.
+#+REVEAL_TOC_SLIDE_STATE: no-toc-progress
+# Do not include TOC slide in TOC-progress.
+#+REVEAL_TOC_SLIDE_CLASS: no-toc-progress
+# Use different heading for TOC.
+#+REVEAL_TOC_SLIDE_TITLE: Agenda
+
+** External Resources :ignoreheading:ignore:
+# Note that doom-emacs sets this variable
+# https://github.com/hlissner/doom-emacs/blob/develop/modules/lang/org/contrib/present.el
+#+REVEAL_EXTRA_CSS: /Users/rgoswami/.config/doom/reveal/rjs/plugin/accessibility/helper.css
+#+REVEAL_EXTRA_CSS: /Users/rgoswami/.config/doom/reveal/rjs/plugin/toc-progress/toc-progress.css
+#+REVEAL_EXTRA_CSS: /Users/rgoswami/.config/doom/reveal/rjs/dist/theme/toc-style.css
+#+REVEAL_EXTRA_CSS: /Users/rgoswami/.config/doom/reveal/rjs/dist/theme/fonts/source-sans-pro/source-sans-pro.css
+
+# Allow to selectively hide links.
+# #+REVEAL_EXTRA_SCRIPTS: ("/Users/rgoswami/.config/doom/reveal/rjs/dist/theme/hidelinks.js")
+#+REVEAL_EXTRA_SCRIPTS: ("/Users/rgoswami/.config/doom/reveal/rjs/dist/theme/hidelinks.js" "/Users/rgoswami/.config/doom/reveal/sfeir-school-theme/dist/js/sfeir-theme.js")
+
+# The following creates an empty footer, for which the css style defines
+# a height that agrees with the TOC-progress footer’s height.
+# In this way, the footer’s height is taken into account by reveal.js’s
+# size calculations.
+#+REVEAL_SLIDE_FOOTER: <br>
+#+OPTIONS: reveal_toc_footer:t
+
+** Macros :ignoreheading:ignore:
+# Set a default bib file.
+
+# Macros to display square brackets (in texts of hyperlinks).
+# Based on: https://emacs.stackexchange.com/questions/7792/can-i-make-links-in-org-mode-that-contain-brackets-or
+# Square Bracket Open [
+#+MACRO: BO @@latex:\char91{}@@@@html:&#91;@@
+# Square Bracket Close ]
+#+MACRO: BC @@latex:\char93{}@@@@html:&#93;@@
+
+# Macro for forced line break, e.g., in titles.
+#+MACRO: BR @@latex:\\@@@@html:<br />@@
+
+# Macro to generate abbr element in HTML.  If a second argument is given, it
+# defines the title attribute.  For LaTeX, output first attribute as is and
+# ignore second one.
+#+MACRO: abbr (eval (concat "@@latex:" Modern Documentation across languages "@@@@html:<abbr" (if (< 0 (length Linguistic and Programmatic Variants)) (concat " title=\"" Linguistic and Programmatic Variants "\"") "") ">" Modern Documentation across languages "</abbr>@@"))
+
+# Macros to display code in different colors.
+#+MACRO: blackcode (eval (format "@@html:<code><span style=\"color:black; font-size:smaller;\">%s</span></code>@@ @@latex:\\verb|%s|@@" (org-html-encode-plain-text Modern Documentation across languages) Modern Documentation across languages))
+#+MACRO: redcode (eval (format "@@html:<code><span style=\"color:darkred; font-size:smaller;\">%s</span></code>@@ @@latex:\\rverb|%s|@@" (org-html-encode-plain-text Modern Documentation across languages) Modern Documentation across languages))
+#+MACRO: greencode (eval (format "@@html:<code><span style=\"color:darkgreen; font-size:smaller;\">%s</span></code>@@ @@latex:\\gverb|%s|@@" (org-html-encode-plain-text Modern Documentation across languages) Modern Documentation across languages))
+#+MACRO: bluecode (eval (format "@@html:<code><span style=\"color:darkblue; font-size:smaller;\">%s</span></code>@@ @@latex:\\bverb|%s|@@" (org-html-encode-plain-text Modern Documentation across languages) Modern Documentation across languages))
+
+** References :ignoreheading:ignore:
+bibliographystyle:unsrt
+#+LATEX_HEADER: \addbibresource{./refs.bib}
+
+** LaTeX Options :ignoreheading:ignore:
+# Setup for PDF generation via LaTeX export.
+#+LATEX_CLASS_OPTIONS: [a4paper]
+#+LATEX_HEADER: \usepackage[backend=biber,style=alphabetic]{biblatex}
+#+LATEX_HEADER: \newenvironment{notes}{\par\footnotesize}{\par}
+#+LATEX_HEADER: \newenvironment{NOTES}{\par\footnotesize}{\par}
+#+LATEX_HEADER: \newenvironment{leftcol}{\begin{minipage}{.49\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol}{\begin{minipage}{.49\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{leftcol30}{\begin{minipage}{.29\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{leftcol40}{\begin{minipage}{.39\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{leftcol60}{\begin{minipage}{.59\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{leftcol70}{\begin{minipage}{.69\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol30}{\begin{minipage}{.29\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol40}{\begin{minipage}{.39\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol60}{\begin{minipage}{.59\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol70}{\begin{minipage}{.69\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \usepackage{newunicodechar}
+#+LATEX_HEADER: \newunicodechar{≈}{$\approx$}
+#+LATEX_HEADER: \newunicodechar{⋮}{\vdots}
+#+LATEX_HEADER: \newunicodechar{ }{~}
+#+LATEX_HEADER: \usepackage{xcolor}
+#+LATEX_HEADER: \definecolor{darkred}{rgb}{0.3, 0.0, 0.0}
+#+LATEX_HEADER: \definecolor{darkgreen}{rgb}{0.0, 0.3, 0.1}
+#+LATEX_HEADER: \definecolor{darkblue}{rgb}{0.0, 0.1, 0.3}
+#+LATEX_HEADER: \definecolor{darkorange}{rgb}{1.0, 0.55, 0.0}
+#+LATEX_HEADER: \definecolor{sienna}{rgb}{0.53, 0.18, 0.09}
+#+LATEX_HEADER: \hypersetup{colorlinks,linkcolor=darkblue,citecolor=darkblue,urlcolor=darkgreen}
+#+LATEX_HEADER: \usepackage{newverbs}
+#+LATEX_HEADER: \newverbcommand{\rverb}{\color{darkred}}{}
+#+LATEX_HEADER: \newverbcommand{\gverb}{\color{darkgreen}}{}
+#+LATEX_HEADER: \newverbcommand{\bverb}{\color{darkblue}}{}
+* Start Here :ignoreheading:ignore:
+* Brief Introduction
+** Hello!
+- Find me here: https://rgoswami.me
+- Who?
+  + *Rohit Goswami*
+    - PhD Student, Science Institute, University of Iceland
+#+begin_leftcol
+[[file:logos/physUoI.png]]
+#+ATTR_HTML: :width 50% :height 50%
+file:logos/rannisLogo.png
+#+ATTR_HTML: :width 40% :height 40%
+[[file:logos/ccLogo.png]]
+#+end_leftcol
+#+begin_rightcol
+#+ATTR_HTML: :width 60% :height 40%
+#+DOWNLOADED: screenshot @ 2022-08-31 11:03:43
+[[file:images/Hello!/2022-08-31_11-03-43_screenshot.png]]
+
+#+ATTR_HTML: :width 50% :height 40%
+[[file:images/Hello!/2022-08-31_11-04-11_screenshot.png]]
+
+#+end_rightcol
+** Logistics
+#+ATTR_REVEAL: :frag appear
+- All contents are [[https://github.com/HaoZeke/haozeke.github.io][hosted on GitHub]]
+  + Slides are in ~presentations/IHPCWorkshop2022~
+#+ATTR_REVEAL: :frag appear
+- Questions are welcome *at the end*, or interrupt me
+* Reproducible Research
+** Data Science Woes
+#+begin_leftcol
+- Version Control
+  - Git, SVN, Mercurial (~hg~)
+- Collaboration
+  - Overleaf, Google Drive, OneDrive
+- Reproduce environments
+  - Docker, Conda, *Nix*
+- Re-run analysis
+  - Luigi, any CWL runner
+#+end_leftcol
+
+#+begin_rightcol
+file:images/ReproducibleMatrix.jpg
+#+end_rightcol
+
+** Why?
+#+ATTR_REVEAL: :frag appear
+- As a *discipline*
+  + For better communities
+#+ATTR_REVEAL: :frag appear
+- As a *requirement*
+  + For quality control
+#+ATTR_REVEAL: :frag appear
+- As a *tool*
+  + For better design
+** What?
+
+#+begin_leftcol
+fullcite:communityTuringWayHandbook2019
+
+file:images/reproducibility.jpg
+#+end_leftcol
+
+#+begin_rightcol
+#+ATTR_HTML: :width 80% :height 80%
+file:images/turingWay/LogoDetailWithText.jpg
+#+end_rightcol
+** How?
+#+begin_leftcol
+file:images/turingWay/Provenance.jpg
+#+end_leftcol
+
+#+begin_rightcol
+file:images/turingWay/TuringWayPathway.jpg
+#+end_rightcol
+** Collaborations
+#+ATTR_HTML: :width 80% :height 80%
+file:images/turingWay/Collaboration.jpg
+* Data Driven Science
+** Traditional Workflow
+#+begin_leftcol
+#+ATTR_REVEAL: :frag appear
+- Write functions/objects
+  + Refactor in modules
+#+ATTR_REVEAL: :frag appear
+- Test
+  + Unit
+  + Integration
+#+ATTR_REVEAL: :frag appear
+- Documentation
+#+ATTR_REVEAL: :frag appear
+- Use after importing
+#+end_leftcol
+
+#+begin_rightcol
+[[file:images/Standard_Approach/2020-09-20_04-19-58_screenshot.png]]
+#+end_rightcol
+
+#+ATTR_REVEAL: :frag appear
+- *Not interactive enough for data-files*
+** Modern Approaches
+#+begin_leftcol
+#+ATTR_REVEAL: :frag appear
+- Try before you buy
+#+ATTR_REVEAL: :frag appear
+- Often doesn't play nice with tests
+#+ATTR_REVEAL: :frag appear
+*Python Interactivity*
+#+ATTR_REVEAL: :frag appear
+- IPython (~ipython~)
+#+ATTR_REVEAL: :frag appear
+- Jupyter (Lab/Notebook)
+#+ATTR_REVEAL: :frag appear
+- Colab (Google)
+#+end_leftcol
+
+#+begin_rightcol
+[[file:images/Modern_Data_Analysis/2020-09-20_04-32-08_screenshot.png]]
+#+end_rightcol
+
+** Concerns
+- Abstracts away too much of the machine
+- Online compilers, script sharing, makes things worse
+- Neuters access to system resources
+
+#+begin_src python
+#!/usr/bin/env python
+print("Hello World")
+print "Hello World"
+#+end_src
+* Scaling Upwards
+** Switching Languages
+- Via embedding
+- Mixed compilations
+- Static types, C++, Rust, other languages
+** Using Accelerators
+- GPU libraries (e.g. PyTorch)
+- Accelerators like TPUs for Machine Learning
+* Academic Clusters
+** Introduction
+#+begin_leftcol
+*Woes*
+#+ATTR_REVEAL: :frag (appear)
+- No ~docker~
+  + If lucky, will have ~singularity~
+- No userspace support
+  + No ~proot~
+- Probably runs CentOS or something
+- Has a networked file system
+- Uses a resource queue
+  + Slurm, PBS
+- Might have support for ~lmod~
+#+end_leftcol
+#+begin_rightcol
+#+attr_html: :alt image from GE research image :align right
+[[file:images/High_Performance_Computing_Clusters/sampleCluster.png]]
+
+#+attr_html: :alt sampleoutput image :align right
+[[file:images/High_Performance_Computing_Clusters/2020-10-17_08-50-27_screenshot.png]]
+#+end_rightcol
+** Usage
+#+begin_leftcol
+#+ATTR_REVEAL: :frag appear
+- Arcane instructions
+#+ATTR_REVEAL: :frag appear
+- Back-alley scripts
+#+end_leftcol
+#+begin_rightcol
+#+begin_src bash
+#!/bin/bash
+#SBATCH --job-name=serial_job_test
+#SBATCH --mail-type=END,FAIL
+#SBATCH --mail-user=email@hi.is
+#SBATCH --ntasks=1 # Number of CPUs
+#SBATCH --mem=1gb # Job memory
+#SBATCH --time=00:05:00
+#SBATCH --output=st_%j.log
+pwd; hostname; date
+module load python
+# Create directory in scratch
+if [ ! -d "$scratchlocation/$USER" ]
+then
+  mkdir -p "$scratchloc/$USER"
+fi
+tdir=$(mktemp -d \
+    "$scrloc/$USER/$SLURM_JOBID")
+chmod +xr "$tdir"
+python /data/plot_template.py
+date
+#+end_src
+#+end_rightcol
+#+ATTR_REVEAL: :frag appear
+- *What about installations?*
+* Dependency Resolution
+#+begin_leftcol
+#+ATTR_REVEAL: :frag appear
+- ~requirements.txt~ (pip)
+#+ATTR_REVEAL: :frag appear
+- Poetry (pretty)
+#+ATTR_REVEAL: :frag appear
+  + ~pyproject.toml~
+#+ATTR_REVEAL: :frag appear
+  + ~poetry.lock~
+#+ATTR_REVEAL: :frag appear
+- Pipenv (older)
+#+ATTR_REVEAL: :frag appear
+  + ~Pipfile~ + lockfile
+#+ATTR_REVEAL: :frag appear
+- Pipx (~pip~ but for applications)
+#+ATTR_REVEAL: :frag appear
+- Pyenv and friends
+#+end_leftcol
+#+begin_rightcol
+#+ATTR_REVEAL: :frag appear
+[[file:images/Dependency_Resolution/2020-09-20_05-09-56_screenshot.png]]
+#+end_rightcol
+** System Dependencies
+#+begin_leftcol
+#+ATTR_REVEAL: :frag appear
+- Appimages
+#+ATTR_REVEAL: :frag appear
+- Containers
+#+ATTR_REVEAL: :frag appear
+  + ~docker~, ~flatpak~, ~snapcraft~
+#+ATTR_REVEAL: :frag appear
+- Impure filesystems
+#+ATTR_REVEAL: :frag appear
+  + Anaconda
+#+end_leftcol
+#+begin_rightcol
+[[file:images/System_Dependencies/2020-09-20_05-23-11_screenshot.png]]
+#+end_rightcol
+* Spack
+** Introduction
+#+begin_leftcol
+#+ATTR_REVEAL: :frag appear
+- Easy to setup
+  + Easy to extend
+#+ATTR_REVEAL: :frag appear
+- Driven by ~python~+~yaml~
+  + Supported by LLNL (+FOSS)
+#+ATTR_REVEAL: :frag appear
+- No ~root~ access needed
+  + Multiple configurations
+#+end_leftcol
+
+#+begin_rightcol
+#+begin_src bash
+git clone -c \
+    feature.manyFiles=true \
+    https://github.com/spack/spack.git
+cd spack/bin
+./spack install libelf
+#+end_src
+
+#+DOWNLOADED: screenshot @ 2022-08-31 12:15:00
+[[file:images/Introduction/2022-08-31_12-15-00_screenshot.png]]
+#+end_rightcol
+
+** Drawbacks
+- Complexity grows for development
+#+begin_src diff
+--- a/var/spack/repos/builtin/packages/py-torch/package.py
++++ b/var/spack/repos/builtin/packages/py-torch/package.py
+@@ -14,7 +14,7 @@ class PyTorch(PythonPackage, CudaPackage):
+     homepage = "https://pytorch.org/"
+-    git      = "https://github.com/pytorch/pytorch.git"
++    git      = "https://github.com/HaoZeke/pytorch.git"
+@@ -22,6 +22,7 @@ class PyTorch(PythonPackage, CudaPackage):
++    version('npeye', branch='npeye', submodules=True)
+     version('master', branch='master', submodules=True)
+@@ -348,7 +349,8 @@ def enable_or_disable(variant, keyword='USE',
+    var=None, newer=False):
+-        if not self.spec.satisfies('@master'):
++        if not (self.spec.satisfies('@master') or
++                self.spec.satisfies('@npeye')):
+#+end_src
+* Nix
+** Current Scenario Summary
+#+begin_leftcol
+#+ATTR_REVEAL: :frag appear
+file:images/xkcd/python_xkcd.png
+[fn:: Comic [[https://xkcd.com/353/][from here]]]
+#+end_leftcol
+#+begin_rightcol
+#+ATTR_REVEAL: :frag appear
+- ~Python~ :: ~poetry~, ~pipenv~, ~pyenv~
+- ~C++~ :: ~conan~, ~vcpkg~, ~cpm~
+#+ATTR_REVEAL: :frag appear
+
+#+DOWNLOADED: screenshot @ 2021-05-29 06:47:00
+[[file:images/Current_Scenario_Summary/2021-05-29_06-47-00_screenshot.png]]
+
+#+end_rightcol
+#+ATTR_REVEAL: :frag appear
+- *Nix is the answer!!*
+** General Workflow
+[[file:images/General_Workflow/2020-05-22_23-04-53_screenshot.png]]
+- From [[https://brianmckenna.org/files/presentations/rootconf19-nix.pdf][here]]
+** Details
+fullcite:dolstraNixSafePolicyFree2004,dolstraNixOSPurelyFunctional2010
+
+#+ATTR_HTML: :width 80% :height 80%
+[[file:images/A_screenshot/2020-05-22_23-15-22_screenshot.png]]
+- User environments (from [[https://nixos.org/nix/manual/#ch-basic-package-mgmt][the manual]])
+** Rationale
+#+begin_leftcol
+#+ATTR_REVEAL: :frag appear
+#+BEGIN_QUOTE
+Protects against self harm
+#+END_QUOTE
+#+ATTR_REVEAL: :frag appear
+#+BEGIN_QUOTE
+Exposes things taken for granted
+#+END_QUOTE
+#+ATTR_REVEAL: :frag appear
+#+BEGIN_QUOTE
+Enforces consistency
+#+END_QUOTE
+#+end_leftcol
+#+begin_rightcol
+#+ATTR_REVEAL: :frag appear
+- Reliable :: Purely functional, no broken dependencies
+#+ATTR_REVEAL: :frag appear
+- Reproducible :: Each package is in isolation
+#+ATTR_REVEAL: :frag appear
+- How? :: store + hash + name + version
+#+end_rightcol
+* Using Nix
+** Installation (Multi-User)
+#+BEGIN_SRC bash :eval never
+sh <(curl https://nixos.org/nix/install) --daemon
+#+END_SRC
+
+#+RESULTS:
+
+#+ATTR_REVEAL: :frag appear
+- Needs ~sudo~ but should not be run as root
+- Will make build users with IDs between 30001 and 30032 along with a group ID 30000
+** Nix Python - Trial I
+#+BEGIN_SRC bash :eval never
+nix-shell -p 'python38.withPackages(ps: with ps; [ numpy toolz ])'
+#+END_SRC
+
+#+ATTR_REVEAL: :frag appear
+- Check which ~python~ is loaded
+- Check which modules are present
+- Check if passing ~-p~ multiple times is allowed
+** With Scripts
+#+BEGIN_SRC bash :eval never
+#! /usr/bin/env nix-shell
+#! nix-shell -i python3 -p "python3.withPackages(ps: [ps.numpy])"
+
+import numpy
+
+print(numpy.__version__)
+#+END_SRC
+#+ATTR_REVEAL: :frag appear
+#+begin_src bash
+chmod +x nixnp.sh
+./nixnp.sh
+#+end_src
+*** Example: Astroid Poll
+#+begin_src bash
+#!/usr/bin/env nix-shell
+#!nix-shell -i python3 -p "python38.withPackages(ps: [ ps.sh ])" -p lieer
+
+from pathlib import Path
+import sh
+# For generic IMAP maildirs
+ISYNC_LABELS = ["rog32"]
+for isync in ISYNC_LABELS:
+    sh.mbsync("-V",isync,_bg=True)
+# Gmaileer
+GMAIL_IDENTIFIERS = ["gmail", "ieee"]
+path = Path(r"/mail/")
+for dirs in path.iterdir():
+    if dirs.is_dir():
+        for gmi in GMAIL_IDENTIFIERS:
+            if gmi in dirs.name:
+                print(f"Syncing {dirs.name}")
+                sh.gmi("sync", _cwd=dirs, _fg=True)
+#+end_src
+** Purity
+#+begin_leftcol
+#+BEGIN_SRC bash :eval never
+nix-shell -p python36 --pure
+#+END_SRC
+
+#+ATTR_REVEAL: :frag appear
+- Why?
+- What do we solve with this?
+#+end_leftcol
+#+begin_rightcol
+#+caption: Stateless builds from https://slides.com/garbas/mozilla-all-hands-london-2016#/7/0/3
+[[file:images/A_screenshot/2020-05-22_23-57-17_screenshot.png]]
+#+end_rightcol
+** Shell in a File
+#+begin_leftcol
+#+BEGIN_SRC nix :tangle $HOME/testNix/shell.nix
+with import <nixpkgs> {};
+
+let
+  pythonEnv = python35.withPackages (ps: [
+    ps.numpy
+    ps.toolz
+  ]);
+in mkShell {
+  buildInputs = [
+    pythonEnv
+    which
+  ];}
+#+END_SRC
+#+end_leftcol
+#+begin_rightcol
+#+ATTR_REVEAL: :frag appear
+- What *tools* are we adding?
+- What *environment* are we using?
+#+end_rightcol
+** Nix Python Expressions I
+#+begin_leftcol
+#+BEGIN_SRC nix :eval never
+f90wrap = self.buildPythonPackage rec {
+  pname = "f90wrap";
+  version = "0.2.3";
+  src = pkgs.fetchFromGitHub {
+    owner = "jameskermode";
+    repo = "f90wrap";
+    rev = "master";
+    sha256 = "0d06nal4xzg8vv6sjdbmg2n88a8h8df5ajam72445mhzk08yin23";
+  };
+  buildInputs = with pkgs; [ gfortran stdenv ];
+#+END_SRC
+#+end_leftcol
+#+begin_rightcol
+#+end_rightcol
+#+ATTR_REVEAL: :frag appear
+- The self portion is from overriding the python environment
+#+ATTR_REVEAL: :frag appear
+- We will dispense with this later
+** Nix Python Expressions II
+#+begin_leftcol
+#+BEGIN_SRC nix :eval never
+  propagatedBuildInputs = with self; [
+    setuptools
+    setuptools-git
+    wheel
+    numpy
+  ];
+  preConfigure = ''
+    export F90=${pkgs.gfortran}/bin/gfortran
+  '';
+  doCheck = false;
+  doInstallCheck = false;
+};
+#+END_SRC
+#+end_leftcol
+#+begin_rightcol
+#+end_rightcol
+#+ATTR_REVEAL: :frag appear
+- More details here: https://rgoswami.me/posts/ccon-tut-nix/
+#+ATTR_REVEAL: :frag appear
+- ~propagatedBuildInputs~ are for the python packages
+** Friendly Nix
+#+begin_leftcol
+#+BEGIN_SRC bash
+nix-env -i nox
+nox lieer
+#+END_SRC
+
+#+DOWNLOADED: screenshot @ 2021-05-29 05:59:23
+[[file:images/Friendly_Nix/2021-05-29_05-59-23_screenshot.png]]
+#+end_leftcol
+#+begin_rightcol
+#+ATTR_REVEAL: :frag appear
+- Niv :: For pinning packages
+#+ATTR_REVEAL: :frag appear
+- Nox :: Interactive package management
+#+ATTR_REVEAL: :frag appear
+- [[https://github.com/target/lorri/][Lorri]] :: For automatically reloading environments
+#+ATTR_REVEAL: :frag appear
+- Mach-Nix :: For working with Python
+#+end_rightcol
+
+** Pinning Nixpkgs
+#+begin_src bash
+niv init
+#+end_src
+#+begin_src json
+{
+    "nixpkgs": {
+        "branch": "release-20.03",
+        "description": "Nix Packages collection",
+        "homepage": "",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "1db42b7fe3878f3f5f7a4f2dc210772fd080e205",
+        "sha256": "05k9y9ki6jhaqdhycnidnk5zrdzsdammbk5lsmsbz249hjhhgcgh",
+        "type": "tarball",
+        "url": "https://github.com/NixOS/nixpkgs/archive/.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    }
+}
+#+end_src
+* Conclusions
+- *nix* allows for perfectly reproducible builds
+  + Steeper learning curve
+- *spack* eases users into building software
+  + Lowers sysadmin cognitive load
+** Pedagogical Imperatives
+- Reduce reliance on sysadmins
+  + Lower burnout
+- Enable reproducible results
+- Reconcile with fears of the command line
+- Understanding software parallelism
+  + Perhaps even hardware support
+* The End
+** Acknowledgments
+#+DOWNLOADED: screenshot @ 2021-09-09 00:22:06
+[[file:images/Acknowledgments/2021-09-09_00-22-06_screenshot.png]]
+- [[https://notendur.hi.is//~hj/indexE.html][Prof. Hannes Jónsson]] as my supervisor, [[https://english.hi.is/staff/birgirhr][Prof. Birgir Hrafnkelsson]] as my co-supervisor
+- [[http://www.morrisriedel.de/][Prof. Dr. - Ing. Morris Riedel]] for shepherding and spearheading the Icelandic HPC endeavors
+- Dr. Elvar Jonsson, Dr. Pedro Costa and other HPC UX meeting members
+- Family, pets, Groupmembers, *audience*
+** Thanks!
+:PROPERTIES:
+:reveal_background: #c9eae7
+:END:
+# Local Variables:
+# indent-tabs-mode: nil
+# org-src-preserve-indentation: t
+# End:
