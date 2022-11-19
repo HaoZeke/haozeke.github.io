@@ -1,0 +1,305 @@
+#+TITLE:     Reproducible High Performance Computing without Redundancy with ~nix~
+#+BEAMER_HEADER:    \author{Rohit Goswami \inst{1,4} \and Ruhila S. \inst{2} \and Amrita Goswami \inst{1} \and Sonaly Goswami \inst{3} \and Debabrata Goswami \inst{3}}
+#+BEAMER_HEADER: \institute[]{\inst{1} Science Institute, University of Iceland \and \inst{2} Department of Biological Sciences, IISER-Mohali \and \inst{3} Department of Chemistry IIT Kanpur \and \inst{4} Quansight Labs, TX}
+#+EMAIL:     rog32@hi.is
+#+DATE:      \today
+
+* TeX Configuration :ignoreheading:ignore:
+:PROPERTIES:
+:VISIBILITY: folded
+:END:
+#+DESCRIPTION:
+#+KEYWORDS:
+#+LANGUAGE:  en
+#+OPTIONS:   H:1 num:t toc:nil \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
+#+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc
+#+INFOJS_OPT: view:nil toc:nil ltoc:t mouse:underline buttons:0 path:https://orgmode.org/org-info.js
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+LINK_UP:
+#+LINK_HOME:
+
+#+LATEX_COMPILER: xelatex
+#+LATEX_HEADER: \PassOptionsToPackage{unicode=true}{hyperref}
+#+LATEX_HEADER: \PassOptionsToPackage{hyphens}{url}
+#+LATEX_HEADER: \PassOptionsToPackage{dvipsnames,svgnames*,x11names*,table}{xcolor}
+#+LATEX_HEADER: \usepackage{amssymb,amsmath}
+#+LATEX_HEADER: \usepackage{physics}
+#+LATEX_HEADER: \usepackage{hyperref}
+#+LATEX_HEADER: \hypersetup{
+#+LATEX_HEADER:             pdftitle={Reproducible High Performance Computing without Redundancy with ~nix~},
+#+LATEX_HEADER:             pdfauthor={Rohit Goswami},
+#+LATEX_HEADER:             pdfborder={0 0 0},
+#+LATEX_HEADER:             breaklinks=true}
+#+LATEX_HEADER: % Make use of float-package and set default placement for figures to H
+#+LATEX_HEADER: \usepackage{float}
+#+LATEX_HEADER: \floatplacement{figure}{H}
+
+#+LATEX_HEADER: \usepackage{epigraph}
+# Fontification
+#+LATEX_HEADER: \usepackage{minted}
+#+LATEX_HEADER: \usemintedstyle{solarized-light}
+
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger,unknownkeysallowed]
+#+startup: beamer
+#+BEAMER_THEME: metropolis
+#+BEAMER_FRAME_LEVEL: 2
+#+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
+
+#+LATEX_HEADER_EXTRA: \renewcommand*{\bibfont}{\footnotesize}
+# Nicer Fonts
+# #+LATEX_HEADER: \usepackage{xunicode}
+# #+LATEX_HEADER: \usepackage{xltxtra}
+# #+LATEX_HEADER: \usepackage[protrusion=true,final]{microtype}
+# #+LATEX_HEADER: \usepackage{mathspec}
+# #+LATEX_HEADER: \defaultfontfeatures{Mapping=tex-text}
+# #+LATEX_HEADER: \setromanfont[Ligatures={Common}, Numbers={OldStyle}]{Hoefler Text}
+# #+LATEX_HEADER: \setsansfont[Scale=0.9]{Helvetica Neue}
+# #+LATEX_HEADER: \setmonofont[Scale=0.8]{Courier}
+# #+LATEX_HEADER: \newfontfamily\scfont[Scale=1.2]{Minion Pro}
+
+# #+LATEX_HEADER: \usepackage[default]{sourcesanspro}
+# #+LATEX_HEADER: \usepackage{sourcecodepro}
+
+# Wider Text
+# #+LATEX_HEADER: \usepackage[textwidth=7in,textheight=9in]{geometry}
+# #+LATEX_HEADER: \usepackage[margin=2.5cm,includehead=true,includefoot=true,centering]{geometry}
+
+# References
+#+LATEX_HEADER: \usepackage[natbib]{biblatex}
+#+LATEX_HEADER: \bibliography{./refs.bib}
+* Start Here :ignoreheading:ignore:
+* Introduction
+https://rgoswami.me
+** A block                                           :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+- *Rohit Goswami* MInstP MBCS
+  - Icelandic HPC ~elja~ working group member
+
+** A screenshot                                            :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+
+file:./images/logos/consolidatedLogos.png
+* Paradigms of Software Development
+** Col 1 :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+- TDD
+
+file:./images/pyDataStack.png
+** Col 2 :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+- Interactivity
+
+file:./images/tryBuy.png
+* Scaling Upwards
+** Col 1 :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+#+begin_src python
+#!/usr/bin/env python
+print("Hello World")
+print "Hello World"
+#+end_src
+
+[[file:images/sysdepmeth.png]]
+** Col 2 :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+*** Switching Languages
+- Via embedding
+- Mixed compilations
+- Static types, C++, Rust, other languages
+*** Using Accelerators
+- GPU libraries (e.g. PyTorch)
+- Accelerators like TPUs for Machine Learning
+* HPC Clusters
+** Col 1 :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+\scriptsize
+- No ~docker~
+- No userspace support
+- Probably runs CentOS or something
+- Has a networked file system
+- Uses a resource queue
+- Probably ~lmod~
+#+latex_attr: :scale 0.4\linewidth
+#+DOWNLOADED: screenshot @ 2022-11-19 02:07:10
+[[file:images/Col_1/2022-11-19_02-07-10_screenshot.png]]
+
+** Col 2 :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+\scriptsize
+#+begin_src bash
+#!/bin/bash
+#SBATCH --job-name=serial_job_test
+#SBATCH --mail-type=END,FAIL
+#SBATCH --mail-user=email@hi.is
+#SBATCH --ntasks=1 # Number of CPUs
+#SBATCH --mem=1gb # Job memory
+#SBATCH --time=00:05:00
+#SBATCH --output=st_%j.log
+pwd; hostname; date
+module load python
+# Create directory in scratch
+if [ ! -d "$scratchlocation/$USER" ]
+then
+  mkdir -p "$scratchloc/$USER"
+fi
+tdir=$(mktemp -d \
+    "$scrloc/$USER/$SLURM_JOBID")
+chmod +xr "$tdir"
+python /data/plot_template.py
+date
+#+end_src
+* Nix Package Management
+** Col 1 :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+file:./images/nixGraph.jpg
+
+\scriptsize
+#+begin_quote
+Protects against self harm
+
+Exposes things taken for granted
+
+Enforces consistency
+#+end_quote
+** Col 2 :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+- Reliable :: Purely functional, no broken dependencies
+- Reproducible :: Each package is in isolation
+- How? :: store + hash + name + version
+
+file:./images/user-profiles.jpg
+* Nix Expression Language
+:PROPERTIES:
+:BEAMER_opt: t
+:END:
+** Col 1 :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+#+begin_src nix
+with import <nixpkgs> {};
+
+let
+  pythonEnv =
+      python35.withPackages (ps: [
+    ps.numpy
+    ps.toolz
+  ]);
+in mkShell {
+  buildInputs = [
+    pythonEnv
+    which
+  ];}
+
+#+end_src
+** Col 2 :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+- Hermetic environments
+  + ~--pure~
+- Can encapsulate scripts
+\scriptsize
+#+begin_src bash
+#! /usr/bin/env nix-shell
+#! nix-shell -i ...
+#+end_src
+* Distributed Nix Extensions
+** Col 1 :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.3
+:END:
+\scriptsize
+- The build request is forwarded by an unprivileged user
+- The daemon communicates across the network to determine the approximate resource usage
+- Based on a round-robin scheme, the build is allocated resources on a machine
+- The final output is still a single path under the shared ~/nix~ store
+** Col 2 :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.7
+:END:
+file:./images/nixParaReq.jpg
+* Conclusions
+** Col 1 :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+file:images/python_xkcd.png
+*** Output
+- Desiridata for distributed HPC Nix
+** Col 2 :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+file:images/std_xkcd.png
+*** Future Directions
+- Billing builds
+- Efficient store distribution
+- Upgrading to ~nix~ $2.4+$
+* Acknowledgments
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+- Faculty :: Prof. Arnar Palsson, Prof. Hannes Jonsson, Prof. Birgir Hrafnkelsson
+- Funding :: Rannis IRF fellowship, Quansight Labs
+- Also :: Family, Lab members, Everyone here
+
+#+ATTR_LATEX: :options [Lewis Carroll, \textit{Alice in Wonderland}]
+#+begin_quotation
+Begin at the beginning, the King said gravely, ``and go on till you come to the end: then stop.''
+#+end_quotation
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+
+file:images/askjaVR3UTSIITK.png
+
+** No Column :B_ignoreheading:
+:PROPERTIES:
+:BEAMER_env: ignoreheading
+:END:
+
+* References
+:PROPERTIES:
+:BEAMER_opt: allowframebreaks
+:END:
+
+#+begin_export latex
+  \nocite{dolstraNixOSPurelyFunctional2010,goswamiDSEAMSDeferredStructural2020a}
+\printbibliography[heading=none]
+#+end_export
+
+* End
+:PROPERTIES:
+:BEAMER_opt: standout
+:END:
+Thank you
+
+
+# Local Variables:
+# after-save-hook: haozeke/org-save-and-export-beamer
+# End:
