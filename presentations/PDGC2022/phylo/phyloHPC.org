@@ -1,0 +1,277 @@
+#+TITLE:     High Throughput Reproducible Literate Phylogenetic Analysis
+#+SUBTITLE:  Taming Omic Data Complexity
+# AUTHOR will break with \inst
+#+BEAMER_HEADER:    \author{Rohit Goswami \inst{1} \and Ruhila S. \inst{2}}
+#+BEAMER_HEADER: \institute[]{\inst{1} Science Institute, University of Iceland \& Quansight Labs, TX \and \inst{2} Department of Biological Sciences, IISER-Mohali}
+#+EMAIL:     rog32@hi.is
+#+DATE:      \today
+#+BEAMER_HEADER: \titlegraphic[height=0.25\paperheight]{images/logos/consolidatedLogos.png}{}
+#+BEAMER_HEADER: \mail{rog32@hi.is}
+
+* Configuration :ignoreheading:ignore:
+:PROPERTIES:
+:VISIBILITY: folded
+:END:
+
+#+BEGIN_SRC emacs-lisp :exports none :eval always :results none
+  (require 'ox-extra)
+  (ox-extras-activate '(ignore-headlines))
+  ;; Define Asynchronous Export
+  (defun haozeke/org-save-and-export-pdf ()
+    (if (eq major-mode 'org-mode)
+        (org-latex-export-to-pdf :async t)))
+  ;; Add hook
+  (add-hook 'after-save-hook 'haozeke/org-save-and-export-beamer)
+#+END_SRC
+
+#
+# LaTeX Stuff
+#
+
+#+DESCRIPTION:
+#+KEYWORDS:
+#+LANGUAGE:  en
+#+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc toc:nil
+#+INFOJS_OPT: view:nil toc:nil ltoc:t mouse:underline buttons:0 path:https://orgmode.org/org-info.js
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+LINK_UP:
+#+LINK_HOME:
+
+#+LATEX_COMPILER: xelatex
+#+LaTeX_CLASS: beamer
+#+startup: beamer
+#+BEAMER_THEME: Verona
+#+LaTeX_CLASS_OPTIONS: [bigger,unknownkeysallowed,aspectratio=169,red,colorblocks]
+#+BEAMER_FRAME_LEVEL: 2
+#+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
+
+#+LATEX_HEADER: \PassOptionsToPackage{unicode=true}{hyperref}
+#+LATEX_HEADER: \PassOptionsToPackage{hyphens}{url}
+#+LATEX_HEADER: \PassOptionsToPackage{dvipsnames,svgnames*,x11names*,table}{xcolor}
+#+LATEX_HEADER: \usepackage{amssymb,amsmath}
+#+LATEX_HEADER: \usepackage{mathtools}
+#+LATEX_HEADER: \usepackage{physics}
+#+LATEX_HEADER: \usepackage{hyperref}
+#+LATEX_HEADER: % Make use of float-package and set default placement for figures to H
+#+LATEX_HEADER: \usepackage{float}
+#+LATEX_HEADER: \floatplacement{figure}{H}
+
+#+LATEX_HEADER: \usepackage{fontspec}
+#+LATEX_HEADER: \setromanfont{EB Garamond}
+#+LATEX_HEADER: \usefonttheme{serif}
+
+#+LATEX_HEADER: \usepackage[absolute,overlay]{textpos}
+
+#+LATEX_HEADER: \newcommand*{\XOffsetFromBottomLeft}{32.5em}%
+#+LATEX_HEADER: \newcommand*{\YOffsetFromBottomLeft}{2.7ex}%
+#+LATEX_HEADER: \newcommand*{\BottomLeftText}[1]{%
+#+LATEX_HEADER:     \par%
+#+LATEX_HEADER: \scriptsize\begin{textblock*}{17.0cm}(\dimexpr\textwidth-\XOffsetFromBottomLeft\relax,\dimexpr\textheight-\YOffsetFromBottomLeft\relax)
+#+LATEX_HEADER:         #1%
+#+LATEX_HEADER:     \end{textblock*}%
+#+LATEX_HEADER: }%
+
+# From https://tex.stackexchange.com/questions/477784/adjust-spacing-between-main-text-and-footnote-in-beamer-slides
+#+LATEX_HEADER: \setbeamertemplate{footnote}{%
+#+LATEX_HEADER:  \makebox[1em][l]{\insertfootnotemark}%
+#+LATEX_HEADER:  \begin{minipage}{\dimexpr\linewidth-1em}
+#+LATEX_HEADER:    \footnotesize\linespread{0.84}\selectfont\insertfootnotetext
+#+LATEX_HEADER:  \end{minipage}\vskip 0pt}%
+
+# References
+#+LATEX_HEADER: \usepackage[doi=false,isbn=false,url=false,eprint=false]{biblatex}
+#+LATEX_HEADER: \bibliography{./refs.bib}
+#+bibliography: ./refs.bib
+
+# Remove header spacing https://tex.stackexchange.com/a/45005/130845
+#+BEAMER_HEADER: \makeatletter % to change template
+#+BEAMER_HEADER:     \setbeamertemplate{headline}[default] % not mandatory, but I though it was better to set it blank
+#+BEAMER_HEADER:     \def\beamer@entrycode{\vspace*{-\headheight}} % here is the part we are interested in :)
+#+BEAMER_HEADER: \makeatother
+* Start Here :ignoreheading:ignore:
+
+* Phylogenetic Analysis
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+
+#+ATTR_LATEX: :options [Dobzhansky, 1973]
+#+begin_quotation
+Nothing in biology makes sense except in the light of evolution
+#+end_quotation
+
+- Tests evolutionary hypothesis
+  + Traces mutations (DNA, RNA, protein)
+  + Common ancestor analysis
+
+** PhyloClado :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+
+#+DOWNLOADED: screenshot @ 2022-11-17 22:12:40
+[[file:images/PhyloClado/2022-11-17_22-12-40_screenshot.png]]
+
+** No Column :B_ignoreheading:
+:PROPERTIES:
+:BEAMER_env: ignoreheading
+:END:
+* Phylogeny as Data Science
+- Data Acquisition ::  National Center for Biotechnology Information
+  + Manually find species and sequence
+- Data Augmentation :: Basic Local Alignment Search Tool (BLAST) [homologs]
+- Preprocess :: MUltiple Sequence Comparison by Log Expectation (MUSCLE-5) algorithm
+  + Generates Phylogenetic distances and signals
+- Tree estimation :: From distance measures or maximum likelihood estimations (which are NP-hard)
+  + RAXML-NG \cite{kozlovRAxMLNGFastScalable2019} is designed for parallel execution
+* Multiple Sequence Alignment (MSA)
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+file:images/figMSA.png
+** B block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+*** MUSLCE5 (cite:edgarHighaccuracyAlignmentEnsembles2022,bawonoMultipleSequenceAlignment2017)
+- UPGMA for guide tree 
+- Kimura distance correction
+  + Until the number of
+  internal nodes for the branching order to change is constant or increases
+- Refines the alignment of the (now) fixed tree topology
+* Tree Estimation
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+file:images/distanceTree.png
+** B block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+file:images/likelihoodTree.png
+* Scaling Up
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+*** High Throughput Computing (HTC)
+Threading model, independent tasks
+*** High Performance Computing
+Larger interconnected tasks (Molecular Dynamics)
+** B block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+*Environments*
+- Lack interactivity 
+  + X over SSH is slow
+- No admin rights
+  + Installation issues
+- Queue systems
+  + Difficult for short tasks
+* Reproducing Literate Results
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+#+ATTR_LATEX: :options [Edmund Burke]
+#+begin_quotation
+Those who don't know history are doomed to repeat it.
+#+end_quotation
+- HTTP server (~ngrok~) with ~radian~ and ~httpgd~
+- Literate snippets with ~quarto~
+- System (user) management via ~micromamba~
+
+*** Key idea
+provenance + visualize = result
+
+** B block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+file:images/genericSnips.png
+* Conclusions
+:PROPERTIES:
+:BEAMER_opt: t
+:END:
+
+*** Takeaway
+Interactive workflow without virtual network computing (VNC) or SSH
+tunneling
+
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+*Summary*
+- Workflow for bioinformatics pipelines
+  + With literate *documentation*
+- Focuses on *human* interaction
+  + With visualization
+#+ATTR_LATEX: :options [Edward Tufte]
+#+begin_quotation
+There is no such thing as information overload. There is only bad design.
+#+end_quotation
+** B block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+*Future Plans*
+- Exploit ~ssh~ libraries
+- Workflow engines like ~snakemake~ \autocite{molderSustainableDataAnalysis2021}
+- Rework into an ~R~-package
+
+#+ATTR_LATEX: :options [Linus Pauling]
+#+begin_quotation
+If you want to have good ideas, you must have many ideas.
+#+end_quotation
+
+* Acknowledgments
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+- Faculty :: Prof. Arnar Palsson, Prof. Hannes Jonsson, Prof. Birgir Hrafnkelsson
+- Funding :: Rannis IRF fellowship, Quansight Labs
+- Also :: Family, Lab members, Everyone here
+
+#+ATTR_LATEX: :options [Lewis Carroll, \textit{Alice in Wonderland}]
+#+begin_quotation
+Begin at the beginning, the King said gravely, ``and go on till you come to the end: then stop.''
+#+end_quotation
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+
+file:images/askjaVR3UTS.png
+
+** No Column :B_ignoreheading:
+:PROPERTIES:
+:BEAMER_env: ignoreheading
+:END:
+
+* References
+:PROPERTIES:
+:BEAMER_opt: allowframebreaks,t
+:END:
+
+\printbibliography[heading=none]
+
+* End
+:PROPERTIES:
+:BEAMER_opt: standout
+:END:
+#+BEGIN_EXPORT latex
+  \begin{center}
+    \Huge Thank you
+  \end{center}
+#+END_EXPORT
+
+# Local Variables:
+# before-save-hook: org-babel-execute-buffer
+# End:
