@@ -1,0 +1,535 @@
+#+TITLE: Reproducible Research and Machine Learning for Chemistry
+#+AUTHOR: Rohit Goswami
+# I need the footnotes to be inlined
+#+STARTUP: fninline
+#+EXCLUDE_TAGS: noexport
+
+#+BEGIN_SRC emacs-lisp :exports none :eval always
+(require 'ox-extra)
+(ox-extras-activate '(ignore-headlines))
+(eval unpackaged/org-export-html-with-useful-ids-mode)
+;; Stop using citeproc-org by default
+(setq org-export-before-parsing-hook '(org-attach-expand-links))
+#+END_SRC
+
+* Configuration :ignoreheading:ignore:
+:PROPERTIES:
+:VISIBILITY: folded
+:END:
+
+# Kanged from https://gitlab.com/oer/oer-reveal/blob/master/org/config.org
+# Also https://gitlab.com/oer/emacs-reveal-howto/-/blob/master/howto.org
+** General Options :ignoreheading:ignore:
+# No Table of contents, no section numbers
+#+OPTIONS: toc:nil num:nil
+
+# Enable smart quotes
+#+OPTIONS: ':t
+** RevealJS Options :ignoreheading:ignore:
+
+# Enable: browser history, fragment IDs in URLs, mouse wheel, links between presentations
+#+OPTIONS: reveal_history:t reveal_fragmentinurl:t  reveal_slide_number:h/v
+#+OPTIONS: reveal_mousewheel:t reveal_inter_presentation_links:t
+
+# Disable separate PDF pages for each fragment.  Just use one per slide.
+#+OPTIONS: reveal_pdfseparatefragments:nil
+
+# Display notes on separate page for PDF export.
+#+REVEAL_EXPORT_NOTES_TO_PDF: separate-page
+
+# Transition styles: none/fade/slide/convex/concave/zoom/cube
+#+REVEAL_TRANS: fade
+# Set a base theme, then override
+#+REVEAL_THEME: robot-lung
+#+REVEAL_EXTRA_CSS: /Users/rgoswami/.config/doom/reveal/extras/rlExtras.css
+#+REVEAL_EXTRA_CSS: /Users/rgoswami/.config/doom/reveal/extras/oerFragments.css
+#+REVEAL_EXTRA_CSS: /Users/rgoswami/.config/doom/reveal/extras/noImgBoxes.css
+#+REVEAL_EXTRA_CSS: /Users/rgoswami/.config/doom/reveal/extras/betterCite.css
+#+REVEAL_EXTRA_CSS: /Users/rgoswami/.config/doom/reveal/extras/moreCode.css
+#+REVEAL_MARGIN: 0.2
+#+REVEAL_PREAMBLE: <div class="line top"></div> <div class="line bottom"></div> <div class="line left"></div> <div class="line right"></div>
+
+#+REVEAL_PLUGINS: (notes search zoom)
+# The following variables are non-standard.
+# Do not display TOC-progress on title slide.
+
+#+REVEAL_TITLE_SLIDE_STATE: no-toc-progress
+# Do not display TOC-progress on TOC slide.
+#+REVEAL_TOC_SLIDE_STATE: no-toc-progress
+# Do not include TOC slide in TOC-progress.
+#+REVEAL_TOC_SLIDE_CLASS: no-toc-progress
+# Use different heading for TOC.
+#+REVEAL_TOC_SLIDE_TITLE: Agenda
+
+** External Resources :ignoreheading:ignore:
+# Note that doom-emacs sets this variable
+# https://github.com/hlissner/doom-emacs/blob/develop/modules/lang/org/contrib/present.el
+#+REVEAL_EXTRA_CSS: /Users/rgoswami/.config/doom/reveal/rjs/plugin/accessibility/helper.css
+#+REVEAL_EXTRA_CSS: /Users/rgoswami/.config/doom/reveal/rjs/plugin/toc-progress/toc-progress.css
+#+REVEAL_EXTRA_CSS: /Users/rgoswami/.config/doom/reveal/rjs/dist/theme/toc-style.css
+#+REVEAL_EXTRA_CSS: /Users/rgoswami/.config/doom/reveal/rjs/dist/theme/fonts/source-sans-pro/source-sans-pro.css
+
+# Allow to selectively hide links.
+# #+REVEAL_EXTRA_SCRIPTS: ("/Users/rgoswami/.config/doom/reveal/rjs/dist/theme/hidelinks.js")
+#+REVEAL_EXTRA_SCRIPTS: ("/Users/rgoswami/.config/doom/reveal/rjs/dist/theme/hidelinks.js" "/Users/rgoswami/.config/doom/reveal/sfeir-school-theme/dist/js/sfeir-theme.js")
+
+# The following creates an empty footer, for which the css style defines
+# a height that agrees with the TOC-progress footer’s height.
+# In this way, the footer’s height is taken into account by reveal.js’s
+# size calculations.
+#+REVEAL_SLIDE_FOOTER: <br>
+#+OPTIONS: reveal_toc_footer:t
+
+** Macros :ignoreheading:ignore:
+# Set a default bib file.
+
+# Macros to display square brackets (in texts of hyperlinks).
+# Based on: https://emacs.stackexchange.com/questions/7792/can-i-make-links-in-org-mode-that-contain-brackets-or
+# Square Bracket Open [
+#+MACRO: BO @@latex:\char91{}@@@@html:&#91;@@
+# Square Bracket Close ]
+#+MACRO: BC @@latex:\char93{}@@@@html:&#93;@@
+
+# Macro for forced line break, e.g., in titles.
+#+MACRO: BR @@latex:\\@@@@html:<br />@@
+
+# Macro to generate abbr element in HTML.  If a second argument is given, it
+# defines the title attribute.  For LaTeX, output first attribute as is and
+# ignore second one.
+#+MACRO: abbr (eval (concat "@@latex:" Modern Documentation across languages "@@@@html:<abbr" (if (< 0 (length Linguistic and Programmatic Variants)) (concat " title=\"" Linguistic and Programmatic Variants "\"") "") ">" Modern Documentation across languages "</abbr>@@"))
+
+# Macros to display code in different colors.
+#+MACRO: blackcode (eval (format "@@html:<code><span style=\"color:black; font-size:smaller;\">%s</span></code>@@ @@latex:\\verb|%s|@@" (org-html-encode-plain-text Modern Documentation across languages) Modern Documentation across languages))
+#+MACRO: redcode (eval (format "@@html:<code><span style=\"color:darkred; font-size:smaller;\">%s</span></code>@@ @@latex:\\rverb|%s|@@" (org-html-encode-plain-text Modern Documentation across languages) Modern Documentation across languages))
+#+MACRO: greencode (eval (format "@@html:<code><span style=\"color:darkgreen; font-size:smaller;\">%s</span></code>@@ @@latex:\\gverb|%s|@@" (org-html-encode-plain-text Modern Documentation across languages) Modern Documentation across languages))
+#+MACRO: bluecode (eval (format "@@html:<code><span style=\"color:darkblue; font-size:smaller;\">%s</span></code>@@ @@latex:\\bverb|%s|@@" (org-html-encode-plain-text Modern Documentation across languages) Modern Documentation across languages))
+
+** References :ignoreheading:ignore:
+bibliographystyle:unsrt
+#+LATEX_HEADER: \addbibresource{./refs.bib}
+
+** LaTeX Options :ignoreheading:ignore:
+# Setup for PDF generation via LaTeX export.
+#+LATEX_CLASS_OPTIONS: [a4paper]
+#+LATEX_HEADER: \usepackage[backend=biber,style=alphabetic]{biblatex}
+#+LATEX_HEADER: \newenvironment{notes}{\par\footnotesize}{\par}
+#+LATEX_HEADER: \newenvironment{NOTES}{\par\footnotesize}{\par}
+#+LATEX_HEADER: \newenvironment{leftcol}{\begin{minipage}{.49\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol}{\begin{minipage}{.49\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{leftcol30}{\begin{minipage}{.29\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{leftcol40}{\begin{minipage}{.39\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{leftcol60}{\begin{minipage}{.59\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{leftcol70}{\begin{minipage}{.69\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol30}{\begin{minipage}{.29\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol40}{\begin{minipage}{.39\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol60}{\begin{minipage}{.59\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol70}{\begin{minipage}{.69\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \usepackage{newunicodechar}
+#+LATEX_HEADER: \newunicodechar{≈}{$\approx$}
+#+LATEX_HEADER: \newunicodechar{⋮}{\vdots}
+#+LATEX_HEADER: \newunicodechar{ }{~}
+#+LATEX_HEADER: \usepackage{xcolor}
+#+LATEX_HEADER: \definecolor{darkred}{rgb}{0.3, 0.0, 0.0}
+#+LATEX_HEADER: \definecolor{darkgreen}{rgb}{0.0, 0.3, 0.1}
+#+LATEX_HEADER: \definecolor{darkblue}{rgb}{0.0, 0.1, 0.3}
+#+LATEX_HEADER: \definecolor{darkorange}{rgb}{1.0, 0.55, 0.0}
+#+LATEX_HEADER: \definecolor{sienna}{rgb}{0.53, 0.18, 0.09}
+#+LATEX_HEADER: \hypersetup{colorlinks,linkcolor=darkblue,citecolor=darkblue,urlcolor=darkgreen}
+#+LATEX_HEADER: \usepackage{newverbs}
+#+LATEX_HEADER: \newverbcommand{\rverb}{\color{darkred}}{}
+#+LATEX_HEADER: \newverbcommand{\gverb}{\color{darkgreen}}{}
+#+LATEX_HEADER: \newverbcommand{\bverb}{\color{darkblue}}{}
+
+* Start Here :ignoreheading:ignore:
+* Brief Introduction
+** Hello!
+- Find me here: https://rgoswami.me
+- Who?
+  + *Rohit Goswami* MInstP
+    - Doctoral Researcher, Science Institute, University of Iceland
+    - Software Engineer, Quansight Labs, Austin TX
+#+begin_leftcol
+[[file:logos/physUoI.png]]
+#+ATTR_HTML: :width 50% :height 50%
+file:logos/rannisLogo.png
+#+ATTR_HTML: :width 40% :height 40%
+[[file:logos/ccLogo.png]]
+#+end_leftcol
+#+begin_rightcol
+#+ATTR_HTML: :width 60% :height 40%
+[[file:logos/pydata2022.png]]
+#+ATTR_HTML: :width 50% :height 40%
+[[file:logos/quansightlabs.jpeg]]
+#+end_rightcol
+** Logistics
+#+ATTR_REVEAL: :frag appear
+- All contents are [[https://github.com/HaoZeke/haozeke.github.io][hosted on GitHub]]
+  + Slides are in ~presentations/PyDataGlobalImpact2022~
+#+ATTR_REVEAL: :frag appear
+- Questions are welcome *at the end*, or interrupt me
+* Potential Energy Surfaces
+- [[https://colab.research.google.com/drive/1wFmOyTqcVlv-JVLoX0VutM-iGPi5f_dy?usp=sharing][Notebook]]
+** Water Dimer
+
+#+begin_leftcol
+- System of two water molecules (Z-matrix form)
+#+begin_src tcl
+O1
+H2 1 1.0
+H3 1 1.0 2 104.52
+x4 2 1.0 1 90.0 3 180.0
+--
+O5 2 1.4 4 90.0 1 180.0
+H6 5 1.0 2 120.0 4 90.0
+H7 5 1.0 2 120.0 4 -90.0
+#+end_src
+#+ATTR_REVEAL: :frag appear
+- Energies for a configuration can be evaluated
+  + ~aug-cc-pVDZ~ SCF via PSI4
+#+end_leftcol
+#+begin_rightcol
+#+DOWNLOADED: screenshot @ 2022-05-12 06:40:13
+[[file:images/Water_Dimer/2022-05-12_06-40-13_screenshot.png]]
+#+end_rightcol
+** 1D Distance PES
+- Scan over ~R_{OO}~ values
+  + Fixed angles
+#+begin_src tcl
+O5 2 **R** 4 90.0 1 180.0
+#+end_src
+#+ATTR_HTML: :width 80% :height 80%
+file:images/1dWaterDimerPES.png
+** 1D Dihedral Angle PES
+- Scan over H-O-H angles $B=A-180$
+  + Fixed distances
+#+begin_src tcl
+H6 5 1.0 2 120.0 4 **A**
+H7 5 1.0 2 120.0 4 **B**
+#+end_src
+#+ATTR_HTML: :width 80% :height 80%
+file:images/1dWaterDimerDihedral.png
+** 2D Distance-Angle PES
+- Scan over distances and angles
+#+ATTR_REVEAL: :frag appear
+- Are we *done yet*?
+#+ATTR_HTML: :width 80% :height 80%
+file:images/2dWaterDimerPES.png
+** $n$ dimensional PES
+- Far too many possible degrees of freedom, e.g. vibrations [[[https://en.wikipedia.org/wiki/Infrared_spectroscopy][wiki]]]:
+
+#+begin_export html
+<table class="wikitable">
+
+<tbody><tr>
+<th style="background:#EAECF0;background:linear-gradient(to top right,#EAECF0 49%,#AAA 49.5%,#AAA 50.5%,#EAECF0 51%);line-height:1.2;padding:0.1em 0.4em;"><div style="margin-left:2em;text-align:right">Symmetry</div><div style="margin-right:2em;text-align:left"><br>Direction</div>
+</th>
+<th>Symmetric
+</th>
+<th>Antisymmetric
+</th></tr>
+<tr style="text-align: center;">
+<th>Radial
+</th>
+<td><a href="/wiki/File:Symmetrical_stretching.gif" class="image"><img alt="Symmetrical stretching.gif" src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Symmetrical_stretching.gif" decoding="async" width="210" height="75" data-file-width="210" data-file-height="75"></a><br>Symmetric stretching (ν<sub>s</sub>)
+</td>
+<td><a href="/wiki/File:Asymmetrical_stretching.gif" class="image"><img alt="Asymmetrical stretching.gif" src="https://upload.wikimedia.org/wikipedia/commons/0/0c/Asymmetrical_stretching.gif" decoding="async" width="210" height="75" data-file-width="210" data-file-height="75"></a><br>Antisymmetric stretching (ν<sub>as</sub>)
+</td></tr>
+<tr style="text-align: center;">
+<th>Latitudinal
+</th>
+<td><a href="/wiki/File:Scissoring.gif" class="image"><img alt="Scissoring.gif" src="https://upload.wikimedia.org/wikipedia/commons/6/60/Scissoring.gif" decoding="async" width="210" height="75" data-file-width="210" data-file-height="75"></a><br>Scissoring (δ)
+</td>
+<td><a href="/wiki/File:Modo_rotacao.gif" class="image"><img alt="Modo rotacao.gif" src="https://upload.wikimedia.org/wikipedia/commons/1/14/Modo_rotacao.gif" decoding="async" width="210" height="75" data-file-width="210" data-file-height="75"></a><br>Rocking (ρ)
+</td></tr>
+<tr style="text-align: center;">
+<th>Longitudinal
+</th>
+<td><a href="/wiki/File:Wagging.gif" class="image"><img alt="Wagging.gif" src="https://upload.wikimedia.org/wikipedia/commons/8/84/Wagging.gif" decoding="async" width="210" height="75" data-file-width="210" data-file-height="75"></a><br>Wagging (ω)
+</td>
+<td><a href="/wiki/File:Twisting.gif" class="image"><img alt="Twisting.gif" src="https://upload.wikimedia.org/wikipedia/commons/4/40/Twisting.gif" decoding="async" width="210" height="75" data-file-width="210" data-file-height="75"></a><br>Twisting (τ)
+</td></tr></tbody></table>
+#+end_export
+
+** Utility and Interpretation
+- Low lying configurations are stable
+- Used to explore products and reactants
+- Saddle points are especially important
+  + Catalysis paths
+  + Transition states
+- With assumptions (harmonic TST)
+  + Can find transitions rates
+** Minimum Energy Path (MEP)
+- cite:henkelmanClimbingImageNudged2000 Many possible minima
+- Many possible maxima --> many saddle points (SP)
+- The rate is from the *highest* SP
+  +  (assuming Boltzmann pop.)
+#+begin_quote
+We need to find all saddles between two low lying states
+--> An intractable problem
+#+end_quote
+- Machine learning methods abound
+  + Neural Networks, Gaussian Process Regressions
+* Reproducible Research
+** Data Science Woes
+#+begin_leftcol
+- Version Control
+  - Git, SVN, Mercurial (~hg~)
+- Collaboration
+  - Overleaf, Google Drive, OneDrive
+- Reproduce environments
+  - Docker, Conda, *Nix*
+- Re-run analysis
+  - Luigi, any CWL runner
+#+end_leftcol
+
+#+begin_rightcol
+file:images/ReproducibleMatrix.jpg
+#+end_rightcol
+
+** Why?
+#+ATTR_REVEAL: :frag appear
+- As a *discipline*
+  + For better communities
+#+ATTR_REVEAL: :frag appear
+- As a *requirement*
+  + For quality control
+#+ATTR_REVEAL: :frag appear
+- As a *tool*
+  + For better design
+** What?
+
+#+begin_leftcol
+fullcite:communityTuringWayHandbook2019
+
+file:images/turingWay/LogoDetailWithText.jpg
+#+end_leftcol
+
+#+begin_rightcol
+file:images/reproducibility.jpg
+#+end_rightcol
+** How?
+#+begin_leftcol
+file:images/turingWay/Provenance.jpg
+#+end_leftcol
+
+#+begin_rightcol
+file:images/turingWay/TuringWayPathway.jpg
+#+end_rightcol
+** Collaborations
+file:images/turingWay/Collaboration.jpg
+* Scaling Upwards
+** Switching Languages
+- Via embedding
+- Mixed compilations
+- Static types, C++, Rust, other languages
+** Using Accelerators
+- GPU libraries (e.g. PyTorch)
+- Accelerators like TPUs for Machine Learning
+* Embedding and Mixed Compilation
+** Why Embed?
+*** Visuals??
+#+ATTR_REVEAL: :frag appear
+- File I/O is sufficient
+#+ATTR_REVEAL: :frag appear
+#+begin_src bash
+simulate.exe > someFile.txt
+#+end_src
+#+ATTR_REVEAL: :frag appear
+#+begin_src python
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+import pandas as pd
+df = pd.read_csv("someFile.txt", sep=" ")
+# Do stuff now
+#+end_src
+#+ATTR_REVEAL: :frag appear
+- Can be better for HPC systems
+  + *Why embed / interpolate?*
+** Better Examples
+*** d-SEAMS
+- Uses ~lua~ to expose a scripting engine
+  + Computation is still ~C++~
+- Reduces compilation requirements
+  + Increases flexibility
+fullcite:goswamiDSEAMSDeferredStructural2020
+#+DOWNLOADED: screenshot @ 2021-04-13 03:36:06
+[[file:images/Better_Examples/2021-04-13_03-36-06_screenshot.png]]
+*** EON
+- EON uses a server client architecture
+- Is meant for distributed use
+fullcite:henkelmanLongTimeScale2001
+#+DOWNLOADED: screenshot @ 2021-04-13 03:39:23
+#+ATTR_HTML: :width 80% :height 80%
+[[file:images/Better_Examples/2021-04-13_03-39-23_screenshot.png]]
+
+* PyBind11
+** Embedding Python
+#+begin_leftcol
+#+ATTR_REVEAL: :frag appear
+- Example adapted [[https://github.com/tttapa/Pybind11-Matplotlib-Cpp][from here]]
+#+ATTR_REVEAL: :frag appear
+#+begin_src bash
+pip install matplotlib
+#+end_src
+#+ATTR_REVEAL: :frag appear
+#+begin_src cmake
+CPMAddPackage(
+  NAME pybind11
+  GITHUB_REPOSITORY pybind/pybind11
+  GIT_TAG v2.6.1
+)
+target_link_libraries(simulation.exe
+  ioplib pybind11::embed)
+#+end_src
+#+ATTR_REVEAL: :frag appear
+#+begin_src cpp
+// py::scoped_interpreter
+#include <pybind11/embed.h>
+#include <pybind11/stl.h>
+namespace py = pybind11;
+int main() {
+std::vector<double>
+    signal(1024);
+for (size_t i = 0; i < signal.size(); ++i)
+    signal[i] = std::exp(i / -256.0) * std::cos(2 * M_PI * 8 * i / 1024.0);
+#+end_src
+#+end_leftcol
+#+begin_rightcol
+#+ATTR_REVEAL: :frag appear
+#+begin_src cpp
+    py::scoped_interpreter guard{};
+    using namespace py::literals;
+    // Save the necessary local variables
+    // in a Python dict
+    py::dict locals = py::dict{
+        "signal"_a = signal,
+    };
+    // Execute Python code, using the variables
+    // saved in `locals`
+    py::exec(R"(
+    import matplotlib.pyplot as plt
+    plt.plot(signal)
+    plt.show()
+
+    )",
+             py::globals(), locals);
+    }
+#+end_src
+#+begin_gcid
+[[https://github.com/HaoZeke/2021_April_IOP_IntroductionToCpp_Part2/commit/5c21716f31f1498ba9e67166ad6faba4cb9159af][5c21716]]
+#+end_gcid
+#+end_rightcol
+*** Sample Run
+#+DOWNLOADED: screenshot @ 2021-04-13 04:08:12
+[[file:images/Embedding_Python/2021-04-13_04-08-12_screenshot.png]]
+
+** Proton Stepper
+#+begin_leftcol
+#+ATTR_REVEAL: :frag appear
+#+begin_src cpp
+// Getters
+double physproc::TimeStepper::getX()
+{ return p.position.x; }
+#+end_src
+#+ATTR_REVEAL: :frag appear
+#+begin_src cpp
+// Accumulators
+std::vector<double> x, y, z;
+for (int i = 0; i < 1E3; i++) {
+ ProtonStepper.Step();
+ if (i % 7 == 0) {
+  x.push_back(ProtonStepper.getX());
+  ...
+ }
+}
+py::scoped_interpreter guard{};
+using namespace py::literals;
+py::dict locals = py::dict{
+    "x"_a = x,
+    ...
+};
+py::exec(R"(
+  )",
+         py::globals(), locals);
+#+end_src
+
+#+begin_gcid
+[[https://github.com/HaoZeke/2021_April_IOP_IntroductionToCpp_Part2/commit/59555bce6a02ffe57bbd3e7ceefa5f8b271c4568][59555bc]]
+#+end_gcid
+#+end_leftcol
+#+begin_rightcol
+
+#+DOWNLOADED: screenshot @ 2021-04-13 04:37:30
+#+ATTR_REVEAL: :frag appear
+[[file:images/Proton_Stepper/2021-04-13_04-37-30_screenshot.png]]
+#+ATTR_REVEAL: :frag appear
+#+begin_src python
+from mpl_toolkits.mplot3d import Axes3D
+import matplotlib.pyplot as plt
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.scatter(x, y, z, c='r', marker='o')
+plt.show()
+#+end_src
+#+end_rightcol
+* Deploying to Production
+** Academic Clusters
+#+begin_leftcol
+*Woes*
+#+ATTR_REVEAL: :frag (appear)
+- No ~docker~
+  + If lucky, will have ~singularity~
+- No userspace support
+  + No ~proot~
+- Probably runs CentOS or something
+- Has a networked file system
+- Uses a resource queue
+  + Slurm, PBS
+- Might have support for ~lmod~
+#+end_leftcol
+#+begin_rightcol
+#+attr_html: :alt image from GE research image :align right
+[[file:images/High_Performance_Computing_Clusters/sampleCluster.png]]
+
+#+attr_html: :alt sampleoutput image :align right
+[[file:images/High_Performance_Computing_Clusters/2020-10-17_08-50-27_screenshot.png]]
+#+end_rightcol
+** Cloud Compute
+#+begin_leftcol
+#+ATTR_REVEAL: :frag (appear)
+- Typically budget bound
+- Can spin up anywhere^*
+  + Might not retain state
+#+end_leftcol
+#+begin_rightcol
+[[file:images/azureCloud.svg]]
+#+end_rightcol
+* Conclusions
+** Perspectives on Data
+- Abstractions matter
+- Workflows have commonalities
+- Deployment demands reproducible workflows
+- Focus on the outputs
+  + Without blocking design pathways
+** Further Reading
+- [[https://the-turing-way.netlify.app/welcome.html][The Turing Way]]
+- [[https://pythonspeed.com/articles/consistent-benchmarking-in-ci/][Reliable (?) benchmarking]]
+- [[https://dl.acm.org/doi/10.1145/103162.103163][Floating point numbers]]
+- [[https://diataxis.fr/][Documentation practices]]
+* The End
+** Acknowledgments
+#+DOWNLOADED: screenshot @ 2021-09-09 00:22:06
+[[file:images/Acknowledgments/2021-09-09_00-22-06_screenshot.png]]
+- [[https://notendur.hi.is//~hj/indexE.html][Prof. Hannes Jónsson]] as my supervisor, [[https://english.hi.is/staff/birgirhr][Prof. Birgir Hrafnkelsson]] as my co-supervisor
+- [[https://ondrejcertik.com/][Dr. Ondřej Čertík]] at GSI Tech.
+- [[https://quansight.com/labs][Quansight Labs]] ([[https://rgommers.github.io/][Dr. Ralf Gommers]], [[https://melissawm.github.io/about-me/][Dr. Melissa Weber Mendonça]] and [[https://github.com/pearu][Dr. Pearu Peterson]])
+- Family, pets, Groupmembers, *audience*
+** Thanks!
+:PROPERTIES:
+:reveal_background: #c9eae7
+:END:
+# Local Variables:
+# indent-tabs-mode: nil
+# org-src-preserve-indentation: t
+# End:
