@@ -253,6 +253,74 @@ nix-shell -p '(callPackage (fetchTarball https://github.com/DavHau/mach-nix/tarb
 ~mkPythonShell~ does not generate an environment which can be used here, since
 that is not a derivation which can be built.  This is most useful in the context
 of systems which use ~asdf~ or other ~PATH~ shim approaches.
+** TODO Auto-discovering ~meson~ tests :meson:cpp:build:
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: auto-disc-meson-tests
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
+
+One of the things I missed when I migrated from ~cmake~ to ~meson~ was the ease
+at which ~cmake~ discovers tests.
+
+#+begin_src cmake
+# Tests
+option(PACKAGE_TESTS "Build the tests" OFF)
+if(PACKAGE_TESTS)
+  find_package(GTest REQUIRED)
+  enable_testing()
+  include(GoogleTest)
+  add_subdirectory(gtests)
+endif()
+#+end_src
+
+Thankfully, ~meson~ can kind of emulate this behavior, even in its restricted
+syntax. The key concept is **arrays** and their iterators.
+
+#+begin_src meson
+test_array = [#
+  # ['Pretty name', 'binary_name', 'BlahTest.cpp']
+  ['String parser helpers', 'strparse_run', 'StringHelpersTest.cpp'],
+  ['Improved Dimer', 'impldim_run', 'ImpDimerTest.cpp'],
+]
+foreach test : test_array
+  test(test.get(0),
+       executable(test.get(1),
+          sources : ['gtests/'+test.get(2)],
+          dependencies : [ prog_deps, gtest_dep, gmock_dep ],
+          link_with : proglib,
+          cpp_args : prog_extra_args
+                 ),
+      )
+endforeach
+#+end_src
+
+Now this is pretty neat already, but we can go a step further and augment this
+with a working directory concept.
+
+#+begin_src meson
+test_array = [#
+  # ['Pretty name', 'binary_name', 'BlahTest.cpp', 'working_dir']
+  ['Improved Dimer', 'impldim_run', 'ImpDimerTest.cpp', '/gtests/data/'],
+  ['Matter converter', 'matter_run', 'MatterTest.cpp', '/gtests/data/systems/sulfolene'],
+  ['String parser helpers', 'strparse_run', 'StringHelpersTest.cpp', ''],
+]
+foreach test : test_array
+  test(test.get(0),
+       executable(test.get(1),
+          sources : ['gtests/'+test.get(2)],
+          dependencies : [ prog_deps, gtest_dep, gmock_dep ],
+          link_with : proglib,
+          cpp_args : prog_extra_args
+                 ),
+        workdir : meson.source_root() + test.get(3)
+      )
+endforeach
+#+end_src
+
+This is rather satisfying. Combined with some ~wraps~, it is also pretty
+portable.
+
 ** TODO Applying Patches Across Repositories :git:cmdline:patch:
 :PROPERTIES:
 :EXPORT_HUGO_BUNDLE: git-commit-patch
