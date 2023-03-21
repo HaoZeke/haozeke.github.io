@@ -1,0 +1,362 @@
+#+TITLE:     Intermediate Representations for Quantum Computing
+#+SUBTITLE:  Numerical Error Sources
+# AUTHOR will break with \inst
+#+BEAMER_HEADER:    \author{Rohit Goswami \inst{1} \and Sonaly Goswami \inst{2} \and Debabrata Goswami \inst{2}}
+#+BEAMER_HEADER: \institute[]{\inst{1} Science Institute, University of Iceland \& Quansight Labs, TX \and \inst{2} Department of Chemistry, IIT Kanpur}
+#+EMAIL:     rog32@hi.is
+#+DATE:      \today
+#+BEAMER_HEADER: \titlegraphic[height=0.25\paperheight]{images/logos/consolidatedLogos.png}{}
+#+BEAMER_HEADER: \mail{rog32@hi.is}
+
+* Configuration :ignoreheading:ignore:
+:PROPERTIES:
+:VISIBILITY: folded
+:END:
+
+#+BEGIN_SRC emacs-lisp :exports none :eval always :results none
+  (require 'ox-extra)
+  (ox-extras-activate '(ignore-headlines))
+  ;; Define Asynchronous Export
+  (defun haozeke/org-save-and-export-pdf ()
+    (if (eq major-mode 'org-mode)
+        (org-latex-export-to-pdf :async t)))
+  ;; Add hook
+  (add-hook 'after-save-hook 'haozeke/org-save-and-export-beamer)
+#+END_SRC
+
+#
+# LaTeX Stuff
+#
+
+#+DESCRIPTION:
+#+KEYWORDS:
+#+LANGUAGE:  en
+#+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc toc:nil
+#+INFOJS_OPT: view:nil toc:nil ltoc:t mouse:underline buttons:0 path:https://orgmode.org/org-info.js
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+LINK_UP:
+#+LINK_HOME:
+
+#+LATEX_COMPILER: xelatex
+#+LaTeX_CLASS: beamer
+#+startup: beamer
+#+BEAMER_THEME: Verona
+#+LaTeX_CLASS_OPTIONS: [bigger,unknownkeysallowed,aspectratio=169,red,colorblocks]
+#+BEAMER_FRAME_LEVEL: 2
+#+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
+
+#+LATEX_HEADER: \PassOptionsToPackage{unicode=true}{hyperref}
+#+LATEX_HEADER: \PassOptionsToPackage{hyphens}{url}
+#+LATEX_HEADER: \PassOptionsToPackage{dvipsnames,svgnames*,x11names*,table}{xcolor}
+#+LATEX_HEADER: \usepackage{amssymb,amsmath}
+#+LATEX_HEADER: \usepackage{mathtools}
+#+LATEX_HEADER: \usepackage{physics}
+#+LATEX_HEADER: \usepackage{hyperref}
+#+LATEX_HEADER: % Make use of float-package and set default placement for figures to H
+#+LATEX_HEADER: \usepackage{float}
+#+LATEX_HEADER: \floatplacement{figure}{H}
+
+#+LATEX_HEADER: \usepackage{fontspec}
+#+LATEX_HEADER: \setromanfont{EB Garamond}
+#+LATEX_HEADER: \usefonttheme{serif}
+
+#+LATEX_HEADER: \usepackage[absolute,overlay]{textpos}
+
+#+LATEX_HEADER: \newcommand*{\XOffsetFromBottomLeft}{32.5em}%
+#+LATEX_HEADER: \newcommand*{\YOffsetFromBottomLeft}{2.7ex}%
+#+LATEX_HEADER: \newcommand*{\BottomLeftText}[1]{%
+#+LATEX_HEADER:     \par%
+#+LATEX_HEADER: \scriptsize\begin{textblock*}{17.0cm}(\dimexpr\textwidth-\XOffsetFromBottomLeft\relax,\dimexpr\textheight-\YOffsetFromBottomLeft\relax)
+#+LATEX_HEADER:         #1%
+#+LATEX_HEADER:     \end{textblock*}%
+#+LATEX_HEADER: }%
+
+# From https://tex.stackexchange.com/questions/477784/adjust-spacing-between-main-text-and-footnote-in-beamer-slides
+#+LATEX_HEADER: \setbeamertemplate{footnote}{%
+#+LATEX_HEADER:  \makebox[1em][l]{\insertfootnotemark}%
+#+LATEX_HEADER:  \begin{minipage}{\dimexpr\linewidth-1em}
+#+LATEX_HEADER:    \footnotesize\linespread{0.84}\selectfont\insertfootnotetext
+#+LATEX_HEADER:  \end{minipage}\vskip 0pt}%
+
+# References
+#+LATEX_HEADER: \usepackage[doi=false,isbn=false,url=false,eprint=false]{biblatex}
+#+LATEX_HEADER: \bibliography{./refs.bib}
+#+bibliography: ./refs.bib
+
+# Remove header spacing https://tex.stackexchange.com/a/45005/130845
+#+BEAMER_HEADER: \makeatletter % to change template
+#+BEAMER_HEADER:     \setbeamertemplate{headline}[default] % not mandatory, but I though it was better to set it blank
+#+BEAMER_HEADER:     \def\beamer@entrycode{\vspace*{-\headheight}} % here is the part we are interested in :)
+#+BEAMER_HEADER: \makeatother
+* Start Here :ignoreheading:ignore:
+* Quantum Computing 101
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+- $|0\rangle = \begin{bmatrix}1\\0\end{bmatrix}$, $|1\rangle = \begin{bmatrix}0\\1\end{bmatrix}$
+  + Quantum computational state
+- $|0 0\rangle = |0\rangle \otimes |0\rangle = \begin{bmatrix} 1 \\ 0 \\ 0 \\ 0  \end{bmatrix}$
+  + Kronecker product (multiple Qubits)
+- $\langle 0 | 1 \rangle = \begin{bmatrix}1 & 0\end{bmatrix} \begin{bmatrix} 0 \\ 1\end{bmatrix} = 0$
+  + Inner product, braket
+** B block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+- Pauli-X gate $\begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix}$
+  + $X|0\rangle = |1\rangle$ --> Flip operation / NOT gate
+
+#+DOWNLOADED: screenshot @ 2023-03-20 18:37:56
+#+caption: Qiskit vector visualization
+[[file:images/B_block/2023-03-20_18-37-56_screenshot.png]]
+
+# * Classical vs Quantum Programming Languages
+# * Formal Language, Grammars, Parsers and Type Safety
+# ** BNF, EBNF
+* Grovers Search
+- Biased random search
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+- $|s\rangle$ (uniform), $|w\rangle$
+- *Phase inversion* around marked input $|x\prime\rangle$ cite:hundtQuantumComputingProgrammers2022
+  + $U_{f} = I^{\otimes n}-2|x\prime\rangle\langle x\prime|$
+- *Invert* about the mean
+  + $U_{\perp}=2(|+\rangle\langle+|)^{\otimes n}$
+- Iterate $k$ times applying $G=U_{\perp}U_{f}$ to get $G^{k}|+\rangle^{\otimes n}\sim|x\prime\rangle$
+  + $k = \frac{\pi}{4}\sqrt{\frac{N}{M}}$
+** B block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+- Uses $O(\sqrt{N})$ evaluations to find a marked item
+  + Classically needs $O(N)$
+
+#+caption: Circuit implementation for finding a single marked state
+#+DOWNLOADED: screenshot @ 2023-03-20 23:24:05
+[[file:images/B_block/2023-03-20_23-24-05_screenshot.png]]
+* Graphical Grovers - I
+- From the IBM Qiskit documentation
+- Prepare state
+
+#+ATTR_LaTeX: :width 0.8\linewidth
+[[file:images/B_block/2023-03-20_23-26-15_screenshot.png]]
+* Graphical Grovers - II
+- From the IBM Qiskit documentation
+- Reflect with $U_{f}$
+
+#+ATTR_LaTeX: :width 0.8\linewidth
+[[file:images/B_block/2023-03-20_23-26-26_screenshot.png]]
+* Graphical Grovers - III
+- From the IBM Qiskit documentation
+- Invert about mean $U_{\perp}$
+
+#+ATTR_LaTeX: :width 0.8\linewidth
+[[file:images/B_block/2023-03-20_23-26-38_screenshot.png]]
+
+* Abstract Programming Stack
+#+DOWNLOADED: screenshot @ 2023-03-20 23:04:51
+#+caption: Resource estimation workflow cite:beverlandAssessingRequirementsScale2022
+[[file:images/B_block/2023-03-20_23-04-51_screenshot.png]]
+
+# * Classical vs Quantum Programming Languages
+# * Formal Language, Grammars, Parsers and Type Safety
+# ** BNF, EBNF
+* Towards Quantum Computing Languages
+#+begin_quote
+“If a program or package (the words are used interchangeably) is to *have a long life* and to be of *wide application* in its field, it is essential for it to be *easily moved* from one machine to another.
+
+It used to be common to dismiss such movement with the statement, *‘There is no such thing as a machine-independent program.’*
+
+Nonetheless, a great many packages *do now move* from one machine to another”cite:lyonUsingAnsFortran1980
+#+end_quote
+
+--> Through the magic of *automated coding* and *standards*
+* Language Standards
+#+begin_quote
+“The standard is the contract between the compiler writer and the application developer.”cite:clermanModernFortranStyle2012
+#+end_quote
+
+#+BEGIN_SRC ditaa :file images/hello-program.png :cmdline -r -s 2.5 :cache yes
++------+     +----------+  assembly   +-----------+
+| Code | --> | Compiler | ----------> | Assembler | ---+
++------+     +----------+             +-----------+    |
+  relocatable machine code                             |
++----------------------------<-------------------------+
+|
+|
+|     +--------+  executable  +--------+     +--------+
++---> | Linker | -----------> | Loader | --> | Memory |
+      +--------+              +--------+     +--------+
+#+END_SRC
+
+#+RESULTS[f1fc83b64fe81184a3a817828e6dd0aec3714f25]:
+[[file:images/hello-program.png]]
+
+- For QC, most IRs work at the circuit level
+  + Python itself is an interpreter which is commonly implemented in C
+* Pitfalls of ignoring precision
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+*Rotation Matrices*
+~complex64~ and ~complex128~
+#+begin_export latex
+\begin{align*}
+\text{Rx} = \begin{bmatrix}
+    \cos(\frac{\theta_x}{2}) & -i \sin(\frac{\theta_x}{2}) \\
+    -i \sin(\frac{\theta_x}{2}) & \cos(\frac{\theta_x}{2})
+\end{bmatrix}
+\end{align*}
+\begin{align*}
+\text{Ry} = \begin{bmatrix}
+    \cos(\frac{\theta_y}{2}) & -\sin(\frac{\theta_y}{2}) \\
+    \sin(\frac{\theta_y}{2}) & \cos(\frac{\theta_y}{2})
+\end{bmatrix}
+\end{align*}
+\begin{align*}
+\text{Rz} = \begin{bmatrix}
+    e^{-i\frac{\theta_z}{2}} & 0 \\
+    0 & e^{i\frac{\theta_z}{2}}
+\end{bmatrix}
+\end{align*}
+#+end_export
+
+** B block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+*Overall algorithm*
+- $R(\theta_x, \theta_y, \theta_z) = \text{Rz}\text{Ry}\text{Rx}$
+- Applied successively to $|\psi_{0}\rangle = |0\rangle$ for $n$ iterations
+  $$ |\psi_{n}\rangle= R(\theta_x, \theta_y, \theta_z)^{n}|\psi_{0}\rangle$$
+
+#+ATTR_LaTeX: :width 0.8\linewidth
+file:images/precAlgQubit.png
+* Abstract Semantic Representations
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+- Concept from LFortran / LPython
+- Abstract semantics enforce constraints
+- Accept multiple front-ends
+- Compile to various backends (QIR, Quil, Silq etc.)
+** B block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+#+BEGIN_SRC ditaa :file images/hello-lfortran.png :cmdline -r -s 3.5 :cache yes
++------+     +-----------+     +----------------+
+| Code | --> | Abstract  | --> | (ASR) Abstract | ---+
+|      |     | Syntax    |     |       Semantic |    |
+|      |     | Tree (AST)|     | Representation |    |
++------+     +-----------+     +----------------+    |
+                                                     |
+          +--------+                                 |
++---------| Passes |--------------<------------------+
+|         +--------+
+|
+|                        +--------+
+|                    +-->| Python |
+|                    |   +--------+
+|                    |
+|     +----------+   |   +------+
++---> | Backends | --+-->| LLVM |
+      +----------+   |   +------+
+                     |
+                     |   +-----+
+                     +-->| C++ |
+                         +-----+
+#+END_SRC
+
+#+RESULTS[e593bcddd9ca0862ed60f7f70716ce54612ef366]:
+[[file:images/hello-lfortran.png]]
+* Temporary allocations
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+- Removing temporary values causes implicit measurements cite:bichselSilqHighlevelQuantum2020
+  + States must be modified for temporary value removal
+- Crucially, that ~silq~ performs this implies an IR can too
+** B block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+
+#+DOWNLOADED: screenshot @ 2023-03-20 23:09:08
+[[file:images/B_block/2023-03-20_23-09-08_screenshot.png]]
+
+* Conclusions and Future
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+*Conclusions*
+- Accumulation of numerical errors can be relevant
+- IRs ought to account for precision
+- Intermediates can apply automatic uncomputation
+- SSA (Static single assignment) may not be required for QC
+- ASR's might be more relevant for QC
+
+** B block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+*Ongoing efforts*
+- Formalizing the grammar
+  + Currently exploring the LFortran ASR
+- Integrating with hardware
+- More tests
+* Acknowledgments
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+- Faculty :: Prof. Hannes Jonsson, Prof. Birgir Hrafnkelsson
+- Funding :: Rannis IRF fellowship, Quansight Labs
+- Also :: Family, Lab members, Everyone here
+
+#+ATTR_LATEX: :options [Lewis Carroll, \textit{Alice in Wonderland}]
+#+begin_quotation
+Begin at the beginning, the King said gravely, ``and go on till you come to the end: then stop.''
+#+end_quotation
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+
+#+DOWNLOADED: screenshot @ 2023-03-20 23:34:57
+[[file:images/A_screenshot/2023-03-20_23-34-57_screenshot.png]]
+
+
+** No Column :B_ignoreheading:
+:PROPERTIES:
+:BEAMER_env: ignoreheading
+:END:
+
+* References
+:PROPERTIES:
+:BEAMER_opt: allowframebreaks,t
+:END:
+
+\printbibliography[heading=none]
+
+* End
+:PROPERTIES:
+:BEAMER_opt: standout
+:END:
+#+BEGIN_EXPORT latex
+  \begin{center}
+    \Huge Thank you
+  \end{center}
+#+END_EXPORT
+
+# Local Variables:
+# before-save-hook: org-babel-execute-buffer
+# End:
