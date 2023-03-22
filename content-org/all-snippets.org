@@ -253,7 +253,8 @@ nix-shell -p '(callPackage (fetchTarball https://github.com/DavHau/mach-nix/tarb
 ~mkPythonShell~ does not generate an environment which can be used here, since
 that is not a derivation which can be built.  This is most useful in the context
 of systems which use ~asdf~ or other ~PATH~ shim approaches.
-** TODO Auto-discovering ~meson~ tests :meson:cpp:build:
+** DONE Auto-discovering ~meson~ tests :meson:cpp:build:
+CLOSED: [2023-03-22 Wed 13:59]
 :PROPERTIES:
 :EXPORT_HUGO_BUNDLE: auto-disc-meson-tests
 :EXPORT_FILE_NAME: index
