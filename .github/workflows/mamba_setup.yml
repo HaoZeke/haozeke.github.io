@@ -6,7 +6,7 @@ on:
     - cron: "0 0 */1 * *"
 
 jobs:
-  test:
+  buildSite:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -14,20 +14,22 @@ jobs:
           submodules: "recursive" # Fetch Hugo themes (true OR recursive)
           fetch-depth: 0 # Fetch all history for .GitInfo and .Lastmod
 
-      - name: Setup Emacs
-        run: sudo apt-get update && sudo apt-get install emacs
-
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
         with:
-          hugo-version: '0.97.3'
+          hugo-version: '0.111.3'
           extended: true
+
+      - name: Setup Emacs
+        uses: purcell/setup-emacs@master
+        with:
+          version: 28.2
 
       - name: Install Conda environment
         uses: mamba-org/provision-with-micromamba@main
 
       # Linux and macOS
-      - name: Install depedencies and build
+      - name: Install dependencies and build
         shell: bash -l {0}
         run: |
           npm install
@@ -40,7 +42,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3.8.0
         with:
           deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-          enable_jekyll: true
+          enable_jekyll: false # No jekyll processing needed
           publish_branch: gh-pages
           publish_dir: ./public
           keep_files: true
