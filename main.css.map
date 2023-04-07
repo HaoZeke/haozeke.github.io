@@ -1,7 +1,7 @@
 {
 	"version": 3,
 	"file": "main.css",
-	"sourceRoot": "/home/rgoswami/Git/Github/WebDev/Mine/haozeke.github.io",
+	"sourceRoot": "/home/runner/work/haozeke.github.io/haozeke.github.io",
 	"sources": [
 		"themes/hello-friend-ng-hz/assets/scss/main.scss",
 		"themes/hello-friend-ng-hz/assets/scss/lib/responsive_type/_vars.scss",
