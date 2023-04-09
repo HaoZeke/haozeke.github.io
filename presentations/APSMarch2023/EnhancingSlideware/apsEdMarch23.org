@@ -1,0 +1,624 @@
+#+TITLE: Enhancing slideware for computational physics education
+#+SUBTITLE: APS March Meeting 2023
+#+AUTHOR: Rohit Goswami
+# I need the footnotes to be inlined
+#+STARTUP: fninline
+#+EXCLUDE_TAGS: noexport
+
+#+BEGIN_SRC emacs-lisp :exports none :eval always
+(require 'ox-extra)
+(ox-extras-activate '(ignore-headlines))
+#+END_SRC
+
+* Configuration :ignoreheading:ignore:
+:PROPERTIES:
+:VISIBILITY: folded
+:END:
+
+# Kanged from https://gitlab.com/oer/oer-reveal/blob/master/org/config.org
+# Also https://gitlab.com/oer/emacs-reveal-howto/-/blob/master/howto.org
+** General Options :ignoreheading:ignore:
+# No Table of contents, no section numbers
+#+OPTIONS: toc:nil num:t
+
+# Enable smart quotes
+#+OPTIONS: ':t
+** RevealJS Options :ignoreheading:ignore:
+
+# Enable: browser history, slide numbers, fragment IDs in URLs, mouse wheel, links between presentations
+#+OPTIONS: reveal_history:t reveal_slide_number:t reveal_fragmentinurl:t
+#+OPTIONS: reveal_mousewheel:t reveal_inter_presentation_links:t
+
+# Disable separate PDF pages for each fragment.  Just use one per slide.
+#+OPTIONS: reveal_pdfseparatefragments:nil
+
+# Display notes on separate page for PDF export.
+#+REVEAL_EXPORT_NOTES_TO_PDF: separate-page
+
+# Transition styles: none/fade/slide/convex/concave/zoom/cube
+#+REVEAL_TRANS: fade
+# Set a base theme, then override
+#+REVEAL_THEME: white
+#+REVEAL_EXTRA_CSS: /home/rgoswami/.config/doom/reveal/extras/robot-lung.css
+#+REVEAL_EXTRA_CSS: /home/rgoswami/.config/doom/reveal/extras/oerFragments.css
+#+REVEAL_EXTRA_CSS: /home/rgoswami/.config/doom/reveal/extras/rlExtras.css
+#+REVEAL_EXTRA_CSS: /home/rgoswami/.config/doom/reveal/extras/noImgBoxes.css
+#+REVEAL_EXTRA_CSS: /home/rgoswami/.config/doom/reveal/extras/moreCode.css
+#+REVEAL_MARGIN: 0.2
+#+REVEAL_PREAMBLE: <div class="line top"></div> <div class="line bottom"></div> <div class="line left"></div> <div class="line right"></div>
+
+#+REVEAL_PLUGINS: (notes search zoom)
+# The following variables are non-standard.
+# Do not display TOC-progress on title slide.
+
+#+REVEAL_TITLE_SLIDE_STATE: no-toc-progress
+# Do not display TOC-progress on TOC slide.
+#+REVEAL_TOC_SLIDE_STATE: no-toc-progress
+# Do not include TOC slide in TOC-progress.
+#+REVEAL_TOC_SLIDE_CLASS: no-toc-progress
+# Use different heading for TOC.
+#+REVEAL_TOC_SLIDE_TITLE: Agenda
+
+** External Resources :ignoreheading:ignore:
+# Note that doom-emacs sets this variable
+# https://github.com/hlissner/doom-emacs/blob/develop/modules/lang/org/contrib/present.el
+#+REVEAL_EXTRA_CSS: /home/rgoswami/.config/doom/reveal/rjs/plugin/accessibility/helper.css
+#+REVEAL_EXTRA_CSS: /home/rgoswami/.config/doom/reveal/rjs/plugin/toc-progress/toc-progress.css
+#+REVEAL_EXTRA_CSS: /home/rgoswami/.config/doom/reveal/rjs/dist/theme/toc-style.css
+#+REVEAL_EXTRA_CSS: /home/rgoswami/.config/doom/reveal/rjs/dist/theme/fonts/source-sans-pro/source-sans-pro.css
+
+# Allow to selectively hide links.
+#+REVEAL_EXTRA_SCRIPTS: ("/home/rgoswami/.config/doom/reveal/rjs/dist/theme/hidelinks.js")
+
+# The following creates an empty footer, for which the css style defines
+# a height that agrees with the TOC-progress footer’s height.
+# In this way, the footer’s height is taken into account by reveal.js’s
+# size calculations.
+#+REVEAL_SLIDE_FOOTER: <br>
+#+OPTIONS: reveal_toc_footer:t
+
+** Macros :ignoreheading:ignore:
+# Set a default bib file.
+
+# Macros to display square brackets (in texts of hyperlinks).
+# Based on: https://emacs.stackexchange.com/questions/7792/can-i-make-links-in-org-mode-that-contain-brackets-or
+# Square Bracket Open [
+#+MACRO: BO @@latex:\char91{}@@@@html:&#91;@@
+# Square Bracket Close ]
+#+MACRO: BC @@latex:\char93{}@@@@html:&#93;@@
+
+# Macro for forced line break, e.g., in titles.
+#+MACRO: BR @@latex:\\@@@@html:<br />@@
+
+# Macro to generate abbr element in HTML.  If a second argument is given, it
+# defines the title attribute.  For LaTeX, output first attribute as is and
+# ignore second one.
+#+MACRO: abbr (eval (concat "@@latex:" Enhancing slideware for computational physics education "@@@@html:<abbr" (if (< 0 (length APS March Meeting 2023)) (concat " title=\"" APS March Meeting 2023 "\"") "") ">" Enhancing slideware for computational physics education "</abbr>@@"))
+
+# Macros to display code in different colors.
+#+MACRO: blackcode (eval (format "@@html:<code><span style=\"color:black; font-size:smaller;\">%s</span></code>@@ @@latex:\\verb|%s|@@" (org-html-encode-plain-text Enhancing slideware for computational physics education) Enhancing slideware for computational physics education))
+#+MACRO: redcode (eval (format "@@html:<code><span style=\"color:darkred; font-size:smaller;\">%s</span></code>@@ @@latex:\\rverb|%s|@@" (org-html-encode-plain-text Enhancing slideware for computational physics education) Enhancing slideware for computational physics education))
+#+MACRO: greencode (eval (format "@@html:<code><span style=\"color:darkgreen; font-size:smaller;\">%s</span></code>@@ @@latex:\\gverb|%s|@@" (org-html-encode-plain-text Enhancing slideware for computational physics education) Enhancing slideware for computational physics education))
+#+MACRO: bluecode (eval (format "@@html:<code><span style=\"color:darkblue; font-size:smaller;\">%s</span></code>@@ @@latex:\\bverb|%s|@@" (org-html-encode-plain-text Enhancing slideware for computational physics education) Enhancing slideware for computational physics education))
+
+** LaTeX Options :ignoreheading:ignore:
+# Setup for PDF generation via LaTeX export.
+#+LATEX_CLASS_OPTIONS: [a4paper]
+#+LATEX_HEADER: \usepackage[backend=biber,style=alphabetic]{biblatex}
+#+LATEX_HEADER: \addbibresource{~/GDrive/zotLib.bib}
+#+LATEX_HEADER: \newenvironment{notes}{\par\footnotesize}{\par}
+#+LATEX_HEADER: \newenvironment{NOTES}{\par\footnotesize}{\par}
+#+LATEX_HEADER: \newenvironment{leftcol}{\begin{minipage}{.49\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol}{\begin{minipage}{.49\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{leftcol30}{\begin{minipage}{.29\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{leftcol40}{\begin{minipage}{.39\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{leftcol60}{\begin{minipage}{.59\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{leftcol70}{\begin{minipage}{.69\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol30}{\begin{minipage}{.29\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol40}{\begin{minipage}{.39\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol60}{\begin{minipage}{.59\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \newenvironment{rightcol70}{\begin{minipage}{.69\textwidth}}{\end{minipage}}
+#+LATEX_HEADER: \usepackage{newunicodechar}
+#+LATEX_HEADER: \newunicodechar{≈}{$\approx$}
+#+LATEX_HEADER: \newunicodechar{⋮}{\vdots}
+#+LATEX_HEADER: \newunicodechar{ }{~}
+#+LATEX_HEADER: \usepackage{xcolor}
+#+LATEX_HEADER: \definecolor{darkred}{rgb}{0.3, 0.0, 0.0}
+#+LATEX_HEADER: \definecolor{darkgreen}{rgb}{0.0, 0.3, 0.1}
+#+LATEX_HEADER: \definecolor{darkblue}{rgb}{0.0, 0.1, 0.3}
+#+LATEX_HEADER: \definecolor{darkorange}{rgb}{1.0, 0.55, 0.0}
+#+LATEX_HEADER: \definecolor{sienna}{rgb}{0.53, 0.18, 0.09}
+#+LATEX_HEADER: \hypersetup{colorlinks,linkcolor=darkblue,citecolor=darkblue,urlcolor=darkgreen}
+#+LATEX_HEADER: \usepackage{newverbs}
+#+LATEX_HEADER: \newverbcommand{\rverb}{\color{darkred}}{}
+#+LATEX_HEADER: \newverbcommand{\gverb}{\color{darkgreen}}{}
+#+LATEX_HEADER: \newverbcommand{\bverb}{\color{darkblue}}{}
+
+* Start Here :ignoreheading:ignore:
+* Brief Introduction
+** Hello!
+- Find me here: https://rgoswami.me
+- Who?
+  + *Rohit Goswami* MInstP MRSC MBCS
+    - Doctoral Researcher, University of Iceland, Faculty of Physical Sciences & Science Insitute
+    - Software Engineer (II), Quansight Labs, TX, USA
+#+begin_leftcol
+[[file:images/consolidatedLogos.png]]
+#+end_leftcol
+#+begin_rightcol
+#+ATTR_HTML: :width 70% :height 70%
+
+#+DOWNLOADED: screenshot @ 2023-03-21 18:02:21
+[[file:images/Hello!/2023-03-21_18-02-21_screenshot.png]]
+
+#+end_rightcol
+# ** What I Do
+# #+begin_leftcol
+# file:images/stuff/volcano.png
+# #+end_leftcol
+# #+begin_rightcol
+# #+ATTR_REVEAL: :frag appear
+# - A good place to work on Water!!
+# file:images/collages/ice7.png
+# #+end_rightcol
+** Logistics
+#+ATTR_REVEAL: :frag appear
+- All contents are [[https://github.com/HaoZeke/2021_April_IOP_IntroductionToCpp_Part2][hosted on GitHub]]
+  + Slides are in ~docs/pres~
+#+ATTR_REVEAL: :frag appear
+- Slides have shortned commit IDs
+  + These lead to specific points in the ~git log~
+#+ATTR_REVEAL: :frag appear
+- Questions are welcome after / during the lecture
+  + [[https://github.com/HaoZeke/2021_April_IOP_IntroductionToCpp_Part2/discussions/categories/q-a][GitHub Discussions]] have been set up for this
+* Student Populations
+#+begin_leftcol
+- Few students
+  + Personal attention
+  + Workshops
+#+end_leftcol
+
+#+begin_rightcol
+- Many students
+  + Hard to provide feedback
+  + Courses
+#+end_rightcol
+* Major Obstacles
+#+begin_leftcol
+- Limited time
+- Limited resources
+- Reading code can be daunting
+  - Even small projects can run into the 1000s
+#+end_leftcol
+#+begin_rightcol
+- "A good building should not show its scaffolding when completed" --> Gauss
+
+#+end_rightcol
+
+#+DOWNLOADED: screenshot @ 2023-03-22 13:25:12
+[[file:images/Major_Obstacles/2023-03-22_13-25-12_screenshot.png]]
+
+* Theoretical Minimums
+#+begin_leftcol
+- Project setup
+- Compilation
+- Shell scripting?
+- Environments?
+#+end_leftcol
+#+begin_rightcol
+- Documentation
+- Best practices?
+- Embedding?
+- Devops?
+#+end_rightcol
+** Clusters
+#+begin_leftcol
+*Woes*
+#+ATTR_REVEAL: :frag (appear)
+- No ~docker~
+  + If lucky, will have ~singularity~
+- No userspace support
+  + No ~proot~
+- Probably runs CentOS or something
+- Has a networked file system
+- Uses a resource queue
+  + Slurm, PBS
+- Might have support for ~lmod~
+#+end_leftcol
+#+begin_rightcol
+#+attr_html: :alt image from GE research image :align right
+[[file:images/High_Performance_Computing_Clusters/sampleCluster.png]]
+
+#+attr_html: :alt sampleoutput image :align right
+[[file:images/High_Performance_Computing_Clusters/2020-10-17_08-50-27_screenshot.png]]
+#+end_rightcol
+
+** Proton Stepper
+#+begin_leftcol
+#+ATTR_REVEAL: :frag appear
+#+begin_src cpp
+// Getters
+double physproc::TimeStepper::getX()
+{ return p.position.x; }
+#+end_src
+#+ATTR_REVEAL: :frag appear
+#+begin_src cpp
+// Accumulators
+std::vector<double> x, y, z;
+for (int i = 0; i < 1E3; i++) {
+ ProtonStepper.Step();
+ if (i % 7 == 0) {
+  x.push_back(ProtonStepper.getX());
+  ...
+ }
+}
+py::scoped_interpreter guard{};
+using namespace py::literals;
+py::dict locals = py::dict{
+    "x"_a = x,
+    ...
+};
+py::exec(R"(
+  )",
+         py::globals(), locals);
+#+end_src
+
+#+begin_gcid
+[[https://github.com/HaoZeke/2021_April_IOP_IntroductionToCpp_Part2/commit/59555bce6a02ffe57bbd3e7ceefa5f8b271c4568][59555bc]]
+#+end_gcid
+#+end_leftcol
+#+begin_rightcol
+
+#+DOWNLOADED: screenshot @ 2021-04-13 04:37:30
+#+ATTR_REVEAL: :frag appear
+[[file:images/Proton_Stepper/2021-04-13_04-37-30_screenshot.png]]
+#+ATTR_REVEAL: :frag appear
+#+begin_src python
+from mpl_toolkits.mplot3d import Axes3D
+import matplotlib.pyplot as plt
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.scatter(x, y, z, c='r', marker='o')
+plt.show()
+#+end_src
+#+end_rightcol
+
+* Local Project Layouts
+** Language Agnostic Beginnings
+#+ATTR_REVEAL: :frag appear
+#+BEGIN_leftcol
+#+ATTR_REVEAL: :frag (appear)
+- ~Readme.{md,org}~ :: Motivation, rationale, license, installation instructions
+- ~LICENSE~ :: Plain text, and preferably an open license
+  - [[https://github.com/azu/license-generator][license-generator]] is pretty handy for this
+- ~.gitignore~ :: Lists files which do not need to be committed; typically generated files
+  - [[https://github.com/simonwhitaker/gibo][gibo]] can be used to generate these
+#+END_leftcol
+#+BEGIN_rightcol
+#+ATTR_REVEAL: :frag appear
+#+begin_src bash
+$ git init # Inside project
+$ gibo macOS Windows Xcode Emacs \
+    Vim Python C++ \
+    CMake TeX > .gitignore
+$ touch readme.md
+$ license-generator MIT \
+    --author "Person"
+$ tree -L 2
+.
+├── LICENSE
+├── docs
+│   └── pres
+└── readme.org
+
+2 directories, 2 files
+#+end_src
+
+#+begin_gcid
+[[https://github.com/HaoZeke/2021_April_IOP_IntroductionToCpp_Part2/commit/9c294144a3d5518dfe03ad53912f2e768e6cc47e][9c29414]]
+#+end_gcid
+#+END_rightcol
+** C++ Project Structure
+#+ATTR_REVEAL: :frag appear
+#+BEGIN_leftcol
+#+ATTR_REVEAL: :frag (appear)
+- ~src/~ :: Should be split into libraries and executables
+- ~include/~ :: For headers, internal and external
+- ~docs/~ :: Documentation of all kinds, typically including markdown files
+- ~CMakeLists.txt~ :: The project build system
+- ~ci/~ :: Scripts for continuous integration
+#+END_leftcol
+#+BEGIN_rightcol
+#+DOWNLOADED: screenshot @ 2021-04-12 21:03:39
+#+ATTR_REVEAL: :frag appear
+[[file:images/C++_Project_Structure/2021-04-12_21-03-39_screenshot.png]]
+[fn:: Cute graphic [[http://archive.makzan.net/images/introducing-web-design/preprocessing.png][from here]]]
+
+#+ATTR_REVEAL: :frag appear
+#+begin_src cpp
+// Along each -I and INCLUDE
+#include<iostream>
+#+end_src
+
+#+ATTR_REVEAL: :frag appear
+#+begin_src cpp
+// Starts in the same directory
+// Reverse order upward
+// -I and INCLUDE
+#include "path-spec"
+#+end_src
+
+#+begin_gcid
+[[https://github.com/HaoZeke/2021_April_IOP_IntroductionToCpp_Part2/commit/a5a0a9ebac0340a5dc7c1c192e062f3a68d32cc4][a5a0a9e]]
+#+end_gcid
+#+END_rightcol
+* Iterative Improvements - I
+** Refactoring CMakefile - I
+#+begin_leftcol
+- Comments are imperative
+- Segregation of build allows for easy cleanup
+  - ~rm -rf build~
+#+ATTR_REVEAL: :frag appear
+#+begin_src cmake
+# --- Variables
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release
+endif()
+set(CMAKE_CXX_FLAGS "-Wall -Wextra")
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+#+end_src
+#+ATTR_REVEAL: :frag appear
+#+begin_src bash
+$ # Should fail!!!
+$ cmake .
+#+end_src
+#+begin_gcid
+[[https://github.com/HaoZeke/2021_April_IOP_IntroductionToCpp_Part2/commit/8193ad90fe6755f6c39d66f175572556dbcad5ad][8193ad9]]
+#+end_gcid
+#+end_leftcol
+#+begin_rightcol
+#+ATTR_REVEAL: :frag appear
+#+begin_src cmake
+cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
+# ---- Project ----
+project(
+  PenningTrapSimulationII
+  VERSION 1.0
+  LANGUAGES CXX
+)
+# ---- Include guards ----
+if(PROJECT_SOURCE_DIR
+    STREQUAL PROJECT_BINARY_DIR)
+  message(
+    FATAL_ERROR
+    "In-source builds not allowed.
+    Please make a new directory
+    (called a build directory)
+    and run CMake from there."
+  )
+endif()
+#+end_src
+#+ATTR_REVEAL: :frag appear
+#+begin_src bash
+$ # Works
+$ cmake -H. -Bbuild
+$ cmake --build build
+$ cd build
+$ simulation.exe
+#+end_src
+#+end_rightcol
+** Header Only Includes
+#+begin_leftcol
+#+ATTR_REVEAL: :frag appear
+- These are meant for small classes
+  + With inlined definitions
+#+ATTR_REVEAL: :frag appear
+#+begin_src cpp
+#ifndef IOP_VEC_H
+#define IOP_VEC_H
+...
+#endif /* IOP_VEC_H */
+#+end_src
+#+ATTR_REVEAL: :frag appear
+- Prevents multiple inclusion
+- Modularity means more unit-tests
+  + Better guarantees
+#+end_leftcol
+#+begin_rightcol
+#+ATTR_REVEAL: :frag appear
+#+begin_src cmake
+# --- Library
+set(headers
+  "${CMAKE_CURRENT_SOURCE_DIR}/include/math_types/iop_vec.hpp")
+set(sources "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp")
+ # Build
+add_executable(simulation.exe ${sources})
+# Add to INCLUDE
+target_include_directories(
+  simulation.exe PUBLIC
+  $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+)
+#+end_src
+#+ATTR_REVEAL: :frag appear
+- We prefer ~<>~ to ~""~ for includes
+#+ATTR_REVEAL: :frag appear
+#+begin_src cpp
+#include <math_types/iop_vec.hpp>
+#+end_src
+
+#+begin_gcid
+[[https://github.com/HaoZeke/2021_April_IOP_IntroductionToCpp_Part2/commit/9ca7f3a123b9891159a805fe78b549a6762744da][9ca7f3a]]
+#+end_gcid
+#+end_rightcol
+* Package Management
+** Current Scenario
+#+begin_leftcol
+#+ATTR_REVEAL: :frag appear
+file:images/xkcd/python_xkcd.png
+[fn:: Comic [[https://xkcd.com/353/][from here]]]
+
+#+ATTR_REVEAL: :frag appear
+- *Nix is the answer!!* (not here)
+#+end_leftcol
+#+begin_rightcol
+#+ATTR_REVEAL: :frag appear
+- ~Python~ :: ~poetry~, ~pipenv~, ~pyenv~
+- ~C++~ :: ~conan~, ~vcpkg~, _~cpm~_
+#+ATTR_REVEAL: :frag appear
+file:images/collages/systemManagers.png
+#+end_rightcol
+** CPM and CMake
+#+ATTR_REVEAL: :frag appear
+#+begin_src bash
+mkdir -p cmake
+wget -O cmake/CPM.cmake "https://github.com/cpm-cmake/\
+CPM.cmake/releases/latest/download/get_cpm.cmake"
+# Can get slow otherwise, rebuilds constantly
+export CPM_SOURCE_CACHE=$HOME/.cache/CPM
+#+end_src
+#+ATTR_REVEAL: :frag appear
+#+begin_src cmake
+# --- Helpers
+include(cmake/CPM.cmake)
+CPMUsePackageLock(package-lock.cmake)
+#+end_src
+#+ATTR_REVEAL: :frag appear
+#+begin_src bash
+# We like locks
+cmake -H. -Bbuild
+cmake --build build --target cpm-update-package-lock
+#+end_src
+* Testing
+** Testing Frameworks
+#+begin_leftcol
+#+ATTR_REVEAL: :frag appear
+- ~C++~ has great testing frameworks
+  + _~Catch2~_, ~googletest~, ~doctest~, etc.
+#+ATTR_REVEAL: :frag appear
+- *Unit tests* are the first layer
+  + Ensure each function outputs as expected
+#+ATTR_REVEAL: :frag appear
+- *Integration tests* are for workflows
+  + Ensure each series of tasks connect correctly
+#+ATTR_REVEAL: :frag appear
+#+begin_src cmake
+# Catch2 CMakeLists.txt
+include(CTest)
+add_subdirectory(tests)
+enable_testing()
+#+end_src
+#+end_leftcol
+#+begin_rightcol
+#+ATTR_REVEAL: :frag appear
+#+begin_src cmake
+# --- Externals ./tests/CMakeLists.txt
+include(../cmake/CPM.cmake)
+CPMAddPackage("gh:catchorg/Catch2@2.13.4")
+add_executable(particle_tests
+               main.cpp
+              vector_particle-test.cpp
+              phys_processes-test.cpp
+)
+# Link everything
+target_link_libraries(particle_tests
+  ioplib
+  Catch2)
+target_compile_features(particle_tests PRIVATE cxx_std_17)
+# Project Libraries
+include_directories(
+../src/include/data_types
+${PROJECT_SOURCE_DIR}/src/include/)
+# ---- Run tests ----
+add_test(NAME particleIOP-unit-tests
+COMMAND $<TARGET_FILE:particle_tests>)
+#+end_src
+#+end_rightcol
+** Writing Tests
+#+begin_leftcol
+#+ATTR_REVEAL: :frag appear
+#+begin_src cpp
+#define CATCH_CONFIG_MAIN
+#define CATCH_CONFIG_RUNNER
+#include <catch2/catch.hpp>
+#+end_src
+#+ATTR_REVEAL: :frag appear
+- The macros must not be repeated
+#+ATTR_REVEAL: :frag appear
+- Many more test scenarios
+  + d-SEAMS [[https://github.com/d-SEAMS/seams-core][has examples]]
+  + [[https://github.com/catchorg/Catch2/blob/devel/docs/tutorial.md#scaling-up][Official docs are great]]
+#+ATTR_REVEAL: :frag appear
+- Try *fixing gravity* as _homework_!
+  + Open a PR (pull request) when done
+#+end_leftcol
+#+begin_rightcol
+#+ATTR_REVEAL: :frag appear
+#+begin_src cpp
+#include <catch2/catch.hpp>
+#include <data_types/iop_particle.hpp>
+#include <data_types/iop_vec.hpp>
+#include <phys_procs.hpp>
+#include <iostream>
+TEST_CASE("Basic Vector class tests", "Vector3") {
+  iopdat::Vector3 a{1, 2, 3};
+REQUIRE(sizeof(a) == 24);
+REQUIRE(sizeof(a) / sizeof(1) == 6);
+REQUIRE(sizeof(a) / sizeof(1.0) == 3);
+  iopdat::Vector3 b{4, 5, 6};
+  b += a;
+  REQUIRE(b.x == 5);
+  REQUIRE(b.y == 7);
+  REQUIRE(b.z == 9);
+  std::cout << b.x;
+}
+#+end_src
+#+begin_gcid
+[[https://github.com/HaoZeke/2021_April_IOP_IntroductionToCpp_Part2/commit/d9ded32c144fde02667dde19f70cf49a11bd5625][d9ded32]]
+#+end_gcid
+#+end_rightcol
+* Conclusions
+** Omitted Topics
+#+ATTR_REVEAL: :frag appear
+- Continuous integration :: Robust tests
+#+ATTR_REVEAL: :frag appear
+- Embeddings :: Mixing languages
+#+ATTR_REVEAL: :frag appear
+- Documentation :: Possibly the most underrated skill in computational work
+#+ATTR_REVEAL: :frag appear
+- Package Management :: Managing OS's
+#+ATTR_REVEAL: :frag appear
+- HPC and Parallelism :: Efficient data usage and algorithms
+#+ATTR_REVEAL: :frag appear
+- Code Review Practices :: Scrum and teamwork
+#+ATTR_REVEAL: :frag appear
+- Inter process communication :: Across networks and process, including serialization
+** Further Resources
+- [[https://docs.microsoft.com/en-us/cpp/cpp/welcome-back-to-cpp-modern-cpp?view=msvc-160][Microsoft Visual Studio]] :: Has a surprisingly good introduction and [[https://docs.microsoft.com/en-us/cpp/get-started/tutorial-console-cpp?view=msvc-160][even some projects]]
+- [[https://rgoswami.me/posts/ccon-tut-nix/][A Tutorial Introduction to Nix]] :: Package management at the system level in a reproducible manner
+- [[https://rgoswami.me/posts/symengine-gsod20/][SymEngine and the Season of Docs]] :: Describes the present SOTA for documentation practices in the context of a large multi-language project
+- [[https://rgoswami.me/posts/iop-cpp-2021-meta/][C++ workshop]] :: along these guidelines
+** Why?
+- Better engagement
+  + Each slide corresponds to a commit
+- Students can take their time
+  + Git history is readable
+- Slides focus on changes
+  + Not too much cognitive overload
+* The End
+# ** Bibliography
+# :PROPERTIES:
+# :CUSTOM_ID: bibliography
+# :END:
+
+# printbibliography:/Users/rohitgoswami/GDrive/zotLib.bib
+
+** Thanks!
+:PROPERTIES:
+:reveal_background: #005ab6
+:END:
+
+# Local Variables:
+# indent-tabs-mode: nil
+# org-src-preserve-indentation: t
+# End:

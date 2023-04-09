@@ -20,10 +20,10 @@
     "autoprefixer": "^10.2.5",
     "glob-parent": ">=5.1.2",
     "normalize-url": ">=4.5.1",
-    "npm-check-updates": "^11.5.11",
+    "npm-check-updates": "^16.10.7",
     "pngout": "^1.0.0",
     "postcss": "^8.3.7",
-    "postcss-cli": "^8.3.1",
-    "svgo": "^2.8.0"
+    "postcss-cli": "^10.1.0",
+    "svgo": "^3.0.2"
   }
 }

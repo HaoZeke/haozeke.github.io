@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<!-- saved from url=(0143)file:///home/rgoswami/Git/Github/WebDev/Mine/haozeke.github.io/presentations/APSMarch2023/EnhancingSlideware/apsEdMarch23.html#/sec-title-slide -->
+<html lang="en" class="reveal-full-page"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>Enhancing slideware for computational physics education</title>
+<meta name="author" content="Rohit Goswami">
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="./enhSlidewareEdu_files/reveal.css">
+
+<link rel="stylesheet" href="./enhSlidewareEdu_files/white.css" id="theme">
+
+<link rel="stylesheet" href="./enhSlidewareEdu_files/robot-lung.css">
+
+<link rel="stylesheet" href="./enhSlidewareEdu_files/oerFragments.css">
+
+<link rel="stylesheet" href="./enhSlidewareEdu_files/rlExtras.css">
+
+<link rel="stylesheet" href="./enhSlidewareEdu_files/noImgBoxes.css">
+
+<link rel="stylesheet" href="./enhSlidewareEdu_files/moreCode.css">
+
+<link rel="stylesheet" href="file:///home/rgoswami/.config/doom/reveal/rjs/plugin/accessibility/helper.css">
+
+<link rel="stylesheet" href="file:///home/rgoswami/.config/doom/reveal/rjs/plugin/toc-progress/toc-progress.css">
+
+<link rel="stylesheet" href="file:///home/rgoswami/.config/doom/reveal/rjs/dist/theme/toc-style.css">
+
+<link rel="stylesheet" href="./enhSlidewareEdu_files/source-sans-pro.css">
+</head>
+<body class="reveal-viewport no-toc-progress" style="transition: transform 0.8s ease 0s; --slide-width:960px; --slide-height:700px; --slide-scale:0.950857;">
+<div class="line top"></div> <div class="line bottom"></div> <div class="line left"></div> <div class="line right"></div>
+<div class="reveal fade center focused has-vertical-slides has-horizontal-slides ready" role="application" data-transition-speed="default" data-background-transition="fade" style="">
+<div class="slides" style="width: 960px; height: 700px; inset: 50% auto auto 50%; transform: translate(-50%, -50%) scale(0.950857);">
+<section id="sec-title-slide" data-state="no-toc-progress" style="top: 120.5px; display: block;" class="present">
+<h1 class="title">Enhancing slideware for computational physics education</h1><h2 class="author">Rohit Goswami</h2><p class="date">Created: 2023-03-22 Wed 13:30</p>
+</section>
+
+
+
+
+
+<section style="top: 0px; display: block;" class="stack future" data-previous-indexv="0" hidden="" aria-hidden="true">
+<section id="slide-3" style="top: 300.5px; display: block;" class="" aria-hidden="true">
+<h2 id="3"><span class="section-number-2">1.</span> Brief Introduction</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+</section>
+<section id="slide-3-1" class="future" style="top: 58.5px; display: block;" hidden="" aria-hidden="true">
+<h3 id="3-1"><span class="section-number-3">1.1.</span> Hello!</h3>
+<ul>
+<li>Find me here: <a href="https://rgoswami.me/">https://rgoswami.me</a></li>
+<li>Who?
+<ul>
+<li><b>Rohit Goswami</b> MInstP MRSC MBCS
+<ul>
+<li>Doctoral Researcher, University of Iceland, Faculty of Physical Sciences &amp; Science Insitute</li>
+<li>Software Engineer (II), Quansight Labs, TX, USA</li>
+
+</ul></li>
+
+</ul></li>
+
+</ul>
+<div class="leftcol" id="orga57a39e">
+
+<div id="org60c3d2d" class="figure">
+<p><img src="./enhSlidewareEdu_files/consolidatedLogos.png" alt="consolidatedLogos.png">
+</p>
+</div>
+
+</div>
+<div class="rightcol" id="org4f3cd34">
+
+<div id="orgb43f621" class="figure">
+<p><img src="./enhSlidewareEdu_files/2023-03-21_18-02-21_screenshot.png" alt="2023-03-21_18-02-21_screenshot.png">
+</p>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-3-2" class="future" style="top: 173px; display: none;" data-fragment="-1" hidden="" aria-hidden="true">
+<h3 id="3-2"><span class="section-number-3">1.2.</span> Logistics</h3>
+<ul class="fragment appear" data-fragment-index="0">
+<li>All contents are <a href="https://github.com/HaoZeke/2021_April_IOP_IntroductionToCpp_Part2">hosted on GitHub</a>
+<ul>
+<li>Slides are in <code>docs/pres</code></li>
+
+</ul></li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="1">
+<li>Slides have shortned commit IDs
+<ul>
+<li>These lead to specific points in the <code>git log</code></li>
+
+</ul></li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="2">
+<li>Questions are welcome after / during the lecture
+<ul>
+<li><a href="https://github.com/HaoZeke/2021_April_IOP_IntroductionToCpp_Part2/discussions/categories/q-a">GitHub Discussions</a> have been set up for this</li>
+
+</ul></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section style="top: 0px; display: block;" class="stack future" data-previous-indexv="0" hidden="" aria-hidden="true">
+<section id="slide-4" style="top: 242px; display: block;" class="" aria-hidden="true">
+<h2 id="4"><span class="section-number-2">2.</span> Student Populations</h2>
+<div class="leftcol" id="org8f23912">
+<ul>
+<li>Few students
+<ul>
+<li>Personal attention</li>
+<li>Workshops</li>
+
+</ul></li>
+
+</ul>
+
+</div>
+
+<div class="rightcol" id="orgf52f2df">
+<ul>
+<li>Many students
+<ul>
+<li>Hard to provide feedback</li>
+<li>Courses</li>
+
+</ul></li>
+
+</ul>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section style="top: 0px; display: none;" class="stack future" data-previous-indexv="0" hidden="" aria-hidden="true">
+<section id="slide-5" style="top: 75px; display: none;" class="" aria-hidden="true">
+<h2 id="5"><span class="section-number-2">3.</span> Major Obstacles</h2>
+<div class="leftcol" id="orgad47b37">
+<ul>
+<li>Limited time</li>
+<li>Limited resources</li>
+<li>Reading code can be daunting
+<ul>
+<li>Even small projects can run into the 1000s</li>
+
+</ul></li>
+
+</ul>
+
+</div>
+<div class="rightcol" id="org81aa438">
+<ul>
+<li>“A good building should not show its scaffolding when completed” –&gt; Gauss</li>
+
+</ul>
+
+</div>
+
+
+<div id="org54c127b" class="figure">
+<p><img src="./enhSlidewareEdu_files/2023-03-22_13-25-12_screenshot.png" alt="2023-03-22_13-25-12_screenshot.png">
+</p>
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+</section>
+<section style="top: 0px; display: none;" class="stack future" data-previous-indexv="0" hidden="" aria-hidden="true">
+<section id="slide-6" style="top: 222.5px; display: none;" class="" aria-hidden="true">
+<h2 id="6"><span class="section-number-2">4.</span> Theoretical Minimums</h2>
+<div class="leftcol" id="org24249eb">
+<ul>
+<li>Project setup</li>
+<li>Compilation</li>
+<li>Shell scripting?</li>
+<li>Environments?</li>
+
+</ul>
+
+</div>
+<div class="rightcol" id="orgc6be256">
+<ul>
+<li>Documentation</li>
+<li>Best practices?</li>
+<li>Embedding?</li>
+<li>Devops?</li>
+
+</ul>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-6-1" class="future" style="top: 50.5px; display: none;" data-fragment="-1" hidden="" aria-hidden="true">
+<h3 id="6-1"><span class="section-number-3">4.1.</span> Clusters</h3>
+<div class="leftcol" id="org81deecb">
+<p>
+<b>Woes</b>
+</p>
+<ul>
+<li class="fragment appear" data-fragment-index="0">No <code>docker</code>
+<ul>
+<li>If lucky, will have <code>singularity</code></li>
+
+</ul></li>
+<li class="fragment appear" data-fragment-index="1">No userspace support
+<ul>
+<li>No <code>proot</code></li>
+
+</ul></li>
+<li class="fragment appear" data-fragment-index="2">Probably runs CentOS or something</li>
+<li class="fragment appear" data-fragment-index="3">Has a networked file system</li>
+<li class="fragment appear" data-fragment-index="4">Uses a resource queue
+<ul>
+<li>Slurm, PBS</li>
+
+</ul></li>
+<li class="fragment appear" data-fragment-index="5">Might have support for <code>lmod</code></li>
+
+</ul>
+
+</div>
+<div class="rightcol" id="orgfc5fa31">
+
+<div id="orgc44089c" class="figure">
+<p><img src="./enhSlidewareEdu_files/sampleCluster.png" alt="image from GE research image" align="right">
+</p>
+</div>
+
+
+<div id="orgec851fb" class="figure">
+<p><img src="./enhSlidewareEdu_files/2020-10-17_08-50-27_screenshot.png" alt="sampleoutput image" align="right">
+</p>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-6-2" class="future" style="top: 0px; display: none;" data-fragment="-1" hidden="" aria-hidden="true">
+<h3 id="6-2"><span class="section-number-3">4.2.</span> Proton Stepper</h3>
+<div class="leftcol" id="org143fc3a">
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="0"><span style="color: #727072;">// </span><span style="color: #727072;">Getters</span>
+<span style="color: #78DCE8;">double</span> <span style="color: #AB9DF2;">physproc</span>::<span style="color: #AB9DF2;">TimeStepper</span>::<span style="color: #A9DC76;">getX</span><span style="color: #AB9DF2;">()</span>
+<span style="color: #AB9DF2;">{</span> <span style="color: #FF6188;">return</span> p.position.x; <span style="color: #AB9DF2;">}</span>
+</pre>
+</div>
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="1"><span style="color: #727072;">// </span><span style="color: #727072;">Accumulators</span>
+<span style="color: #AB9DF2;">std</span>::<span style="color: #78DCE8;">vector</span><span style="color: #AB9DF2;">&lt;</span><span style="color: #78DCE8;">double</span><span style="color: #AB9DF2;">&gt;</span> <span style="color: #FCFCFA;">x</span>, <span style="color: #FCFCFA;">y</span>, <span style="color: #FCFCFA;">z</span>;
+<span style="color: #FF6188;">for</span> <span style="color: #AB9DF2;">(</span><span style="color: #78DCE8;">int</span> <span style="color: #FCFCFA;">i</span> = <span style="color: #AB9DF2; font-weight: bold;">0</span>; i &lt; <span style="color: #AB9DF2; font-weight: bold;">1E3</span>; i++<span style="color: #AB9DF2;">)</span> <span style="color: #AB9DF2;">{</span>
+ ProtonStepper.Step<span style="color: #78DCE8;">()</span>;
+ <span style="color: #FF6188;">if</span> <span style="color: #78DCE8;">(</span>i % <span style="color: #AB9DF2; font-weight: bold;">7</span> == <span style="color: #AB9DF2; font-weight: bold;">0</span><span style="color: #78DCE8;">)</span> <span style="color: #78DCE8;">{</span>
+  x.push_back<span style="color: #FC9867;">(</span>ProtonStepper.getX<span style="color: #A9DC76;">()</span><span style="color: #FC9867;">)</span>;
+  <span style="color: #A9DC76;">...</span>
+ <span style="color: #78DCE8;">}</span>
+<span style="color: #AB9DF2;">}</span>
+<span style="color: #AB9DF2;">py</span>::<span style="color: #78DCE8;">scoped_interpreter</span> <span style="color: #FCFCFA;">guard</span><span style="color: #AB9DF2;">{}</span>;
+<span style="color: #FF6188;">using</span> <span style="color: #FF6188;">namespace</span> <span style="color: #AB9DF2;">py</span>::<span style="color: #AB9DF2;">literals</span>;
+<span style="color: #AB9DF2;">py</span>::<span style="color: #78DCE8;">dict</span> <span style="color: #FCFCFA;">locals</span> = <span style="color: #AB9DF2;">py</span>::dict<span style="color: #AB9DF2;">{</span>
+    <span style="color: #FFD866;">"x"</span>_a = x,
+    <span style="color: #A9DC76;">...</span>
+<span style="color: #AB9DF2;">}</span>;
+<span style="color: #AB9DF2;">py</span>::exec<span style="color: #AB9DF2;">(</span>R"<span style="color: #FFD866;">(</span>
+<span style="color: #FFD866;">  )</span>",
+         <span style="color: #AB9DF2;">py</span>::globals<span style="color: #78DCE8;">()</span>, locals<span style="color: #AB9DF2;">)</span>;
+</pre>
+</div>
+
+<div class="gcid" id="org071b4bf">
+<p>
+<a href="https://github.com/HaoZeke/2021_April_IOP_IntroductionToCpp_Part2/commit/59555bce6a02ffe57bbd3e7ceefa5f8b271c4568">59555bc</a>
+</p>
+
+</div>
+
+</div>
+<div class="rightcol" id="orge72e78b">
+<p>
+
+</p>
+
+
+<div id="org22f2326" class="figure">
+<p><img src="./enhSlidewareEdu_files/2021-04-13_04-37-30_screenshot.png" alt="2021-04-13_04-37-30_screenshot.png" class="fragment appear" data-fragment-index="2">
+</p>
+</div>
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="3"><span style="color: #FF6188;">from</span> mpl_toolkits.mplot3d <span style="color: #FF6188;">import</span> Axes3D
+<span style="color: #FF6188;">import</span> matplotlib.pyplot <span style="color: #FF6188;">as</span> plt
+<span style="color: #FCFCFA;">fig</span> = plt.figure()
+<span style="color: #FCFCFA;">ax</span> = fig.add_subplot(<span style="color: #AB9DF2; font-weight: bold;">111</span>, projection=<span style="color: #FFD866;">'3d'</span>)
+ax.scatter(x, y, z, c=<span style="color: #FFD866;">'r'</span>, marker=<span style="color: #FFD866;">'o'</span>)
+plt.show()
+</pre>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+
+</section>
+</section>
+<section style="top: 0px; display: none;" class="stack future" data-previous-indexv="0" hidden="" aria-hidden="true">
+<section id="slide-7" style="top: 300.5px; display: none;" class="" aria-hidden="true">
+<h2 id="7"><span class="section-number-2">5.</span> Local Project Layouts</h2>
+<div class="outline-text-2" id="text-7">
+</div>
+</section>
+<section id="slide-7-1" class="future" style="top: 6px; display: none;" data-fragment="-1" hidden="" aria-hidden="true">
+<h3 id="7-1"><span class="section-number-3">5.1.</span> Language Agnostic Beginnings</h3>
+<div class="fragment appear leftcol" id="org135914a" data-fragment-index="0">
+<dl>
+<dt class="fragment appear" data-fragment-index="1"><code>Readme.{md,org}</code></dt><dd class="fragment appear" data-fragment-index="2">Motivation, rationale, license, installation instructions</dd>
+<dt class="fragment appear" data-fragment-index="3"><code>LICENSE</code></dt><dd class="fragment appear" data-fragment-index="4">Plain text, and preferably an open license
+<ul>
+<li><a href="https://github.com/azu/license-generator">license-generator</a> is pretty handy for this</li>
+
+</ul></dd>
+<dt class="fragment appear" data-fragment-index="5"><code>.gitignore</code></dt><dd class="fragment appear" data-fragment-index="6">Lists files which do not need to be committed; typically generated files
+<ul>
+<li><a href="https://github.com/simonwhitaker/gibo">gibo</a> can be used to generate these</li>
+
+</ul></dd>
+
+</dl>
+
+</div>
+<div class="rightcol" id="orgbc1a8fc">
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="7">$ <span style="color: #78DCE8;">git</span> init <span style="color: #727072;"># </span><span style="color: #727072;">Inside project</span>
+$ gibo macOS Windows Xcode Emacs <span style="color: #FFD866;">\</span>
+    Vim Python C++ <span style="color: #FFD866;">\</span>
+    CMake TeX &gt; .gitignore
+$ <span style="color: #78DCE8;">touch</span> readme.md
+$ license-generator MIT <span style="color: #FFD866;">\</span>
+    --author <span style="color: #FFD866;">"Person"</span>
+$ tree -L <span style="color: #AB9DF2; font-weight: bold;">2</span>
+.
+├── LICENSE
+├── docs
+│&nbsp;&nbsp; └── pres
+└── readme.org
+
+<span style="color: #AB9DF2; font-weight: bold;">2</span> directories, <span style="color: #AB9DF2; font-weight: bold;">2</span> files
+</pre>
+</div>
+
+<div class="gcid" id="org6f1b823">
+<p>
+<a href="https://github.com/HaoZeke/2021_April_IOP_IntroductionToCpp_Part2/commit/9c294144a3d5518dfe03ad53912f2e768e6cc47e">9c29414</a>
+</p>
+
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-7-2" class="future" style="top: 0px; display: none;" data-fragment="-1" hidden="" aria-hidden="true">
+<h3 id="7-2"><span class="section-number-3">5.2.</span> C++ Project Structure</h3>
+<div class="fragment appear leftcol" id="org62a3c9b" data-fragment-index="0">
+<dl>
+<dt class="fragment appear" data-fragment-index="1"><code>src/</code></dt><dd class="fragment appear" data-fragment-index="2">Should be split into libraries and executables</dd>
+<dt class="fragment appear" data-fragment-index="3"><code>include/</code></dt><dd class="fragment appear" data-fragment-index="4">For headers, internal and external</dd>
+<dt class="fragment appear" data-fragment-index="5"><code>docs/</code></dt><dd class="fragment appear" data-fragment-index="6">Documentation of all kinds, typically including markdown files</dd>
+<dt class="fragment appear" data-fragment-index="7"><code>CMakeLists.txt</code></dt><dd class="fragment appear" data-fragment-index="8">The project build system</dd>
+<dt class="fragment appear" data-fragment-index="9"><code>ci/</code></dt><dd class="fragment appear" data-fragment-index="10">Scripts for continuous integration</dd>
+
+</dl>
+
+</div>
+<div class="rightcol" id="orgb873529">
+<p class="fragment appear" data-fragment-index="11">
+<img src="./enhSlidewareEdu_files/2021-04-12_21-03-39_screenshot.png" alt="2021-04-12_21-03-39_screenshot.png" class="fragment appear" data-fragment-index="12">
+<sup><a id="fnr.1" class="footref" href="file:///home/rgoswami/Git/Github/WebDev/Mine/haozeke.github.io/presentations/APSMarch2023/EnhancingSlideware/apsEdMarch23.html#fn.1" role="doc-backlink">1</a></sup>
+</p>
+
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="13"><span style="color: #727072;">// </span><span style="color: #727072;">Along each -I and INCLUDE</span>
+<span style="color: #FF6188; font-weight: bold;">#include</span><span style="color: #AB9DF2;">&lt;</span><span style="color: #FFD866;">iostream</span><span style="color: #AB9DF2;">&gt;</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="14"><span style="color: #727072;">// </span><span style="color: #727072;">Starts in the same directory</span>
+<span style="color: #727072;">// </span><span style="color: #727072;">Reverse order upward</span>
+<span style="color: #727072;">// </span><span style="color: #727072;">-I and INCLUDE</span>
+<span style="color: #FF6188; font-weight: bold;">#include</span> <span style="color: #FFD866;">"path-spec"</span>
+</pre>
+</div>
+
+<div class="gcid" id="org32dbe55">
+<p>
+<a href="https://github.com/HaoZeke/2021_April_IOP_IntroductionToCpp_Part2/commit/a5a0a9ebac0340a5dc7c1c192e062f3a68d32cc4">a5a0a9e</a>
+</p>
+
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section style="top: 0px; display: none;" class="stack future" data-previous-indexv="0" hidden="" aria-hidden="true">
+<section id="slide-8" style="top: 261px; display: none;" class="" aria-hidden="true">
+<h2 id="8"><span class="section-number-2">6.</span> Iterative Improvements - I</h2>
+<div class="outline-text-2" id="text-8">
+</div>
+</section>
+<section id="slide-8-1" class="future" style="top: 0px; display: none;" data-fragment="-1" hidden="" aria-hidden="true">
+<h3 id="8-1"><span class="section-number-3">6.1.</span> Refactoring CMakefile - I</h3>
+<div class="leftcol" id="org6f7258d">
+<ul>
+<li>Comments are imperative</li>
+<li>Segregation of build allows for easy cleanup
+<ul>
+<li><code>rm -rf build</code></li>
+
+</ul></li>
+
+</ul>
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="0"><span style="color: #727072;"># </span><span style="color: #727072;">--- Variables</span>
+<span style="color: #FF6188;">if</span>(NOT CMAKE_BUILD_TYPE)
+  <span style="color: #A9DC76;">set</span>(CMAKE_BUILD_TYPE Release
+<span style="color: #FF6188;">endif</span>()
+<span style="color: #A9DC76;">set</span>(CMAKE_CXX_FLAGS <span style="color: #FFD866;">"-Wall -Wextra"</span>)
+<span style="color: #A9DC76;">set</span>(CMAKE_CXX_FLAGS_DEBUG <span style="color: #FFD866;">"-g"</span>)
+<span style="color: #A9DC76;">set</span>(CMAKE_CXX_FLAGS_RELEASE <span style="color: #FFD866;">"-O3"</span>)
+</pre>
+</div>
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="1">$ <span style="color: #727072;"># </span><span style="color: #727072;">Should fail!!!</span>
+$ cmake .
+</pre>
+</div>
+<div class="gcid" id="org43120bb">
+<p>
+<a href="https://github.com/HaoZeke/2021_April_IOP_IntroductionToCpp_Part2/commit/8193ad90fe6755f6c39d66f175572556dbcad5ad">8193ad9</a>
+</p>
+
+</div>
+
+</div>
+<div class="rightcol" id="orgd33562c">
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="2"><span style="color: #A9DC76;">cmake_minimum_required</span>(VERSION <span style="color: #AB9DF2; font-weight: bold;">3.14</span> FATAL_ERROR)
+<span style="color: #727072;"># </span><span style="color: #727072;">---- Project ----</span>
+<span style="color: #A9DC76;">project</span>(
+  PenningTrapSimulationII
+  VERSION <span style="color: #AB9DF2; font-weight: bold;">1.0</span>
+  LANGUAGES CXX
+)
+<span style="color: #727072;"># </span><span style="color: #727072;">---- Include guards ----</span>
+<span style="color: #FF6188;">if</span>(PROJECT_SOURCE_DIR
+    STREQUAL PROJECT_BINARY_DIR)
+  <span style="color: #A9DC76;">message</span>(
+    FATAL_ERROR
+    <span style="color: #FFD866;">"In-source builds not allowed.</span>
+<span style="color: #FFD866;">    Please make a new directory</span>
+<span style="color: #FFD866;">    (called a build directory)</span>
+<span style="color: #FFD866;">    and run CMake from there."</span>
+  )
+<span style="color: #FF6188;">endif</span>()
+</pre>
+</div>
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="3">$ <span style="color: #727072;"># </span><span style="color: #727072;">Works</span>
+$ cmake -H. -Bbuild
+$ cmake --build build
+$ <span style="color: #78DCE8;">cd</span> build
+$ simulation.exe
+</pre>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-8-2" class="future" style="top: 58.5px; display: none;" data-fragment="-1" hidden="" aria-hidden="true">
+<h3 id="8-2"><span class="section-number-3">6.2.</span> Header Only Includes</h3>
+<div class="leftcol" id="orge82bda3">
+<ul class="fragment appear" data-fragment-index="0">
+<li>These are meant for small classes
+<ul>
+<li>With inlined definitions</li>
+
+</ul></li>
+
+</ul>
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="1"><span style="color: #FF6188; font-weight: bold;">#if</span><span style="color: #FF6188; font-weight: bold;">n</span><span style="color: #FF6188; font-weight: bold;">def</span> <span style="color: #AB9DF2;">IOP_VEC_H</span>
+<span style="color: #FF6188; font-weight: bold;">#define</span> <span style="color: #FCFCFA;">IOP_VEC_H</span>
+<span style="color: #A9DC76;">...</span>
+<span style="color: #FF6188; font-weight: bold;">#endif</span> <span style="color: #727072;">/* </span><span style="color: #727072;">IOP_VEC_H</span><span style="color: #727072;"> */</span>
+</pre>
+</div>
+<ul class="fragment appear" data-fragment-index="2">
+<li>Prevents multiple inclusion</li>
+<li>Modularity means more unit-tests
+<ul>
+<li>Better guarantees</li>
+
+</ul></li>
+
+</ul>
+
+</div>
+<div class="rightcol" id="orgb69a20d">
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="3"><span style="color: #727072;"># </span><span style="color: #727072;">--- Library</span>
+<span style="color: #A9DC76;">set</span>(headers
+  <span style="color: #FFD866;">"${</span><span style="color: #FCFCFA;">CMAKE_CURRENT_SOURCE_DIR</span><span style="color: #FFD866;">}/include/math_types/iop_vec.hpp"</span>)
+<span style="color: #A9DC76;">set</span>(sources <span style="color: #FFD866;">"${</span><span style="color: #FCFCFA;">CMAKE_CURRENT_SOURCE_DIR</span><span style="color: #FFD866;">}/src/main.cpp"</span>)
+ <span style="color: #727072;"># </span><span style="color: #727072;">Build</span>
+<span style="color: #A9DC76;">add_executable</span>(simulation.exe ${<span style="color: #FCFCFA;">sources</span>})
+<span style="color: #727072;"># </span><span style="color: #727072;">Add to INCLUDE</span>
+<span style="color: #A9DC76;">target_include_directories</span>(
+  simulation.exe PUBLIC
+  $&lt;BUILD_INTERFACE:${<span style="color: #FCFCFA;">PROJECT_SOURCE_DIR</span>}/include&gt;
+)
+</pre>
+</div>
+<ul class="fragment appear" data-fragment-index="4">
+<li>We prefer <code>&lt;&gt;</code> to <code>""</code> for includes</li>
+
+</ul>
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="5"><span style="color: #FF6188; font-weight: bold;">#include</span> <span style="color: #AB9DF2;">&lt;</span><span style="color: #FFD866;">math_types/iop_vec.hpp</span><span style="color: #AB9DF2;">&gt;</span>
+</pre>
+</div>
+
+<div class="gcid" id="org22d28df">
+<p>
+<a href="https://github.com/HaoZeke/2021_April_IOP_IntroductionToCpp_Part2/commit/9ca7f3a123b9891159a805fe78b549a6762744da">9ca7f3a</a>
+</p>
+
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section style="top: 0px; display: none;" class="stack future" data-previous-indexv="0" hidden="" aria-hidden="true">
+<section id="slide-9" style="top: 300.5px; display: none;" class="" aria-hidden="true">
+<h2 id="9"><span class="section-number-2">7.</span> Package Management</h2>
+<div class="outline-text-2" id="text-9">
+</div>
+</section>
+<section id="slide-9-1" class="future" style="top: 0px; display: none;" data-fragment="-1" hidden="" aria-hidden="true">
+<h3 id="9-1"><span class="section-number-3">7.1.</span> Current Scenario</h3>
+<div class="leftcol" id="org8b4c213">
+<p class="fragment appear" data-fragment-index="0">
+<img src="./enhSlidewareEdu_files/python_xkcd.png" alt="python_xkcd.png" class="fragment appear" data-fragment-index="1">
+<sup><a id="fnr.2" class="footref" href="file:///home/rgoswami/Git/Github/WebDev/Mine/haozeke.github.io/presentations/APSMarch2023/EnhancingSlideware/apsEdMarch23.html#fn.2" role="doc-backlink">2</a></sup>
+</p>
+
+<ul class="fragment appear" data-fragment-index="2">
+<li><b>Nix is the answer!!</b> (not here)</li>
+
+</ul>
+
+</div>
+<div class="rightcol" id="org81cd05c">
+<dl class="fragment appear" data-fragment-index="3">
+<dt><code>Python</code></dt><dd><code>poetry</code>, <code>pipenv</code>, <code>pyenv</code></dd>
+<dt><code>C++</code></dt><dd><code>conan</code>, <code>vcpkg</code>, <span class="underline"><code>cpm</code></span></dd>
+
+</dl>
+
+<div id="org4c267a4" class="figure">
+<p><img src="./enhSlidewareEdu_files/systemManagers.png" alt="systemManagers.png" class="fragment appear" data-fragment-index="4">
+</p>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-9-2" class="future" style="top: 101.5px; display: none;" data-fragment="-1" hidden="" aria-hidden="true">
+<h3 id="9-2"><span class="section-number-3">7.2.</span> CPM and CMake</h3>
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="0"><span style="color: #78DCE8;">mkdir</span> -p cmake
+wget -O cmake/CPM.cmake <span style="color: #FFD866;">"https://github.com/cpm-cmake/\</span>
+<span style="color: #FFD866;">CPM.cmake/releases/latest/download/get_cpm.cmake"</span>
+<span style="color: #727072;"># </span><span style="color: #727072;">Can get slow otherwise, rebuilds constantly</span>
+<span style="color: #78DCE8;">export</span> <span style="color: #FCFCFA;">CPM_SOURCE_CACHE</span>=$<span style="color: #FCFCFA;">HOME</span>/.cache/CPM
+</pre>
+</div>
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="1"><span style="color: #727072;"># </span><span style="color: #727072;">--- Helpers</span>
+<span style="color: #A9DC76;">include</span>(cmake/CPM.cmake)
+<span style="color: #A9DC76;">CPMUsePackageLock</span>(package-lock.cmake)
+</pre>
+</div>
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="2"><span style="color: #727072;"># </span><span style="color: #727072;">We like locks</span>
+cmake -H. -Bbuild
+cmake --build build --target cpm-update-package-lock
+</pre>
+</div>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section style="top: 0px; display: none;" class="stack future" data-previous-indexv="0" hidden="" aria-hidden="true">
+<section id="slide-10" style="top: 300.5px; display: none;" class="" aria-hidden="true">
+<h2 id="10"><span class="section-number-2">8.</span> Testing</h2>
+<div class="outline-text-2" id="text-10">
+</div>
+</section>
+<section id="slide-10-1" class="future" style="top: 0px; display: none;" data-fragment="-1" hidden="" aria-hidden="true">
+<h3 id="10-1"><span class="section-number-3">8.1.</span> Testing Frameworks</h3>
+<div class="leftcol" id="org00c6a36">
+<ul class="fragment appear" data-fragment-index="0">
+<li><code>C++</code> has great testing frameworks
+<ul>
+<li><span class="underline"><code>Catch2</code></span>, <code>googletest</code>, <code>doctest</code>, etc.</li>
+
+</ul></li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="1">
+<li><b>Unit tests</b> are the first layer
+<ul>
+<li>Ensure each function outputs as expected</li>
+
+</ul></li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="2">
+<li><b>Integration tests</b> are for workflows
+<ul>
+<li>Ensure each series of tasks connect correctly</li>
+
+</ul></li>
+
+</ul>
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="3"><span style="color: #727072;"># </span><span style="color: #727072;">Catch2 CMakeLists.txt</span>
+<span style="color: #A9DC76;">include</span>(CTest)
+<span style="color: #A9DC76;">add_subdirectory</span>(tests)
+<span style="color: #A9DC76;">enable_testing</span>()
+</pre>
+</div>
+
+</div>
+<div class="rightcol" id="org2190833">
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="4"><span style="color: #727072;"># </span><span style="color: #727072;">--- Externals ./tests/CMakeLists.txt</span>
+<span style="color: #A9DC76;">include</span>(../cmake/CPM.cmake)
+<span style="color: #A9DC76;">CPMAddPackage</span>(<span style="color: #FFD866;">"gh:catchorg/Catch2@2.13.4"</span>)
+<span style="color: #A9DC76;">add_executable</span>(particle_tests
+               main.cpp
+              vector_particle-test.cpp
+              phys_processes-test.cpp
+)
+<span style="color: #727072;"># </span><span style="color: #727072;">Link everything</span>
+<span style="color: #A9DC76;">target_link_libraries</span>(particle_tests
+  ioplib
+  Catch2)
+<span style="color: #A9DC76;">target_compile_features</span>(particle_tests PRIVATE cxx_std_17)
+<span style="color: #727072;"># </span><span style="color: #727072;">Project Libraries</span>
+<span style="color: #A9DC76;">include_directories</span>(
+../src/include/data_types
+${<span style="color: #FCFCFA;">PROJECT_SOURCE_DIR</span>}/src/include/)
+<span style="color: #727072;"># </span><span style="color: #727072;">---- Run tests ----</span>
+<span style="color: #A9DC76;">add_test</span>(NAME particleIOP-unit-tests
+COMMAND $&lt;TARGET_FILE:particle_tests&gt;)
+</pre>
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-10-2" class="future" style="top: 26px; display: none;" data-fragment="-1" hidden="" aria-hidden="true">
+<h3 id="10-2"><span class="section-number-3">8.2.</span> Writing Tests</h3>
+<div class="leftcol" id="org32bcaad">
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="0"><span style="color: #FF6188; font-weight: bold;">#define</span> <span style="color: #FCFCFA;">CATCH_CONFIG_MAIN</span>
+<span style="color: #FF6188; font-weight: bold;">#define</span> <span style="color: #FCFCFA;">CATCH_CONFIG_RUNNER</span>
+<span style="color: #FF6188; font-weight: bold;">#include</span> <span style="color: #AB9DF2;">&lt;</span><span style="color: #FFD866;">catch2/catch.hpp</span><span style="color: #AB9DF2;">&gt;</span>
+</pre>
+</div>
+<ul class="fragment appear" data-fragment-index="1">
+<li>The macros must not be repeated</li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="2">
+<li>Many more test scenarios
+<ul>
+<li>d-SEAMS <a href="https://github.com/d-SEAMS/seams-core">has examples</a></li>
+<li><a href="https://github.com/catchorg/Catch2/blob/devel/docs/tutorial.md#scaling-up">Official docs are great</a></li>
+
+</ul></li>
+
+</ul>
+<ul class="fragment appear" data-fragment-index="3">
+<li>Try <b>fixing gravity</b> as <span class="underline">homework</span>!
+<ul>
+<li>Open a PR (pull request) when done</li>
+
+</ul></li>
+
+</ul>
+
+</div>
+<div class="rightcol" id="org3a933e0">
+<div class="org-src-container">
+
+<pre class="fragment appear" data-fragment-index="4"><span style="color: #FF6188; font-weight: bold;">#include</span> <span style="color: #AB9DF2;">&lt;</span><span style="color: #FFD866;">catch2/catch.hpp</span><span style="color: #AB9DF2;">&gt;</span>
+<span style="color: #FF6188; font-weight: bold;">#include</span> <span style="color: #AB9DF2;">&lt;</span><span style="color: #FFD866;">data_types/iop_particle.hpp</span><span style="color: #AB9DF2;">&gt;</span>
+<span style="color: #FF6188; font-weight: bold;">#include</span> <span style="color: #AB9DF2;">&lt;</span><span style="color: #FFD866;">data_types/iop_vec.hpp</span><span style="color: #AB9DF2;">&gt;</span>
+<span style="color: #FF6188; font-weight: bold;">#include</span> <span style="color: #AB9DF2;">&lt;</span><span style="color: #FFD866;">phys_procs.hpp</span><span style="color: #AB9DF2;">&gt;</span>
+<span style="color: #FF6188; font-weight: bold;">#include</span> <span style="color: #AB9DF2;">&lt;</span><span style="color: #FFD866;">iostream</span><span style="color: #AB9DF2;">&gt;</span>
+<span style="color: #AB9DF2;">TEST_CASE</span><span style="color: #AB9DF2;">(</span><span style="color: #FFD866;">"Basic Vector class tests"</span>, <span style="color: #FFD866;">"Vector3"</span><span style="color: #AB9DF2;">)</span> <span style="color: #AB9DF2;">{</span>
+  <span style="color: #AB9DF2;">iopdat</span>::<span style="color: #78DCE8;">Vector3</span> <span style="color: #FCFCFA;">a</span><span style="color: #78DCE8;">{</span><span style="color: #AB9DF2; font-weight: bold;">1</span>, <span style="color: #AB9DF2; font-weight: bold;">2</span>, <span style="color: #AB9DF2; font-weight: bold;">3</span><span style="color: #78DCE8;">}</span>;
+<span style="color: #AB9DF2;">REQUIRE</span><span style="color: #78DCE8;">(</span><span style="color: #FF6188;">sizeof</span><span style="color: #FC9867;">(</span>a<span style="color: #FC9867;">)</span> == <span style="color: #AB9DF2; font-weight: bold;">24</span><span style="color: #78DCE8;">)</span>;
+<span style="color: #AB9DF2;">REQUIRE</span><span style="color: #78DCE8;">(</span><span style="color: #FF6188;">sizeof</span><span style="color: #FC9867;">(</span>a<span style="color: #FC9867;">)</span> / <span style="color: #FF6188;">sizeof</span><span style="color: #FC9867;">(</span><span style="color: #AB9DF2; font-weight: bold;">1</span><span style="color: #FC9867;">)</span> == <span style="color: #AB9DF2; font-weight: bold;">6</span><span style="color: #78DCE8;">)</span>;
+<span style="color: #AB9DF2;">REQUIRE</span><span style="color: #78DCE8;">(</span><span style="color: #FF6188;">sizeof</span><span style="color: #FC9867;">(</span>a<span style="color: #FC9867;">)</span> / <span style="color: #FF6188;">sizeof</span><span style="color: #FC9867;">(</span><span style="color: #AB9DF2; font-weight: bold;">1.0</span><span style="color: #FC9867;">)</span> == <span style="color: #AB9DF2; font-weight: bold;">3</span><span style="color: #78DCE8;">)</span>;
+  <span style="color: #AB9DF2;">iopdat</span>::<span style="color: #78DCE8;">Vector3</span> <span style="color: #FCFCFA;">b</span><span style="color: #78DCE8;">{</span><span style="color: #AB9DF2; font-weight: bold;">4</span>, <span style="color: #AB9DF2; font-weight: bold;">5</span>, <span style="color: #AB9DF2; font-weight: bold;">6</span><span style="color: #78DCE8;">}</span>;
+  b += a;
+  <span style="color: #AB9DF2;">REQUIRE</span><span style="color: #78DCE8;">(</span>b.x == <span style="color: #AB9DF2; font-weight: bold;">5</span><span style="color: #78DCE8;">)</span>;
+  <span style="color: #AB9DF2;">REQUIRE</span><span style="color: #78DCE8;">(</span>b.y == <span style="color: #AB9DF2; font-weight: bold;">7</span><span style="color: #78DCE8;">)</span>;
+  <span style="color: #AB9DF2;">REQUIRE</span><span style="color: #78DCE8;">(</span>b.z == <span style="color: #AB9DF2; font-weight: bold;">9</span><span style="color: #78DCE8;">)</span>;
+  <span style="color: #AB9DF2;">std</span>::cout &lt;&lt; b.x;
+<span style="color: #AB9DF2;">}</span>
+</pre>
+</div>
+<div class="gcid" id="org9961a28">
+<p>
+<a href="https://github.com/HaoZeke/2021_April_IOP_IntroductionToCpp_Part2/commit/d9ded32c144fde02667dde19f70cf49a11bd5625">d9ded32</a>
+</p>
+
+</div>
+
+</div>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section style="top: 0px; display: none;" class="stack future" data-previous-indexv="0" hidden="" aria-hidden="true">
+<section id="slide-11" style="top: 300.5px; display: none;" class="" aria-hidden="true">
+<h2 id="11"><span class="section-number-2">9.</span> Conclusions</h2>
+<div class="outline-text-2" id="text-11">
+</div>
+</section>
+<section id="slide-11-1" class="future" style="top: 95px; display: none;" data-fragment="-1" hidden="" aria-hidden="true">
+<h3 id="11-1"><span class="section-number-3">9.1.</span> Omitted Topics</h3>
+<dl class="fragment appear" data-fragment-index="0">
+<dt>Continuous integration</dt><dd>Robust tests</dd>
+
+</dl>
+<dl class="fragment appear" data-fragment-index="1">
+<dt>Embeddings</dt><dd>Mixing languages</dd>
+
+</dl>
+<dl class="fragment appear" data-fragment-index="2">
+<dt>Documentation</dt><dd>Possibly the most underrated skill in computational work</dd>
+
+</dl>
+<dl class="fragment appear" data-fragment-index="3">
+<dt>Package Management</dt><dd>Managing OS’s</dd>
+
+</dl>
+<dl class="fragment appear" data-fragment-index="4">
+<dt>HPC and Parallelism</dt><dd>Efficient data usage and algorithms</dd>
+
+</dl>
+<dl class="fragment appear" data-fragment-index="5">
+<dt>Code Review Practices</dt><dd>Scrum and teamwork</dd>
+
+</dl>
+<dl class="fragment appear" data-fragment-index="6">
+<dt>Inter process communication</dt><dd>Across networks and process, including serialization</dd>
+
+</dl>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-11-2" class="future" style="top: 114.5px; display: none;" hidden="" aria-hidden="true">
+<h3 id="11-2"><span class="section-number-3">9.2.</span> Further Resources</h3>
+<dl>
+<dt><a href="https://docs.microsoft.com/en-us/cpp/cpp/welcome-back-to-cpp-modern-cpp?view=msvc-160">Microsoft Visual Studio</a></dt><dd>Has a surprisingly good introduction and <a href="https://docs.microsoft.com/en-us/cpp/get-started/tutorial-console-cpp?view=msvc-160">even some projects</a></dd>
+<dt><a href="https://rgoswami.me/posts/ccon-tut-nix/">A Tutorial Introduction to Nix</a></dt><dd>Package management at the system level in a reproducible manner</dd>
+<dt><a href="https://rgoswami.me/posts/symengine-gsod20/">SymEngine and the Season of Docs</a></dt><dd>Describes the present SOTA for documentation practices in the context of a large multi-language project</dd>
+<dt><a href="https://rgoswami.me/posts/iop-cpp-2021-meta/">C++ workshop</a></dt><dd>along these guidelines</dd>
+
+</dl>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-11-3" class="future" style="top: 173px; display: none;" hidden="" aria-hidden="true">
+<h3 id="11-3"><span class="section-number-3">9.3.</span> Why?</h3>
+<ul>
+<li>Better engagement
+<ul>
+<li>Each slide corresponds to a commit</li>
+
+</ul></li>
+<li>Students can take their time
+<ul>
+<li>Git history is readable</li>
+
+</ul></li>
+<li>Slides focus on changes
+<ul>
+<li>Not too much cognitive overload</li>
+
+</ul></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section style="top: 0px; display: none;" class="stack future" data-previous-indexv="0" hidden="" aria-hidden="true">
+<section id="slide-12" style="top: 281px; display: none;" class="" aria-hidden="true">
+<h2 id="12"><span class="section-number-2">10.</span> The End</h2>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-12-1" data-background="#005ab6" class="has-dark-background future" style="top: 290px; display: none;" hidden="" aria-hidden="true">
+<h3 id="12-1"><span class="section-number-3">10.1.</span> Thanks!</h3>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+</div>
+<div class="backgrounds"><div class="slide-background present" style="display: block;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background stack future" style="display: block;" data-loaded="true"><div class="slide-background-content"></div><div class="slide-background present" style="display: block;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: block;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div></div><div class="slide-background stack future" style="display: block;" data-loaded="true"><div class="slide-background-content"></div><div class="slide-background present" style="display: block;" data-loaded="true"><div class="slide-background-content"></div></div></div><div class="slide-background stack future" data-loaded="true" style="display: none;"><div class="slide-background-content"></div><div class="slide-background present" data-loaded="true" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-background stack future" data-loaded="true" style="display: none;"><div class="slide-background-content"></div><div class="slide-background present" data-loaded="true" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" data-loaded="true" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div></div><div class="slide-background stack future" data-loaded="true" style="display: none;"><div class="slide-background-content"></div><div class="slide-background present" data-loaded="true" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" data-loaded="true" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" data-loaded="true" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-background stack future" data-loaded="true" style="display: none;"><div class="slide-background-content"></div><div class="slide-background present" data-loaded="true" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" data-loaded="true" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div></div><div class="slide-background stack future" data-loaded="true" style="display: none;"><div class="slide-background-content"></div><div class="slide-background present" data-loaded="true" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div></div><div class="slide-background stack future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div><div class="slide-background present" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div></div><div class="slide-background stack future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div><div class="slide-background present" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div></div><div class="slide-background stack future" style="display: none;" data-loaded="true"><div class="slide-background-content"></div><div class="slide-background present" style="display: none;" data-loaded="true"><div class="slide-background-content"></div></div><div class="slide-background future" data-background-hash="#005ab6nullnullnullnullnullnullnullnullnullnull" style="background: rgb(0, 90, 182); display: none;" data-loaded="true"><div class="slide-background-content"></div></div></div></div><div class="slide-number" style="display: block;"><a href="file:///home/rgoswami/Git/Github/WebDev/Mine/haozeke.github.io/presentations/APSMarch2023/EnhancingSlideware/apsEdMarch23.html#/sec-title-slide">
+					<span class="slide-number-a">1</span>
+					</a></div><aside class="controls" data-controls-layout="bottom-right" data-controls-back-arrows="faded" style="display: block;"><button class="navigate-left" aria-label="previous slide" disabled="disabled"><div class="controls-arrow"></div></button>
+			<button class="navigate-right enabled" aria-label="next slide"><div class="controls-arrow"></div></button>
+			<button class="navigate-up" aria-label="above slide" disabled="disabled"><div class="controls-arrow"></div></button>
+			<button class="navigate-down" aria-label="below slide" disabled="disabled"><div class="controls-arrow"></div></button></aside><div class="progress" style="display: block;"><span style="transform: scaleX(0);"></span></div><div class="speaker-notes" data-prevent-swipe="" tabindex="0"></div><div class="pause-overlay"><button class="resume-button">Resume presentation</button></div><div class="aria-status" aria-live="polite" aria-atomic="true" style="position: absolute; height: 1px; width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px);">Enhancing slideware for computational physics education Rohit Goswami Created: 2023-03-22 Wed 13:30 </div></div>
+<script src="./enhSlidewareEdu_files/reveal.js"></script>
+<script src="./enhSlidewareEdu_files/notes.js"></script>
+<script src="./enhSlidewareEdu_files/search.js"></script>
+<script src="./enhSlidewareEdu_files/zoom.js"></script>
+<script src="file:///home/rgoswami/.config/doom/reveal/rjs/dist/theme/hidelinks.js"></script>
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: true,
+center: true,
+slideNumber: 't',
+rollingLinks: false,
+keyboard: true,
+mouseWheel: true,
+fragmentInURL: true,
+hashOneBasedIndex: false,
+pdfSeparateFragments: false,
+overview: true,
+margin: 0.20,
+
+transition: 'fade',
+transitionSpeed: 'default',
+showNotes: window.location.search.match( /print-pdf/gi ) ? 'separate-page' : false,
+
+// Plugins with reveal.js 4.x
+plugins: [ RevealNotes, RevealSearch, RevealZoom ],
+
+// Optional libraries used to extend reveal.js
+dependencies: [
+]
+
+});
+</script>
+
+
+</body></html>

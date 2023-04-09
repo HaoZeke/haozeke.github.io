@@ -19,10 +19,24 @@
         '(("melpa" . "https://melpa.org/packages/")
           ("gnu" . "http://elpa.gnu.org/packages/")
           ("nongnu" . "https://elpa.nongnu.org/nongnu/")
-     ))
-  (package-refresh-contents)
+          ))
   )
 (package-initialize)
+
+;; Function to check if any required package is missing
+(defun required-packages-missing-p (packages)
+  (let ((missing-packages (seq-filter
+                           (lambda (package)
+                             (not (package-installed-p package)))
+                           packages)))
+    (if missing-packages t nil)))
+
+;; List of required packages
+(defvar required-packages '(use-package org org-contrib htmlize lua-mode ox-hugo))
+
+;; Refresh package contents only if any required package is missing
+(when (required-packages-missing-p required-packages)
+  (package-refresh-contents))
 
 ;; Install and setup use-package
 (unless (package-installed-p 'use-package)
