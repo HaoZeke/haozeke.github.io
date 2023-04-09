@@ -7,7 +7,7 @@ name: hzsite
 channels:
   - conda-forge
 dependencies:
-  - python=3.9
+  - python
   - pandoc
   - nodejs
   - ruby

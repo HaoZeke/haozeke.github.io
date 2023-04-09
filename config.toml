@@ -1,4 +1,4 @@
-baseurl = "https://rgoswami.me/"
+# baseurl = "https://rgoswami.me/"
 languageCode = "en-us"
 theme = ["hugo-search-fuse-js", "hello-friend-ng-hz"]
 
@@ -20,10 +20,10 @@ publishDir   = "public"
 buildDrafts  = false
 buildFuture  = false
 buildExpored = false
-canonifyURLs = false
+canonifyURLs = true
 
 enableRobotsTXT = true
-enableGitInfo   = false # See https://github.com/kaushalmodi/ox-hugo/blob/5de3da970f9ead05930781dd0b73b5011310b2ba/doc/config.toml#L14
+enableGitInfo   = true
 enableEmoji     = true
 enableMissingTranslationPlaceholders = false
 
@@ -147,7 +147,7 @@ accountID = "rohit"
   [[params.social]]
     name = "mastodon"
     rel  = "me"
-    url  = "https://mastodon.cloud/@rgoswami"
+    url  = "https://mathstodon.xyz/@rgoswami"
 
   [[params.social]]
     name = "keybase"
