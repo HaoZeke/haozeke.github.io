@@ -1,4 +1,4 @@
-# baseurl = "https://rgoswami.me/"
+baseurl = "https://rgoswami.me/"
 languageCode = "en-us"
 theme = ["hugo-search-fuse-js", "hello-friend-ng-hz"]
 
