@@ -15595,6 +15595,72 @@ suppose, if invited, I would return.
 * TODO LaTeX and Snakemake for reactive programming workflows
 * TODO Stan Math and Meson
 * TODO Analytics again
+* TODO Python Projects with Native Extensions
+** Background
+Building things is a pain. ~python~ projects which use ~c~ extensions are
+especially painful in a post ~setup.py~ world. ~pdm~ seems to be a promising
+candidate tracking ~pep 518~, so it makes sense to try it out. In the same vein,
+~meson~ makes the process of actually building and linking a compiled native
+extension trivial. Together, these can be leveraged to develop several
+interesting packages combining compiled code and standard ~python~ packaging.
+** System packages
+Though ~nix~ is definitely the best approach to obtaining development
+environments, for usage where it is not commonly available, a ~conda~
+environment will suffice. We will prefer to install and manage ~python~
+dependencies through ~pdm~, but ~C++~ libraries and ~python~ versions are best
+handled separately here. This is to (attempt to) establish a system-agnostic
+build development toolchain.
+#+begin_src yaml
+# To use:
+#
+#   $ micromamba env create -f environment.yml -p $(pwd)/.envcond  # `micromamba` works too for this command
+#   $ micromamba activate $(pwd)/.envcond
+#
+channels:
+  - conda-forge
+dependencies:
+  # Build helpers
+  - compilers
+  - meson
+  - cmake
+  - gfortran
+  - pkg-config
+  - openblas
+  - ninja
+  # CPP
+  - fmt
+  - pybind11
+  # Pinned
+  - eigen==3.4.0
+  # Python
+  - python==3.10.*
+  - pdm
+  - pip
+  - meson-python
+  - numpy
+  - ipython
+#+end_src
+** Python Package Setup
+Since we have obtained ~pdm~ as part of the ~conda~ environment, we can use it
+directly via ~pdm init~. This asks for user-input about which ~python~
+interpreter to use, this workflow is amenable to other package management
+schemes, including system packages.
+
+- The build backend does not matter, as it will be changed to ~meson-python~
+
+Note that only committed files will work with ~python -m build~ because of the
+way ~meson dist~ works. This means we need ~README.md~, ~pyproject.toml~,
+~meson.build~ along with the library files to be committed (~CPP~ and ~python~).
+
+At the moment, ~pdm build~ will fail, even though ~python -m build~ and ~pip
+install .~ will both work. This means most things will not work well. The same
+is true of most of the other front-ends which also happen to provide backends
+and vice versa. So we fall back on an older idea. We would like to use our own
+build backend, and a front end which is decoupled from having to rely on a
+specific backend. In short, we want to migrate towards something like ~pipenv~.
+** Compiled extensions
+We will need a simple example. For our purposes, ~pybind11~ will suffice.
+*** ~meson~ and compiled extensions
 * Migrating to Home Manager
 #+begin_quote
 Leveraging ~nix~ and ~flakes~ in conjunction with ~home-manager~
