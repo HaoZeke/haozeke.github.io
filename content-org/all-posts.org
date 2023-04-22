@@ -15601,7 +15601,85 @@ Leveraging ~nix~ and ~flakes~ in conjunction with ~home-manager~
 #+end_quote
 ** Background
 Configuration can be painful.
+* TODO Customizing ArchLinux Images
+** Background
+I recently had to switch server boxes, due to a cascade of hardware errors stemming from a remodeling of my home. The new box, however, did not see fit to include a WiFi card, which meant I  pp
+* TODO CPP Library Blueprints for Bindings
+** Background
+I recently ended up writing and rewriting a series of libraries to essentially
+get them to a point where I could write bindings to them. In doing so, some
+thoughts on design and preventing massive breakage. In particular, using PRs
+turned out to be insufficient to maintain code quality and I ended up shifting
+to a submodule based workflow.
 
+Originally, I had the library and bindings in one repository, which was easier
+to work hack on, and had fewer moving parts. I rashly assumed that using
+branches would provide a modicum of reproducibility. As I quickly found though,
+this got out of hand when the code needed to be refactored to suit the bindings
+and wasn't always backported to ~main~ in a timely fashion. In a sense, this is
+another introduction to yet another ~cookiecutter~ template, but the post should
+provide context behind the decisions.
+** Overview
+** Layout
+We will use ~meson~ throughout
+*** Library
+For the library itself
+
+* TODO Python Bindings for CPP Libraries
+** Background
+I've been writing a lot of Python bindings lately. Mostly thin wrappers to
+existing libraries. These are some guidelines I keep reaching for. Most of these
+evolved during my work on ~eON~, the long timescale dynamics code, but isn't (as
+of April 2024) public yet[fn:academicFOSS].
+What does distribution really take? I've dabbled with writing extensive
+documentation, setting up ~docker~ containers, ~snakemake~ workflows, ~nix~,
+~spack~, ~easybuild~, but they all fundamentally require too much effort at both
+ends to get things working. This is cuts deeper for things which are _supposed_
+to be simple to share, like ~python~ scripts[fn:whatpy].
+** Setup Preliminaries
+We will be as general in our suggestions as is humanely possible, but when we
+need to reach for specific examples, they will be in context of the ~potlib~
+project (library, bindings), which is small and innocuous enough to grok hopefully.
+*** Tools
+For most new projects, I use ~pybind11~ [fn:nanobind] with ~meson~.
+- ~pdm~ is used for dependencies
+- ~mesonpy~ is the backend
+- ~cibuildwheel~ is used for actually getting the wheels for ~pypi~
+  + This is a bit of a nightmare, need to use [[https://repology.org/project/eigen/versions][repology]] and fiddle around with figuring out which version of each OS is used by each specification
+  + Any kind of system based package management was exceedingly slow, so sticking to ~pip~ and ~meson~ managed dependencies is the safest bet
+** Design Guidelines
+- I found ~meson.wrap~ to be much more palpable than working with ~submodules~
+
+[fn:nanobind] ~nanobind~ is interesting but lacks ~Eigen~ support, and most of the codes I interface to / from use ~Eigen~ arrays
+[fn:academicFOSS] Academia is rather odd about open source development before publication, reviewers almost never bother to even run software, let alone check authorship / provenance
+[fn:whatpy] This IMO is a myth, and ~python~ scripts are way more convoluted to share than most things, but they certainly feel like they should be easy to share
+* TODO Packages with Python and Compiled Extensions with ~meson~
+** Background
+The title is a work in progress. After finally getting the build-bot setup
+correctly for the bindings. I realized I needed to refactor to add adapters to
+~ase~. More generally, the problem is of embedding a compiled extension in a
+package which has other pure-python code snippets as well.
+** Pure Python and ~meson~
+~meson~ doesn't support ~python~ as a first class language. The general idea is to muck around with the fact that copying over ~.py~ files to the "right place" is essentially an installation.
+As seen in ~scipy~:
+#+begin_src python
+py3.install_sources([
+    '__init__.py',
+    'hierarchy.py',
+    'vq.py'
+  ],
+  subdir: 'scipy/cluster'
+)
+#+end_src
+Which is, exciting in a way. ~macos_arm64~ is a cross compile currently and so not a good idea. ~numpy~ has a nice build wheels only if commit contains [wheel build] which is nice to kang.
+** Details
+- ~musllinux~ doesn't ship with ~openblas~, so adding ~scipy~ or anything
+  depending on it as a project dependency is going to break
+  + [[https://github.com/TheochemUI/pypotlib/commit/f46933c22b5ebdcd884d2a93a13589fa0d1deeaf][Kanged and adapted]] ~scipy~'s solution to this, since it is so much faster to
+    copy ~openblas~ in than use the ~apk~ package manager
+  + It is still massively slow, around 30 minutes to test
+  + Either drop ~musllinux~ wheels or just don't test them
+    + The dependencies are only resolved during the installation which is done prior to testing the wheel
 * Important Note :ignoreheading:ignore:
 # ALWAYS at the bottom, to ensure fresh builds do not break
 * DONE About
