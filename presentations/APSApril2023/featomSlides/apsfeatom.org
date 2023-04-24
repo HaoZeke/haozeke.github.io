@@ -1,0 +1,833 @@
+#+TITLE: High-order finite element method for atomic structure calculations
+#+SUBTITLE: The \texttt{featom} code
+#+AUTHOR: @@latex:\begin{tabular}{c} Ondřej Čertík \qquad John E. Pask \qquad Isuru Fernando \\ \textbf{Rohit Goswami} \qquad N. Sukumar \qquad Lee. A. Collins \\ Gianmarco Manzini \qquad Jiří Vackář\end{tabular}@@
+#+DATE: \today
+
+* Configuration :ignoreheading:ignore:
+:PROPERTIES:
+:VISIBILITY: folded
+:END:
+
+** Lisp Setup :ignoreheading:ignore:
+:PROPERTIES:
+:VISIBILITY: folded
+:END:
+
+#+BEGIN_SRC emacs-lisp :exports none :eval always :results none
+(require 'ox-extra)
+(ox-extras-activate '(ignore-headlines))
+(org-babel-tangle)
+;; Define Asynchronous Export
+(defun haozeke/org-save-and-export-pdf ()
+  (if (eq major-mode 'org-mode)
+      (org-latex-export-to-pdf :async t)))
+;; Add hook
+(add-hook 'after-save-hook 'haozeke/org-save-and-export-beamer)
+#+END_SRC
+
+** Beamer Theme :ignoreheading:ignore:
+:PROPERTIES:
+:VISIBILITY: folded
+:END:
+#+begin_src latex :exports none :results none :tangle beamerthemeExecushares.sty :eval always
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage[none]{hyphenat}
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+
+\newif\ifbeamer@pixelitem
+\beamer@pixelitemtrue
+\DeclareOptionBeamer{nopixelitem}{\beamer@pixelitemfalse}
+\ProcessOptionsBeamer
+
+% define colours
+% taken from pickton on Adobe Kuler:
+% https://kuler.adobe.com/Some-Kind-Of-Execushares-color-theme-3837185/
+\definecolor{ExecusharesAPSBlue}{RGB}{0,108,179}
+\definecolor{ExecusharesBlack}{RGB}{43,40,40}
+\definecolor{ExecusharesBlue}{RGB}{22,190,207}
+\definecolor{ExecusharesWhite}{RGB}{255,255,243}
+\definecolor{ExecusharesGrey}{RGB}{107,110,108}
+
+% use Adobe's Source Pro fonts:
+% Source Serif Pro: https://github.com/adobe-fonts/source-serif-pro
+% Source Sans Pro: https://github.com/adobe-fonts/source-sans-pro
+% Source Code Pro: https://github.com/adobe-fonts/source-code-pro
+\setmainfont{Source Serif 4}
+\setsansfont{Source Sans 3}
+\setmonofont{Source Code Pro}
+
+% To use with pdflatex,
+% comment the fontspec package at the top
+% \usepackage{sourceserifpro}
+% \usepackage{sourcesanspro}
+% \usepackage{sourcecodepro}
+
+% set colours
+\setbeamercolor{itemize item}{fg=ExecusharesBlue}
+\setbeamercolor{enumerate item}{fg=ExecusharesBlue}
+\setbeamercolor{alerted text}{fg=ExecusharesBlue}
+\setbeamercolor{section in toc}{fg=ExecusharesBlack}
+
+% set fonts
+\setbeamerfont{itemize/enumerate body}{size=\large}
+\setbeamerfont{itemize/enumerate subbody}{size=\normalsize}
+\setbeamerfont{itemize/enumerate subsubbody}{size=\small}
+
+\ifbeamer@pixelitem
+  % make the itemize bullets pixelated >
+  \setbeamertemplate{itemize item}{
+	\tikz{
+      \draw[fill=ExecusharesBlue,draw=none] (0, 0) rectangle(0.1, 0.1);
+      \draw[fill=ExecusharesBlue,draw=none] (0.1, 0.1) rectangle(0.2, 0.2);
+      \draw[fill=ExecusharesBlue,draw=none] (0, 0.2) rectangle(0.1, 0.3);
+	}
+  }
+  % make the subitems also pixelated >, but a little smaller and red
+  \setbeamertemplate{itemize subitem}{
+	\tikz{
+      \draw[fill=ExecusharesAPSBlue,draw=none] (0, 0) rectangle(0.075, 0.075);
+      \draw[fill=ExecusharesAPSBlue,draw=none] (0.075, 0.075) rectangle(0.15, 0.15);
+      \draw[fill=ExecusharesAPSBlue,draw=none] (0, 0.15) rectangle(0.075, 0.225);
+	}
+  }
+\fi
+
+% disable navigation
+\setbeamertemplate{navigation symbols}{}
+
+% custom draw the title page above
+\setbeamertemplate{title page}{}
+
+% again, manually draw the frame title above
+\setbeamertemplate{frametitle}{}
+
+% disable "Figure:" in the captions
+\setbeamertemplate{caption}{\tiny\insertcaption}
+\setbeamertemplate{caption label separator}{}
+
+% since I don't know a better way to do this, these are all switches
+% doing Symbol’s value as variable is void: setcounter{showProgressBar}{0} will turn the progress bar off (I turn it off for Appendix slides)
+% etc
+\newcounter{showProgressBar}
+\setcounter{showProgressBar}{1}
+\newcounter{showSlideNumbers}
+\setcounter{showSlideNumbers}{1}
+\newcounter{showSlideTotal}
+\setcounter{showSlideTotal}{1}
+
+% Set beginning of backup slides
+% This lets you having the slides counter ending with the "thank you" slide and avoiding the annoying question "why is the thank you at slide 38/41?"
+\newcommand{\backupbegin}{
+  \newcounter{finalframe}
+  \setcounter{finalframe}{\value{framenumber}}
+}
+\newcommand{\backupend}{
+  \setcounter{framenumber}{\value{finalframe}}
+}
+
+% use \makeatletter for our progress bar definitions
+% progress bar idea from http://tex.stackexchange.com/a/59749/44221
+% slightly adapted for visual purposes here
+\makeatletter
+\newcount\progressbar@tmpcounta% auxiliary counter
+\newcount\progressbar@tmpcountb% auxiliary counter
+\newdimen\progressbar@pbwidth %progressbar width
+\newdimen\progressbar@tmpdim % auxiliary dimension
+
+\newdimen\slidewidth % auxiliary dimension
+\newdimen\slideheight % auxiliary dimension
+
+% make the progress bar go across the screen
+% \progressbar@pbwidth=12.8cm
+\progressbar@pbwidth=\the\paperwidth
+\slidewidth=\the\paperwidth
+\slideheight=\the\paperheight
+
+% use tikz to draw everything
+% it may not be the best, but it's easy to work with
+% and looks good
+% TODO: base title slide and contents slide on something other than slide numbers :/
+\setbeamertemplate{background}{
+  % deal with progress bar stuff
+  % (calculate where it should go)
+  \progressbar@tmpcounta=\insertframenumber
+  \progressbar@tmpcountb=\inserttotalframenumber
+  \progressbar@tmpdim=\progressbar@pbwidth
+  \divide\progressbar@tmpdim by 100
+  \multiply\progressbar@tmpdim by \progressbar@tmpcounta
+  \divide\progressbar@tmpdim by \progressbar@tmpcountb
+  \multiply\progressbar@tmpdim by 100
+
+  \begin{tikzpicture}
+    % set up the entire slide as the canvas
+    \useasboundingbox (0,0) rectangle(\the\paperwidth,\the\paperheight);
+
+    % the background
+    \fill[color=ExecusharesWhite] (0,0) rectangle(\the\paperwidth,\the\paperheight);
+
+    % separate the drawing based on if we're the first (title) slide or not
+    \ifnum\thepage=1\relax
+      % the title page
+      % draw the fills
+      \fill[color=ExecusharesAPSBlue] (0, 4cm) rectangle(\slidewidth,\slideheight);
+
+      % draw the actual text
+      \node[anchor=south,text width=\slidewidth-1cm,inner xsep=0.5cm] at (0.5\slidewidth,4cm) {\color{ExecusharesWhite}\Huge\textbf{\inserttitle}};
+      \node[anchor=north east,text width=\slidewidth-1cm,align=right] at (\slidewidth-0.4cm,4cm) {\color{ExecusharesBlack}\tiny\insertsubtitle};
+      % \node[above] at(0.5\slidewidth,2.3cm) {\color{ExecusharesBlack} presented by};
+      \node at (0.5\slidewidth,2cm) {\color{ExecusharesBlack}\large\insertauthor};
+
+      % add the date in the corner
+      \node[anchor=south east] at(\slidewidth,0cm) {\color{ExecusharesGrey}\tiny\insertdate};
+    \else
+      % NOT the title page
+      % title bar
+      \fill[color=ExecusharesAPSBlue] (0, \slideheight-1cm) rectangle(\slidewidth,\slideheight);
+
+      % swap the comment on these to add section titles to slide titles
+      % \node[anchor=north,text width=11.8cm,inner xsep=0.5cm,inner ysep=0.25cm] at (6.4cm,9.6cm) {\color{ExecusharesWhite}\Large\textbf{\insertsectionhead: \insertframetitle}};
+      \node[anchor=north,text width=\slidewidth-1cm,inner xsep=0.5cm,inner ysep=0.25cm] at (0.5\slidewidth,\slideheight) {\color{ExecusharesWhite}\huge\textbf{\insertframetitle}};
+
+      % if we're showing a progress bar, show it
+      % (I disable the progress bar and slide numbers for the "Appendix" slides)
+      \ifnum \value{showProgressBar}>0\relax%
+        % the the progress bar icon in the middle of the screen
+        \draw[fill=ExecusharesGrey,draw=none] (0cm,0cm) rectangle(\slidewidth,0.25cm);
+        \draw[fill=ExecusharesAPSBlue,draw=none] (0cm,0cm) rectangle(\progressbar@tmpdim,0.25cm);
+
+        % bottom information
+        \node[anchor=south west] at(0cm,0.25cm) {\color{ExecusharesGrey}\tiny\vphantom{lp}\insertsection};
+        % if slide numbers are active
+        \ifnum \value{showSlideNumbers}>0\relax%
+          % if slide totals are active
+          \ifnum \value{showSlideTotal}>0\relax%
+            % draw both slide number and slide total
+            \node[anchor=south east] at(\slidewidth,0.25cm) {\color{ExecusharesGrey}\tiny\insertframenumber/\inserttotalframenumber};
+          \else
+            % slide totals aren't active, don't draw them
+            \node[anchor=south east] at(\slidewidth,0.25cm) {\color{ExecusharesGrey}\tiny\insertframenumber};
+          \fi
+        \fi
+        % don't show the progress bar?
+      \else
+        % section title in the bottom left
+        \node[anchor=south west] at(0cm,0cm) {\color{ExecusharesGrey}\tiny\vphantom{lp}\insertsection};
+        % if we're showing slide numbers
+        \ifnum \value{showSlideNumbers}>0\relax%
+          % if slide totals are active
+          \ifnum \value{showSlideTotal}>0\relax%
+            % draw both slide number and slide total
+            \node[anchor=south east] at(\slidewidth,0cm) {\color{ExecusharesGrey}\tiny\insertframenumber/\inserttotalframenumber};
+          \else
+            % slide totals aren't active, don't draw them
+            \node[anchor=south east] at(\slidewidth,0cm) {\color{ExecusharesGrey}\tiny\insertframenumber};
+          \fi
+        \fi
+      \fi
+    \fi
+  \end{tikzpicture}
+}
+\makeatother
+
+% add section titles
+\AtBeginSection{\frame{\sectionpage}}
+\setbeamertemplate{section page}
+{
+  \begin{tikzpicture}
+    % set up the entire slide as the canvas
+    \useasboundingbox (0,0) rectangle(\slidewidth,\slideheight);
+    % \fill[color=ExecusharesWhite] (0,0) rectangle(\the\paperwidth,\the\paperheight);
+    \fill[color=ExecusharesWhite] (-1cm, 2cm) rectangle (\slidewidth, \slideheight+0.1cm);
+    \fill[color=ExecusharesAPSBlue] (-1cm, 0.5\slideheight-1cm) rectangle(\slidewidth, 0.5\slideheight+1cm);
+    \node[text width=\the\paperwidth-1cm,align=center] at (0.4\slidewidth, 0.5\slideheight) {\color{ExecusharesWhite}\Huge\textbf{\insertsection}};
+  \end{tikzpicture}
+}
+#+end_src
+
+** TeX Configuration :ignoreheading:ignore:
+:PROPERTIES:
+:VISIBILITY: folded
+:END:
+
+#
+# LaTeX Stuff
+#
+
+#+DESCRIPTION:
+#+KEYWORDS:
+#+LANGUAGE:  en
+#+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc toc:nil
+#+INFOJS_OPT: view:nil toc:nil ltoc:t mouse:underline buttons:0 path:https://orgmode.org/org-info.js
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+LINK_UP:
+#+LINK_HOME:
+
+#+LATEX_COMPILER: xelatex
+#+LATEX_HEADER: \PassOptionsToPackage{unicode=true}{hyperref}
+#+LATEX_HEADER: \PassOptionsToPackage{hyphens}{url}
+#+LATEX_HEADER: \PassOptionsToPackage{dvipsnames,svgnames*,x11names*,table}{xcolor}
+#+LATEX_HEADER: \usepackage{amssymb,amsmath}
+#+LATEX_HEADER: \usepackage{mathtools}
+#+LATEX_HEADER: \usepackage{physics}
+#+LATEX_HEADER: \usepackage{hyperref}
+#+LATEX_HEADER: % Make use of float-package and set default placement for figures to H
+#+LATEX_HEADER: \usepackage{float}
+#+LATEX_HEADER: \floatplacement{figure}{H}
+
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger,unknownkeysallowed,aspectratio=169,colorblocks]
+#+startup: beamer
+#+BEAMER_THEME: Execushares
+#+BEAMER_FRAME_LEVEL: 2
+#+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
+#+LATEX_HEADER: \setbeamerfont{footnote}{size=\tiny}
+
+# References
+#+LATEX_HEADER: \usepackage[doi=false,isbn=false,url=false,eprint=false]{biblatex}
+#+LATEX_HEADER: \bibliography{paper.bib}
+
+* Start Here :ignoreheading:ignore:
+* Speaker
+\scriptsize
+- Find me here: https://rgoswami.me
+  + *Rohit Goswami* MInstP MBCS MRSC
+    - Doctoral Researcher in the Jonsson Group, University of Iceland, Faculty of Physical Sciences and Science Institute
+    - Software Engineer (II) Quansight Labs
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+
+#+DOWNLOADED: screenshot @ 2023-04-24 00:39:37
+#+ATTR_LaTeX: :width 0.3\linewidth
+[[file:images/A_block/2023-04-24_00-39-37_screenshot.png]]
+
+#+ATTR_LaTeX: :width 0.3\linewidth
+file:./images/quansightlabs.png
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+
+#+ATTR_LaTeX: :width 0.6\linewidth
+file:./images/physUoI.png
+#+ATTR_LaTeX: :width 0.4\linewidth
+file:./images/rannisLogo.png
+#+ATTR_LaTeX: :width 0.4\linewidth
+file:./images/ccLogo.png
+
+* Outline
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+#+begin_export latex
+\tableofcontents[sections={1-5}]
+#+end_export
+
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+#+begin_export latex
+\tableofcontents[sections={6-}]
+#+end_export
+
+** No Column :B_ignoreheading:
+:PROPERTIES:
+:BEAMER_env: ignoreheading
+:END:
+
+
+* Section: Paper :ignoreheading:ignore:
+#+begin_export latex
+\section{Paper}
+#+end_export
+* Author Affiliations
+
+#+DOWNLOADED: screenshot @ 2023-04-24 00:35:27
+#+ATTR_LaTeX: :width 0.6\linewidth
+[[file:images/Authors/2023-04-24_00-35-27_screenshot.png]]
+
+* Section: Background :ignoreheading:ignore:
+#+begin_export latex
+\section{Background}
+#+end_export
+* Atomic Structure Calculations
+- Generally we consider single atoms in a central potential
+- Relativistic, /rl/ (Dirac) and non-relativistic, /nrl/ (Schrödinger) equations are to be solved
+  - For heavy atoms, like Uranium /rl/ effects matter
+- These equations are partial differential equations and can be solved with numerical methods, including:
+  + Finite difference methods
+  + *Finite element methods*
+* Finite Element Method Overview
+
+#+BEGIN_SRC ditaa :file images/hello-fem.png :cmdline -r -s 2.5 :cache yes
++----------------+       +----------------+       +--------------------+       +-------------------+
+| Define Domain  |       | Discretize     |       | Formulate Weak     |       | Assemble Global   |
+| & Boundary     |------>| Domain         |------>| Form               |------>| Stiffness Matrix  |
+| Conditions     |       | (Elements)     |       | (Galerkin's Method)|       | & Load Vector     |
++----------------+       +----------------+       +--------------------+       +-------------------+
+                                      |                                                |
+                                      v                                                v
+                              +------------------+                             +------------------+
+                              | Apply Boundary   |                             | Solve Linear     |
+                              | Conditions       |                             | System           |
+                              +------------------+                             +------------------+
+                                                                                         |
+                                                                                         v
+                                                                            +------------------+
+                                                                            | Compute Solution |
+                                                                            | & Error Estimates|
+                                                                            +------------------+
+#+END_SRC
+
+#+RESULTS[5a25a9400a7085aa14f6dda218b81a8a850ee0f5]:
+[[file:images/hello-fem.png]]
+*** Benefits
+- Variational formulation
+  + Finite differences may have errors which oscillate cite:paskFiniteElementMethods2005
+* Finite Element Method Equations
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+- Weak Form :: $$\int_\Omega \nabla u \cdot \nabla v \, d\Omega = \int_\Omega fv \, d\Omega \quad \forall v \in V$$
+- FEM Approximation :: $u_h(x) = \sum_{i=1}^{N} u_i \phi_i(x)$
+- Linear equations after discretization :: $Ku = F$
+- Assembly :: $$K_{ij} = \int_\Omega \nabla \phi_i \cdot \nabla \phi_j \, d\Omega, \quad F_i = \int_\Omega f\phi_i \, d\Omega$$
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+- Where:
+  + $K$ is the global stiffness matrix
+  + $u$ is the vector of nodal values of the approximate solution
+  + $F$ is the load vector
+** No Column :B_ignoreheading:
+:PROPERTIES:
+:BEAMER_env: ignoreheading
+:END:
+* Section: Dirac Operator :ignoreheading:ignore:
+#+begin_export latex
+\section{Dirac Operator}
+#+end_export
+* Basics in a Central Potential
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+- Wave function (Spinor) has 4 components
+  + Separated into large and small components
+#+begin_export latex
+\begin{align*}
+P_{n\kappa}'(r) &= -{\frac{\kappa}{r}}P_{n\kappa}(r)+\left({\frac{E-V(r)}{c}}+2c\right)Q_{n\kappa}(r), \\
+Q_{n\kappa}'(r) &= -\left({E-\frac{V(r)}{c}}\right)P_{n\kappa}(r)+{\frac{\kappa}{r}}Q_{n\kappa}(r),\\
+P_{n\kappa}(r)&=rg_{n\kappa}(r), \\
+Q_{n\kappa}(r)&=rf_{n\kappa}(r).
+\end{align*}
+#+end_export
+
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+- $\left[\boldsymbol{\alpha} \cdot \boldsymbol{p} + \beta + V(r)\right] \psi(\mathbf{r}) = E \psi(\mathbf{r})$
+  - $\boldsymbol{\alpha} = \begin{pmatrix}0 & \boldsymbol{\sigma} \\\boldsymbol{\sigma} & 0\end{pmatrix}$
+  - $\beta = \begin{pmatrix}I & 0 \\0 & -I\end{pmatrix}$
+#+begin_export latex
+\begin{align*}
+\sigma_x = 
+\begin{pmatrix}
+0 & 1 \\
+1 & 0
+\end{pmatrix},
+\quad
+\sigma_y = 
+\begin{pmatrix}
+0 & -i \\
+i & 0
+\end{pmatrix},\\
+\sigma_z = 
+\begin{pmatrix}
+1 & 0 \\
+0 & -1
+\end{pmatrix}
+\end{align*}
+#+end_export
+* Negative Energy States
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+- Energy eigenvalue spectra cite:bachManyElectronApproachesPhysics2014
+  + Single atom, attractive potential
+#+DOWNLOADED: screenshot @ 2023-04-24 04:41:33
+[[file:images/A_block/2023-04-24_04-41-33_screenshot.png]]
+
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+- Rest mass of electron
+  + Schrödinger $\to 0$
+  + Dirac $\to mc^{2}$
+- Spin-orbit coupling is present
+- Kinematic relativistic effects cause lowering
+** No Column :B_ignoreheading:
+:PROPERTIES:
+:BEAMER_env: ignoreheading
+:END:
+
+
+* Dealing with Spurious States
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+- Expansion of wave functions in a basis to replace operators causes "variational collapse" cite:kutzelniggBasisSetExpansion1984
+  + Since the Dirac operator is not bounded from below
+  # + The Dirac operator has no kinetic energy operator analogous to the Schrödinger
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+*** Possible solutions
+- High $c$ approximations
+- Special basis choices for expanding wavefunctions
+- Quasiunitary transformations
+- Modifications of $\sigma \hat p$
+- *Sq. Dirac operator*
+- Projection of $\hat D$ to positive energy states
+** No Column :B_ignoreheading:
+:PROPERTIES:
+:BEAMER_env: ignoreheading
+:END:
+$\hat D\Psi = (\beta mc^{2}+c\alpha\hat p+\hat V)\Psi=W\Psi$
+* Section: ~featom~ :ignoreheading:ignore:
+#+begin_export latex
+\section{\texttt{featom}}
+#+end_export
+* Squared Hamiltonian for the Dirac Operator
+:PROPERTIES:
+:BEAMER_opt: shrink 
+:END:
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+- Bounded from below
+  + No spurious states
+- Asymptotic form $H' = r^{\alpha} \left(H+E\right)^2 r^{\alpha}$
+- Let:
+#+begin_export latex
+\begin{equation*}
+H'= \begin{pmatrix}
+    H^{11} & H^{12} \\
+    H^{21} & H^{22}
+    \end{pmatrix}
+\end{equation*}
+#+end_export
+
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+#+begin_export latex
+\vfill
+\begin{align*}
+    H^{11} &= r^{2\alpha}\left(V(r) + c^2\right)^2 + r^{2\alpha}c^2\left(-{\dv[2]{r}}-{2\alpha\over r} {\dv{r}}+ \Phi\right), \\
+    H^{12} &= r^{2\alpha}c\left(2{\left(\kappa-\alpha\right)\over r} V(r) - 2V(r) {\dv{r}} - V'(r) \right), \\
+    H^{21} &= r^{2\alpha}c\left(2{\left(\kappa+\alpha\right)\over r} V(r) + 2V(r) {\dv{r}} + V'(r) \right), \\
+    H^{22} &= r^{2\alpha}\left(V(r) - c^2\right)^2 + r^{2\alpha}c^2 \left(-{\dv[2]{r}}-{2\alpha\over r} {\dv{r}}+ \Phi\right),\\
+\intertext{where $\displaystyle\Phi = \frac{\left(\kappa\left(\kappa+1\right)-\alpha\left(\alpha-1\right)\right)}{r^2}$.}\nonumber
+\end{align*}
+#+end_export
+** No Column :B_ignoreheading:
+:PROPERTIES:
+:BEAMER_env: ignoreheading
+:END:
+* Properties of the Sq. Hamiltonian Dirac
+- Correct Schrödinger limit ($K_{e}<<mc^{2}$, Dirac ~ Schrödinger)
+  + Negative eigenvalues are multiplied by $-1$
+- Introduces coupling b/w electron and positron states
+  + Can be transformed off via Foldy-Wouthuysen
+- Zero or near zero $\sigma \hat p$ must be avoided via basis choice for inversions 
+- Pauli limit may be relatively accurate due to compensating errors textcite:kutzelniggBasisSetExpansion1984
+  + We *demonstrate* that the errors solving the Sq. Dirac Hamiltonian results in low errors across the periodic table
+* Implementation Details
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+- Fortran 2018
+- Handles Schrödinger and Dirac
+- Modular design
+- Simple interface for extensions
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+*** Benchmarks
+| Solver/Code | *featom* | *dftatom* |
+| /Schrödinger/ | 28ms   | 166ms   |
+| /Dirac/       | 565ms  | 276ms   |
+- Apple M1 Max laptop using ~GFortran 11.3.0~.
+  + Uranium RLDA-DFT to $10^{-6}$ a.u. accuracy
+* Section: Results with Coulomb-Dirac Potential for Uranium :ignoreheading:ignore:
+#+begin_export latex
+\section{Results with Coulomb-Dirac Potential for Uranium}
+#+end_export
+* Couloumb-Dirac Uranium Background
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+*** External Potential
+- $V_{ext}=-Z/r$
+- $Z=92$ (Uranium)
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+*** Exact Eigenvalues
+#+begin_export latex
+  \begin{align*}
+    E_{n\kappa} &= \frac{c^{2}}{\sqrt{1+\frac{(Z/c)^{2}}{(n-|\kappa|+\beta)^{2}}}}-c^{2}\\
+    \beta&=\sqrt{\kappa^{2}-(Z/c)^{2}}
+  \end{align*}
+#+end_export
+** No Column :B_ignoreheading:
+:PROPERTIES:
+:BEAMER_env: ignoreheading
+:END:
+Errors due to confining wavefunctions / potentials is lower than other errors for $r_{\mathrm{max}}=50$
+* Polynomial order study
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+file:./images/res/coulomb_dirac_conv.pdf
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+- Straight line on log linear graph
+  + Error is exponential in the polynomial order
+- $r_{max}=50$
+- $p\in[7, 22]$
+
+** No Column :B_ignoreheading:
+:PROPERTIES:
+:BEAMER_env: ignoreheading
+:END:
+- Compared to ~dftatom~ cite:certikDftatomRobustGeneral2013
+
+* Radial Dependence
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+file:./images/res/coulomb_dirac_rmax_eig.pdf
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+file:./images/res/coulomb_dirac_rmax.pdf
+** No Column :B_ignoreheading:
+:PROPERTIES:
+:BEAMER_env: ignoreheading
+:END:
+- Eigenvalues correspond to energy values
+  + Log-linear, exact matches tend to $0$
+  + Compared to ~dftatom~ cite:certikDftatomRobustGeneral2013
+* Theoretical Convergence Rate for FEM
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+file:./images/res/coulomb_dirac_ne.pdf
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+- Theoretical convergence shown as a dotted line
+  + Convergence = $N_{e}^{-2p}$
+** No Column :B_ignoreheading:
+:PROPERTIES:
+:BEAMER_env: ignoreheading
+:END:
+- Compared to ~dftatom~ cite:certikDftatomRobustGeneral2013
+* Section: Results of RLDA-DFT-Dirac Calculations for Uranium :ignoreheading:ignore:
+#+begin_export latex
+\section{Results of RLDA-DFT-Dirac Calculations for Uranium}
+#+end_export
+* RLDA-DFT-Dirac Uranium Background
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+*** Electronic Configuration
+#+begin_export latex
+\begin{align*}
+1s^2, 2s^2, 2p^6, 3s^2, 3p^6, 3d^{10}, 4s^2,\\
+4p^6, 4d^{10}, 4f^{14}, 5s^2, 5p^6, 5d^{10},\\
+5f^3, 6s^2, 6p^6, 6d^1, 7s^2
+\end{align*}
+#+end_export
+- Occupation for l-shell split according to degeneracy
+  + $j=l+\frac{1}{2}$ and $j=l-\frac{1}{2}$ subshells
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+- Ground state calculation
+  - $r_{\mathrm{max}}=50$
+*** Rationale
+- Highly oscillatory, tightly bound $s$ states
+  + Energy range $\approx[-0.1, -4000]$ a.u.
+- Numerous eigenstates
+** No Column :B_ignoreheading:
+:PROPERTIES:
+:BEAMER_env: ignoreheading
+:END:
+* Polynomial order study
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+file:./images/res/dft_dirac_conv.pdf
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+- Straight line on log linear graph
+  + Error is exponential in the polynomial order
+- $r_{max}=50$
+- $p\in[7, 31]$
+
+** No Column :B_ignoreheading:
+:PROPERTIES:
+:BEAMER_env: ignoreheading
+:END:
+- Compared to ~dftatom~ cite:certikDftatomRobustGeneral2013
+
+* Radial Dependence
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+file:./images/res/dft_dirac_rmax_eig.pdf
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+file:./images/res/dft_dirac_rmax.pdf
+** No Column :B_ignoreheading:
+:PROPERTIES:
+:BEAMER_env: ignoreheading
+:END:
+- Eigenvalues correspond to energy values
+  + Log-linear, exact matches tend to $0$
+  + Compared to ~dftatom~ cite:certikDftatomRobustGeneral2013
+* Theoretical Convergence Rate for FEM
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+file:./images/res/dft_dirac_ne.pdf
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+- Theoretical convergence shown as a dotted line
+  + Convergence = $N_{e}^{-2p}$
+** No Column :B_ignoreheading:
+:PROPERTIES:
+:BEAMER_env: ignoreheading
+:END:
+- Compared to ~dftatom~ cite:certikDftatomRobustGeneral2013
+* Section: Summary :ignoreheading:ignore:
+#+begin_export latex
+\section{Summary}
+#+end_export
+* Wrap-up
+** Summary :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+*** ~featom~ Summary
+- Fast :: Compared to shooting solvers
+- Robust :: Poly order controls convergence systematically
+- Accurate :: Upto $10^{-8}$ Hatree (Uranium)
+- Extensible :: Not limited to Coulombic or self-consistent potentials
+- General :: Handles non-uniform meshes
+- Open Source :: MIT Licensed
+** Conclusions :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+*** Conclusions
+- $H^{2}_{D}$ does not have spurious states
+- FEM methods are robust, fast and accurate
+  + Even for $\kappa=\pm1$ state
+- Formulated for Schrödinger and Dirac equations
+* Acknowledgments
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+- Faculty :: Prof. Hannes Jonsson, Prof. Birgir Hrafnkelsson
+- Funding :: Rannis IRF fellowship, Quansight Labs
+- Also :: Family, Lab members, Everyone here
+
+# #+ATTR_LATEX: :options [Lewis Carroll, \textit{Alice in Wonderland}]
+# #+begin_quotation
+# Begin at the beginning, the King said gravely, ``and go on till you come to the end: then stop.''
+# #+end_quotation
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+*** ~featom~ Authors
+1. Ondřej Čertík
+2. John E. Pask
+3. Isuru Fernando
+4. Rohit Goswami
+5. N. Sukumar
+6. Lee. A. Collins
+7. Gianmarco Manzini
+8. Jiří Vackář
+
+** No Column :B_ignoreheading:
+:PROPERTIES:
+:BEAMER_env: ignoreheading
+:END:
+
+* Section: References :ignoreheading:ignore:
+#+begin_export latex
+\section{References}
+#+end_export
+* References
+:PROPERTIES:
+:BEAMER_opt: allowframebreaks
+:END:
+
+** No Column :B_ignoreheading:
+:PROPERTIES:
+:BEAMER_env: ignoreheading
+:END:
+
+\printbibliography[heading=none]
+
+* Section: End :ignoreheading:ignore:
+#+begin_export latex
+\section*{Thank you, Questions?}
+#+end_export
+
+# Local Variables:
+# before-save-hook: org-babel-execute-buffer
+# End:
