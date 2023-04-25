@@ -15746,6 +15746,17 @@ Which is, exciting in a way. ~macos_arm64~ is a cross compile currently and so n
   + It is still massively slow, around 30 minutes to test
   + Either drop ~musllinux~ wheels or just don't test them
     + The dependencies are only resolved during the installation which is done prior to testing the wheel
+* TODO MATLAB interfaces and pitfalls
+** Background
+I inherited a Fortran 77 potential function a while ago. Naturally this meant
+interfacing said potential to everything under the sun. More specifically I also
+inherited a MATLAB codebase which delighted in calling binary executables and
+reading in and out of files. This post has some pitfalls relating to the same.
+
+It quickly became apparent, browsing the documentation, that though MATLAB and
+Fortran share storage orders, the API for C is much saner than the Fortran
+variant, which seems to have been cobbled together almost as an afterthought to
+the C MATLAB API.
 * Important Note :ignoreheading:ignore:
 # ALWAYS at the bottom, to ensure fresh builds do not break
 * DONE About
