@@ -1,6 +1,11 @@
 # We use the generated html to prevent issues involving markdown frontmatter
 
 [[input.files]]
+path = "./posts/handling-legacy-fortran-code/index.html"
+url = "https://rgoswami.me/posts/handling-legacy-fortran-code/"
+title = "Handling Legacy Fortran Code"
+
+[[input.files]]
 path = "./snippets/auto-disc-meson-tests/index.html"
 url = "https://rgoswami.me/snippets/auto-disc-meson-tests/"
 title = "Auto-discovering meson tests"
