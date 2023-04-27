@@ -19,7 +19,7 @@ C++ libraries which may have embedded Fortran code.</p><h2 id=the-code>The Code<
 program for generating the potential energy surface (and forces) of a
 system containing Copper and Hydrogen atoms. The group I&rsquo;m associated
 with has a rather nice Embedded Atom Model parameterized for this
-particular system <sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup>. The source can be obtained from here:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=ln>1</span><span class=cl>git clone https://github.com/TheochemUI/fortran_cuh2
+particular system <sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup>. The source can be obtained from here:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=ln>1</span><span class=cl>git clone https://github.com/TheochemUI/fortran_cuh2_src
 </span></span></code></pre></div><p>Since it was initially meant to work with <code>con</code> files, the salient
 points of the implementation are:</p><ul><li><code>main.f90</code> uses file I/O to read <code>tmp.con</code> and write to <code>energy.out</code>
 and <code>forces.out</code>, and signals that it is ready by writing \(1\) to
