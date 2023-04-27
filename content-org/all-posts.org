@@ -15670,7 +15670,188 @@ Configuration can be painful.
 * TODO Customizing ArchLinux Images
 ** Background
 I recently had to switch server boxes, due to a cascade of hardware errors stemming from a remodeling of my home. The new box, however, did not see fit to include a WiFi card, which meant I  pp
-* TODO CPP Library Blueprints for Bindings
+* DONE Handling Legacy Fortran Code :@notes:fortran:f2py:
+CLOSED: [2023-04-27 Thu 16:09]
+:PROPERTIES:
+:EXPORT_FILE_NAME: handling-legacy-fortran-code
+:EXPORT_HUGO_PANDOC_CITATIONS: t
+:EXPORT_BIBLIOGRAPHY: biblio/myWork.bib
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
+:END:
+#+BEGIN_QUOTE
+A short pseudo-tutorial post on working with inherited Fortran.
+#+END_QUOTE
+** Background
+In-spite of the many claims by upper management (e.g. [[https://fortran-lang.discourse.group/t/an-evaluation-of-risks-associated-with-relying-on-fortran-for-mission-critical-codes-for-the-next-15-years/5644?u=rgoswami][at LANL]]) regarding the death
+of Fortran, most people with even a passing interest in academic research within
+STEM fields will interact with Fortran code, and the community has only been
+improving with time @kedwardStateFortran2022. Rewriting *is not* typically an
+option, or a good use of time. This set of posts should be applicable to any
+blackbox legacy fortran code, though the specific example here is one from my
+own field (computational chemistry).
+*** Series
+This is a series of posts centered around "things to do with old fortran code".
+To be very exact, there's only this post, but related articles are:
+1. *Handling Legacy Fortran Code* <-- You are here
+2. MATLAB bindings for Fortran Libraries through ~C~
+3. ~cibuildwheel~ for C++ libraries with thin Python wrappers
+
+The third post lays out design guidelines and build practicalities for C++
+libraries which may have embedded Fortran code.
+** The Code
+As an exemplary example, we will consider an implicitly typed Fortran-77 program
+for generating the potential energy surface (and forces) of a system containing
+Copper and Hydrogen atoms. The group I'm associated with has a rather nice
+Embedded Atom Model parameterized for this particular system [fn:whygood]. The
+source can be obtained from here:
+
+#+begin_src bash
+git clone https://github.com/TheochemUI/fortran_cuh2_src
+#+end_src
+
+Since it was initially meant to work with ~con~ files, the salient points of the
+implementation are:
+- ~main.f90~ uses file I/O to read ~tmp.con~ and write to ~energy.out~ and ~forces.out~, and signals that it is ready by writing $1$ to ~eam.tmp~
+- ~eamroutines.f90~ reads in ~pot.par~, which has parameters used in a space separated file:
+
+#+begin_src bash
+   6.10000   6.30000
+    .000000E+00  .000000E+00  .000000E+00
+   2862.30      79.5013      86.1495
+   3.51236      2.47961      4.21154
+  -109.107     -107.555      15355.5
+  ....
+#+end_src
+
+Additionally the code is in FORTRAN 77, and uses features no longer in vogue
+including implicit typing and ~common~ blocks.
+
+*** Initial Cleanup
+Rather than hard-coding a path (~pot.par~) it is best to store these values in
+the source code itself.
+#+begin_src python
+potpar = np.loadtxt("pot.par", skiprows=1) # first row has 2 values
+for idx, val in enumerate(aa, start=1):
+    print(f"potpar({idx}, 1) = {val[0]}\npotpar({idx}, 2) = {val[1]}\npotpar({idx}, 3) = {val[2]}")
+#+end_src
+
+There are many more possible optimizations which can be done on the Fortran
+side, but this is the bare minimum we need to move on. The state of the project
+can be seen in [[https://github.com/TheochemUI/fortran_cuh2_src/commit/1461cdf927f69f2da75a5da75e566faa66b88267][1461cdf]]. The ~main.f90~ issues regarding the file I/O can be
+handled from different languages.
+** Python Usage
+When confronted by a Fortran 77 code, or any Fortran code in general, it is never a bad idea to start out with ~f2py~. In this instance, we would like to call the ~force_eam~ function without all the file I/O:
+#+begin_src bash
+f2py -c -m cuh2 eamroutines.f90
+#+end_src
+Now we can use this from Python:
+#+begin_src python
+import numpy as np
+import cuh2 # Compiled module
+R = [0.63940268750835, 0.90484742551374, 6.97516498544584, 3.19652040936288, 0.90417430354811, 6.97547796369474, 8.98363230369760, 9.94703496017833, 7.83556854923689, 7.64080177576300, 9.94703114803832, 7.83556986121272]
+box = np.array([15.34, 21.702, 100])
+natms = np.array([2, 2])
+u = np.zeros(1)
+F = np.zeros_like(R)
+cuh2.force_eam(natms, box, R.ravel(), F.ravel(), u) # Call!
+print(u)
+[-2.71140933]
+#+end_src
+This works very well, and in-fact, if this use case (flexibly calling a
+function) is all that is needed, then nothing more needs to be done. ~f2py~ also
+generates correct signatures, and doc-strings:
+
+#+begin_src python
+??cuh2.force_eam
+force_eam(natms,box,r,f,u,[ndim])
+
+Wrapper for ``force_eam``.
+
+Parameters
+----------
+natms : input rank-1 array('i') with bounds (2)
+box : input rank-1 array('d') with bounds (3)
+r : input rank-1 array('d') with bounds (ndim)
+f : input rank-1 array('d') with bounds (ndim)
+u : input rank-1 array('d') with bounds (1)
+
+Other Parameters
+----------------
+ndim : input int, optional
+    Default: shape(r, 0)
+#+end_src
+
+The resulting compiled extensions can also be published to PyPI as SciPy does.
+** ~ISO_C_BINDING~s for ~C++~ and ~C~
+An ~iso_c_binding~ is essential for rational interfacing to C++ or other languages with a well-defined C-API. Since here there is only one function which needs to be called it can be as simple as:
+#+begin_src fortran
+  module eam_wrap
+    use iso_c_binding, only: c_double, c_int
+      implicit none
+  contains
+    subroutine c_force_eam (natms, ndim, box, R, F, U) bind(c)
+      integer(c_int), intent(in) :: natms(2)
+      integer(c_int), value, intent(in) :: ndim
+      real(c_double), intent(in) :: box(3)
+      real(c_double), intent(inout) :: U(1), R(ndim), F(ndim)
+      call force_eam(natms, ndim, box, R, F, U)
+    end subroutine c_force_eam
+  end module eam_wrap
+#+end_src
+Which, can be mapped to the following function in any ~C~ header file:
+#+begin_src c
+extern void c_force_eam(int *natms, int ndim,
+                        double *box, double *R,
+                        double *F, double *U);
+#+end_src
+We can always check that the right functions are where they should be:
+#+begin_src bash
+gfortran -c eam_isoc.f90 eamroutines.f90
+nm eam_isoc.o
+0000000000000000 T c_force_eam
+                 U force_eam_
+nm eamroutines.o
+000000000000000c C counters_
+0000000000000050 C cutoff_values_
+00000000000065c8 C eam_
+0000000000000130 C eamdblexp_
+00000000000025e8 T eamfcu_
+000000000000249b T eamfh_
+0000000000000000 T eamh2cu_
+00000000000029ef T eamphicucu_
+00000000000028f8 T eamphihcu_
+0000000000002801 T eamphihh_
+0000000000002331 T eamrhocu_
+00000000000021c7 T eamrhoh_
+                 U exp
+0000000000003210 T force_eam_
+                 U _gfortran_stop_string
+                 U _gfortran_st_write
+                 U _gfortran_st_write_done
+                 U _gfortran_transfer_character_write
+                 U _gfortran_transfer_integer_write
+                 U _gfortran_transfer_real_write
+0000000000002ae6 T potinit_
+                 U __powidf2
+                 U __stack_chk_fail
+#+end_src
+*** MATLAB Interfaces
+Nominally, MATLAB has a [[https://www.mathworks.com/help/matlab/call-mex-fortran.html][Fortran API]]. However, it isn't great. The ~C++~ API is
+"modern" to the [[https://www.mathworks.com/help/matlab/matlab_external/c-mex-functions.html][extent of of C++11]], which is practically useless. So the ~C~ [[https://www.mathworks.com/help/matlab/cc-mx-matrix-library.html][MEX
+API]] is the best way forward here, though *input arrays need to be transposed*
+if they are passed to Fortran routines.
+** Conclusions
+This was a first pass at what to do when confronted with Fortran code, short of
+running away, or rewriting entirely. Follow up posts handle integrating into
+larger C++ codes, or distributing said libraries with ~pip~ [fn:whynothere].
+
+
+[fn:whygood]  For a copper slab and hydrogen molecule, the potential is qualitatively correct. It captures the fact that when the slab is fixed, there are effectively only two degrees of freedom, the distance between the hydrogen atoms, and the distance to the slab.
+[fn:whynothere] Most of the issues which crop up in embedding and distribution are largely build system related, and require no changes to the Fortran code other than a compatible ~iso_c_binding~ wrapper so they are extracted away.
+* TODO CPP Library Blueprints for Python Bindings
+#+begin_quote
+Design guidelines for thin Python wrappers to C++ libraries
+#+end_quote
 ** Background
 I recently ended up writing and rewriting a series of libraries to essentially
 get them to a point where I could write bindings to them. In doing so, some
@@ -15746,7 +15927,10 @@ Which is, exciting in a way. ~macos_arm64~ is a cross compile currently and so n
   + It is still massively slow, around 30 minutes to test
   + Either drop ~musllinux~ wheels or just don't test them
     + The dependencies are only resolved during the installation which is done prior to testing the wheel
-* TODO MATLAB interfaces and pitfalls
+* TODO MATLAB interfaces for F77 code :@notes:fortran:matlab:c:
+#+begin_quote
+
+#+end_quote
 ** Background
 I inherited a Fortran 77 potential function a while ago. Naturally this meant
 interfacing said potential to everything under the sun. More specifically I also
@@ -15757,6 +15941,59 @@ It quickly became apparent, browsing the documentation, that though MATLAB and
 Fortran share storage orders, the API for C is much saner than the Fortran
 variant, which seems to have been cobbled together almost as an afterthought to
 the C MATLAB API.
+** Setup
+
+** Implementation
+*** Continuous local builds
+Although the ~mex~
+** Unit Testing
+Thankfully, ~MATLAB~ supports rudimentary unit-tests, though they haven't
+figured out how to check for approximate equality of matrices.
+** Continuous Integration (CI)
+Although ~MATLAB~ is *very* proprietary, Github Actions (and other CI services)
+have the ability to run ~MATLAB~ and in particular, execute ~runtests~ to
+validate the codes. The only subtlety here is that the environment variables
+need to be set with some care.
+#+begin_src yaml
+name: Run MATLAB Tests on GitHub-Hosted Runner
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  mextest:
+    name: Run MATLAB Tests and Generate Artifacts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up MATLAB
+        uses: matlab-actions/setup-matlab@v1
+
+      - name: Build shared library
+        env:
+          ROOT_PATH: ${{ github.workspace }}
+        run: |
+          gfortran -shared -fPIC -o libcuH2Fort.so src/fortran/eam_isoc.f90 src/fortran/eamroutines.f90
+          mex -I$ROOT_PATH -L$ROOT_PATH -lcuH2Fort src/cuh2_mex.c
+
+      - name: Run tests and generate artifacts
+        uses: matlab-actions/run-tests@v1
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}
+        with:
+          test-results-junit: test-results/results.xml
+          code-coverage-cobertura: code-coverage/coverage.xml
+#+end_src
+** Conclusions
+Hopefully I'll never need to write much more ~MATLAB~. There are a laundry list
+of deficiencies in the language, from the naming conventions to the lack of
+printing of structured data. I'm not sure any of this would be considered to be
+a "best practice", however, it has proven to be satisfactory to me so far.
 * Important Note :ignoreheading:ignore:
 # ALWAYS at the bottom, to ensure fresh builds do not break
 * DONE About
@@ -15843,7 +16080,7 @@ I thought it might be of use to list a few of my more official visages. This is
 mostly to ensure people do not confuse me with a Sasquatch[fn:notpersonal].
 These mugshots are exactly that, mugshots for profile icons[fn:mountaintapir].
 
-#+caption: A collage of mugshots, shuffled and not ordered by date to confuse people trying to kill me
+#+caption: A collage of mugshots, shuffled and not ordered by date
 [[file:images/avatarCollage.jpg]]
 
 ** Donations
