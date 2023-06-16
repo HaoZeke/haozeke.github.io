@@ -8575,18 +8575,25 @@ Anything on this site [[https://rgoswami.me/tags/nix/][tagged with Nix]] or [[ht
 
 [fn:officialsite] One location I am going to be able to keep track of
 
-* TODO HPC Configuration 2021 :@programming:workflow:projects:hpc:
+* DONE HPC Configuration 2021 :@programming:workflow:projects:hpc:
+CLOSED: [2021-05-09 Sun 23:12]
 :PROPERTIES:
 :EXPORT_FILE_NAME: hpc-conf-2021
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc tre :comments true
 :END:
 
 #+begin_quote
-A post on configuring a user account for heavy interactive HPC usage with Spack, Nix and self-hosted applications.
+A post on configuring a user account for heavy interactive HPC usage with ~Spack~,
+~Nix~ and self-hosted applications.
 #+end_quote
-
 ** Background
-I have in the past written a few posts about configuring my HPC setup. Since the [[https://www.rhnet.is/][Research and University Network of Iceland hf. (RHnet)]] recently recieved funding for a new machine, called Elja [fn:whyname], I decided to jot down my notes from my setup as part of the user interaction team. Without abusing the ability to bend the ear of the system administrators, I decided to document a user-facing workflow. All the commands here assume an interactive session (example in ~slurm~):
+I have in the past written a few posts about configuring my HPC setup. Since the
+[[https://www.rhnet.is/][Research and University Network of Iceland hf. (RHnet)]] recently recieved funding
+for a new machine, called Elja [fn:whyname], I decided to jot down my notes from
+my setup as part of the user interaction team. Without abusing the ability to
+bend the ear of the system administrators, I decided to document a user-facing
+workflow. All the commands here assume an interactive session (example in
+~slurm~):
 #+begin_src bash
 # 26 should be the number of processors on a node
 srun -n 26 --pty /bin/bash
@@ -8715,7 +8722,7 @@ spack compiler add $(spack location -i gcc@10.2.0)
 spacktivate interactive # After setting the environment
 #+end_src
 *** Environments
-This step is not required if one uses the ~dotfiles~.
+This step is not required if one uses my ~dotfiles~.
 #+begin_src yaml
 # $SPACK_HOME//var/spack/environments/interactive/spack.yaml
 spack:
@@ -8782,7 +8789,6 @@ We can then rebuild the setup.
 #+begin_src bash
 spack module lmod refresh --delete-tree -y
 #+end_src
-
 ** Nix
 *** Portable
 [[https://github.com/DavHau/nix-portable][nix-portable]] is one of the best projects for working with local ~nix~ installations. Where it works, it works very simply:
@@ -8894,8 +8900,12 @@ code-server --link
 
 Naturally this is often disabled by more security oriented SysAdmins. This can be circumvented with the same ~ngrok~ scheme as outlined earlier.
 
-[fn:whyname] A step in the right direction in terms of female representation amongst the university servers
+** Conclusions
+This is a work in progress, and would likely need to be updated ever so often,
+perhaps like a "State Of My Dots" or a yearly "HPC Configuration $YEAR" or
+something like that.
 
+[fn:whyname] A step in the right direction in terms of female representation among the university servers
 * TODO Nix Shells for Ruby Projects :@programming:tools:nix:workflow:ruby:
 :PROPERTIES:
 :EXPORT_FILE_NAME: nix-shell-ruby
