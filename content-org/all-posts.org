@@ -360,9 +360,9 @@ get started.
 
 The whole file is also [[https://github.com/HaoZeke/haozeke.github.io/blob/src/content-org/tmp/myFakeJupyter.org][reproduced here]].
 
-** Comments
-The older commenting system was implemented with [[https://utteranc.es][utteranc.es]] as seen below.
-@@html:<script src="https://utteranc.es/client.js" repo="haozeke/haozeke.github.io" issue-term="pathname" theme="photon-dark" label="Utterance 💬" crossorigin="anonymous" async></script>@@
+# ** Comments
+# The older commenting system was implemented with [[https://utteranc.es][utteranc.es]] as seen below.
+# @@html:<script src="https://utteranc.es/client.js" repo="haozeke/haozeke.github.io" issue-term="pathname" theme="photon-dark" label="Utterance 💬" crossorigin="anonymous" async></script>@@
 
 * TODO Orgmode and Hugo :@programming:tools:emacs:webdev:hugo:
 :PROPERTIES:
@@ -482,9 +482,9 @@ scattered thoughts:
   tutorials, especially for listicles, not changing the shifts will really hurt
 - Try and get a mechanical keyboard (like the [[https://www.annepro.net/][Anne Pro 2]] or the [[https://www.coolermaster.com/catalog/peripheral/keyboards/masterkeys-pro-l-white/][Coolermaster Masterkeys]]), they're fun and easy to change layouts on
 
-** Comments
-The older commenting system was implemented with [[https://utteranc.es][utteranc.es]] as seen below.
-@@html:<script src="https://utteranc.es/client.js" repo="haozeke/haozeke.github.io" issue-term="pathname" theme="photon-dark" label="Utterance 💬" crossorigin="anonymous" async></script>@@
+# ** Comments
+# The older commenting system was implemented with [[https://utteranc.es][utteranc.es]] as seen below.
+# @@html:<script src="https://utteranc.es/client.js" repo="haozeke/haozeke.github.io" issue-term="pathname" theme="photon-dark" label="Utterance 💬" crossorigin="anonymous" async></script>@@
 
 [fn:img] The images are [[https://www.keyboard-design.com/best-keyboard-layouts.html][from here]], where there's also an effort based metric
 used to score keyboard layouts.
@@ -1469,9 +1469,9 @@ Print["images/sine.png"]
 
 Where we have used ~mathematica :results file~ as our header line.
 
-** Comments
-The older commenting system was implemented with [[https://utteranc.es][utteranc.es]] as seen below.
-@@html:<script src="https://utteranc.es/client.js" repo="haozeke/haozeke.github.io" issue-term="pathname" theme="photon-dark" label="Utterance 💬" crossorigin="anonymous" async></script>@@
+# ** Comments
+# The older commenting system was implemented with [[https://utteranc.es][utteranc.es]] as seen below.
+# @@html:<script src="https://utteranc.es/client.js" repo="haozeke/haozeke.github.io" issue-term="pathname" theme="photon-dark" label="Utterance 💬" crossorigin="anonymous" async></script>@@
 
 [fn:aboutmash] As noted in the comments, it is nicer to rename ~mash.pl~ to ~mash~
 [fn:whydoom] The dark side has cookies
@@ -1813,9 +1813,9 @@ just how my configuration evolved. Feel free to cannibalize this for your
 personal benefit. Eventually I plan to expand this into something with
 ~org-journal~ as well, but not right now.
 
-** Comments
-The older commenting system was implemented with [[https://utteranc.es][utteranc.es]] as seen below.
-@@html:<script src="https://utteranc.es/client.js" repo="haozeke/haozeke.github.io" issue-term="pathname" theme="photon-dark" label="Utterance 💬" crossorigin="anonymous" async></script>@@
+# ** Comments
+# The older commenting system was implemented with [[https://utteranc.es][utteranc.es]] as seen below.
+# @@html:<script src="https://utteranc.es/client.js" repo="haozeke/haozeke.github.io" issue-term="pathname" theme="photon-dark" label="Utterance 💬" crossorigin="anonymous" async></script>@@
 
 [fn:notrepro] The video uses ~org-ref-notes-function-many-files~ as the ~org-ref-notes-function~ so the template looks a little different
 [fn:nodrop] For some strange reason a lot of online posts suggested Dropbox for syncing notes, which makes no sense to me, it is always better to have version control and ignore rules
@@ -2367,9 +2367,9 @@ would have preferred not having to suffer through the darkness of my
 screen[fn:bojackplug]. This has been a rather trivial post, but one to keep in
 mind none-the-less.
 
-** Comments
-The older commenting system was implemented with [[https://utteranc.es][utteranc.es]] as seen below.
-@@html:<script src="https://utteranc.es/client.js" repo="haozeke/haozeke.github.io" issue-term="pathname" theme="photon-dark" label="Utterance 💬" crossorigin="anonymous" async></script>@@
+# ** Comments
+# The older commenting system was implemented with [[https://utteranc.es][utteranc.es]] as seen below.
+# @@html:<script src="https://utteranc.es/client.js" repo="haozeke/haozeke.github.io" issue-term="pathname" theme="photon-dark" label="Utterance 💬" crossorigin="anonymous" async></script>@@
 
 [fn:whatglitch] To be clear, none of the windows were the glitch. The issue was the darkened overlay
 [fn:bojackplug] Though it might have also served as a metaphor for *darkness*
