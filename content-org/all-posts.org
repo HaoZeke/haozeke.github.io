@@ -15792,7 +15792,7 @@ ndim : input int, optional
 #+end_src
 
 The resulting compiled extensions can also be published to PyPI as SciPy does.
-** ~ISO_C_BINDING~s for ~C++~ and ~C~
+** ~ISO_C_BINDING~ wrappers for ~C++~ and ~C~
 An ~iso_c_binding~ is essential for rational interfacing to C++ or other languages with a well-defined C-API. Since here there is only one function which needs to be called it can be as simple as:
 #+begin_src fortran
   module eam_wrap
