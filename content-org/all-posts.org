@@ -12928,7 +12928,7 @@ For local use, assuming similar installation instructions, it is easier to manip
 
 Where you will need to replace ~"blah"~ with the output of ~(system-name)~.
 ** Conclusions
-Embarrassingly, neither setup provided as pleasant an SSH based workflow as VS Code. However, that probably has a lot more to do with TRAMP than any of the language servers, and in any case [[https://magit.vc/][Magit]] still makes ~emacs~ far superior. In any case, the setup described here is still far superior to not using anything other than ~projectile~ and ~ripgrep~ so I am satisfied for now. The path setup in this post is deliberately polluting for simplification however, and in practice [[https://github.com/HaoZeke/Dotfiles/blob/bombadil/readme.org][my Dotfiles]] are managed a lot better with ~bombadil~ which is something for a later post. Each of these will take some getting used to, and new keybindings will probably be needed, especially for my [[https://rgoswami.me/posts/colemak-dots-refactor/][idiomatic Colemak setup]].
+Embarrassingly, neither setup provided as pleasant an SSH based workflow as VS Code. However, that probably has a lot more to do with TRAMP than any of the language servers, and in any case [[https://magit.vc/][Magit]] still makes ~emacs~ far superior. In any case, the setup described here is still far superior to not using anything other than ~projectile~ and ~ripgrep~ so I am satisfied for now. The path setup in this post is deliberately polluting for simplification however, and in practice [[https://github.com/HaoZeke/Dotfiles/blob/bombadil/readme.org][my Dotfiles]] are managed a lot better with ~bombadil~ which is something for a later post. Each of these will take some getting used to, and new keybindings will probably be needed, especially for my [[Refactoring Dotfiles For Colemak][idiomatic Colemak setup]].
 
 [fn:howemacs] More than adequately managed by ~hlissner~'s fantastic [[https://github.com/hlissner/doom-emacs][doom-emacs]]
 [fn:nofair] If you need more information, Doug Davis has a more [[https://ddavis.io/posts/eglot-cpp-ide/][in-depth vanilla emacs write-up]] on ~eglot~ and C++
@@ -13095,18 +13095,58 @@ I'm not jumping on the ~julia~ bandwagon. I still reach for ~C++~ or ~Fortran~ o
 [fn:whydft] Most of my existing experience with other codes like Quantum Espresso were at CECAM events with VMs... so it wouldn't be fair to plunge into ~dftk~ on my laptop
 
 
-* TODO Migrating Dots to Chezmoi :@personal:ramblings:tools:workflow:
+* TODO The State of my Dots :@personal:ramblings:tools:workflow:config:
 :PROPERTIES:
 :EXPORT_FILE_NAME: mig-dots-chezmoi
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :END:
 #+begin_quote
-Notes on migrating dotfiles to Chezmoi
+Yet another post on provisioning machines with ~dotfiles~...
+now with ~chezmoi~
 #+end_quote
 ** Background
-Barely two months ago [[Dotfiles from dotgit to bombadil][I wrote about]] moving away from the (now) ~python~ based [[https://github.com/EvanPurkhiser/dots][dots]] to the ~rust~ based [[https://github.com/oknozor/toml-bombadil][toml-bombadil]]. Unfortunately, the structure I backed myself into there was needlessly complicated, and involved manually making entries in the ~bombadil.toml~ file for each sub file. This is a good workflow in principle, since it enforces separation of concerns, but it is rather annoying in practice.
-** Chezmoi
-[[https://github.com/twpayne/chezmoi/][chezmoi]] is almost an institution in and of itself, with [[https://www.chezmoi.io/][detailed documentation]] and a plethora of users. Rather than go over the features of ~chezmoi~
++Barely two months ago+ A few years ago, [[Dotfiles from dotgit to bombadil][I wrote about]] moving away from the
++(now)+ ~python~ based [[https://github.com/EvanPurkhiser/dots][dots]] to the ~rust~ based [[https://github.com/oknozor/toml-bombadil][toml-bombadil]]. Unfortunately, the
+structure I backed myself into there was needlessly complicated, and involved
+manually making entries in the ~bombadil.toml~ file for each sub file. This was a
+good workflow in principle, since it enforces separation of concerns, but it was
+rather annoying in practice [fn:maybenomore].
+
+This post got sidelined a bunch of times over the years, as did a bunch of my
+work in progress posts, mostly because there were always some warts to be ironed
+out.
+*** HPC Configurations
+Around the same time as this post, I was [[HPC Configuration 2021][writing up my trials]] and tribulations
+as a lowly user without admin access of the (then) new ~elja~ HPC cluster at the
+University of Iceland. Anyway, since HPC work (user / admin / whatever) is one
+of my main use-cases, this post could also be seen as a sequel of sorts to that
+one.
+** Dotfile management with ~chezmoi~
+[[https://github.com/twpayne/chezmoi/][chezmoi]] is almost an institution in and of itself, with [[https://www.chezmoi.io/][detailed documentation]]
+and a plethora of users. Rather than go over the features of ~chezmoi~, I'll
+outline the components of my ~dotfiles~ as they appear in the course of setting
+up a new user instance on a remote headless machine [fn:whatwhere].
+
+** Conclusions
+There's not a whole lot to say about the configuration. My setup has been fairly
+stable across a few systems with ~chezmoi~ but I haven't also really shifted
+machines very much. There are a few moving parts I wish were simpler, like
+setting up encryption, but ~chezmoi~ is the sort of fully loaded footgun one
+needs while adrift on a sea of random impersonal ~/bin/bash~ terminals.
+
+#+attr_html: :class info-alert
+#+begin_alert
+#+begin_alert-heading
+Info
+#+end_alert-heading
+As an aside, there are *a lot* of backlogged posts I meant to get around to
+writing but no longer feel all that strongly about. Most of these are written up
+in the [[Site Rationale][original spirit of this blog]] (TL;DR: just write stuff down).
+#+end_alert
+
+
+[fn:maybenomore] I haven't used ~bombadil~ in a few years now, it might have changed
+[fn:whatwhere] An HPC (~elja~, which I used to work more with).
 * DONE Regarding Quansight Labs :@personal:history:ramblings:fortran:
 CLOSED: [2021-08-29 Sun 02:05]
 :PROPERTIES:
@@ -13191,7 +13231,7 @@ I had the honor and pleasure to have two presentations at the [[https://tcevents
 f2py is the gold standard for interfacing Fortran and Python. The most famous downstream consumer of the generated wrappers is undoubtedly the scipy ecosystem. Crucially, f2py is not a compiler, and generates a best effort set of wrappers, aided by special comment lines. One of the key inter-operable approaches to compilation of the subsequent wrappers relies on numpy.distutils. Given the planned obsolescence of this module; we discuss the methodology by which the build phase can be split into a two phase process and document better the pyf enhancements made to facilitate callbacks. A brief outline of test suites and documentation within the numpy ecosystem and proposed enhancement proposals will be discussed as well. We lay out the roadmap towards f2py remaining relevant beyond f77 by implementing derived types and newer features like parallelism with co-arrays. Playing to its strengths as a code-enhancer and leveraging the flexibility of not being constrained by the actual compilation process allows for the reimagining of f2py as a tool and library.
 #+END_QUOTE
 **** Other Content
-- [[https://rgoswami.me/posts/numpy-meson-f2py/][NumPy, Meson and ~f2py~]]
+- [[NumPy, Meson and ~f2py~][NumPy, Meson and ~f2py~]]
 *** Slides
 - [[file:/revealjs/fortrancon21/quansight/f2py2declater.html][Best viewed here]] using a browser (in a new tab)
 - A ~pdf~ copy of the slides are embedded below
@@ -15917,6 +15957,11 @@ For most new projects, I use ~pybind11~ [fn:nanobind] with ~meson~.
 [fn:nanobind] ~nanobind~ is interesting but lacks ~Eigen~ support, and most of the codes I interface to / from use ~Eigen~ arrays
 [fn:academicFOSS] Academia is rather odd about open source development before publication, reviewers almost never bother to even run software, let alone check authorship / provenance
 [fn:whatpy] This IMO is a myth, and ~python~ scripts are way more convoluted to share than most things, but they certainly feel like they should be easy to share
+** Gotchas
+For some reason using ~meson wrap install~ for ~pybind11~ as a pre-build step
+doesn't work while building wheels. So all the ~wrap~ files needed should be
+vendored in. It is still broken on PyPI. So now we need to look into what's
+going wrong. AGAIN.
 * TODO Packages with Python and Compiled Extensions with ~meson~
 ** Background
 The title is a work in progress. After finally getting the build-bot setup
