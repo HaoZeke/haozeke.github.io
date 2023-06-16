@@ -184,9 +184,10 @@ accountID = "rohit"
 [languages]
   [languages.en]
     title = "Rohit Goswami"
-    subtitle = "Reflections"
-    keywords = ""
     copyright = '<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>.'
+    [languages.en.params]
+    keywords = "personal"
+    subtitle = "Reflections"
     readOtherPosts = "Read other posts"
 
     [languages.en.params.logo]
