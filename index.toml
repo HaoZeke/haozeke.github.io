@@ -211,6 +211,11 @@ url = "https://rgoswami.me/snippets/nix-collection-overwrite-attrs/"
 title = "Overwriting Attributes"
 
 [[input.files]]
+path = "./posts/hpc-conf-2021/index.html"
+url = "https://rgoswami.me/posts/hpc-conf-2021/"
+title = "HPC Configuration 2021"
+
+[[input.files]]
 path = "./posts/dotfiles-dotgit-bombadil/index.html"
 url = "https://rgoswami.me/posts/dotfiles-dotgit-bombadil/"
 title = "Dotfiles from dotgit to bombadil"
