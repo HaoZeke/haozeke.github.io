@@ -20,7 +20,7 @@ publishDir   = "public"
 buildDrafts  = false
 buildFuture  = false
 buildExpored = false
-canonifyURLs = true
+canonifyURLs = false # Legacy
 
 enableRobotsTXT = true
 enableGitInfo   = true
