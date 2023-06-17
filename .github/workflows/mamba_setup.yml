@@ -28,6 +28,9 @@ jobs:
       - name: Install Conda environment
         uses: mamba-org/provision-with-micromamba@main
 
+      - name: Install Dart Sass Embedded
+        run: sudo snap install dart-sass-embedded
+
       # Linux and macOS
       - name: Install dependencies and build
         shell: bash -l {0}
