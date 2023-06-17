@@ -16056,6 +16056,134 @@ Hopefully I'll never need to write much more ~MATLAB~. There are a laundry list
 of deficiencies in the language, from the naming conventions to the lack of
 printing of structured data. I'm not sure any of this would be considered to be
 a "best practice", however, it has proven to be satisfactory to me so far.
+* DONE Dart Sass and Hugo Themes :@notes:webdev:
+CLOSED: [2023-06-17 Sat 17:29]
+:PROPERTIES:
+:EXPORT_FILE_NAME: dart-sass-hugo-themes
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+BEGIN_QUOTE
+Quick notes on variables, ~dart-sass~ and ~hugo~
+#+END_QUOTE
+** Background
+Recently I decided that it was annoying for me as a user to not know which links
+on my site were internal and which led off to an external site.
+
+#+DOWNLOADED: screenshot @ 2023-06-17 16:48:01
+#+caption: The desired end-result, blue for internal links, purple for external links, colors chosen with [[https://www.colorhexa.com/][ColorHexa]]
+[[file:images/Background/2023-06-17_16-48-01_screenshot.png]]
+
+However, since ~hugo~ requires ~baseurl~ for generating meaningful ~rss~ and
+~sitemap~ files, this meant either hardcoding the variable into [[https://github.com/HaoZeke/hugo-theme-hello-friend-ng-hz][my theme]], or
+figuring out how to pass variables from my ~config.toml~ to my theme's
+(generated) ~css~.
+
+This about the latter, and is heavily based off of this [[https://discourse.gohugo.io/t/initialize-sass-variables-from-hugo-templates/42053][post on the Hugo
+Discourse]].
+** The CSS
+The crux of the implementation is simply the use of attribute selectors:
+#+begin_src scss
+a {
+  &[href^="/"],
+  &[href^="https://rgoswami.me"],
+  &[href^="#"] {
+    border-bottom: #0380ff 0.125em solid;
+  }
+  &:not(&[href^="/"], &[href^="https://rgoswami.me"], &[href^="#"]) {
+    border-bottom: #9b36ff 0.125em solid;
+  }
+}
+#+end_src
+
+Where the main sticking point is being able to pass the name of the site from
+the configuration. Although this could be done with ~libsass~ and ~hugo~ as
+detailed in the [[https://discourse.gohugo.io/t/initialize-sass-variables-from-hugo-templates/42053][discourse post]], it is conceptually clunky, since partials are
+not respected when using ~ExecuteAsTemplate~ with [[https://gohugo.io/hugo-pipes/resource-from-template/][hugo-pipes]]. A better SCSS
+processor could probably take in a better configuration option object.... Which
+leads to the next section.
+** Dart Sass
+At some point which I didn't have time to figure out, ~libsass~ got phased out
+in favor of [[https://sass-lang.com/dart-sass][Dart Sass]] and includes (among other features) a nifty ~math~
+module. Among other things this had a few side effects:
+
+- I could swap my hand-kanged ~exp~ function for ~math.exp()~ and also had to transition to using ~calc()~ more (as in [[https://github.com/HaoZeke/hugo-theme-hello-friend-ng-hz/commit/3938ac24d3c9e017a6ff633383d3188c5915257f][3938ac2]]).
+- I could pass variables from ~hugo~ to ~scss~ and from there to ~css~ for attribute selectors (as in [[https://github.com/HaoZeke/hugo-theme-hello-friend-ng-hz/commit/b139e7fce6ce05315ad7bba67d9a997a5a285d96][b139e7f]])
+*** CI Updates
+For various reasons, ~hugo~ (even the extended version) does not seem to include
+~dart-sass-embedded~ though the ~snap~ package does (as noted [[https://discourse.gohugo.io/t/using-the-dart-sass-transpiler/41878][here]] on Discourse).
+#+begin_src yml
+- name: Setup Hugo
+  uses: peaceiris/actions-hugo@v2
+  with:
+    hugo-version: '0.111.3'
+    extended: true
+- name: Install Dart Sass Embedded
+  run: sudo snap install dart-sass-embedded
+#+end_src
+*** Local Usage
+~hugo serve~ will correctly compile and load the theme if ~hugo env~ recognizes the ~dart-sass-embedded~ installation:
+#+begin_src bash
+$ hugo env
+hugo v0.112.3+extended linux/amd64 BuildDate=unknown
+GOOS="linux"
+GOARCH="amd64"
+GOVERSION="go1.20.4"
+github.com/sass/libsass="3.6.5"
+github.com/webmproject/libwebp="v1.2.4"
+github.com/sass/dart-sass-embedded/protocol="1.2.0"
+github.com/sass/dart-sass-embedded/compiler="1.54.8"
+github.com/sass/dart-sass-embedded/implementation="1.54.8"
+#+end_src
+~dart-sass-embedded~ is a node package, which means that ~npm~ can be used:
+#+begin_src bash
+DART_SASS_VERSION=1.54.8 npm install sass-embedded-linux-x64@${DART_SASS_VERSION}
+PATH=$PATH:./node_modules/sass-embedded-linux-x64/dart-sass-embedded/ hugo env
+#+end_src
+Personally I ended up using ~micromamba~ to grab ~dart-sass~ as well.
+** Passing Variables
+*** User Perspective
+The theme users simply updates their configuration to include the relevant variables:
+#+begin_src toml
+baseurl = "https://rgoswami.me/"
+[params.style]
+site_url = "https://rgoswami.me/" # Same as baseurl
+#+end_src
+*** Theme Dev Perspective
+With the ~hugo~ asset processing pipeline for ~dart-sass~, the relevant options need to be (minimally) set:
+#+begin_src html
+{{ $options := (dict "targetPath" "main.css" "transpiler" "dartsass" "vars" site.Params.style) }}
+{{ $style := resources.Get "scss/main.scss" |  resources.ToCSS $options | resources.Minify | resources.Fingerprint }}
+<link rel="stylesheet" href="{{ $style.RelPermalink }}">
+#+end_src
+Where ~vars~ takes a section corresponding to the user-defined section (~style~
+in this case). Usage within ~scss~ partials looks like:
+#+begin_src scss
+@use "hugo:vars" as h;
+$site-url: h.$site_url;
+$link-color: #0380ff;
+$external-link-color: #9b36ff;
+#+end_src
+Which can finally be used to elegantly setup attribute selector based colors:
+#+begin_src scss
+a {
+  &[href^="/"],
+  &[href^="#{$site-url}"],
+  &[href^="#"] {
+    border-bottom: $link-color 0.125em solid;
+  }
+  &:not(&[href^="/"], &[href^="#{$site-url}"], &[href^="#"]) {
+    border-bottom: $external-link-color 0.125em solid;
+  }
+}
+#+end_src
+** Conclusions
+Of the many maintenance burdens I have accrued over the years, one of the least
+often discussed is the underlying theme used for the site. Some day that will be
+rectified. I think web design via vanilla JS, S(CSS) and HTML is a pretty nifty
+gateway into other languages (interpreted and compiled). The approach could be
+(and perhaps should be) extended to color other links and sites differently
+(e.g. all my content on other sites in blue). For now this works well enough at
+any rate.
 * Important Note :ignoreheading:ignore:
 # ALWAYS at the bottom, to ensure fresh builds do not break
 * DONE About
