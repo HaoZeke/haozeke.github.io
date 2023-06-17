@@ -16104,7 +16104,7 @@ leads to the next section.
 ** Dart Sass
 At some point which I didn't have time to figure out, ~libsass~ got phased out
 in favor of [[https://sass-lang.com/dart-sass][Dart Sass]] and includes (among other features) a nifty ~math~
-module. Among other things this had a few side effects:
+module. This had a few side effects:
 
 - I could swap my hand-kanged ~exp~ function for ~math.exp()~ and also had to transition to using ~calc()~ more (as in [[https://github.com/HaoZeke/hugo-theme-hello-friend-ng-hz/commit/3938ac24d3c9e017a6ff633383d3188c5915257f][3938ac2]]).
 - I could pass variables from ~hugo~ to ~scss~ and from there to ~css~ for attribute selectors (as in [[https://github.com/HaoZeke/hugo-theme-hello-friend-ng-hz/commit/804d417f1436dc3f58d770a717985fe43cb3813c][804d417]])
