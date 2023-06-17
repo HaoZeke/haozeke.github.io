@@ -16085,11 +16085,11 @@ The crux of the implementation is simply the use of attribute selectors:
 #+begin_src scss
 a {
   &[href^="/"],
-  &[href^="https://rgoswami.me"],
+  &[href*="rgoswami.me"],
   &[href^="#"] {
     border-bottom: #0380ff 0.125em solid;
   }
-  &:not(&[href^="/"], &[href^="https://rgoswami.me"], &[href^="#"]) {
+  &:not([href^="/"]):not([href*="rgoswami.me"]):not([href^="#"]) {
     border-bottom: #9b36ff 0.125em solid;
   }
 }
@@ -16107,7 +16107,7 @@ in favor of [[https://sass-lang.com/dart-sass][Dart Sass]] and includes (among o
 module. Among other things this had a few side effects:
 
 - I could swap my hand-kanged ~exp~ function for ~math.exp()~ and also had to transition to using ~calc()~ more (as in [[https://github.com/HaoZeke/hugo-theme-hello-friend-ng-hz/commit/3938ac24d3c9e017a6ff633383d3188c5915257f][3938ac2]]).
-- I could pass variables from ~hugo~ to ~scss~ and from there to ~css~ for attribute selectors (as in [[https://github.com/HaoZeke/hugo-theme-hello-friend-ng-hz/commit/b139e7fce6ce05315ad7bba67d9a997a5a285d96][b139e7f]])
+- I could pass variables from ~hugo~ to ~scss~ and from there to ~css~ for attribute selectors (as in [[https://github.com/HaoZeke/hugo-theme-hello-friend-ng-hz/commit/804d417f1436dc3f58d770a717985fe43cb3813c][804d417]])
 *** CI Updates
 For various reasons, ~hugo~ (even the extended version) does not seem to include
 ~dart-sass-embedded~ though the ~snap~ package does (as noted [[https://discourse.gohugo.io/t/using-the-dart-sass-transpiler/41878][here]] on Discourse).
@@ -16146,7 +16146,7 @@ The theme users simply updates their configuration to include the relevant varia
 #+begin_src toml
 baseurl = "https://rgoswami.me/"
 [params.style]
-site_url = "https://rgoswami.me/" # Same as baseurl
+site_url = "rgoswami.me" # Same as baseurl
 #+end_src
 *** Theme Dev Perspective
 With the ~hugo~ asset processing pipeline for ~dart-sass~, the relevant options need to be (minimally) set:
@@ -16167,11 +16167,11 @@ Which can finally be used to elegantly setup attribute selector based colors:
 #+begin_src scss
 a {
   &[href^="/"],
-  &[href^="#{$site-url}"],
+  &[href*="#{$site-url}"],
   &[href^="#"] {
     border-bottom: $link-color 0.125em solid;
   }
-  &:not(&[href^="/"], &[href^="#{$site-url}"], &[href^="#"]) {
+  &:not([href^="/"]):not([href*="#{$site-url}"]):not([href^="#"]) {
     border-bottom: $external-link-color 0.125em solid;
   }
 }
