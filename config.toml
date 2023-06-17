@@ -111,7 +111,7 @@ mediaType = "application/toml"
   backend = "fuse" # can be stork or fuse
 
 [params.style]
-site_url = "https://rgoswami.me/" # Same as baseurl
+site_url = "rgoswami.me" # Based on baseurl
 
 [params.utterances]
 issue = "pathname"
