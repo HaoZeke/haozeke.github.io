@@ -12,5 +12,6 @@ dependencies:
   - nodejs
   - ruby
   - rb-bundler
+  - dart-sass
   - git
   - curl

@@ -110,6 +110,9 @@ mediaType = "application/toml"
   enable = true
   backend = "fuse" # can be stork or fuse
 
+[params.style]
+site_url = "https://rgoswami.me/" # Same as baseurl
+
 [params.utterances]
 issue = "pathname"
 theme = "photon-dark"
