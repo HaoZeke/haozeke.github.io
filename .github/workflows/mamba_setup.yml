@@ -26,14 +26,18 @@ jobs:
           version: 28.2
 
       - name: Install Conda environment
-        uses: mamba-org/provision-with-micromamba@main
+        uses: mamba-org/setup-micromamba@v1
+        init-shell: >-
+          bash
+          zsh
+        cache-environment: true
 
       - name: Install Dart Sass Embedded
         run: sudo snap install dart-sass-embedded
 
       # Linux and macOS
       - name: Install dependencies and build
-        shell: bash -l {0}
+        shell: bash -el {0}
         run: |
           npm install
           gem install bundler:2.2.20
