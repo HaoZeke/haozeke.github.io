@@ -17,7 +17,7 @@ jobs:
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
         with:
-          hugo-version: '0.111.3'
+          hugo-version: '0.112.3'
           extended: true
 
       - name: Setup Emacs
@@ -27,10 +27,12 @@ jobs:
 
       - name: Install Conda environment
         uses: mamba-org/setup-micromamba@v1
-        init-shell: >-
-          bash
-          zsh
-        cache-environment: true
+        with:
+          init-shell: >-
+            bash
+            zsh
+          environment-file: environment.yml
+          cache-environment: true
 
       - name: Install Dart Sass Embedded
         run: sudo snap install dart-sass-embedded
