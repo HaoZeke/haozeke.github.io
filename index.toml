@@ -1,6 +1,11 @@
 # We use the generated html to prevent issues involving markdown frontmatter
 
 [[input.files]]
+path = "./posts/managing-scanned-books/index.html"
+url = "https://rgoswami.me/posts/managing-scanned-books/"
+title = "Managing Scanned Books"
+
+[[input.files]]
 path = "./posts/dart-sass-hugo-themes/index.html"
 url = "https://rgoswami.me/posts/dart-sass-hugo-themes/"
 title = "Dart Sass and Hugo Themes"
