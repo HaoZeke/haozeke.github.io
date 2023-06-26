@@ -16184,6 +16184,216 @@ gateway into other languages (interpreted and compiled). The approach could be
 (and perhaps should be) extended to color other links and sites differently
 (e.g. all my content on other sites in blue). For now this works well enough at
 any rate.
+* DONE Managing Scanned Books :@notes:workflow:ramblings:
+CLOSED: [2023-06-26 Mon 21:34]
+:PROPERTIES:
+:EXPORT_FILE_NAME: managing-scanned-books
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+begin_quote
+Where I consider digitizing colored content.
+#+end_quote
+** Background
+It so happened that I recently acquired a rather unique book which (somewhat
+oddly) had no corresponding digital variant [fn:whybother]. I've discussed how I modify books
+and papers [[My Life in E-ink][for consumption on my Kobo Aura HD in the past]], but this comes before
+that. Much of this is essentially a plug for [[https://github.com/4lex4/scantailor-advanced][Scantailor Advanced]] [fn:whatadvanced].
+** Goals
+Starting with the initial output ~pdf~ files from a scanner's "scan to me" function [fn:whyfiles] the goal is to have all the bells and whistles of a well-done digital book:
+- Fixing orientations :: This is meant to deal with rotations mostly, skew is later
+- Splitting pages :: Since most scanners with books take two pages at a time
+- Handling skew :: Deskewing works to reorient pages for visibility
+- Reworking content selections :: The automated selection worked will for this, and is especially useful if there are artifacts
+- Adding back margins :: For padding post selection
+- Output determination :: 600 DPI is generally enough, and "mixed" mode works great for images, the one thing to add is that "Higher search sensitivity" for picture shapes is pretty useful
+
+These six steps can be carried out with Scantailor Advanced, which has a very
+intuitive GUI for the same but there are but two more things:
+- Optical Character Recognition (OCR)
+- A proper Table of Contents
+
+We will also have to first get high resolution images out of the ~pdf~ files.
+For starters our project might look like this:
+#+begin_src bash
+❯ ls
+appendix.pdf	chap6.pdf		     images
+chap2_chap3.pdf  chap7.pdf		     toc_chap1_intro.pdf
+chap4.pdf	chap8.pdf
+chap5.pdf
+#+end_src
+** From ~pdf~ to ~tiff~
+Without any bells and whistles, a simple bash script will suffice to extract
+high resolution ~.tiff~ files from ~.pdf~ inputs. The only caveat is the need to
+carefully format the page names so they can be joined together easily. This lead to:
+
+#+begin_src bash
+# The first page number (output file name) for the current PDF
+export INP_SCAN_NAME=toc_chap1_intro
+output_index=1
+pdftoppm -tiff "${INP_SCAN_NAME}.pdf"  temp
+i=0
+for file in temp*.tif; do
+  i=$((i+1))
+  new_index=$(printf "%03d" $((output_index + i - 1)))
+  new_file="page_${new_index}.tiff"
+  mv "$file" "images/$new_file"
+done
+#+end_src
+
+At this point we can plug the images directly into ScanTailor Advanced and work
+through the GUI.
+** OCR Setup
+Working with the TIFF images which form the output at ScanTailor Advanced is a
+good bet. System packages needed are:
+#+begin_src bash
+trizen -S tesseract tesseract-data-eng \
+    tesseract-data-isl \
+    ghostscript unpaper pngquant \
+    img2pdf jbig2enc pdftk
+#+end_src
+Subsequently I ended up with a throwaway ~conda~ environment for using [[https://github.com/ocrmypdf/OCRmyPDF][OCRmyPDF]]
+(like with all ~python~ tools).
+#+begin_src bash
+micromamba create -p $(pwd)/.ocrtmp pip ocrmypdf
+micromamba activate $(pwd)/.ocrtmp
+#+end_src
+Since ~ocrmypdf~ works on single PDF files or alternatively single images, one
+brute-force approach is simply:
+#+begin_src bash
+cd out # where scantailor puts things
+mkdir temp
+for file in page*.tif; do
+  base=$(basename "$file" .tif)
+  ocrmypdf -l eng --output-type pdf "$file" "temp/${base}.pdf"
+done
+#+end_src
+Which leads to a series of ~.pdf~ files.
+** Concatenation and Compression
+[[https://www.ghostscript.com/][Ghostscript]] is the best way to get a single reasonably *compressed* output from
+these files[fn:whatelse]:
+#+begin_src bash
+export OUTPUT_PDF_DPI=500 # good enough for me
+# Or 600 for the Scantailor default
+gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite \
+    -dCompatibilityLevel=1.7 -dPDFSETTINGS=/ebook \
+    -dEmbedAllFonts=true -dSubsetFonts=true \
+    -dColorImageDownsampleType=/Bicubic \
+    -dColorImageResolution=$OUTPUT_PDF_DPI \
+    -dGrayImageDownsampleType=/Bicubic \
+    -dGrayImageResolution=$OUTPUT_PDF_DPI \
+    -dMonoImageDownsampleType=/Bicubic \
+    -dMonoImageResolution=$OUTPUT_PDF_DPI \
+    -sOutputFile="output_${OUTPUT_PDF_DPI}.pdf" \
+    temp/*.pdf
+#+end_src
+Where the compatibility level is to [[https://stackoverflow.com/questions/29417217/how-are-pdf-files-able-to-be-partially-displayed-while-downloading][allow for linearization]] [fn:whatlinis] (needs [[http://www.adobe.com/content/dam/Adobe/en/devnet/acrobat/pdfs/pdf_reference_1-7.pdf][PDF 1.7]]).
+Sometimes this leads to files which are still too large (Table ref:tbl:sizes).
+
+#+label: tbl:sizes
+#+name: tbl:sizes
+#+caption: For a color book
+| DPI | Size (in MB) |
+| 300 |        139.2 |
+| 600 |        303.5 |
+
+In such cases ~pdfsizeopt~ (from [[https://github.com/pts/pdfsizeopt][here]]) can be setup in the environment with:
+#+begin_src bash
+mkdir $CONDA_PREFIX/tmp/pdfsizeopt
+cd $CONDA_PREFIX/tmp/pdfsizeopt
+wget -O pdfsizeopt_libexec_linux.tar.gz https://github.com/pts/pdfsizeopt/releases/download/2023-04-18/pdfsizeopt_libexec_linux-v9.tar.gz
+tar xzvf pdfsizeopt_libexec_linux.tar.gz
+rm -f    pdfsizeopt_libexec_linux.tar.gz
+wget -O pdfsizeopt.single https://raw.githubusercontent.com/pts/pdfsizeopt/master/pdfsizeopt.single
+chmod +x pdfsizeopt.single
+mv * $CONDA_PREFIX/bin && cd $CONDA_PREFIX/bin
+ln -s pdfsizeopt.single $CONDA_PREFIX/bin/pdfsizeopt
+rm -rf $CONDA_PREFIX/tmp/*
+#+end_src
+
+Which can then be used as:
+#+begin_src bash
+pdfsizeopt output_600.pdf
+#+end_src
+
+The compression takes a while [fn:whywait], but the results are completely
+lossless and the reduction was pretty neat, from ~390 MB~ to ~250 MB~, though it
+took forever, and [[https://acrobat.adobe.com/link/acrobat/compress-pdf][Adobe Acrobat]] reduced a ~390 MB~ file to ~108 MB~ in minutes.
+
+#+DOWNLOADED: screenshot @ 2023-06-26 21:31:14
+#+caption: Lossless compression (~250 MB~) on the left, lossy Acrobat compression (~108 MB~) on the right
+[[file:images/Concatenation_and_Compression/2023-06-26_21-31-14_screenshot.png]]
+
+
+For handling the cover image I ended up with:
+#+begin_src bash
+# from the ScanTailor 600 DPI image
+# 39.3 MB
+tiffcp -c zip:p9  cpage-1.tif cpage.tif #  19.7 MB
+convert cpage.tif -compress JPEG -quality 90% cpage.jpg # 2.0 MB
+#+end_src
+Then I dumped it through a [[https://compressjpg.com/][web tool]] [fn:othercompressor](around ~560 KB~) before finishing up
+with ~ocrmypdf~ for the final ~pdf~ of ~535 KB~.
+** TOC Generation
+Sometimes I feel too lazy and end up doing my table of contents editing in
+Master PDF editor [fn:reallycommercial]. That being said my most favored way for
+a fully fledged TOC with chapters and sub-headings is with the venerable [[https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/][PDFtk]]:
+#+begin_src bash
+cat toc.txt
+BookmarkBegin
+BookmarkTitle: Chapter 1
+BookmarkLevel: 1
+BookmarkPageNumber: 5
+
+BookmarkBegin
+BookmarkTitle: Section 1.1
+BookmarkLevel: 2
+BookmarkPageNumber: 6
+
+BookmarkBegin
+BookmarkTitle: Section 1.2
+BookmarkLevel: 2
+BookmarkPageNumber: 10
+BookmarkBegin
+
+
+BookmarkTitle: Chapter 2
+BookmarkLevel: 1
+BookmarkPageNumber: 15
+...
+#+end_src
+This can be applied with:
+#+begin_src bash
+pdftk input.pdf update_info toc.txt output output_with_toc.pdf
+#+end_src
+Sometimes I end up padding the ~pdf~ with a few extra pages to ensure the page
+numbers (printed) match the ones in the TOC.
+** Linearization
+Since we targeted PDF 1.7, with linearization support [fn:whybotherlin]. We need [[https://qpdf.readthedocs.io/][qpdf]]:
+#+begin_src bash
+micromamba install qpdf
+qpdf --linearize output_300.pdf olin300.pdf
+#+end_src
+This has seemingly no effect on size so it can be the last step.
+** Conclusions
+This isn't my first time working with a scanned book. Felt like a lot more steps
+than before though. Some more bash magic could have automated extracting the
+images from scanner generated ~pdf~ files, and perhaps some other minor
+tweaks [fn:likehpc] or other tools [fn:likewhat], though for my purposes, this
+worked well enough. I was a little disappointed to not be able to hit optimal
+file sizes without web tools, but given the amount of time expended, it was
+probably to be expected.
+
+[fn:whybother] A few papercuts steeled my resolved to get this onto my devices
+[fn:whatadvanced] A more maintained fork of the old and venerable Scantailor which now weirdly has [[https://scantailor.org/][a fan-page]] with dubious plugs to something called Truthfinder...
+[fn:whyfiles] Scanning the book in one go led to overly large attachments for my email provider. 576.96 766.08
+[fn:whatelse] If compression doesn't matter using ~pdftk~ (needed for the TOC) would be fine too.
+[fn:whywait] The TOC work can go on simultaneously, and compression can take days
+[fn:reallycommercial] They used to have a really nice trial of version 4 which did everything I needed..
+[fn:whybotherlin] Some of my devices use web browsers for rendering ~pdf~ files.
+[fn:likehpc] ScanTailor could be run on an HPC most probably, as could the ~ocrmypdf~ step, the pdf compression definitely should (took around three days on my ThinkPad X1 Carbon 6th Gen)
+[fn:likewhat] [[https://github.com/Krasjet/pdf.tocgen][pdf.tocgen]] is pretty cool
+[fn:whatlinis] Swankier [[https://apryse.com/blog/pdf-format/what-is-pdf-linearization][explanation her]]e
+[fn:othercompressor] When file-sizes are really a bottle neck there's also the sister [[https://pdfcompressor.com/][pdfcompressor]] site, or for really small files there's the [[https://acrobat.adobe.com/link/acrobat/compress-pdf][Adobe Acrobat compressor]]
 * Important Note :ignoreheading:ignore:
 # ALWAYS at the bottom, to ensure fresh builds do not break
 * DONE About
