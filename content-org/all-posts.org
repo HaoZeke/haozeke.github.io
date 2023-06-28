@@ -8409,7 +8409,7 @@ A while ago, [[Grant Proposals - I][I wrote about my experience applying]] for t
 ** Conclusion
 I might decide to keep a running tab of grant related posts and activities.
 
-* DONE SymEngine and the Season of Docs :@personal:ramblings:thoughts:
+* DONE SymEngine and the Season of Docs :@personal:ramblings:thoughts:documentation:
 CLOSED: [2021-03-25 Thu 21:18]
 :PROPERTIES:
 :EXPORT_FILE_NAME: symengine-gsod20
@@ -8475,16 +8475,24 @@ That is a deal breaker, since the algorithms are often described step by step.
   - Includes hierarchies
 - Also is now pretty
 *** Tooling Decisions
-This is more of a technically specification; but after rooting around, it was decided to throw consistency of design to the wind and use native tools for each language binding as shown in Table [[tbl:langtool]].
+This is more of a technical specification; but after rooting around, it was decided to throw consistency of design to the wind and use native tools for each language binding as shown in Table [[tbl:langtool]].
 
 #+name: tbl:langtool
 #+caption: Language bindings and tools
-| Language         | Package                  |
-| [[https://symengine.org/symengine.R][R]]                | [[https://pkgdown.r-lib.org/][pkgdown]]                  |
-| [[https://symengine.org/symengine.py][Python]]           | [[https://www.sphinx-doc.org/][Sphinx]]                   |
-| [[https://symengine.org/symengine][C++]]              | [[https://www.doxygen.nl/index.html][Doxygen]] + [[https://github.com/HaoZeke/doxyYoda][doxyYoda]]       |
-| [[https://symengine.org/SymEngine.jl/][Julia]]            | [[https://juliadocs.github.io/Documenter.jl/stable/man/guide/][Documenter.jl]]            |
-| [[https://symengine.org/#api-documentation][Notebooks / MyST]] | [[https://www.sphinx-doc.org/][Sphinx]] + [[https://myst-nb.readthedocs.io/en/latest/][myst]] + [[https://jupytext.readthedocs.io/en/latest/install.html][jupytext]] |
+#+attr_html: :class zebra-striping sane-table
+|-------------------+--------------------------|
+| *Language*        | *Package*                |
+|-------------------+--------------------------|
+| [[https://symengine.org/symengine.R][R]]                 | [[https://pkgdown.r-lib.org/][pkgdown]]                  |
+|-------------------+--------------------------|
+| [[https://symengine.org/symengine.py][Python]]            | [[https://www.sphinx-doc.org/][Sphinx]]                   |
+|-------------------+--------------------------|
+| [[https://symengine.org/symengine][C++]]               | [[https://www.doxygen.nl/index.html][Doxygen]] + [[https://github.com/HaoZeke/doxyYoda][doxyYoda]]       |
+|-------------------+--------------------------|
+| [[https://symengine.org/SymEngine.jl/][Julia]]             | [[https://juliadocs.github.io/Documenter.jl/stable/man/guide/][Documenter.jl]]            |
+|-------------------+--------------------------|
+| [[https://symengine.org][Notebooks or MyST]] | [[https://www.sphinx-doc.org/][Sphinx]] + [[https://myst-nb.readthedocs.io/en/latest/][myst]] + [[https://jupytext.readthedocs.io/en/latest/install.html][jupytext]] |
+|-------------------+--------------------------|
 
 *** Notebooks and Documentation
 *I do not like* Jupyter Notebooks. This is because, to me, a rabid ~org-mode~ fanatic [fn:soyousay], it seems pretty odd that they are essentially monstrous ~json~ nightmares instead of plain text. Thankfully [[https://jupytext.readthedocs.io/][jupytext]] and [[https://myst-nb.readthedocs.io/en/latest/][MyST-NB]] solve this problem admirably. There are still some use-cases for having pure notebooks, especially since GitHub now renders them; so a CI (Github Actions) generates a "notebooks" branch for the entrenched as well.
@@ -15912,51 +15920,121 @@ Design guidelines for thin Python wrappers to C++ libraries
 ** Background
 I recently ended up writing and rewriting a series of libraries to essentially
 get them to a point where I could write bindings to them. In doing so, some
-thoughts on design and preventing massive breakage. In particular, using PRs
-turned out to be insufficient to maintain code quality and I ended up shifting
-to a submodule based workflow.
-
+thoughts on design have evolved into this post.
+** Truncated
+- I found ~meson.wrap~ to be much more palpable than working with ~submodules~
+*** False starts
 Originally, I had the library and bindings in one repository, which was easier
-to work hack on, and had fewer moving parts. I rashly assumed that using
-branches would provide a modicum of reproducibility. As I quickly found though,
-this got out of hand when the code needed to be refactored to suit the bindings
-and wasn't always backported to ~main~ in a timely fashion. In a sense, this is
-another introduction to yet another ~cookiecutter~ template, but the post should
-provide context behind the decisions.
-** Overview
-** Layout
-We will use ~meson~ throughout
-*** Library
-For the library itself
+to hack on, and had fewer moving parts. I rashly assumed that using branches
+would provide a modicum of reproducibility. As I quickly found though, this got
+out of hand when the code needed to be refactored to suit the bindings and
+wasn't always backported to ~main~ in a timely fashion
+** Setup Preliminaries
+We will be as general in our suggestions as is humanely possible, but when we
+need to reach for specific examples, they will be in context of the ~potlib~
+project ([[https://github.com/TheochemUI/potlib][library]], [[https://github.com/TheochemUI/pypotlib][bindings]]), which is small and innocuous enough to grok
+hopefully.
+*** Tools
+For most new projects, I use ~pybind11~ [fn:nanobind] with ~meson~.
+- ~pdm~ is used for dependencies / scripting / environments
+- ~mesonpy~ is the backend
+- ~cibuildwheel~ is used for actually getting the wheels for ~pypi~
+  + This is a bit of a nightmare, need to use [[https://repology.org/project/eigen/versions][repology]] and fiddle around with
+    figuring out which version of each OS is used by each specification
+  + Any kind of system based package management was exceedingly slow, so
+    sticking to ~pip~ and ~meson~ managed dependencies is the safest bet
+** Library Layout
+Taking ~potlib~ as a concrete example, my current favored layout looks like this:
+#+begin_src bash
+.
+├── CppCore
+│   ├── examples
+│   ├── gtests
+│   ├── meson.build
+│   └── src
+├── environment.yml
+├── LICENSE
+├── meson.build
+├── meson_options.txt
+└── Readme.org
+#+end_src
+*** Linking to the library
+[[https://git-scm.com/book/en/v2/Git-Tools-Submodules][Git submodules]] are generally the first thing to reach for when working with
+repositories which depend on each other, but I found ~meson~ [[https://mesonbuild.com/Subprojects.html][subprojects]] to be
+less finicky if the library and bindings are all compatible with ~meson~. The
+documentation omits setting up a ~.wrap~ file for a project, so consider the
+following (from ~pypotlib~):
+#+begin_src toml
+[wrap-git]
+directory=potlib
+url=https://github.com/TheochemUI/potlib.git
+revision=5d029b9
 
-* TODO Python Bindings for CPP Libraries
-** Background
-I've been writing a lot of Python bindings lately. Mostly thin wrappers to
-existing libraries. These are some guidelines I keep reaching for. Most of these
-evolved during my work on ~eON~, the long timescale dynamics code, but isn't (as
-of April 2024) public yet[fn:academicFOSS].
+[provide]
+potlib=git
+#+end_src
+Which can be placed in ~subprojects/potlib.wrap~ of the bindings repo and should be committed.
+**** Miscellaneous ~meson~ points
+Personally I gravitate towards having a few standard default variables defined at the top level:
+#+begin_src meson
+_args = [] # Extra arguments
+_deps = [] # Dependencies
+_linkto = [] # All the sub-libraries
+_incdirs = [] # All the includes
+#+end_src
+Along with the ~clang~ and ~gcc~ on Unix related dependencies:
+#+begin_src meson
+# Dependencies
+# libm for Unix systems
+m_dep = cppc.find_library('m', required: false)
+_deps += m_dep
+# For clang
+_deps += [declare_dependency(link_args: '-lstdc++')]
+#+end_src
+This makes it easier to pull variables from subprojects in a seamless manner:
+Linking to the library itself is best done by declaring a dependency:
+#+begin_src meson
+# ---------------------- Library Dependencies
+potlib_proj = subproject('potlib', version: '0.1')
+# optionally use:
+                        # default_options: ['default_library=static'])
+potlib_dep = declare_dependency(link_with: potlib_proj.get_variable('_linkto'),
+                               dependencies: potlib_proj.get_variable('_deps'))
+_deps += [ potlib_dep ]
+#+end_src
+Setting up targets is then also pretty straightforward:
+#+begin_src meson
+blahlib = library('blah',
+                 src_files,
+                 dependencies: _deps,
+                 cpp_args: _args,
+                 link_with: _linkto,
+                 install: true)
+#+end_src
+** Structuring Bindings
+Although a single file can be used for the ~pybind11~ bindings, I prefer a more
+structured approach, consider the layout below:
+** Distribution
 What does distribution really take? I've dabbled with writing extensive
 documentation, setting up ~docker~ containers, ~snakemake~ workflows, ~nix~,
 ~spack~, ~easybuild~, but they all fundamentally require too much effort at both
 ends to get things working. This is cuts deeper for things which are _supposed_
 to be simple to share, like ~python~ scripts[fn:whatpy].
-** Setup Preliminaries
-We will be as general in our suggestions as is humanely possible, but when we
-need to reach for specific examples, they will be in context of the ~potlib~
-project (library, bindings), which is small and innocuous enough to grok hopefully.
-*** Tools
-For most new projects, I use ~pybind11~ [fn:nanobind] with ~meson~.
-- ~pdm~ is used for dependencies
-- ~mesonpy~ is the backend
-- ~cibuildwheel~ is used for actually getting the wheels for ~pypi~
-  + This is a bit of a nightmare, need to use [[https://repology.org/project/eigen/versions][repology]] and fiddle around with figuring out which version of each OS is used by each specification
-  + Any kind of system based package management was exceedingly slow, so sticking to ~pip~ and ~meson~ managed dependencies is the safest bet
-** Design Guidelines
-- I found ~meson.wrap~ to be much more palpable than working with ~submodules~
+** Conclusions
+Using PRs turned out to be insufficient to maintain code quality and I ended up
+shifting to a submodule based workflow. Most of these evolved during my work on
+[[https://pypi.org/project/pypotlib/][pypotlib]], and a newer version of ~eON~, the long timescale dynamics code, which
+isn't (as of April 2024) public yet[fn:academicFOSS].
 
+[fn:likewhen] Most recently when working on [[https://github.com/ERGO-Code/HiGHS][HiGHs bindings]] to eventually simplify its integration with SciPy
 [fn:nanobind] ~nanobind~ is interesting but lacks ~Eigen~ support, and most of the codes I interface to / from use ~Eigen~ arrays
 [fn:academicFOSS] Academia is rather odd about open source development before publication, reviewers almost never bother to even run software, let alone check authorship / provenance
 [fn:whatpy] This IMO is a myth, and ~python~ scripts are way more convoluted to share than most things, but they certainly feel like they should be easy to share
+* TODO Python Bindings for CPP Libraries
+** Background
+These are some guidelines I keep reaching for[fn:likewhen].
+** Design Guidelines
+
 ** Gotchas
 For some reason using ~meson wrap install~ for ~pybind11~ as a pre-build step
 doesn't work while building wheels. So all the ~wrap~ files needed should be
@@ -15969,7 +16047,9 @@ correctly for the bindings. I realized I needed to refactor to add adapters to
 ~ase~. More generally, the problem is of embedding a compiled extension in a
 package which has other pure-python code snippets as well.
 ** Pure Python and ~meson~
-~meson~ doesn't support ~python~ as a first class language. The general idea is to muck around with the fact that copying over ~.py~ files to the "right place" is essentially an installation.
+~meson~ doesn't support ~python~ as a first class language. The general idea is
+to muck around with the fact that copying over ~.py~ files to the "right place"
+is essentially an installation.
 As seen in ~scipy~:
 #+begin_src python
 py3.install_sources([
@@ -15980,7 +16060,9 @@ py3.install_sources([
   subdir: 'scipy/cluster'
 )
 #+end_src
-Which is, exciting in a way. ~macos_arm64~ is a cross compile currently and so not a good idea. ~numpy~ has a nice build wheels only if commit contains [wheel build] which is nice to kang.
+Which is, exciting in a way. ~macos_arm64~ is a cross compile currently and so
+not a good idea. ~numpy~ has a nice build wheels only if commit contains [wheel
+build] which is nice to kang.
 ** Details
 - ~musllinux~ doesn't ship with ~openblas~, so adding ~scipy~ or anything
   depending on it as a project dependency is going to break
