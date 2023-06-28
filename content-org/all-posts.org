@@ -15913,7 +15913,12 @@ larger C++ codes, or distributing said libraries with ~pip~ [fn:whynothere].
 
 [fn:whygood]  For a copper slab and hydrogen molecule, the potential is qualitatively correct. It captures the fact that when the slab is fixed, there are effectively only two degrees of freedom, the distance between the hydrogen atoms, and the distance to the slab.
 [fn:whynothere] Most of the issues which crop up in embedding and distribution are largely build system related, and require no changes to the Fortran code other than a compatible ~iso_c_binding~ wrapper so they are extracted away.
-* TODO CPP Library Blueprints for Python Bindings
+* DONE CPP Library Blueprints for Python Bindings :@programming:design:bindings:python:cpp:
+CLOSED: [2023-06-28 Wed 11:27]
+:PROPERTIES:
+:EXPORT_FILE_NAME: cpp-library-blueprints-pybind
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
+:END:
 #+begin_quote
 Design guidelines for thin Python wrappers to C++ libraries
 #+end_quote
@@ -15921,8 +15926,6 @@ Design guidelines for thin Python wrappers to C++ libraries
 I recently ended up writing and rewriting a series of libraries to essentially
 get them to a point where I could write bindings to them. In doing so, some
 thoughts on design have evolved into this post.
-** Truncated
-- I found ~meson.wrap~ to be much more palpable than working with ~submodules~
 *** False starts
 Originally, I had the library and bindings in one repository, which was easier
 to hack on, and had fewer moving parts. I rashly assumed that using branches
@@ -15946,17 +15949,23 @@ For most new projects, I use ~pybind11~ [fn:nanobind] with ~meson~.
 ** Library Layout
 Taking ~potlib~ as a concrete example, my current favored layout looks like this:
 #+begin_src bash
-.
-├── CppCore
-│   ├── examples
-│   ├── gtests
-│   ├── meson.build
-│   └── src
-├── environment.yml
-├── LICENSE
+CppCore
+├── examples
+│   ├── calling_cuh2.cc
+│   └── calling_ljpot.cc
+├── gtests
+│   └── CuH2PotTest.cc
 ├── meson.build
-├── meson_options.txt
-└── Readme.org
+└── src
+    ├── base_types.cc
+    ├── base_types.hpp
+    ├── CuH2
+    ├── helpers.cc
+    ├── helpers.hpp
+    ├── LennardJones
+    ├── Potential.cc
+    ├── Potential.hpp
+    └── pot_types.hpp
 #+end_src
 *** Linking to the library
 [[https://git-scm.com/book/en/v2/Git-Tools-Submodules][Git submodules]] are generally the first thing to reach for when working with
@@ -15992,7 +16001,7 @@ _deps += m_dep
 _deps += [declare_dependency(link_args: '-lstdc++')]
 #+end_src
 This makes it easier to pull variables from subprojects in a seamless manner:
-Linking to the library itself is best done by declaring a dependency:
+Linking to the library itself is best done by declaring a dependency [fn:whatifnot]:
 #+begin_src meson
 # ---------------------- Library Dependencies
 potlib_proj = subproject('potlib', version: '0.1')
@@ -16011,41 +16020,139 @@ blahlib = library('blah',
                  link_with: _linkto,
                  install: true)
 #+end_src
+
+** Binding Conventions
+- Always use ~clang-format~.
+- All strings must be explicitly identified ~""s~
+  + **not for doc-strings** in ~pybind11~
+*** General
+- Always use ~namespace py = pybind11;~
+- For ~Blah.cpp~ the binding will be ~pybinds/py_blah.cc~
+- Most header content must be in ~pybinds/py_wrapper.hpp~
+  + The exceptions are base classes like ~py_potential.hpp~ since these need to be imported by child files like ~potentials/py_morse.cc~
+  + If a header is supplied, then the corresponding ~.cc~ should *only* reference the header, which in turn should declare other dependencies.
+    - This only applies to files at the same tree/folder level
+- Every method must have:
+  + arguments defined
+  + documentation string
+Example:
+#+begin_src c++
+.def("setCell", &Matter::setCell, "Sets the cell dimensions"s, py::arg("AtomMatrix newCell"))
+#+end_src
+*** Naming
+Naming is hard. To simplify long filenames and deep hierarchies, the following conventions are established:
+- Within ~objectivefunctions~, ~ObjectiveFunction~ can be replaced by ~objfunc~
+  + So ~MatterObjectiveFunction~ is bound in ~py_matterobjfunc.cc~
+*** Class boilerplate
+
+#+begin_src c++
+void py_objectName(py::module_ &m) {
+    py::class_<ObjectName>(m, "ObjectName", py::dynamic_attr()) // dynamic incurs a penalty
+    /*
+    ,** Constructors
+    ,*/
+
+    /*
+    ,** Operators
+    ,*/
+
+    /*
+    ,** Methods
+    ,*/
+
+    /*
+    ,** Parameters
+    ,*/
+
+    /*
+    ,** Python helpers
+    ,*/
+
+    .def("__repr__", [](const ObjectName &a) { return "<ObjectName object>"; });
+}
+#+end_src
+
+*** Function arguments
+- First one must be ~py::arg()~
+- Subsequent arguments may be ~""_a~
+- When there is a non-obvious type used in the arguments, document it
+  - e.g. ~AtomMatrix~ and ~VectorXd~
+  - Use ~_~ for spaces, e.g. ~AtomMatrix_pos~ for arguments ~(AtomMatrix pos)~
+- When using overloads, always note the actual arguments as comments
+#+begin_src cpp
+             py::overload_cast<long /*nAtoms*/,
+                               AtomMatrix /*positions*/,
+                               VectorXi /*atomicNrs*/,
+                               double * /*energy*/,
+                               Matrix3d /*box*/,
+                               int /*nImages*/
+                               >(&Potential::force),
+#+end_src
 ** Structuring Bindings
 Although a single file can be used for the ~pybind11~ bindings, I prefer a more
 structured approach, consider the layout below:
-** Distribution
-What does distribution really take? I've dabbled with writing extensive
-documentation, setting up ~docker~ containers, ~snakemake~ workflows, ~nix~,
-~spack~, ~easybuild~, but they all fundamentally require too much effort at both
-ends to get things working. This is cuts deeper for things which are _supposed_
-to be simple to share, like ~python~ scripts[fn:whatpy].
+#+begin_src bash
+├── pyb11_srcs
+│   ├── CuH2
+│   │   ├── py_cuh2pot.cc
+│   │   └── py_cuh2pot.hpp
+│   ├── LennardJones
+│   │   ├── py_ljpot.cc
+│   │   └── py_ljpot.hpp
+│   ├── py_potential.cc
+│   ├── py_potential.hpp
+│   ├── py_pottypes.cc
+│   ├── py_wrapper.cc
+│   └── py_wrapper.hpp
+#+end_src
+Which mirrors the library design.
+- Add to ~py_wrapper.hpp~
+#+begin_src c++
+PYBIND11_MODULE(eonclient, m) {
+    ...
+    py_newthing(m);
+}
+#+end_src
+- Make ~py_newthing.cc~
+#+begin_src c++
+// clang-format off
+#include "py_wrapper.hpp"
+// Binding code (unless in py_wrapper)
+#include "../newthing.h"
+// clang-format on
+
+void py_newthing(py::module_ &m) {
+    /* Wrapping details here */
+    }
+#+end_src
+For a concrete example consider this [[https://github.com/TheochemUI/pypotlib/commit/99b944cf41544e87e2e2170a25eff5e2860b20b7][pypotlib commit]].
 ** Conclusions
-Using PRs turned out to be insufficient to maintain code quality and I ended up
-shifting to a submodule based workflow. Most of these evolved during my work on
-[[https://pypi.org/project/pypotlib/][pypotlib]], and a newer version of ~eON~, the long timescale dynamics code, which
-isn't (as of April 2024) public yet[fn:academicFOSS].
+So far this covered creating a single compiled extension for thin bindings to an
+existing ~c++~ library. Using PRs and submodules turned out to be insufficient
+to maintain code quality and I ended up shifting to a subproject based workflow.
+Most of these evolved during my work on [[https://pypi.org/project/pypotlib/][pypotlib]], and a newer version of ~eON~,
+the long timescale dynamics code, which isn't (as of April 2024) public
+yet[fn:academicFOSS]. A follow up post will cover adding pure python code which
+can be used for generating a more pythonic interface and also  the requirements
+for distribution via PyPI.
 
 [fn:likewhen] Most recently when working on [[https://github.com/ERGO-Code/HiGHS][HiGHs bindings]] to eventually simplify its integration with SciPy
 [fn:nanobind] ~nanobind~ is interesting but lacks ~Eigen~ support, and most of the codes I interface to / from use ~Eigen~ arrays
 [fn:academicFOSS] Academia is rather odd about open source development before publication, reviewers almost never bother to even run software, let alone check authorship / provenance
 [fn:whatpy] This IMO is a myth, and ~python~ scripts are way more convoluted to share than most things, but they certainly feel like they should be easy to share
-* TODO Python Bindings for CPP Libraries
-** Background
-These are some guidelines I keep reaching for[fn:likewhen].
-** Design Guidelines
-
-** Gotchas
-For some reason using ~meson wrap install~ for ~pybind11~ as a pre-build step
-doesn't work while building wheels. So all the ~wrap~ files needed should be
-vendored in. It is still broken on PyPI. So now we need to look into what's
-going wrong. AGAIN.
+[fn:whatifnot] This was a bit of a gotcha, since adding variables to the project's ~_deps~ and ~_linkto~ didn't work
 * TODO Packages with Python and Compiled Extensions with ~meson~
 ** Background
 The title is a work in progress. After finally getting the build-bot setup
 correctly for the bindings. I realized I needed to refactor to add adapters to
 ~ase~. More generally, the problem is of embedding a compiled extension in a
 package which has other pure-python code snippets as well.
+** Distribution
+What does distribution really take? I've dabbled with writing extensive
+documentation, setting up ~docker~ containers, ~snakemake~ workflows, ~nix~,
+~spack~, ~easybuild~, but they all fundamentally require too much effort at both
+ends to get things working. This is cuts deeper for things which are _supposed_
+to be simple to share, like ~python~ scripts[fn:whatpy].
 ** Pure Python and ~meson~
 ~meson~ doesn't support ~python~ as a first class language. The general idea is
 to muck around with the fact that copying over ~.py~ files to the "right place"
