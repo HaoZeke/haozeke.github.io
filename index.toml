@@ -1,6 +1,11 @@
 # We use the generated html to prevent issues involving markdown frontmatter
 
 [[input.files]]
+path = "./posts/cpp-library-blueprints-pybind/index.html"
+url = "https://rgoswami.me/posts/cpp-library-blueprints-pybind/"
+title = "CPP Library Blueprints for Python Bindings"
+
+[[input.files]]
 path = "./posts/managing-scanned-books/index.html"
 url = "https://rgoswami.me/posts/managing-scanned-books/"
 title = "Managing Scanned Books"
