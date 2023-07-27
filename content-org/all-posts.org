@@ -15732,9 +15732,106 @@ Leveraging ~nix~ and ~flakes~ in conjunction with ~home-manager~
 #+end_quote
 ** Background
 Configuration can be painful.
-* TODO Customizing ArchLinux Images
+* TODO Customizing ArchLinux Installation Media
+:PROPERTIES:
+:EXPORT_FILE_NAME: customizing-archlinux-im
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+begin_quote
+A short plug for ~hzArchiso~, and general thoughts on ~archiso~
+#+end_quote
 ** Background
-I recently had to switch server boxes, due to a cascade of hardware errors stemming from a remodeling of my home. The new box, however, did not see fit to include a WiFi card, which meant I  pp
+I recently had to switch server boxes, due to a cascade of hardware errors
+stemming from a remodeling of my home. The new box, however, did not see fit to
+include a WiFi card, which meant I had to add one of my own, a Realtek 88XXau,
+the kernel module for which is [[https://aur.archlinux.org/packages/rtl88xxau-aircrack-dkms-git][on the AUR]].
+
+This meant the official ArchLinux ISO would not be able to connect to the
+internet, and short of copying over files from PC to PC manually with a USB
+stick, my only option was to build my own installation media.
+
+This then snowballed a little into a customized live-USB project called
+[[https://github.com/HaoZeke/hzArchiso/][hzArchiso]] with a bunch of bells and whistles I need [fn:kindavague]. This post
+is not meant to supplant [[https://wiki.archlinux.org/title/Archiso][the ArchWiki]] and does not provide an in-depth
+introduction to using ~archiso~ [fn:whydisclaim].
+** Makepkg tweaks
+When building system images, I tend to modify my ~/etc/makepkg.conf~ to use all
+cores and also use the faster ~mold~ linker (detailed on the [[https://wiki.archlinux.org/title/Makepkg#Parallel_compilation][ArchWiki]]):
+#+begin_src bash
+MAKEFLAGS="-j$(nproc)"
+GITFLAGS="--filter=tree:0"
+LDFLAGS="... -fuse-ld=mold"
+RUSTFLAGS="... -C link-arg=-fuse-ld=mold"
+#+end_src
+
+- *Do not use* ~march=native~ or other processor specific flags.
+- ~$GITFLAGS~ support needs ~pacman-git~ as of July 2023, check the [[https://wiki.archlinux.org/title/Makepkg#Reduce_source_download_and_extraction_times][ArchWiki for details]].
+** Managing AUR packages
+~repoctl~ ([[https://github.com/cassava/repoctl][repo]]) is a fantastic tool for setting up local repositories of
+packages, which make it pretty trivial to add to an installation media as well.
+Since the repository is meant only for use with the installation media, it is
+sufficient to define it in only within the project.
+
+Updating / adding packages can be done with:
+#+begin_src bash
+## Once
+repoctl conf new ~/pkgs/hzarchiso.db.tar.gz
+repoctl reset
+## Separate terminal
+repoctl serve
+## Everytime
+mkdir tmpUpd && cd tmpUpd
+for pkg in $(cat ../aurpkgs.txt); do
+    (
+        repoctl down "$pkg"
+    )
+done
+for dir in *; do cd $dir; makepkg -cs && repoctl add *.pkg.tar.zst && cd ../  && rm -rf $dir || cd ../; done
+cd ../ && rm -rf tmpUpd
+#+end_src
+** Kernel modifications
+It turns out that my new machine required a wireless card patch. I haven't
+compiled a kernel for several years now[fn:sincewhen]. The process was
+gratifyingly simplistic, following some discussion threads on the [[https://bbs.archlinux.org/viewtopic.php?pid=2103599#p2103599][Archlinux
+Forums]].
+
+Essentially:
+- Grab the relevant patchset
+- Add it to the ~PKGBUILD~
+- Build (optionally add to local repo)
+- Profit
+
+#+begin_src bash
+..
+source = (
+    "v2-wifi-iwlwifi-pcie-add-device-id51F1-for-killer-1675.patch::https://lore.kernel.org/linux-wireless/20230608082725.353150-1-yi@yikuo.dev/raw"
+)
+..
+b2sums=(
+    'e9f30d94b84a019c38842fbb468c64522782d14a347a12442704e185b4d9b131dc25661e7e9b9640ac20e0c949f5fa0375739d0c1badd0a0c637408a56091118'
+)
+#+end_src
+
+For building the ~nitrous~ kernel (an [[https://wiki.archlinux.org/title/Kernel#Unofficial_kernels][unofficial one]] for newer hardware) then:
+#+begin_src bash
+repoctl down linux-nitrous
+# modify the PKGBUILD
+makepkg -si
+#+end_src
+
+This particular patch changes no headers thankfully. Building kernels takes
+around as long as I remember, several hours at the least on an older laptop.
+** Conclusions
+Modifying ArchLinux installation media is fun. Even if the exact set of packages
+bundled with ~hzArchiso~ isn't for most, it serves as a useful blueprint for
+branching out into their own ISOs. Pull requests and other issues /
+contributions are always welcome as well, and more detailed build information is
+[[https://github.com/HaoZeke/hzArchiso][on the repo]] and [[https://wiki.archlinux.org/title/Archiso][on the ArchWiki]]. Personally, I expect to update the ~iso~ every now and then with
+more of my configuration / defaults / every time I get a new machine.
+
+[fn:kindavague] My first attempts at modifying the installation media date back to [[https://github.com/HaoZeke/hzArchiso/commits/main?after=7fe66527b0029053398ca3a97039d29cb786db5f+69&branch=main&qualified_name=refs%2Fheads%2Fmain][2018 though]]
+[fn:sincewhen] Since I largely retired from Android [[LineageOS Maintainer Appreciation][custom kernel / ROM work]]
+[fn:whydisclaim] Seriously, *always* read the [[https://wiki.archlinux.org/][ArchWiki]] over blog posts, sometimes the [[https://bbs.archlinux.org/][ArchLinux forums]] are useful too
 * DONE Handling Legacy Fortran Code :@notes:fortran:f2py:
 CLOSED: [2023-04-27 Thu 16:09]
 :PROPERTIES:
