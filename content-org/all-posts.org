@@ -16680,6 +16680,89 @@ probably to be expected.
 [fn:likewhat] [[https://github.com/Krasjet/pdf.tocgen][pdf.tocgen]] is pretty cool
 [fn:whatlinis] Swankier [[https://apryse.com/blog/pdf-format/what-is-pdf-linearization][explanation her]]e
 [fn:othercompressor] When file-sizes are really a bottle neck there's also the sister [[https://pdfcompressor.com/][pdfcompressor]] site, or for really small files there's the [[https://acrobat.adobe.com/link/acrobat/compress-pdf][Adobe Acrobat compressor]]
+* TODO Favorite ~pre-commit~ hooks
+** C++ Hooks
+** Python Hooks
+** Fortran Hooks
+* TODO Ruminations on Github Actions for dependent projects :@notes:ramblings:ci:gha:
+:PROPERTIES:
+:EXPORT_FILE_NAME: managing-scanned-books
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+begin_quote
+Leveraging Github for managing interconnected projects.
+#+end_quote
+** Background
+Projects have dependencies. They may (often) also have very distinct histories
+and development goals. Technically ~git~ is fine for these situations as well,
+since changes are really tracked at the file level. Nevertheless, it can happen
+that projects spin off, but still need rather tighte integration, e.g. ~f2py~
+changes in ~numpy~ *must* be tested against the latest ~scipy~ to ensure nothing
+breaks.
+
+Traditionally, this requirement falls on the maintainers and the onus of
+ensuring zero breakage with change-sets to relevant parts of the codebases.
+However, this step can also be handled automatically at the CI/CD level.
+
+*** Overview
+There is a [[https://github.com/orgs/community/discussions/26323][rather extensive dicussion thread]] over on Github regarding this
+situation of dependent repositories. Existing solutions
+include [fn:creditmelissa] using trigger-workflow-and-wait as for example in
+napari for building their documentation ([[https://github.com/napari/napari/blob/main/.github/workflows/deploy_docs.yml][main repo]], [[https://github.com/napari/docs/blob/main/.github/workflows/deploy_docs.yml][triggered]]).
+
+The rest of this post will drop the generalities and focus on a more concrete
+scenario where all repositories on Github [fn:whynotnumpy]. We will consider
+three levels of complexity in terms of access controls; where all the
+repositories are under a single user, where all repositories are under one
+organization, and finally the most general scenario where the repositories to be
+linked are under disparate organizations.
+
+** Workflow requirements
+Will we use stages here, to make sure that each step does what it needs to do.
+Essentially we have:
+- Building
+- Testing
+- Triggering upstream / downstream
+- Commenting with the results
+  + Minimally on the PR (this should be by triggering another workflow if it succeeds)
+  + Ideally would be nice to semi-automatically open an issue as well
+*** Dependents
+Repositories which *depend* on an upstream repository (e.g. bindings) should be
+triggered via a user specified comment workflow, since it may not be necessary
+to run on each push to the upstream project, and for this, [[https://github.com/drewwyatt/comment-pipeline][comment-pipeline]]
+seems useful.
+
+** First attempt: Manual checkout and ~cron~
+If a library depends on another, the simplest would be to run a ~cron~ job every
+day which manually checks out the dependent to see if anything broke.
+
+Consider, then:
+
+** Tokens and Access
+For simplicity, the idea is to use the ~gh~ client token and ~gh~ itself to
+trigger workflows.
+***  User level
+Scoping rules in GitHub and security considerations being what they are, the
+focus will be on minimal permissions, and we will first consider
+*** Organization level
+*** Cross organization
+
+
+[fn:creditmelissa] Brought to my attention at work by the always excellent [[https://melissawm.github.io/about-me/][Dr. Melissa Weber Mendonça]].
+[fn:whynotnumpy] So more akin to my doctoral work over at [[github.com/TheochemUI][Theochem]] (~potlib~, ~pypotlib~) or [[https://github.com/atomic-solvers][atomic-solvers]] than NumPy / SciPy at the moment.
+* TODO Writing ~R~ Packages :@notes:r:cpp:fortan:bindings:
+:PROPERTIES:
+:EXPORT_FILE_NAME: managing-scanned-books
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+begin_quote
+Some thoughts on melding ~R~ with lower level languages and package management
+#+end_quote
+** Background
+I like plotting with ~ggplot2~. It makes more sense to me than the other plotting systems.
+** Idiosyncracies
+- I find it odd that ~R~ packages commit so much generated code
+  + Can be simplified with a CI bot
 * Important Note :ignoreheading:ignore:
 # ALWAYS at the bottom, to ensure fresh builds do not break
 * DONE About
