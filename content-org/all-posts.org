@@ -15732,7 +15732,8 @@ Leveraging ~nix~ and ~flakes~ in conjunction with ~home-manager~
 #+end_quote
 ** Background
 Configuration can be painful.
-* TODO Customizing ArchLinux Installation Media
+* DONE Customizing ArchLinux Installation Media
+CLOSED: [2023-07-27 Thu 22:45]
 :PROPERTIES:
 :EXPORT_FILE_NAME: customizing-archlinux-im
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
@@ -15819,8 +15820,8 @@ repoctl down linux-nitrous
 makepkg -si
 #+end_src
 
-This particular patch changes no headers thankfully. Building kernels takes
-around as long as I remember, several hours at the least on an older laptop.
+Building kernels takes around as long as I remember, several hours at  on an
+older laptop.
 ** Conclusions
 Modifying ArchLinux installation media is fun. Even if the exact set of packages
 bundled with ~hzArchiso~ isn't for most, it serves as a useful blueprint for
