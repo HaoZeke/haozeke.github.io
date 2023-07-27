@@ -322,6 +322,8 @@ endforeach
 This is rather satisfying. Combined with some ~wraps~, it is also pretty
 portable.
 
+** TODO Github Action Blocks
+Concurrency is a great idea.
 ** TODO Applying Patches Across Repositories :git:cmdline:patch:
 :PROPERTIES:
 :EXPORT_HUGO_BUNDLE: git-commit-patch
