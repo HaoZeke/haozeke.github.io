@@ -15732,8 +15732,7 @@ Leveraging ~nix~ and ~flakes~ in conjunction with ~home-manager~
 #+end_quote
 ** Background
 Configuration can be painful.
-* DONE Customizing ArchLinux Installation Media
-CLOSED: [2023-07-27 Thu 22:45]
+* TODO Customizing ArchLinux Installation Media
 :PROPERTIES:
 :EXPORT_FILE_NAME: customizing-archlinux-im
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
@@ -15771,7 +15770,8 @@ RUSTFLAGS="... -C link-arg=-fuse-ld=mold"
 ~repoctl~ ([[https://github.com/cassava/repoctl][repo]]) is a fantastic tool for setting up local repositories of
 packages, which make it pretty trivial to add to an installation media as well.
 Since the repository is meant only for use with the installation media, it is
-sufficient to define it in only within the project.
+sufficient to define it in only within the project, as discussed on the
+~archiso~ [[https://wiki.archlinux.org/title/Archiso][ArchWiki entry]].
 
 Updating / adding packages can be done with:
 #+begin_src bash
@@ -15822,17 +15822,184 @@ makepkg -si
 
 Building kernels takes around as long as I remember, several hours at  on an
 older laptop.
+** Using ~hzArchiso~
+The general idea is to follow along with the ArchWiki [[https://wiki.archlinux.org/title/Installation_guide][installation steps]]
+(perhaps augmented by the [[https://wiki.archlinux.org/title/Dual_boot_with_Windows][dual-booting]] instructions) For some users, the
+~archinstaller~ script ([[https://python-archinstall.readthedocs.io/en/latest/index.html][repo]]) might be a better option. There's also an
+~offlineInst.sh~ script which can be used to replicate the environment on the
+live-USB.
+
 ** Conclusions
 Modifying ArchLinux installation media is fun. Even if the exact set of packages
 bundled with ~hzArchiso~ isn't for most, it serves as a useful blueprint for
 branching out into their own ISOs. Pull requests and other issues /
 contributions are always welcome as well, and more detailed build information is
 [[https://github.com/HaoZeke/hzArchiso][on the repo]] and [[https://wiki.archlinux.org/title/Archiso][on the ArchWiki]]. Personally, I expect to update the ~iso~ every now and then with
-more of my configuration / defaults / every time I get a new machine.
+more of my configuration / defaults / every time I get a new machine. I've also
+been using ~btrfs~ for almost a decade without any trouble [fn:why], which is anecdotal
+but nice.
 
+[fn:whereswap] This is derived from [[https://nerdstuff.org/posts/2020/2020-004_arch_linux_luks_btrfs_systemd-boot/][this post]], which in turn references the ArchWiki for [[https://wiki.archlinux.org/title/Btrfs#Swap_file][BTRFS]] and [[https://wiki.archlinux.org/title/Swap#Swap_file][swap]].
+[fn:anysources] Based on the setup described [[https://nerdstuff.org/posts/2020/2020-004_arch_linux_luks_btrfs_systemd-boot/][here]],
+[fn:why] Transparent compression is a rather neat feature
 [fn:kindavague] My first attempts at modifying the installation media date back to [[https://github.com/HaoZeke/hzArchiso/commits/main?after=7fe66527b0029053398ca3a97039d29cb786db5f+69&branch=main&qualified_name=refs%2Fheads%2Fmain][2018 though]]
 [fn:sincewhen] Since I largely retired from Android [[LineageOS Maintainer Appreciation][custom kernel / ROM work]]
 [fn:whydisclaim] Seriously, *always* read the [[https://wiki.archlinux.org/][ArchWiki]] over blog posts, sometimes the [[https://bbs.archlinux.org/][ArchLinux forums]] are useful too
+
+* TODO Laptop setup notes ~btrfs~ subvolumes
+Since the installation media has more features one might perhaps use ~gparted~
+for resizing disks, use the GUI for managing networks, etc. Personally I
+generally allocate a chunk from whatever other OS is present in ~gparted~, and
+format it as unformatted. This is so I can use [[https://wiki.archlinux.org/title/Dm-crypt/Encrypting_an_entire_system][encrypted]] BTRFS
+[[https://wiki.archlinux.org/index.php/Btrfs#Subvolumes][subvolumes]][fn:anysources].
+
+**** Input variants with ~sway~
+
+Instead of setting up a configuration, I typically use:
+
+#+begin_src bash
+swaymsg input type:keyboard xkb_variant colemak
+swaymsg input type:keyboard xkb_layout us
+#+end_src
+
+**** Setup Encryption
+
+#+begin_src bash
+cryptsetup luksFormat /dev/nvme0n1p5
+cryptsetup open /dev/nvme0n1p5 luks
+mkfs.btrfs -L ROOT /dev/mapper/luks
+#+end_src
+
+**** BTRFS Layout
+
+The logic behind the flat ~btrfs~ layout is to separate things which should
+remain untouched during rollbacks of the system. I use a variant of a layout
+from [[https://github.com/archlinux/archinstall/issues/781][this issue]] (more on layouts [[https://github.com/lnussel/lnussel.github.io/blob/fs/_posts/2020-12-16-fslayout.md][here]] and [[https://www.jwillikers.com/btrfs-layout][here]]):
+#+begin_src bash
+mount /dev/mapper/luks /mnt
+# Root
+btrfs sub create /mnt/@ # /
+# Needs additional setup
+btrfs sub create /mnt/@swap
+# Manage each home separately
+btrfs sub create /mnt/@home # /home
+btrfs sub create /mnt/@pkg # /var/cache/pacman/pkg
+btrfs sub create /mnt/@.snapshots
+# VMs shouldn't be rolled back
+btrfs sub create /mnt/@VMs # /var/lib/libvirt/images
+btrfs sub create /mnt/@containers # for docker
+# Log files should be consistent
+btrfs sub create /mnt/@log # /var/log
+# Often has licensed software
+btrfs sub create /mnt/@opt # /opt
+btrfs sub create /mnt/@usr_local # /usr/local
+umount /mnt
+#+end_src
+
+These can then be mounted with reasonable defaults ([[https://www.jwillikers.com/btrfs-mount-options.html][detailed here]]):
+
+#+begin_src bash
+mount -o noatime,nodiratime,compress=zstd,space_cache=v2,ssd,subvol=@ /dev/mapper/luks /mnt
+mkdir -p /mnt/btrfs # To mount the btrfs root: https://unix.stackexchange.com/q/367123/246530
+mount -o noatime,nodiratime,compress=zstd,space_cache=v2,ssd,subvolid=5 /dev/mapper/luks /mnt/btrfs
+# Mount the other subvolumes
+mkdir -p /mnt/{boot,home,var/cache/pacman/pkg,.snapshots,var/lib/libvirt/images,var/log,opt,usr/local}
+mount -o noatime,nodiratime,compress=zstd,space_cache=v2,ssd,subvol=@home /dev/mapper/luks /mnt/home
+mount -o noatime,nodiratime,compress=zstd,space_cache=v2,ssd,subvol=@pkg /dev/mapper/luks /mnt/var/cache/pacman/pkg
+mount -o noatime,nodiratime,compress=zstd,space_cache=v2,ssd,subvol=@VMs /dev/mapper/luks /mnt/var/lib/libvirt/images
+mount -o noatime,nodiratime,compress=zstd,space_cache=v2,ssd,subvol=@log /dev/mapper/luks /mnt/var/log
+mount -o noatime,nodiratime,compress=zstd,space_cache=v2,ssd,subvol=@opt /dev/mapper/luks /mnt/opt
+mount -o noatime,nodiratime,compress=zstd,space_cache=v2,ssd,subvol=@usr_local /dev/mapper/luks /mnt/usr/local
+mount -o noatime,nodiratime,compress=zstd,space_cache=v2,ssd,subvol=@snapshots /dev/mapper/luks /mnt/.snapshots
+#+end_src
+
+We also need to mount the EFI partition:
+#+begin_src bash
+mount -o rw,relatime,fmask=0022,dmask=0022,iocharset=ascii,shortname /dev/nvme0n1p1 /mnt/boot
+#+end_src
+
+Switch to sddm with weston for a better display manager
+***** Handling ~swap~
+To get the physical offset, as [[https://wiki.archlinux.org/title/Power_management/Suspend_and_hibernate#Hibernation_into_swap_file_on_Btrfs][noted on the ArchWiki]] we can use ~btrfs inspect-internal~[fn:whereswap].
+#+begin_src bash
+cd /mnt/btrfs/@swap
+truncate -s 0 ./swapfile
+chattr +C ./swapfile
+btrfs property set ./compression none
+dd if=/dev/zero of=./swapfile bs=1M count=<FILE-SIZE-IN-MiB> status=progress
+chmod 600 ./swapfile
+mkswap ./swapfile
+swapon ./swapfile
+cd -
+#+end_src
+**** System setup
+I like the live USB packages, so I tend to use the ~./offlineInst.sh~ instead of ~pacstrap~. Some additional configuration is needed:
+#+begin_src bash
+arch-chroot /mnt
+# Set the hostname
+echo <HOSTNAME> > /etc/hostname
+# Locale is set already to C.UTF-8
+# Setup timezone
+ln -sf /usr/share/zoneinfo/<WHATEVER> /etc/localtime
+
+# Hosts should be updated
+# cat /etc/hosts
+# #<ip> <hostname.domain.org> <hostname>
+# 127.0.0.1 <HOSTNAME>.localdomain <HOSTNAME>
+# ::1 localhost.localdomain localhost
+#+end_src
+
+Finally, a password needs to be setup for the ~root~ user with ~passwd~. It is generally a good idea to make a new user too:
+#+begin_src bash
+useradd -m username -s /bin/zsh
+passwd username
+usermod -aG wheel username # for sudo
+#+end_src
+
+Some other (optional) ~colemak~ steps:
+,#+begin_src bash
+echo KEYMAP=colemak > /etc/vconsole.conf
+#+end_src
+
+**** Cleaning up ~archiso~
+Some cruft is copied over if the ~offlineInst.sh~ script is used. We will need to:
+- Remove the local repository from ~/etc/pacman.conf~
+- Remove the preset ~archiso~ for ~mkinitcpio~ (by deleting ~/etc/mkinitcpio.d/linux.preset~)
+
+We also need to remove the user:
+
+#+begin_src
+userdel hzlinarch
+rm -rf /home/hzlinarch
+#+end_src
+
+Some other things to be deleted (should be updated in the script):
+#+begin_src bash
+sudo rm -rf /var/lib/pacman/local/mkinitcpio-archiso-*
+sudo rm -rf /usr/lib/initcpio/hooks/archiso*
+sudo rm -rf /usr/share/doc/mkinitcpio-archiso
+#+end_src
+
+**** Kernel setup
+The ~initramfs~ hooks need to be modified for ~swap~ and to recognize ~btrfs~
+(also to remove all the ~archiso~ hooks):
+
+#+begin_src bash
+# /etc/mkinitcpio.conf
+HOOKS=(base keyboard udev kms autodetect modconf block keymap encrypt btrfs filesystems resume)
+#+end_src
+
+Additionally, the kernel will need to be recompiled (at the very least). Since I
+was using the ~nitrous~ variant, this time I recompiled with ~mperformance~ in
+the ~PKGBUILD~ and this meant modifying the ~rtl88xxau~ kernel driver a bit as
+it passes ~-mhard-float~ and ~clang~ will fail with unused arguments.
+
+**** Setup notes
+With the skeletal system setup, I needed only to add my customizations. Namely:
+- All ~clang~ source builds
+- SDDM display management
+
+
 * DONE Handling Legacy Fortran Code :@notes:fortran:f2py:
 CLOSED: [2023-04-27 Thu 16:09]
 :PROPERTIES:
