@@ -7700,7 +7700,6 @@ A more elegant approach is by using the excellent [[https://github.com/39aldo39/
 git clone https://github.com/39aldo39/klfc
 cd klfc
 # Kanged from the AUR https://aur.archlinux.org/packages/klfc/
-cabal v1-sandbox init
 cabal v1-update
 cabal v1-install --only-dependencies --ghc-options=-dynamic --force-reinstalls
 cabal v1-configure --prefix=/usr --ghc-options=-dynamic
