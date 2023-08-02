@@ -15997,7 +15997,20 @@ it passes ~-mhard-float~ and ~clang~ will fail with unused arguments.
 With the skeletal system setup, I needed only to add my customizations. Namely:
 - All ~clang~ source builds
 - SDDM display management
+***** Nix
+My dotfiles expect ~nix~ for a variety of additional reasons.
+With ~sddm~ however, the default installation adds all ~nixbld~ users to the
+login screen. To prevent this, it is best to set the ~MaximumUid~, for
+example in ~/etc/sddm.conf.d/08_nix_uid.conf~:
+#+begin_src conf
+[Users]
+MaximumUid=30000
+#+end_src
+***** Laptop Tweaks
+Mostly garnered from the [[https://wiki.archlinux.org/title/Laptop][Archwiki Laptop page]]. I generally setup ~/etc/systemd/{logind,sleep}.conf~ with defaults from my older ~etckeeper~ configuration.
 
+- Fingerprints worked natively with ~fprintd~ and a polkit (I used ~lxpolkit~)
+- For keyring management ~gnome-keyring~ is fine (with ~wl-clipboard~)
 
 * DONE Handling Legacy Fortran Code :@notes:fortran:f2py:
 CLOSED: [2023-04-27 Thu 16:09]
