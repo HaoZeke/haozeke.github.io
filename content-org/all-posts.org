@@ -8223,7 +8223,7 @@ jobs:
 In the end, to ensure easy long-term maintenance by the other maintainers, it was decided that the ~nix~ derivations should be trashed in favor of ~conda~ madness. Though most changes should be contributed upstream, the efficient re-use of upstream expressions is still viable for certain projects, especially those related to documentation.
 [fn:whopaid] Sponsored by the Google Season of Docs initiative
 [fn:whocares] Part of the documentation design worked out involved the [[https://abseil.io/about/philosophy#we-recommend-that-you-choose-to-live-at-head][live at head concept]] (also described in this [[https://cppcon2017.sched.com/event/Bhci/c-as-a-live-at-head-language][CPPCon17 talk]])
-* DONE My Life in E-ink :@personal:workflow:tools:ramblings:
+* DONE My Life in E-ink :@personal:workflow:tools:ramblings:books:
 CLOSED: [2021-02-20 Sat 01:41]
 :PROPERTIES:
 :EXPORT_FILE_NAME: my-life-in-eink
@@ -12347,7 +12347,7 @@ To hold its place in the larger ecosystem, ~f2py~ will be essential in
 protecting the average user from the standard itself, automatically providing
 optimal bindings for users as initially planned by [[https://github.com/pearu][Pearu Peterson]]. Modernization
 efforts with  [[https://melissawm.github.io/about-me/][Melissa Weber Mendonça]], Ralf, Pearu, and others at Quansight
-(including the rest of the community and [[About][me]]) are sure to gravitate towards generating better, more reliable
+(including the rest of the community and [[https://rgoswami.me/about][me]]) are sure to gravitate towards generating better, more reliable
 interfaces to bridge the gaps between Fortran and Python as supported by the
 NumPy core developers[fn:spthanks]. Clearly, the way forward is to work in
 lockstep with the NumPy-C API and recent Fortran standards.
@@ -16943,6 +16943,178 @@ I like plotting with ~ggplot2~. It makes more sense to me than the other plottin
 ** Idiosyncracies
 - I find it odd that ~R~ packages commit so much generated code
   + Can be simplified with a CI bot
+* DONE Managing cloud based ~calibre~ libraries :@personal:workflow:tools:ramblings:books:
+CLOSED: [2023-08-19 Sat 13:33]
+:PROPERTIES:
+:EXPORT_FILE_NAME: managing-cloud-based-calibre
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+begin_quote
+Ruminations on cross-cloud library management
+#+end_quote
+** Background
+I have a set of different devices across which I need to sync my library
+(described in [[https://rgoswami.me/posts/my-life-in-eink/][an earlier post]]). Ideally this should be a lazy synchronization
+mechanism and be as general as possible.
+** Constraints
+~calibre~ should never be modifying the files while they are being synced, not
+only because it creates and removes a lot of temporary files and folders which
+will cause churn, but also because it actually locks files during modification
+and this leads to permission issues.
+** Approximations to solutions
+*** 0th: Cloud native synchronization tools
+I use [[https://www.pcloud.com/][pCloud]], which has a nifty GUI client (and CLI) across my operating systems
+which essentially provides a mounted drive.
+- Store directly on the drive
+  + Very slow, since many directories and temporaries are created
+*** 1st: GUI based synchronization
+Next we can consider using ~sync~ via the GUI. This essentially binds two
+folders together and continuously ensures they are up to date.
+- This syncs continuously and so ended up with permission errors
+*** 2nd: ~rsync~ to mounted drive
+As a slightly more complicated workflow we can use a local synchronization tool
+on a ~cron~ schedule to sync to the drive mount.
+#+begin_src bash
+rsync -avP /path/to/source/directory/ /path/to/destination/directory
+#+end_src
+**** Pros
+- ~cron~ job can be linked to triggers like:
+  + Checking if ~calibre~ is running
+  + Checking for network / power requirements
+**** Cons
+- This doesn't really sync immediately, and the delay might be pretty
+  significant if earlier jobs are skipped
+*** 3rd: Use ~rclone~ manually
+~rsync~ is really meant for SSH connections, while [[https://rclone.org][Rclone]] is fantastic for
+working with cloud providers. Setting this up is a breeze.
+#+begin_src bash
+rclone config
+# Best to encrypt it
+rclone sync -P /path/to/calibre/library remote-name:/path/in/pcloud
+#+end_src
+**** Pros
+- Simple setup
+**** Cons
+- Manual, so this will need to be run every time
+** Coupling to ~calibre~
+~calibre~ is the only program which is supposed to manage the libraries. In that
+sense, it makes sense to strongly couple syncing with ~calibre~. Most of my
+machines have ~gnome-keyring~ installed, and ~rclone~ [[https://rclone.org/docs/#configuration-encryption][supports secrets]] stored in
+password managers so:
+#+begin_src bash
+secret-tool store --label="rclone" service "rclone" user "calisync"
+#+end_src
+
+Which can then simply be set to ~RCLONE_PASSWORD_COMMAND~ and used directly:
+#+begin_src bash
+export RCLONE_PASSWORD_COMMAND='secret-tool lookup service "rclone" user "calisync"'
+rclone sync -P CalibreLibs/Synced pCloud:/Calibre --ask-password=false
+#+end_src
+
+Putting this together, we can wrap ~calibre~ runs in a script:
+#+begin_src bash
+#!/bin/bash
+# $HOME/.local/bin/calibre_and_sync.sh
+
+# Start calibre and wait
+calibre
+wait $! # optional really, but a bit safer
+
+# Setup and run sync
+RCLONE_PASSWORD_COMMAND='secret-tool lookup service "rclone" user "calisync"'
+rclone sync -P ~/CalibreLibs/Synced pCloud:/Calibre --ask-password=false
+#+end_src
+
+It can be made more fancy if necessary, but should ideally just be customized
+for each machine. In any case the script is mostly to be used from a ~.desktop~
+file, e.g. in ~.local/share/applications/CaliSync~.
+
+#+begin_src bash
+[Desktop Entry]
+Type=Application
+Name=CaliSync
+Exec=/home/username/.local/bin/calibre_and_sync.sh
+Icon=calibre-gui
+GenericName=E-book library management with cloud sync
+Comment=Start Calibre and sync library with pCloud
+Terminal=false
+Categories=Office;Utility;
+#+end_src
+
+Do keep in mind that environment variables are not expanded, so generalizing
+this would require a suitable dotfile management system like ~chezmoi~ (as [[https://github.com/HaoZeke/Dotfiles/commit/7e6fbb192135fa43ea55638c5722ea4cd528b52d][seen
+here]]).
+*** Visual Tweaks
+The script discussed in the previous section is fine, but it is often nicer to
+have a visual indication of what's going on in terms of the upload, especially
+if there are a lot of files.
+#+begin_src bash
+#!/bin/bash
+# $HOME/.local/bin/calibre_and_sync.sh
+
+# Start Calibre and wait
+calibre
+
+# Setup and run sync
+zenity --notification --text="Start syncing"
+RCLONE_PASSWORD_COMMAND='secret-tool lookup service "rclone" user "calisync"'
+(
+  rclone sync -P ~/CalibreLibs/Synced pCloud:/Calibre --ask-password=false \
+      --password-command="$RCLONE_PASSWORD_COMMAND" 2>&1 | \
+  while read -r line; do
+    echo "# $line"
+  done
+) |
+zenity --progress \
+  --title="Syncing Calibre Library with pCloud" \
+  --text="Syncing..." \
+  --percentage=0 \
+  --pulsate \
+  --auto-close \
+  --auto-kill
+zenity --notification --text="Sync completed"
+#+end_src
+
+This is nice, but doesn't actually show the full progress. ~zenity~ doesn't
+support embedding a terminal, so the only other option is to spawn a shell.
+
+#+begin_src bash
+#!/bin/bash
+# $HOME/.local/bin/calibre_and_sync.sh
+
+# Start Calibre and wait
+calibre
+
+# Setup and run sync
+zenity --notification --text="Start syncing"
+RCLONE_PASSWORD_COMMAND='secret-tool lookup service "rclone" user "calisync"'
+foot -- sh -c "rclone sync -P ~/CalibreLibs/Synced pCloud:/Calibre --ask-password=false --password-command=\"$RCLONE_PASSWORD_COMMAND\""
+zenity --notification --text="Sync completed"
+#+end_src
+** Conclusions
+With this setup, it is now fairly trivial to sync libraries across devices, and
+thus, to take advantage of suitably large storage devices and local ~calibre~
+readers. Android devices and ~calibre~ library support has been a bit of a
+roller-coaster, especially since Calibre Companion was [[https://www.mobileread.com/forums/showthread.php?t=348027][sold off and abandoned]],
+but for now, it works, as does [[https://calibresync.bitbucket.io/][Calibre Sync]] and [[http://koreader.rocks/][KoReader]]. That being said, the
+best approach would be pairing this setup with something like [[https://foldersync.io/][FolderSync]] and
+[[https://www.appbrain.com/app/leger-calibre/com.calibre.local][Leger Calibre]] would be the best but Leger Calibre has gone the [[https://www.mobileread.com/forums/showthread.php?t=267147&highlight=leger+calibre][way of the dodo]],
+leaving one with precious little options, though [[http://koreader.rocks/][KoReader]] is still the best
+option for local ~calibre~ management without cover information.
+
+*** ~reprex~ addenum
+This post was executed with binaries at the following versions:
+#+begin_src bash
+rclone version
+rclone v1.63.1
+# pcloud 1.14.0
+rsync --version
+rsync  version 3.2.7  protocol version 31
+Copyright (C) 1996-2022 by Andrew Tridgell, Wayne Davison, and others.
+zenity --version
+3.44.2
+#+end_src
+
 * Important Note :ignoreheading:ignore:
 # ALWAYS at the bottom, to ensure fresh builds do not break
 * DONE About
