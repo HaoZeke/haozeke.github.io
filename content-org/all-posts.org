@@ -16006,6 +16006,10 @@ example in ~/etc/sddm.conf.d/08_nix_uid.conf~:
 [Users]
 MaximumUid=30000
 #+end_src
+***** Wayland notes
+- ~caja~ isn't compatible with ~wayland~ out of the box
+- Thanks to a [[https://bugs.launchpad.net/ubuntu/+source/file-roller/+bug/1923033][very old]] archive-manager (file-roller) bug, there aren't any really good native options for compression
+  + ~peazip~ works as a native file and archive manager though
 ***** Laptop Tweaks
 Mostly garnered from the [[https://wiki.archlinux.org/title/Laptop][Archwiki Laptop page]]. I generally setup ~/etc/systemd/{logind,sleep}.conf~ with defaults from my older ~etckeeper~ configuration.
 
@@ -16870,7 +16874,7 @@ probably to be expected.
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :END:
 #+begin_quote
-Leveraging Github for managing interconnected projects.
+Token hell, or leveraging Github for managing interconnected projects.
 #+end_quote
 ** Background
 Projects have dependencies. They may (often) also have very distinct histories
@@ -16897,39 +16901,236 @@ repositories are under a single user, where all repositories are under one
 organization, and finally the most general scenario where the repositories to be
 linked are under disparate organizations.
 
+*** Basic Workflow Etiquette
+
+We first discuss some of the aspects common to workflow etiquette which will be
+elided in subsequent snippets. Concurrency is important, it saves valuable
+developer time, especially when there's one active developer per pull request.
+When in doubt a reasonable snippet is:
+#+begin_src yaml
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+#+end_src
+
+A matrix of operating systems and ~python~ versions can be useful always a good
+idea to test the basic trinity of MacOS, Windows and Linux machines. So a
+reasonable matrix might be:
+
+#+begin_src yaml
+runs-on: ${{ matrix.os }}
+strategy:
+  fail-fast: false
+  matrix:
+    os: ["ubuntu-latest"]
+    python-version: ["3.7", "3.10", "pypy-3.8", "pypy-3.9"]
+    r-version: ['release']
+timeout-minutes: 30
+#+end_src
+
+The tests we discuss in this post can be flaky; ~pypy~ in particular has a
+tendency to timeout (or deadlock) so failing fast isn't a great idea, but a
+timeout is. Other variables can also be set in the ~matrix~ as needed. Caching
+is always important; again, for ~python~ projects one might use:
+
+#+begin_src yaml
+- name: Set up Python version ${{ matrix.python-version }}
+  uses: actions/setup-python@v4
+  with:
+    python-version: ${{ matrix.python-version }}
+    cache: pip
+    cache-dependency-path: pyproject.toml
+#+end_src
+
+With these general niceties out of the way, we can continue with the basic
+requirements.
+
 ** Workflow requirements
 Will we use stages here, to make sure that each step does what it needs to do.
 Essentially we have:
 - Building
 - Testing
 - Triggering upstream / downstream
+  + The base library triggers the dependents, and the dependents should have a
+    workflow to trigger with the latest upstream as well
 - Commenting with the results
   + Minimally on the PR (this should be by triggering another workflow if it succeeds)
   + Ideally would be nice to semi-automatically open an issue as well
-*** Dependents
+
 Repositories which *depend* on an upstream repository (e.g. bindings) should be
 triggered via a user specified comment workflow, since it may not be necessary
 to run on each push to the upstream project, and for this, [[https://github.com/drewwyatt/comment-pipeline][comment-pipeline]]
-seems useful.
+seems useful. Other approaches are using [[https://github.com/marketplace/actions/repository-dispatch][a repository dispatch]], or [[https://github.com/imjohnbo/ok-to-test][ok-to-test]] or
+[[https://github.com/peter-evans/slash-command-dispatch][slash-command-dispatch]].
 
-** First attempt: Manual checkout and ~cron~
-If a library depends on another, the simplest would be to run a ~cron~ job every
-day which manually checks out the dependent to see if anything broke.
+** 0th attempts: Manual checkout and ~cron~
+A valid first approximation is to simply checkout the upstream libraries and run
+what tests are required for integration with the downstream component in the
+repository. This has a few advantages:
+- No token / authorization issues for public repositories
+- First class support for ensuring all tests show up in the Github UI
 
-Consider, then:
+However, it doesn't scale very well, and if the number of dependent libraries
+grows, it can be rather vexing. There may be workflows which demand secrets.
+Additionally, failing a workflow on a repo isn't the best way to signal to the
+upstream developers that something might be wrong and their input is needed.
+Nevertheless, this first approximation looks (for ~asv~ and ~asv_runner~, [[https://github.com/airspeed-velocity/asv_runner/pull/24/files][latest
+variant]]) something like this:
+
+#+begin_src yaml
+name: test_asv
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  test_asv:
+    name: test with specific asv_runner
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ["ubuntu-latest"]
+        python-version: ["3.10", "pypy-3.9"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          path: asv_runner
+          fetch-depth: 0
+      - name: Checkout tools repo
+        uses: actions/checkout@v3
+        with:
+          repository: airspeed-velocity/asv
+          path: asv
+          fetch-depth: 0
+      - name: Set up Python version ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: asv_runner/pyproject.toml
+      - name: Install asv and depedencies
+        run: cd asv/ && python -m pip install ".[test,hg]"
+      - name: Install asv_runner
+        run: cd asv_runner/ && pip install .
+      - name: Run tests with the current asv_runner
+        run: |
+          cd asv/
+          ASV_RUNNER="$(pwd)/../asv_runner" python -m pytest -v --timeout=300 --durations=100 test
+#+end_src
+
+Taking solace in some sysadmin tools, we can try to decouple the testing
+apparatus further with a ~cron~ job.  If a library depends on another, the
+simplest would be to run a ~cron~ job every day which manually checks out the
+dependent to see if anything broke. This can be useful for projects with many
+changes / PRs / rapid development, but also harder to pin down since each change
+does not trigger a build. This is the ~dependabot~ style, which itself is
+irksome enough to not be an actual role model.
+
+** Triggering workflows
+We will handle the somewhat simpler case first, of an upstream library
+triggering CI runs on dependent projects, in this case, ~asv_runner~ (core
+functionality) and ~asv~ (user-facing library). Here we can simply use the
+[[https://github.com/marketplace/actions/trigger-workflow-and-wait][trigger-workflow-and-wait]] action.
+*** Triggered
+The only things to keep in mind other than the standard workflow rules are:
+- Enabling input handling via ~workflow_dispatch~
+- Providing the ~git~ ref via the ~client_payload~
+
+This makes the triggered workflow rather simplistic (in the upstream repository,
+as for example [[https://github.com/airspeed-velocity/asv/blob/master/.github/workflows/triggered.yml][in asv]]):
+#+begin_src yaml
+name: Triggered
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'PR Number'
+        required: true
+
+jobs:
+  ASVRunner:
+    name: test with specific asv_runner
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+          # more setup tasks
+
+      - name: Install dependencies
+        run: python -m pip install ".[test,hg]"
+
+      - name: Get asv_runner to be tested
+        uses: actions/checkout@v3
+        with:
+          repository: airspeed-velocity/asv_runner
+          ref: refs/pull/${{ github.event.inputs.pr_number }}/head
+          path: latest_asv_runner
+
+      - name: Install asv
+        run: pip install .
+
+      - name: Run tests with the current asv_runner
+        run: ASV_RUNNER="$(pwd)/latest_asv_runner" python -m pytest -v --timeout=300 --durations=100 test
+#+end_src
+
+Where the only notable snippet is that the repository is cloned and checked out
+to the PR which in turn needs to be passed by the triggering workflow.
+
+*** Trigger Dispatch
+
+Out of pure malice, consider the ideal solution in an ideal world:
+
+#+begin_src yaml
+name: Trigger asv
+on: [pull_request]
+jobs:
+  triggerasv:
+    runs-on: ${{ matrix.config.os }}
+    name: ${{ matrix.config.os }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: "recursive"
+          fetch-depth: 0
+      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+        with:
+          owner: airspeed-velocity
+          repo: asv
+          github_token: ghp_blah_mytokeninplaintext
+          workflow_file_name: triggered.yml
+          ref: master
+          wait_workflow: true
+          client_payload: '{"pr_number": "${{ github.event.pull_request.number }}"}'
+#+end_src
+
+However, this, it turns out is less than ideal for security reasons random forks
+and pull requests should not and must not have access to repository secrets. It
+is difficult to test this on public repositories, since secrets are not directly
+shared on pull requests [fn:whatwhynosecrets]. Working around this is a bit
+tricky, and another level of indirection is required.
 
 ** Tokens and Access
 For simplicity, the idea is to use the ~gh~ client token and ~gh~ itself to
-trigger workflows.
-***  User level
-Scoping rules in GitHub and security considerations being what they are, the
-focus will be on minimal permissions, and we will first consider
-*** Organization level
-*** Cross organization
+trigger workflows. Scoping rules in GitHub and security considerations being
+what they are, the focus will be on minimal permissions, and we will first
+consider generating a [[https://github.com/settings/tokens][classic personal access token]]. I used the workflow access
+scope.
+
+** Github Apps
+
+** Conclusions
 
 
 [fn:creditmelissa] Brought to my attention at work by the always excellent [[https://melissawm.github.io/about-me/][Dr. Melissa Weber Mendonça]].
-[fn:whynotnumpy] So more akin to my doctoral work over at [[github.com/TheochemUI][Theochem]] (~potlib~, ~pypotlib~) or [[https://github.com/atomic-solvers][atomic-solvers]] than NumPy / SciPy at the moment.
+[fn:whynotnumpy] So more akin to my doctoral work over at [[https://github.com/TheochemUI][Theochem]] (~potlib~, ~pypotlib~) or [[https://github.com/atomic-solvers][atomic-solvers]] than NumPy / SciPy at the moment.
+[fn:whatwhynosecrets] Security reasons, as noted in the [[https://docs.github.com/en/actions/security-guides/encrypted-secrets#using-encrypted-secrets-in-a-workflow][official documentation]] and this [[https://github.com/orgs/community/discussions/33683][community discussion]]
 * TODO Writing ~R~ Packages :@notes:r:cpp:fortan:bindings:
 :PROPERTIES:
 :EXPORT_FILE_NAME: managing-scanned-books
