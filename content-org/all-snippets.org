@@ -458,6 +458,23 @@ Then use it in the ~shellHook~ as:
 #+end_src
 Or directly as ~export LOCALE_ARCHIVE="$(nix-env --installed --no-name --out-path --query glibc-locales)/lib/locale/locale-archive"~
 ** TODO Nix Thoughts
+** TODO On Hyread and Color E-Ink
+*** ~adb~ rules
+A quick glance at the output of ~lsusb~ yields:
+#+begin_src bash
+Bus 003 Device 004: ID 04f2:b751 Chicony Electronics Co., Ltd Integrated Camera
+#+end_src
+
+Which suggests the following rule:
+#+begin_src bash
+cat /etc/udev/rules.d/51-android.rules
+SUBSYSTEM=="usb", ATTR{idVendor}=="04f2", MODE="0660", GROUP="adbusers", TAG+="uaccess"
+SUBSYSTEM=="usb", ATTR{idVendor}=="04f2", ATTR{idProduct}=="b751", SYMLINK+="android_adb"
+SUBSYSTEM=="usb", ATTR{idVendor}=="04f2", ATTR{idProduct}=="b751", SYMLINK+="android_fastboot"
+#+end_src
+
+With these forcibly loaded via ~sudo udevadm trigger~, the device should show up
+with ~adb devices~.
 ** TODO Overrides and Nix
 I recently had to extend my ~nix~ installed ~git~ version to get ~git-svn~ and to upgrade to the latest version. This was fairly straightforward.
 #+begin_src nix
