@@ -10762,16 +10762,6 @@ Towards the mid-summer evaluation and redirecting efforts
 ** Background
 Serialized update for the [[https://summerofcode.withgoogle.com/projects/#5790375215628288][2021 Google Summer of Code]] under the [[https://fortran-lang.org/][fortran-lang
 organization]], mentored by [[https://ondrejcertik.com/][Ondrej Certik]].
-*** Series
-This post is part of a series based around my weekly GSoC21 project check-ins.
-1. [[GSoC21 W1: LFortran Kickoff][GSoC21 W1: LFortran Kickoff]]
-2. [[GSoC21 W2: LFortran Unraveling][GSoC21 W2: LFortran Unraveling]]
-3. [[GSoC21 W3: Kind, Characters, and Standards][GSoC21 W3: Kind, Characters, and Standards]]
-4. *GSoC21 W4: LFortran, Backends and Bugs* <-- You are here!
-
-5. [[GSoC21 W5: LFortran Design Details and ~minidftatom~][GSoC21 W5: LFortran Design Details and ~minidftatom~]]
-6. [[GSoC21 W6: LFortran ASR and Values][GSoC21 W6: LFortran ASR and Values]]
-7. [[GSoC21 W7: LFortran Workflow Basics][GSoC21 W7: LFortran Workflow Basics]]
 ** Overview
 This week was a bit of a sticky wicket. My unfamiliarity with the LLVM backend
 and its internals caught up with me just around the same time I ran into several
