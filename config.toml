@@ -214,11 +214,19 @@ accountID = "rohit"
     identifier = "blog"
     name       = "Blog"
     url        = "/posts"
+  [[menu.main]]
+    identifier = "series"
+    name       = "Series"
+    url        = "/series"
+  [[menu.other]]
+    identifier = "categories"
+    name       = "Categories"
+    url        = "/categories"
   [[menu.other]]
     identifier = "tags"
     name       = "Tags"
     url        = "/tags"
   [[menu.other]]
-    identifier = "categories"
-    name       = "Categories"
-    url        = "/categories"
+    identifier = "snippets"
+    name       = "Snippets"
+    url        = "/snippets"
