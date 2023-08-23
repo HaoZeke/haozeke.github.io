@@ -1,6 +1,11 @@
 # We use the generated html to prevent issues involving markdown frontmatter
 
 [[input.files]]
+path = "./snippets/zotero-connector-blog-posts/index.html"
+url = "https://rgoswami.me/snippets/zotero-connector-blog-posts/"
+title = "Zotero Connector and Blog Posts"
+
+[[input.files]]
 path = "./posts/managing-cloud-based-calibre/index.html"
 url = "https://rgoswami.me/posts/managing-cloud-based-calibre/"
 title = "Managing cloud based calibre libraries"
