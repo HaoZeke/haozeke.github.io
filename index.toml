@@ -6,11 +6,6 @@ url = "https://rgoswami.me/snippets/zotero-connector-blog-posts/"
 title = "Zotero Connector and Blog Posts"
 
 [[input.files]]
-path = "./posts/managing-cloud-based-calibre/index.html"
-url = "https://rgoswami.me/posts/managing-cloud-based-calibre/"
-title = "Managing cloud based calibre libraries"
-
-[[input.files]]
 path = "./posts/cpp-library-blueprints-pybind/index.html"
 url = "https://rgoswami.me/posts/cpp-library-blueprints-pybind/"
 title = "CPP Library Blueprints for Python Bindings"
@@ -559,16 +554,6 @@ path = "./posts/islr-ch2-ch3/index.html"
 url = "https://rgoswami.me/posts/islr-ch2-ch3/"
 title = "  &#34;ISLR :: Multiple Linear Regression&#34;
   "
-
-[[input.files]]
-path = "./about/index.html"
-url = "https://rgoswami.me/about/"
-title = "About"
-
-[[input.files]]
-path = "./posts/rg-collection-weblinks/index.html"
-url = "https://rgoswami.me/posts/rg-collection-weblinks/"
-title = "Collection of WebLinks"
 
 [[input.files]]
 path = "./search/index.html"
