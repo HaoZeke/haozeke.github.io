@@ -1,0 +1,22 @@
+#+author: Rohit Goswami
+#+hugo_base_dir: ../
+#+hugo_front_matter_format: yaml
+#+hugo_weight: nil
+#+hugo_front_matter_key_replace: description>summary
+#+bibliography: biblio/refs.bib
+
+#+seq_todo: TODO DRAFT DONE
+#+seq_todo: TEST__TODO | TEST__DONE
+
+#+property: header-args :eval never-export
+
+#+startup: logdone indent overview inlineimages
+
+* DONE Orgmode Almanac
+CLOSED: [2023-08-23 Wed 04:20]
+:PROPERTIES:
+:EXPORT_FILE_NAME: _index
+:EXPORT_HUGO_SECTION: series/the-orgmode-almanac
+:END:
+A reflective collection of posts on weaving ~orgmode~ into most computational
+applications.
