@@ -44,6 +44,7 @@ mediaType = "application/toml"
   tag      = "tags"
   category = "categories"
   search   = "search"
+  series   = "series"
 
 [author]
   name = "Rohit Goswami (HaoZeke)"

@@ -158,6 +158,7 @@ Now we can just make ~.envrc~ files with ~layout_poetry~ and everything will
 :EXPORT_FILE_NAME: jupyter-orgmode
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :EXPORT_DATE: 2020-02-13 22:36
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("The Orgmode Almanac")
 :END:
 ** Background
 - I dislike Jupyter notebooks (and [[https://jupyter.org/][JupyterHub]]) a lot
@@ -367,6 +368,7 @@ The whole file is also [[https://github.com/HaoZeke/haozeke.github.io/blob/src/c
 * TODO Orgmode and Hugo :@programming:tools:emacs:webdev:hugo:
 :PROPERTIES:
 :EXPORT_FILE_NAME: hugo-orgmode
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("The Orgmode Almanac")
 :END:
 ** Background
 - This is about the site you are reading
@@ -375,14 +377,14 @@ The whole file is also [[https://github.com/HaoZeke/haozeke.github.io/blob/src/c
 * DONE Switching to Colemak :@personal:workflow:explanations:
 :PROPERTIES:
 :EXPORT_FILE_NAME: colemak-switch
-:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Colemak necessities")
 :EXPORT_DATE: 2020-02-29 14:06
 :EXPORT_HUGO_AUTO_SET_LASTMOD: t
 :END:
 #+BEGIN_QUOTE
 Thoughts on and rationale behind leaving QWERTY and touch typing in general. Followed [[Refactoring Dotfiles For Colemak][by this post]] on refactoring my Dotfiles.
 #+END_QUOTE
-
 ** Background
 I just realized that it has been over two years since I switched from QWERTY to
 Colemak but somehow never managed to write about it. It was a major change in my
@@ -13861,6 +13863,7 @@ CLOSED: [2021-12-19 Sun 16:25]
 :EXPORT_HUGO_PANDOC_CITATIONS: t
 :EXPORT_BIBLIOGRAPHY: biblio/Quansight.bib, biblio/refs.bib
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Bridging Fortran \& Python")
 :END:
 
 #+begin_quote
@@ -17144,6 +17147,56 @@ I like plotting with ~ggplot2~. It makes more sense to me than the other plottin
 ** Idiosyncracies
 - I find it odd that ~R~ packages commit so much generated code
   + Can be simplified with a CI bot
+* TODO Reproducible ~R~ environments with ~nix-flakes~
+:PROPERTIES:
+:EXPORT_FILE_NAME: reproducible-r-nix-flakes
+:EXPORT_HUGO_PANDOC_CITATIONS: t
+:EXPORT_BIBLIOGRAPHY: biblio/Website.bib
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("R x Nix Nexus: Crafting Cohesive Environments")
+:END:
+#+begin_quote
+On constructing reproducible ~R~ environments with ~nix-flakes~, without ~RStudio~
+#+end_quote
+** Background
+I've written about replacing ~jupyter~ with ~orgmode~ [[Replacing Jupyter with Orgmode][in the past]], and that
+workflow scales naturally to the case of writing ~R~ code with ~polymode~ and
+~nix~ as [[https://rgoswami.me/posts/emacs-nix-r/][discussed earlier]] and demonstrated in [[https://rgoswami.me/posts/sr2-ch13-ch14/][several other posts]].
+** Alternates
+*** Why not ~conda~?
+The ~conda~ ecosystem is pretty good for quick projects, and I have been using
+it (via ~micromamba~) quite a lot recently [fn:wherelse]. Indeed, the recent
+[[https://prefix.dev/][pixi]] too improves on the existing user interface as well. However, in-spite of
+this, the manner in which ~conda~ interacts with compiled packages, via the
+~compilers~ meta-package, (especially for ~R~) make it difficult to manage,
+especially when loading or using multiple ~devtools~ based packages. There are
+some good resources for both running ~RStudio~ @sturmRunningRstudioServer2023
+and managing ~R~ within ~conda~ @ManagingEnvironmentsUsing2022.
+*** Why not ~docker~?
+- Security (though there's ~singularity~ too)
+- Speed
+- Sanity
+That being said ~docker~ is perfectly fine for shipping a whole system alongside
+some scripts. Not exactly lightweight though. Personally, I prefer to use
+~docker~ only when I specifically need to swap operating systems (e.g. grabbing
+~python-dbg~ as [[https://rgoswami.me/snippets/docker-dev-envs/][discussed here]]).
+*** What about ~spack~ or ~easybuild~?
+**Building** the world from scratch for each new project (e.g. [[https://rgoswami.me/posts/spack-pytorch-dev-workflow/][for PyTorch]]) is
+only really feasible for high performance computing environments, where I do
+prefer ~spack~ to any of the other alternatives discussed. For personal projects
+meant to be run on different laptops though, this is not recommended.
+** Flakes 101
+There are far too many resources covering ~nix-flakes~ [fn:howtoflake].
+** Conclusions
+More of an introduction to ~nix-flakes~ than anything else, this was long
+overdue, given my association with the Summer of Nix and other ~nix~ community
+efforts. Flakes can seem a little, flakey to say the least, but are a robust
+option for (approximately) reproducible [fn:whyapprox] personal projects.
+
+[fn:reallystillexp] They're **still** experimental though
+[fn:howtoflake] Some introductory options
+[fn:wherelse] Much of the Scientific Python ecosystem relies on ~conda~ for CI services too
+[fn:whyapprox] Some members of the [[https://reproducible.nixos.org/][community]] [[https://github.com/NorfairKing/nix-does-not-guarantee-reproducibility][disagree]] with the assertion of reproducible ~nix~
 * DONE Managing cloud based ~calibre~ libraries :@personal:workflow:tools:ramblings:books:
 CLOSED: [2023-08-19 Sat 13:33]
 :PROPERTIES:
