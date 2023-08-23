@@ -1385,6 +1385,7 @@ CLOSED: [2020-04-26 Sun 20:01]
 :PROPERTIES:
 :EXPORT_FILE_NAME: org-mathematica
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("The Orgmode Almanac")
 :END:
 ** Background
 I have been wanting to find a workflow which allows me to bypass writing a lot of TeX by hand for a while now. To that end I looked into using a computer algebra system (CAS). Naturally, my first choice was the [[http://maxima.sourceforge.net/][FOSS Maxima]] (also because it uses Lisp under the hood). However, for all the reasons [[http://thingwy.blogspot.com/2015/07/maxima-versus-mathematica-should-i-go.html][listed here]], relating to its accuracy, which have not been fixed even though the post was over 5 years ago, I ended up having to go with the closed source [[https://www.wolfram.com/mathematica/][Mathematica]].
@@ -1498,6 +1499,7 @@ CLOSED: [2020-05-10 Sun 15:01]
 :PROPERTIES:
 :EXPORT_FILE_NAME: org-note-workflow
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("The Orgmode Almanac")
 :END:
 ** Background
 One of the main reasons to use ~orgmode~ is definitely to get a better note
@@ -1838,6 +1840,7 @@ CLOSED: [2020-05-02 Sat 16:39]
 :PROPERTIES:
 :EXPORT_FILE_NAME: org-pandoc-babel
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("The Orgmode Almanac")
 :END:
 ** Background
 One of the best things about writing in ~orgmode~ is that we can embed and
@@ -1927,11 +1930,11 @@ CLOSED: [2020-05-02 Sat 20:30]
 :PROPERTIES:
 :EXPORT_FILE_NAME: colemak-dots-refactor
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Colemak necessities")
 :END:
 #+BEGIN_QUOTE
 A more actionable follow up to [[Switching to Colemak][my personal recollections]] relating to my switch to Colemak.
 #+END_QUOTE
-
 ** Background
 I have, in the past written about how I [[Switching to Colemak][made the switch]] to Colemak. However,
 until recently, I was still trying to mimic the VIM keybindings from QWERTY.
@@ -2390,6 +2393,7 @@ mind none-the-less.
 :PROPERTIES:
 :EXPORT_FILE_NAME: fancy-unicode-orgmode
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("The Orgmode Almanac")
 :END:
 
 \begin{align}
@@ -2432,6 +2436,7 @@ CLOSED: [2020-06-06 Sat 05:49]
 :PROPERTIES:
 :EXPORT_FILE_NAME: nix-r-devtools
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("R x Nix Nexus: Crafting Cohesive Environments")
 :END:
 #+BEGIN_QUOTE
 This post discusses briefly, the ~nix-shell~ environment for reproducible
@@ -2708,6 +2713,7 @@ CLOSED: [2020-06-07 Sun 04:24]
 :PROPERTIES:
 :EXPORT_FILE_NAME: rethinking-r-nix
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("R x Nix Nexus: Crafting Cohesive Environments")
 :END:
 
 #+BEGIN_QUOTE
@@ -3321,6 +3327,7 @@ CLOSED: [2020-06-10 Wed 00:12]
 :PROPERTIES:
 :EXPORT_FILE_NAME: emacs-nix-r
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("R x Nix Nexus: Crafting Cohesive Environments")
 :END:
 #+BEGIN_QUOTE
 A short post on my current set-up for ~R~ with ~nixpkgs~ and ~emacs~ to
@@ -3461,6 +3468,7 @@ CLOSED: [2020-06-19 Fri 05:07]
 :PROPERTIES:
 :EXPORT_FILE_NAME: org-arb-tex
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("The Orgmode Almanac")
 :END:
 #+BEGIN_QUOTE
 A post on working with transient TeX templates in ~orgmode~ without modifying global configurations. This will also serve as a rudimentary introduction to TeX in ~orgmode~.
@@ -6036,23 +6044,18 @@ ldconfig -p | grep libGLX
 #+END_SRC
 
 ** Conclusion
-* DONE Documenting C++ with Doxygen and Sphinx - Exhale :@programming:documentation:workflow:cpp:
+* DONE Documenting C++ with Doxygen and Sphinx - Exhale :@programming:documentation:workflow:cpp:sphinx:doxygen:
 CLOSED: [2020-09-22 Tue 06:58]
 :PROPERTIES:
 :EXPORT_FILE_NAME: doc-cpp-dox-sph-exhale
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("C++ documentation practices")
 :END:
 #+BEGIN_QUOTE
 This post outlines a basic workflow for C++ projects using Doxygen, Sphinx, and Exhale.
 #+END_QUOTE
 ** Background
 My project proposal for documenting [[https://github.com/symengine/symengine][Symengine]] was recently accepted for the Google Summer of Docs initiative. In the past I have been more than happy to document C++ code using *only* [[https://www.doxygen.nl/][Doxygen]] (with [[https://docs.dseams.info][pretty fantastic results]]), while keeping example usage separate ([[https://wiki.dseams.info][d-SEAMS wiki]]). Though this is still a feasible method, a monolithic multi-project setup might benefit from [[https://www.sphinx-doc.org/][Sphinx]], which is what will be covered.
-*** Series
-This post is the first in a series based on best C++ documentation practices for Sphinx+Doxygen workflows.
-1. *Documenting C++ with Doxygen and Sphinx - Exhale* <-- You are here!
-2. [[Publishing Doxygen and Sphinx with Nix and Rake][Publishing Doxygen and Sphinx with Nix and Rake]]
-3. Documenting C++ with Doxygen and Sphinx - doxyrest (TBD)
-4. Adding Tutorials to Sphinx Projects (TBD)
 ** Goals
 A couple of goals informed this approach:
 - We expect our documentation to link to the source files
@@ -6200,22 +6203,18 @@ This leads to some pretty documentation.
 
 ** Conclusions
 At this point, we have a basic setup, which we can tweak with a bunch of themes, and/or different parsers, but this is still pretty rough around the edges. However, a caveat of this setup is that the actual contents of the source are not visible in the generated documentation. [[Publishing Doxygen and Sphinx with Nix and Rake][In the next post]], we will look at automating this setup for deploying with Travis.
-* DONE Publishing Doxygen and Sphinx with Nix and Rake :@programming:documentation:workflow:nix:cpp:
+* DONE Publishing Doxygen and Sphinx with Nix and Rake :@programming:documentation:workflow:nix:cpp:ruby:rake:
 CLOSED: [2020-09-22 Tue 10:30]
 :PROPERTIES:
 :EXPORT_FILE_NAME: pub-doc-cpp-dox-sph-nix
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("C++ documentation practices")
 :END:
 #+BEGIN_QUOTE
-Automating documenation deployment with Travis, ~rake~ and ~nix~
+Automating documentation deployment with Travis, ~rake~ and ~nix~
 #+END_QUOTE
 ** Background
 In [[Documenting C++ with Doxygen and Sphinx - Exhale][the previous post]] we generated documentation using Doxygen with Exhale to handle Sphinx. Now we will clean up the earlier workflow with ~rake~ and ensure the environment is reproducible with ~nix~ while deploying to [[https://travis-ci.com/][Travis CI]].
-*** Series
-1. [[Documenting C++ with Doxygen and Sphinx - Exhale][Documenting C++ with Doxygen and Sphinx - Exhale]]
-2. *Publishing Doxygen and Sphinx with Nix and Rake* <-- You are here
-3. Documenting C++ with Doxygen and Sphinx - doxyrest
-4. Adding Tutorials to Sphinx Projects
 ** Setup
 A quick reminder of the setup we generated in the last post:
 
@@ -6545,26 +6544,24 @@ A lot has happened on the tooling end, even though the documentation itself has 
 [fn:teachmerake] [[https://avdi.codes/tag/rake/page/2/][Avdi's blog has a fantastic introduction]] to ~rake~ and ~Rakefiles~
 [fn:whatshebang] Chris Warbo has a good [[http://chriswarbo.net/projects/nixos/nix_shell_shebangs.html][introduction to the nix shebang]]
 * TODO Documenting C++ with Doxygen and Sphinx - doxyrest :@programming:documentation:workflow:nix:cpp:
+:PROPERTIES:
+:EXPORT_FILE_NAME: doc-cpp-dox-sph-doxyrest
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("C++ documentation practices")
+:END:
 #+BEGIN_QUOTE
 Advanced documentation customization with doxyrest for C++ projects
 #+END_QUOTE
 ** Background
-*** Series
-1. [[Documenting C++ with Doxygen and Sphinx - Exhale][Documenting C++ with Doxygen and Sphinx - Exhale]]
-2. [[Publishing Doxygen and Sphinx with Nix and Rake][Publishing Doxygen and Sphinx with Nix and Rake]]
-3. *Documenting C++ with Doxygen and Sphinx - doxyrest* <-- You are here
-4. [[Adding Tutorials to Sphinx Projects][Adding Tutorials to Sphinx Projects]]
-* TODO Adding Tutorials to Sphinx Projects :@programming:documentation:workflow:cpp:
+* TODO Adding Tutorials to Sphinx Projects :@programming:documentation:tutorials:sphinx:
+:PROPERTIES:
+:EXPORT_FILE_NAME: doc-tut-sph
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
 #+BEGIN_QUOTE
 Multi-source documentation coupled to tutorials, using ~.ipynb~ and other extensions
 #+END_QUOTE
 ** Background
-*** Series
-1. [[Documenting C++ with Doxygen and Sphinx - Exhale][Documenting C++ with Doxygen and Sphinx - Exhale]]
-2. [[Publishing Doxygen and Sphinx with Nix and Rake][Publishing Doxygen and Sphinx with Nix and Rake]]
-3. [[Documenting C++ with Doxygen and Sphinx - doxyrest][Documenting C++ with Doxygen and Sphinx - doxyrest]]
-4. *Adding Tutorials to Sphinx Projects* <-- You are here
-
 * DONE Talk Supplements for PyCon India 2020 :@conferences:presentations:ramblings:nix:python:
 CLOSED: [2020-10-02 Fri 23:56]
 :PROPERTIES:
@@ -6923,6 +6920,7 @@ CLOSED: [2020-10-27 Tue 01:05]
 :PROPERTIES:
 :EXPORT_FILE_NAME: anki-decks-orgmode
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("The Orgmode Almanac")
 :END:
 #+begin_quote
 Setting up unicode math and ~orgmode~ for painless Anki deck building
@@ -7333,6 +7331,7 @@ long-form notes as well, a coherent approach to this can also be covered later.
 :PROPERTIES:
 :EXPORT_FILE_NAME: declining-linux-email
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Managing Email")
 :END:
 #+begin_quote
 A scathing indictment of Linux Email clients and a methodology to revert to command line oriented workflows.
@@ -7362,17 +7361,13 @@ CLOSED: [2020-12-30 Wed 06:37]
 :PROPERTIES:
 :EXPORT_FILE_NAME: reclaim-email-astroid
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Managing Email")
 :END:
 #+begin_quote
 Migrating Imap, Gmail and Exchange, mail accounts from GUI clients to [[https://astroidmail.github.io/][Astroid]]
 #+end_quote
 ** Background
 Initially, I had planned this post to start with a brief history of the decline of email clients for Linux. That quickly got out of hand, and was therefore spun out into a post of its own (TBD). To keep things brief. Thanks to the incredible ineptitude of the Thunderbird steering committee, I ended up requiring a new mail client. Having despaired of the GUI based bloat heavy approaches of most clients, I decided to go the old fashioned route and build one up in a modular manner.
-*** Series
-This post is part of a series on email.
-1. The Decline of Linux Email (TBD)
-2. *Reclaiming Email with Astroid* <-- You are here!
-3. Emacs and Email (TBD)
 ** The Accounts
 In no order of preference, for a variety of reasons, I have 23 distinct email accounts. However, these are actually broken down into a few basic types and associated mail fetching software.
 - Generic IMAP :: Yahoo, Mail.ru and the rest are managed with [[https://isync.sourceforge.io/][isync]]
@@ -7648,8 +7643,10 @@ Thankfully, ~astroid~ supports GPG encryption as well as markdown support. This 
 
 
 ** Conclusions
-This is enough to get started for a while, but it isn't yet at the stage where I can replace ~thunderbird~ unfortunately. However, there are several pain points to be addressed, which will be covered in a future post. Some of these are essentially related to network fluctuations, and the awkward deletion setup.
-
+This is enough to get started for a while, but it isn't yet at the stage where I
+can replace ~thunderbird~ unfortunately. However, there are several pain points
+to be addressed, which will be covered in a future post. Some of these are
+essentially related to network fluctuations, and the awkward deletion setup.
 *** Update
 - ~astroid~ appears to be having a [[https://github.com/astroidmail/astroid/issues/669][bit of a development crisis]]
   + The [[https://github.com/gauteh/ragnarok][sequel (ragnarok)]] unfortunately seems to have gone towards a [[https://github.com/gauteh/ragnarok/tree/master/astroid][browser frontend]], which is quite unacceptable to me
@@ -7658,23 +7655,18 @@ This is enough to get started for a while, but it isn't yet at the stage where I
 - [[https://mehl.mx/][Max Mehl]] has a [[https://src.mehl.mx/mxmehl/mail-config/src/branch/master/astroid/scripts][good collection of scripts]] for ~astroid~
 
 [fn:whatkey] The GPG key itself can be stored with ~keybase~
-* DONE Remapping Keys with XKB and KLFC :@personal:workflow:tools:
+* DONE Remapping Keys with XKB and KLFC :@personal:workflow:tools:keyboard:
 CLOSED: [2020-12-05 Sat 22:05]
 :PROPERTIES:
 :EXPORT_FILE_NAME: remap-keys-xkb-klfc
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Colemak necessities" "Keboard management")
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :END:
 #+begin_quote
 An introduction to hacking keyboard layouts with X keyboard extension (XKB) and ~klfc~, focused on Colemak and vim bindings
 #+end_quote
 ** Background
-Inspite of maximizing ergonomic bindings for most common software (e.g. Vimium, doom-emacs), every operation with the arrow keys still trouble me. Here I will lay out my experiments transitioning to a stable, uniquely defined setup with the X keyboard extension.
-*** Series
-This post is part of a series on Colemak and keyboard management in general.
-1. [[Switching to Colemak][Switching to Colemak]]
-2. [[Refactoring Dotfiles For Colemak][Refactoring Dotfiles For Colemak]] 
-3. *Remapping Keys with XKB and KLFC* <-- You are here!
-4. [[Remapping Keys for ColemakVIM on MacOS][Remapping Keys for ColemakVIM on MacOS]]
+In-spite of maximizing ergonomic bindings for most common software (e.g. Vimium, doom-emacs), every operation with the arrow keys still trouble me. Here I will lay out my experiments transitioning to a stable, uniquely defined setup with the X keyboard extension.
 ** Keyboard Basics
 Some terms to keep in mind for this post are[fn:morespecifics]:
 - Dead Keys :: These don't actually output anything, but modify the next key pressed. Like applying an umlaut on the subsequent letter.
@@ -9403,6 +9395,7 @@ CLOSED: [2021-07-23 Fri 04:45]
 :PROPERTIES:
 :EXPORT_FILE_NAME: keybindings-colevimhz-macos
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Colemak necessities" "Keboard management")
 :EXPORT_HUGO_LASTMOD: 2021-08-22T13:43:02+00:00
 :END:
 #+begin_quote
@@ -9412,13 +9405,6 @@ Struggling to emulate ~klfc~ for VIM Colemak bindings on Darwin (macOS) systems 
 I have mentioned in the past my customized [[Refactoring Dotfiles For Colemak][Colemak dotfiles]] which I used with [[Remapping Keys with XKB and KLFC][a customized keyboard layout]]. Unfortunately, the ~.keylayout~ system of MacOS is far more primitive than the elegant ~klfc~ setup [fn:nothinggood]. For an understanding of what we are trying to get at, the following poorly made video will suffice.
 
 #+html: {{< youtube BgqlUsenmKU  >}}
-
-*** Series
-This post is part of a series on Colemak and keyboard management in general.
-1. [[Switching to Colemak][Switching to Colemak]]
-2. [[Refactoring Dotfiles For Colemak][Refactoring Dotfiles For Colemak]]
-3. [[Remapping Keys with XKB and KLFC][Remapping Keys with XKB and KLFC]]
-4. *Keybindings and MacOS* <-- You are here!
 *** VIM Colemak Extensions
 Just as a reminder, my setup (or ~hzColemak~) consists of an augmented VIM workflow, as shown below, and [[Remapping Keys with XKB and KLFC][described in my previous post]].
 
@@ -10342,6 +10328,7 @@ CLOSED: [2021-06-12 Sat 00:57]
 :EXPORT_HUGO_PANDOC_CITATIONS: t
 :EXPORT_BIBLIOGRAPHY: biblio/refs.bib
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("GSoC21: LFortran")
 :END:
 #+begin_quote
 Charting paths towards concrete ~lfortran~ usage
@@ -10358,16 +10345,6 @@ I will workshop a few styles of getting maximal information into the post while
 ensuring the bulk of the technical details and other related notes makes its way
 into the appropriate channels, that is, into the ~lfortran~ [[https://gitlab.com/lfortran/lfortran][project repository]]
 and [[https://docs.lfortran.org/][documentation]].
-*** Series
-This post is part of a series based around my weekly GSoC21 project check-ins.
-1. *GSoC21 W1: LFortran Kickoff* <-- You are here!
-
-2. [[GSoC21 W2: LFortran Unraveling][GSoC21 W2: LFortran Unraveling]]
-3. [[GSoC21 W3: Kind, Characters, and Standards][GSoC21 W3: Kind, Characters, and Standards]]
-4. [[GSoC21 W4: LFortran, Backends and Bugs][GSoC21 W4: LFortran, Backends and Bugs]]
-5. [[GSoC21 W5: LFortran Design Details and ~minidftatom~][GSoC21 W5: LFortran Design Details and ~minidftatom~]]
-6. [[GSoC21 W6: LFortran ASR and Values][GSoC21 W6: LFortran ASR and Values]]
-7. [[GSoC21 W7: LFortran Workflow Basics][GSoC21 W7: LFortran Workflow Basics]]
 ** Logistics
 - I met with Ondrej on Thursday, though our standing arrangement is for Tuesday
   + Meeting earlier in the week helps reduce chances of veering off course
@@ -10499,6 +10476,7 @@ CLOSED: [2021-06-18 Fri 18:59]
 :EXPORT_HUGO_PANDOC_CITATIONS: t
 :EXPORT_BIBLIOGRAPHY: biblio/refs.bib
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("GSoC21: LFortran")
 :END:
 #+begin_quote
 Delving into language standards and back-ends for ~lfortran~
@@ -10507,17 +10485,6 @@ Delving into language standards and back-ends for ~lfortran~
 As discussed in a previous post in this series, I have been spending roughly
 half of each working day with LFortran as part of the [[https://summerofcode.withgoogle.com/projects/#5790375215628288][2021 Google Summer of Code]]
 under the [[https://fortran-lang.org/][fortran-lang organization]], mentored by [[https://ondrejcertik.com/][Ondrej Certik]].
-*** Series
-This post is part of a series based around my weekly GSoC21 project check-ins.
-1. [[GSoC21 W1: LFortran Kickoff][GSoC21 W1: LFortran Kickoff]]
-2. *GSoC21 W2: LFortran Unraveling* <-- You are here!
-
-3. [[GSoC21 W3: Kind, Characters, and Standards][GSoC21 W3: Kind, Characters, and Standards]]
-4. [[GSoC21 W4: LFortran, Backends and Bugs][GSoC21 W4: LFortran, Backends and Bugs]]
-5. [[GSoC21 W5: LFortran Design Details and ~minidftatom~][GSoC21 W5: LFortran Design Details and ~minidftatom~]]
-6. [[GSoC21 W6: LFortran ASR and Values][GSoC21 W6: LFortran ASR and Values]]
-7. [[GSoC21 W7: LFortran Workflow Basics][GSoC21 W7: LFortran Workflow Basics]]
-
 ** Logistics
 Some of the meeting points are to be expanded on below.
 - Met with Ondrej on Tuesday, as discussed previously
@@ -10661,6 +10628,7 @@ CLOSED: [2021-06-26 Sat 00:28]
 :EXPORT_HUGO_PANDOC_CITATIONS: t
 :EXPORT_BIBLIOGRAPHY: biblio/GSoC21.bib
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("GSoC21: LFortran")
 :END:
 #+begin_quote
 Standard practice pragmatic approaches to ~kind~ for ~dftatom~
@@ -10668,16 +10636,6 @@ Standard practice pragmatic approaches to ~kind~ for ~dftatom~
 ** Background
 Serialized update for the [[https://summerofcode.withgoogle.com/projects/#5790375215628288][2021 Google Summer of Code]] under the [[https://fortran-lang.org/][fortran-lang
 organization]], mentored by [[https://ondrejcertik.com/][Ondrej Certik]].
-*** Series
-This post is part of a series based around my weekly GSoC21 project check-ins.
-1. [[GSoC21 W1: LFortran Kickoff][GSoC21 W1: LFortran Kickoff]]
-2. [[GSoC21 W2: LFortran Unraveling][GSoC21 W2: LFortran Unraveling]]
-3. *GSoC21 W3: Kind, Characters, and Standards* <-- You are here!
-
-4. [[GSoC21 W4: LFortran, Backends and Bugs][GSoC21 W4: LFortran, Backends and Bugs]]
-5. [[GSoC21 W5: LFortran Design Details and ~minidftatom~][GSoC21 W5: LFortran Design Details and ~minidftatom~]]
-6. [[GSoC21 W6: LFortran ASR and Values][GSoC21 W6: LFortran ASR and Values]]
-7. [[GSoC21 W7: LFortran Workflow Basics][GSoC21 W7: LFortran Workflow Basics]]
 ** Logistics
 - Met with Ondrej on Tuesday
   + Went over my ~kind~ implementation
@@ -10796,6 +10754,7 @@ CLOSED: [2021-07-02 Fri 23:26]
 :PROPERTIES:
 :EXPORT_FILE_NAME: gsoc21-w4
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("GSoC21: LFortran")
 :END:
 #+begin_quote
 Towards the mid-summer evaluation and redirecting efforts
@@ -11007,6 +10966,7 @@ CLOSED: [2021-07-09 Fri 19:23]
 :PROPERTIES:
 :EXPORT_FILE_NAME: gsoc21-w5
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("GSoC21: LFortran")
 :END:
 #+begin_quote
 Project scaffolding and compiler design
@@ -11014,16 +10974,6 @@ Project scaffolding and compiler design
 ** Background
 Serialized update for the [[https://summerofcode.withgoogle.com/projects/#5790375215628288][2021 Google Summer of Code]] under the [[https://fortran-lang.org/][fortran-lang
 organization]], mentored by [[https://ondrejcertik.com/][Ondrej Certik]].
-*** Series
-This post is part of a series based around my weekly GSoC21 project check-ins.
-1. [[GSoC21 W1: LFortran Kickoff][GSoC21 W1: LFortran Kickoff]]
-2. [[GSoC21 W2: LFortran Unraveling][GSoC21 W2: LFortran Unraveling]]
-3. [[GSoC21 W3: Kind, Characters, and Standards][GSoC21 W3: Kind, Characters, and Standards]]
-4. [[GSoC21 W4: LFortran, Backends and Bugs][GSoC21 W4: LFortran, Backends and Bugs]]
-5. *GSoC21 W5: LFortran Design Details and ~minidftatom~* <-- You are here!
-
-6. [[GSoC21 W6: LFortran ASR and Values][GSoC21 W6: LFortran ASR and Values]]
-7. [[GSoC21 W7: LFortran Workflow Basics][GSoC21 W7: LFortran Workflow Basics]]
 ** Logistics
 - Met with Ondrej on Tuesday, Wednesday and Thursday
   + Discussed the AST, ASR and backends in more detail
@@ -11113,6 +11063,7 @@ CLOSED: [2021-07-16 Fri 17:19]
 :PROPERTIES:
 :EXPORT_FILE_NAME: gsoc21-w6
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("GSoC21: LFortran")
 :END:
 #+begin_quote
 Enriching ASR nodes at compile time
@@ -11120,16 +11071,6 @@ Enriching ASR nodes at compile time
 ** Background
 Serialized update for the [[https://summerofcode.withgoogle.com/projects/#5790375215628288][2021 Google Summer of Code]] under the [[https://fortran-lang.org/][fortran-lang
 organization]], mentored by [[https://ondrejcertik.com/][Ondrej Certik]].
-*** Series
-This post is part of a series based around my weekly GSoC21 project check-ins.
-1. [[GSoC21 W1: LFortran Kickoff][GSoC21 W1: LFortran Kickoff]]
-2. [[GSoC21 W2: LFortran Unraveling][GSoC21 W2: LFortran Unraveling]]
-3. [[GSoC21 W3: Kind, Characters, and Standards][GSoC21 W3: Kind, Characters, and Standards]]
-4. [[GSoC21 W4: LFortran, Backends and Bugs][GSoC21 W4: LFortran, Backends and Bugs]]
-5. [[GSoC21 W5: LFortran Design Details and ~minidftatom~][GSoC21 W5: LFortran Design Details and ~minidftatom~]]
-6. *GSoC21 W6: LFortran ASR and Values* <-- You are here!
-
-7. [[GSoC21 W7: LFortran Workflow Basics][GSoC21 W7: LFortran Workflow Basics]]
 ** Logistics
 - Met with Ondrej on Monday and Wednesday
   + Discussed the design choices w.r.t. class hierarchies (and the lack thereof)
@@ -11154,6 +11095,7 @@ CLOSED: [2021-07-23 Fri 22:33]
 :PROPERTIES:
 :EXPORT_FILE_NAME: gsoc21-w7
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("GSoC21: LFortran")
 :END:
 #+begin_quote
 Revisiting ~minidftatom~ and a birds eye view of ~lfortran~
@@ -11161,16 +11103,6 @@ Revisiting ~minidftatom~ and a birds eye view of ~lfortran~
 ** Background
 Serialized update for the [[https://summerofcode.withgoogle.com/projects/#5790375215628288][2021 Google Summer of Code]] under the [[https://fortran-lang.org/][fortran-lang
 organization]], mentored by [[https://ondrejcertik.com/][Ondrej Certik]].
-*** Series
-This post is part of a series based around my weekly GSoC21 project check-ins.
-1. [[GSoC21 W1: LFortran Kickoff][GSoC21 W1: LFortran Kickoff]]
-2. [[GSoC21 W2: LFortran Unraveling][GSoC21 W2: LFortran Unraveling]]
-3. [[GSoC21 W3: Kind, Characters, and Standards][GSoC21 W3: Kind, Characters, and Standards]]
-4. [[GSoC21 W4: LFortran, Backends and Bugs][GSoC21 W4: LFortran, Backends and Bugs]]
-5. [[GSoC21 W5: LFortran Design Details and ~minidftatom~][GSoC21 W5: LFortran Design Details and ~minidftatom~]]
-6. [[GSoC21 W6: LFortran ASR and Values][GSoC21 W6: LFortran ASR and Values]]
-7. *GSoC21 W7: LFortran Workflow Basics* <-- You are here!
-
 ** Logistics
 - Met with Ondrej on Tuesday
   + Went over the debugging workflow
@@ -11214,6 +11146,7 @@ CLOSED: [2021-07-30 Fri 17:11]
 :PROPERTIES:
 :EXPORT_FILE_NAME: gsoc21-w8
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("GSoC21: LFortran")
 :END:
 #+begin_quote
 Language standardese and implementations
@@ -11221,16 +11154,6 @@ Language standardese and implementations
 ** Background
 Serialized update for the [[https://summerofcode.withgoogle.com/projects/#5790375215628288][2021 Google Summer of Code]] under the [[https://fortran-lang.org/][fortran-lang
 organization]], mentored by [[https://ondrejcertik.com/][Ondrej Certik]].
-*** Series
-This post is part of a series based around my weekly GSoC21 project check-ins.
-1. [[GSoC21 W1: LFortran Kickoff][GSoC21 W1: LFortran Kickoff]]
-2. [[GSoC21 W2: LFortran Unraveling][GSoC21 W2: LFortran Unraveling]]
-3. [[GSoC21 W3: Kind, Characters, and Standards][GSoC21 W3: Kind, Characters, and Standards]]
-4. [[GSoC21 W4: LFortran, Backends and Bugs][GSoC21 W4: LFortran, Backends and Bugs]]
-5. [[GSoC21 W5: LFortran Design Details and ~minidftatom~][GSoC21 W5: LFortran Design Details and ~minidftatom~]]
-6. [[GSoC21 W6: LFortran ASR and Values][GSoC21 W6: LFortran ASR and Values]]
-7. [[GSoC21 W7: LFortran Workflow Basics][GSoC21 W7: LFortran Workflow Basics]]
-8. *GSoC21 W8: LFortran Refactors, and Compile Time Evaluations* <-- You are here!
 ** Logistics
 - Discussed more refactors over MRs and Zulip
 ** Overview
@@ -11312,6 +11235,7 @@ CLOSED: [2021-08-06 Fri 19:50]
 :PROPERTIES:
 :EXPORT_FILE_NAME: gsoc21-w9
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("GSoC21: LFortran")
 :END:
 #+begin_quote
 Continuing compile time intrinsic functions, ASR passes, and testing LAPACK
@@ -11319,17 +11243,6 @@ Continuing compile time intrinsic functions, ASR passes, and testing LAPACK
 ** Background
 Serialized update for the [[https://summerofcode.withgoogle.com/projects/#5790375215628288][2021 Google Summer of Code]] under the [[https://fortran-lang.org/][fortran-lang
 organization]], mentored by [[https://ondrejcertik.com/][Ondrej Certik]].
-*** Series
-This post is part of a series based around my weekly GSoC21 project check-ins.
-1. [[GSoC21 W1: LFortran Kickoff][GSoC21 W1: LFortran Kickoff]]
-2. [[GSoC21 W2: LFortran Unraveling][GSoC21 W2: LFortran Unraveling]]
-3. [[GSoC21 W3: Kind, Characters, and Standards][GSoC21 W3: Kind, Characters, and Standards]]
-4. [[GSoC21 W4: LFortran, Backends and Bugs][GSoC21 W4: LFortran, Backends and Bugs]]
-5. [[GSoC21 W5: LFortran Design Details and ~minidftatom~][GSoC21 W5: LFortran Design Details and ~minidftatom~]]
-6. [[GSoC21 W6: LFortran ASR and Values][GSoC21 W6: LFortran ASR and Values]]
-7. [[GSoC21 W7: LFortran Workflow Basics][GSoC21 W7: LFortran Workflow Basics]]
-8. [[GSoC21 W8: LFortran Refactors, and Compile Time Evaluations][GSoC21 W8: LFortran Refactors, and Compile Time Evaluations]]
-9. *GSoC21 W9: LFortran Bug Hunting Bonanza* <-- You are here!
 ** Logistics
 - Daily checkins over Zulip
   + Code reviews on Gitlab
@@ -11406,6 +11319,7 @@ CLOSED: [2021-08-14 Sat 00:28]
 :EXPORT_HUGO_PANDOC_CITATIONS: t
 :EXPORT_BIBLIOGRAPHY: biblio/GSoC21.bib
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("GSoC21: LFortran")
 :END:
 #+begin_quote
 The road to accurate elementary intrinsic functions is paved with IEEE/ISO standards
@@ -11413,18 +11327,6 @@ The road to accurate elementary intrinsic functions is paved with IEEE/ISO stand
 ** Background
 Serialized update for the [[https://summerofcode.withgoogle.com/projects/#5790375215628288][2021 Google Summer of Code]] under the [[https://fortran-lang.org/][fortran-lang
 organization]], mentored by [[https://ondrejcertik.com/][Ondrej Certik]].
-*** Series
-This post is part of a series based around my weekly GSoC21 project check-ins.
-1. [[GSoC21 W1: LFortran Kickoff][GSoC21 W1: LFortran Kickoff]]
-2. [[GSoC21 W2: LFortran Unraveling][GSoC21 W2: LFortran Unraveling]]
-3. [[GSoC21 W3: Kind, Characters, and Standards][GSoC21 W3: Kind, Characters, and Standards]]
-4. [[GSoC21 W4: LFortran, Backends and Bugs][GSoC21 W4: LFortran, Backends and Bugs]]
-5. [[GSoC21 W5: LFortran Design Details and ~minidftatom~][GSoC21 W5: LFortran Design Details and ~minidftatom~]]
-6. [[GSoC21 W6: LFortran ASR and Values][GSoC21 W6: LFortran ASR and Values]]
-7. [[GSoC21 W7: LFortran Workflow Basics][GSoC21 W7: LFortran Workflow Basics]]
-8. [[GSoC21 W8: LFortran Refactors, and Compile Time Evaluations][GSoC21 W8: LFortran Refactors, and Compile Time Evaluations]]
-9. [[GSoC21 W9: LFortran Bug Hunting Bonanza][GSoC21 W9: LFortran Bug Hunting Bonanza]]
-10. *GSoC21 W10: LFortran Runtime Library Design* <-- You are here!
 ** Logistics
 - Met with Ondrej daily from Sunday till Friday
   + On Sunday we finished the compile time evaluation design (partially)
@@ -11679,34 +11581,13 @@ CLOSED: [2021-08-20 Fri 00:43]
 :EXPORT_HUGO_PANDOC_CITATIONS: t
 :EXPORT_BIBLIOGRAPHY: biblio/GSoC21.bib
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("GSoC21: LFortran")
 :END:
 #+begin_quote
 Directed recollections of the GSoC21 timeline
 #+end_quote
 ** Background
 If the last ten weeks of weekly posts have not made it clear; as a student developer in the Google Summer of Code in the year 2021; I was privileged to work on the [[https://lfortran.org/][LFortran compiler]] alongside [[https://czgdp1807.github.io/][Gagandeep Singh]] and [[https://fortran-lang.discourse.group/t/lfortran-gsoc-student-progress-thirumalai-shaktivel-ast-project/1271][Thirumalai Shaktivel]] under the fantastic mentorship of [[https://ondrejcertik.com/][Ondřej Čertík]] under the Fortran-Lang organization.
-*** Series
-This post is going to be generally expositionary in tone; but the series is also reproduced.
-1. [[GSoC21 W1: LFortran Kickoff][GSoC21 W1: LFortran Kickoff]]
-
-2. [[GSoC21 W2: LFortran Unraveling][GSoC21 W2: LFortran Unraveling]]
-
-3. [[GSoC21 W3: Kind, Characters, and Standards][GSoC21 W3: Kind, Characters, and Standards]]
-
-4. [[GSoC21 W4: LFortran, Backends and Bugs][GSoC21 W4: LFortran, Backends and Bugs]]
-
-5. [[GSoC21 W5: LFortran Design Details and ~minidftatom~][GSoC21 W5: LFortran Design Details and ~minidftatom~]]
-
-6. [[GSoC21 W6: LFortran ASR and Values][GSoC21 W6: LFortran ASR and Values]]
-
-7. [[GSoC21 W7: LFortran Workflow Basics][GSoC21 W7: LFortran Workflow Basics]]
-
-8. [[GSoC21 W8: LFortran Refactors, and Compile Time Evaluations][GSoC21 W8: LFortran Refactors, and Compile Time Evaluations]]
-
-9. [[GSoC21 W9: LFortran Bug Hunting Bonanza][GSoC21 W9: LFortran Bug Hunting Bonanza]]
-
-10. [[GSoC21 W10: LFortran Runtime Library Design][GSoC21 W10: LFortran Runtime Library Design]]
-
 ** Pencil Pushing
 This section describes the overall work done in a manner designed to delight minds enamoured by brevity and numbers. It is by no means a replacement for going over the series.
 *** Project Overview
@@ -11854,6 +11735,7 @@ CLOSED: [2021-09-23 Thu 05:45]
 :PROPERTIES:
 :EXPORT_FILE_NAME: numpy-meson-f2py
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Bridging Fortran \& Python")
 :END:
 #+begin_quote
 Exploring ~meson~ for interfacing ~fortran~ and ~python~ via ~f2py~ and standard techniques, with benchmarks.
@@ -13306,6 +13188,7 @@ CLOSED: [2021-10-02 Sat 04:19]
 :EXPORT_HUGO_PANDOC_CITATIONS: t
 :EXPORT_BIBLIOGRAPHY: biblio/Quansight.bib, biblio/refs.bib
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Bridging Fortran \& Python")
 :END:
 #+begin_quote
 Moving simple Fortran derived types to Python and back via C
@@ -13319,12 +13202,6 @@ historical improvements are pretty much the most the Fortran standards committee
 have managed to date in the 21st century. The point of this exploration is to
 design interfaces to ~Python~, mostly for the long term advancement of ~f2py~,
 and just for the heck of it. Simple in the context of the title means that we consider only derived types whose members have direct ~C~ equivalents as defined in the Fortran 2003 @reidNewFeaturesFortran2003 standard.
-*** Series
-Without intending it to be so, it appears that a series has been established,
-though not in strict order, the progression of the standards and their modern
-equivalents for Fortran-Python can be traced as seen in:
-1. [[NumPy, Meson and ~f2py~][NumPy Meson Fortran]]
-2. *Simple Fortran Derived Types and Python* <-- You are here!
 ** C Structures and Derived Types - I
 Consider, first an example of what shall be a rather simple collection of records, the prototypical darling of most simulations, the point in Euclidean space, $\mathbb{R}^{3}$.
 #+begin_src f90
@@ -13878,14 +13755,6 @@ intrinsic module. A closer inspection of the functionality provided therein is t
 first step towards extending beyond the standards to support calling type
 bound procedures. This is an often overlooked aspect of the derived
 type usage pattern, in terms of interoperability.
-
-*** Series
-Thoughts relating to interoperability of Fortran with things can be
-vaguely collated into the following series.
-1. [[NumPy, Meson and ~f2py~][NumPy Meson Fortran]]
-2. [[Simple Fortran Derived Types and Python][Simple Fortran Derived Types and Python]]
-3. *Exploring ~ISO_C_BINDING~ and type-bound procedures* <-- You are here!
-
 ** Setup
 We would like to understand the effect of the intrinsic ~iso_c_binding~ module.
 So, we will re-use at first, the basic cartesian type of the previous post,
@@ -14431,6 +14300,7 @@ CLOSED: [2022-05-09 Mon 03:39]
 :EXPORT_HUGO_PANDOC_CITATIONS: t
 :EXPORT_BIBLIOGRAPHY: biblio/Quansight.bib, biblio/refs.bib
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Bridging Fortran \& Python")
 :END:
 #+begin_quote
 Explorations of object oriented Fortran with ~bind(c)~ derived types for representations generated by F2PY
@@ -14454,14 +14324,6 @@ For F2PY within ~numpy~, however, although there are no direct equivalents in
 ~C~ for the more OOP specific derived types, there are plenty of equivalent
 structures in ~Python~. This post will bridge Fortran derived types to their
 logically equivalent Python class definitions.
-
-*** Series
-Thoughts relating to interoperability of Fortran with things can be
-vaguely collated into the following series.
-1. [[NumPy, Meson and ~f2py~][NumPy Meson Fortran]]
-2. [[Simple Fortran Derived Types and Python][Simple Fortran Derived Types and Python]]
-3. [[Exploring ~ISO_C_BINDING~ and type-bound procedures][Exploring ~ISO_C_BINDING~ and type-bound procedures]]
-4. *Fortran OOP and Python* <-- You are here!
 ** Premise
 As in [[Simple Fortran Derived Types and Python][the previous posts]], we will be interested in a ~bind(c)~ derived type.
 #+begin_src fortran
@@ -14859,6 +14721,13 @@ on exposing a series of ~C~ functions which call ~Fortran~ methods.
 [fn:whoelse] I also discussed this at a few NumPy meetings and also informally mentioned this during some LFortran meetings as well
 [fn:whatprovoc] Benchmarks are notoriously [[https://pythonspeed.com/articles/consistent-benchmarking-in-ci/][divisive and finicky]], and no attempt was made to ensure statistical stability of the results nor were the plotted points obtained on machines dedicated and isolated from spurious loads
 * TODO Fortran Derived Type Arrays and Python
+:PROPERTIES:
+:EXPORT_FILE_NAME: fortran-deriv-type-arrays-py
+:EXPORT_HUGO_PANDOC_CITATIONS: t
+:EXPORT_BIBLIOGRAPHY: biblio/Quansight.bib, biblio/refs.bib
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Bridging Fortran \& Python")
+:END:
 #+begin_quote
 Passing dynamic arrays of derived types from ~C~, ~Fortran~ and ~Python~
 #+end_quote
@@ -14873,15 +14742,6 @@ For F2PY within ~numpy~, however, although there are no direct equivalents in
 ~C~ for the more OOP specific derived types, there are plenty of equivalent
 structures in ~Python~. This post will bridge Fortran derived types to their
 logically equivalent Python class definitions.
-
-*** Series
-Thoughts relating to interoperability of Fortran with things can be
-vaguely collated into the following series.
-1. [[NumPy, Meson and ~f2py~][NumPy Meson Fortran]]
-2. [[Simple Fortran Derived Types and Python][Simple Fortran Derived Types and Python]]
-3. [[Exploring ~ISO_C_BINDING~ and type-bound procedures][Exploring ~ISO_C_BINDING~ and type-bound procedures]]
-4. [[Fortran OOP and Python][Fortran OOP and Python]]
-5. *Fortran Derived Type Arrays and Python* <-- You are here!
 * DONE Revisiting Wayland for ArchLinux :@notes:rambling:workflow:
 CLOSED: [2021-12-24 Fri 18:13]
 :PROPERTIES:
@@ -16026,6 +15886,7 @@ CLOSED: [2023-04-27 Thu 16:09]
 :EXPORT_HUGO_PANDOC_CITATIONS: t
 :EXPORT_BIBLIOGRAPHY: biblio/myWork.bib
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Fortran Frontiers: Bridging Legacy to Modernity")
 :END:
 #+BEGIN_QUOTE
 A short pseudo-tutorial post on working with inherited Fortran.
@@ -16038,15 +15899,6 @@ improving with time @kedwardStateFortran2022. Rewriting *is not* typically an
 option, or a good use of time. This set of posts should be applicable to any
 blackbox legacy fortran code, though the specific example here is one from my
 own field (computational chemistry).
-*** Series
-This is a series of posts centered around "things to do with old fortran code".
-To be very exact, there's only this post, but related articles are:
-1. *Handling Legacy Fortran Code* <-- You are here
-2. MATLAB bindings for Fortran Libraries through ~C~
-3. ~cibuildwheel~ for C++ libraries with thin Python wrappers
-
-The third post lays out design guidelines and build practicalities for C++
-libraries which may have embedded Fortran code.
 ** The Code
 As an exemplary example, we will consider an implicitly typed Fortran-77 program
 for generating the potential energy surface (and forces) of a system containing
@@ -16197,6 +16049,29 @@ larger C++ codes, or distributing said libraries with ~pip~ [fn:whynothere].
 
 [fn:whygood]  For a copper slab and hydrogen molecule, the potential is qualitatively correct. It captures the fact that when the slab is fixed, there are effectively only two degrees of freedom, the distance between the hydrogen atoms, and the distance to the slab.
 [fn:whynothere] Most of the issues which crop up in embedding and distribution are largely build system related, and require no changes to the Fortran code other than a compatible ~iso_c_binding~ wrapper so they are extracted away.
+* TODO MATLAB bindings for Fortran Libraries through ~C~
+:PROPERTIES:
+:EXPORT_FILE_NAME: matlab-fortran-c
+:EXPORT_HUGO_PANDOC_CITATIONS: t
+:EXPORT_BIBLIOGRAPHY: biblio/myWork.bib
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Fortran Frontiers: Bridging Legacy to Modernity")
+:END:
+#+begin_quote
+C-Matlab is a lot more pleasant to work with
+#+end_quote
+* TODO C++ Libraries & Python: The cibuildwheel Way
+:PROPERTIES:
+:EXPORT_FILE_NAME: cpplib-py-cibuildwheel
+:EXPORT_HUGO_PANDOC_CITATIONS: t
+:EXPORT_BIBLIOGRAPHY: biblio/myWork.bib
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Fortran Frontiers: Bridging Legacy to Modernity")
+:END:
+#+begin_quote
+Where we lay out design guidelines and build practicalities for C++
+libraries which may have embedded Fortran code
+#+end_quote
 * DONE CPP Library Blueprints for Python Bindings :@programming:design:bindings:python:cpp:
 CLOSED: [2023-06-28 Wed 11:27]
 :PROPERTIES:
@@ -16883,7 +16758,7 @@ Token hell, or leveraging Github for managing interconnected projects.
 Projects have dependencies. They may (often) also have very distinct histories
 and development goals. Technically ~git~ is fine for these situations as well,
 since changes are really tracked at the file level. Nevertheless, it can happen
-that projects spin off, but still need rather tighte integration, e.g. ~f2py~
+that projects spin off, but still need rather tight integration, e.g. ~f2py~
 changes in ~numpy~ *must* be tested against the latest ~scipy~ to ensure nothing
 breaks.
 
