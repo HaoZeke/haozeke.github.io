@@ -343,6 +343,42 @@ as a stop gap solution.
 
 The code which handles these ~meta~ tags for ~blogPosts~ can be [[https://github.com/zotero/translators/blob/b6eb8802779a538752435f567a6c1461d87cdfac/Embedded%20Metadata.js#L306-L313][seen upstream]].
 Will be fixed by [[https://github.com/zotero/translators/pull/3116][this PR]] soon enough hopefully.
+** TODO Useful Repository Management Tools :library:design:
+The way I see it, especially ~fortran~ libraries, are meant to be embedded in
+larger codes. This is just the natural way. So it makes sense to have headers
+generated automatically for them.
+*** Release management
+- ~tbump~ :: is very useful, pretty much project agnostic
+- ~towncrier~ :: also good for tracking changes
+
+They actually work really well together, even for mixed-language projects.
+#+begin_src bash
+towncrier build --version=$(tbump current-version)
+#+end_src
+With the minimal configurations noted here.
+
+For the first release, most of the points were without issues.
+#+begin_src bash
+❯ echo 'Added pytests validating the results against SymPy' > newsfragments/+sympy_cli.misc
+❯ echo 'Added the Golub-Welsch algorithm' > newsfragments/+gw_algo.feature
+#+end_src
+
+Anyway, the ~tbump.toml~ configuration works very nicely, to the point where
+really there's not much work left to do at all. ~tbump current-version~ within
+the ~before_commit~ sections resolves to the new version, which makes it
+interact very elegantly with ~towncrier~ for releases.Configuration in hand, I merged the pull request, switched to main, and ran the
+final variant. For the first release,
+for mixed-language (~fortran~) projects, it was enough to run ~tbump
+<current-version>~ just to generate the initial files.
+
+For finally releasing on GitHub, copying the News.md file for the release and
+additionally using the Generate release notes button really works quite well.
+
+
+*** Documentation
+So much digital ink spilled, nevertheless I prefer ~doxygen~ for mixed-language
+projects, with my [[https://github.com/HaoZeke/doxyYoda][doxyYoda theme]]. A minimal configuration is typically just
+[[https://github.com/HaoZeke/GaussJacobiQuad/commit/470c9cf36563e3ea6d292798a12a9f4775e659be][this commit]] (with [[https://github.com/HaoZeke/GaussJacobiQuad/commit/49491e4519be971e16e46a9da72c673b6d416acc][a bugfix]]).
 ** TODO Github Action Blocks
 Concurrency is a great idea.
 ** TODO Applying Patches Across Repositories :git:cmdline:patch:
