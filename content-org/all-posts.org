@@ -15860,7 +15860,7 @@ example in ~/etc/sddm.conf.d/08_nix_uid.conf~:
 MaximumUid=30000
 #+end_src
 ***** Wayland notes
-- ~caja~ isn't compatible with ~wayland~ out of the box
+- ~caja~ isn't compatible with ~wayland~ out of the box (but my favorite ~thunar~ is)
 - Thanks to a [[https://bugs.launchpad.net/ubuntu/+source/file-roller/+bug/1923033][very old]] archive-manager (file-roller) bug, there aren't any really good native options for compression
   + ~peazip~ works as a native file and archive manager though
 ***** Laptop Tweaks
