@@ -374,6 +374,7 @@ for mixed-language (~fortran~) projects, it was enough to run ~tbump
 For finally releasing on GitHub, copying the News.md file for the release and
 additionally using the Generate release notes button really works quite well.
 
+For Zenodo, I forgot to activate the Github integration on the repo before I released, so I used [[https://github.com/imcf/zenodo-doi-for-existing-release][this repo]] to trigger an update. Then I added the Citation file to the repo following the Zenodo suggestions.
 
 *** Documentation
 So much digital ink spilled, nevertheless I prefer ~doxygen~ for mixed-language
