@@ -16394,6 +16394,29 @@ Hopefully I'll never need to write much more ~MATLAB~. There are a laundry list
 of deficiencies in the language, from the naming conventions to the lack of
 printing of structured data. I'm not sure any of this would be considered to be
 a "best practice", however, it has proven to be satisfactory to me so far.
+* TODO Exporting single file Fortran libraries
+:PROPERTIES:
+:EXPORT_FILE_NAME: export-lib-fortran
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Fortran Frontiers: Bridging Legacy to Modernity")
+:END:
+#+begin_quote
+On distributing Fortran libraries
+#+end_quote
+** Background
+Fortran has no real equivalent to ~pypi~ and friends. There is ~fpm~, which is great, but also not that well supported, and has only patchy support for multi-lingual projects.
+** Managing dependencies
+Fortran parsing takes up an unholy amount of my time [fn:whyso]. Perhaps because
+of that, I was wary of reaching for yet another fully fledged Fortran parser.
+Besides, from the point of view of exports, this is really more of a build
+system issue. I've mentioned ~fortdepend~ a long time ago when I was starting
+out as a GSoC student, where I used it to find module dependencies.
+Unsurprisingly it can be used, therefore, to get a reverse list of imports which
+are needed for a single file export.
+
+I eventually wrote a tiny package for this.
+
+[fn:whyso] ~f2py~. 'nuff said.
 * DONE Dart Sass and Hugo Themes :@notes:webdev:
 CLOSED: [2023-06-17 Sat 17:29]
 :PROPERTIES:
@@ -17012,6 +17035,224 @@ I like plotting with ~ggplot2~. It makes more sense to me than the other plottin
 ** Idiosyncracies
 - I find it odd that ~R~ packages commit so much generated code
   + Can be simplified with a CI bot
+** Repo setup
+~pixi~ with ~renv~ turns out to be surprisingly robust. I normally begin with:
+#+begin_src bash
+echo ".pixi/" > .gitignore
+gibo dump R C++ | cat >> .gitignore
+pixi init
+pixi add radian r-renv compilers
+git add .
+git commit -m "PRJ: Let there be light"
+#+end_src
+The rest of the preliminaries can take place within the context of ~renv~ and
+~pixi shell~. I tend to leave ~LICENSE~ and other templates to ~usethis~.
+*** ~renv~ package development
+This is fairly straightforward, but takes a while to run, from the ~radian~
+terminal (after ~pixi-shell~).
+
+#+begin_src R
+renv::init()
+install.packages(c("devtools")) # can take a while
+usethis::create_package(".") # from $GITROOT
+#+end_src
+Now we can start with the rest of the templates.
+#+begin_src R
+usethis::use_mit_license()
+usethis::use_readme_rmd()
+#+end_src
+#+attr_html: :class warning-alert
+#+begin_alert
+#+begin_alert-heading
+*Warning*
+#+end_alert-heading
+CRAN doesn't like fixed dependencies, see [[https://github.com/ropensci-review-tools/pkgcheck/issues/149][the discussion here]], and often for developing packages one might not need ~renv~ though it still makes sense if one has multiple development machines.
+#+end_alert
+** Stylistic decisions
+Always a good idea to lint and style from the get-go, so:
+#+begin_src R
+install.packages(c("lintr", "styler"))
+#+end_src
+Also remember to add ~.pixi/~ to ~.Rbuildignore~ otherwise local checks will
+parse the entire contents of the rather substantial folder.
+*** Pre-commit hooks
+For my packages, I tend to use a ~pre-commit-hook~ configured with ~.pre-commit-config.yaml~:
+#+begin_src yaml
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.4.0
+  hooks:
+  - id: trailing-whitespace
+    exclude: ^(.lintr)
+  - id: end-of-file-fixer
+  - id: check-yaml
+  - id: check-added-large-files
+- repo: https://github.com/pre-commit/mirrors-clang-format
+  rev: v16.0.6
+  hooks:
+  - id: clang-format
+#+end_src
+
+Which can be used via:
+#+begin_src bash
+# Check
+pipx run pre-commit run -a
+# Install
+pipx run pre-commit install
+#+end_src
+
+Also worth noting is the CI configuration for the same especially useful for
+contributors, ~.github/workflows/pre-commit.yml~:
+#+begin_src yaml
+name: pre-commit
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v3
+      with:
+        python-version: '3.11'
+    - uses: pre-commit/action@v2.0.3
+#+end_src
+However, sometimes ~pre-commit~ for ~R~ can be flakey. In such situations consider:
+#+begin_src bash
+find . \( -path "./.pixi" -o -path "./renv" \) -prune -o -type f -name "*.R" -exec Rscript -e 'library(styler); style_file("{}")' \;
+Rscript -e 'library(lintr); lintr::lint_package(".")'
+#+end_src
+In any case, always remember to run ~renv::snapshot()~ after an
+~install.packages~ call.
+*** ROpenSci package check
+#+attr_html: :class warning-alert
+#+begin_alert
+#+begin_alert-heading
+*Warning*
+#+end_alert-heading
+This is *really* slow locally, but required in the ~renv~ workflow. Still annoying to run locally!
+#+end_alert
+We need to install this with a non-CRAN [[https://docs.ropensci.org/pkgcheck/][source]]:
+#+begin_src R
+options (repos = c (
+        ropenscireviewtools = "https://ropensci-review-tools.r-universe.dev",
+        CRAN = "https://cloud.r-project.org"
+    ))
+install.packages("pkgcheck")
+#+end_src
+When its finally done, add the CI configuration.
+#+begin_src yaml
+name: ROpenSci pkg-check
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  pkgcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: "recursive"
+          fetch-depth: 0
+      - name: pkgcheck
+        uses: ropensci-review-tools/pkgcheck-action@v1.0.0
+#+end_src
+** Using ~cpp11~
+Even after ~usethis::use_package("cpp11")~ one must link to it explicitly in the ~DESCRIPITON~:
+#+begin_src yaml
+ SystemRequirements: C++17
+ Encoding: UTF-8
+ Roxygen: list(markdown = TRUE)
+ RoxygenNote: 7.2.3
++LinkingTo:
++    cpp11
+ Imports:
+     cpp11
+#+end_src
+
+One of the other things which tripped me up is that the functions are not
+automatically exported, and so one needs to create, in ~R/$PKGNAME-package.R~:
+#+begin_src R
+## usethis namespace: start
+#' @useDynLib your-package-name, .registration = TRUE
+## usethis namespace: end
+#' @export func-name-from-cpp11.R
+NULL
+#+end_src
+
+Finally, in most cases I found ~devtools::load_all()~ to be a bit insufficient, had to use the more complete:
+#+begin_src R
+devtools::clean_dll()
+cpp11::cpp_register()
+devtools::document()
+devtools::load_all()
+#+end_src
+
+I never understood why the ~R~ community commits so many generated files, personally I like to prepend my ~gitignore~ with:
+#+begin_src gitignore
+## Generated files
+R/cpp11.R
+src/cpp11.cpp
+man/
+#+end_src
+
+#+attr_html: :class warning-alert
+#+begin_alert
+#+begin_alert-heading
+*Warning*
+#+end_alert-heading
+Sadly the entire ~R~ ecosystem of checks will fail with this, so a first approximation committing everything might make some sense..
+#+end_alert
+
+Later, a bot or CI action can be used to populate a "full" branch of the
+repository without muddying my nice ~git~ history. In fact, some of these are
+actually already part of the set of [[https://github.com/r-lib/actions/tree/v2/examples][Github Actions]] supported by ~usethis::~. I
+ended up with:
+#+begin_src R
+usethis::use_github_action() ## Basic, smoke test
+usethis::use_github_action("check-standard") ## Overwrite older
+#+end_src
+
+I was also initially thrown by the requirement of including copies of source
+code. I suspect this might be bypassed by using ~meson~ as I have in ~cuh2vizR~,
+unless CRAN packages are built without internet access. It would make it much
+easier to handle updates if ~meson~ were to handle setting up the dependencies, however, it isn't exactly part of ~R-tools~[fn:yetatleast].
+** Appeasing ~pkgcheck~
+Some thoughts:
+- No ~renv~ in ~.Rprofile~
+- Use ~codemetar~ to get a ~codemeta.json~
+- Add a ~CONTRIBUTING.md~ (e.g. here)
+  + Not strictly necessary but I also go with a ~CODE_OF_CONDUCT.md~ (e.g. here)
+
+Personally I needed some ~tex~ updates:
+#+begin_src bash
+tlmgr install collection-latexrecommended
+tlmgr install collection-fontsrecommended
+#+end_src
+
+Always best to include a ~.covrignore~ but when in a pinch, this will work:
+#+begin_src R
+covr::package_coverage(line_exclusions=file.path(".pixi", list.files(path=".pixi", recursi
+    ve=T)))
+#+end_src
+
+Also useful was:
+#+begin_src R
+usethis::use_build_ignore(c("newsfragments/", "pixi.*", "CONTRIBUTING.md", "CODE_OF_CONDUCT.md", ".covrignore"))
+#+end_src
+
+It is also important, for benchmarking and other long running vignettes, to have
+them cached or precomputed, as detailed in [[https://www.kloppenborg.ca/2021/06/long-running-vignettes/][this blog post]] which in turn
+references an [[https://ropensci.org/blog/2019/12/08/precompute-vignettes/][older ROpenSci post]]. Vignette images are a whole other beast,
+nicely [[https://www.jumpingrivers.com/blog/knitr-rmarkdown-image-size/][covered here]].
+
+[fn:yetatleast] Yet.
 * TODO Reproducible ~R~ environments with ~nix-flakes~
 :PROPERTIES:
 :EXPORT_FILE_NAME: reproducible-r-nix-flakes
