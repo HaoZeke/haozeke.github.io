@@ -253,7 +253,7 @@ nix-shell -p '(callPackage (fetchTarball https://github.com/DavHau/mach-nix/tarb
 ~mkPythonShell~ does not generate an environment which can be used here, since
 that is not a derivation which can be built.  This is most useful in the context
 of systems which use ~asdf~ or other ~PATH~ shim approaches.
-** DONE Auto-discovering ~meson~ tests :meson:cpp:build:
+** DONE Auto-discovering ~meson~ tests :meson:cpp:build:tests:
 CLOSED: [2023-03-22 Wed 13:59]
 :PROPERTIES:
 :EXPORT_HUGO_BUNDLE: auto-disc-meson-tests
@@ -322,6 +322,21 @@ endforeach
 This is rather satisfying. Combined with some ~wraps~, it is also pretty
 portable.
 
+** TODO Catch2 and ~meson~ :meson:cpp:build:tests:
+When specifying ~main~ manually, this will suffice:
+#+begin_src meson
+test_deps = _deps + dependency('Catch2')
+#+end_src
+Which will pick up the ~pkgconfig~ configuration typically. However, to use the
+~main~ which comes with ~catch2~ it is easier to use ~cmake~:
+#+begin_src meson
+test_deps += dependency(
+  'Catch2',
+  method: 'cmake',
+  modules: ['Catch2::Catch2WithMain'],
+)
+#+end_src
+The rest of the tests can be setup via auto-discovery as [[Auto-discovering ~meson~ tests][discussed before]].
 ** DONE Zotero Connector and Blog Posts
 CLOSED: [2023-08-23 Wed 00:17]
 :PROPERTIES:
@@ -375,11 +390,38 @@ For finally releasing on GitHub, copying the News.md file for the release and
 additionally using the Generate release notes button really works quite well.
 
 For Zenodo, I forgot to activate the Github integration on the repo before I released, so I used [[https://github.com/imcf/zenodo-doi-for-existing-release][this repo]] to trigger an update. Then I added the Citation file to the repo following the Zenodo suggestions.
+*** Release TL;DR
+- Use ~cibuildwheel~ on CI
+- ~git tag v0.x.0~ and ~git push --atomic origin v0.x.0~
+
+Then download completed build artifacts:
+#+begin_src bash
+twine check dist/*
+twine upload dist/*
+#+end_src
+
+If / when something goes wrong:
+
+#+begin_src bash
+git tag -d v0.x.0
+# make changes / push
+git tag v0.x.0
+git push --atomic origin v0.x.0
+#+end_src
+
+Recall that even if the build-bot runs for each commit / PR / whatever, the
+version picked up dynamically will not match the tag, so one needs to delete and
+rebuild. Once releases hit PyPi they can only be yanked, so this workflow is
+safer.
 
 *** Documentation
 So much digital ink spilled, nevertheless I prefer ~doxygen~ for mixed-language
 projects, with my [[https://github.com/HaoZeke/doxyYoda][doxyYoda theme]]. A minimal configuration is typically just
 [[https://github.com/HaoZeke/GaussJacobiQuad/commit/470c9cf36563e3ea6d292798a12a9f4775e659be][this commit]] (with [[https://github.com/HaoZeke/GaussJacobiQuad/commit/49491e4519be971e16e46a9da72c673b6d416acc][a bugfix]]).
+** TODO Anki Deck Tips
+*** Working with images
+- SVGs can be rotated with [[https://pixelied.com][pixelied]]
+  + Then ~inkscape~ can resize the page to selection
 ** TODO Github Action Blocks
 Concurrency is a great idea.
 ** TODO Applying Patches Across Repositories :git:cmdline:patch:
@@ -554,3 +596,35 @@ I recently had to extend my ~nix~ installed ~git~ version to get ~git-svn~ and t
         };
 #+end_src
 
+
+** TODO GDB Tips
+*** Introduction
+   In GDB, you can save the breakpoints to a file and then later load them back into another debugging session. This can be very useful if you have a set of breakpoints that you use frequently.
+*** Saving Breakpoints
+   To save breakpoints, you can use the command =save breakpoints [filename]= in GDB.
+
+   - Start by setting some breakpoints in your code
+     #+BEGIN_SRC text
+     gdb -q ./my_program
+     (gdb) break main
+     (gdb) break some_function
+     #+END_SRC
+
+   - Save the breakpoints to a file
+     #+BEGIN_SRC text
+     (gdb) save breakpoints my_breakpoints.txt
+     #+END_SRC
+
+*** Loading Breakpoints
+   To load breakpoints from a file, you can use the command =source [filename]= in GDB.
+   - Start a new debugging session
+     #+BEGIN_SRC text
+     gdb -q ./my_program
+     #+END_SRC
+
+   - Load the breakpoints from the file
+     #+BEGIN_SRC text
+     (gdb) source my_breakpoints.txt
+     #+END_SRC
+*** Conclusion
+   Saving and loading breakpoints can make your debugging sessions more efficient by preserving the state of your breakpoints between sessions.
