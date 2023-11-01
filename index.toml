@@ -1,6 +1,11 @@
 # We use the generated html to prevent issues involving markdown frontmatter
 
 [[input.files]]
+path = "./snippets/local-precommit-dependencies/index.html"
+url = "https://rgoswami.me/snippets/local-precommit-dependencies/"
+title = "Local precommit dependencies"
+
+[[input.files]]
 path = "./snippets/zotero-connector-blog-posts/index.html"
 url = "https://rgoswami.me/snippets/zotero-connector-blog-posts/"
 title = "Zotero Connector and Blog Posts"
