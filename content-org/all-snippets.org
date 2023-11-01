@@ -358,6 +358,48 @@ as a stop gap solution.
 
 The code which handles these ~meta~ tags for ~blogPosts~ can be [[https://github.com/zotero/translators/blob/b6eb8802779a538752435f567a6c1461d87cdfac/Embedded%20Metadata.js#L306-L313][seen upstream]].
 Will be fixed by [[https://github.com/zotero/translators/pull/3116][this PR]] soon enough hopefully.
+** DONE Local ~precommit~ dependencies
+CLOSED: [2023-11-01 Wed 04:33]
+Recently a bunch of my pre-commit CI jobs started failing. The easiest way to ensure reliable usage is to have ~local~ runs. Consider:
+#+begin_src yaml
+- repo: https://github.com/pocc/pre-commit-hooks
+  rev: v1.3.5
+  hooks:
+    - id: cppcheck
+      args: ["--error-exitcode=0"]
+#+end_src
+Which leaves one dependent on an external repo, can be rewritten as:
+#+begin_src yaml
+- repo: local
+  hooks:
+    - id: cppcheck
+      name: cppcheck
+      entry: cppcheck
+      language: system
+      types_or: [c++, c]
+      args: ["--error-exitcode=0"]
+#+end_src
+With this local setup, it's necessary to adjust the CI configuration:
+#+begin_src yaml
+name: pre-commit
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v3
+      with:
+        python-version: '3.9'
+    - name: Install Conda environment
+      uses: mamba-org/provision-with-micromamba@main
+    - uses: pre-commit/action@v2.0.3
+      shell: bash -l {0}
+#+end_src
+This ensures the ~pre-commit~ action is executed within the ~conda~ environment.
 ** TODO Useful Repository Management Tools :library:design:
 The way I see it, especially ~fortran~ libraries, are meant to be embedded in
 larger codes. This is just the natural way. So it makes sense to have headers
