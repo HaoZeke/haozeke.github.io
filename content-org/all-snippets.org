@@ -360,7 +360,14 @@ The code which handles these ~meta~ tags for ~blogPosts~ can be [[https://github
 Will be fixed by [[https://github.com/zotero/translators/pull/3116][this PR]] soon enough hopefully.
 ** DONE Local ~precommit~ dependencies
 CLOSED: [2023-11-01 Wed 04:33]
-Recently a bunch of my pre-commit CI jobs started failing. The easiest way to ensure reliable usage is to have ~local~ runs. Consider:
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: local-precommit-dependencies
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
+Recently a bunch of my pre-commit CI jobs started failing due to dependency
+resolution issues. The easiest way to ensure reliable usage is to have locally
+installed tools used. Consider:
 #+begin_src yaml
 - repo: https://github.com/pocc/pre-commit-hooks
   rev: v1.3.5
@@ -368,7 +375,7 @@ Recently a bunch of my pre-commit CI jobs started failing. The easiest way to en
     - id: cppcheck
       args: ["--error-exitcode=0"]
 #+end_src
-Which leaves one dependent on an external repo, can be rewritten as:
+Which leaves one dependent on an external repo. This can be rewritten as:
 #+begin_src yaml
 - repo: local
   hooks:
@@ -379,8 +386,8 @@ Which leaves one dependent on an external repo, can be rewritten as:
       types_or: [c++, c]
       args: ["--error-exitcode=0"]
 #+end_src
-With this local setup, it's necessary to adjust the CI configuration:
-#+begin_src yaml
+With this local setup, it is necessary to adjust the CI configuration:
+#+begin_src yaml :hl_lines 14-17
 name: pre-commit
 on:
   pull_request:
