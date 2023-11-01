@@ -404,7 +404,6 @@ jobs:
     - name: Install Conda environment
       uses: mamba-org/provision-with-micromamba@main
     - uses: pre-commit/action@v2.0.3
-      shell: bash -l {0}
 #+end_src
 This ensures the ~pre-commit~ action is executed within the ~conda~ environment.
 ** TODO Useful Repository Management Tools :library:design:
