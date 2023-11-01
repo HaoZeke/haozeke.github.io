@@ -387,7 +387,7 @@ Which leaves one dependent on an external repo. This can be rewritten as:
       args: ["--error-exitcode=0"]
 #+end_src
 With this local setup, it is necessary to adjust the CI configuration:
-#+begin_src yaml :hl_lines 14-17
+#+begin_src yaml
 name: pre-commit
 on:
   pull_request:
@@ -398,14 +398,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - uses: actions/setup-python@v3
-      with:
-        python-version: '3.9'
     - name: Install Conda environment
       uses: mamba-org/provision-with-micromamba@main
-    - uses: pre-commit/action@v2.0.3
+    - name: Run precommit
+      shell: bash -l {0}
+      run: |
+        pipx run pre-commit run -a
 #+end_src
-This ensures the ~pre-commit~ action is executed within the ~conda~ environment.
+This ensures the ~pre-commit~ action is executed within the ~conda~ environment,
+which is assumed to have ~pipx~ and the dependencies present.
 ** TODO Useful Repository Management Tools :library:design:
 The way I see it, especially ~fortran~ libraries, are meant to be embedded in
 larger codes. This is just the natural way. So it makes sense to have headers
