@@ -14723,7 +14723,9 @@ Passing dynamic arrays of derived types from ~C~, ~Fortran~ and ~Python~
 #+end_quote
 ** Background
 
-Appropos of nothing, we will assume that one is familiar with the rational for wanting to have arrays of record types passed between languages as efficiently as possible.
+Appropos of nothing, we will assume that one is familiar with the rational for
+wanting to have arrays of record types passed between languages as efficiently
+as possible.
 
 We will liberally use features from the [[https://gitlab.com/lfortran/lfortran/uploads/973db2bfcc64cd2a397f823c32718b39/18-007r1.pdf][F2018 draft standard]], but will only
 focus concretely on 1D and 2D numeric data.
@@ -17022,7 +17024,8 @@ scope.
 [fn:creditmelissa] Brought to my attention at work by the always excellent [[https://melissawm.github.io/about-me/][Dr. Melissa Weber Mendonça]].
 [fn:whynotnumpy] So more akin to my doctoral work over at [[https://github.com/TheochemUI][Theochem]] (~potlib~, ~pypotlib~) or [[https://github.com/atomic-solvers][atomic-solvers]] than NumPy / SciPy at the moment.
 [fn:whatwhynosecrets] Security reasons, as noted in the [[https://docs.github.com/en/actions/security-guides/encrypted-secrets#using-encrypted-secrets-in-a-workflow][official documentation]] and this [[https://github.com/orgs/community/discussions/33683][community discussion]]
-* TODO Writing ~R~ Packages :@notes:r:cpp:fortan:bindings:
+* DONE Writing ~R~ Packages :@notes:r:cpp:fortan:bindings:
+CLOSED: [2023-11-10 Fri 18:50]
 :PROPERTIES:
 :EXPORT_FILE_NAME: managing-scanned-books
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
@@ -17031,7 +17034,9 @@ scope.
 Some thoughts on melding ~R~ with lower level languages and package management
 #+end_quote
 ** Background
-I like plotting with ~ggplot2~. It makes more sense to me than the other plotting systems.
+I like plotting with ~ggplot2~. It makes more sense to me than the other
+plotting systems. These notes arose while binding [[https://github.com/HaoZeke/readCon][readCon]] and [[https://github.com/TheochemUI/potlib][potlib]] for
+[[https://github.com/HaoZeke/cuh2vizR][cuh2vizR]]. However, for best practices, my [[https://github.com/ropensci/fastMatMR][fastMatMR]] project should be consulted.
 ** Idiosyncracies
 - I find it odd that ~R~ packages commit so much generated code
   + Can be simplified with a CI bot
@@ -17066,7 +17071,10 @@ usethis::use_readme_rmd()
 #+begin_alert-heading
 *Warning*
 #+end_alert-heading
-CRAN doesn't like fixed dependencies, see [[https://github.com/ropensci-review-tools/pkgcheck/issues/149][the discussion here]], and often for developing packages one might not need ~renv~ though it still makes sense if one has multiple development machines.
+CRAN doesn't like fixed dependencies, see [[https://github.com/ropensci-review-tools/pkgcheck/issues/149][the discussion here]], and often for
+developing packages one might not need ~renv~ though it still makes sense if one
+has multiple development machines. This turned out to be something I regretted,
+though ~pixi~ is still useful.
 #+end_alert
 ** Stylistic decisions
 Always a good idea to lint and style from the get-go, so:
@@ -17222,7 +17230,8 @@ usethis::use_github_action("check-standard") ## Overwrite older
 I was also initially thrown by the requirement of including copies of source
 code. I suspect this might be bypassed by using ~meson~ as I have in ~cuh2vizR~,
 unless CRAN packages are built without internet access. It would make it much
-easier to handle updates if ~meson~ were to handle setting up the dependencies, however, it isn't exactly part of ~R-tools~[fn:yetatleast].
+easier to handle updates if ~meson~ were to handle setting up the dependencies,
+however, it isn't exactly part of ~R-tools~[fn:yetatleast].
 ** Appeasing ~pkgcheck~
 Some thoughts:
 - No ~renv~ in ~.Rprofile~
@@ -17252,7 +17261,28 @@ them cached or precomputed, as detailed in [[https://www.kloppenborg.ca/2021/06/
 references an [[https://ropensci.org/blog/2019/12/08/precompute-vignettes/][older ROpenSci post]]. Vignette images are a whole other beast,
 nicely [[https://www.jumpingrivers.com/blog/knitr-rmarkdown-image-size/][covered here]].
 
+** Conclusions
+These were my rough notes while developing guidelines during the first release
+of [[https://github.com/ropensci/fastMatMR][fastMatMR]]. There were additional changes to my packages, mostly in terms of
+making them more in keeping with the ~R~ community expectations and best
+practices. I went through the ~ROpenSci~ process and eventually also released to
+~CRAN~, but will cover that in a follow-up.
+
 [fn:yetatleast] Yet.
+* TODO ~ROpenSci~ submissions and ~CRAN~
+#+begin_quote
+Where I discuss my experience with the review process and subsequent CRAN release
+#+end_quote
+
+** The Process
+
+The final steps were to
+
+** Appeasing ~CRAN~
+I used the ~devtools~ workflow discussed in the [[https://r-pkgs.org/release.html][R pkgs book chapter]], along with
+extra checks [[https://www.mzes.uni-mannheim.de/socialsciencedatalab/article/r-package/][from this post from Method Bites]] for finalizing the package for
+~CRAN~. Essentially, as eventually
+
 * TODO Reproducible ~R~ environments with ~nix-flakes~
 :PROPERTIES:
 :EXPORT_FILE_NAME: reproducible-r-nix-flakes
