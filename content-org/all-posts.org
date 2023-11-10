@@ -17024,10 +17024,10 @@ scope.
 [fn:creditmelissa] Brought to my attention at work by the always excellent [[https://melissawm.github.io/about-me/][Dr. Melissa Weber Mendonça]].
 [fn:whynotnumpy] So more akin to my doctoral work over at [[https://github.com/TheochemUI][Theochem]] (~potlib~, ~pypotlib~) or [[https://github.com/atomic-solvers][atomic-solvers]] than NumPy / SciPy at the moment.
 [fn:whatwhynosecrets] Security reasons, as noted in the [[https://docs.github.com/en/actions/security-guides/encrypted-secrets#using-encrypted-secrets-in-a-workflow][official documentation]] and this [[https://github.com/orgs/community/discussions/33683][community discussion]]
-* DONE Writing ~R~ Packages :@notes:r:cpp:fortan:bindings:
+* DONE Writing ~R~ Packages :@notes:r:cpp:bindings:packaging:
 CLOSED: [2023-11-10 Fri 18:50]
 :PROPERTIES:
-:EXPORT_FILE_NAME: managing-scanned-books
+:EXPORT_FILE_NAME: writing-r-packages
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :END:
 #+begin_quote
