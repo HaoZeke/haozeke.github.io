@@ -28,20 +28,21 @@ jobs:
         with:
           version: 28.2
 
-      - name: Setup pixi
-        uses: prefix-dev/setup-pixi@v0.3.0
+      - name: Install Conda environment
+        uses: mamba-org/setup-micromamba@v1
         with:
-          pixi-version: v0.5.0
-          # cache: true
+          init-shell: >-
+            bash
+            zsh
+          environment-file: environment.yml
+          cache-environment: true
 
-      - name: Build and Test
-        shell: pixi run bash {0}
-        run: |
-          meson setup bbdir -Dwith_tests=True
+      - name: Install Dart Sass Embedded
+        run: sudo snap install dart-sass-embedded
 
       # Linux and macOS
       - name: Install dependencies and build
-        shell: pixi run bash {0}
+        shell: bash -el {0}
         run: |
           npm install
           # gem install bundler:2.2.20
