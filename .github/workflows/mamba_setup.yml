@@ -2,6 +2,9 @@ name: Build site
 on:
   push:
     branches: [src]
+  pull_request:
+    branches:
+      - src
   schedule:
     - cron: "0 0 */1 * *"
 
@@ -17,7 +20,7 @@ jobs:
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
         with:
-          hugo-version: '0.112.3'
+          hugo-version: '0.120.3'
           extended: true
 
       - name: Setup Emacs
