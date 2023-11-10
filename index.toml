@@ -1,8 +1,8 @@
 # We use the generated html to prevent issues involving markdown frontmatter
 
 [[input.files]]
-path = "./posts/managing-scanned-books/index.html"
-url = "https://rgoswami.me/posts/managing-scanned-books/"
+path = "./posts/writing-r-packages/index.html"
+url = "https://rgoswami.me/posts/writing-r-packages/"
 title = "Writing R Packages"
 
 [[input.files]]
