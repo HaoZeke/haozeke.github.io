@@ -563,3 +563,4 @@ Temporary Items
 presentations/**/*.html
 /presentations/**/*.pdf
 *flycheck*
+/.pixi/
