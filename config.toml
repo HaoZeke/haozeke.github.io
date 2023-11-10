@@ -74,8 +74,12 @@ mediaType = "application/toml"
     [markup.goldmark.renderer]
       unsafe = true
 
+# TODO: Use in theme
 [params.author]
 name = "Rohit Goswami (HaoZeke)"
+
+[author]
+  name = "Rohit Goswami (HaoZeke)"
 
 [params]
   dateform        = "Jan 2, 2006"
