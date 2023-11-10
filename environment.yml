@@ -11,6 +11,5 @@ dependencies:
   - pandoc
   - nodejs
   - ruby
-  - dart-sass
   - git
   - curl
