@@ -46,9 +46,6 @@ mediaType = "application/toml"
   search   = "search"
   series   = "series"
 
-[author]
-  name = "Rohit Goswami (HaoZeke)"
-
 [markup]
   [markup.highlight]
     codeFences = true
@@ -76,6 +73,9 @@ mediaType = "application/toml"
       typographer = true
     [markup.goldmark.renderer]
       unsafe = true
+
+[params.author]
+name = "Rohit Goswami (HaoZeke)"
 
 [params]
   dateform        = "Jan 2, 2006"
