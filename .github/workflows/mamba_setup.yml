@@ -49,7 +49,7 @@ jobs:
           bundler exec rake hugoBuild
 
       - name: Deploy
-        if: "!contains(github.event.head_commit.message, 'ImgBot')"
+        if: github.event_name != 'pull_request' && !contains(github.event.head_commit.message, 'ImgBot')
         uses: peaceiris/actions-gh-pages@v3
         with:
           deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
