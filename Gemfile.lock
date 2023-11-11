@@ -15,7 +15,7 @@ GEM
     image_size (3.3.0)
     in_threads (1.6.0)
     progress (3.6.0)
-    rake (13.0.3)
+    rake (13.1.0)
 
 PLATFORMS
   ruby
@@ -23,7 +23,7 @@ PLATFORMS
 DEPENDENCIES
   image_optim
   image_optim_pack
-  rake (= 13.0.3)
+  rake (= 13.1.0)
 
 BUNDLED WITH
    2.4.22
