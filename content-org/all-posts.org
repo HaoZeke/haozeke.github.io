@@ -17283,6 +17283,11 @@ I used the ~devtools~ workflow discussed in the [[https://r-pkgs.org/release.htm
 extra checks [[https://www.mzes.uni-mannheim.de/socialsciencedatalab/article/r-package/][from this post from Method Bites]] for finalizing the package for
 ~CRAN~. Essentially, as eventually
 
+* TODO Non-contigous arrays and F2PY
+Recently it was noted on the [[https://fortran-lang.discourse.group/t/the-difficulties-of-using-fortran-in-scipy/6753/41?u=rgoswami][Fortran-Lang discourse]] that passing non-contiguous
+arrays from NumPy to Fortran is currently slow. However, via careful handling of
+~CFI_extent~, discontinous arrays *copy-free* traversal is indeed possible.
+
 * TODO Reproducible ~R~ environments with ~nix-flakes~
 :PROPERTIES:
 :EXPORT_FILE_NAME: reproducible-r-nix-flakes
