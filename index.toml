@@ -1,6 +1,11 @@
 # We use the generated html to prevent issues involving markdown frontmatter
 
 [[input.files]]
+path = "./posts/types-fortran-python-opaque/index.html"
+url = "https://rgoswami.me/posts/types-fortran-python-opaque/"
+title = "Types from Fortran to Python via Opaque Pointers"
+
+[[input.files]]
 path = "./posts/writing-r-packages/index.html"
 url = "https://rgoswami.me/posts/writing-r-packages/"
 title = "Writing R Packages"
