@@ -407,6 +407,59 @@ jobs:
 #+end_src
 This ensures the ~pre-commit~ action is executed within the ~conda~ environment,
 which is assumed to have ~pipx~ and the dependencies present.
+** DONE Off the shelf OCR and Deep Learning
+CLOSED: [2023-11-15 Wed 19:06]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: oshelf-ocr-dl
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
+In general, ~detexify~ ([[https://detexify.kirelabs.org/classify.html][here]]) and [[https://rgoswami.me/posts/managing-scanned-books/][my ScanTools workflow]] is great. However,
+sometimes more can be done.
+#+begin_src bash
+micromamba create -n textocr
+micromamba activate textocr
+micromamba install torchvision -c pytorch
+pip install pix2tex[gui]
+pip install python-doctr
+#+end_src
+
+The ~TeX~ tool ([[https://lukas-blecher.github.io/LaTeX-OCR][LaTeX OCR]]) works great even via the terminal. The ~doctr~
+library is a bit more finicky, but can be a decent way to extract plain text when regular OCR tools fail (e.g. ~ocrmypdf~).
+#+begin_src python
+import argparse
+from pathlib import Path
+from doctr.io import DocumentFile
+from doctr.models import ocr_predictor
+
+
+def process_pdf(pdf_path):
+    model = ocr_predictor(
+        det_arch="db_resnet50", reco_arch="crnn_vgg16_bn", pretrained=True
+    )
+    doc = DocumentFile.from_pdf(pdf_path)
+    result = model(doc)
+    return result.render()
+
+
+def save_to_text(input_path, output_text):
+    output_file = Path(input_path).with_suffix(".txt")
+    output_file.write_text(output_text, encoding="utf-8")
+
+
+def main():
+    parser = argparse.ArgumentParser(description="OCR processing of a PDF file")
+    parser.add_argument("pdf_file", help="Path to the PDF file to be processed")
+    args = parser.parse_args()
+    ocr_result = process_pdf(args.pdf_file)
+    save_to_text(args.pdf_file, ocr_result)
+
+
+if __name__ == "__main__":
+    main()
+#+end_src
+Which is alright, called via ~python -c doctr_runner.py blah.pdf~.
+
 ** TODO Useful Repository Management Tools :library:design:
 The way I see it, especially ~fortran~ libraries, are meant to be embedded in
 larger codes. This is just the natural way. So it makes sense to have headers
