@@ -422,6 +422,7 @@ micromamba activate textocr
 micromamba install torchvision -c pytorch
 pip install pix2tex[gui]
 pip install python-doctr
+pip install nougat-ocr
 #+end_src
 
 The ~TeX~ tool ([[https://lukas-blecher.github.io/LaTeX-OCR][LaTeX OCR]]) works great even via the terminal. The ~doctr~
@@ -460,6 +461,12 @@ if __name__ == "__main__":
 #+end_src
 Which is alright, called via ~python -c doctr_runner.py blah.pdf~.
 
+Or [[https://github.com/facebookresearch/nougat][Meta's nougat]], which is slower but generally better formatted:
+#+begin_src bash
+nougat blah.pdf -o output_dir
+#+end_src
+
+As of ~15-11-2023~, both these options have [[https://github.com/facebookresearch/nougat/issues/162][a known warning]] about a memory leak.
 ** TODO Useful Repository Management Tools :library:design:
 The way I see it, especially ~fortran~ libraries, are meant to be embedded in
 larger codes. This is just the natural way. So it makes sense to have headers
