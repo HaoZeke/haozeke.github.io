@@ -17559,7 +17559,7 @@ probably to be expected.
 ** Fortran Hooks
 * TODO Ruminations on Github Actions for dependent projects :@notes:ramblings:ci:gha:
 :PROPERTIES:
-:EXPORT_FILE_NAME: managing-scanned-books
+:EXPORT_FILE_NAME: ruminations-gha-deps
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :END:
 #+begin_quote
