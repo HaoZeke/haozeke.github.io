@@ -467,6 +467,38 @@ nougat blah.pdf -o output_dir
 #+end_src
 
 As of ~15-11-2023~, both these options have [[https://github.com/facebookresearch/nougat/issues/162][a known warning]] about a memory leak.
+** DONE Faster manual tests with ~popd~ :devenv:cmdline:
+CLOSED: [2023-11-19 Sun 23:34]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: manual-tests-popd-spin
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
+Both NumPy and SciPy use ~spin~ as a frontend to call ~meson~ and this can be
+used to setup a shell. The good thing is that invoking ~exit~ will return to the
+directory from which ~spin~ was run. To toggle between directories (e.g. a
+folder with a bug / issue reprex) and the rebuild quickly ~popd~ is  useful.
+#+begin_src bash
+# Generate reprex for bug
+cd ~/Git/Github/BuggyNP/gh2322/
+vim buggy.f90
+python whatever.py
+# whatever to reproduce the bug
+cd ~/Git/Github/NumPy
+# Make changes, rebuild
+spin run $SHELL
+popd
+# returned to the gh2322 folder, test
+python whatever.py
+exit
+# returns to NumPy root
+vim README.md
+spin run $SHELL
+popd
+# and so on...
+#+end_src
+Naturally these tools, and ~popd~ is more general and can be used for a lot more
+but this is pretty nifty too.
 ** TODO Useful Repository Management Tools :library:design:
 The way I see it, especially ~fortran~ libraries, are meant to be embedded in
 larger codes. This is just the natural way. So it makes sense to have headers
