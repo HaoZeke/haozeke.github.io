@@ -1,6 +1,11 @@
 # We use the generated html to prevent issues involving markdown frontmatter
 
 [[input.files]]
+path = "./snippets/manual-tests-popd-spin/index.html"
+url = "https://rgoswami.me/snippets/manual-tests-popd-spin/"
+title = "Faster manual tests with popd"
+
+[[input.files]]
 path = "./snippets/oshelf-ocr-dl/index.html"
 url = "https://rgoswami.me/snippets/oshelf-ocr-dl/"
 title = "Off the shelf OCR and Deep Learning"
