@@ -337,7 +337,7 @@ test_deps += dependency(
 )
 #+end_src
 The rest of the tests can be setup via auto-discovery as [[Auto-discovering ~meson~ tests][discussed before]].
-** DONE Zotero Connector and Blog Posts
+** DONE Zotero Connector and Blog Posts :zotero:references:
 CLOSED: [2023-08-23 Wed 00:17]
 :PROPERTIES:
 :EXPORT_HUGO_BUNDLE: zotero-connector-blog-posts
@@ -358,7 +358,7 @@ as a stop gap solution.
 
 The code which handles these ~meta~ tags for ~blogPosts~ can be [[https://github.com/zotero/translators/blob/b6eb8802779a538752435f567a6c1461d87cdfac/Embedded%20Metadata.js#L306-L313][seen upstream]].
 Will be fixed by [[https://github.com/zotero/translators/pull/3116][this PR]] soon enough hopefully.
-** DONE Local ~precommit~ dependencies
+** DONE Local ~precommit~ dependencies :build:packaging:precommit:
 CLOSED: [2023-11-01 Wed 04:33]
 :PROPERTIES:
 :EXPORT_HUGO_BUNDLE: local-precommit-dependencies
@@ -407,7 +407,7 @@ jobs:
 #+end_src
 This ensures the ~pre-commit~ action is executed within the ~conda~ environment,
 which is assumed to have ~pipx~ and the dependencies present.
-** DONE Off the shelf OCR and Deep Learning
+** DONE Off the shelf OCR and Deep Learning :python:ocr:tex:
 CLOSED: [2023-11-15 Wed 19:06]
 :PROPERTIES:
 :EXPORT_HUGO_BUNDLE: oshelf-ocr-dl
