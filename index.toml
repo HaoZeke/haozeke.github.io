@@ -51,6 +51,16 @@ url = "https://rgoswami.me/posts/dart-sass-hugo-themes/"
 title = "Dart Sass and Hugo Themes"
 
 [[input.files]]
+path = "./posts/laptop-setup-btrfs-notes/index.html"
+url = "https://rgoswami.me/posts/laptop-setup-btrfs-notes/"
+title = "Laptop setup notes btrfs subvolumes"
+
+[[input.files]]
+path = "./posts/customizing-archlinux-im/index.html"
+url = "https://rgoswami.me/posts/customizing-archlinux-im/"
+title = "Customizing ArchLinux Installation Media"
+
+[[input.files]]
 path = "./posts/handling-legacy-fortran-code/index.html"
 url = "https://rgoswami.me/posts/handling-legacy-fortran-code/"
 title = "Handling Legacy Fortran Code"
