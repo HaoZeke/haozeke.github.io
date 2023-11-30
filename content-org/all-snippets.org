@@ -499,6 +499,8 @@ popd
 #+end_src
 Naturally these tools, and ~popd~ is more general and can be used for a lot more
 but this is pretty nifty too.
+** TODO Python ~precommit~ hooks
+I use [[Local ~precommit~ dependencies][local dependencies]], typically I have:
 ** TODO Useful Repository Management Tools :library:design:
 The way I see it, especially ~fortran~ libraries, are meant to be embedded in
 larger codes. This is just the natural way. So it makes sense to have headers

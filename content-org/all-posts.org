@@ -18134,6 +18134,68 @@ option for (approximately) reproducible [fn:whyapprox] personal projects.
 [fn:howtoflake] Some introductory options
 [fn:wherelse] Much of the Scientific Python ecosystem relies on ~conda~ for CI services too
 [fn:whyapprox] Some members of the [[https://reproducible.nixos.org/][community]] [[https://github.com/NorfairKing/nix-does-not-guarantee-reproducibility][disagree]] with the assertion of reproducible ~nix~
+* TODO Pure ~python~ projects with ~pdm~ :@notes:python:packaging:
+:PROPERTIES:
+:EXPORT_FILE_NAME: pure-python-proj-hatch
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Python packaging")
+:END:
+#+begin_quote
+Ruminations on packaging and distributing *pure* ~python~ projects.
+#+end_quote
+** Background
+There are too many competing approaches to packaging in the ~python~ ecosystem.
+Sometimes, typically for simple parse and plot packages, it makes sense to
+remain relatively pure[fn:whyrela]. This is an opinionated starter guide geared
+towards ~pdm~ and ~hatch~ usage.
+
+When specifics are required, they will be in the context of the [[https://github.com/HaoZeke/chemparseplot][chemparseplot package]].
+** Initialization
+Typically we still need a way to lock down the ~python~ version. For this I
+generally end up with ~pixi~ now. Even though we'd like to test a range of
+versions later, as a baseline it makes sense to start with a reasonably recent
+version[fn:but312].
+
+#+begin_src bash
+pixi init -c conda-forge
+pixi add python>=3.10 pip hatch pdm
+pixi shell
+#+end_src
+
+That's all we need from ~pixi~. Lets start with the rest of the setup.
+
+#+begin_src bash
+hatch new chemparseplot
+cd chemparseplot
+mv * ../
+rm -rf chemparseplot
+#+end_src
+
+Personally I'm not super fond of the ~src~ layout, but I'd rather not quibble
+with [[https://hatch.pypa.io/latest/config/project-templates/#src-layout][the defaults]]. That being said, it is a better idea to move away from the
+default versioning method and use [[https://github.com/ofek/hatch-vcs][hatch-vcs]] instead. Also it is important to setup the ~include~ keys:
+
+#+begin_src toml
+[tool.hatch.build]
+include = [
+  "chemparseplot/*.py",
+  "/tests",
+]
+#+end_src
+
+At this point I ended up migrating from ~hatch~ to ~pdm~ though with ~pdm~ as
+the mangement system (mainly since ~hatch~ doesn't have easy dependency
+management). For example:
+
+#+begin_src bash
+pdm add -dG test pytest "coverage[toml]"
+#+end_src
+
+This was worth the switch for me.
+
+[fn:whyrela] Relative here in the sense that dependencies like ~numpy~ and
+friends are always going to bring in compiled extensions...
+[fn:but312] *3.12* with compiled extensions is a sticky choice because of the
+~distutils~ deprecation, but we're relatively pure so it should be fine..
 * DONE Managing cloud based ~calibre~ libraries :@personal:workflow:tools:ramblings:books:
 CLOSED: [2023-08-19 Sat 13:33]
 :PROPERTIES:
@@ -18306,6 +18368,280 @@ zenity --version
 3.44.2
 #+end_src
 
+* TODO A gentle introduction to high throughput calculations :@notes:hpc:ramblings:chem:
+:PROPERTIES:
+:EXPORT_FILE_NAME: intro-highthrough-calc
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+begin_quote
+HPC and MongoDB for fault tolerant calculations
+#+end_quote
+** Background
+*** What
+[[https://materialsproject.github.io/fireworks/][Fireworks]], from the Materials Project[fn:whatelse] is the main setup target for
+this post. To be precise, setting up a [[https://www.mongodb.com/][MongoDB instance]] for running [[https://materialsproject.github.io/jobflow/tutorials/8-fireworks.html][Jobflow]] in
+a couple of ways to use HPC resources in the best possible way while incurring
+the least possible sysadmin ire.
+*** Why
+For most of my doctoral research, I don't run large systems, or even many
+systems. Method development rarely requires such things (until production). For
+when I have to, I've found various ways to circumvent[fn:wailordplug] the
+requirement of actually writing bash scripts by hand for hundreds of systems
+with soul crushingly similar, but completely arbitrarily presented parameters in
+"free-form" random input data files[fn:seriously] which are the /lingua franca/
+of computational chemistry codes[fn:notallcodes].
+
+Concurrently, computational high-throughput "materials science" has become a
+thing, with the admirable goal of "running things" until suitable properties are
+found[fn:isthatall]. This pragmatic approach led to more effective compute
+intensive approach, which is none-the-less useful to have "data" to discuss
+"chemistry".
+*** TL;DR
+This is a post about setting up workflow management systems in a traditional HPC
+environment.
+** Baseline
+The plan is to start out locally with ~jobflow~[fn:basejobflow], then configure
+a MongoDB instance (still local), the finally export to an HPC stack. We will
+use a chemical system as a reference job, but the workflow could be adapted to
+any domain.
+*** System setup
+**** Computational
+This will vary a bit from stage to stage. For starters, a ~pixi~ environment to
+handle [[https://prefix.dev/docs/pixi/overview][conda dependencies]] will suffice.
+#+begin_src bash
+mkdir -p $HOME/Git/Github/jflow_mongodb && cd "$_"
+pixi init -c conda-forge
+pixi add mongodb mongo-tools
+#+end_src
+Weirdly ~mongodb~ and ~mongo-tools~ don't include ~mongosh~, the shell client. So:
+#+begin_src bash
+pixi add nodejs
+npx mongosh
+#+end_src
+**** Chemical
+The job which will be used as a reference is a dirt simple scan of energies with
+respect to the distance between atoms of a system consisting of a single H2
+molecule fig:kolos. Some other details:
+- ORCA will be used as the calculator
+  + To change various potentials / basis sets etc.
+- It shall be run as an executable
+
+The last point might be a bit off, since we created the initial configuration
+using ~ASE~, and ~jobflow~ is a Python library, when the stars align and the
+stack is in Python it is often best to use it throughout. Given the distribution
+of quantum chemistry codes though[fn:howdist], and in order to be more general,
+we will work with executables.
+
+#+name: fig:kolos
+#+caption: Sample scan over H2 bond for various potentials generated with ~wailord~
+[[file:images/throughput_chem/plotH2B1plt.png]]
+
+To get this setup, assuming ORCA binaries are available on ~$PATH~ or its equivalents:
+#+begin_src bash
+pixi add ase ipython pip
+#+end_src
+
+We can construct general molecules in ~ase~ pretty easily.
+
+#+begin_src python
+from ase.build import molecule
+h2 = molecule('H2')
+h2.write('h2_base.xyz', comment="\n")
+#+end_src
+
+Or in one shot:
+
+#+begin_src bash
+python -c "from ase.build import molecule; h2 = molecule('H2'); h2.write('h2_base.xyz', comment='\n')"
+#+end_src
+
+Note that the metadata added by `ase` isn't compatible with ORCA, hence the
+newline comment. Now we just need an ORCA input file:
+#+begin_src yaml
+!OPT UHF def2-SVP
+%geom Scan
+ # B <atmid1> <atmid2> = init, final, npoints
+ # Converted from Angstrom to Bohr
+ B 0 1 = 7.5589039543, 0.2116708996, 33
+ end
+end
+,*xyzfile 0 1 h2_base.xyz
+#+end_src
+
+This slightly confusing notation is because ORCA will only scan in a geometry
+optimization problem, and one will need to create and run mind-numbingly similar
+files for each energy function or basis set.
+
+Running this is fairly simple:
+#+begin_src bash
+export PATH=$PATH:/blah/orca_5_0_4_linux_x86-64_openmpi411/
+mkdir uhf
+cp orca.inp h2_base.xyz uhf
+cd uhf
+($(which orca) orca.inp 2>&1) | tee scan_uhf
+#+end_src
+
+Where we note that we redirect both stderr and stdout to a file and
+simultaneously to screen, because:
+- ~ORCA~ writes a lot of files, *~78* in this small example
+  + The most important information including number of
+  iterations, times taken, scan results, etc are only written to ~stdout~
+- The ~which orca~ thing is for parallel runs, but not a bad best practice
+- ~ORCA~ really writes a lot, so it makes sense to make a folder for this
+
+Also, since this is plain text, it makes sense to compress it with ~gzip~, since
+that is also natively supported by Python.
+
+#+begin_src bash
+gzip -9 -c scan_uhf > scanuhf.gz
+#+end_src
+
+This is always a good idea.
+
+#+begin_src bash
+du ../uhf/scan_uhf scan_uhf.gz
+1396	../uhf/scan_uhf
+108	scan_uhf.gz
+#+end_src
+
+Further discussion of the intricacies of working with ORCA would take us again
+too far afield, but it is worth noting a tiny script to parse the output and
+eventually generate the plot[fn:alsowailord].
+
+#+begin_src python
+
+#+end_src
+
+That's quite a lot of *ugly* scripting before we can even get one set of data
+points. In practice, not all codes will even support scans, in which case we'd
+need some machinery (preferably not a grad student) to run a calculation for
+each data point, keep track of them, and then generate the plot.
+
+***** ~jobflow~ setup
+Some light refactoring of our existing setup is required to cast the problem
+into a ~jobflow~ compatible format.
+# **** Chemical alternate via ~wailord~
+# The example being considered, i.e. using ~ORCA~ for a host of energy calculations has an explicit solution already by
+# using [[https://wailord.xyz][wailord]], which will setup the entire set of runs, and parse their outputs
+# neatly into a ~pandas~ dataframe.
+
+# #+begin_src bash
+# # say, in ~/Git/Github
+# git clone git@github.com:HaoZeke/wailord
+# cd wailord
+# git checkout nextRel
+# pixi run pip install .
+# #+end_src
+
+# Now we can
+
+# This is clearly the best option for the problem at hand. However, for workflows
+# not covered by ~wailord~ e.g. other HPC codes, we will continue to explore Fireworks.
+** MongoDB Instances
+*** Local
+For starters we will just setup a basic instance.
+#+begin_src bash
+pixi shell
+mkdir -p $(pwd)/data/database
+mongod --dbpath $(pwd)/data/database
+#+end_src
+Now in another shell:
+#+begin_src bash
+npx mongosh
+#+end_src
+
+Annoyingly there's a warning raised about the Nodejs version, but that doesn't
+matter for now. We will run through some basic steps:
+#+begin_src js
+❯ npx mongosh
+Current Mongosh Log ID:	6564daef4aec767d07c9a9f5
+Connecting to:		mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.1.0
+Using MongoDB:		6.0.2
+Using Mongosh:		2.1.0
+test> db
+test
+#+end_src
+Switching databases:
+#+begin_src js
+test> use science
+switched to db science
+science> db.chem
+science.chem
+#+end_src
+Adding entries (and [[https://www.mongodbtutorial.org/mongodb-crud/mongodb-deletemany/][bulk insertions]]):
+#+begin_src js
+science> topic = {"title": "Physical chemistry", "power_level": 3000}
+{ title: 'Physical chemistry', power_level: 3000 }
+science> db.chem.insertOne(topic)
+{
+  acknowledged: true,
+  insertedId: ObjectId('6564db4c4aec767d07c9a9f6')
+}
+#+end_src
+Finding things:
+#+begin_src js
+science> db.chem.find().pretty()
+[
+  {
+    _id: ObjectId('6564db4c4aec767d07c9a9f6'),
+    title: 'Physical chemistry',
+    power_level: 3000
+  }
+]
+#+end_src
+Along with deletion (with [[https://www.mongodbtutorial.org/mongodb-crud/mongodb-deletemany/][a filter]]):
+#+begin_src js
+db.chem.deleteMany({ "title": /chemistry/i })
+#+end_src
+The key concept here is that the entries can be queried, and they pick up their
+own ~_id~ variables. This alone will be most of the benefit we need from a
+workflow management system.
+*** Hosted
+**** MongoDB Atlas
+*** HPC
+** Conclusions
+The MongoDB setup, and general workflow management idea works great. It will
+doubtless usher in a revolution of reduced calculations, if only more people
+could be compelled to use it[fn:perhapscoursework]. I would recommend it
+wholeheartedly as a user, sysadmin, reviewer and under all my other academic
+hats. It seems also, that hosted MongoDB instances are good enough in terms of
+bandwidth and other configuration settings for the HPC calculations Firworks is
+typically used for[fn:howcomemongofree]. Will cover scaling up in another post.
+*** Opinions
+With this setup, the actual work can now continue uninterupted by stray qualms
+like "but what if you turn off parameter X in system Y because domain
+knowledge". Just run them all, and let the data speak for itself[fn:butchem].
+Without covering the ethics of "science per watt" as demanded by most HPC
+systems [fn:wtfsciencepwatt], it is useful to be able to generate reproducible
+runs for production systems. Far better than hand-rolling them. Just, be mindful
+of an oft forgotten fact from the preface of
+@schaeferQuantumChemistryDevelopment2004:
+
+#+begin_quote
+Running a few molecular orbital calculations doesn't make one an electronic
+structure theorist any more than sleeping in one's garage makes him/her an
+automobile.
+#+end_quote
+
+Naturally this is applicable across all domains.
+
+[fn:notallcodes] Most of them anyway, e.g. [[https://sites.google.com/site/orcainputlibrary/general-input?authuser=0][ORCA]], [[https://www.vasp.at/wiki/index.php/Category:Input_files][VASP]], [[https://manual.q-chem.com/5.0/sect0010.html][QChem]], [[https://www.scm.com/doc/AMS/Input_Output.html][AMS]].. Better designs like [[https://www.bigdft.org/][BigDFT]]'s ~yaml~ inputs or even [[https://theory.cm.utexas.edu/code/eon/docs/_build/html/documentation.html][EON's INI]] are rare.
+[fn:wailordplug] e.g. [[https://wailord.xyz/][Wailord]] ([[https://conference.scipy.org/proceedings/scipy2022/pdfs/rohit_goswami_wailord.pdf][SciPyCon22 paper]]) for ORCA.
+[fn:seriously] I could go on about this sadsack state of affairs for hours but that would detract from the point, there are also some efforts to fix this, e.g. ~wailord~ or ~cclib~ or I guess ~ase~ (different goals though).
+[fn:isthatall] Yes that's very reductive.
+[fn:whatelse] Also home to more quantum chem scoped job management systems like [[https://www.aiida.net/][AiiDA]].
+[fn:basejobflow] Familiarity with ~jobflow~ [[https://materialsproject.github.io/jobflow/tutorials.html][tutorials]] is recommended, especially the [[https://materialsproject.github.io/jobflow/tutorials/1-quickstart.html][quickstart]].
+[fn:perhapscoursework] I suggest homework. Mandatory homework. Across the whole range of academics.
+[fn:howcomemongofree] It is perhaps not surprising that the MongoDB free tiers geared for actual database operations are more than enough to cover these runs.
+[fn:wtfsciencepwatt] A term I was introduced to at a [[https://www.lumi-supercomputer.eu/][LUMI workshop]].
+[fn:howdist] Binaries. Large, blobby, statically linked binaries.
+[fn:butchem] Of course one should ideally understand exactly what's going on and tune parameters for each system...
+[fn:alsowailord] As noted, many of these problems are alleviated by ~wailord~
+* TODO VPS Baselines and MongoDB
+** Background
+The key reason to decouple a MongoDB instance from existing HPC architecture is
+to be more robust to changes in clusters. Also, it makes it easier to run on
+multiple HPC centers without repeating the setup steps.
 * Important Note :ignoreheading:ignore:
 # ALWAYS at the bottom, to ensure fresh builds do not break
 * DONE About
