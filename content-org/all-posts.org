@@ -10321,7 +10321,7 @@ niv add emacs-mirror/emacs -b feature/native-comp-macos-fixes -n emacs-nativecom
 niv add nix-community/emacs-overlay -b master -n emacs-overlay # upstream builder
 #+end_src
 
-* DONE GSoC21 W1: LFortran Kickoff :@notes:gsoc21:fortran:rambling:
+* DONE GSoC21 W1: LFortran Kickoff :@notes:gsoc21:fortran:ramblings:
 CLOSED: [2021-06-12 Sat 00:57]
 :PROPERTIES:
 :EXPORT_FILE_NAME: gsoc21-w1
@@ -10469,7 +10469,7 @@ terminology which will be used for the remainder of the project.
 [fn:whatsnap] *Not* the Spectral Neighbor Analysis Potential implemented in LAMMPS
 [fn:whatastasr] Should also add a post on standard terminology which will come up a lot
 
-* DONE GSoC21 W2: LFortran Unraveling :@notes:gsoc21:fortran:rambling:
+* DONE GSoC21 W2: LFortran Unraveling :@notes:gsoc21:fortran:ramblings:
 CLOSED: [2021-06-18 Fri 18:59]
 :PROPERTIES:
 :EXPORT_FILE_NAME: gsoc21-w2
@@ -10621,7 +10621,7 @@ makes compiler design the art form as described in @cooperEngineeringCompiler201
 [fn:whatlego] I am convinced the concept behind IKEA and its Icelandic counterpart Rumfatalagerinn is that some people enjoy assembling their furniture the same way kids enjoy LEGO
 [fn:whatexplosive] There were some interesting allegations of the standards committee being far too conservative, though many of the concerns reflect on the dearth of community efforts compared to other languages; Fortran is not after-all coupled to a compiler unlike modern languages like Rust and Julia
 [fn:silently] Owing to the lack of a stable internet I was reduced to text-only participation
-* DONE GSoC21 W3: Kind, Characters, and Standards :@notes:gsoc21:fortran:rambling:
+* DONE GSoC21 W3: Kind, Characters, and Standards :@notes:gsoc21:fortran:ramblings:
 CLOSED: [2021-06-26 Sat 00:28]
 :PROPERTIES:
 :EXPORT_FILE_NAME: gsoc21-w3
@@ -10749,7 +10749,7 @@ The primary goal for next week shall remain implementing assumed length characte
 
 [fn:whatpoll] For example, this [[https://fortran-lang.discourse.group/t/poll-fortran-202x-conditional-expressions-syntax/1425/31][poll on conditional expressions]]
 [fn:forumhist] The community discourse has [[https://fortran-lang.discourse.group/t/intel-releases-oneapi-toolkit-free-fortran-2018/471/14?u=rgoswami][historical records]] too
-* DONE GSoC21 W4: LFortran, Backends and Bugs :@notes:gsoc21:fortran:rambling:
+* DONE GSoC21 W4: LFortran, Backends and Bugs :@notes:gsoc21:fortran:ramblings:
 CLOSED: [2021-07-02 Fri 23:26]
 :PROPERTIES:
 :EXPORT_FILE_NAME: gsoc21-w4
@@ -10951,7 +10951,7 @@ The differences between the module versions are not major:
 More importantly however, the module versions correspond to being compressed and this needs to be eventually handled as well.
 ** Conclusions
 For the next week, I shall be finalizing work on the allocatable character lengths and moving on to some more semantics and intrinsics. Naturally as these are completed there will be more progress down the ~dftatom~ module listing. The main takeaway from this week for me was the retargeting of efforts. I do wish to continue struggling with the backend simply because I feel it is exciting and fun, but I shall endeavor to be more productive by applying a breadth first approach by contributing more concrete code every week. I have high hopes for being able to power through the intended project goals by the end of the program, and can always clean up / document afterwards.
-* DONE GSoC21 W5: LFortran Design Details and ~minidftatom~  :@notes:gsoc21:fortran:rambling:
+* DONE GSoC21 W5: LFortran Design Details and ~minidftatom~  :@notes:gsoc21:fortran:ramblings:
 CLOSED: [2021-07-09 Fri 19:23]
 :PROPERTIES:
 :EXPORT_FILE_NAME: gsoc21-w5
@@ -11048,7 +11048,7 @@ file:images/minidftatom_depgraph.svg
 I found a new favorite command, which I should have remembered while it was being implemented (by Thirumalai Shaktivel in [[https://gitlab.com/lfortran/lfortran/-/merge_requests/765][765]]); namely the  ~--indent~ option which makes for a much more readable ASR output. Apart from that ~git diff --color-words~ works well enough as well.
 ** Conclusions
 The main work plan outcomes for the week were the [[https://gitlab.com/lfortran/lfortran/-/issues/420][new design specifications for the compile time evaluation of expressions]]. It is always an enriching experience to work with Ondrej directly (even over the ether) and this week felt more productive than most. I hope to keep the same momentum going. This will allow faster progress on the main issue of getting ASR generated for ~minidftatom~.
-* DONE GSoC21 W6: LFortran ASR and Values :@notes:gsoc21:fortran:rambling:
+* DONE GSoC21 W6: LFortran ASR and Values :@notes:gsoc21:fortran:ramblings:
 CLOSED: [2021-07-16 Fri 17:19]
 :PROPERTIES:
 :EXPORT_FILE_NAME: gsoc21-w6
@@ -11080,7 +11080,7 @@ Essentially, as far as the code base goes, we have a class based hierarchy, whic
 Code duplication is a non-squinter though, since only ~integer~ and ~real~ have similar implementations, and Ondrej pointed out that over-engineering a design simply because two ~if-esle~ branches are similar is effectively yak shaving.
 ** Conclusions
 ~real~ was initially implemented as a string, which has now been replaced by Ondrej in [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1066][1066]], making an extension to it trivial. I expect to focus on getting started on ~functions~ which will have the added benefit of easily adding functionality to the backend (since the ~LLVM~ backend can choose to simply use ~value~). I intend to refocus my efforts towards getting ~minidftatom~ to work as well.
-* DONE GSoC21 W7: LFortran Workflow Basics :@notes:gsoc21:fortran:rambling:
+* DONE GSoC21 W7: LFortran Workflow Basics :@notes:gsoc21:fortran:ramblings:
 CLOSED: [2021-07-23 Fri 22:33]
 :PROPERTIES:
 :EXPORT_FILE_NAME: gsoc21-w7
@@ -11131,7 +11131,7 @@ Ondrej mentioned in the past that he does not use a debugger, and in our meeting
 - Inside a sub-module, we need to shift the scope, which was done for the ~BodyVisitor~ but not for the ~SymbolTableVisitor~
 ** Conclusions
 This week was possibly more productive in terms of code than any before. For that, I mostly have to thank that sudden flash of *understanding* which comes from working on a code-base for weeks (with a fantastic guide). Next week should see the rest of ~expr_value~ be completed, and I intend to try my hand at the LLVM backend to make it use ~expr_value~ when possible. Naturally, this will be done in tandem with the ~minidftatom~ issues, after-all it is back to basics in the sense that progress resumed on working through the main ~minidftatom~ roadmap as well.
-* DONE GSoC21 W8: LFortran Refactors, and Compile Time Evaluations :@notes:gsoc21:fortran:rambling:
+* DONE GSoC21 W8: LFortran Refactors, and Compile Time Evaluations :@notes:gsoc21:fortran:ramblings:
 CLOSED: [2021-07-30 Fri 17:11]
 :PROPERTIES:
 :EXPORT_FILE_NAME: gsoc21-w8
@@ -11220,7 +11220,7 @@ Therefore, ~tiny~ must be ~FLT_MIN~ or ~DBL_MIN~. I also took a small detour int
 #+end_src
 ** Conclusions
 My thoughts have been turning towards scalability for a long time now. Good design before it is necessary is a premature optimization, but I think I would like to formulate a cleaner way of dealing with the intrinsic functions which can be reduced to values. The ~ISO_C_BINDING~ has been in my thoughts for a while now. Without it, runtime compilation of the ASR remains intractable. I expect the next week to continue along the same lines, populating value for all the intrinsic functions called by ~minidftatom~. It would be best to also generate corresponding ~runtime~ implementations.
-* DONE GSoC21 W9: LFortran Bug Hunting Bonanza :@notes:gsoc21:fortran:rambling:
+* DONE GSoC21 W9: LFortran Bug Hunting Bonanza :@notes:gsoc21:fortran:ramblings:
 CLOSED: [2021-08-06 Fri 19:50]
 :PROPERTIES:
 :EXPORT_FILE_NAME: gsoc21-w9
@@ -11302,7 +11302,7 @@ end program main
 Which ~gfortran~ accepts without a complaint. Not really much of a pain since there is a proposed refactor which is one of the primary goals of the next week after the bug fixes are in but still odd.
 ** Conclusions
 Next week is crucial. The LLVM backend must gracefully accept ~value~ when present, and there are some additional tasks which simply must be completed. All the QoL MRs will be in next week as well. That said, I expect at this point to dedicate more time to the project, which is not a bad thing, but a bit of a sobering realization. Last week I wasn't working over the weekend, but I have several catchup tasks to finish this time around; for draft MRs and issues.
-* DONE GSoC21 W10: LFortran Runtime Library Design :@notes:gsoc21:fortran:rambling:
+* DONE GSoC21 W10: LFortran Runtime Library Design :@notes:gsoc21:fortran:ramblings:
 CLOSED: [2021-08-14 Sat 00:28]
 :PROPERTIES:
 :EXPORT_FILE_NAME: gsoc21-w10
@@ -11564,7 +11564,7 @@ Rather than move forward with the closing comments; and going into more detail a
 [fn:whybashwhere] From this [[https://stackoverflow.com/questions/13099202/awk-script-for-finding-smallest-value-from-column/13100039][stackoverflow post]] of course
 [fn:wherewhysohist] From this [[https://berthub.eu/articles/posts/help-my-sin-is-slow-and-my-fpu-is-inaccurate/][blog post by Bert Hubert]]
 [fn:butresearch] I maintain similar notes for my research, but those sadly never see the light of day
-* DONE GSoC21 LFortran and Computational Chemistry :@notes:gsoc21:fortran:rambling:
+* DONE GSoC21 LFortran and Computational Chemistry :@notes:gsoc21:fortran:ramblings:
 CLOSED: [2021-08-20 Fri 00:43]
 :PROPERTIES:
 :EXPORT_FILE_NAME: gsoc21-fin-reprot
@@ -11720,7 +11720,7 @@ Computational spectroscopy and the Fortran community
 I recently spent two weeks at the Les Houches School of Physics for a workshop on Multiple Scattering Green's Functions for Electronic Structure and Spectroscopy. Apart from being a fantastic place to work, I became acquainted with several Fortran programs for the same. This post pays homage to them.
 ** Conclusions
 The school was an enriching experience, as I mentioned in passing to one of the more senior members, while stupid questions in person are still alright, online the ability to ask basic dumb big picture questions is severely reduced. It was also exhausting, due to my many existing commitments.
-* DONE NumPy, Meson and ~f2py~ :@notes:python:fortran:numpy:f2py:rambling:
+* DONE NumPy, Meson and ~f2py~ :@notes:python:fortran:numpy:f2py:ramblings:
 CLOSED: [2021-09-23 Thu 05:45]
 :PROPERTIES:
 :EXPORT_FILE_NAME: numpy-meson-f2py
@@ -13171,7 +13171,7 @@ From around 10:43 in.
 
 ** Thoughts
 I could go on about these topics all day, thankfully for the most part, I do.
-* DONE Simple Fortran Derived Types and Python :@notes:python:fortran:numpy:f2py:rambling:
+* DONE Simple Fortran Derived Types and Python :@notes:python:fortran:numpy:f2py:ramblings:
 CLOSED: [2021-10-02 Sat 04:19]
 :PROPERTIES:
 :EXPORT_FILE_NAME: cython-derivedtype-f2py
@@ -13612,7 +13612,7 @@ these. In terms of derived types of simple structures, without allocatable
 arrays, the extensions appear to be straightforward.
 
 [fn:sowhat] This is more surprising with each passing year
-* TODO F2PY and the Python Packaging Story :@notes:python:rambling:fortran:f2py:
+* TODO F2PY and the Python Packaging Story :@notes:python:ramblings:fortran:f2py:
 ** Background
 One of the nicer aspects of working on the LFortran project and considering its
 long term viability with [[https://ondrejcertik.com/][Ondřej Čertík]] is its modular layout. This makes it
@@ -13723,7 +13723,7 @@ an ANSI string.
 
 [fn:whatunique] Like perhaps wrapping ~.c~ code way [[https://scipy-cookbook.readthedocs.io/items/f2py_and_NumPy.html][back in 2006]], or exotic callbacks
 [fn:lolback] A wonderful endeavor, much like the way aeroplanes and horse driven sleighs are still compatible... *wait*..
-* DONE Exploring ~ISO_C_BINDING~ and type-bound procedures :@notes:fortran:f2py:rambling:
+* DONE Exploring ~ISO_C_BINDING~ and type-bound procedures :@notes:fortran:f2py:ramblings:
 CLOSED: [2021-12-19 Sun 16:25]
 :PROPERTIES:
 :EXPORT_FILE_NAME: iso-c-type-bound-fortran
@@ -14283,7 +14283,7 @@ such images can be a little off putting.
 Nothing in this post constitutes any kind of best practice. In an ideal world
 one would have either physical machines to access or well configured virtual
 machines. Nevertheless, for edge cases, this works well enough in practice  .
-* DONE Fortran OOP and Python :@notes:python:fortran:numpy:f2py:rambling:
+* DONE Fortran OOP and Python :@notes:python:fortran:numpy:f2py:ramblings:
 CLOSED: [2022-05-09 Mon 03:39]
 :PROPERTIES:
 :EXPORT_FILE_NAME: fortran-oop-python
@@ -14734,7 +14734,7 @@ For F2PY within ~numpy~, however, although there are no direct equivalents in
 ~C~ for the more OOP specific derived types, there are plenty of equivalent
 structures in ~Python~. This post will bridge Fortran derived types to their
 logically equivalent Python class definitions.
-* DONE Types from Fortran to Python via Opaque Pointers :@notes:python:fortran:numpy:f2py:rambling:
+* DONE Types from Fortran to Python via Opaque Pointers :@notes:python:fortran:numpy:f2py:ramblings:
 CLOSED: [2023-11-12 Sun 23:36]
 :PROPERTIES:
 :EXPORT_FILE_NAME: types-fortran-python-opaque
@@ -15530,11 +15530,12 @@ bright.
 [fn:seriously] Pun intended
 [fn:saywhat] This Fortran-Lang [[https://fortran-lang.discourse.group/t/allocate-interoperability-and-c-descriptors/5088/9?u=rgoswami][discourse thread]] includes examples from Ivan Pribec demonstrating this
 [fn:whydiscont] A popular NumPy usage pattern, and a visible bottleneck in interactive workflows
-* DONE Revisiting Wayland for ArchLinux :@notes:rambling:workflow:
+* DONE Revisiting Wayland for ArchLinux :@notes:ramblings:workflow:setup:archlinux:
 CLOSED: [2021-12-24 Fri 18:13]
 :PROPERTIES:
 :EXPORT_FILE_NAME: revisiting-wayland-2021-archlinux
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("ArchLinux Chronoscope")
 :END:
 #+begin_quote
 Ruminating on ~wayland~ and ~sway~ for daily use with ArchLinux
@@ -16382,10 +16383,12 @@ Leveraging ~nix~ and ~flakes~ in conjunction with ~home-manager~
 #+end_quote
 ** Background
 Configuration can be painful.
-* TODO Customizing ArchLinux Installation Media
+* DONE Customizing ArchLinux Installation Media :@notes:ramblings:setup:archlinux:
+CLOSED: [2023-04-30 Sun 15:22]
 :PROPERTIES:
 :EXPORT_FILE_NAME: customizing-archlinux-im
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("ArchLinux Chronoscope")
 :END:
 #+begin_quote
 A short plug for ~hzArchiso~, and general thoughts on ~archiso~
@@ -16478,7 +16481,6 @@ The general idea is to follow along with the ArchWiki [[https://wiki.archlinux.o
 ~archinstaller~ script ([[https://python-archinstall.readthedocs.io/en/latest/index.html][repo]]) might be a better option. There's also an
 ~offlineInst.sh~ script which can be used to replicate the environment on the
 live-USB.
-
 ** Conclusions
 Modifying ArchLinux installation media is fun. Even if the exact set of packages
 bundled with ~hzArchiso~ isn't for most, it serves as a useful blueprint for
@@ -16490,20 +16492,37 @@ been using ~btrfs~ for almost a decade without any trouble [fn:why], which is an
 but nice.
 
 [fn:whereswap] This is derived from [[https://nerdstuff.org/posts/2020/2020-004_arch_linux_luks_btrfs_systemd-boot/][this post]], which in turn references the ArchWiki for [[https://wiki.archlinux.org/title/Btrfs#Swap_file][BTRFS]] and [[https://wiki.archlinux.org/title/Swap#Swap_file][swap]].
-[fn:anysources] Based on the setup described [[https://nerdstuff.org/posts/2020/2020-004_arch_linux_luks_btrfs_systemd-boot/][here]],
 [fn:why] Transparent compression is a rather neat feature
 [fn:kindavague] My first attempts at modifying the installation media date back to [[https://github.com/HaoZeke/hzArchiso/commits/main?after=7fe66527b0029053398ca3a97039d29cb786db5f+69&branch=main&qualified_name=refs%2Fheads%2Fmain][2018 though]]
 [fn:sincewhen] Since I largely retired from Android [[LineageOS Maintainer Appreciation][custom kernel / ROM work]]
 [fn:whydisclaim] Seriously, *always* read the [[https://wiki.archlinux.org/][ArchWiki]] over blog posts, sometimes the [[https://bbs.archlinux.org/][ArchLinux forums]] are useful too
 
-* TODO Laptop setup notes ~btrfs~ subvolumes
+* DONE Laptop setup notes ~btrfs~ subvolumes :@notes:ramblings:setup:archlinux:
+CLOSED: [2023-05-01 Mon 15:22]
+:PROPERTIES:
+:EXPORT_FILE_NAME: laptop-setup-btrfs-notes
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("ArchLinux Chronoscope")
+:END:
+#+begin_quote
+Thoughts on laptop configurations for ArchLinux in 2023, with ~btrfs~ and ~sway~
+#+end_quote
+
+#+attr_html: :class warning-alert
+#+begin_alert
+#+begin_alert-heading
+*Warning*
+#+end_alert-heading
+This post is a little less complete than most, it has been dated to roughly the correct time chronologically.
+#+end_alert
+** Background
+I split this post from the [[Customizing ArchLinux Installation Media][previous one]], to make each more self contained.
 Since the installation media has more features one might perhaps use ~gparted~
 for resizing disks, use the GUI for managing networks, etc. Personally I
 generally allocate a chunk from whatever other OS is present in ~gparted~, and
 format it as unformatted. This is so I can use [[https://wiki.archlinux.org/title/Dm-crypt/Encrypting_an_entire_system][encrypted]] BTRFS
 [[https://wiki.archlinux.org/index.php/Btrfs#Subvolumes][subvolumes]][fn:anysources].
-
-**** Input variants with ~sway~
+** Input variants with ~sway~
 
 Instead of setting up a configuration, I typically use:
 
@@ -16512,7 +16531,7 @@ swaymsg input type:keyboard xkb_variant colemak
 swaymsg input type:keyboard xkb_layout us
 #+end_src
 
-**** Setup Encryption
+** Setup Encryption
 
 #+begin_src bash
 cryptsetup luksFormat /dev/nvme0n1p5
@@ -16520,7 +16539,7 @@ cryptsetup open /dev/nvme0n1p5 luks
 mkfs.btrfs -L ROOT /dev/mapper/luks
 #+end_src
 
-**** BTRFS Layout
+** BTRFS Layout
 
 The logic behind the flat ~btrfs~ layout is to separate things which should
 remain untouched during rollbacks of the system. I use a variant of a layout
@@ -16582,7 +16601,7 @@ mkswap ./swapfile
 swapon ./swapfile
 cd -
 #+end_src
-**** System setup
+** System setup
 I like the live USB packages, so I tend to use the ~./offlineInst.sh~ instead of ~pacstrap~. Some additional configuration is needed:
 #+begin_src bash
 arch-chroot /mnt
@@ -16611,7 +16630,7 @@ Some other (optional) ~colemak~ steps:
 echo KEYMAP=colemak > /etc/vconsole.conf
 #+end_src
 
-**** Cleaning up ~archiso~
+** Cleaning up ~archiso~
 Some cruft is copied over if the ~offlineInst.sh~ script is used. We will need to:
 - Remove the local repository from ~/etc/pacman.conf~
 - Remove the preset ~archiso~ for ~mkinitcpio~ (by deleting ~/etc/mkinitcpio.d/linux.preset~)
@@ -16630,7 +16649,7 @@ sudo rm -rf /usr/lib/initcpio/hooks/archiso*
 sudo rm -rf /usr/share/doc/mkinitcpio-archiso
 #+end_src
 
-**** Kernel setup
+** Kernel setup
 The ~initramfs~ hooks need to be modified for ~swap~ and to recognize ~btrfs~
 (also to remove all the ~archiso~ hooks):
 
@@ -16644,11 +16663,11 @@ was using the ~nitrous~ variant, this time I recompiled with ~mperformance~ in
 the ~PKGBUILD~ and this meant modifying the ~rtl88xxau~ kernel driver a bit as
 it passes ~-mhard-float~ and ~clang~ will fail with unused arguments.
 
-**** Setup notes
+** Setup notes
 With the skeletal system setup, I needed only to add my customizations. Namely:
 - All ~clang~ source builds
 - SDDM display management
-***** Nix
+*** Nix
 My dotfiles expect ~nix~ for a variety of additional reasons.
 With ~sddm~ however, the default installation adds all ~nixbld~ users to the
 login screen. To prevent this, it is best to set the ~MaximumUid~, for
@@ -16657,16 +16676,20 @@ example in ~/etc/sddm.conf.d/08_nix_uid.conf~:
 [Users]
 MaximumUid=30000
 #+end_src
-***** Wayland notes
+*** Wayland notes
 - ~caja~ isn't compatible with ~wayland~ out of the box (but my favorite ~thunar~ is)
 - Thanks to a [[https://bugs.launchpad.net/ubuntu/+source/file-roller/+bug/1923033][very old]] archive-manager (file-roller) bug, there aren't any really good native options for compression
   + ~peazip~ works as a native file and archive manager though
-***** Laptop Tweaks
+*** Laptop Tweaks
 Mostly garnered from the [[https://wiki.archlinux.org/title/Laptop][Archwiki Laptop page]]. I generally setup ~/etc/systemd/{logind,sleep}.conf~ with defaults from my older ~etckeeper~ configuration.
 
 - Fingerprints worked natively with ~fprintd~ and a polkit (I used ~lxpolkit~)
 - For keyring management ~gnome-keyring~ is fine (with ~wl-clipboard~)
 
+[fn:anysources] Based on the setup described [[https://nerdstuff.org/posts/2020/2020-004_arch_linux_luks_btrfs_systemd-boot/][here]],
+** Conclusions
+At this point, my notes came to an abrupt end. Presumably this meant I was able
+to cobble together the rest of the system using the pointers there.
 * DONE Handling Legacy Fortran Code :@notes:fortran:f2py:
 CLOSED: [2023-04-27 Thu 16:09]
 :PROPERTIES:
