@@ -63,3 +63,5 @@ eval "$(rbenv init -)"
 gem install bundler
 bundle
 #+end_src
+
+* TODO Fix snippets not being part of the sitemap
