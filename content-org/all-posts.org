@@ -16579,12 +16579,12 @@ mount -o noatime,nodiratime,compress=zstd,space_cache=v2,ssd,subvol=@VMs /dev/ma
 mount -o noatime,nodiratime,compress=zstd,space_cache=v2,ssd,subvol=@log /dev/mapper/luks /mnt/var/log
 mount -o noatime,nodiratime,compress=zstd,space_cache=v2,ssd,subvol=@opt /dev/mapper/luks /mnt/opt
 mount -o noatime,nodiratime,compress=zstd,space_cache=v2,ssd,subvol=@usr_local /dev/mapper/luks /mnt/usr/local
-mount -o noatime,nodiratime,compress=zstd,space_cache=v2,ssd,subvol=@snapshots /dev/mapper/luks /mnt/.snapshots
+mount -o noatime,nodiratime,compress=zstd,space_cache=v2,ssd,subvol=@.snapshots /dev/mapper/luks /mnt/.snapshots
 #+end_src
 
 We also need to mount the EFI partition:
 #+begin_src bash
-mount -o rw,relatime,fmask=0022,dmask=0022,iocharset=ascii,shortname /dev/nvme0n1p1 /mnt/boot
+mount -o rw,relatime,fmask=0022,dmask=0022,iocharset=ascii,shortname=mixed /dev/nvme0n1p1 /mnt/boot
 #+end_src
 
 Switch to sddm with weston for a better display manager
