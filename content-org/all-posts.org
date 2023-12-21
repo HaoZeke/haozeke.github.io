@@ -554,11 +554,31 @@ tail $HOME/proxychains.conf
 # socks4 	127.0.0.1 9050
 #+end_example
 
-I actually use [[https://windscribe.com][Windscribe]] for my VPN needs, and they have a neat [[https://windscribe.com/getconfig/socks][SOCKS5 proxy
-setup]]. This works out to a line like ~socks5 $IP $PORT $USERNAME $PASS~ being
-added. The default generator gives you a pretty server name, but to get the IP I
-use ~ping $SERVER~ and put that in the ~conf~ file. Any online DNS resolver will
-also do the trick, like [[https://www.vedbex.com/dns/socks-us.windscribe.com][this one]].
+I actually use [[https://windscribe.com][Windscribe]] for my VPN needs, and they
+have a neat [[https://windscribe.com/getconfig/socks][SOCKS5 proxy setup]]. This
+works out to a line like ~socks5 $IP $PORT $USERNAME $PASS~ being added. The
+default generator gives you a pretty server name, but to get the IP I use ~ping
+$SERVER~ and put that in the ~conf~ file. Any online DNS resolver will also do
+the trick, like [[https://www.vedbex.com/dns/socks-us.windscribe.com][this one]].
+
+#+attr_html: :class note-alert
+#+begin_alert
+#+begin_alert-heading
+*Note*
+#+end_alert-heading
+The SOCKS5 proxy from Windscribe has been [[https://windscribe.com/knowledge-base/articles/why-was-socks5-discontinued][phased out]] but it is actually easier
+to do this via the [[https://windscribe.com/features/proxy-gateway][proxy gateway]] and split tunneling.
+#+end_alert
+
+For inclusive split tunneling, add the following (minimally):
+#+begin_src txt
+tuner.pandora.com
+audio-usc-mp1-t1-2-v4v6.pandora.com
+#+end_src
+
+At some point it might be nice to actually have this done via a WireGuard
+configuration to cut out the app in the middle..
+
 ** Pandora
 I use the excellent ~pianobar~ frontend.
 1. Get [[https://github.com/PromyLOPh/pianobar][pianobar]]
@@ -18221,6 +18241,289 @@ This was worth the switch for me.
 friends are always going to bring in compiled extensions...
 [fn:but312] *3.12* with compiled extensions is a sticky choice because of the
 ~distutils~ deprecation, but we're relatively pure so it should be fine..
+* TODO General ~CPP~ project management :@notes:cpp:packaging:
+:PROPERTIES:
+:EXPORT_FILE_NAME: cpp-meson-proj-manage
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("C++ packaging")
+:END:
+#+begin_quote
+Ruminations on packaging and distributing ~C++~ projects.
+#+end_quote
+** Background
+Something about academic work leads to multiple tiny C++ libraries. These
+generally have pretty similar project management techniques.
+** Guidelines
+Some things which should be a part of every repository:
+- LICENSE :: I now prefer the ~MIT~ license, via ~licensor~
+- Readme :: This needs to be present, either generated from an ~orgmode~ source or directly in markdown / REsT.
+*** Pre-commit hooks
+As [[https://rgoswami.me/snippets/local-precommit-dependencies/][noted elsewhere]], local pre-commit hooks are superior to hosted ones. For ~CPP~ projects I generally have:
+#+begin_src yaml
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.4.0
+  hooks:
+  - id: trailing-whitespace
+    exclude: ^(src)
+  - id: end-of-file-fixer
+    exclude: .md
+  - id: check-yaml
+  - id: check-added-large-files
+- repo: https://github.com/pre-commit/mirrors-clang-format
+  rev: v16.0.6
+  hooks:
+  - id: clang-format
+    types_or: [c++, c]
+- repo: local
+  hooks:
+    - id: cppcheck
+      name: cppcheck
+      entry: cppcheck
+      language: system
+      types_or: [c++, c]
+      args: ["--error-exitcode=0"]
+    - id: cpplint
+      name: cpplint
+      entry: cpplint
+      language: system
+      types_or: [c++, c]
+      args: ["--filter=-whitespace/comments,-runtime/references,-whitespace/indent,-runtime/int,-build/c++11"]
+#+end_src
+** Documentation
+*** ~orgmode~ sources
+To use ~orgmode~
+*** API Docs with ~doxyYoda~
+I use ~doxygen~ (version ~1.9.1~) with the [[https://github.com/HaoZeke/doxyYoda][doxyYoda theme]].
+#+begin_src bash
+mkdir -p doc/apidocs
+cd doc/apidocs
+doxygen -g Doxyfile.cfg
+#+end_src
+This needs to be coupled with a minimal project specific configuration file:
+#+begin_src conf
+# Doxyfile-proj.cfg
+@INCLUDE                = "doc/apidocs/Doxyfile.cfg"
+# XML
+GENERATE_XML            = NO
+XML_PROGRAMLISTING      = NO
+
+# HTML
+GENERATE_HTML           = YES
+HTML_OUTPUT             = doc/build/html
+
+# LaTeX
+GENERATE_LATEX          = NO
+
+# Project Settings
+PROJECT_NAME            = "projname"
+PROJECT_NUMBER          = "0.0.1"
+PROJECT_BRIEF           = "A some stuff"
+PROJECT_LOGO            = "images/Logo.png"
+IMAGE_PATH             = "./images"
+
+# Apidocs Settings
+RECURSIVE              = YES
+EXTRACT_ALL            = YES
+INPUT                  = doc/index.md CppCore images/
+EXCLUDE                = CppCore/tests
+USE_MDFILE_AS_MAINPAGE = doc/index.md
+CITE_BIB_FILES         = refs.bib
+
+# Style
+JAVADOC_BANNER         = YES
+JAVADOC_AUTOBRIEF      = NO
+INHERIT_DOCS           = YES
+INLINE_SOURCES         = YES
+SOURCE_BROWSER         = YES
+DISABLE_INDEX          = NO
+GENERATE_TREEVIEW      = NO
+HAVE_DOT               = YES
+DOT_IMAGE_FORMAT       = YES
+HTML_DYNAMIC_SECTIONS  = YES
+INTERACTIVE_SVG        = YES
+# Theme
+# HTML
+GENERATE_HTML          = YES
+USE_MATHJAX            = YES
+HTML_HEADER            = "doc/apidocs/doxyYoda/html/header.html"
+HTML_FOOTER            = "doc/apidocs/doxyYoda/html/footer.html"
+HTML_EXTRA_STYLESHEET  = "doc/apidocs/doxyYoda/css/doxyYoda.min.css"
+LAYOUT_FILE            = "doc/apidocs/doxyYoda/xml/doxyYoda.xml"
+
+# Extract everything
+EXTRACT_ALL            = YES
+#+end_src
+Also the theme is easiest used with a tagged version, so a small script is
+usually a good idea, something like this:
+#+begin_src bash
+#!/bin/bash
+
+# Default theme version
+DEFAULT_VERSION="0.0.2"
+
+# Take theme version as an input argument, or use the default
+THEME_VERSION="${1:-$DEFAULT_VERSION}"
+
+# Define variables
+ROOT_DIR=$(pwd)
+DOC_DIR="${ROOT_DIR}/doc/apidocs"
+THEME_URL="https://github.com/HaoZeke/doxyYoda/releases/download/${THEME_VERSION}/doxyYoda_${THEME_VERSION}.tar.gz"
+THEME_TAR="${DOC_DIR}/doxyYoda_${THEME_VERSION}.tar.gz"
+THEME_DIR="${DOC_DIR}/doxyYoda"
+CFG_FILE="${DOC_DIR}/Doxygen-proj.cfg"
+TAGS_DIR="${DOC_DIR}/tags"
+CPP_REF_TAG_URL="https://upload.cppreference.com/mwiki/images/f/f8/cppreference-doxygen-web.tag.xml"
+CPP_REF_TAG_FILE="${TAGS_DIR}/cppreference-doxygen-web.tag.xml"
+
+# Ensure the documentation directory exists
+if [ ! -d "$DOC_DIR" ]; then
+    echo "Creating documentation directory..."
+    mkdir -p "$DOC_DIR"
+fi
+
+cd "$DOC_DIR" || {
+    echo "Error: Failed to navigate to documentation directory"
+    exit 1
+}
+
+# Check if the theme is already extracted
+if [ -d "$THEME_DIR" ]; then
+    echo "Theme already downloaded and extracted."
+else
+    # Check if the tarball already exists
+    if [ -f "$THEME_TAR" ]; then
+        echo "Theme tarball already exists. Skipping download."
+    else
+        # Download the theme tarball
+        echo "Downloading theme version ${THEME_VERSION}..."
+        wget -O "$THEME_TAR" "$THEME_URL" || {
+            echo "Error: Download failed"
+            exit 1
+        }
+    fi
+
+    # Extract the theme
+    echo "Extracting theme..."
+    mkdir -p "$THEME_DIR"
+    tar -xf "$THEME_TAR" -C "$THEME_DIR" --strip-components=1 || {
+        echo "Error: Extraction failed"
+        exit 1
+    }
+fi
+
+# Download CPP Reference Tags
+if [ ! -d "$TAGS_DIR" ]; then
+    echo "Creating tags directory..."
+    mkdir -p "$TAGS_DIR"
+fi
+
+cd "$TAGS_DIR" || {
+    echo "Error: Failed to navigate to tags directory"
+    exit 1
+}
+
+if [ -f "$CPP_REF_TAG_FILE" ]; then
+    echo "CPP Reference tags already downloaded."
+else
+    echo "Downloading CPP Reference tags..."
+    curl -o "$CPP_REF_TAG_FILE" "$CPP_REF_TAG_URL" || {
+        echo "Error: Tags download failed"
+        exit 1
+    }
+fi
+
+# Run Doxygen with the specified configuration
+echo "Generating documentation with Doxygen..."
+cd "$ROOT_DIR" || {
+    echo "Error: Failed to navigate back to root"
+    exit 1
+}
+doxygen "$CFG_FILE" || {
+    echo "Error: Doxygen generation failed"
+    exit 1
+}
+
+echo "Documentation generation complete."
+#+end_src
+Which is pretty self explanatory.
+#+begin_src bash
+./scripts/mkdoxydoc.sh
+#+end_src
+**** CI Setup
+To do this via Github actions, a basic configuration would be something like this:
+#+begin_src yaml
+name: Build documentation
+on: [push, pull_request]
+jobs:
+  build_docs:
+    name: Build documentation
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+    steps:
+      - uses: actions/checkout@v3
+      - uses: mamba-org/setup-micromamba@v1
+        with:
+          micromamba-version: '1.3.1-0'
+          environment-file: environment.yml
+          init-shell: >-
+            bash
+          cache-environment: true
+          post-cleanup: 'all'
+      - name: Build documentation
+        shell: bash -el {0}
+        run: |
+          mkdir -p doc/build
+          ./scripts/mkdoxydoc.sh
+      - name: Archive artifact
+        shell: sh
+        if: runner.os == 'Linux'
+        run: |
+          tar \
+          --dereference --hard-dereference \
+          --exclude=.git \
+          --exclude=.github \
+          -cvf "$RUNNER_TEMP/artifact.tar" \
+          --directory=doc/build/html .
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: github-pages
+          path: ${{ runner.temp }}/artifact.tar
+          if-no-files-found: error
+  # Deploy job
+  deploy:
+    # Add a dependency to the build job
+    needs: build_docs
+    if: github.event_name == 'push'
+    permissions:
+      pages: write      # to deploy to Pages
+      id-token: write   # to verify the deployment originates from an appropriate source
+    # Deploy to the github-pages environment
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    # Specify runner + deployment step
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2 # or the latest "vX.X.X" version tag for this action
+#+end_src
+Where blocks would need to be modified if for example, ~micromamba~ is not used
+for package management.
+** Release management
+*** Changelog
+I tend to use ~towncrier~ for this, with a fairly [[https://towncrier.readthedocs.io/en/stable/markdown.html][standard setup]]. The only
+change is that in keeping with the other conventions, the ~changelog.d~ folder
+lives in ~doc/~.
+*** Version changes
+For this, I use ~tbump~ with a specialized configuration.
+** Conclusions
+Actually most of these steps are pretty much applicable to projects in most
+languages, with minor differences to the API documentation section. However, for
+my own needs, it is nicer to have separate posts for separate languages.
+
 * DONE Managing cloud based ~calibre~ libraries :@personal:workflow:tools:ramblings:books:
 CLOSED: [2023-08-19 Sat 13:33]
 :PROPERTIES:
@@ -18562,8 +18865,7 @@ into a ~jobflow~ compatible format.
 
 # This is clearly the best option for the problem at hand. However, for workflows
 # not covered by ~wailord~ e.g. other HPC codes, we will continue to explore Fireworks.
-** MongoDB Instances
-*** Local
+** Local ~MongoDB~ Instances
 For starters we will just setup a basic instance.
 #+begin_src bash
 pixi shell
@@ -18621,9 +18923,29 @@ db.chem.deleteMany({ "title": /chemistry/i })
 The key concept here is that the entries can be queried, and they pick up their
 own ~_id~ variables. This alone will be most of the benefit we need from a
 workflow management system.
-*** Hosted
-**** MongoDB Atlas
-*** HPC
+** Fireworks
+Now we can follow along with the basic tutorial:
+#+begin_src bash
+pixi add Fireworks
+gh repo clone materialsproject/fireworks /tmp/fire
+mv /tmp/fire/fw_tutorials .
+rm -rf /tmp/fire
+#+end_src
+
+I find it easier to work in a ~tmux~ session for these situations. In any case,
+start the MongoDB server in one terminal via ~mongod --dbpath
+$(pwd)/data/database~ and in a new terminal:
+
+#+begin_src bash
+lpad reset
+#+end_src
+
+** Jobflow
+
+** Putting ~ORCA~ runs together
+Now to actually use these workflow management tools effectively, quite a bit of
+boilerplate is needed[fn:seeatomate]. We need something similar.
+
 ** Conclusions
 The MongoDB setup, and general workflow management idea works great. It will
 doubtless usher in a revolution of reduced calculations, if only more people
@@ -18631,7 +18953,7 @@ could be compelled to use it[fn:perhapscoursework]. I would recommend it
 wholeheartedly as a user, sysadmin, reviewer and under all my other academic
 hats. It seems also, that hosted MongoDB instances are good enough in terms of
 bandwidth and other configuration settings for the HPC calculations Firworks is
-typically used for[fn:howcomemongofree]. Will cover scaling up in another post.
+typically used for[fn:howcomemongofree]. Will cover scaling up via hosted Atlas and VPS instances along with HPC interaction in another post.
 *** Opinions
 With this setup, the actual work can now continue uninterupted by stray qualms
 like "but what if you turn off parameter X in system Y because domain
@@ -18662,6 +18984,7 @@ Naturally this is applicable across all domains.
 [fn:howdist] Binaries. Large, blobby, statically linked binaries.
 [fn:butchem] Of course one should ideally understand exactly what's going on and tune parameters for each system...
 [fn:alsowailord] As noted, many of these problems are alleviated by ~wailord~
+[fn:seeatomate] e.g. The ~atomate~ project is essentially a VASP compatibility layer
 * TODO VPS Baselines and MongoDB
 ** Background
 The key reason to decouple a MongoDB instance from existing HPC architecture is
