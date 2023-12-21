@@ -19262,3 +19262,9 @@ I've been sitting in on these for a while thanks to [[https://www.math.ias.edu/~
   - "A Blueprint of Standardized and Composable Machine Learning" by Eric Xing
 
 [fn:whereswaldo] If you do think you have seen me somewhere not on this list, drop me an email
+
+* COMMENT Local Variables
+This file is too large to be auto-exported on each save.
+# Local Variables:
+# eval: (org-hugo-auto-export-mode -1)
+# End:
