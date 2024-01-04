@@ -18990,6 +18990,25 @@ Naturally this is applicable across all domains.
 The key reason to decouple a MongoDB instance from existing HPC architecture is
 to be more robust to changes in clusters. Also, it makes it easier to run on
 multiple HPC centers without repeating the setup steps.
+* TODO Dotfile encryption and secrets with ~chezmoi~ and Enpass :@personal:workflow:tools:
+#+begin_quote
+Ruminations on secrets within shared configurations
+#+end_quote
+** Background
+A lot of configuration files contain "secrets", but are also generic enough to
+not warrant file-level encryption for the whole configuration. An easy example
+is the following:
+#+begin_src toml
+[General]
+    optionA = solA
+    # .... lots more, would ideally be shared
+[Secrets]
+    user = "Not secret but will change"
+    pass = "VerySecret"
+#+end_src
+~chezmoi~ has enough fine grained integrations with password management tools to make it feasible to skip block encryption.
+** Tools
+I personally [[https://enpass.io/][use Enpass]] for handling my passwords.
 * Important Note :ignoreheading:ignore:
 # ALWAYS at the bottom, to ensure fresh builds do not break
 * DONE About
