@@ -3,6 +3,8 @@
 #+AUTHOR: @@latex:\begin{tabular}{c} Rohit Goswami \end{tabular}@@
 #+DATE: \today
 
+# Can turn on the slide transitions by replacing attr_reveal: :frag appear with attr_beamer: :overlay <+->
+
 * Configuration :ignoreheading:ignore:
 :PROPERTIES:
 :VISIBILITY: folded
