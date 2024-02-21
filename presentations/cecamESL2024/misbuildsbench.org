@@ -294,9 +294,10 @@
 
 * Start Here :ignoreheading:ignore:
 * Speaker
-- Find me here: https://rgoswami.me
-  + *Rohit Goswami* MInstP MBCS MRSC
+- @@latex:\small{Find me here: https://rgoswami.me}@@
+  + @@latex:\small{}@@ *Rohit Goswami* MInstP MBCS MRSC
     - Doctoral Researcher :: Jónsson Group, University of Iceland, Faculty of Physical Sciences and Science Institute
+    - Software Engineer (II) :: Quansight Labs 
     - Maintainer :: NumPy, ASV, d-SEAMS, Seldon
 
 ** A block :B_ignoreheading:BMCOL:
@@ -305,8 +306,8 @@
 :END:
 
 #+DOWNLOADED: screenshot @ 2024-02-20 21:17:49
-#+ATTR_LaTeX: :scale 0.1
-[[file:images/Acknowledgments/2024-02-20_21-17-49_screenshot.png]]
+#+ATTR_LaTeX: :scale 0.06
+[[file:images/ihpc_ncc_eurocc2.png]]
 #+ATTR_LaTeX: :width 0.3\linewidth
 file:./images/quansightlabs.png
 
