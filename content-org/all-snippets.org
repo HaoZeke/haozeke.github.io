@@ -322,6 +322,70 @@ endforeach
 This is rather satisfying. Combined with some ~wraps~, it is also pretty
 portable.
 
+*** Addenum: Tests with arguments
+
+Recently, some ~openblas~ work made me rethink how ~meson~ handles tests and arguments. It turns out something relatively simple in ~make~:
+#+begin_src makefile
+xblat2s: sblat2.o $(BLASLIB)
+	$(FC) $(FFLAGS) $(LDFLAGS) -o $@ $^
+run: all
+	./xblat2s < sblat2.in
+#+end_src
+
+Is rather complicated to emulate directly within ~meson~. A wrapper is required, first in ~C~:
+
+#+begin_src C
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main(int argc, char *argv[]) {
+    if (argc != 3) {
+        fprintf(stderr, "Usage: %s <executable> <input_file>\n", argv[0]);
+        return EXIT_FAILURE;
+    }
+
+    char command[1024];
+    snprintf(command, sizeof(command), "%s < %s", argv[1], argv[2]);
+
+    int result = system(command);
+    if (result != 0) {
+        fprintf(stderr, "Error: Command '%s' failed with return code %d.\n", command, result);
+        return EXIT_FAILURE;
+    }
+
+    return EXIT_SUCCESS;
+}
+#+end_src
+
+Which can then be used within ~meson~:
+
+#+begin_src meson
+_blas_input_test_array = [#
+  # ['Pretty name', 'binary_name', 'BlahTest.cpp', 'inputfile.in']
+  ['Test REAL Level 2 BLAS', 'xblat2s', 'sblat2.f', 'sblat2.in'],
+]
+test_runner = executable('run_test',
+                         sources: ['run_test.c'],
+                         install: false)
+# NOTE: For the tests to pass the executables need to be compiled first
+foreach _test : _blas_input_test_array
+  executable(_test.get(1),
+             sources : _test.get(2),
+             link_with : netlib_blas,
+            )
+  test_exe = meson.current_build_dir() / _test.get(1)
+  input_file = meson.source_root() + '/lapack-netlib/BLAS/TESTING/' + _test.get(3)
+  test(_test.get(0), fortran_test_runner,
+       args: [test_exe, input_file],
+       workdir: meson.current_build_dir())
+endforeach
+#+end_src
+
+However, the main pain point with this is that the executables are not exactly
+test dependencies so this fails if the entire project hasn't been compiled
+before running the tests. Still a pretty minor caveat.
+
 ** TODO Catch2 and ~meson~ :meson:cpp:build:tests:
 When specifying ~main~ manually, this will suffice:
 #+begin_src meson
