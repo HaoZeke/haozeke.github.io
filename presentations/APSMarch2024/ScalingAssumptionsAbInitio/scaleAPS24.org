@@ -273,7 +273,7 @@ file:images/reproducibility.png
 :PROPERTIES:
 :BEAMER_col: 0.6
 :END:
-- DFT :: $O_{T}(N^{3)}$ or $O_{T}(N^{4)}$
+- DFT :: $O_{T}(N^{3})$ or $O_{T}(N^{4})$
   + But many other costs come into play!
 
 #+ATTR_LaTeX: :scale 0.12
