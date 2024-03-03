@@ -1,0 +1,573 @@
+#+TITLE: Revisiting Scaling Assumptions of Ab-Initio Calculations
+#+SUBTITLE: A public saftey announcement
+#+AUTHOR: Rohit Goswami,\textsc{\scriptsize\ MInstP MRSC MBCS}
+#+DATE:  \today
+#+BEAMER_HEADER: \titlegraphic[height=1.5cm]{images/physUoI.png}{}
+#+BEAMER_HEADER: \mail{rgoswami@ieee.org}
+
+* Configuration :ignoreheading:ignore:
+:PROPERTIES:
+:VISIBILITY: folded
+:END:
+
+#+BEGIN_SRC emacs-lisp :exports none :eval always :results none
+(require 'ox-extra)
+(ox-extras-activate '(ignore-headlines))
+;; Define Asynchronous Export
+(defun haozeke/org-save-and-export-pdf ()
+  (if (eq major-mode 'org-mode)
+      (org-latex-export-to-pdf :async t)))
+;; Add hook
+(add-hook 'after-save-hook 'haozeke/org-save-and-export-beamer)
+#+END_SRC
+
+#
+# LaTeX Stuff
+#
+
+#+DESCRIPTION:
+#+KEYWORDS:
+#+LANGUAGE:  en
+#+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc toc:nil
+#+INFOJS_OPT: view:nil toc:nil ltoc:t mouse:underline buttons:0 path:https://orgmode.org/org-info.js
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+LINK_UP:
+#+LINK_HOME:
+
+#+LATEX_COMPILER: xelatex
+#+LATEX_HEADER: \PassOptionsToPackage{unicode=true}{hyperref}
+#+LATEX_HEADER: \PassOptionsToPackage{hyphens}{url}
+#+LATEX_HEADER: \PassOptionsToPackage{dvipsnames,svgnames*,x11names*,table}{xcolor}
+#+LATEX_HEADER: \usepackage{amssymb,amsmath}
+#+LATEX_HEADER: \usepackage{mathtools}
+#+LATEX_HEADER: \usepackage{physics}
+#+LATEX_HEADER: \usepackage{hyperref}
+#+LATEX_HEADER: \hypersetup{
+#+LATEX_HEADER:             pdftitle={Scaling    },
+#+LATEX_HEADER:             pdfauthor={Author},
+#+LATEX_HEADER:             pdfborder={0 0 0},
+#+LATEX_HEADER:             breaklinks=true}
+#+LATEX_HEADER: % Make use of float-package and set default placement for figures to H
+#+LATEX_HEADER: \usepackage{float}
+#+LATEX_HEADER: \floatplacement{figure}{H}
+
+#+LATEX_HEADER: \usepackage{fontspec}
+#+LATEX_HEADER: \setromanfont{EB Garamond}
+#+LATEX_HEADER: \usefonttheme{serif}
+
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger,unknownkeysallowed,aspectratio=169,blue,colorblocks]
+#+startup: beamer
+#+BEAMER_THEME: Verona
+#+BEAMER_FRAME_LEVEL: 2
+#+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
+
+#+LATEX_HEADER: \usepackage[absolute,overlay]{textpos}
+
+#+LATEX_HEADER: \newcommand*{\XOffsetFromBottomLeft}{32.5em}%
+#+LATEX_HEADER: \newcommand*{\YOffsetFromBottomLeft}{2.7ex}%
+#+LATEX_HEADER: \newcommand*{\BottomLeftText}[1]{%
+#+LATEX_HEADER:     \par%
+#+LATEX_HEADER: \scriptsize\begin{textblock*}{17.0cm}(\dimexpr\textwidth-\XOffsetFromBottomLeft\relax,\dimexpr\textheight-\YOffsetFromBottomLeft\relax)
+#+LATEX_HEADER:         #1%
+#+LATEX_HEADER:     \end{textblock*}%
+#+LATEX_HEADER: }%
+#+LATEX_HEADER:  \usepackage{tikz,pgfplots}
+#+LATEX_HEADER:  \usetikzlibrary{positioning, arrows.meta, decorations.pathreplacing, calc, shapes.geometric}
+#+LATEX_HEADER:  \pgfplotsset{compat=1.17}
+
+# From https://tex.stackexchange.com/a/533755/130845
+#+LATEX_HEADER: \newcommand{\pd}[2]{\frac{\partial{#1}}{\partial{#2}}}
+#+LATEX_HEADER: \newcommand{\pdd}[2]{\frac{\partial^2{#1}}{\partial{#2}^2}}
+
+# From https://tex.stackexchange.com/questions/477784/adjust-spacing-between-main-text-and-footnote-in-beamer-slides
+#+LATEX_HEADER: \setbeamertemplate{footnote}{%
+#+LATEX_HEADER:  \makebox[1em][l]{\insertfootnotemark}%
+#+LATEX_HEADER:  \begin{minipage}{\dimexpr\linewidth-1em}
+#+LATEX_HEADER:    \footnotesize\linespread{0.84}\selectfont\insertfootnotetext
+#+LATEX_HEADER:  \end{minipage}\vskip 0pt}%
+
+# References
+#+LATEX_HEADER: \usepackage[doi=false,isbn=false,url=false,eprint=false]{biblatex}
+#+LATEX_HEADER: \bibliography{refs.bib}
+
+* Start Here :ignoreheading:ignore:
+* Speaker
+- @@latex:\small{Find me here: https://rgoswami.me}@@
+  + @@latex:\small{}@@ *Rohit Goswami* MInstP MBCS MRSC
+    - Doctoral Researcher :: Jónsson Group, University of Iceland
+    - Software Engineer (II) :: Quansight Labs
+    - Maintainer :: NumPy, ASV, d-SEAMS, Seldon
+
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+
+#+DOWNLOADED: screenshot @ 2024-03-03 18:45:16
+#+ATTR_LaTeX: :width 0.3\linewidth
+[[file:images/A_block/2024-03-03_18-45-16_screenshot.png]]
+
+
+#+ATTR_LaTeX: :width 0.3\linewidth
+file:./images/quansightlabs.png
+
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+
+#+ATTR_LaTeX: :width 0.6\linewidth
+file:./images/physUoI.png
+#+ATTR_LaTeX: :width 0.4\linewidth
+file:./images/rannisLogo.png
+#+ATTR_LaTeX: :width 0.2\linewidth
+file:./images/ccLogo.png
+** No Column :B_ignoreheading:
+:PROPERTIES:
+:BEAMER_env: ignoreheading
+:END:
+
+* Royal Road To Reproducibility
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+
+fullcite:communityTuringWayHandbook2019
+
+#+ATTR_LaTeX: :width 0.4\textwidth
+file:images/turingWay/LogoDetailWithText.png
+
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+file:images/reproducibility.png
+* Computational primitives - I
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+[[file:images/chol_svd.png]]
+** B block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+- Cholesky decomposition ~dpotrf~
+- SVD Sparsity pattern footfullcite:daviesEffectiveImplementationGaussian
+
+
+* Computational primitives - II
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+
+#+ATTR_LaTeX: :width 0.6\linewidth
+[[file:images/func_grad_contour.png]]
+** B block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.3
+:END:
+- Function and gradient
+- Contour illustration and steepest descent footfullcite:daviesEffectiveImplementationGaussian
+* Quantifying Speed
+*** What sounds faster?
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+- New algorithm with $O(N^2)$ scaling
+  + In space or time?
+  + What about the prefactor?
+
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+- New hardware with 1 petaflop of processor power
+  + What programming languages?
+  + What numerical precision?
+
+* Faster: By virtue of hardware
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+#+ATTR_LaTeX: :width 0.6\linewidth
+[[file:images/sleepsupercomp.png]]
+
+** B block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.3
+:END:
+*** Sleep for 10 years
+- Then use better hardware
+  + With a stable implementation
+  + Same benchmark, *of course*
+    - Alanine di-peptide?
+    - Water clusters?
+* Faster: Algorithmically
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+#+begin_export latex
+\begin{tikzpicture}
+    \begin{axis}[
+        title={Big O Notation},
+        xlabel={Input Size (n)},
+        ylabel={Time/Space Complexity},
+        domain=0:10,
+        ymax=50,
+        samples=100,
+        legend pos=north west,
+    ]
+    \addplot {1}; \addlegendentry{$O(1)$}
+    \addplot {log2(x)}; \addlegendentry{$O(\log n)$}
+    \addplot {x}; \addlegendentry{$O(n)$}
+    \addplot {x*log2(x)}; \addlegendentry{$O(n \log n)$}
+    \addplot {x^2}; \addlegendentry{$O(n^2)$}
+    \addplot {2^x}; \addlegendentry{$O(2^n)$}
+    % O(n!) and other higher complexities are excluded due to their rapid growth leading to impractical plotting over the domain used.
+    \end{axis}
+\end{tikzpicture}
+#+end_export
+
+** B block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.3
+:END:
+- Asymtomatically better algorithms
+- Maybe better parallelism
+  + Often understudied
+  + *Needs a rewrite*
+* Faster: AI?
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+
+#+DOWNLOADED: screenshot @ 2024-03-03 23:06:54
+[[file:images/A_block/2024-03-03_23-06-54_screenshot.png]]
+
+** B block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.3
+:END:
+- *How many parameters is that?*
+  + AlphaFold v1 has *21 million parameters* cite:torrisiDeepLearningMethods2020
+- Figure from footfullcite:seniorImprovedProteinStructure2020
+* Ab-initio Scaling
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.3
+:END:
+- Hartree-Fock :: $O_{T}(N^{4}), O_M(N^2)$ in the basis functions
+- MP2 :: $O_{T}(N^{5})$
+- CCSD :: $O_{T}(N^{6})$
+- CCSD(T) :: $O_{T}(N^{7})$
+** B block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+- DFT :: $O_{T}(N^{3)}$ or $O_{T}(N^{4)}$
+  + But many other costs come into play!
+
+#+ATTR_LaTeX: :scale 0.12
+[[file:images/jacobsladder.png]]
+* Automatic differentiation (AD)
+#+begin_export latex
+\begin{tikzpicture}[
+    node distance=1.5cm and 2cm,
+    operation/.style={circle, draw, fill=blue!20},
+    input/.style={circle, draw, fill=green!20},
+    output/.style={circle, draw, fill=red!20},
+    dual/.style={rectangle, draw, rounded corners, fill=orange!30},
+    auto/.style={->, >=latex},
+    every node/.style={font=\small}
+]
+
+% Nodes
+\node[input] (x) {$x$};
+\node[operation, right=of x] (square) {$\times$};
+\node[operation, right=of square] (add) {$+$};
+\node[operation, right=of add] (add1) {$+$};
+\node[output, right=of add1] (f) {$f(x)$};
+
+\node[dual, below=of square] (dx) {$dx$};
+\node[dual, below=of add] (dadd) {$d(\cdot+\cdot)$};
+\node[dual, below=of add1] (dadd1) {$d(\cdot+1)$};
+
+% Edges
+\draw[auto] (x) -- (square) node[midway, above] {$x$};
+\draw[auto] (square) -- (add) node[midway, above] {$x^2$};
+\draw[auto] (add) -- (add1) node[midway, above] {$x^2 + 2x$};
+\draw[auto] (add1) -- (f) node[midway, above] {$f(x)$};
+
+\draw[auto, dashed] (x) |- (dx) node[near start, left] {1};
+\draw[auto, dashed] (dx) -- (dadd) node[midway, above] {2$x$};
+\draw[auto, dashed] (dadd) -- (dadd1) node[midway, above] {2};
+
+% Annotations
+\node[above=0.5cm of square] (mult) {Multiply};
+\node[above=0.5cm of add] (add2x) {Add $2x$};
+\node[above=0.5cm of add1] (addConst) {Add Constant $1$};
+
+\draw[decoration={brace, mirror, raise=5pt}, decorate] (x) -- (square) node[midway, below=10pt] {Input};
+\draw[decoration={brace, raise=5pt}, decorate] (f) -- (add1) node[midway, below=10pt] {Output};
+
+\end{tikzpicture}
+#+end_export
+* AD -- Tape description
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.7
+:END:
+#+begin_export latex
+\begin{tikzpicture}[
+    opnode/.style={circle, draw, fill=blue!20, minimum size=25pt},
+    varnode/.style={circle, draw, fill=green!20, minimum size=25pt},
+    gradient/.style={circle, draw, fill=red!20, minimum size=25pt},
+    arrowstyle/.style={->,>=stealth},
+    tapestyle/.style={draw, fill=yellow!20, minimum height=20pt, minimum width=40pt, align=center}
+]
+
+% Forward pass nodes
+\node[varnode] (x) {$x$};
+\node[varnode, right=of x] (y) {$y$};
+\node[opnode, above right=of x, yshift=-0.5cm] (mult) {$x*y$};
+\node[opnode, above=of x] (sin) {$sin(x)$};
+\node[opnode, above right=of sin, yshift=-0.5cm] (sum) {$+$};
+\node[varnode, right=of sum] (f) {$f$};
+
+% Forward pass arrows
+\draw[arrowstyle] (x) -- (mult);
+\draw[arrowstyle] (y) -- (mult);
+\draw[arrowstyle] (mult) -- (sum);
+\draw[arrowstyle] (x) -- (sin);
+\draw[arrowstyle] (sin) -- (sum);
+\draw[arrowstyle] (sum) -- (f);
+
+% Backward pass (gradients) - horizontally aligned
+\node[gradient, below=of x] (gx) {$\frac{\partial f}{\partial x}$};
+\node[gradient, right=of gx] (gy) {$\frac{\partial f}{\partial y}$};
+\node[gradient, right=of gy] (gmult) {$\frac{\partial f}{\partial (x*y)}$};
+\node[gradient, right=of gmult] (gsin) {$\frac{\partial f}{\partial sin(x)}$};
+
+% Backward pass arrows - adjusted for horizontal layout
+\draw[arrowstyle, dashed] (gmult) -- (gx);
+\draw[arrowstyle, dashed] (gmult) -- (gy);
+\draw[arrowstyle, dashed] (gsin) -- (gx);
+\end{tikzpicture}
+#+end_export
+** B block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.3
+:END:
+- Reverse mode AD
+*Example*:
+1. Push $x$
+2. Push $y$
+3. Multiply
+4. $sin(x)$
+5. Add
+
+*** Note
+Needs the whole graph
+* Complex step differentiation (CSD) -- Idea
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.7
+:END:
+#+begin_export latex
+\begin{tikzpicture}[
+    node distance=2cm and 2cm,
+    operation/.style={circle, draw, fill=blue!20},
+    input/.style={circle, draw, fill=green!20},
+    output/.style={circle, draw, fill=red!20},
+    complex/.style={rectangle, draw, rounded corners, fill=purple!30},
+    auto/.style={->, >=latex},
+    every node/.style={font=\small}
+]
+
+% Nodes
+\node[input] (x) {$x$};
+\node[complex, right=of x] (complexStep) {$x + ih$};
+\node[operation, right=of complexStep] (f) {$f(\cdot)$};
+\node[output, right=of f] (result) {Result};
+
+% Edges
+\draw[auto] (x) -- (complexStep);
+\draw[auto] (complexStep) -- (f) node[midway, above] {};
+\draw[auto] (f) -- (result) node[midway, above] {};
+
+% Imaginary extraction
+\node[below=0.75cm of f] (imaginary) {Im(Result)/$h$};
+\draw[->, dashed] (f) -- (imaginary) node[midway, right] {Derivative};
+
+% Annotations
+\node[above=0.5cm of complexStep] (step) {Complex Step};
+\node[above=0.5cm of f] (evaluate) {Evaluate $f$};
+
+\end{tikzpicture}
+#+end_export
+** B block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.3
+:END:
+#+ATTR_LATEX: :options [P. Pechukas]
+#+begin_quotation
+The derivation can be made to look slightly less juvenile by introducing an obscure notation at this point
+#+end_quotation
+* CSD -- Derivation
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+*** Taylor Series
+- $f(x + ih)$ around $x$ is:
+#+begin_export latex
+\begin{align*}
+f(x + ih) = f(x) + ih\pd{f(x)}{x} + \\
+\frac{(ih)^2}{2!}\pdd{f(x)}{x} + \mathcal{O}(h^3)
+\end{align*}
+#+end_export
+
+- Ignoring higher order terms
+$$
+f(x + ih) \approx f(x) + ih\pd{f(x)}{x}
+$$
+** B block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+*** Extracting derivatives
+- The imaginary part of $f(x + ih)$ gives us:
+$$
+\text{Im}\left(f(x + ih)\right) = h\pd{f(x)}{x}
+$$
+- Thus, the derivative can be approximated as:
+$$
+\pd{f(x)}{x} \approx \frac{\text{Im}\left(f(x + ih)\right)}{h}
+$$
+* CSD -- Result
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+
+#+DOWNLOADED: screenshot @ 2024-03-03 22:41:03
+[[file:images/A_block/2024-03-03_22-41-03_screenshot.png]]
+
+** B block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+- Finite difference methods suffer from *roundoff errors* cite:riddersAccurateComputation1982,martinsReviewUnificationMethods2013
+- Figure from footfullcite:martinsReviewUnificationMethods2013
+
+
+* Comparison: AD vs. CSD
+:PROPERTIES:
+:BEAMER_opt: t
+:END:
+Formally equivalent! cite:martinsReviewUnificationMethods2013
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+*** Automatic Differentiation
+*Pros:*
+- Supports a wide range of operations
+- Better integration with modern hardware and software ecosystems
+*Cons:*
+- Computationally costly compared to direct analytical methods
+- Not universally compatible with all libraries
+** B block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+*** Complex Step Differentiation
+*Pros:*
+- Simple to implement, works with libraries (BLAS, LAPACK)
+*Cons:*
+- Can be challenging to integrate due to type restrictions
+
+* Conclusions
+:PROPERTIES:
+:BEAMER_opt: t
+:END:
+*** Takeaway
+- Make complex step differentiation popular
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+*** Ill Portents
+- Certain computations *seem efficient*
+  + Especially with custom hardware
+- Faster implementation for poorer scaling
+** B block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+*** Pitfall avoidance
+- Leverage physical intuition over brute-force parameterization
+  + ML should be used wisely, not widely
+- Revisit scaling constraints
+  + Quantify parallelism
+* Acknowledgments
+** A block :B_ignoreheading:BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.6
+:END:
+- Faculty :: Prof. Hannes Jonsson, Prof. Birgir Hrafnkelsson, Prof. Morris Riedel
+- Funding :: Rannis IRF fellowship, Quansight Labs
+- Also :: Family, Lab members, Everyone here
+
+#+ATTR_LATEX: :options [Lewis Carroll, \textit{Alice in Wonderland}]
+#+begin_quotation
+Begin at the beginning, the King said gravely, ``and go on till you come to the end: then stop.''
+#+end_quotation
+** A screenshot :BMCOL:B_example:
+:PROPERTIES:
+:BEAMER_col: 0.4
+:END:
+
+#+ATTR_LaTeX: :width 0.4\textwidth
+file:images/askjaVR3UTSIITK.png
+
+** No Column :B_ignoreheading:
+:PROPERTIES:
+:BEAMER_env: ignoreheading
+:END:
+
+* References
+:PROPERTIES:
+:BEAMER_opt: allowframebreaks, noframenumbering
+:END:
+
+** No Column :B_ignoreheading:
+:PROPERTIES:
+:BEAMER_env: ignoreheading
+:END:
+
+\printbibliography[heading=none]
+
+* End
+:PROPERTIES:
+:BEAMER_opt: standout, noframenumbering
+:END:
+#+BEGIN_EXPORT latex
+\begin{center}
+\Huge Thank you. \\
+\textbf{Questions?}
+\end{center}
+#+END_EXPORT
+
+# Local Variables:
+# before-save-hook: org-babel-execute-buffer
+# End:
