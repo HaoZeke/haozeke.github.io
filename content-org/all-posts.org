@@ -7738,7 +7738,7 @@ My primary use case is currently my ThinkPad X380, which comes with a basic [[ht
 #+caption: Basic X380 QWERTY
 file:images/keyboards/qwerty_x380.png
 *** Colemak - Layers 1 and 2
-The first mapping is a [[http://www.keyboard-layout-editor.com/#/gists/93c31b6e61608c19c26933b0a212b262][basic Colemak setup]] as shown in Fi. fig:colemak.
+The first mapping is a [[http://www.keyboard-layout-editor.com/#/gists/93c31b6e61608c19c26933b0a212b262][basic Colemak setup]] as shown in Fig. [[fig:colemak][fig:colemak]].
 
 #+name: fig:colemak
 #+caption: Basic X380 Colemak
@@ -7887,6 +7887,150 @@ The layout takes a bit of time to get used to, but it is a lot more transparent 
 [fn:morespecifics] For more details the [[https://en.wikipedia.org/wiki/Keyboard_layout][Wikipedia article on Keyboard Layouts]] is useful or this [[https://github.com/tmk/tmk_keyboard/blob/master/tmk_core/doc/keymap.md][file on the tmk keyboard]]
 [fn:whyext] [[https://forum.colemak.com/topic/2014-extend-extra-extreme/][DreymaR's Extend mappings]] might be good for QWERTY people 
 [fn:whatmetrics] The metric collection of [[https://github.com/mw8/white_keyboard_layout][Michael White]] or the [[http://mkweb.bcgsc.ca/carpalx/][CARPALX metrics]]
+
+* DONE Icelandic with Compose Keys on Linux :@personal:workflow:tools:keyboard:linux:
+CLOSED: [2024-03-08 Fri 01:35]
+:PROPERTIES:
+:EXPORT_FILE_NAME: xcompose-keys-linux-icelandic
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Colemak necessities" "Keboard management")
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+begin_quote
+Minimally expanding my existing layouts with the compose key.[fn:whatcompose]
+#+end_quote
+** Background
+Life outside Emacs can be daunting for a lot of reasons, the lack of ~auctex~
+and ~org-latex~ being a major one. Additionally, for the purposes of my
+(somewhat current) country of residence[fn:whatwhyweird], it is often useful to
+be able to type Icelandic characters without resorting to something [[https://icelandic.typeit.org/][like typeit]].
+** Compositional Choices
+I already use ~klfc~ to generate a very portable (in a Unix sense) customized
+[[https://rgoswami.me/posts/remap-keys-xkb-klfc/][VIM based Colemak binding layout]]. Some reasons why I first decided to modify the
+compose keybindings instead of extending that are[fn:whatfirst]:
+- The keys and bindings defined here aren't in use enough for me to justify
+  actually adding them to one of my levels.
+- It is slightly easier to share ~.XCompose~ files compared to the ~klfc~
+  compatible ~json~ files.
+- It also integrates nicely with [[https://github.com/HaoZeke/Dotfiles][my dotfiles]] and templates
+  + There are a few tools for concatenating fragments[fn:likewhatxcomposers]  but it seemed more
+    straightforward to use my existing ~chezmoi~ machinery
+    - The tools, especially [[https://gitlab.com/ekaunt/ext-compose/][ext-compose]], can be used as a pretty definitve source of viable mappings
+
+However, though the compose key and chords works great for TeX it isn't exactly
+ideal for language bindings, so I ended up with a hybrid, where some keys are
+placed on the dead-greek (~AltGr~) level and the rest are via multi-key (a.k.a
+~compose~) chords.
+*** Setting the Compose Key
+Modern keyboards don't often come with a dedicated ~compose~ key.  For
+simplicity I opted to choose one of the default supported rules for the this:
+#+begin_src bash
+grep "compose:" /usr/share/X11/xkb/rules/base.lst
+  compose:ralt         Right Alt
+  compose:lwin         Left Win
+  compose:lwin-altgr   3rd level of Left Win
+  compose:rwin         Right Win
+  compose:rwin-altgr   3rd level of Right Win
+  compose:menu         Menu
+  compose:menu-altgr   3rd level of Menu
+  compose:lctrl        Left Ctrl
+  compose:lctrl-altgr  3rd level of Left Ctrl
+  compose:rctrl        Right Ctrl
+  compose:rctrl-altgr  3rd level of Right Ctrl
+  compose:caps         Caps Lock
+  compose:caps-altgr   3rd level of Caps Lock
+  compose:102          The "&lt; &gt;" key
+  compose:102-altgr    3rd level of the "&lt; &gt;" key
+  compose:paus         Pause
+  compose:ins          Insert
+  compose:prsc         PrtSc
+  compose:sclk         Scroll Lock
+#+end_src
+
+I went with ~compose:ralt~ since ~compose:lalt~ isn't thing. Setting this in
+~sway~ is simple and stacks well with the other settings:
+#+begin_src bash
+# To test
+swaymsg 'input * xkb_options compose:ralt'
+#+end_src
+To set this permanently:
+#+begin_src conf
+input * {
+      xkb_options "compose:ralt"
+}
+#+end_src
+
+** Mapping Icelandic
+I used [[https://icelandic.typeit.org/][TypeIt]] as a reference, since I'm rather used to it. The mapping therefore
+proceeds in two stages, an AltGr layer, and some compose keychords.
+*** AltGr Layer
+For the base keys, I did end up first extending the AltGr layer, with the following, as
+depicted in Fig. [[fig:altgrlayeris][fig:altgrlayeris]] [fn:figwherefrom]:
+
+#+name: fig:altgrlayeris
+#+caption: AltGr layer mapping
+[[file:images/keyboards/IS_AltGr_hz.png]]
+
+Which is defined in another ~json~ file:
+#+begin_src json
+{
+  "filter": "no tmk",
+  "singletonKeys": [
+    [ "Alt_L", "AltGr" ]
+  ],
+  "shiftlevels": [ "AltGr", "Shift+AltGr" ],
+  "keys": [
+    { "pos": "A", "letters": [ "á", "Á" ] },
+    { "pos": "F", "letters": [ "þ", "Þ" ] },
+    { "pos": "G", "letters": [ "ð", "Ð" ] },
+    { "pos": "K", "letters": [ "é", "É" ] },
+    { "pos": "L", "letters": [ "í", "Í" ] },
+    { "pos": ";", "letters": [ "ó", "Ó" ] },
+    { "pos": "I", "letters": [ "ú", "Ú" ] },
+    { "pos": "O", "letters": [ "ý", "Ý" ] }
+  ]
+}
+#+end_src
+
+Installation is similar to the previous post:
+#+begin_src bash
+git clone https://github.com/39aldo39/klfc
+cd klfc
+# Kanged from the AUR https://aur.archlinux.org/packages/klfc/
+cabal v1-update
+cabal v1-install --only-dependencies --ghc-options=-dynamic --force-reinstalls
+cabal v1-configure --prefix=/usr --ghc-options=-dynamic
+cabal v1-build
+# Build layout
+./dist/build/klfc/klfc ~/.config/klfc/colemak.json ~/.config/klfc/extendVIM.json ~/.config/klfc/is_altgr_Colevim.json -o colevimIS
+# Install
+cd colevimIS/xkb/
+./install-system.sh && ./scripts/install-xcompose.sh
+#+end_src
+
+*** Compose Keychords
+It turns out there are really only two left:
+#+begin_src conf
+# ~/.XCompose
+<Multi_key> <a> <e> : "æ"
+<Multi_key> <o> <i> : "ö"
+#+end_src
+
+** Conclusions
+This is going to take a while to get used to for sure, but eventually it should
+help me reduce the time it takes me to get thoughts on (digital) paper in
+Icelandic. I will probably need to touch type on something like [[https://10fastfingers.com/typing-test/icelandic][fastfingers]] [fn:whynoothers].
+
+I had hoped to include a bunch of unicode math and other compose keychords, but
+it is annoying to have to keep track of the translations like ~*~ to ~asterisk~
+and similar[fn:sowhatnow].
+
+[fn:whatcompose] Recall that the compose key is essentially for keychords, like a dead key on steriods.
+[fn:whatwhyweird] Where the phrasing is mostly for legal purposes, as anyone dealing with immigration and taxation would know.
+[fn:likewhatxcomposers] Like [[https://github.com/np/xcompose/tree/master][xcompose]], or [[https://gitlab.com/ekaunt/ext-compose/][ext-compose]], or [[https://github.com/hugomg/xcomposer][xcomposer]], or [[https://github.com/EdAyers/xcomposegen][xcomposegen]], or even something with a GUI like [[https://github.com/QazCetelic/Composition][Composition]].
+[fn:whatfirst] I ended up extending the layout a bit for the Icelandic mappings though.
+[fn:figwherefrom] As in [[https://rgoswami.me/posts/remap-keys-xkb-klfc/][the previous post]] the images are made with [[http://www.keyboard-layout-editor.com/][keyboard-layout-editor]].
+[fn:whynoothers] [[https://www.typingclub.com/][Typingclub]] or [[https://www.typing.com/][typing.com]] or [[https://www.keybr.com/][keybr]] are favorites but don't support Icelandic yet.
+[fn:sowhatnow] Perhaps I too will try my hand at a cleaner ~xcompose~ generator.
 
 * DONE Private Github Actions without PAT :@notes:tools:github:workflow:
 CLOSED: [2020-12-23 Wed 14:34]
