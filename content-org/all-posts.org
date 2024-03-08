@@ -7896,7 +7896,7 @@ CLOSED: [2024-03-08 Fri 01:35]
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :END:
 #+begin_quote
-Minimally expanding my existing layouts with the compose key.[fn:whatcompose]
+Minimally expanding my existing layouts for supporting Icelandic orthography.[fn:whatcompose]
 #+end_quote
 ** Background
 Life outside Emacs can be daunting for a lot of reasons, the lack of ~auctex~
