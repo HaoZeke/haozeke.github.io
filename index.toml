@@ -1,6 +1,11 @@
 # We use the generated html to prevent issues involving markdown frontmatter
 
 [[input.files]]
+path = "./posts/xcompose-keys-linux-icelandic/index.html"
+url = "https://rgoswami.me/posts/xcompose-keys-linux-icelandic/"
+title = "Icelandic with Compose Keys on Linux"
+
+[[input.files]]
 path = "./snippets/manual-tests-popd-spin/index.html"
 url = "https://rgoswami.me/snippets/manual-tests-popd-spin/"
 title = "Faster manual tests with popd"
