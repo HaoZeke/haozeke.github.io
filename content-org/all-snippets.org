@@ -563,6 +563,33 @@ popd
 #+end_src
 Naturally these tools, and ~popd~ is more general and can be used for a lot more
 but this is pretty nifty too.
+** DONE Jupyter ~data~ helpers
+CLOSED: [2024-04-15 Mon 00:44]
+Often my notebooks are organized with respect to ~GITROOT~, so this snippet
+makes for an easy way to construct relative paths.
+#+begin_src python
+gitroot = Path(subprocess.run(["git", "rev-parse", "--show-toplevel"],
+                         check=True,
+                         capture_output=True).stdout.decode("utf-8").strip())
+# Usage
+exdata = gitroot / "data" / "very_important_folder"
+#+end_src
+For packages which demand string only paths, another helper can be used in tandem.
+#+begin_src python
+def getstrform(pathobj):
+    return str(pathobj.absolute())
+#+end_src
+Along with a context manager for running commands in a particular directory (kanged from my ~f2py~ utilities):
+#+begin_src python
+@contextlib.contextmanager
+def switchdir(path):
+    curpath = Path.cwd()
+    os.chdir(path)
+    try:
+        yield
+    finally:
+        os.chdir(curpath)
+#+end_src
 ** TODO Python ~precommit~ hooks
 I use [[Local ~precommit~ dependencies][local dependencies]], typically I have:
 ** TODO Useful Repository Management Tools :library:design:
@@ -835,3 +862,10 @@ I recently had to extend my ~nix~ installed ~git~ version to get ~git-svn~ and t
      #+END_SRC
 *** Conclusion
    Saving and loading breakpoints can make your debugging sessions more efficient by preserving the state of your breakpoints between sessions.
+
+** TODO Local TeX Configurations :@personal:workflow:tools:tex:
+Although ~tectonic~ has gotten better at compiling arbitrary ~TeX~ snippets, for
+my local Linux machines I still prefer to keep the possiblity of getting full
+CTAN distribution. The easiest way to update an existing setup is to wipe the
+old one and start anew. I tend to use a minimal ~.profile~ which is then coupled
+to my ~dotfiles~.
