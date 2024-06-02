@@ -19007,9 +19007,9 @@ RemainAfterExit=yes
 #+end_src
 
 Some notes on service types:
-- The server will be a forking service, since ~tmux start-server~ essentially puts
-itself in the background.
-- The clients should be oneshot, since they should complete before other
+- The server will be a ~forking~ service, since ~tmux start-server~ essentially
+  puts itself in the background.
+- The clients should be ~oneshot~, since they should complete before other
   dependent services start[fn:2]
 - We need to set remain after exit since we have a "rollback" for our service
   (~ExecStop~) and since we modify system state, i.e. we don't want to re-run
