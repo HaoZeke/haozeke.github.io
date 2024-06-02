@@ -18932,16 +18932,19 @@ theme via ~foot.ini~ ([[https://github.com/HaoZeke/Dotfiles/tree/chezmoi/dot_con
 # include = ~/.config/foot/foot.d/theme-acario-light.ini
 include = ~/.config/foot/foot.d/theme-solarized-dark-normal-brights.ini
 #+end_src
-Would entail a whole ~killall -9 foot~ song and dance which was also rather annoying.
-*** ~exec_always~ doesn't prevent process failure
+Would entail a whole ~killall -9 foot~ song and dance which was also rather
+annoying, especially under the current configuration, the ~tmux~ sessions would
+also die with the ~foot~ instances.
+*** ~exec_always~ doesn't restart failed processes
 Nor should it, as the [[https://man.archlinux.org/man/sway.5.en][documentation explicitly mentions]], it is basically like
 ~exec~ but it also gets re-executed after a reload. For something like a
 terminal server service, this isn't exactly what is required at all. Afterall:
 - It is independent of the ~sway~ configuration
 Or it really should be. On the other hand, some of the settings for the
 scratchpads were baked into the configuration. Having to reload the ~sway~
-configuration just because changes needed to be propagated is asinine, and
-finally annoyed me enough to make the switch to a real service manager.
+configuration (and redo the ~tmux~ state) just because aesthetic changes needed
+to be propagated is asinine, and finally annoyed me enough to make the switch to
+a real service manager.
 ** Using ~systemd~ to offload management
 The solution is to abstract the configuration for the main and helper
 scratchpads out of the configuration and also offload management of the process
@@ -18959,7 +18962,7 @@ systemctl --user reload-or-restart foot-server.service
 systemctl --user status foot-server.service
 #+end_src
 There are a few common stanzas which are needed for a minimal service file:
-#+begin_src conf
+#+begin_src systemd
 [Unit]
 Description=
 [Service]
@@ -18969,7 +18972,7 @@ Restart=on-failure
 WantedBy=default.target
 #+end_src
 With much more extensive documentation found in the ~man~ pages (or [[https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html][online, here]]).
-*** Server
+*** Terminal Server
 The ordering of the services are also fairly obvious, both the scratchpads (and
 indeed, the sway terminals) need one primary ~foot-server~ instance to be
 running at all times. The easiest approach is to reuse ~XDG_RUNTIME_DIR~ which
@@ -18989,6 +18992,28 @@ specify they require ~foot-server.service~ and will be run after
 /usr/bin/footclient --server-socket=/run/user/%U/foot-server.sock --app-id="mS" -e tmux new -A -s mS
 #+end_src
 The full configurations are reproduced in [[Complete configurations\[fn:1\]][the next section]].
+*** ~tmux~ sessions
+Additionally, since the goal is to reload ~foot~ often via simple ~killall -9
+foot~ to apply new configurations, it makes sense to add a ~tmux~ server into
+the mix.
+
+For this we need to consider some additional options:
+
+#+begin_src systemd
+[Service]
+Type= # simple (default), forking, oneshot
+ExecStop=
+RemainAfterExit=yes
+#+end_src
+
+Some notes on service types:
+- The server will be a forking service, since ~tmux start-server~ essentially puts
+itself in the background.
+- The clients should be oneshot, since they should complete before other
+  dependent services start[fn:2]
+- We need to set remain after exit since we have a "rollback" for our service
+  (~ExecStop~) and since we modify system state, i.e. we don't want to re-run
+  the service actions without stopping[fn:3]
 *** False starts
 I thought I wanted to use sockets ([[https://www.freedesktop.org/software/systemd/man/latest/systemd.socket.html][online man-page]]), but for a constantly
 running set of terminals there is very little point. On my machine, the ~foot~
@@ -19030,6 +19055,7 @@ With the bindings changed to point to the same socket as the process:
 set $term footclient --server-socket=$XDG_RUNTIME_DIR/foot-server.sock
 #+end_src
 *** Systemd services
+**** ~foot~ setup
 #+begin_src systemd
 [Unit]
 Description=Foot terminal server
@@ -19045,8 +19071,8 @@ WantedBy=default.target
 #+begin_src systemd
 [Unit]
 Description=Foot client for tmux session mS
-After=foot-server.service
-Requires=foot-server.service
+After=foot-server.service tmux-session-ms.service
+Requires=foot-server.service tmux-session-ms.service
 
 [Service]
 ExecStart=/usr/bin/footclient --server-socket=/run/user/%U/foot-server.sock --app-id="mS" -e tmux new -A -s mS
@@ -19059,8 +19085,8 @@ WantedBy=default.target
 #+begin_src systemd
 [Unit]
 Description=Foot client for tmux session subFloat
-After=foot-server.service
-Requires=foot-server.service
+After=foot-server.service tmux-session-subfloat.service
+Requires=foot-server.service tmux-session-subfloat.service
 
 [Service]
 ExecStart=/usr/bin/footclient --server-socket=/run/user/%U/foot-server.sock --app-id="subFloat" -e tmux new -A -s subFloat
@@ -19070,6 +19096,53 @@ Restart=on-failure
 WantedBy=default.target
 #+end_src
 
+**** ~tmux~ setup
+#+begin_src systemd
+[Unit]
+Description=Tmux server
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/tmux start-server
+ExecStop=/usr/bin/tmux kill-server
+RemainAfterExit=yes
+
+[Install]
+WantedBy=default.target
+#+end_src
+
+#+begin_src systemd
+[Unit]
+Description=Tmux session mS
+After=tmux-server.service
+Requires=tmux-server.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/tmux new-session -s mS -d
+ExecStop=/usr/bin/tmux kill-session -t mS
+
+[Install]
+WantedBy=default.target
+#+end_src
+
+#+begin_src systemd
+[Unit]
+Description=Tmux session subFloat
+After=tmux-server.service
+Requires=tmux-server.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/tmux new-session -s subFloat -d
+ExecStop=/usr/bin/tmux kill-session -t subFloat
+
+[Install]
+WantedBy=default.target
+#+end_src
 ** Conclusions
 Perhaps on modern machines, with many gigabytes of RAM, there is no real benefit
 to this approach, however, given that I use a lot of terminals and don't always
@@ -19079,13 +19152,16 @@ configuration updates to ~foot~, since all instances use the same server.
 Moreover, this setup greatly facilitates changing themes, a feature that is
 particularly useful for those who work in varying lighting conditions, like
 moving between indoor and outdoor environments. For people who consistently work
-in the same environment, this might not be a significant advantage.
+in the same environment, this might not be a significant advantage. However, the
+persistent ~tmux~ services is likely to be useful in any case.
 
 Nevertheless, the minor annoyances have been quelled, and  I had never really
 worked with ~systemd~ services before barring a few backup setups, so this was
 pretty gratifying.
 
 [fn:1] for now, updates will probably appear only on [[https://github.com/HaoZeke/Dotfiles/tree/chezmoi/][my Dotfiles repo]]
+[fn:2] There is an excellent visual explanation of the differences b/w [[info:][simple and oneshot types here]] by Thomas Stringer
+[fn:3] Aside from the [[https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html][official documentation]], [[https://stackoverflow.com/a/38377069/1895378][this SO answer]] is quite nice
 * TODO A gentle introduction to high throughput calculations :@notes:hpc:ramblings:chem:
 :PROPERTIES:
 :EXPORT_FILE_NAME: intro-highthrough-calc
@@ -19399,6 +19475,7 @@ is the following:
 ~chezmoi~ has enough fine grained integrations with password management tools to make it feasible to skip block encryption.
 ** Tools
 I personally [[https://enpass.io/][use Enpass]] for handling my passwords.
+Also ~pass~.
 * Important Note :ignoreheading:ignore:
 # ALWAYS at the bottom, to ensure fresh builds do not break
 * DONE About
