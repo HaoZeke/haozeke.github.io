@@ -18,3 +18,20 @@
 :END:
 A reflective collection of posts on weaving ~orgmode~ into most computational
 applications.
+
+* DONE Wayland Wayfinders
+:PROPERTIES:
+:EXPORT_FILE_NAME: _index
+:EXPORT_HUGO_SECTION: series/wayland-wayfinders
+:END:
+A series of posts focused on leveraging Wayland with sway for efficient setups,
+optimized resource usage, and enhanced theming.
+
+
+* DONE Keyboard Management
+:PROPERTIES:
+:EXPORT_FILE_NAME: _index
+:EXPORT_HUGO_SECTION: series/keyboard-management
+:END:
+A series of posts focused on efficient keyboard setups, remapping keys, and
+enhancing productivity across different operating systems.

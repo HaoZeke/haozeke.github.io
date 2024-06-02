@@ -15699,7 +15699,7 @@ CLOSED: [2021-12-24 Fri 18:13]
 :PROPERTIES:
 :EXPORT_FILE_NAME: revisiting-wayland-2021-archlinux
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
-:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("ArchLinux Chronoscope")
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("ArchLinux Chronoscope" "Wayland Wayfinders")
 :END:
 #+begin_quote
 Ruminating on ~wayland~ and ~sway~ for daily use with ArchLinux
@@ -18845,6 +18845,7 @@ CLOSED: [2024-06-02 Sun 15:00]
 :PROPERTIES:
 :EXPORT_FILE_NAME: lowering-resource-usage-foot-systemd
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Wayland Wayfinders")
 :END:
 #+begin_quote
 Melding ~systemd~ and ~foot~ for reduced memory consumption in ~sway~
