@@ -18935,7 +18935,7 @@ include = ~/.config/foot/foot.d/theme-solarized-dark-normal-brights.ini
 Would entail a whole ~killall -9 foot~ song and dance which was also rather annoying.
 *** ~exec_always~ doesn't prevent process failure
 Nor should it, as the [[https://man.archlinux.org/man/sway.5.en][documentation explicitly mentions]], it is basically like
-~exec~ but it also gets re-executated after a reload. For something like a
+~exec~ but it also gets re-executed after a reload. For something like a
 terminal server service, this isn't exactly what is required at all. Afterall:
 - It is independent of the ~sway~ configuration
 Or it really should be. On the other hand, some of the settings for the
