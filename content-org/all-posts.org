@@ -18840,6 +18840,251 @@ zenity --version
 3.44.2
 #+end_src
 
+* DONE Lowering resource usage with ~foot~ and ~systemd~ :@notes:workflow:tools:
+CLOSED: [2024-06-02 Sun 15:00]
+:PROPERTIES:
+:EXPORT_FILE_NAME: lowering-resource-usage-foot-systemd
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+begin_quote
+Melding ~systemd~ and ~foot~ for reduced memory consumption in ~sway~
+#+end_quote
+** Background
+Since I often work in strong sunlight, I often want to reconfigure my terminal
+to use a light or a dark scheme depending on the time of day. In the process, I
+decided to fiddle around with custom ~systemd~ targets, since ~sway~ isn't
+really good at managing long running processes like my terminal (~foot~) server.
+** Starting point
+Some years ago I ended up with a rather ad-hoc scratchpad configuration,
+reproduced for clarity ([[https://github.com/HaoZeke/Dotfiles/tree/chezmoi/dot_config/sway][current config here]]):
+#+begin_src conf
+# The main scratchpad in the upper left
+for_window [app_id="mS"] {
+    move scratchpad
+    move position 0 0
+    resize set 50 ppt 35 ppt
+    floating enable
+    border pixel 1
+}
+bindsym F1 [app_id="mS"] scratchpad show; move position 0 0, resize set 50 ppt 35 ppt
+exec_always foot --app-id="mS" -e tmux new -A -s mS
+
+# The secondary scratchpad in the center
+for_window [app_id="subFloat"] {
+    move scratchpad
+    move position center
+    floating enable
+    border pixel 1
+}
+bindsym F5 exec swaymsg [app_id="subFloat"] scratchpad show || exec foot --app-id="subFloat" -e tmux new -A -s subFloat
+#+end_src
+
+Which essentially boils down to:
+- Put a scratchpad in the upper left bound to ~F1~ and resize it to a long thin window
+  + Attach or start a ~tmux~ session here called ~mS~
+- Put another scratchpad in the center, bound to ~F5~
+  + Attach or start a ~tmux~ session called ~subFloat~
+
+When everything works (e.g. at start-up) it essentially leads to a scratchpad
+setup like so:
+
+#+DOWNLOADED: screenshot @ 2024-06-02 14:10:26
+[[file:images/Background/2024-06-02_14-10-26_screenshot.png]]
+
+Additionally, I also have some additional setp for managing terminals:
+#+begin_src conf
+set $term_server foot -s
+set $term footclient
+exec_always $term_server
+bindsym $mod+Return exec $term
+#+end_src
+
+Which ideally starts a ~foot~ server, and subsequently spawns ~footclient~
+instances on demand.
+
+** Annoyances
+This setup served me quite well, for several years I had no major issues
+whatsover, though there were minor annoyances, some of which eventually broke
+the camel's back.
+*** Memory consumption
+The problem is perhaps immediately evident in the narrowed down specification:
+#+begin_src conf
+exec_always foot --app-id="mS" -e tmux new -A -s mS
+# ...
+exec_always foot --app-id="subFloat" -e tmux new -A -s subFloat
+#+end_src
+Right of the bat, it is rather evident that this configuration will spawn two
+instances of ~foot~, one for each scratchpad.
+
+#+DOWNLOADED: screenshot @ 2024-06-02 14:15:22
+#+CAPTION: Snapshot of memory consumption (from ~btop~), clients take around 10x less memory
+[[file:images/Background/2024-06-02_14-15-22_screenshot.png]]
+
+On its own, given that I mostly use relatively high-end machines, this was not
+really a problem, more an aesthetic annoyance.
+*** Applying ~foot~ configurations
+If the main (~sway~) server is restarted to apply a configuration update it will
+not propagate to the scratchpad unless those are also restarted, and ~sway~
+isn't meant to handle long running processes. Essentially, applying a change of
+theme via ~foot.ini~ ([[https://github.com/HaoZeke/Dotfiles/tree/chezmoi/dot_config/foot][crrent config here]]):
+#+begin_src conf
+# include = ~/.config/foot/foot.d/theme-acario-light.ini
+include = ~/.config/foot/foot.d/theme-solarized-dark-normal-brights.ini
+#+end_src
+Would entail a whole ~killall -9 foot~ song and dance which was also rather annoying.
+*** ~exec_always~ doesn't prevent process failure
+Nor should it, as the [[https://man.archlinux.org/man/sway.5.en][documentation explicitly mentions]], it is basically like
+~exec~ but it also gets re-executated after a reload. For something like a
+terminal server service, this isn't exactly what is required at all. Afterall:
+- It is independent of the ~sway~ configuration
+Or it really should be. On the other hand, some of the settings for the
+scratchpads were baked into the configuration. Having to reload the ~sway~
+configuration just because changes needed to be propagated is asinine, and
+finally annoyed me enough to make the switch to a real service manager.
+** Using ~systemd~ to offload management
+The solution is to abstract the configuration for the main and helper
+scratchpads out of the configuration and also offload management of the process
+lifetime to ~systemd~. User configurations for ~systemd~ live in
+~$HOME/.config/systemd/user~ and require some standard commands for interacting
+with them:
+#+begin_src bash
+# Reload user units, every time files are changed
+systemctl --user daemon-reload
+# Start and enable a service
+systemctl --user --now foot-server.service
+# Reload or restart, also when files are changed
+systemctl --user reload-or-restart foot-server.service
+# Check the status
+systemctl --user status foot-server.service
+#+end_src
+There are a few common stanzas which are needed for a minimal service file:
+#+begin_src conf
+[Unit]
+Description=
+[Service]
+ExecStart=
+Restart=on-failure
+[Install]
+WantedBy=default.target
+#+end_src
+With much more extensive documentation found in the ~man~ pages (or [[https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html][online, here]]).
+*** Server
+The ordering of the services are also fairly obvious, both the scratchpads (and
+indeed, the sway terminals) need one primary ~foot-server~ instance to be
+running at all times. The easiest approach is to reuse ~XDG_RUNTIME_DIR~ which
+is typically the same as ~/run/user/$(id -u $USER)/~, so the server runs via:
+#+begin_src bash
+/usr/bin/foot --server=/run/user/%U/foot-server.sock
+#+end_src
+Since ~foot -s~ doesn't fork itself, the default ~Type=simple~ will suffice.
+
+Additionally, we will need to ensure that all the ~footclient~ instances we call
+use the same server socket (as shown in [[Sway Scratchpads and Config][Sway Scratchpads and Config]]).
+*** Scratchpad clients
+The clients themselves are equally simple, except that the ~[UNIT]~ stanza will
+specify they require ~foot-server.service~ and will be run after
+~foot-server.service~.
+#+begin_src bash
+/usr/bin/footclient --server-socket=/run/user/%U/foot-server.sock --app-id="mS" -e tmux new -A -s mS
+#+end_src
+The full configurations are reproduced in [[Complete configurations\[fn:1\]][the next section]].
+*** False starts
+I thought I wanted to use sockets ([[https://www.freedesktop.org/software/systemd/man/latest/systemd.socket.html][online man-page]]), but for a constantly
+running set of terminals there is very little point. On my machine, the ~foot~
+server takes around 20MB-31MB while each client instance is below 1.5MB, so
+having a a socket for either the server or the clients made little to no sense.
+** Complete configurations[fn:1]
+#+DOWNLOADED: screenshot @ 2024-06-02 14:38:48
+#+CAPTION: Final single server many client view (via ~btop~)
+[[file:images/Conclusions/2024-06-02_14-38-48_screenshot.png]]
+*** Sway Scratchpads and Config
+The final ~sway~ scratchpad setup is essentially:
+#+begin_src conf
+# Settings
+set {
+ $ms_pos border none, move position 0 0, resize set 50 ppt 35 ppt
+ $sf_pos border pixel 1, move position center
+ $start_ms systemctl --user start foot-ms.service
+ $start_sf systemctl --user start foot-subfloat.service
+}
+# The main scratchpad in the upper left
+for_window [app_id="mS"] {
+    move to scratchpad
+    floating enable
+    $ms_pos
+}
+bindsym F1 exec swaymsg [app_id="mS"] scratchpad show || $start_ms, $ms_pos
+
+# The secondary scratchpad in the center
+for_window [app_id="subFloat"] {
+    move to scratchpad
+    floating enable
+    border pixel 1
+}
+bindsym F5 exec swaymsg [app_id="subFloat"] scratchpad show || $start_sf, $sf_pos
+#+end_src
+With the bindings changed to point to the same socket as the process:
+#+begin_src conf
+# Remove exec_always $term_server, infact get rid of it all together, since systemd handles it now
+set $term footclient --server-socket=$XDG_RUNTIME_DIR/foot-server.sock
+#+end_src
+*** Systemd services
+#+begin_src systemd
+[Unit]
+Description=Foot terminal server
+
+[Service]
+ExecStart=/usr/bin/foot --server=/run/user/%U/foot-server.sock
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
+#+end_src
+
+#+begin_src systemd
+[Unit]
+Description=Foot client for tmux session mS
+After=foot-server.service
+Requires=foot-server.service
+
+[Service]
+ExecStart=/usr/bin/footclient --server-socket=/run/user/%U/foot-server.sock --app-id="mS" -e tmux new -A -s mS
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
+#+end_src
+
+#+begin_src systemd
+[Unit]
+Description=Foot client for tmux session subFloat
+After=foot-server.service
+Requires=foot-server.service
+
+[Service]
+ExecStart=/usr/bin/footclient --server-socket=/run/user/%U/foot-server.sock --app-id="subFloat" -e tmux new -A -s subFloat
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
+#+end_src
+
+** Conclusions
+Perhaps on modern machines, with many gigabytes of RAM, there is no real benefit
+to this approach, however, given that I use a lot of terminals and don't always
+reach for ~tmux~, for me this works out very nicely. It also helps handling
+configuration updates to ~foot~, since all instances use the same server.
+
+Moreover, this setup greatly facilitates changing themes, a feature that is
+particularly useful for those who work in varying lighting conditions, like
+moving between indoor and outdoor environments. For people who consistently work
+in the same environment, this might not be a significant advantage.
+
+Nevertheless, the minor annoyances have been quelled, and  I had never really
+worked with ~systemd~ services before barring a few backup setups, so this was
+pretty gratifying.
+
+[fn:1] for now, updates will probably appear only on [[https://github.com/HaoZeke/Dotfiles/tree/chezmoi/][my Dotfiles repo]]
 * TODO A gentle introduction to high throughput calculations :@notes:hpc:ramblings:chem:
 :PROPERTIES:
 :EXPORT_FILE_NAME: intro-highthrough-calc
