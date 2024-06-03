@@ -18992,11 +18992,12 @@ specify they require ~foot-server.service~ and will be run after
 #+begin_src bash
 /usr/bin/footclient --server-socket=/run/user/%U/foot-server.sock --app-id="mS" -e tmux new -A -s mS
 #+end_src
-The full configurations are reproduced in [[Complete configurations\[fn:1\]][the next section]].
+The full configurations are reproduced in the next section.
 *** ~tmux~ sessions
 Additionally, since the goal is to reload ~foot~ often via simple ~killall -9
 foot~ to apply new configurations, it makes sense to add a ~tmux~ server into
-the mix.
+the mix, which will also be part of the requires and after keys for the
+scratchpad clients.
 
 For this we need to consider some additional options:
 
