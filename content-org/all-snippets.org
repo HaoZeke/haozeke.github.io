@@ -614,10 +614,17 @@ scp restream.arm.static root@$(pass REMARKABLE_IP):/home/root/restream
 ssh root@$(pass REMARKABLE_IP) 'chmod +x /home/root/restream'
 #+end_src
 
-With this, finally getting the shared window is a snap:
+With this, finally getting the shared window is a snap, as seen in Figure [[fig:remarkSSHView]]:
 #+begin_src sh
 REMARKABLE_IP=$(pass REMARKABLE_IP) reStream -p
 #+end_src
+
+#+NAME: fig:remarkSSHView
+#+LABEL: fig:remarkSSHView
+#+DOWNLOADED: screenshot @ 2024-06-15 21:00:21
+#+CAPTION: Success!!! No clue what I was scribbling though..
+[[file:images/reMarkable_Screen_Sharing/2024-06-15_21-00-21_screenshot.png]]
+
 
 [fn:alldots] All my dotfiles [[https://github.com/HaoZeke/Dotfiles/tree/chezmoi][are here]]
 [fn:notoltec] Unfortunately, ~toltec~ doesn't support OS versions 3.x and up... [[https://github.com/toltec-dev/toltec/discussions/673][yet]]
