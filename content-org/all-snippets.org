@@ -592,14 +592,14 @@ def switchdir(path):
 #+end_src
 ** DONE reMarkable Screen Sharing :devenv:cmdline:ssh:collab:
 CLOSED: [2024-06-15 Sat 20:55]
-Basically followed along the directions for [[https://github.com/rien/reStream?tab=readme-ov-file][reStream]] (~toltec~ doesn't support OS versions 3.x and up).
+Basically followed along the directions for [[https://github.com/rien/reStream?tab=readme-ov-file][reStream]] [fn:notoltec].
 - Got the SSH root password and IP from ~Settings > Help > Copyrights and licenses > General information (scroll to the bottom)~
 - Added the IP to the pass store via ~pass insert REMARKABLE_IP~
   + Queried via ~pass REMARKABLE_IP~
 - Added an ~ecdsa~ key, ~ssh-keygen -t ecdsa -C "MYMAIL" -f ~/.ssh/remarkable~
   + ~ssh-copy-id -i ~/.ssh/remarkable root@$(pass REMARKABLE_IP)~
 
-The only slight point of deviation was using ~chezmoi~ to grab the local script via ([[https://github.com/HaoZeke/Dotfiles/tree/chezmoi][all dotfiles]]):
+The only slight point of deviation was using ~chezmoi~ to grab the local script [fn:alldots]:
 #+begin_src sh
 {{ if ne .chezmoi.os "windows" -}}
 zinit ice from"gh-r" as"program" bpick"*.sh" mv"restream.sh -> reStream"
@@ -619,6 +619,8 @@ With this, finally getting the shared window is a snap:
 REMARKABLE_IP=$(pass REMARKABLE_IP) reStream -p
 #+end_src
 
+[fn:alldots] All my dotfiles [[https://github.com/HaoZeke/Dotfiles/tree/chezmoi][are here]]
+[fn:notoltec] Unfortunately, ~toltec~ doesn't support OS versions 3.x and up... [[https://github.com/toltec-dev/toltec/discussions/673][yet]]
 ** TODO Python ~precommit~ hooks
 I use [[Local ~precommit~ dependencies][local dependencies]], typically I have:
 ** TODO Useful Repository Management Tools :library:design:
