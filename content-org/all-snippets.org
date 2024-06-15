@@ -590,6 +590,35 @@ def switchdir(path):
     finally:
         os.chdir(curpath)
 #+end_src
+** DONE reMarkable Screen Sharing :devenv:cmdline:ssh:collab:
+CLOSED: [2024-06-15 Sat 20:55]
+Basically followed along the directions for [[https://github.com/rien/reStream?tab=readme-ov-file][reStream]] (~toltec~ doesn't support OS versions 3.x and up).
+- Got the SSH root password and IP from ~Settings > Help > Copyrights and licenses > General information (scroll to the bottom)~
+- Added the IP to the pass store via ~pass insert REMARKABLE_IP~
+  + Queried via ~pass REMARKABLE_IP~
+- Added an ~ecdsa~ key, ~ssh-keygen -t ecdsa -C "MYMAIL" -f ~/.ssh/remarkable~
+  + ~ssh-copy-id -i ~/.ssh/remarkable root@$(pass REMARKABLE_IP)~
+
+The only slight point of deviation was using ~chezmoi~ to grab the local script via ([[https://github.com/HaoZeke/Dotfiles/tree/chezmoi][all dotfiles]]):
+#+begin_src sh
+{{ if ne .chezmoi.os "windows" -}}
+zinit ice from"gh-r" as"program" bpick"*.sh" mv"restream.sh -> reStream"
+zinit light rien/reStream
+{{ end -}}
+#+end_src
+
+Setting the actual binary on the reMarkable was also by the book (very thorough
+instructions):
+#+begin_src sh
+scp restream.arm.static root@$(pass REMARKABLE_IP):/home/root/restream
+ssh root@$(pass REMARKABLE_IP) 'chmod +x /home/root/restream'
+#+end_src
+
+With this, finally getting the shared window is a snap:
+#+begin_src sh
+REMARKABLE_IP=$(pass REMARKABLE_IP) reStream -p
+#+end_src
+
 ** TODO Python ~precommit~ hooks
 I use [[Local ~precommit~ dependencies][local dependencies]], typically I have:
 ** TODO Useful Repository Management Tools :library:design:
@@ -863,6 +892,26 @@ I recently had to extend my ~nix~ installed ~git~ version to get ~git-svn~ and t
 *** Conclusion
    Saving and loading breakpoints can make your debugging sessions more efficient by preserving the state of your breakpoints between sessions.
 
+** TODO Using ~aria2c~
+Typically:
+#+begin_src bash
+# max-concurrent-downloads is -j
+# max-connection-per-server is -x
+# force-sequential pipelines downloads
+# auto-file-renaming false prevents overwriting if .aria2 files are found
+aria2c --input-file links.txt \
+    --max-concurrent-downloads 16 \
+    --force-sequential false \
+    --max-connection-per-server 16 \
+    --auto-file-renaming=false \
+    --continue=true
+#+end_src
+
+Also to make sure everything is on the level:
+#+begin_src bash
+# Make sure no incomplete files are left behind
+ag -g aria2
+#+end_src
 ** TODO Local TeX Configurations :@personal:workflow:tools:tex:
 Although ~tectonic~ has gotten better at compiling arbitrary ~TeX~ snippets, for
 my local Linux machines I still prefer to keep the possiblity of getting full
