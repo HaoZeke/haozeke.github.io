@@ -723,13 +723,16 @@ MAINT,BUG,CI: Explicitly take commit message [winci f2py]
 This allows for a "per-workflow" level of granularity without sacrificing the
 integritity of the ~git log~.
 
-**** FAQ
+*** FAQ
 - What about ~[skip ci]~ ? :: This would skip everything indiscriminately,
   including "trigger on ~[]~" rules like the ~[winci f2py]~ example
 - What about ~act~ ? :: Doesn't work well for Windows runs, especially if a
   local Windows box is not present.
 - What about ~github.event.head_commit.message~ ? :: Not always present,
   especially on pull requests.
+**** Other providers
+- Azure :: Allows skips anywhere in the commit message
+- Cirrus :: Skips only if on the [[https://cirrus-ci.org/guide/writing-tasks/#conditional-task-execution][first or last line]]
 ** TODO Python ~precommit~ hooks
 I use [[Local ~precommit~ dependencies][local dependencies]], typically I have:
 ** TODO Useful Repository Management Tools :library:design:
@@ -971,6 +974,17 @@ I recently had to extend my ~nix~ installed ~git~ version to get ~git-svn~ and t
 #+end_src
 
 
+** TODO Sanitizers in ArchLinux
+I needed to set:
+#+begin_src bash
+export DEBUGINFOD_URLS="https://debuginfod.archlinux.org"
+#+end_src
+Which apparently was supposed to be set by default but wasn't.
+** TODO ~git~ tips
+1. Open the first unmerged file in ~emacsclient~
+#+begin_src bash
+emacsclient -n $(git diff --name-only --diff-filter=U | head -n 1)
+#+end_src
 ** TODO GDB Tips
 *** Introduction
    In GDB, you can save the breakpoints to a file and then later load them back into another debugging session. This can be very useful if you have a set of breakpoints that you use frequently.
@@ -1022,6 +1036,12 @@ Also to make sure everything is on the level:
 #+begin_src bash
 # Make sure no incomplete files are left behind
 ag -g aria2
+#+end_src
+** TODO Imagemagick tricks
+Sometimes a dark theme compatible variant of an existing logo is required.
+#+begin_src bash
+convert logo_v2.png -fuzz 20% -transparent white moltr.png
+convert moltr.png -channel RGB -negate output.png
 #+end_src
 ** TODO Local TeX Configurations :@personal:workflow:tools:tex:
 Although ~tectonic~ has gotten better at compiling arbitrary ~TeX~ snippets, for
