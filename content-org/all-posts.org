@@ -8386,6 +8386,7 @@ CLOSED: [2021-02-20 Sat 01:41]
 :PROPERTIES:
 :EXPORT_FILE_NAME: my-life-in-eink
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Modern reading")
 :END:
 #+begin_quote
 Collection of odds and ends relating to e-readers including personal reminisces
@@ -8523,7 +8524,11 @@ TOC editing is still rather janky; but this is also because the OCR process is s
 - Good metadata collection :: Nothing beats rich metadata, and with third party plugins, all the best content providers can be leveraged for blurbs; plus most purchased books come with metadata which ~calibre~ can read
 It isn't perfect, there are far better [[https://opds.io/][OPDS (Open Publication Distribution System)]] servers like the fantastic [[https://github.com/seblucas/cops][COPS (Calibre OPDS)]] project, and there have been [[https://anarc.at/software/desktop/calibre/][some security concerns in the past]], but it is really usable and is [[https://github.com/kovidgoyal/calibre][under active development]]; plus it has a [[https://kovidgoyal.net/][fun developer]]. I also personally find the file conversion lacking, compared to ~k2pdfopt~, but as a library management system it is really good.
 *** Zotero Sync
-Calibre provides a handy [[https://www.mobileread.com/forums/showthread.php?p=3339191#poststop][ZMI (Zotero Metadata Importer) plugin]] which allows for exported papers to be imported into ~calibre~ and from then into the e-reader as expected. Combined with the folder mounts facilitated by ~calibre~ this allows for a painless way to ensure a quick export; optimize; sync; read and delete workflow.
+Calibre provides a handy [[https://www.mobileread.com/forums/showthread.php?p=3339191#poststop][ZMI (Zotero Metadata Importer) plugin]] which allows for
+exported papers to be imported into ~calibre~ and from then into the e-reader as
+expected. Combined with the folder mounts facilitated by ~calibre~ this allows
+for a painless way to ensure a quick export; optimize; sync; read and delete
+workflow.
 *** Koreader
 Koreader is probably the best thing to happen to e-ink devices since sliced bread. It replaces the need to use any cables with an e-reader; since newer versions have a nice SSH server, and can also update itself. Since this is mostly used as is; and all the information required is on the [[https://github.com/koreader/koreader/wiki][Github Wiki]], there's not much else to say here.
 
@@ -17537,6 +17542,7 @@ CLOSED: [2023-06-26 Mon 21:34]
 :PROPERTIES:
 :EXPORT_FILE_NAME: managing-scanned-books
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Modern reading")
 :END:
 #+begin_quote
 Where I consider digitizing colored content.
@@ -18672,6 +18678,7 @@ my own needs, it is nicer to have separate posts for separate languages.
 CLOSED: [2023-08-19 Sat 13:33]
 :PROPERTIES:
 :EXPORT_FILE_NAME: managing-cloud-based-calibre
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Modern reading")
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :END:
 #+begin_quote
@@ -18824,6 +18831,18 @@ directory attachments works really well[fn:1].
 #+DOWNLOADED: screenshot @ 2024-07-06 12:46:20
 #+CAPTION: Zotero settings for linking files consistently
 [[file:images/Integrating_with_~zotero~/2024-07-06_12-46-20_screenshot.png]]
+
+Some reasons to do this:
+
+- The main goal of this is to enable keeping notes per-book, which Calibre
+  doesn't support
+  + Also to get easy access without duplicated files on the backing WebDAV
+    service (pCloud in my case)
+- Allows easier, more natural ~bibtex~ handling in Zotero, without going through
+  a sync plugin like [[https://forums.zotero.org/discussion/60898/calibre-zotero-metadata-importer-plug-in][ZMI]]
+
+However:
+- Do *not* rename from Zotero, this will break integration with Calibre
 
 ** Conclusions
 With this setup, it is now fairly trivial to sync libraries across devices, and
