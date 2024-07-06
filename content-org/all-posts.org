@@ -18816,6 +18816,15 @@ RCLONE_PASSWORD_COMMAND='secret-tool lookup service "rclone" user "calisync"'
 foot -- sh -c "rclone sync -P ~/CalibreLibs/Synced pCloud:/Calibre --ask-password=false --password-command=\"$RCLONE_PASSWORD_COMMAND\""
 zenity --notification --text="Sync completed"
 #+end_src
+** Integrating with ~zotero~
+I've dicussed working with [[My Life in E-ink][Zotero before]], but when working with cloud synced
+calibre libraries, to prevent duplication of files, relative linking of base
+directory attachments works really well[fn:1].
+
+#+DOWNLOADED: screenshot @ 2024-07-06 12:46:20
+#+CAPTION: Zotero settings for linking files consistently
+[[file:images/Integrating_with_~zotero~/2024-07-06_12-46-20_screenshot.png]]
+
 ** Conclusions
 With this setup, it is now fairly trivial to sync libraries across devices, and
 thus, to take advantage of suitably large storage devices and local ~calibre~
@@ -18840,6 +18849,7 @@ zenity --version
 3.44.2
 #+end_src
 
+[fn:1] As first [[https://blogs.princeton.edu/librarian/2013/05/organizing-my-research-life-updated/][noted here]] by Wayne Bivens-Tatum
 * DONE Lowering resource usage with ~foot~ and ~systemd~ :@notes:workflow:tools:
 CLOSED: [2024-06-02 Sun 15:00]
 :PROPERTIES:
