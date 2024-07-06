@@ -19174,6 +19174,40 @@ pretty gratifying.
 [fn:1] for now, updates will probably appear only on [[https://github.com/HaoZeke/Dotfiles/tree/chezmoi/][my Dotfiles repo]]
 [fn:2] There is an excellent visual explanation of the differences b/w [[info:][simple and oneshot types here]] by Thomas Stringer
 [fn:3] Aside from the [[https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html][official documentation]], [[https://stackoverflow.com/a/38377069/1895378][this SO answer]] is quite nice
+* TODO HPC Usage Tricks
+** Background
+Highly personalized set of tasks and workflows I often reach for.
+** Persist with ~tmux~
+The idea is to have a ready-to-use persistent setup on your login node. This is
+useful.
+** Job management
+*** ~tmux~ permissions
+Occasionally the following may manifest.
+#+begin_src bash
+tmux new -s "blah"
+# Some error about a missing directory
+mkdir $WHATEVER_MISSING
+# Later
+tmux attach
+directory /tmp/tmux-20255 has unsafe permissions
+#+end_src
+This is a sign of poor system management. Report it to your admins and also
+circumvent it via:
+#+begin_src bash
+chmod -R 700 /tmp/tmux-20255
+#+end_src
+Since it is in ~/tmp/~ it should be writable.
+** Interactivity
+*** Analysis
+I tend to have a simple ~conda~ based setup for this.
+#+begin_src bash
+micromamba create -n do_jup -c conda-forge
+micromamba activate do_jup
+micromamba install jupytext jupyterlab
+#+end_src
+Ideally of course, this should be project scoped, and handled in a ~pixi~
+configuration perhaps, however, without going into the "system wide" ~pixi
+global~ setup and still having a modicum of dependency management is nice.
 * TODO A gentle introduction to high throughput calculations :@notes:hpc:ramblings:chem:
 :PROPERTIES:
 :EXPORT_FILE_NAME: intro-highthrough-calc
@@ -19763,6 +19797,9 @@ I've been sitting in on these for a while thanks to [[https://www.math.ias.edu/~
 
 * COMMENT Local Variables
 This file is too large to be auto-exported on each save.
+
+* Footnotes
+
 # Local Variables:
 # eval: (org-hugo-auto-export-mode -1)
 # End:
