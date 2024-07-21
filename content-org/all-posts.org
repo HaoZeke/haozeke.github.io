@@ -19549,6 +19549,99 @@ Naturally this is applicable across all domains.
 The key reason to decouple a MongoDB instance from existing HPC architecture is
 to be more robust to changes in clusters. Also, it makes it easier to run on
 multiple HPC centers without repeating the setup steps.
+* DONE ~xonsh~ Excursions :@notes:ramblings:tools:
+CLOSED: [2024-07-21 Sun 23:56]
+** Background
+Recently I found myself writing a bunch of search and replace one-liners.
+#+begin_src bash
+export FROM='Matrix3d'; export TO='Matrix3S'; ag -l $FROM | xargs -I {} sd $FROM $TO {}
+#+end_src
+Which works, especially since both ~ag~ and ~sd~ are rather good, but it is still:
+- Slightly non-ergonomic to type
+- Difficult to keep track of
+  + Modulo dumping everything in a ~.sh~ file
+These reminded me of the rich set of alternate shells[fn:1].
+** Reaching for ~xonsh~
+Although ~nushell~, ~elvish~ and even ~oil~ seemed promising, I settled on the
+[[https://xon.sh/][Python based xonsh]].
+#+begin_src bash
+pipx install xonsh[full]
+pipx inject xonsh xcontrib-sh
+echo 'xontrib load sh' >> ~/.xonshrc
+#+end_src
+Where we use the [[https://pipx.pypa.io/latest/docs/#pipx-inject][injection mechanism]] to add the [[https://github.com/anki-code/xontrib-sh][xcontrib-sh]] plugin for running
+shell commands without using ~xonsh~, since we might not want to [[https://xon.sh/bash_to_xsh.html][translate]] every
+command to be compliant with ~xonsh~.
+*** Additions
+- ~xonsh-mode~ works well with ~emacs~ and is on MELPA
+- [[https://github.com/xxh/xxh][xxh]] makes it pretty trivial to take into foreign SSH machines
+** Scripting substitutions
+Directly leveraging ~xonsh~ we can rewrite the earlier ~bash~ script into:
+
+#+begin_src python
+from pathlib import Path
+
+def replace_make_shared():
+    FROM_MAKE = 'Matter'
+    TO_MAKE = 'Matter'
+
+    files = $(ag -l @(FROM_MAKE)).splitlines()
+
+    for f in files:
+        if Path(f).exists():
+            sd @(FROM_MAKE) @(TO_MAKE) @(f)
+        else:
+            echo "File not found: @(file)"
+
+replace_make_shared()
+#+end_src
+
+*** Leveraging Python
+It is instructive to recall how this would work in pure ~python~.
+
+#+begin_src python
+import subprocess
+from pathlib import Path
+
+def replace_make_shared():
+    FROM_MAKE = 'std::shared_ptr<Matter>'
+    TO_MAKE = 'Matter*'
+
+    result = subprocess.run(['ag', '-l', FROM_MAKE],
+                            capture_output=True, text=True)
+    files = result.stdout.splitlines()
+    actionable_files = [x for x in files if 'migrator' not in x]
+
+    for f in actionable_files:
+        file_path = Path(f)
+        if file_path.exists():
+            subprocess.run(['sd', FROM_MAKE, TO_MAKE,
+                            str(file_path)], check=True)
+        else:
+            print(f"File not found: {file_path}")
+
+replace_make_shared()
+#+end_src
+
+With [[https://sh.readthedocs.io/en/latest/index.html][sh]], shell calls become more ergonomic, however, it is still easier to
+interoperate between the shell outputs and Python code (e.g. using ~echo~) using
+~xonsh~.
+
+** Conclusions
+Personally, ~xonsh~ hits the sweet-spot of being slightly less finicky than
+POSIX shells while being less verbose than the pure ~python~ variant. It isn't
+perfect though:
+
+- The ~python~ dependence, even with ~pipx~ can be an issue [fn:2]
+  + Packages which are needed have to be injected into the same environment..
+    - ~nix~ maybe...
+- There is no good testing framework
+  + Ugly ~subprocess~ based ~pytest~ tests could be written
+
+For now, though, this is sufficiently advantageous.
+
+[fn:1] Like those mentioned in [[https://itsfoss.com/shells-linux/][this list]]
+[fn:2] True of all [[https://chriswarrick.com/blog/2023/01/15/how-to-improve-python-packaging/][python packages]]
 * TODO Dotfile encryption and secrets with ~chezmoi~ and Enpass :@personal:workflow:tools:
 #+begin_quote
 Ruminations on secrets within shared configurations
