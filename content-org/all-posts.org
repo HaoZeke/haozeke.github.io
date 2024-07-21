@@ -19193,6 +19193,34 @@ pretty gratifying.
 [fn:1] for now, updates will probably appear only on [[https://github.com/HaoZeke/Dotfiles/tree/chezmoi/][my Dotfiles repo]]
 [fn:2] There is an excellent visual explanation of the differences b/w [[info:][simple and oneshot types here]] by Thomas Stringer
 [fn:3] Aside from the [[https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html][official documentation]], [[https://stackoverflow.com/a/38377069/1895378][this SO answer]] is quite nice
+* DONE Talk Supplements for Scientific Computing in Rust 2024 :@conferences:presentations:rust:
+CLOSED: [2024-07-21 Sun 23:57]
+:PROPERTIES:
+:EXPORT_FILE_NAME: scicomprs-2024-meta
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments false
+:END:
+#+BEGIN_QUOTE
+A meta-post on a presentation at the Scientific Computing in Rust 2024 annual workshop
+#+END_QUOTE
+
+** Background
+*** Details
+- ~bless~ [[https://github.com/HaoZeke/bless][repo]] on Github
+- Workshop listing on [[https://scientificcomputing.rs/2024/talks/goswami.html][conference site]]
+Blurb:
+#+begin_quote
+We introduce bless, a tool geared towards multiple runs of codes in flux. The key idea is to use Rust's logging libraries to transparently annotate outputs and additionally use a MongoDB database to store the output and metadata. We find this raises interesting problems while handling the outputs of MPI commands asynchronously. Additionally we provide alternatives to (PROG 2>&1) | tee blah.out, with the ability to use a configuration file and prepare a tar.gz of outputs and inputs. This is invaluable when working with minor changes to multiple codebases, as is typical in the early stages of a scientific project.
+#+end_quote
+
+** Slides
+- A ~pdf~ copy of the slides are embedded below
+#+BEGIN_EXPORT html
+<script defer class="speakerdeck-embed" data-id="ea09a267822146a6af7cb9989fdac577" data-ratio="1.7772511848341233" src="//speakerdeck.com/assets/embed.js"></script>
+#+END_EXPORT
+** Video
+
+#+html: {{< youtube H58LOUDPpaU >}}
+
 * TODO HPC Usage Tricks
 ** Background
 Highly personalized set of tasks and workflows I often reach for.
