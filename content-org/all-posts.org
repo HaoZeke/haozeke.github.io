@@ -19194,7 +19194,7 @@ pretty gratifying.
 [fn:2] There is an excellent visual explanation of the differences b/w [[info:][simple and oneshot types here]] by Thomas Stringer
 [fn:3] Aside from the [[https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html][official documentation]], [[https://stackoverflow.com/a/38377069/1895378][this SO answer]] is quite nice
 * DONE Talk Supplements for Scientific Computing in Rust 2024 :@conferences:presentations:rust:
-CLOSED: [2024-07-21 Sun 23:57]
+CLOSED:         [2024-07-21 Sun 23:57]
 :PROPERTIES:
 :EXPORT_FILE_NAME: scicomprs-2024-meta
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments false
@@ -19550,8 +19550,12 @@ Naturally this is applicable across all domains.
 The key reason to decouple a MongoDB instance from existing HPC architecture is
 to be more robust to changes in clusters. Also, it makes it easier to run on
 multiple HPC centers without repeating the setup steps.
-* DONE ~xonsh~ Excursions :@notes:ramblings:tools:
-CLOSED: [2024-07-21 Sun 23:56]
+* DONE ~xonsh~ Excursions :@notes:ramblings:tools:shell:
+CLOSED: [2024-07-22 Mon 00:09]
+:PROPERTIES:
+:EXPORT_FILE_NAME: xonsh-excursion
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
 ** Background
 Recently I found myself writing a bunch of search and replace one-liners.
 #+begin_src bash
