@@ -628,7 +628,7 @@ REMARKABLE_IP=$(pass REMARKABLE_IP) reStream -p
 
 [fn:alldots] All my dotfiles [[https://github.com/HaoZeke/Dotfiles/tree/chezmoi][are here]]
 [fn:notoltec] Unfortunately, ~toltec~ doesn't support OS versions 3.x and up... [[https://github.com/toltec-dev/toltec/discussions/673][yet]]
-** DONE Dual-boot Bitlocker Drives :config:archlinux:encryption:
+** DONE Dual-boot Bitlocker Drives :config:archlinux:encryption:dualboot:win:
 CLOSED: [2024-07-28 Sun 14:33]
 ~cryptsetup~ has partial support for ~bitlocker~ encrypted drives, but
 ~dislocker~ works better with dual booted machines.
@@ -661,6 +661,20 @@ sudo umount /media/{Windows,bitlocker}
 #+end_src
 
 [fn:1] From this [[https://www.baeldung.com/linux/bitlocker-encrypted-device][reference article]] and the Kali Linux [[https://www.kali.org/tools/dislocker/][page]].
+** DONE Sharing Bluetooth Keys :dualboot:config:win:
+CLOSED: [2024-07-28 Sun 14:52]
+Re-pairing bluetooth devices in Windows and Linux is annoying. [fn:1] The ArchWiki
+article on [[https://wiki.archlinux.org/title/Bluetooth_mouse][bluetooth mouse management]] provides a link to a [[https://gist.github.com/5shekel/8b4998a69903438a6aac2f01a44463d3][helpful gist]]. Combined with the bitlocker [[Dual-boot Bitlocker Drives][setup described earlier]], and this patch:
+#+begin_src bash
+wget "https://gist.githubusercontent.com/5shekel/8b4998a69903438a6aac2f01a44463d3/raw/622a55c3a5bc1929369047c831a3f10e6988a195/export-ble-infos.py"
+# Comment out config['LocalSignatureKey']['Key'] = read_reg('CSRK', 'hex16')
+# If there's an error
+python export-ble-infos.py -s "/media/Windows/Windows/System32/config/SYSTEM"
+sudo bash -c 'cp -r ./bluetooth /var/lib'
+sudo systemctl restart bluetooth.service
+rm -rf bluetooth
+#+end_src
+[fn:1] Often pairing devices is easier in Windows anyway
 ** TODO Enforcing NumPy commit styles
 It has been a few years since I started following the usage of the commit prefix
 guidelines from the NumPy documentation[fn:1].
