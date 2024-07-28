@@ -628,6 +628,39 @@ REMARKABLE_IP=$(pass REMARKABLE_IP) reStream -p
 
 [fn:alldots] All my dotfiles [[https://github.com/HaoZeke/Dotfiles/tree/chezmoi][are here]]
 [fn:notoltec] Unfortunately, ~toltec~ doesn't support OS versions 3.x and up... [[https://github.com/toltec-dev/toltec/discussions/673][yet]]
+** DONE Dual-boot Bitlocker Drives :config:archlinux:encryption:
+CLOSED: [2024-07-28 Sun 14:33]
+~cryptsetup~ has partial support for ~bitlocker~ encrypted drives, but
+~dislocker~ works better with dual booted machines.
+
+Crucially ~cryptsetup~
+doesn't work with partially encrypted drives.
+
+#+begin_src bash
+cryptsetup --version
+# cryptsetup 2.7.3 flags: UDEV BLKID KEYRING KERNEL_CAPI HW_OPAL
+sudo cryptsetup --type bitlk open /dev/nvme0n1p3 windows
+# Activation of partially decrypted BITLK device is not supported.
+#+end_src
+
+Usage of ~dislocker~ is rather straightforward[fn:1].
+
+#+begin_src bash
+sudo mkdir -p /media/{bitlocker,Windows}
+# Get the Bitlocker drive, assumes there's only one
+export BTLDRIVE=$(blkid | grep "BitLocker" | awk '{print $1}' | sed 's/://')
+sudo dislocker -v -V $BTLDRIVE -- /media/bitlocker
+# Type might also be exfat depending on the configuration
+sudo mount -t ntfs-3g -o loop,rw /media/bitlocker/dislocker-file /media/Windows/
+#+end_src
+
+Cleanup is equally straightforward, where the inner drive needs to be unmounted before the outer one.
+
+#+begin_src bash
+sudo umount /media/{Windows,bitlocker}
+#+end_src
+
+[fn:1] From this [[https://www.baeldung.com/linux/bitlocker-encrypted-device][reference article]] and the Kali Linux [[https://www.kali.org/tools/dislocker/][page]].
 ** TODO Enforcing NumPy commit styles
 It has been a few years since I started following the usage of the commit prefix
 guidelines from the NumPy documentation[fn:1].
