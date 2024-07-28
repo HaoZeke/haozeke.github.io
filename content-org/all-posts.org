@@ -19222,6 +19222,18 @@ We introduce bless, a tool geared towards multiple runs of codes in flux. The ke
 
 #+html: {{< youtube H58LOUDPpaU >}}
 
+* TODO Packaging practices for Rust
+** Background
+Recently spoke about ~bless~, which had the distinction of being my first Rust
+package.
+** Tools
+My general release tools are:
+- towncrier :: For keeping a changelog
+- tbump :: For tracking versions
+
+Along with some ~rust~ specific tools
+- oranda :: For handling the static site
+- cargo-dist :: For distribution on crates.io
 * TODO HPC Usage Tricks
 ** Background
 Highly personalized set of tasks and workflows I often reach for.

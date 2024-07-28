@@ -628,6 +628,13 @@ REMARKABLE_IP=$(pass REMARKABLE_IP) reStream -p
 
 [fn:alldots] All my dotfiles [[https://github.com/HaoZeke/Dotfiles/tree/chezmoi][are here]]
 [fn:notoltec] Unfortunately, ~toltec~ doesn't support OS versions 3.x and up... [[https://github.com/toltec-dev/toltec/discussions/673][yet]]
+** TODO Enforcing NumPy commit styles
+It has been a few years since I started following the usage of the commit prefix
+guidelines from the NumPy documentation[fn:1].
+
+Any way to enforce this makes
+
+[fn:1] Coinciding mostly with my term on the NumPy maintainers team.
 ** DRAFT Better Github Action Skips :devenv:devops:docker:gha:
 *** Why
 I needed to test a few F2PY commands on Windows, which were best served on the
@@ -1049,3 +1056,5 @@ my local Linux machines I still prefer to keep the possiblity of getting full
 CTAN distribution. The easiest way to update an existing setup is to wipe the
 old one and start anew. I tend to use a minimal ~.profile~ which is then coupled
 to my ~dotfiles~.
+
+* Footnotes
