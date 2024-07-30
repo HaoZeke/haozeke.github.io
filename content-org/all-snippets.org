@@ -471,6 +471,28 @@ jobs:
 #+end_src
 This ensures the ~pre-commit~ action is executed within the ~conda~ environment,
 which is assumed to have ~pipx~ and the dependencies present.
+** DRAFT Precommit conventions :regex:packaging:precommit:
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: precommit-conventions
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
+**** Expressive ~regex~
+~pre-commit~ accepts ~exclude~ keys which take ~python~ regular expressions,
+typically designed with [[https://regex101.com/][regex101]]. For example:
+#+begin_src yaml
+- id: clang-format
+  name: clang-format
+  entry: clang-format
+  exclude: |
+    (?x)(
+    thirdparty|
+    xtb.h|
+    )
+  language: system
+  types_or: [c, c++, cuda]
+  args: ["-fallback-style=none", "-style=file", "-i"]
+#+end_src
 ** DONE Off the shelf OCR and Deep Learning :python:ocr:tex:
 CLOSED: [2023-11-15 Wed 19:06]
 :PROPERTIES:
