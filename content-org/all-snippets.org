@@ -437,7 +437,7 @@ installed tools used. Consider:
   rev: v1.3.5
   hooks:
     - id: cppcheck
-      args: ["--error-exitcode=0"]
+      args: ["--error-exitcode=1"]
 #+end_src
 Which leaves one dependent on an external repo. This can be rewritten as:
 #+begin_src yaml
