@@ -475,27 +475,69 @@ jobs:
 #+end_src
 This ensures the ~pre-commit~ action is executed within the ~conda~ environment,
 which is assumed to have ~pipx~ and the dependencies present.
-** DRAFT Precommit conventions :regex:packaging:precommit:
+** DRAFT ~precommit~ selections :regex:precommit:
 :PROPERTIES:
-:EXPORT_HUGO_BUNDLE: precommit-conventions
+:EXPORT_HUGO_BUNDLE: precommit-selections
 :EXPORT_FILE_NAME: index
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
 :END:
-**** Expressive ~regex~
-~pre-commit~ accepts ~exclude~ keys which take ~python~ regular expressions,
+~pre-commit~ accepts ~exclude~ keys which take ~python~ [[https://pre-commit.com/#regular-expressions][regular expressions]],
 typically designed with [[https://regex101.com/][regex101]]. For example:
 #+begin_src yaml
+exclude: |
+  (?x)(
+  thirdparty| # vendored
+  xtb.h| # vendored
+  )
 - id: clang-format
   name: clang-format
   entry: clang-format
-  exclude: |
-    (?x)(
-    thirdparty|
-    xtb.h|
-    )
   language: system
   types_or: [c, c++, cuda]
   args: ["-fallback-style=none", "-style=file", "-i"]
+#+end_src
+While it is especially useful for tools which don't have ignore flags, as a
+convention:
+- Use  a globally defined ~exclude~
+  + Explain the exclusion with a comment
+- Fine-tune with per-hook ~types_or~ (or even ~files~)
+  + Additional ~exclude~ keys may be used as well
+** DRAFT C++ ~precommit~ hooks :regex:cpp:precommit:
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: precommit-cpp
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
+Generally, combined with [[Local ~precommit~ dependencies][local dependencies]] and [[~precommit~ selections][exclusion rules]], the followi
+#+begin_src yaml
+- repo: local
+  hooks:
+    - id: cppcheck
+      name: cppcheck
+      entry: cppcheck
+      language: system
+      types_or: [c++, c]
+      args: [
+      "--error-exitcode=1",
+      "--std=c++20",
+      "--language=c++",
+      "--check-level=exhaustive",
+      ]
+    - id: cpplint
+      name: cpplint
+      entry: cpplint
+      language: system
+      types_or: [c++, c]
+      args: [
+      "--filter=-whitespace/comments,
+      -build/namespaces,"
+      ]
+    - id: clang-format
+      name: clang-format
+      entry: clang-format
+      language: system
+      types_or: [c, c++, cuda]
+      args: ["-fallback-style=none", "-style=file", "-i"]
 #+end_src
 ** DONE Off the shelf OCR and Deep Learning :python:ocr:tex:
 CLOSED: [2023-11-15 Wed 19:06]
