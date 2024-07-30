@@ -448,7 +448,7 @@ Which leaves one dependent on an external repo. This can be rewritten as:
       entry: cppcheck
       language: system
       types_or: [c++, c]
-      args: ["--error-exitcode=0"]
+      args: ["--error-exitcode=1"]
 #+end_src
 With this local setup, it is necessary to adjust the CI configuration:
 #+begin_src yaml
@@ -461,9 +461,13 @@ jobs:
   pre-commit:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Install Conda environment
-      uses: mamba-org/provision-with-micromamba@main
+      # Using a lock file is optional but heavily recommended
+      uses: mamba-org/setup-micromamba@v1
+      with:
+        environment-file: conda-lock.yml
+        environment-name: ci
     - name: Run precommit
       shell: bash -l {0}
       run: |
