@@ -563,8 +563,13 @@ popd
 #+end_src
 Naturally these tools, and ~popd~ is more general and can be used for a lot more
 but this is pretty nifty too.
-** DONE Jupyter ~data~ helpers
+** DONE Jupyter ~data~ helpers :devenv:jupyter:python:
 CLOSED: [2024-04-15 Mon 00:44]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: jup-dat-helper
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
 Often my notebooks are organized with respect to ~GITROOT~, so this snippet
 makes for an easy way to construct relative paths.
 #+begin_src python
@@ -592,6 +597,11 @@ def switchdir(path):
 #+end_src
 ** DONE reMarkable Screen Sharing :devenv:cmdline:ssh:collab:
 CLOSED: [2024-06-15 Sat 20:55]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: rm2-ss
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
 Basically followed along the directions for [[https://github.com/rien/reStream?tab=readme-ov-file][reStream]] [fn:notoltec].
 - Got the SSH root password and IP from ~Settings > Help > Copyrights and licenses > General information (scroll to the bottom)~
 - Added the IP to the pass store via ~pass insert REMARKABLE_IP~
@@ -630,6 +640,11 @@ REMARKABLE_IP=$(pass REMARKABLE_IP) reStream -p
 [fn:notoltec] Unfortunately, ~toltec~ doesn't support OS versions 3.x and up... [[https://github.com/toltec-dev/toltec/discussions/673][yet]]
 ** DONE Dual-boot Bitlocker Drives :config:archlinux:encryption:dualboot:win:
 CLOSED: [2024-07-28 Sun 14:33]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: db-btl-drives
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
 ~cryptsetup~ has partial support for ~bitlocker~ encrypted drives, but
 ~dislocker~ works better with dual booted machines.
 
@@ -663,6 +678,11 @@ sudo umount /media/{Windows,bitlocker}
 [fn:1] From this [[https://www.baeldung.com/linux/bitlocker-encrypted-device][reference article]] and the Kali Linux [[https://www.kali.org/tools/dislocker/][page]].
 ** DONE Sharing Bluetooth Keys :dualboot:config:win:
 CLOSED: [2024-07-28 Sun 14:52]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: share-db-bluetooth-keys
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
 Re-pairing bluetooth devices in Windows and Linux is annoying. [fn:1] The ArchWiki
 article on [[https://wiki.archlinux.org/title/Bluetooth_mouse][bluetooth mouse management]] provides a link to a [[https://gist.github.com/5shekel/8b4998a69903438a6aac2f01a44463d3][helpful gist]]. Combined with the bitlocker [[Dual-boot Bitlocker Drives][setup described earlier]], and this patch:
 #+begin_src bash
