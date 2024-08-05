@@ -540,6 +540,21 @@ Generally, combined with [[Local ~precommit~ dependencies][local dependencies]] 
       types_or: [c, c++, cuda]
       args: ["-fallback-style=none", "-style=file", "-i"]
 #+end_src
+** DRAFT C++ ~precommit~ hooks for ~meson~ :meson:build:precommit:
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: precommit-meson-hooks
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
+#+begin_src yaml
+- id: meson-format
+  name: meson format
+  entry: meson
+  language: system
+  types: [meson]
+  files: \.build$
+  args: ["format", "-i"]
+#+end_src
 ** DONE Off the shelf OCR and Deep Learning :python:ocr:tex:
 CLOSED: [2023-11-15 Wed 19:06]
 :PROPERTIES:
