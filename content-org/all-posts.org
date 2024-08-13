@@ -18261,6 +18261,50 @@ practices. I went through the ~ROpenSci~ process and eventually also released to
 ~CRAN~, but will cover that in a follow-up.
 
 [fn:yetatleast] Yet.
+* TODO Revisiting ~R~ package development :@notes:r:cpp:bindings:packaging:
+:PROPERTIES:
+:EXPORT_FILE_NAME: revisit-r-pkgdev
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+begin_quote
+Handling development dependencies and bugfixes
+#+end_quote
+** Background
+I was an opportunity scholar at posit::conf 2024 which I took as an opportunity
+to save ~fastMatMR~ on being [[https://github.com/ropensci/fastMatMR/issues/65][removed from CRAN]] due to its ~cpp11~ dependency.
+Most of this is going to be in the context of the previous post.
+** Reproducing environments
+With ~pixi~ this is fairly straightforward:
+
+#+begin_src bash
+gh repo clone ropensci/fastMatMR
+cd fastMatMR
+gh repo fork
+pixi shell
+pixi update
+git commit -m "BLD: Update pixi lockfile"
+#+end_src
+
+That sets up the basic ~radian~ shell we can use for the rest of this post. The
+new standard for handling package dependencies is no longer
+~devtools::install_*~ or ~remotes::~, but ~pak~, as seen in [[https://github.com/r-lib/remotes/issues/808][this issue]]. In turn,
+this requires an adjustment to the [[https://rstudio.github.io/renv/reference/config.html?q=pak#renv-config-pak-enabled][renv configuration]], which in turn, is best handled through a repo-local ~.Renviron~ file [fn:rconfigs] with:
+
+#+begin_src sh
+RENV_CONFIG_PAK_ENABLED=TRUE
+#+end_src
+
+** The case against reproductions
+To quote (and mildly paraphrase) Hadley Wickham [fn:whensaid],
+#+begin_quote
+.. part of being a package developer is experiencing this (broken dependencies) discomfort before your users
+#+end_quote
+
+Which is also echoed by many others in the R community
+
+[fn:rconfigs] Configuration files [[https://support.posit.co/hc/en-us/articles/360047157094-Managing-R-with-Rprofile-Renviron-Rprofile-site-Renviron-site-rsession-conf-and-repos-conf][discussed here]]
+[fn:whensaid] In person walk and talk at posit::conf 2024
+
 * TODO ~ROpenSci~ submissions and ~CRAN~
 #+begin_quote
 Where I discuss my experience with the review process and subsequent CRAN release
