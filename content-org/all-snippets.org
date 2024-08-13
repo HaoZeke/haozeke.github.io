@@ -555,6 +555,16 @@ Generally, combined with [[Local ~precommit~ dependencies][local dependencies]] 
   files: \.build$
   args: ["format", "-i"]
 #+end_src
+** DRAFT Using meson subprojects for CMake dependencies
+#+begin_src meson
+cmake = import('cmake')
+opt_var = cmake.subproject_options()
+opt_var.add_cmake_defines({'CMAKE_BUILD_TYPE': 'Release', 'Boost_USE_STATIC_LIBS': 'OFF'})
+
+cmcachelot = cmake.subproject('cachelot', options: opt_var)
+message('CMake targets:\n - ' + '\n - '.join(cmcachelot.target_list()))
+_deps += cmcachelot.dependency('cachelot')
+#+end_src
 ** DONE Off the shelf OCR and Deep Learning :python:ocr:tex:
 CLOSED: [2023-11-15 Wed 19:06]
 :PROPERTIES:
