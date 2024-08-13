@@ -779,6 +779,34 @@ sudo systemctl restart bluetooth.service
 rm -rf bluetooth
 #+end_src
 [fn:1] Often pairing devices is easier in Windows anyway
+** DONE Extending ~sway~ monitors :sway:config:wayland:archlinux:
+CLOSED: [2024-08-13 Tue 07:25]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: sway-mon-ext
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
+For a laptop, assuming the primary screen is always the one it comes with, an
+easy approach to position screens relatively left and right of the monitor is:
+#+begin_src bash
+# Get display names, -p for plain text
+swaymsg -t get_outputs -p | grep Output
+Output eDP-1 'Chimei Innolux Corporation 0x1417 Unknown' (focused)
+Output DP-1 'Lenovo Group Limited M14 V904H2WF'
+# Center the primary display
+swaymsg 'output eDP-1 position 0 0'
+#+end_src
+Now we can get the current configuration and move the other screen relative to
+it.
+#+begin_src bash
+# -r for json format
+PRIMARY_WIDTH=$(swaymsg -t get_outputs -r | jq '.[] | select(.name | contains("eDP")) | .["current_mode"].["width"]')
+# Left of primary
+swaymsg "output DP-1 position -${PRIMARY_WIDTH} 0"
+# Right of primary
+swaymsg "output DP-1 position ${PRIMARY_WIDTH} 0"
+#+end_src
+This can be wrapped into a little helper script.
 ** TODO Enforcing NumPy commit styles
 It has been a few years since I started following the usage of the commit prefix
 guidelines from the NumPy documentation[fn:1].
