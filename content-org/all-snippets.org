@@ -689,6 +689,8 @@ def switchdir(path):
     finally:
         os.chdir(curpath)
 #+end_src
+
+*EDIT*: These are now part of my ~pycrumbs~ helper library..
 ** DONE reMarkable Screen Sharing :devenv:cmdline:ssh:collab:
 CLOSED: [2024-06-15 Sat 20:55]
 :PROPERTIES:
