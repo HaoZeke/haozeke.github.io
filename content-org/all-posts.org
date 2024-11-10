@@ -16471,6 +16471,563 @@ themselves. It was good to have the opportunity to highlight projects I believe
 in, and to introduce ~f2py~'s GSoC student ([[https://namamishanker.github.io/][Namami Shankar]]) to the community. I
 suppose, if invited, I would return.
 
+* TODO Configuring a personal VPS
+:PROPERTIES:
+:EXPORT_FILE_NAME: configuring-personal-vps
+:EXPORT_HUGO_PANDOC_CITATIONS: t
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :csl biblio/csl/ieee.csl
+:EXPORT_BIBLIOGRAPHY: biblio/Website.bib
+:END:
+** Background
+I needed a MongoDB instance I could use for handling my HPC runs. I ended up
+getting a small VPS at Hostinger. These are some abbreviated setup notes.
+
+The general idea is to have three different layers of control:
+- Alpine Linux Firewall :: To redirect traffic, and control orchestration to
+  ~tailscale~
+- Tailscale :: To prevent unauthorized access to core services like ~ssh~ and
+  ~mosh~ (only devices on the "tailnet" can even see them)
+- Cloudflare Tunnel :: For handling authentication for services exposed to the
+  world
+- Reverse Proxy :: This is for load-balancing mostly, and to have all routing
+  rules in one place
+** Baseline
+I opted for Alpine Linux, even though Arch Linux is available, mostly because
+I've never used a ~musl~ based distribution before, and also because I'll be
+basically using a bunch of ~docker~ images anyway, so I just need a minimal OS.
+
+
+#+DOWNLOADED: screenshot @ 2024-09-03 08:55:25
+#+CAPTION: Doesn't get any easier
+[[file:images/Baseline/2024-09-03_08-55-25_screenshot.png]]
+
+** First steps
+Some configuration is already done, e.g. the ~/etc/apk/repositories~ is set to
+use ~https~.
+*** Logging
+Since Alpine Linux [[https://www.perrotta.dev/2022/01/alpine-linux-apk-logs-with-etckeeper/][has no logs]], it makes sense to setup ~etckeeper~. However,
+since ~etckeeper~ tries to create a bunch of files as soon as it is installed,
+due to a ~post-install~ we need to first configure some reasonable defaults:
+#+begin_src bash
+apk add git
+cd /etc
+git config --global init.defaultBranch main
+git init
+git config --local user.name "etckeeperbot"
+git config --local user.email "nop@hide.me"
+#+end_src
+
+Now we can setup ~etckeeper~, without leaking server information through the
+default email or user.
+#+begin_src bash
+apk add etckeeper
+#+end_src
+
+To push this somewhere, we need another ~ssh-key~.
+#+begin_src bash
+ssh-keygen -t ed25519 -C "rgETCbot@hide.me" -f ~/.ssh/vps_etckeep
+eval `ssh-agent -s`
+ssh-add ~/.ssh/vps_etckeep
+cat ~/.ssh/vps_etckeep.pub
+# Add public key to Git server, e.g. Gitlab, and test
+ssh git@gitlab.com -T
+git remote add origin "git@gitserver.blah:User/Name.git"
+# Assumes a bare upstream
+etckeeper vcs push -u origin main
+#+end_src
+
+Finally, to ensure commits are pushed as soon as they are made,
+~PUSH_REMOTE="origin"~ in ~etckeeper.conf~ should work, however this requires an
+active ~ssh~ agent, which isn't always true, so, we need to amend the script ~etckeeper~ uses to push:
+
+#+begin_src diff
+iff --git a/etckeeper/commit.d/99push b/etckeeper/commit.d/99push
+index 3df1350..99e03d1 100755
+--- a/etckeeper/commit.d/99push
++++ b/etckeeper/commit.d/99push
+@@ -1,4 +1,17 @@
+ #!/bin/sh
++set -e
++
++# Ensure ssh-agent is running
++if [ -z "$SSH_AGENT_PID" ]; then
++  eval "$(ssh-agent -s)"
++fi
++
++# Add the SSH key if it is not already added
++KEY_PATH="/root/.ssh/vps_etckeep"
++if ! ssh-add -l | grep -q "$(ssh-keygen -lf "$KEY_PATH" | awk '{print $2}')"; then
++  ssh-add "$KEY_PATH"
++fi
++
+ if [ -n "$PUSH_REMOTE" ]; then
+ 	if [ "$VCS" = git ] && [ -d .git ]; then
+ 		for REMOTE in $PUSH_REMOTE; do
+#+end_src
+
+There is also a daily ~cron~ job, which runs once a day to make commits, and is
+enabled by default:
+
+#+begin_src bash
+# Checking
+run-parts --test /etc/periodic/daily
+#+end_src
+
+Note that ~doas etckeeper vcs push~ will still fail, but the post-commit push
+will work, e.g. after an ~apk add~ or ~apk del~ [fn:: This is, I believe, a limitation stemming from not having ~systemd~].
+
+*** Sharing SSH authentications with ~doas~
+
+To fix the ~vcs push~ consider modifying ~doas.conf~..
+
+#+attr_html: :class note-alert
+#+begin_alert
+#+begin_alert-heading
+*Note*
+#+end_alert-heading
+Always ensure the ~doas.conf~ works before exiting a session, perhaps by editing in ~doas su~, since it is imperative that it is error-free. From the ArchWiki, @DoasArchWiki:
+#+begin_src bash
+if doas -C /etc/doas.conf; then echo "config ok"; else echo "config error"; fi
+#+end_src
+#+end_alert
+
+It turns out, at-least in the Hostinger instance, no amount of ~doas.conf~ work [fn:: Naively I thought ~permit nopass setenv { SSH_AUTH_SOCK } :wheel~ would do the trick]
+helps with this, the only workaround is explicitly passing the socket:
+
+#+begin_src bash
+doas env SSH_AUTH_SOCK=$SSH_AUTH_SOCK etckeeper vcs push --set-upstream origin main
+#+end_src
+
+Or a much saner approach, is probably to simply use the ~HostKey~ found in
+~/etc/ssh/ssh_host_ed25519~, but where's the fun in that [fn:: Also more
+realistically they might have been generated with sub-optimal settings, though
+again, could have just regenerated them].
+
+** User creation
+First we need a new SSH key.
+#+begin_src bash
+# local machine
+ssh-keygen -t ed25519 -C "$MY_EMAIL" -f "~/.ssh/$MY_SSH_KEY"
+cat "$HOME/.ssh/$MY_SSH_KEY.pub"
+# dotfile management, optional
+chezmoi add --encrypt "$HOME/.ssh/$MY_SSH_KEY"
+chezmoi add "$HOME/.ssh/$MY_SSH_KEY.pub"
+#+end_src
+
+Now on the server, we're ready to create a new user.
+
+#+begin_src bash
+# Create a new user, with admin access
+# NOTE(rg): Don't forget to add an ssh-key
+setup-user -a
+# or if -a is omitted, later
+adduser <username> wheel
+#+end_src
+
+Note that again, unlike the instructions [[https://wiki.alpinelinux.org/wiki/Setting_up_a_new_user][on the wiki]], the image on Hostinger is
+pre-configured, and so ~doas~ is present already, with the ~wheel~ group setup
+as well.
+
+Then a few baseline packages:
+
+#+begin_src bash
+apk add zsh mosh tmux
+chsh # to /bin/zsh
+#+end_src
+
+Now might be a good time to revisit having a ~salt~ or ~ansible~ configuration,
+but perhaps later, if this happens more than once.
+
+For now, though, after
+checking that logging in works alright, we will just "lock" the ~root~ account:
+
+#+begin_src bash
+passwd -l root
+#+end_src
+
+For the rest of this article we will be operating from the user account accessed
+via:
+
+#+begin_src bash
+mosh -i --ssh="ssh -i $MY_SSH_KEY" "rgoswami@$MY_VPS_IP"
+#+end_src
+
+Also to prevent cruft, emptying ~/etc/motd~ is a good idea.
+*** No ~dotfiles~
+For the server, to keep things light, I use ~TRAMP~ to access files over ~emacs~
+and keep the default ~sh~ shell instead of trying to deploy a variant of my
+~dotfiles~.
+** SSH setup
+For starters, we will reconfigure the ~sshd~ settings, having already setup the
+required public ~ssh-key~ for access, or if not, after adding the public key to
+~$HOME/.ssh/authorized_keys~. These are pretty standard rules, e.g. discussed in
+more [[https://www.digitalocean.com/community/tutorials/how-to-harden-openssh-on-ubuntu-20-04][detail here on DigitalOcean]].
+
+#+begin_src diff
+diff --git a/oldsshd b/etc/ssh/sshd_config
+index 45c5f7d..e70d6fb 100644
+--- a/oldsshd
++++ b/etc/ssh/sshd_config
+@@ -32,9 +32,9 @@ Include /etc/ssh/sshd_config.d/*.conf
+
+ # Authentication:
+
+-#LoginGraceTime 2m
++LoginGraceTime 1m
+ #StrictModes yes
+-#MaxAuthTries 6
++MaxAuthTries 3
+ #MaxSessions 10
+
+ #PubkeyAuthentication yes
+@@ -57,11 +57,11 @@ AuthorizedKeysFile	.ssh/authorized_keys
+ #IgnoreRhosts yes
+
+ # To disable tunneled clear text passwords, change to no here!
+-#PasswordAuthentication yes
+-#PermitEmptyPasswords no
++PasswordAuthentication no
++PermitEmptyPasswords no
+
+ # Change to no to disable s/key passwords
+-#KbdInteractiveAuthentication yes
++KbdInteractiveAuthentication no
+
+ # Kerberos options
+ #KerberosAuthentication no
+@@ -83,7 +83,7 @@ AuthorizedKeysFile	.ssh/authorized_keys
+ # and KbdInteractiveAuthentication to 'no'.
+ #UsePAM no
+
+-#AllowAgentForwarding yes
++AllowAgentForwarding no
+ # Feel free to re-enable these if your use case requires them.
+ AllowTcpForwarding no
+ GatewayPorts no
+@@ -94,27 +94,27 @@ X11Forwarding no
+ #PrintMotd yes
+ #PrintLastLog yes
+ #TCPKeepAlive yes
+-#PermitUserEnvironment no
++PermitUserEnvironment no
+ #Compression delayed
+ #ClientAliveInterval 0
+ #ClientAliveCountMax 3
+ #UseDNS no
+ #PidFile /run/sshd.pid
+ #MaxStartups 10:30:100
+-#PermitTunnel no
++PermitTunnel no
+ #ChrootDirectory none
+ #VersionAddendum none
+
+ # no default banner path
+-#Banner none
++Banner none
+
+ # override default of no subsystems
+ Subsystem	sftp	internal-sftp
+
+ # Example of overriding settings on a per-user basis
+ #Match User anoncvs
+-#	X11Forwarding no
++X11Forwarding no
+ #	AllowTcpForwarding no
+ #	PermitTTY no
+ #	ForceCommand cvs server
+-PermitRootLogin yes
++PermitRootLogin no
+#+end_src
+
+Which are validated and applied via:
+
+#+begin_src bash
+doas sshd -t
+doas rc-service sshd restart
+#+end_src
+
+Won't be using them anyway, but, ~Kerberos~ and ~GSSAPI~ are not supported out
+of the box on Hostinger.
+*** +TOTP additions+
+Initially I planned to setup PAM for TOTP, mostly along the lines of [[https://wiki.alpinelinux.org/wiki/HOWTO_OpenSSH_2FA_with_password_and_Google_Authenticator][the
+AlpineWiki]], the [[https://wiki.archlinux.org/title/Google_Authenticator][ArchWiki]], and this [[https://www.digitalocean.com/community/tutorials/how-to-set-up-multi-factor-authentication-for-ssh-on-ubuntu-20-04][DigitalOcean tutorial]]. However, I realized
+there's an easier way to harden connections to the machine, via ~tailscale~.
+
+** ~tailscale~ baseline
+Once ~tailscale~ is setup locally, typically via ~tailscale login~, we can set things up on the VPS.
+#+begin_src bash
+# Adds a repository and gets the latest variant
+curl -fsSL https://tailscale.com/install.sh | sh
+# needed for setting up the service
+echo tun >> /etc/modules
+doas rc-service tailscale start
+doas rc-update add tailscale
+#+end_src
+Now we can test that regular SSH connections from the local machine (logged in
+to ~tailscale~) to the VPS work.
+
+#+begin_src bash
+tailscale ip # vps
+ssh $TAILSCALE_IP # local
+#+end_src
+
+Since I have ControlD, I use it for the global nameserver in ~tailscale~ and
+override local DNS, but it doesn't really matter in this instance.
+** Firewall setup
+Rather than use ~ufw~, I wanted to try out ~awall~, the [[https://git.alpinelinux.org/awall/about/][Alpine Wall]], since
+~json~ is marginally more endearing than arbitrary plain-text. Partially derived from @SettingAlpineWall.
+
+#+begin_src bash
+doas apk add awall
+#+end_src
+
+For starters, we can deny everything, everywhere.
+
+#+begin_src json
+{
+    "description": "Default awall internet policy rejecting everything",
+    "variable": {
+        "internet_if": "eth0"
+    },
+    "zone": {
+        "internet": {
+            "iface": "$internet_if"
+        }
+    },
+    "policy": [
+        {
+            "in": "internet",
+            "action": "reject"
+        },
+        {
+            "action": "reject"
+        }
+    ]
+}
+#+end_src
+
+Which can (and should) be paired with a rule to accept things from the ~tailnet~.
+
+#+begin_src json
+{
+    "description": "Default awall policy accepting everything in a tailnet",
+    "variable": {
+        "tailnet_if": "tailscale0"
+    },
+    "zone": {
+        "tailnet": {
+            "iface": "$tailnet_if"
+        }
+    },
+    "policy": [
+        {
+            "in": "tailnet",
+            "action": "accept"
+        }
+    ]
+}
+#+end_src
+
+As a fallback, it is also good to have a default ~ssh~ option (for the
+internet), even though this will largely be disabled.
+
+#+begin_src json
+{
+    "description": "Allow incoming SSH access over the internet (TCP/22)",
+    "filter": [
+        {
+            "in": "internet",
+            "out": "_fw",
+            "service": "ssh",
+            "action": "accept",
+            "conn-limit": {
+                "count": 3,
+                "interval": 60
+            }
+        }
+    ]
+}
+#+end_src
+
+The granularity of these rules is really neat, and in general, even the
+~tailnet~ connections should be validated against attacks, so for example, a
+~tln-ssh.json~ might be:
+
+#+begin_src json
+{
+    "description": "Rate limit incoming SSH access over the tailnet (TCP/22)",
+    "filter": [
+        {
+            "in": "tailnet",
+            "out": "_fw",
+            "service": "ssh",
+            "action": "accept",
+            "conn-limit": {
+                "count": 3,
+                "interval": 60
+            }
+        }
+    ]
+}
+#+end_src
+
+
+#+attr_html: :class note-alert
+#+begin_alert
+#+begin_alert-heading
+*Note*
+#+end_alert-heading
+For some reason, files named with ~-~ work, but not named with ~_~, so ~tln-ssh.json~ is fine, but not ~tln_ssh.json~.
+#+end_alert
+
+With this, we can now test these out:
+
+#+begin_src bash
+doas awall enable default
+doas awall enable tailnet
+doas awall enable tln-ssh
+doas awall list
+deny-in  enabled   Default awall internet policy rejecting everything
+ssh      disabled  Allow incoming SSH access over the internet (TCP/22)
+tailnet  enabled   Default awall policy accepting everything in a tailnet
+tln-ssh  disabled  Rate limit incoming SSH access over the tailnet (TCP/22)
+doas awall activate
+#+end_src
+
+*** Service definitions
+The setup above works for using ~ssh~ over the tailnet nicely
+[fn:: I haven't really felt the need to setup the [[https://tailscale.com/kb/1193/tailscale-ssh][Tailscale SSH]] (using the ACL interface)],
+however ~mosh~ expects a range of ports, by default starting at ~60001~ and
+ending at ~61000~.  So we define a custom
+~/etc/awall/private/custom-services.json~ for it:
+
+#+begin_src json
+{
+  "service": {
+    "mosh": [
+      {
+        "proto": "udp",
+        "port": [
+          "60000-61000"
+        ]
+      }
+    ]
+  }
+}
+#+end_src
+
+Which we will then be able to use in an optional service:
+
+#+begin_src json
+{
+    "description": "Allow mosh over tailnet",
+    "import": ["custom-services"],
+    "filter": [
+        {
+            "in": "tailnet",
+            "out": "_fw",
+            "service": "mosh",
+            "action": "accept"
+        }
+    ]
+}
+#+end_src
+
+*** Allowing outbound connections
+While it is good to deny access to the server, we need not be so restrictive
+about outbound connections, so:
+#+begin_src json
+{
+    "description": "Allow basic outgoing traffic from local",
+    "filter": [
+        {
+            "in": "_fw",
+            "out": "internet",
+            "service": ["dns", "http", "https", "ping", "git", "ssh"],
+            "action": "accept"
+        },
+        {
+            "in": "_fw",
+            "out": "tailnet",
+            "action": "accept"
+        }
+    ]
+}
+#+end_src
+
+Where we are more permissive with the ~tailnet~, as always. The service definition for ~git~ is:
+
+#+begin_src json
+"git": [
+    {
+        "proto": "tcp",
+        "port": [9418, 22]
+    }
+]
+#+end_src
+
+Though ~ssh~ needs to be open as well.
+
+*** Hostinger hardening
+It is possible to apply rules at both the OS level, and mirror them hosting
+service (Hostinger) level, for reasons why, [[https://support.hostinger.com/en/articles/8172641-how-to-use-a-managed-vps-firewall][see here]] (TL;DR it can be cheaper to
+do so).
+
+As a demonstration, the firewall configuration denying standard ~ssh~ and ~mosh~ access can look like:
+
+#+DOWNLOADED: screenshot @ 2024-09-04 13:34:10
+[[file:images/Firewall_setup/2024-09-04_13-34-10_screenshot.png]]
+
+
+Note that this is a very high level filter, so it cannot be used for connecting
+to a reverse proxy or redirection.
+
+** ~podman~ details
+The easiest way to handle web-services is via ~docker~, and its also why there's
+no need to setup any ~glibc~ contortions. However, I wanted to try ~podman~
+anyway, so we shall. Mainly because there's no additional service to run in the
+background.
+
+#+begin_src bash
+doas apk add podman
+#+end_src
+
+Also instead of setting up ~cgroups~ for ~root~ execution, we will instead
+follow the [[https://wiki.alpinelinux.org/wiki/Podman][AlpineLinux Wiki]] for ~rootless~ usage.
+
+#+begin_src bash
+doas su
+usermod --add-subuids 100000-165535 --add-subgids 100000-165535 rgoswami
+podman system migrate
+exit
+doas vi /etc/fstab # add shared to the mount options
+reboot
+podman run --rm hello-world
+#+end_src
+
+We will use ~portainer~ to manage things (securely).
+
+#+begin_src bash
+doas apk add podman-compose
+podman pull docker.io/portainer/portainer-ce
+#+end_src
+
+* TODO Designing a course website
+** Background
+In my never ending battle to find a living wage / strive towards a permanent
+position within academia, I ended up accepting my first teaching engagement.
+Naturally a website for the course was in the works. I thought again of ~nanoc~
+(with its excellent multi-document output design) ~pollen~ (not just because of
+Matthew, but also because of Typography for lawyers, Beautiful racket)..  or
+even ~mdbook~ which worked very well for me in W3cm. Or any of my many other
+design attempts from ~sphinx~ to whatever has become of the new "executable
+book" ~mystmd~ thing (why everyone wants to "overtake / consume")
+
+In the end I decided to stick to ~hugo~, with a suitable doc theme; though
+~amythest~ with backlinks seemed very interesting as well. The reason was
+simple; because ~ox-hugo~ provides the best ~orgmode~ integration (beyond
+publishing directly with ~orgmode~).
 * TODO Talk Supplements for the 2022 PyData Global Impact Program
 * TODO GSoC'22: A Triumph for Fortran
 * TODO Electronic Structure Library and CECAM
@@ -19755,6 +20312,111 @@ is the following:
 ** Tools
 I personally [[https://enpass.io/][use Enpass]] for handling my passwords.
 Also ~pass~.
+* DRAFT Encryping Thunderbird Profiles for PCloud :@personal:tools:email:workflow:
+#+begin_quote
+
+#+end_quote
+** Background
+I still believe Astroid is the best way to handle email. However, I also often
+switch operating systems and machines, so it is best to have a cross-platform
+tool to handle my email as well. Despite being stripped of XUL, Thunderbird is
+still marginally useful.
+** Encryption
+Cryptomator is an easy way to have dynamically sized encrypted data.
+
+* DRAFT Storing data with DVC and OneDrive :@personal:tools:workflow:repro:
+#+begin_quote
+Shortcuts towards reproducible science
+#+end_quote
+** Background
+The University of Iceland has an "unlimited" OneDrive setup for staff / graduate
+students. This is generally not very helpful, but in conjunction with ~rclone~
+[fn:: Also discussed in [[Managing cloud based ~calibre~ libraries][Managing cloud based ~calibre~ libraries]]] and
+~dvc~ can be made to be of more use.
+** Baseline
+Like most of my newer projects, ~pixi~ is used to manage the tooling required,
+along with ~git-subrepo~ for handling local changes to projects.
+
+#+begin_src bash
+pixi add dvc rclone
+#+end_src
+
+As before, we will assume ~gnome-keyring~ is present, and then since ~rclone~
+[[https://rclone.org/docs/#configuration-encryption][supports secrets]] stored in password managers we have[fn:: Remember that any unique set of key value pairs can be used, see ~man secret-tool~ for details]:
+#+begin_src bash
+secret-tool store --label="dvc" service "rclone" project "gprd_dimer"
+#+end_src
+
+Which can then simply be set to ~RCLONE_PASSWORD_COMMAND~ and used directly:
+#+begin_src bash
+export RCLONE_PASSWORD_COMMAND='secret-tool lookup service "rclone" project "gprd_dimer"'
+rclone config --ask-password=false
+#+end_src
+
+We don't want duplication. So there has to be a question of if we want to use
+the artifact uploaded directly to an S3 instance or if we want to use local and
+let DVC handle putting it on a bucket if need be.
+
+Rather than use the local NAS approach of letting DVC take an absolute path to
+an ~rclone mount~ point, it is a bit nicer to use an ~rclone server~ WebDAV
+instance instead.
+
+#+begin_src bash
+pixi add dvc-webdav
+# In one terminal
+rclone serve webdav HIOneDrive:/.dvcstore --vfs-cache-mode full --addr unix:///tmp/dvc.hi.socket
+# In another
+dvc remote add -d HIOneDrive webdavs:///tmp/dvc.hi.socket
+#+end_src
+
+Where we assume that ~rclone~ is configured as per the [[https://rclone.org/onedrive/][OneDrive instructions]].
+Since there are no sensitive details in any of the above commands, it is alright
+to have DVC store this configuration and track it with ~git~.
+
+** Handling SSL errors
+
+Annoyingly, it turns out that even with ~ssl_verify false~, an SSL record layer
+error will be thrown if the WebDAV instance doesn't offer SSL.
+
+#+begin_src bash
+dvc remote modify hionedrive ssl_verify false
+dvc push
+Collecting                                                                                                                                                            |0.00 [00:00,    ?entry/s]
+Pushing
+ERROR: unexpected error - [SSL] record layer failure (_ssl.c:1000): [SSL] record layer failure (_ssl.c:1000)
+#+end_src
+
+Which means that we need to setup a key pair, with the defaults, which is OK
+since it will only be used locally:
+
+#+begin_src bash
+# Keep hitting enter to accept the defaults
+openssl ecparam -out ec_key.pem -name prime256v1 -genkey
+openssl req -new -key ec_key.pem -x509 -nodes -days 365 -out cert.pem
+#+end_src
+
+This can now be used to serve the WebDAV instance:
+
+#+begin_src bash
+rclone serve webdav HIOneDrive:/.dvcstore --vfs-cache-mode full --addr localhost:9677 --cert cert.pem --key ec_key.pem
+#+end_src
+
+It is important to note that DVC doesn't care about the exact key-pair, and with
+the current setup browsers will (correctly) raise
+~net::ERR_CERT_AUTHORITY_INVALID~ warnings [fn:: However, this post isn't about using LetsEncrypt or ~certbot~ to get a proper certificate, nor is it relevant] but will now merrily accept the connection (since ~ssl_verify~ is still off):
+
+#+begin_src bash
+dvc push
+Collecting                                                          |0.00 [00:00,    ?entry/s]
+Pushing
+196 files pushed
+#+end_src
+
+** More ~dvc~ idiosyncracies
+
+- Ignore folders in the ~.gitignore~, else ~dvc~ may complain that the relevant ~.dvc~ is ignored by ~git~
+  + i.e. to ignore ~best_trial_8/~ don't ignore ~best_trial*~ but use ~best_trial*/~
+
 * Important Note :ignoreheading:ignore:
 # ALWAYS at the bottom, to ensure fresh builds do not break
 * DONE About
