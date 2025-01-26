@@ -690,7 +690,7 @@ def switchdir(path):
         os.chdir(curpath)
 #+end_src
 
-*EDIT*: These are now part of my ~pycrumbs~ helper library..
+*EDIT*: These are now part of my ~pycrumbs~ (aka ~pycrumpets~) helper library..
 ** DONE reMarkable Screen Sharing :devenv:cmdline:ssh:collab:
 CLOSED: [2024-06-15 Sat 20:55]
 :PROPERTIES:
@@ -1133,6 +1133,21 @@ Then use it in the ~shellHook~ as:
 #+end_src
 Or directly as ~export LOCALE_ARCHIVE="$(nix-env --installed --no-name --out-path --query glibc-locales)/lib/locale/locale-archive"~
 ** TODO Nix Thoughts
+** TODO Listing things
+*** Zotero plugins
+- [[https://github.com/leonkt/zotero-memento/pull/19][Memento]] to get an internet archive link
+- DOI Manager
+- Googe Scholar Citation Count
+- Night for Zotero
+- Hub Plugin
+- Storage Scanner for Zotero
+- Zotero Citation Counts Manager
+- Zotero OCR
+- ZotFile
+- Zotero Tag
+- zotext
+- Zotero LibreOffice Integration
+- [[https://github.com/northword/zotero-format-metadata][Zotero Linter]] for adding italics and other HTML tags to titles and more easily
 ** TODO On Hyread and Color E-Ink
 *** ~adb~ rules
 A quick glance at the output of ~lsusb~ yields:
@@ -1178,6 +1193,9 @@ I needed to set:
 export DEBUGINFOD_URLS="https://debuginfod.archlinux.org"
 #+end_src
 Which apparently was supposed to be set by default but wasn't.
+** TODO Branch coverage for ~lcov~
+Every single ~lcov~ command needs to ~--rc lcov_branch_coverage=1~, if the ~.rc~
+file isn't present.
 ** TODO ~git~ tips
 1. Open the first unmerged file in ~emacsclient~
 #+begin_src bash
@@ -1241,6 +1259,21 @@ Sometimes a dark theme compatible variant of an existing logo is required.
 convert logo_v2.png -fuzz 20% -transparent white moltr.png
 convert moltr.png -channel RGB -negate output.png
 #+end_src
+** TODO Networking issues
+My previous setup with ~NetworkManager~ and ~iwd~ caused more friction than I expected. Instead consider:
+#+begin_src bash
+sc-disable-now NetworkManager
+sudo pacman -Rnsc NetworkManager
+# For allowing everyone to view but not edit
+sudo chmod 755 /var/lib/iwd/
+#+end_src
+Now we need a better resolver, I prefer [[https://github.com/Control-D-Inc/ctrld][ctrld]] from Control-D. With this, we can remove ~systemd-resolver~ since it will be started and configured by ~ctrld~.
+#+begin_src bash
+# Or replace p2 with your custom instance
+sudo ctrld start --cd  'p2'
+sc-enable-now ctrld
+sc-disable-now systemd-resolved
+#+end_src
 ** TODO Local TeX Configurations :@personal:workflow:tools:tex:
 Although ~tectonic~ has gotten better at compiling arbitrary ~TeX~ snippets, for
 my local Linux machines I still prefer to keep the possiblity of getting full
@@ -1248,4 +1281,136 @@ CTAN distribution. The easiest way to update an existing setup is to wipe the
 old one and start anew. I tend to use a minimal ~.profile~ which is then coupled
 to my ~dotfiles~.
 
+** TODO ~noweb~ idiosyncrasies :@programming:tools:emacs:workflow:orgmode:
+
+~noweb~ allows for the expansion of snippets in place, so something like this
+can be written:
+
+#+name: failed-runs
+#+begin_src bash :results none
+ag -z "exit status: 1" -U -l 2>/dev/null
+#+end_src
+
+Now we can use this at any time:
+#+begin_src bash :session shared
+cd "$GITROOT/bench_runs/eon/runs"
+<<failed-runs>> | wc -l
+#+end_src
+
+*** Variable substitution
+However, there is also the option of going beyond, by using variable substition.
+Naively, a first pass might be:
+
+#+name: failed-runs
+#+begin_src bash :results none :var sstr=""
+ag -z ${sstr} -U -l 2>/dev/null
+#+end_src
+
+#+begin_src bash :session shared :noweb yes
+cd "$GITROOT/bench_runs/eon/runs"
+<<failed-runs(sstr='exit status: 1')>>
+#+end_src
+
+This doesn't work as, via ~C-C C-V v~ shows that it evaluates to ~nil~. This can
+be fixed by echoing the original command to be run after the variable
+substitution [fn:: as seen in this [[https://www.reddit.com/r/orgmode/comments/1dgtk23/comment/l9xtf59/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button][comment on reddit]].].
+
+#+name: searcher
+#+begin_src bash :var sstr=0 :results none :exports code
+echo "ag -z \"$sstr\" -U -l 2>/dev/null"
+#+end_src
+
+#+begin_src sh :session shared :noweb yes :eval never
+<<searcher(sstr="exit status: 1")>>
+#+end_src
+
+Which now works as intended.
+
+*** Environment management
+When using shared session details, it is best to load the environment once, and
+use it in subsequent calls.
+
+#+begin_src bash :session shared :results none :eval never
+# with :session shared and :results none
+export GITROOT=$(git rev-parse --show-toplevel)
+export PATH="$PATH:$HOME/.pixi/bin" # not sourced otherwise somehow
+#+end_src
+
+However, it seems that trying to activate the environment often causes issues
+including printing the ~EOE~ line several times, i.e. ~echo 'org_babel_sh_eoe'~.
+
+So it is better to set ~PIXI_NO_PROGRESS~ instead and use ~pixi run -q~.
+
+** TODO  Taming submodules with ~git-subrepo~ :@programming:tools:git:workflow:
+Essentially this works in two phases:
+- ~pixi~ is used to ensure locally editable packages are ready for immediate use
+- ~git-subrepo~ is used to changes are easily upstreamed
+
+This workflow is easier than using a fork only approach, due to the locality of
+data. Additionally, it allows for a "fat" release of the analysis.
+
+Essentially:
+- Make a new branch in each project / tool which the primary project depends on
+  + This may entail a fork
+- Clone each of these (with the right branch) into a local directory with ~git-subrepo~
+- Automatically add them and changes to the environment via ~pixi~
+
+In practice this could look like:
+#+begin_src bash
+cd $MY_TOOL
+git checkout -b my_project
+git push -u origin my_project
+cd $MY_PROJECT
+mkdir subrepos
+git subrepo clone git@github.com:$GITHUB_ID/$MY_TOOL_NAME.git subrepos/$MY_TOOL_NAME -b $MY_PROJECT
+git commit --amend # rename to something like MAINT: Pin $MY_TOOL_NAME locally with git-subrepo
+#+end_src
+Additionally, within the ~pixi.toml~:
+#+begin_src toml
+[pypi-dependencies]
+$MY_TOOL_NAME = { path = "./subrepos/$MY_TOOL_NAME", editable=true}
+#+end_src
+
+*** Handling ~setuptools_scm~ for Python versions
+
+Most packaging managers using ~vcs~ information rely on ~setuptools_scm~ under the
+hood (e.g. ~hatch_vcs~ does). While this approach works well with ~git submodule~
+systems, it turns out that with ~git subrepo~ the installation cannot proceed
+because of the ~.git~ folder not being part of the checkout.
+
+That being said, a workaround is to simply set the
+~SETUPTOOLS_SCM_PRETEND_VERSION~ variable instead.
+
+For instance:
+#+begin_src bash
+export SETUPTOOLS_SCM_PRETEND_VERSION="v0.0.dev0+$MY_PROJECT_$(git rev-parse HEAD)"
+#+end_src
+
+Which can then be stored in an activation script for ~pixi~ commands to pickup on:
+#+begin_src toml
+[activation]
+scripts = ["scripts/env_setup.sh"]
+#+end_src
+
+Another workaround would be to use the actual repository for the ~pixi~ bit, i.e.
+the one stored in ~.git/tmp/subrepo/subrepos/$MY_TOOL_NAME~
+
+*** Using ~git sub-repo~
+The contributing flow is basically:
+#+begin_src bash
+git subrepo branch subrepos/$MY_TOOL_NAME
+git subrepo push subrepos/$MY_TOOL_NAME
+#+end_src
+Make changes in ~$MY_TOOL~
+
+** DRAFT Mesa Bugs with Sway :@note:ramblings:
+Recently upgraded my system only to have ~sway~ crash with an ~egl~ error, which
+was odd, given that I'm on an Intel GPU. At first it seemed to be a ~glvnd~ bug,
+as noted from the ~sway~ issue tracker, but it turned out to be a ~mesa~ bug.
+Can be worked around with ~WLR_RENDERER=pixman sway~ which uses software only
+rendering.
+
+Another issue was having to handle the groups on the ~/dev/dri/renderD128~ which
+needed ~sudo usermod -a -G vglusers $USER~.
 * Footnotes
+Warren said 30 s or 30 min for machine learning, anything else will not add any information.
