@@ -7389,12 +7389,66 @@ Migrating Imap, Gmail and Exchange, mail accounts from GUI clients to [[https://
 #+end_quote
 ** Background
 Initially, I had planned this post to start with a brief history of the decline of email clients for Linux. That quickly got out of hand, and was therefore spun out into a post of its own (TBD). To keep things brief. Thanks to the incredible ineptitude of the Thunderbird steering committee, I ended up requiring a new mail client. Having despaired of the GUI based bloat heavy approaches of most clients, I decided to go the old fashioned route and build one up in a modular manner.
+
+*** Packages
+We will need the following:
+- ~astroid~ :: for handling the email interface
+- ~isync/mbsync~ :: for general IMAP account syncrhonization
+- ~lieer~ :: for GMail accounts
+- ~davmail~ :: for Exchange accounts
+- ~notmuch~ :: for indexing emails
+- ~pass~ :: for handling secrets (~secret-tool~ or anything else would work too)
+- ~msmtp~ :: for sending email
+- ~nix~ :: for handling dependencies in a reproducible manner (or ~pixi~)
+- ~cryptomator~ :: for encryption at-rest (or ~tomb~)
+- ~rclone~ :: for handling cloud synchronization of email contents
 ** The Accounts
 In no order of preference, for a variety of reasons, I have 23 distinct email accounts. However, these are actually broken down into a few basic types and associated mail fetching software.
 - Generic IMAP :: Yahoo, Mail.ru and the rest are managed with [[https://isync.sourceforge.io/][isync]]
 - Exchange :: A school account of mine uses Office 365, and will be handled with [[http://davmail.sourceforge.net/][davmail]] in conjunction with ~isync~
 - Gmail :: There are a few of these, two personal, and two institutional, all of which are handled with [[http://lieer.gaute.vetsj.com/][lieer]]
-** InSync
+** Security
+We will use ~pass~ for handling the secrets [fn:whatkey].
+
+#+begin_src bash
+pass git init $GPG_KEY # Optional, use a secure private git repo
+pass init $GPG_KEY
+#+end_src
+
+Additionally, we will store the actual contents of the mail in an encrypted
+store. Generally ~Cryptomator~ works really well for data which is not updated
+very often, but has performance issues for many small file[fn:: See the [[https://community.cryptomator.org/t/is-cryptomator-a-safe-replacement-for-veracrypt-durability-and-performance-wise/5157][discussion here]] and the security [[https://docs.cryptomator.org/en/latest/security/security-target/#security-security-target][target here]]]. However, given its focus, and the fact that this setup can end up
+with a rather heavy set of files, we will instead use ~tomb~ which interacts
+with a ~LUKS~ volume ([[https://dyne.org/docs/tomb/#get-started][website]]).
+
+#+attr_html: :class warning-alert
+#+begin_alert
+#+begin_alert-heading
+*Warning*
+#+end_alert-heading
+Although LUKS volumes can be expanded to become larger, shrinking to reclaim
+space is not a supported operation [fn:: Deleting email didn't seem like an operation I'd do very often].
+#+end_alert
+
+In any case:
+
+#+begin_src bash
+tomb dig -s 10000 mail.tomb
+tomb forge mail.tomb.key
+tomb forge mail.tomb.key -f
+tomb lock mail.tomb -k mail.tomb.key
+tomb open mail.tomb -k mail.tomb.key
+#+end_src
+
+Which means we can now use the ~/media/mail~ folder for storing data.
+
+It is easiest to store the ~.mail~ folder where necessary and bind mount to a location like ~/media/mail~:
+
+#+begin_src bash
+sudo mount --bind "$HOME/.mail" /media/mail
+#+end_src
+
+** ISync
 For general IMAP accounts (anything which isn't backed by ~gmail~ or ~outlook~) an ~mbsync~ approach works best. Exhange accounts need ~davmail~ and are described in a separate sub-section. Before we get to the ~poll.sh~ script and ~astroid~, it is a good idea to run each of these as we set them up, especially as the first run can take quite a long time (around an hour for 9205 messages).
 
 #+begin_src bash
@@ -7402,15 +7456,17 @@ mbsync -V blah
 #+end_src
 
 *** General IMAP
-For a standard IMAP account (anything which isn't Exchange or Gmail) the only thing we need to keep track of is a good way to obfuscate passwords. We will use ~pass~ for this [fn:whatkey].
+For a standard IMAP account (anything which isn't Exchange or Gmail) the only
+thing we need to keep track of is a good way to obfuscate passwords. We will use
+~pass~ for this, as configured earlier.
 
 #+begin_src bash
-pass git init $GPG_KEY # Optional, use a secure private git repo
-pass init $GPG_KEY
 pass add mail/rgoswami.iitk
 #+end_src
 
-With this, we can configure a general IMAP account (an IITK webmail in this instance, but it could be anything).
+With this, we can configure a general IMAP account in ~$HOME/.config/isyncrc~
+[fn:: an IITK webmail in this instance, but it could be anything].
+
 
 #+begin_src tcl
 IMAPAccount rgoswami.iitk
@@ -7438,19 +7494,30 @@ SyncState *
 #+end_src
 
 *** Exchange Accounts
-For Exchange accounts we need to setup ~davmail~. Thankfully the process is actually excessively simple for a single account. For each account, a ~.properties~ file needs to be generated. The password section is kept blank in this case, since we will authenticate with the ~O365Interactive~ protocol.
+For Exchange accounts we need to setup ~davmail~. Thankfully the process is
+actually excessively simple for a single account. For each account, a
+~.properties~ file needs to be generated. The password section is kept blank in
+this case, since we will authenticate with the ~O365Interactive~ protocol.
 
 #+begin_src bash
 # The default setup
 davmail ~/.davmail.properties
 #+end_src
 
-Use the following properties in the ~.davemail.properties~ file to prevent timeout errors:
+Use the following properties in the ~.davmail.properties~ file to prevent timeout errors:
 #+begin_src bash
 davmail.folderSizeLimit=50
 davmail.clientSoTimeout=0
 davmail.enableKeepAlive=true
 #+end_src
+
+#+attr_html: :class note-alert
+#+begin_alert
+#+begin_alert-heading
+*Note*
+#+end_alert-heading
+~java-openjfx~ is required for the interactive setting, and ~swt~ for the icon.
+#+end_alert
 
 Further information is available at [[http://davmail.sourceforge.net/faq.html][the official docs]].
 
@@ -7469,32 +7536,42 @@ Host localhost
 User rog32@hi.is
 Pass dummy
 Port 1143
-SSLType None
+TLSType None
 AuthMechs LOGIN
 
 IMAPStore rog32-remote
 Account rog32
+
 MaildirStore rog32-local
 SubFolders Verbatim
-Path /run/media/Storage/.mail/rog32/
-Inbox /run/media/Storage/.mail/rog32/Inbox
+Path /media/mail/rog32/
+Inbox /media/mail/rog32/Inbox
 
 Channel rog32
-Master :rog32-remote:
-Slave :rog32-local:
+Far :rog32-remote:
+Near :rog32-local:
 Patterns *
 Create Both
 SyncState *
 #+end_src
 
-The ~SSLType~ and ~AuthMechs~ are important parameters. Note that the ~Pass~ is truly not important since we an OAuth token is stored in the ~properties~ file.
+The ~TLSType~ and ~AuthMechs~ are important parameters. Note that the ~Pass~ is truly not important since we an OAuth token is stored in the ~properties~ file.
 
 #+DOWNLOADED: screenshot @ 2020-12-29 23:51:10
 #+caption: First run of a large inbox with ~davmail~ and ~isync~
 [[file:images/InSync/2020-12-29_23-51-10_screenshot.png]]
 
 ** Gmaileer
-The general setup ~gmi init blah@gmail.com~ works well for personal accounts. However, there was an additional step for the IEEE account.
+The general setup ~gmi init blah@gmail.com~ works well for personal accounts. Basically:
+
+#+begin_src bash
+cd /media/mail
+mkdir personalGmail
+cd personalGmail
+gmi init personal@gmail.com
+#+end_src
+
+However, there was an additional step for the IEEE account.
 *** IEEE
 Some issues with tags led to the following changes in the ~.gmaileer.json~ file
 #+begin_src js
@@ -7502,7 +7579,9 @@ Some issues with tags led to the following changes in the ~.gmaileer.json~ file
 #+end_src
 Essentially just the addition of two new ~ignore_tags~.
 ** Notmuch
-At this point, we have all mail synced into local directories, but we have no access to view or interact with them. We will start by setting up ~notmuch~ to search and index our mail. This is pretty basic for now.
+At this point, we have all mail synced into local directories, but we have no
+access to view or interact with them. We will start by setting up ~notmuch~ to
+search and index our mail. This is pretty basic for now, in ~$HOME/.notmuch-config~.
 #+begin_src toml
 [database]
 path=/run/media/Storage/.mail/
@@ -7512,14 +7591,19 @@ primary_email=primary@domain.com
 other_email=one@domain.com;two@domain.com
 [new]
 tags=new;unread;inbox;TODO;
-ignore=/.*[.](json|lock|bak)$/
+ignore=/.*[.](json|lock|bak|osync_workdir|mbsyncstate|uidvalidity|log)$/
 [search]
-exclude_tags=deleted;spam;
+exclude_tags=deleted;spam;trash;
 [maildir]
 synchronize_flags=true
 #+end_src
 
 There are a lot more options which may be configured, but this is enough to get started.
+#+begin_src bash
+notmuch setup
+notmuch new
+#+end_src
+
 ** Sending Email
 At this stage we need a way to actually send email. A simple configuration can be setup in ~/.config/msmtp/config~ is given below (where we use ~pass~ again):
 #+begin_src tcl
@@ -7574,6 +7658,7 @@ The accounts section is fairly self explanatory, but we will need to use the fol
             "sendmail": "msmtp --read-envelope-from -i -t",
 #+end_src
 
+With that, usage of ~astroid~ may commence.
 
 *** Nix Python Poll Script
 Natively only bash appears to be supported. However, with ~nix~, we can use a reproducible python script with [[https://amoffat.github.io/sh][the sh library]] to call system functions instead.
@@ -16054,6 +16139,7 @@ Though the conclusions above are still valid, with the XWayland fixes, this is d
 CLOSED: [2022-04-24 Sun 19:16]
 :PROPERTIES:
 :EXPORT_FILE_NAME: spack-pytorch-dev-workflow
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("HPC")
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :END:
 #+begin_quote
@@ -20417,6 +20503,70 @@ Pushing
 - Ignore folders in the ~.gitignore~, else ~dvc~ may complain that the relevant ~.dvc~ is ignored by ~git~
   + i.e. to ignore ~best_trial_8/~ don't ignore ~best_trial*~ but use ~best_trial*/~
 
+* DRAFT Per-project Spack Baseline with ~git-subrepo~ :@notes:ramblings:workflow:
+:PROPERTIES:
+:EXPORT_FILE_NAME: pp-spack-base-2025
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("HPC")
+:END:
+#+begin_quote
+~spack~ first ~git-subrepo~ setup for reproducible HPC repositories.
+#+end_quote
+** Background
+[[https://spack.readthedocs.io/en/latest/getting_started.html][Spack]] is pretty useful for generating optimized binaries for the HPC. ~pixi~ is
+generally useful for projects which can make use of the ~conda~ ecosystem, but
+for most high performance computing software, optimizing compilers and host of
+interdependent build requirements lead to either Spack, Easybuild, Singularity
+or Nix [fn:: Though most clusters don't ship with ~nix~]. More background on
+~spack~ including local environment use was covered in a [[Spack and PyTorch Development Workflows][previous post]].
+
+At the same time, the [[https://github.com/ingydotnet/git-subrepo][git-subrepo]] helper allows vendoring repository contents,
+which somewhat alleviates the fragility of ~submodules~ while retaining the
+ability to push and pull from upstream [fn:: *Never* rebase the subrepo target,
+and *always* have a forked branch for the subrepo in question!]. Taken together,
+these can work synergistically with a queue aware workflow manager like
+~snakemake~ for building and running high throughput calculations.
+** Incorporating with ~subrepo~
+Assuming a local clone of ~spack~ and a repo where reproduction is required, we
+will first create a new branch for the project:
+#+begin_src bash
+git checkout --branch gprd_sella_bench # or whatever
+git push -u origin gprd_sella_bench
+#+end_src
+This branch *should not* be force pushed to, otherwise the ~subrepo~ linkage
+will break and need to be setup from scratch.
+
+In the project repository now:
+#+begin_src bash
+git subrepo clone git@github.com:HaoZeke/spack subrepos/spack -b gprd_sella_bench -m "MAINT: Add spack for reproduction"
+#+end_src
+
+
+#+attr_html: :class note-alert
+#+begin_alert
+#+begin_alert-heading
+*Note*
+#+end_alert-heading
+This is a fairly heavy operation, and is really only meant for projects which
+need it, otherwise consider simply using ~pixi~.
+#+end_alert
+
+Now we can effectively follow along with [[https://spack.readthedocs.io/en/latest/getting_started.html][the documentation]], bootstrapping
+~clingo~ for dependency resolution.
+#+begin_src bash
+. subrepos/spack/share/spack/setup-env.sh # Assumes zsh || bash
+spack spec zlib # Or anything really
+spack --bootstrap find # Should have clingo
+#+end_src
+
+Spack will still continue to use ~$HOME/.spack~ for [[https://spack.readthedocs.io/en/latest/getting_started.html#compiler-configuration][most of the configuration]],
+and indeed this allows easy usage beyond the project directory [fn:: Unlike
+~pixi~ but like ~micromamba~ or ~conda~ named environments].
+
+The point this is to ensure the exact state of the ~spack~ recipes used within
+the repository for posterity. Additionally, new recipes for the project can be
+easily pushed via ~git subrepo~ to make opening pull requests post validation
+much easier.
 * Important Note :ignoreheading:ignore:
 # ALWAYS at the bottom, to ensure fresh builds do not break
 * DONE About
