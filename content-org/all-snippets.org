@@ -1281,6 +1281,22 @@ CTAN distribution. The easiest way to update an existing setup is to wipe the
 old one and start anew. I tend to use a minimal ~.profile~ which is then coupled
 to my ~dotfiles~.
 
+** TODO Desktop files and ~tmux~ sessions
+I was having trouble launching ~ovito~ from a desktop file. To send commands through to a new ~tmux~ session and then close it out I ended up with.
+#+begin_src desktop
+[Desktop Entry]
+Name=OVITO
+Type=Application
+Exec=/usr/bin/tmux new-session -d -s ovito "bash --init-file <(echo '$HOME/.local/bin/ovito && tmux kill-session -t ovito')"
+Icon=ovito
+Terminal=false
+StartupNotify=false
+Categories=Education;Science;Mathematics;
+Comment=Open Visualization Tool
+#+end_src
+So basically create a named session, run a ~bash~ instance, then kill the
+session at the end of it. Without the ~bash~ session, ~tmux~ exits immediately
+after executing ~ovito~.
 ** TODO ~noweb~ idiosyncrasies :@programming:tools:emacs:workflow:orgmode:
 
 ~noweb~ allows for the expansion of snippets in place, so something like this
