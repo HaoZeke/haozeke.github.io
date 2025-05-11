@@ -509,7 +509,7 @@ convention:
 :EXPORT_FILE_NAME: index
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
 :END:
-Generally, combined with [[Local ~precommit~ dependencies][local dependencies]] and [[~precommit~ selections][exclusion rules]], the followi
+Generally, combined with [[https://rgoswami.me/snippets/local-precommit-dependencies/][local dependencies]] and [[~precommit~ selections][exclusion rules]], the followi
 #+begin_src yaml
 - repo: local
   hooks:
@@ -940,7 +940,7 @@ integritity of the ~git log~.
 - Azure :: Allows skips anywhere in the commit message
 - Cirrus :: Skips only if on the [[https://cirrus-ci.org/guide/writing-tasks/#conditional-task-execution][first or last line]]
 ** TODO Python ~precommit~ hooks
-I use [[Local ~precommit~ dependencies][local dependencies]], typically I have:
+I use [[https://rgoswami.me/snippets/local-precommit-dependencies/][local dependencies]], typically I have:
 ** TODO Useful Repository Management Tools :library:design:
 The way I see it, especially ~fortran~ libraries, are meant to be embedded in
 larger codes. This is just the natural way. So it makes sense to have headers
