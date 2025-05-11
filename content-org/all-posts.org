@@ -13,7 +13,7 @@
 
 #+startup: logdone indent overview inlineimages
 
-#+BEGIN_SRC emacs-lisp :exports none :eval always
+#+BEGIN_SRC emacs-lisp :exports none :eval always :results none
 (require 'ox-extra)
 (ox-extras-activate '(ignore-headlines))
 (eval unpackaged/org-export-html-with-useful-ids-mode)
@@ -23,8 +23,6 @@
 (citeproc-org-setup)
 #+END_SRC
 
-#+RESULTS:
-| citeproc-org-render-references | org-ref-acronyms-before-parsing | org-ref-glossary-before-parsing | org-attach-expand-links |
 * DONE Search
 :PROPERTIES:
 :EXPORT_HUGO_SECTION: /
@@ -113,7 +111,8 @@ repo data, I can manage my notifications better with [[https://octobox.io/][Octo
 It looks like this:
 
 #+caption: Octobox Stock Photo
-[[file:images/octoboxSample.png]]
+file:images/octoboxSample.png
+
 * DONE Poetry and Direnv :@programming:tools:direnv:workflow:python:
 :PROPERTIES:
 :EXPORT_FILE_NAME: poetry-direnv
