@@ -20591,7 +20591,7 @@ CLOSED: [2025-05-11 Sun 17:44]
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Remote usage")
 :END:
 #+begin_quote
-Leveraging containers for streamlined remote interactive and mounted file access to intranent machines
+Leveraging containers for streamlined remote interactive and mounted file access to intranet machines
 #+end_quote
 ** Background
 Most academic or corporate networks gate access to internal resources (like
@@ -20760,7 +20760,7 @@ docker run --rm -it \
   vpn-smart-jumphost:latest
 #+end_src
 
-This will prompt in the terminal for the VNP credentials, including an MFA if
+This will prompt in the terminal for the VPN credentials, including an MFA if
 necessary. The network within the container is now correctly connected through
 to the VPN. Remember to keep this open as it maintains the VPN session (perhaps
 using ~tmux~).
