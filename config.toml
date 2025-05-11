@@ -22,7 +22,6 @@ buildExpored = false
 canonifyURLs = false # Legacy
 
 enableRobotsTXT = true
-enableGitInfo   = true
 enableEmoji     = true
 enableMissingTranslationPlaceholders = false
 
@@ -31,6 +30,8 @@ disableSitemap = false
 disable404     = false
 disableHugoGeneratorInject = false
 
+[frontmatter]
+  lastmod = ["lastmod", ":git", "date", "publishDate"]
 [caches]
   [caches.images]
     dir = ':cacheDir/images'
