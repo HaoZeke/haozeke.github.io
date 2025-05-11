@@ -1,5 +1,7 @@
 name: Build site
 on:
+  # For manual actions
+  workflow_dispatch:
   push:
     branches: [src]
   pull_request:
@@ -8,9 +10,19 @@ on:
   schedule:
     - cron: "0 0 */1 * *"
 
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash
+
 jobs:
   buildSite:
     runs-on: ubuntu-latest
+    env:
+      HUGO_ENVIRONMENT: production
     steps:
       - uses: actions/checkout@v4
         with:
@@ -41,12 +53,37 @@ jobs:
         run: sudo snap install dart-sass
 
       # Linux and macOS
-      - name: Install dependencies and build
+      - name: Install dependencies
         shell: bash -el {0}
         run: |
           npm install
           bundler install
-          bundler exec rake hugoBuild
+
+      - name: Cache Restore
+        id: cache-restore
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ${{ runner.temp }}/hugo_cache
+          key: hugo-${{ github.run_id }}
+          restore-keys:
+            hugo-
+
+      - name: Configure Git
+        run: git config core.quotepath false
+
+      - name: Build pages
+        shell: bash -el {0}
+        run: |
+          bundler exec rake hugoBuild --cachedir "${{ runner.temp }}/hugo_cache"
+
+      - name: Cache Save
+        id: cache-save
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            ${{ runner.temp }}/hugo_cache
+          key: ${{ steps.cache-restore.outputs.cache-primary-key }}
 
       - name: Deploy
         if: github.event_name != 'pull_request' && !contains(github.event.head_commit.message, 'ImgBot')

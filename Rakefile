@@ -40,7 +40,8 @@ end
 
 desc "Build site with Hugo"
 task :hugoBuild => ["md"] do
-  sh "hugo --minify --enableGitInfo"
+  args.with_defaults(:cachedir => "$(pwd)/cacheDir/images")
+  sh "hugo --minify --enableGitInfo --gc --cacheDir #{args.cachedir}"
 end
 
 desc "Orgmode to markdown with Emacs"
