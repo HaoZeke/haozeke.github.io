@@ -819,6 +819,14 @@ swaymsg "output DP-1 position -${PRIMARY_WIDTH} 0"
 swaymsg "output DP-1 position ${PRIMARY_WIDTH} 0"
 #+end_src
 This can be wrapped into a little helper script.
+** TODO Using ~pixi~ with ~R~ packages
+The ~conda~ compilers cause some oddities during ~check~ even if ~.pixi~ is
+ignored via ~use_build_ignore~. However it is sufficient to simply ~touch~ the
+missing files.
+#+begin_src bash
+touch .pixi/envs/dev/lib/gcc/x86_64-conda-linux-gnu/13.3.0/libhwasan.so
+touch .pixi/envs/default/lib/gcc/x86_64-conda-linux-gnu/14.2.0/libhwasan.so
+#+end_src
 ** TODO Enforcing NumPy commit styles
 It has been a few years since I started following the usage of the commit prefix
 guidelines from the NumPy documentation[fn:1].
@@ -1297,6 +1305,8 @@ Comment=Open Visualization Tool
 So basically create a named session, run a ~bash~ instance, then kill the
 session at the end of it. Without the ~bash~ session, ~tmux~ exits immediately
 after executing ~ovito~.
+
+One caveat is that it only works for a single instance at a time.
 ** TODO ~noweb~ idiosyncrasies :@programming:tools:emacs:workflow:orgmode:
 
 ~noweb~ allows for the expansion of snippets in place, so something like this
@@ -1428,5 +1438,30 @@ rendering.
 
 Another issue was having to handle the groups on the ~/dev/dri/renderD128~ which
 needed ~sudo usermod -a -G vglusers $USER~.
+** DRAFT Handling environments with ~cibuildwheel~
+As kanged from NumPy.
+#+begin_src bash
+set -xe
+# Kanged from NumPy:
+# https://github.com/numpy/numpy/blob/main/tools/wheels/cibw_before_build.sh
+
+# remove any cruft from a previous run
+rm -rf build
+
+# TODO: delete along with enabling build isolation by unsetting
+# CIBW_BUILD_FRONTEND when numpy is buildable under free-threaded
+# python with a released version of cython
+FREE_THREADED_BUILD="$(python -c"import sysconfig; print(bool(sysconfig.get_config_var('Py_GIL_DISABLED')))")"
+if [[ $FREE_THREADED_BUILD == "True" ]]; then
+    python -m pip install setuptools
+    python -m pip install -i https://pypi.anaconda.org/scientific-python-nightly-wheels/simple cython numpy
+fi
+#+end_src
+Which works quite nicely, just from within the ~pyproject.toml~.
+#+begin_src toml
+[tool.cibuildwheel]
+before-build = "bash {project}/tools/wheels/cibw_before_build.sh {project}"
+#+end_src
+Helpfully this also can be used to set variables and propagate things based on other conditions like operating systems.
 * Footnotes
 Warren said 30 s or 30 min for machine learning, anything else will not add any information.
