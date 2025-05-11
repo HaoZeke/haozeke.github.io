@@ -16588,6 +16588,22 @@ basically using a bunch of ~docker~ images anyway, so I just need a minimal OS.
 #+CAPTION: Doesn't get any easier
 [[file:images/Baseline/2024-09-03_08-55-25_screenshot.png]]
 
+*** Netcup
+For ~netcup~ I ended up with the ~virtual~ [[https://alpinelinux.org/downloads/][alpine linux image]].
+
+#+DOWNLOADED: screenshot @ 2025-03-02 13:50:56
+[[file:images/Baseline/2025-03-02_13-50-56_screenshot.png]]
+
+
+This needs some setup from the VNC, basically just running ~setup-alpine~. Some notes:
+- ~d~ was not being sent via the VNC which was annoying
+- ~community~ isn't setup but that's [[https://wiki.alpinelinux.org/w/index.php?title=Enable_Community_Repository&redirect=no][straight-forward]]
+
+Also to get things runnning smoothly we need to setup ~qemu-guest-agent~:
+#+begin_src bash
+doas apk add qemu-guest-agent
+doas rc-update add qemu-guest-agent
+#+end_src
 ** First steps
 Some configuration is already done, e.g. the ~/etc/apk/repositories~ is set to
 use ~https~.
@@ -16694,7 +16710,7 @@ again, could have just regenerated them].
 First we need a new SSH key.
 #+begin_src bash
 # local machine
-ssh-keygen -t ed25519 -C "$MY_EMAIL" -f "~/.ssh/$MY_SSH_KEY"
+ssh-keygen -t ed25519 -C "$MY_EMAIL" -f ~/.ssh/$MY_SSH_KEY
 cat "$HOME/.ssh/$MY_SSH_KEY.pub"
 # dotfile management, optional
 chezmoi add --encrypt "$HOME/.ssh/$MY_SSH_KEY"
@@ -20575,7 +20591,7 @@ CLOSED: [2025-05-11 Sun 17:44]
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Remote usage")
 :END:
 #+begin_quote
-Leveraging containers for streamlined remote access to intranent machines
+Leveraging containers for streamlined remote interactive and mounted file access to intranent machines
 #+end_quote
 ** Background
 Most academic or corporate networks gate access to internal resources (like
@@ -20588,6 +20604,13 @@ university subscriptions, but it becomes problematic when:
 - You need to connect to multiple distinct services, each behind its own
   separate VPN. Managing these simultaneously or switching between them on a
   host system is often cumbersome or impossible.
+
+These considerations not only affect interactive SSH sessions but also
+complicates using tools for remote file management or other services that need
+to operate through these VPNs.
+*** Tools
+We'll be using [[https://podman.io/][Podman]] with [[https://www.infradead.org/openconnect/][OpenConnect]] and [[https://www.openssh.com/][OpenSSH]] to build a VPN jumphost for
+simplified ~ProxyJump~ configurations and [[https://rclone.org/][rclone]] for SFTP mounting.
 ** Normal usage
 To recap, the standard workflow, for say, an ~anyconnect~ VPN is as follows:
 
@@ -20605,32 +20628,18 @@ through the VPN. Trying to manage multiple such VPNs is difficult.
 
 *** Caveats
 - Full Network Routing :: Your entire machine's internet usage goes through the VPN.
-- Multiple VPNs :: Switching between VPNs is slow, and running multiple simultaneously is generally not feasible.
+- Multiple VPNs :: Switching between VPNs is slow, and running multiple
+  simultaneously is generally not feasible.
 - Streamlining Access :: Even with one VPN, accessing many internal machines via
   direct SSH can be made more convenient with a jumphost and SSH's ProxyJump
   feature.
-
+** Container setup
 Containerization offers a powerful solution by isolating the VPN connection
 within a dedicated environment, leaving your host system's networking untouched.
 This container can then act as a secure SSH jumphost.
 
-
-Attempting to switch between VPNs, or run multiple VPN clients, can be
-time-consuming, error-prone, and sometimes technically infeasible on a single
-host operating system.
-
-Furthermore, even when connected to a single VPN, accessing multiple internal
-machines often involves direct SSH commands. A more streamlined approach
-involves setting up a secure jumphost that routes traffic through the VPN, which
-can then be seamlessly integrated into local SSH workflows using features like
-~ProxyJump~.
-
-This is where containerization technology offers a powerful alternative,
-allowing us to isolate a VPN connection and its associated network routing
-within a dedicated environment, without affecting the host system's main network
-configuration.
-** Container setup
-A basic container using an Alpine base with a non-root user for this is basically:
+A basic container using an Alpine base with a non-root user for this is
+basically:
 #+begin_src conf
 FROM alpine:latest
 
@@ -20790,16 +20799,50 @@ ssh some-other-server.vpnhost
 #+end_src
 The first time you connect via the jumphost, you may be asked to verify and
 accept the SSH host key of the container.
+** Mounting SFTP Remotes
+The ~ProxyJump~ setup in ~~/.ssh/config~ is excellent for interactive SSH
+sessions, ~scp~, and direct ~sftp~ commands. However, for ~rclone~ ([[https://rclone.org/][homepage]]),
+which can mount a remote SFTP share, some more work is necessary for the VPN
+jumphost.
+
+~rclone~ can leverage SSH's capabilities, but it does not parse directives from
+the global SSH config directly.
+
+We can achieve this by constructing an appropriate ProxyCommand and passing it
+to rclone via its SFTP backend options.
+
+#+begin_src bash
+ssh -o "ProxyCommand ssh jumphostuser@127.0.0.1 -p 2200 -i ~/.ssh/cosmolab -o IdentitiesOnly=yes -W %h:%p" $USER@$VPN_HOSTNAME
+#+end_src
+
+The ProxyCommand effectively tells SSH how to connect to the intermediate
+jumphost first, and then tunnel the connection to the final SFTP server.
+
+Essentially we have ~rclone config edit~ (followed by ~n~ and then ~SFTP~) to
+end up with:
+- type :: ~sftp~
+- host :: ~$RCLONE_REMOTE~
+- user :: ~$USER~
+- pubkey_file :: ~$SSH_KEY~
+- key_use_agent :: ~true~
+- ssh :: ~ssh -o "ProxyCommand ssh jumphostuser@127.0.0.1 -p 2200 -i ~/.ssh/cosmolab -o IdentitiesOnly=yes -W %h:%p" $USER@$VPN_HOSTNAME~
+
+Final usage proceeds in the usual fashion:
+#+begin_src bash
+rclone mount "$RCLONE_REMOTE:/home/$USER" ~/mnt/somevpn --vfs-cache-mode full
+#+end_src
+Where ~--vfs-cache-mode full~ improves performance by caching files.
 ** Conclusions
 This containerized approach provides an isolated VPN connection and a convenient
 ProxyJump setup, allowing for more streamlined and targeted access to remote
-networks without impacting your entire host's networking.  The principles can be
-adapted for other OpenConnect-compatible VPNs by modifying the ~openconnect~
-command in the ~entrypoint.sh~ script (potentially using environment variables
-for server addresses and usernames).
+networks without impacting your entire host's networking. Remote file access via
+~rclone~ also works well. The principles can be adapted for other
+OpenConnect-compatible VPNs by modifying the ~openconnect~ command in the
+~entrypoint.sh~ script (potentially using environment variables for server
+addresses and usernames).
 
-A more robust variant of the container workflow developed into the [[https://github.com/HaoZeke/vpn-proxyjump][vpn-proxyjump]]
-project.
+A more robust variant of the container images and workflow developed into the
+[[https://github.com/HaoZeke/vpn-proxyjump][vpn-proxyjump]] project.
 * Important Note :ignoreheading:ignore:
 # ALWAYS at the bottom, to ensure fresh builds do not break
 * DONE About
