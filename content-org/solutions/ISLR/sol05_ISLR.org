@@ -1,5 +1,5 @@
-#+title:  "ISLR :: Moving Beyond Linearity"
-#+author: "Rohit Goswami"
+#+title:  ISLR :: Moving Beyond Linearity
+#+author: Rohit Goswami
 #+date: 2020-02-19 9:47
 
 #+hugo_base_dir: ../../../

@@ -1,5 +1,5 @@
-#+title:  "Everyone Should Get an A - David MacKay"
-#+author: "David MacKay"
+#+title:  Everyone Should Get an A - David MacKay
+#+author: David MacKay
 #+date: 2020-03-16 02:24
 
 #+hugo_base_dir: ../../
