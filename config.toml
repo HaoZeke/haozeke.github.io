@@ -40,7 +40,7 @@ mediaType = "application/toml"
   home = ["HTML", "RSS", "TOML", "JSON"]
 
 [taxonomies]
-  author   = "author"
+  author   = "authors"
   tag      = "tags"
   category = "categories"
   search   = "search"
