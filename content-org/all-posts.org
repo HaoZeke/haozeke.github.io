@@ -20819,12 +20819,12 @@ jumphost first, and then tunnel the connection to the final SFTP server.
 
 Essentially we have ~rclone config edit~ (followed by ~n~ and then ~SFTP~) to
 end up with:
-- type :: ~sftp~
-- host :: ~$RCLONE_REMOTE~
-- user :: ~$USER~
-- pubkey_file :: ~$SSH_KEY~
-- key_use_agent :: ~true~
-- ssh :: ~ssh -o "ProxyCommand ssh jumphostuser@127.0.0.1 -p 2200 -i ~/.ssh/cosmolab -o IdentitiesOnly=yes -W %h:%p" $USER@$VPN_HOSTNAME~
+- *type* :: ~sftp~
+- *host* :: ~$RCLONE_REMOTE~
+- *user* :: ~$USER~
+- *pubkey_file* :: ~$SSH_KEY~
+- *key_use_agent* :: ~true~
+- *ssh* :: ~ssh -o "ProxyCommand ssh jumphostuser@127.0.0.1 -p 2200 -i ~/.ssh/cosmolab -o IdentitiesOnly=yes -W %h:%p" $USER@$VPN_HOSTNAME~
 
 Final usage proceeds in the usual fashion:
 #+begin_src bash
