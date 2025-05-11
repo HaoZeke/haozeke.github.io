@@ -380,7 +380,6 @@ The whole file is also [[https://github.com/HaoZeke/haozeke.github.io/blob/src/c
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Colemak necessities")
 :EXPORT_DATE: 2020-02-29 14:06
-:EXPORT_HUGO_AUTO_SET_LASTMOD: t
 :END:
 #+BEGIN_QUOTE
 Thoughts on and rationale behind leaving QWERTY and touch typing in general. Followed [[Refactoring Dotfiles For Colemak][by this post]] on refactoring my Dotfiles.
