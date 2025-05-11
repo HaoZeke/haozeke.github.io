@@ -8,7 +8,6 @@ PygmentsStyle = "native"
 # rssLimit  = 10  # Maximum number of items in the RSS feed.
 copyright = "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License." # This message is only used by the RSS template.
 
-googleAnalytics = "UA-109503488-16"
 # disqusShortname = ""
 
 archetypeDir = "archetypes"
@@ -112,6 +111,9 @@ name = "Rohit Goswami (HaoZeke)"
   # Default theme "light" or "dark"
   defaultTheme = "dark"
 
+[services]
+  [services.googleAnalytics]
+  googleAnalytics = "UA-109503488-16"
 [params.search]
   enable = true
   backend = "fuse" # can be stork or fuse
