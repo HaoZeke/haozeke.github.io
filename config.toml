@@ -31,6 +31,10 @@ disableSitemap = false
 disable404     = false
 disableHugoGeneratorInject = false
 
+[caches]
+  [caches.images]
+    dir = ':cacheDir/images'
+
 [outputFormats]
 [outputFormats.TOML]
 mediaType = "application/toml"
