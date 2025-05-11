@@ -39,7 +39,7 @@ task :hugoServe, [:port] => [:md] do |t, args|
 end
 
 desc "Build site with Hugo"
-task :hugoBuild => ["md"] do
+task :hugoBuild => ["md"] do |t, args|
   args.with_defaults(:cachedir => "$(pwd)/cacheDir/images")
   sh "hugo --minify --enableGitInfo --gc --cacheDir #{args.cachedir}"
 end
