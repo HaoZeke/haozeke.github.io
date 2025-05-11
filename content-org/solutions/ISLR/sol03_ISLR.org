@@ -1,5 +1,5 @@
-#+title:  "ISLR :: Resampling Methods"
-#+author: "Rohit Goswami"
+#+title:  ISLR :: Resampling Methods
+#+author: Rohit Goswami
 #+date: 2020-02-18 22:00
 
 #+hugo_base_dir: ../../../

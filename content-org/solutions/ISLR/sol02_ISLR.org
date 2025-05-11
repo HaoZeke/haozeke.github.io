@@ -1,5 +1,5 @@
-#+title:  "ISLR :: Classification"
-#+author: "Rohit Goswami"
+#+title:  ISLR :: Classification
+#+author: Rohit Goswami
 #+date: 2020-02-17 15:28
 
 #+hugo_base_dir: ../../../
