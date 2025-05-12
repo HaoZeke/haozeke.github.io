@@ -1463,5 +1463,12 @@ Which works quite nicely, just from within the ~pyproject.toml~.
 before-build = "bash {project}/tools/wheels/cibw_before_build.sh {project}"
 #+end_src
 Helpfully this also can be used to set variables and propagate things based on other conditions like operating systems.
+** DRAFT Terminal Slack with Pidgin
+Slack is unusable. Pidgin and Finch are marginally better. [[https://github.com/dylex/slack-libpurple?search=1][slack-libpurple]] works with a password generated from the Local Storage and Cookies of a browser session as follows [fn:: First described [[https://github.com/dylex/slack-libpurple/pull/162#issue-1311170227][here]]]:
+- Get the main token (~$MAIN~) via devtools->Application->Storage->Local Storage (search for ~xoxc-~)
+  + Search for ~xoxc~ then find it under ~localConfig_v2/teams/token~
+- Get the Cookies ~d~ token (~$COOKIE~) from:
+  + devtools->Application->Storage->Cookies-> ~d~
+Join them together with a space so it is ~$MAIN $COOKIE~ and use that as the password for Pidgin.
 * Footnotes
 Warren said 30 s or 30 min for machine learning, anything else will not add any information.
