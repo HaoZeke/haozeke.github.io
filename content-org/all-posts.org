@@ -20832,15 +20832,13 @@ rclone mount "$RCLONE_REMOTE:/home/$USER" ~/mnt/somevpn --vfs-cache-mode full
 Where ~--vfs-cache-mode full~ improves performance by caching files.
 ** Conclusions
 This containerized approach provides an isolated VPN connection and a convenient
-ProxyJump setup, allowing for more streamlined and targeted access to remote
+~ProxyJump~ setup, allowing for more streamlined and targeted access to remote
 networks without impacting your entire host's networking. Remote file access via
-~rclone~ also works well. The principles can be adapted for other
-OpenConnect-compatible VPNs by modifying the ~openconnect~ command in the
-~entrypoint.sh~ script (potentially using environment variables for server
-addresses and usernames).
+~rclone~ also works well, which means integration with ~emacs~ and other IDEs is
+a snap.
 
-A more robust variant of the container images and workflow developed into the
-[[https://github.com/HaoZeke/vpn-proxyjump][vpn-proxyjump]] project.
+A more robust variant of this basic concept developed into the [[https://github.com/HaoZeke/vpn-proxyjump][vpn-proxyjump]]
+project.
 * Important Note :ignoreheading:ignore:
 # ALWAYS at the bottom, to ensure fresh builds do not break
 * DONE About
