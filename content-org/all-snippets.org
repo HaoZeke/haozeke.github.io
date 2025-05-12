@@ -1470,5 +1470,6 @@ Slack is unusable. Pidgin and Finch are marginally better. [[https://github.com/
 - Get the Cookies ~d~ token (~$COOKIE~) from:
   + devtools->Application->Storage->Cookies-> ~d~
 Join them together with a space so it is ~$MAIN $COOKIE~ and use that as the password for Pidgin.
+Later, setup ~gntrc~ from ~man finch~ to use ~nchat~ like bindings.
 * Footnotes
 Warren said 30 s or 30 min for machine learning, anything else will not add any information.
