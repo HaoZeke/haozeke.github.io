@@ -563,3 +563,7 @@ Temporary Items
 presentations/**/*.html
 /presentations/**/*.pdf
 *flycheck*
+
+# pixi environments
+.pixi
+*.egg-info
