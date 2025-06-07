@@ -1463,6 +1463,10 @@ Which works quite nicely, just from within the ~pyproject.toml~.
 before-build = "bash {project}/tools/wheels/cibw_before_build.sh {project}"
 #+end_src
 Helpfully this also can be used to set variables and propagate things based on other conditions like operating systems.
+** DRAFT Handling ~gh~ auth
+#+begin_src bash
+BROWSER=false gh auth login
+#+end_src
 ** DRAFT Terminal Slack with Pidgin
 Slack is unusable. Pidgin and Finch are marginally better. [[https://github.com/dylex/slack-libpurple?search=1][slack-libpurple]] works with a password generated from the Local Storage and Cookies of a browser session as follows [fn:: First described [[https://github.com/dylex/slack-libpurple/pull/162#issue-1311170227][here]]]:
 - Get the main token (~$MAIN~) via devtools->Application->Storage->Local Storage (search for ~xoxc-~)
@@ -1471,5 +1475,18 @@ Slack is unusable. Pidgin and Finch are marginally better. [[https://github.com/
   + devtools->Application->Storage->Cookies-> ~d~
 Join them together with a space so it is ~$MAIN $COOKIE~ and use that as the password for Pidgin.
 Later, setup ~gntrc~ from ~man finch~ to use ~nchat~ like bindings.
+** DRAFT Remote ~lldb~ on MacOS
+Didn't look into why too much but.
+#+begin_src bash
+sudo DevToolsSecurity --enable
+spctl developer-mode enable-terminal
+sudo security authorizationdb write system.privilege.taskport.debug allow
+#+end_src
+does the trick.
+** DRAFT Pruning ~dvc~ cache
+For situations where the data is tracked in an upstream remote, removing caches locally can be accomplished through:
+#+begin_src bash
+dvc gc --not-in-remote -w
+#+end_src
 * Footnotes
 Warren said 30 s or 30 min for machine learning, anything else will not add any information.
