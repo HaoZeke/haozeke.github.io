@@ -20839,6 +20839,36 @@ a snap.
 
 A more robust variant of this basic concept developed into the [[https://github.com/HaoZeke/vpn-proxyjump][vpn-proxyjump]]
 project.
+* Revisiting Linux Email :@personal:rant:tools:email:workflow:
+:PROPERTIES:
+:EXPORT_FILE_NAME: revisiting-linux-email
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Managing Email")
+:END:
+#+begin_quote
+Securing Email backups with Evolution and ~notmuch~
+#+end_quote
+** Background
+I've used pretty much every Linux email client over the years. Thunderbird has
+been in decline for ages. Astroid unfortunately seemed to run out of steam, as
+did Mailspring. One of the worst parts of this entire situation is having to
+handle backups separately. Also HTML emails have largely displaced plain text,
+making more elegant CLI readers a bit limited.
+
+This leads to a fairly obvious middle ground. Handle backups and synchronization
+via CLI tools as before, but use Evolution as a front-end for interacting with
+the ~maildir~.
+** Cloud setup
+Easiest to mount a dedicated folder with ~rclone~ or ~pcloud~ and then use ~cryptomator~. An ~rclone-crypt~ remote would work just as well.
+
+#+begin_src bash
+sudo mkdir -p /media/mail
+sudo chown -R $USER:$USER /media/mail
+#+end_src
+
+Easiest to mount the folder as a sub-directory wrapped around which a ~pixi~
+configuration will be present. There are problems though. Constant synchronization is slow and network intensive.
+
 * Important Note :ignoreheading:ignore:
 # ALWAYS at the bottom, to ensure fresh builds do not break
 * DONE About
