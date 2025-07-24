@@ -1298,6 +1298,8 @@ Which should be decompressed with:
 #+begin_src bash
 lrunzip -o - gprd_sella_bench.tar.bzip2-lrz | tar xvf -
 #+end_src
+
+Though I do hear good things about ~7z~ [[https://softwarerecs.stackexchange.com/questions/49019/which-compression-utility-should-i-use-for-an-extremely-large-plain-text-file][too]].
 ** TODO Local TeX Configurations :@personal:workflow:tools:tex:
 Although ~tectonic~ has gotten better at compiling arbitrary ~TeX~ snippets, for
 my local Linux machines I still prefer to keep the possiblity of getting full
