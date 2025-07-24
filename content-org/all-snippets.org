@@ -1290,8 +1290,8 @@ The best compression I know of is basically via the [[https://wiki.archlinux.org
 #+begin_src bash
 lrzdir=gprd_sella_bench; \
     tar cvf $lrzdir.tar $lrzdir; \
-    lrzip -Ubvvp `nproc` \
-    -S .bzip2-lrz -L 9 $lrzdir.tar; \
+    lrzip -Uvvp `nproc` \
+    -S .lrz -L 9 $lrzdir.tar; \
     rm -fv $lrzdir.tar; unset lrzdir
 #+end_src
 Which should be decompressed with:
