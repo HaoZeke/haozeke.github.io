@@ -20581,6 +20581,21 @@ The point this is to ensure the exact state of the ~spack~ recipes used within
 the repository for posterity. Additionally, new recipes for the project can be
 easily pushed via ~git subrepo~ to make opening pull requests post validation
 much easier.
+* DRAFT Thoughts on free threading Python development
+:PROPERTIES:
+:EXPORT_FILE_NAME: thoughts-ft-pydev
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+begin_quote
+Where I pontificate on supporting free threaded Python.
+#+end_quote
+** Background
+Quansight Labs, in my final few days there, had a vested interest in ensuring
+most of the Python ecosystem has support for free threaded builds[fn:: Not
+necessarily bug free or optimal, but atleast to a point where the GIL is not
+re-enabled due to a downstream dependency.].
+** Setting up sanitizers
+The easiest
 * DONE Simplified SSH access via container VPNs :@notes:ramblings:setup:remote:
 CLOSED: [2025-05-11 Sun 17:44]
 :PROPERTIES:
@@ -20839,7 +20854,7 @@ a snap.
 
 A more robust variant of this basic concept developed into the [[https://github.com/HaoZeke/vpn-proxyjump][vpn-proxyjump]]
 project.
-* Revisiting Linux Email :@personal:rant:tools:email:workflow:
+* TODO Revisiting Linux Email :@personal:rant:tools:email:workflow:
 :PROPERTIES:
 :EXPORT_FILE_NAME: revisiting-linux-email
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
@@ -20853,12 +20868,18 @@ I've used pretty much every Linux email client over the years. Thunderbird has
 been in decline for ages. Astroid unfortunately seemed to run out of steam, as
 did Mailspring. One of the worst parts of this entire situation is having to
 handle backups separately. Also HTML emails have largely displaced plain text,
-making more elegant CLI readers a bit limited.
+making more elegant CLI readers a bit limited. Most of the baseline setup is
+very similar to the upstream documentation or my previous post.
 
 This leads to a fairly obvious middle ground. Handle backups and synchronization
 via CLI tools as before, but use Evolution as a front-end for interacting with
-the ~maildir~.
-** Cloud setup
+the ~maildir~ and sending email.
+** IMAP accounts
+** Exchange accounts
+The setup from the previous post is still valid, with multiple ~davmail~
+configurations required for each additional Outlook email to be managed.
+** Encryption
+*** Cloud storage
 Easiest to mount a dedicated folder with ~rclone~ or ~pcloud~ and then use ~cryptomator~. An ~rclone-crypt~ remote would work just as well.
 
 #+begin_src bash
@@ -20867,8 +20888,16 @@ sudo chown -R $USER:$USER /media/mail
 #+end_src
 
 Easiest to mount the folder as a sub-directory wrapped around which a ~pixi~
-configuration will be present. There are problems though. Constant synchronization is slow and network intensive.
+configuration will be present. There are problems though. Constant
+synchronization is slow and network intensive.
 
+In fact, this turned out to be a dead end.
+
+*** Backup only
+In practice however, there is not much use for a locally encrypted backup
+especially given the degraded performance. Instead, a ~cron~ script works better
+via ~borg~, keeping encryted, compressed backups, while having fast access to
+local mail.
 * Important Note :ignoreheading:ignore:
 # ALWAYS at the bottom, to ensure fresh builds do not break
 * DONE About
