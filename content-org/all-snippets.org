@@ -1282,6 +1282,22 @@ sudo ctrld start --cd  'p2'
 sc-enable-now ctrld
 sc-disable-now systemd-resolved
 #+end_src
+** DONE Cold storage compression :cmdline:compression:
+CLOSED: [2025-07-24 Thu 13:37]
+Recently some of my older publications were accepted and naturally were archived
+on the Materials Archive. That being said, local copies are also nice to have.
+The best compression I know of is basically via the [[https://wiki.archlinux.org/title/Lrzip][Lzma RZIP]] :
+#+begin_src bash
+lrzdir=gprd_sella_bench; \
+    tar cvf $lrzdir.tar $lrzdir; \
+    lrzip -Ubvvp `nproc` \
+    -S .bzip2-lrz -L 9 $lrzdir.tar; \
+    rm -fv $lrzdir.tar; unset lrzdir
+#+end_src
+Which should be decompressed with:
+#+begin_src bash
+lrunzip -o - gprd_sella_bench.tar.bzip2-lrz | tar xvf -
+#+end_src
 ** TODO Local TeX Configurations :@personal:workflow:tools:tex:
 Although ~tectonic~ has gotten better at compiling arbitrary ~TeX~ snippets, for
 my local Linux machines I still prefer to keep the possiblity of getting full
