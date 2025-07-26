@@ -387,7 +387,13 @@ However, the main pain point with this is that the executables are not exactly
 test dependencies so this fails if the entire project hasn't been compiled
 before running the tests. Still a pretty minor caveat.
 
-** TODO Catch2 and ~meson~ :meson:cpp:build:tests:
+** DONE Catch2 and ~meson~ :meson:cpp:build:tests:
+CLOSED: [2025-07-26 Sat 19:58]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: catch2-meson-tests
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
 When specifying ~main~ manually, this will suffice:
 #+begin_src meson
 test_deps = _deps + dependency('Catch2')
@@ -499,7 +505,7 @@ exclude: |
 #+end_src
 While it is especially useful for tools which don't have ignore flags, as a
 convention:
-- Use  a globally defined ~exclude~
+- Use a globally defined ~exclude~
   + Explain the exclusion with a comment
 - Fine-tune with per-hook ~types_or~ (or even ~files~)
   + Additional ~exclude~ keys may be used as well
@@ -1054,7 +1060,8 @@ I had a lot of annoyances with the older versions of LaTeX provided with the def
 #+begin_src bash
 tlmgr search --global --file asana
 #+end_src
-** TODO Mamba and Colab :ssh:colab:python:
+** DONE Mamba and Colab :ssh:colab:python:
+CLOSED: [2024-07-26 Fri 19:56]
 :PROPERTIES:
 :EXPORT_HUGO_BUNDLE: mamba-colab-usage
 :EXPORT_FILE_NAME: index
@@ -1122,7 +1129,13 @@ S="something" bash -c "$(wget -qO- gsocket.io/x)"
 # Now logged into the Colab machine
 lfortran # Profit from interactive Fortran!
 #+end_src
-** TODO Nix Shell and Locales
+** DONE Nix Shell and Locales :nix:
+CLOSED: [2023-07-26 Wed 19:57]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: nix-shell-locale
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
 From [[https://github.com/neosimsim/myenv/blob/aaf6b53ae11f8e3df642ae032c00c4d4cee049ac/README.md][here]]. Often ~nix-shell~ invocations have the following issue:
 #+begin_src bash
 bash: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
