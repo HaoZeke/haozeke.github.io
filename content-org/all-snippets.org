@@ -482,7 +482,8 @@ jobs:
 #+end_src
 This ensures the ~pre-commit~ action is executed within the ~conda~ environment,
 which is assumed to have ~pipx~ and the dependencies present.
-** DRAFT ~precommit~ selections :regex:precommit:
+** DONE ~precommit~ selections :regex:precommit:
+CLOSED: [2025-07-26 Sat 19:59]
 :PROPERTIES:
 :EXPORT_HUGO_BUNDLE: precommit-selections
 :EXPORT_FILE_NAME: index
