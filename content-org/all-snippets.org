@@ -1323,7 +1323,13 @@ CTAN distribution. The easiest way to update an existing setup is to wipe the
 old one and start anew. I tend to use a minimal ~.profile~ which is then coupled
 to my ~dotfiles~.
 
-** TODO Desktop files and ~tmux~ sessions
+** DONE GUI desktop files and ~tmux~ sessions :cmdline:gui:tmux:
+CLOSED: [2025-07-19 Sat 19:54]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: gui-tmux-desktop
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
 I was having trouble launching ~ovito~ from a desktop file. To send commands through to a new ~tmux~ session and then close it out I ended up with.
 #+begin_src desktop
 [Desktop Entry]
@@ -1472,7 +1478,13 @@ rendering.
 
 Another issue was having to handle the groups on the ~/dev/dri/renderD128~ which
 needed ~sudo usermod -a -G vglusers $USER~.
-** DRAFT Handling environments with ~cibuildwheel~
+** DONE Handling environments with ~cibuildwheel~ :ci:
+CLOSED: [2025-07-19 Sat 19:52]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: environments-cibuildwheel
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
 As kanged from NumPy.
 #+begin_src bash
 set -xe
@@ -1501,15 +1513,27 @@ Helpfully this also can be used to set variables and propagate things based on o
 #+begin_src bash
 BROWSER=false gh auth login
 #+end_src
-** DRAFT Terminal Slack with Pidgin
+** DONE Terminal Slack with Pidgin :cmdline:communication:
+CLOSED: [2025-07-26 Sat 19:50]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: terminal-slack-pidgin
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
 Slack is unusable. Pidgin and Finch are marginally better. [[https://github.com/dylex/slack-libpurple?search=1][slack-libpurple]] works with a password generated from the Local Storage and Cookies of a browser session as follows [fn:: First described [[https://github.com/dylex/slack-libpurple/pull/162#issue-1311170227][here]]]:
 - Get the main token (~$MAIN~) via devtools->Application->Storage->Local Storage (search for ~xoxc-~)
   + Search for ~xoxc~ then find it under ~localConfig_v2/teams/token~
 - Get the Cookies ~d~ token (~$COOKIE~) from:
   + devtools->Application->Storage->Cookies-> ~d~
 Join them together with a space so it is ~$MAIN $COOKIE~ and use that as the password for Pidgin.
-Later, setup ~gntrc~ from ~man finch~ to use ~nchat~ like bindings.
-** DRAFT Remote ~lldb~ on MacOS
+# TODO(rg) :: Later, setup ~gntrc~ from ~man finch~ to use ~nchat~ like bindings.
+** DONE Remote ~lldb~ on MacOS :debugging:macos:
+CLOSED: [2025-07-25 Fri 19:51]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: lldb-macos-remote
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
 Didn't look into why too much but.
 #+begin_src bash
 sudo DevToolsSecurity --enable
