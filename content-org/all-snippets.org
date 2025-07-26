@@ -1283,7 +1283,12 @@ sc-enable-now ctrld
 sc-disable-now systemd-resolved
 #+end_src
 ** DONE Cold storage compression :cmdline:compression:
-CLOSED: [2025-07-24 Thu 13:37]
+CLOSED: [2025-07-26 Sat 19:43]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: cold-storage-compression
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
 Recently some of my older publications were accepted and naturally were archived
 on the Materials Archive. That being said, local copies are also nice to have.
 The best compression I know of is basically via the [[https://wiki.archlinux.org/title/Lrzip][Lzma RZIP]] :
