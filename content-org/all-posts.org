@@ -21051,7 +21051,6 @@ the rest[fn:whereswaldo].
 - The Carpentries
   - [[https://carpentries.org/instructors#HaoZeke][Instructor]], [[https://carpentries.org/maintainers#HaoZeke][Maintainer]], [[https://2020.carpentrycon.org/task-force/][CarpentyrCon2020 Committee Task Force]], [[https://2020.carpentrycon.org/schedule/#session-10][CarpentryCon2020 Speaker]]
 - [[https://forum.igdore.org/t/rohit-goswami/656][IGDORE]]
-- [[https://www.univ.ai/teams/rohit-goswami][Univ.ai]]
 - TeX Users Group
   - [[http://tug.org/tug2020/][TUG 2020 Conference Committee member]]
   - TUG Zulip Admin
