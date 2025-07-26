@@ -1156,8 +1156,13 @@ Or directly as ~export LOCALE_ARCHIVE="$(nix-env --installed --no-name --out-pat
 - zotext
 - Zotero LibreOffice Integration
 - [[https://github.com/northword/zotero-format-metadata][Zotero Linter]] for adding italics and other HTML tags to titles and more easily
-** TODO On Hyread and Color E-Ink
-*** ~adb~ rules
+** DONE Hyread Color E-Ink ~adb~ rules :adb:ereaders:
+CLOSED: [2024-08-26 Mon 19:45]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: hyread-adb-rules
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
 A quick glance at the output of ~lsusb~ yields:
 #+begin_src bash
 Bus 003 Device 004: ID 04f2:b751 Chicony Electronics Co., Ltd Integrated Camera
