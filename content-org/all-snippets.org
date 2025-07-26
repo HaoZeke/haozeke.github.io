@@ -1209,8 +1209,14 @@ Which apparently was supposed to be set by default but wasn't.
 ** TODO Branch coverage for ~lcov~
 Every single ~lcov~ command needs to ~--rc lcov_branch_coverage=1~, if the ~.rc~
 file isn't present.
-** TODO ~git~ tips
-1. Open the first unmerged file in ~emacsclient~
+** DONE Cycling through unmerged ~git~ files :git:cmdline:emacs:
+CLOSED: [2025-07-26 Sat 19:47]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: git-unmerged-cycle
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
+To open the first unmerged file in ~emacsclient~
 #+begin_src bash
 emacsclient -n $(git diff --name-only --diff-filter=U | head -n 1)
 #+end_src
