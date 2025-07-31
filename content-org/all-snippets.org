@@ -1234,6 +1234,10 @@ To open the first unmerged file in ~emacsclient~
 #+begin_src bash
 emacsclient -n $(git diff --name-only --diff-filter=U | head -n 1)
 #+end_src
+or in ~nushell~
+#+begin_src nu
+git diff --name-only --diff-filter=U | lines | first | each { |it| emacsclient -n $it }
+#+end_src
 ** TODO GDB Tips
 *** Introduction
    In GDB, you can save the breakpoints to a file and then later load them back into another debugging session. This can be very useful if you have a set of breakpoints that you use frequently.
