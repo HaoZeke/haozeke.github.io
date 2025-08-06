@@ -20259,37 +20259,6 @@ Naturally this is applicable across all domains.
 [fn:butchem] Of course one should ideally understand exactly what's going on and tune parameters for each system...
 [fn:alsowailord] As noted, many of these problems are alleviated by ~wailord~
 [fn:seeatomate] e.g. The ~atomate~ project is essentially a VASP compatibility layer
-* TODO Caching and accelerating ~meson~ builds
-~mold~ is an easy win, with the following native file:
-#+begin_src conf
-[binaries]
-c_ld = 'mold'
-cpp_ld = 'mold'
-fortran_ld = 'mold'
-[built-in options]
-# mold 1.11.0 or later needed due to https://github.com/rui314/mold/issues/1017
-# --no-as-needed temporarily necessary due to the seeming return of https://github.com/rui314/mold/issues/1017
-c_link_args = ['-fuse-ld=mold', '-Wl,--no-as-needed']
-cpp_link_args = ['-fuse-ld=mold', '-Wl,--no-as-needed']
-fortran_link_args = ['-fuse-ld=mold', '-Wl,--no-as-needed']
-#+end_src
-~ccache~ can be used to cache and rebuild quicker as well:
-#+begin_src bash
-CC="$(which ccache) $(which gcc)" CXX="$(which ccache) $(which g++)" FCC="$(which ccache) $(which gfortran)" meson setup b2dir --native-file nativeFiles/mold.ini
-#+end_src
-Or in another native file:
-#+begin_src conf
-[binaries]
-c = ['ccache', 'gcc']
-cpp = ['ccache', 'g++']
-fortran = ['ccache', 'gfortran']
-#+end_src
-This can be called in a cascade:
-#+begin_src bash
-meson setup b2dir --native-file nativeFiles/mold.ini --native-file nativeFiles/ccache_gnu.ini
-#+end_src
-Further improvements come from ~ccache~ with ~distcc~, or [[https://github.com/icecc/icecream][icecream]] or for a
-single binary extension, [[https://github.com/mozilla/sccache][sccache]].
 * TODO VPS Baselines and MongoDB
 ** Background
 The key reason to decouple a MongoDB instance from existing HPC architecture is
@@ -20880,6 +20849,7 @@ a snap.
 
 A more robust variant of this basic concept developed into the [[https://github.com/HaoZeke/vpn-proxyjump][vpn-proxyjump]]
 project.
+* TODO Monorepo management for reproducible research
 * TODO Revisiting Linux Email :@personal:rant:tools:email:workflow:
 :PROPERTIES:
 :EXPORT_FILE_NAME: revisiting-linux-email
