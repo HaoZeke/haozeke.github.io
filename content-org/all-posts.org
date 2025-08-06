@@ -20295,6 +20295,22 @@ single binary extension, [[https://github.com/mozilla/sccache][sccache]].
 The key reason to decouple a MongoDB instance from existing HPC architecture is
 to be more robust to changes in clusters. Also, it makes it easier to run on
 multiple HPC centers without repeating the setup steps.
+* DRAFT Saner conda-forge interactions with a custom forge
+:PROPERTIES:
+:EXPORT_FILE_NAME: sane-custom-forge
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+** Background
+I recently handled releasing a ton of packages to ~conda-forge~ and realized
+that the ~docker~ setup didn't work very well for me.
+* DRAFT Weird academic polishing opportunities
+:PROPERTIES:
+:EXPORT_FILE_NAME: weird-academia
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+
+e.g. Mendeley profiles? XD Academia.edu? Kudos? whatever..?
+
 * DONE ~xonsh~ Excursions :@notes:ramblings:tools:shell:
 CLOSED: [2024-07-22 Mon 00:09]
 :PROPERTIES:
@@ -20424,9 +20440,15 @@ still marginally useful.
 ** Encryption
 Cryptomator is an easy way to have dynamically sized encrypted data.
 
-* DRAFT Storing data with DVC and OneDrive :@personal:tools:workflow:repro:
+* DONE Storing data with DVC and OneDrive :@personal:tools:workflow:repro:science:wip:
+CLOSED: [2025-08-06 Wed 16:27]
+:PROPERTIES:
+:EXPORT_FILE_NAME: dvc-onedrive
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Reproducible research")
+:END:
 #+begin_quote
-Shortcuts towards reproducible science
+Usage notes for data storage within university constraints.
 #+end_quote
 ** Background
 The University of Iceland has an "unlimited" OneDrive setup for staff / graduate
@@ -20512,10 +20534,14 @@ Pushing
 196 files pushed
 #+end_src
 
-** More ~dvc~ idiosyncracies
-
+** Other ~dvc~ idiosyncracies
 - Ignore folders in the ~.gitignore~, else ~dvc~ may complain that the relevant ~.dvc~ is ignored by ~git~
   + i.e. to ignore ~best_trial_8/~ don't ignore ~best_trial*~ but use ~best_trial*/~
+** Conclusions
+This isn't necessarily the most robust setup as written, given that the
+University reclaims access pretty aggressively, however when coupled with the
+[[https://archive.materialscloud.org/record/2025.91][Materials Archive]] and a [[https://rgoswami.me/snippets/cold-storage-compression/][strong compression technique]] for personal storage via
+~borg~ it is fairly resilient.
 
 * DRAFT Per-project Spack Baseline with ~git-subrepo~ :@notes:ramblings:workflow:
 :PROPERTIES:
