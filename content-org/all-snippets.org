@@ -1434,7 +1434,7 @@ rendering.
 
 Another issue was having to handle the groups on the ~/dev/dri/renderD128~ which
 needed ~sudo usermod -a -G vglusers $USER~.
-** DONE Replacing ~git-subrepo~ with ~josh-filter~ :@note:todo:workflow:tools:
+** DONE Replacing ~git-subrepo~ with ~josh-filter~ :todo:workflow:tools:
 CLOSED: [2025-08-12 Tue 03:28]
 :PROPERTIES:
 :EXPORT_HUGO_BUNDLE: git-subrepo-josh-filter
