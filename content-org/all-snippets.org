@@ -1434,6 +1434,35 @@ rendering.
 
 Another issue was having to handle the groups on the ~/dev/dri/renderD128~ which
 needed ~sudo usermod -a -G vglusers $USER~.
+** DONE Replacing ~git-subrepo~ with ~josh-filter~ :@note:todo:workflow:tools:
+CLOSED: [2025-08-12 Tue 03:28]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: git-subrepo-josh-filter
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
+To initialize (with ~single~ to get a clean history in the current repository):
+#+begin_src bash
+➜ git remote add hzeon git@github.com:HaoZeke/eOn
+➜ git fetch hzeon doCIdimer
+  josh-filter ':prefix=subrepos/eOn' FETCH_HEAD --single
+  git merge --allow-unrelated FILTERED_HEAD
+#+end_src
+Changes can be made within the sub-repo.
+#+begin_src bash
+echo "blah" > subrepos/eOn/blah
+git add subrepos/eOn/blah
+git commit -m "blah"
+#+end_src
+When changes are to be pushed back upstream / to another branch..
+#+begin_src bash
+git fetch hzeon doCIdimer
+josh-filter ':/subrepos/eOn' HEAD --update FILTERED_HEAD
+git push hzeon FILTERED_HEAD:refs/heads/dotry
+#+end_src
+Which works since ~josh-filter~ allows for inverse operations and generates
+commits reproducibly. Personally I find this easier to grok than the many
+thousands of ~bash~ which makes up ~git-subrepo~ but this is debatable.
 ** DONE Caching and accelerating ~meson~ builds :cmdline:build:
 CLOSED: [2025-08-06 Wed 16:30]
 :PROPERTIES:
