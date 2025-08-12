@@ -20850,6 +20850,90 @@ a snap.
 A more robust variant of this basic concept developed into the [[https://github.com/HaoZeke/vpn-proxyjump][vpn-proxyjump]]
 project.
 * TODO Monorepo management for reproducible research
+* TODO An excursion into ~nushell~
+** Background
+I've been using ~zsh~ for over a decade at this point. In general things work
+well. However over time most of my scripts became reliant on ~rust~ tools, like
+~starship~ to be cross compatible across machines.
+** Dotfile conversion
+To help streamline the inevitable, a new branch of my ~chezmoi~ dotfiles
+contained the changes needed to get to an approximation of my previous setup
+with ~nushell~. These were not [[https://github.com/HaoZeke/Dotfiles/compare/chezmoi...toNu][particularly hard but fairly repetitive]].
+** Conclusions
+~nushell~ is perfectly usable; even pleasant for many use-cases. However, the
+struggle involved in re-writing things to work with it is a bit higher than
+anticipated. ~fish~ seems like another stop along the way back towards ~bash~.
+* TODO Swimming with ~fish~
+** Background
+Having left ~nushell~ behind mostly due to incompatibilities with ~spack~. I
+decided to give ~fish~ a chance for the first time in a few decades.
+** Conclusions
+* TODO Taming submodules with ~git-subrepo~ :@programming:tools:git:workflow:
+:PROPERTIES:
+:EXPORT_FILE_NAME: taming-submodules-git-subrepo
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+Essentially this works in two phases:
+- ~pixi~ is used to ensure locally editable packages are ready for immediate use
+- ~git-subrepo~ is used to changes are easily upstreamed
+
+This workflow is easier than using a fork only approach, due to the locality of
+data. Additionally, it allows for a "fat" release of the analysis.
+
+Essentially:
+- Make a new branch in each project / tool which the primary project depends on
+  + This may entail a fork
+- Clone each of these (with the right branch) into a local directory with ~git-subrepo~
+- Automatically add them and changes to the environment via ~pixi~
+
+In practice this could look like:
+#+begin_src bash
+cd $MY_TOOL
+git checkout -b my_project
+git push -u origin my_project
+cd $MY_PROJECT
+mkdir subrepos
+git subrepo clone git@github.com:$GITHUB_ID/$MY_TOOL_NAME.git subrepos/$MY_TOOL_NAME -b $MY_PROJECT
+git commit --amend # rename to something like MAINT: Pin $MY_TOOL_NAME locally with git-subrepo
+#+end_src
+Additionally, within the ~pixi.toml~:
+#+begin_src toml
+[pypi-dependencies]
+$MY_TOOL_NAME = { path = "./subrepos/$MY_TOOL_NAME", editable=true}
+#+end_src
+
+*** Handling ~setuptools_scm~ for Python versions
+
+Most packaging managers using ~vcs~ information rely on ~setuptools_scm~ under the
+hood (e.g. ~hatch_vcs~ does). While this approach works well with ~git submodule~
+systems, it turns out that with ~git subrepo~ the installation cannot proceed
+because of the ~.git~ folder not being part of the checkout.
+
+That being said, a workaround is to simply set the
+~SETUPTOOLS_SCM_PRETEND_VERSION~ variable instead.
+
+For instance:
+#+begin_src bash
+export SETUPTOOLS_SCM_PRETEND_VERSION="v0.0.dev0+$MY_PROJECT_$(git rev-parse HEAD)"
+#+end_src
+
+Which can then be stored in an activation script for ~pixi~ commands to pickup on:
+#+begin_src toml
+[activation]
+scripts = ["scripts/env_setup.sh"]
+#+end_src
+
+Another workaround would be to use the actual repository for the ~pixi~ bit, i.e.
+the one stored in ~.git/tmp/subrepo/subrepos/$MY_TOOL_NAME~
+
+*** Using ~git sub-repo~
+The contributing flow is basically:
+#+begin_src bash
+git subrepo branch subrepos/$MY_TOOL_NAME
+git subrepo push subrepos/$MY_TOOL_NAME
+#+end_src
+Make changes in ~$MY_TOOL~
+
 * TODO Revisiting Linux Email :@personal:rant:tools:email:workflow:
 :PROPERTIES:
 :EXPORT_FILE_NAME: revisiting-linux-email
