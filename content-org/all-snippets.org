@@ -407,7 +407,7 @@ test_deps += dependency(
   modules: ['Catch2::Catch2WithMain'],
 )
 #+end_src
-The rest of the tests can be setup via auto-discovery as [[Auto-discovering ~meson~ tests][discussed before]].
+The rest of the tests can be setup via auto-discovery [[https://rgoswami.me/snippets/auto-disc-meson-tests/][as discussed before]].
 ** DONE Zotero Connector and Blog Posts :zotero:references:
 CLOSED: [2023-08-23 Wed 00:17]
 :PROPERTIES:
