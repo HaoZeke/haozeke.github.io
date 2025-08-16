@@ -20849,6 +20849,137 @@ a snap.
 
 A more robust variant of this basic concept developed into the [[https://github.com/HaoZeke/vpn-proxyjump][vpn-proxyjump]]
 project.
+* DONE Parameter passing in NWChem and the Runtime Database :@notes:hpc:science:components:parameters:nwchem:
+CLOSED: [2025-08-16 Sat 22:50]
+:PROPERTIES:
+:EXPORT_FILE_NAME: parameter-passing-nwchem-rtdb
+:EXPORT_BIBLIOGRAPHY: biblio/Website.bib
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :link-citations true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Simulation software patterns")
+:EXPORT_HUGO_PANDOC_CITATIONS: t
+:END:
+#+begin_quote
+Thoughts on parameter passing through the RTDB within NWChem.
+#+end_quote
+** Background
+Despite a plethora of publications
+[@apraNWChemPresentFuture2020;@mejia-rodriguezNWChemRecentOngoing2023], NWChem
+has little to nothing in terms of developer documentation [fn:: A trait shared
+by its ill fated successor, NWChemEX [@kowalskiNWChemNWChemExEvolving2021].].
+For better integration over sockets with EON (described elsewhere), I ended up
+having to add user defined parameters, from which this short note stems.
+** Inputs in NWChem
+The input file format in NWChem, like most codes of the era, consist of a
+keyword driven, whitespace delimited, block structured set of directives which
+are parsed once into a database and propagated across other modules.
+** Runtime Database (RTDB)
+The run time database, as noted in
+[@bernholdtParallelComputationalChemistry1995;@guestHighperformanceComputingChemistry1996], is similar to the GAMESS dump
+file or GAUSSIAN checkpoint file. Allegedly it is
+easier and safer than both, and arrays of typed data are stored with ASCII
+strings for keys. Though the GAMESS and GAUSSIAN notes are not an immediately
+recognizable point of reference either, but it is essentially a key value store
+which is used to circumvent having an interoperable data-structure.
+
+This centralized key-value approach decouples modules from the specifics of the
+input file; a routine only needs to know the key for a parameter, not how or
+where it was parsed. This contrasts with approaches where configuration objects
+must be passed through long call stacks or where multiple components parse the
+same configuration file independently.
+** Adding parameters to NWChem through the RTDB
+Here, we will only be interested in this section:
+
+#+begin_src conf
+driver
+  socket unix eon_nwchem
+end
+#+end_src
+
+Which can be abstracted into:
+
+#+begin_src conf
+driver
+  socket (unix || ipi_client) <socketname>
+end
+#+end_src
+
+Concretely, we will consider the case of adding optional parameters to this so as to enable the following design:
+
+#+begin_src conf
+driver
+  socket (unix || ipi_client) <socketname> [retries <int>] [delay <int>]
+end
+#+end_src
+
+Conceptually this involves:
+- Parsing :: To extract data from the input
+- Storing :: Committing parsed values into the RTDB with ~rtdb_put~
+- Retrieving :: Accessing the values from the RTDB with ~rtdb_get~
+
+#+attr_html: :class note-alert
+#+begin_alert
+#+begin_alert-heading
+*Note*
+#+end_alert-heading
+The complete changeset required is enumerated in the [[https://github.com/nwchemgit/nwchem/pull/1145][pull request]] with a
+documentation update to the wiki [[https://github.com/nwchemgit/nwchem-wiki/pull/39][here]].
+#+end_alert
+*** Parsing optional keyword arguments
+Naming follows a conventional scheme[fn:: Though as always, a full ~grep~
+through is recommended], so the ~src/driver/driver_input.F~ is the first port of
+call. The implementation involves setting defaults and then looping through
+remaining fields on the line to check for overrides.
+#+begin_src f90
+! socket ipi_client ip:port [retries <int>] [delay <int>]
+max_retries = 30
+retry_delay = 2
+do while (inp_a(field))
+   if (inp_compare(.false., 'retries', field)) then
+      if (.not. inp_i(max_retries))
+      call errquit('driver_input: expected integer for retries', 0,INPUT_ERR)
+   else if (inp_compare(.false., 'delay', field)) then
+      if (.not. inp_i(retry_delay))
+      call errquit('driver_input: expected int for delay',0,INPUT_ERR)
+   end if
+end do
+#+end_src
+
+Where ~inp_a~ parses a keyword, ~inp_compare~ checks against an expected value,
+and ~inp_i~ parses the value as an integer.
+*** Comitting values to the RTDB
+Once stored in a local variable, the value is then committed to the RTDB using
+~rtdb_put~, which is namespaced for modularity and to reduce key conflicts.
+#+begin_src f90
+if (inp_compare(.false.,'retries',field)) then
+  if (.not. inp_i(max_retries)) call errquit(...)
+    if (.not. rtdb_put(rtdb,'driver:socket_retries',mt_int,1,max_retries)) call errquit(...)
+end if
+#+end_src
+Where the signature notes the number of elements (~1~) being stored along with
+the type (~mt_int~).
+*** Retrieval and usage
+Where the values are to be retrieved, say, here in ~src/driver/socket_driver.F~,
+defaults are used if the key is missing.
+#+begin_src f90
+ if (.not. rtdb_get(rtdb, 'driver:socket_retries', mt_int, 1, max_retries)) then
+    max_retries = 30
+ end if
+#+end_src
+Before being used as needed. The signature of ~rtdb_get~ conceptually mimics
+that of ~rtdb_put~. In practice, since these are FORTRAN 77 files in ~nwchem~,
+there are a few more continuation line characters and other marginalia, but
+otherwise this is all that is necessary to expose user parameters to modules in
+NWChem.
+** Conclusions
+Although not the design taken by more modern software, the RTDB is pretty intuitive to
+work with, and probably better than GAMESS, GAUSSIAN, or even the bring your own
+data into a simulation development environment idea of NWChemEx
+[@richardDevelopingComputationalChemistry2019]. Better documentation would
+probably stemmed the split. Modern tools (e.g. EON) improve upon this by using
+more structured input files, e.g. using TOML ensures typing which can then be
+independently read into C/C++/Fortran etc. though the issue of consistency at
+runtime remains.
 * TODO Monorepo management for reproducible research
 * TODO An excursion into ~nushell~
 ** Background
