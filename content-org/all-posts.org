@@ -20850,7 +20850,7 @@ a snap.
 A more robust variant of this basic concept developed into the [[https://github.com/HaoZeke/vpn-proxyjump][vpn-proxyjump]]
 project.
 * DONE Parameter passing in NWChem and the Runtime Database :@notes:hpc:science:components:parameters:nwchem:
-CLOSED: [2025-08-16 Sat 23:06]
+CLOSED: [2025-08-16 Sat 19:06]
 :PROPERTIES:
 :EXPORT_FILE_NAME: parameter-passing-nwchem-rtdb
 :EXPORT_BIBLIOGRAPHY: biblio/Website.bib
