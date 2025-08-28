@@ -13,6 +13,8 @@
 
 #+startup: logdone indent overview inlineimages
 
+#+macro: relref [$1]({{< relref "$2" >}})
+
 #+BEGIN_SRC emacs-lisp :exports none :eval always :results none
 (require 'ox-extra)
 (ox-extras-activate '(ignore-headlines))
@@ -209,7 +211,7 @@ poetry add numpy matplotlib scipy pandas
 #+END_SRC
 
 The next part is optional, but a good idea if you figure out [[https://direnv.net/][using direnv]] and
-have configured ~layout_poetry~ as [[Poetry and Direnv][described here]]:
+have configured ~layout_poetry~ as {{{relref(described here,poetry-direnv)}}}:
 #+BEGIN_SRC bash
 # Same place as the poetry files
 echo "layout_poetry()" >> .envrc
@@ -382,7 +384,7 @@ The whole file is also [[https://github.com/HaoZeke/haozeke.github.io/blob/src/c
 :EXPORT_DATE: 2020-02-29 14:06
 :END:
 #+BEGIN_QUOTE
-Thoughts on and rationale behind leaving QWERTY and touch typing in general. Followed [[Refactoring Dotfiles For Colemak][by this post]] on refactoring my Dotfiles.
+Thoughts on and rationale behind leaving QWERTY and touch typing in general. Followed {{{relref(by this post,colemak-dots-refactor)}}} on refactoring my Dotfiles.
 #+END_QUOTE
 ** Background
 I just realized that it has been over two years since I switched from QWERTY to
@@ -472,7 +474,7 @@ https://www.keyboard-design.com/kb-images/colemak-kla.jpg
 #+begin_alert-heading
 *Update*
 #+end_alert-heading
-I actually ended up refactoring my entire Dotfiles to use more Colemak native bindings, as described [[Refactoring Dotfiles For Colemak][in this post]].
+I actually ended up refactoring my entire Dotfiles to use more Colemak native bindings, as described {{{relref(in this post,colemak-dots-refactor)}}}.
 #+end_alert
 ** Conclusion
 Changing layouts was a real struggle. Watching my WPM drop back to lower than
@@ -1200,7 +1202,7 @@ I might eventually go back to GA, if I go over the 10k page view limit. Then
 again, I might not. It might be more like, I only care about the first 10k
 people who make it to my site.
 
-**UPDATE:** This site has since shifted to Clicky, for [[Analytics II: Goat to Clicky][reasons outlined here]]
+**UPDATE:** This site has since shifted to Clicky, for {{{relref(reasons outlined here,goat-click)}}}.
 * TODO Fediverse Thoughts
 ** Background
 I recently decided to take a half day off. Naturally I began looking into things
@@ -1241,7 +1243,7 @@ CLOSED: [2020-04-14 Tue 02:48]
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
 :END:
 ** Background
-As I mentioned in my [[On-boarding for Code in Place][last post]], I'm leading a section for [[https://compedu.stanford.edu/codeinplace/announcement/][Stanford CS106A: Code
+As I mentioned in my {{{relref(last post,scp-onboarding)}}}, I'm leading a section for [[https://compedu.stanford.edu/codeinplace/announcement/][Stanford CS106A: Code
 in Place]]. I did also mention I'd try to keep a set of short notes on the
 process. So there[fn:videos].
 ** The Training
@@ -1287,7 +1289,7 @@ CLOSED: [2020-04-17 Fri 22:54]
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
 :END:
 ** Background
-As I mentioned [[On-boarding for Code in Place][earlier]], I'm leading a section for [[https://compedu.stanford.edu/codeinplace/announcement/][Stanford CS106A: Code
+As I mentioned {{{relref(earlier,scp-onboarding)}}}, I'm leading a section for [[https://compedu.stanford.edu/codeinplace/announcement/][Stanford CS106A: Code
 in Place]]. I did also mention I'd try to keep a set of short notes on the
 process. I finally had my first section meeting!
 ** Preparation
@@ -1319,7 +1321,7 @@ CLOSED: [2020-04-22 Wed 07:01]
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments false
 :END:
 ** Background
-As I mentioned [[On-boarding for Code in Place][earlier]], I'm leading a section for [[https://compedu.stanford.edu/codeinplace/announcement/][Stanford CS106A: Code
+As I mentioned {{{relref(earlier,scp-onboarding)}}}, I'm leading a section for [[https://compedu.stanford.edu/codeinplace/announcement/][Stanford CS106A: Code
 in Place]]. This post relates to the notes and thoughts garnered during the small group training session[fn:whenpost].
 ** Reflections
 *** Demographics
@@ -1949,10 +1951,10 @@ CLOSED: [2020-05-02 Sat 20:30]
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Colemak necessities")
 :END:
 #+BEGIN_QUOTE
-A more actionable follow up to [[Switching to Colemak][my personal recollections]] relating to my switch to Colemak.
+A more actionable follow up to {{{relref(my personal recollections,colemak-switch)}}} relating to my switch to Colemak.
 #+END_QUOTE
 ** Background
-I have, in the past written about how I [[Switching to Colemak][made the switch]] to Colemak. However,
+I have, in the past written about how I {{{relref(made the switch,colemak-switch)}}} to Colemak. However,
 until recently, I was still trying to mimic the VIM keybindings from QWERTY.
 This is a post where I discuss the changes I made to ensure that I never have to
 stretch my fingers in odd ways again. The main idea is expressed well by [[https://github.com/jooize/vim-colemak][vim-colemak]].
@@ -2355,7 +2357,7 @@ This post is about hunting down what caused this amazing zoom
 glitch[fn:whatglitch] and how I finally fixed it.
 ** Tiling Windows and Compositors
 For reasons best left to another post, I use the fabulous [[https://i3wm.org/][i3 window manager]],
-with colemak keybindings [[i3][described here]]. Recall that, [[https://en.wikipedia.org/wiki/Compositing_window_manager][from Wikipedia]]:
+with colemak keybindings {{{relref(described here,colemak-dots-refactor#i3)}}}. Recall that, [[https://en.wikipedia.org/wiki/Compositing_window_manager][from Wikipedia]]:
 #+BEGIN_QUOTE
 A compositing window manager is a window manager that provides applications with an off-screen buffer for each window. The window manager composites the window buffers into an image representing the screen and writes the result into the display memory.
 #+END_QUOTE
@@ -2429,7 +2431,7 @@ for the CS106A students on Machine Learning for the Physical Sciences. This is a
 post about the technical issues, and also includes a video if you read through.
 ** Zoom and LosslessCut
 Zoom recordings are one of the nicer ways to deal with switching windows and
-screen sharing, especially after fixing the [[Compton to Picom and Zoom Glitches][dark screen glitch]]. However, though
+screen sharing, especially after fixing the {{{relref(dark screen glitch,compton-zoom-shadow)}}}. However, though
 [[https://github.com/mifi/lossless-cut][LosslessCut]] works really well to get cut-points, exporting and merging the file
 into one caused a bunch of glitches.
 ** Enter Handbrake
@@ -2680,7 +2682,7 @@ Note that in this method, on Linux systems, the locale problem has to be fixed
 with the explicit export. This means that this should be used mostly with
 project level environments, instead of populating the global shell RC files.
 
-*Update:* There is [[Emacs for Nix-R][another post]] with methods to reload this configuration automatically
+*Update:* There is {{{relref(another post,emacs-nix-r)}}} with methods to reload this configuration automatically
 ** Conclusions
 Of the methods described, the most useful method for working with packages not
 hosted on CRAN is through the user-profile, while the ~shell.nix~ method is
@@ -2716,7 +2718,7 @@ in mkShell {
 #+END_SRC
 
 The entire workflow for
-~rethinking~ is [[Statistical Rethinking and Nix][continued here]].
+~rethinking~ is {{{relref(continued here,rethinking-r-nix)}}}.
 
 [fn:whatwhy] As part of [[https://ugla.hi.is/kennsluskra/index.php?sid=&tab=nam&chapter=namskeid&id=71055920203][a summer course]] at the University of Iceland relating to their successful [[http://covid.hi.is/][COVID-19 model]]
 [fn:whutaur] The [[https://wiki.archlinux.org/index.php/Arch_User_Repository][Arch User Repository]] is the port of first call for most ArchLinux users
@@ -2742,8 +2744,8 @@ Rethinking" by [[https://twitter.com/rlmcelreath][Richard McElreath]].
 #+END_QUOTE
 
 ** Background
-As detailed [[Nix with R and devtools][in an earlier post]][fn:wherehook], I had set up Nix to work with
-non-CRAN packages. If the rest of this section is unclear, please refer back to [[Nix with R and devtools][the earlier post]].
+As detailed {{{relref(in an earlier post,nix-r-devtools)}}}[fn:wherehook], I had set up Nix to work with
+non-CRAN packages. If the rest of this section is unclear, please refer back to {{{relref(the earlier post,nix-r-devtools)}}}.
 *** Setup
 
 For the remainder of the post, we will set up a basic project structure:
@@ -2880,7 +2882,7 @@ At this stage we have a reproducible set of packages ready to use. However it is
 still pretty annoying to have to go through the trouble of writing ~nix-shell~
 and also waiting while it rebuilds when we change things.
 *** Lorri and Direnv
-[[Poetry and Direnv][In the past]], I have made my admiration for ~direnv~ very clear (especially for
+{{{relref(In the past,poetry-direnv)}}}, I have made my admiration for ~direnv~ very clear (especially for
 ~python-poetry~). However, though ~direnv~ does allow us to include arbitrary ~bash~ logic into our projects, it would be nice to have something which has some defaults for nix. Thankfully, the folks at TweagIO developed [[https://github.com/target/lorri][lorri]] to scratch that itch.
 
 The basic setup is simple:
@@ -3333,10 +3335,10 @@ have worked out well. ~R~ with Nix has finally become a truly viable combination
 for any and every analysis under the sun. Some parts of the workflow are still a
 bit janky, but will probably resolve themselves over time.
 
-*Update:* There is [[Emacs for Nix-R][a final part]] detailing automated ways of reloading the system configuration
+*Update:* There is {{{relref(a final part,emacs-nix-r)}}} detailing automated ways of reloading the system configuration
 
-[fn:wherehook] My motivations were laid out in the [[Nix with R and devtools][aforementioned post]], and will not be repeated
-[fn:explaaiin] For why these are the way they are see the this is written, see the [[Nix with R and devtools][aforementioned post]]
+[fn:wherehook] My motivations were laid out in the {{{relref(aforementioned post,nix-r-devtools)}}}, and will not be repeated
+[fn:explaaiin] For why these are the way they are see the this is written, see the {{{relref(aforementioned post,nix-r-devtools)}}}
 [fn:callbacktopost] Christine Dodrill [[https://christine.website/blog/how-i-start-nix-2020-03-08][has a great write up]] on using these tools as well
 * DONE Emacs for Nix-R :@programming:tools:nix:workflow:R:emacs:
 CLOSED: [2020-06-10 Wed 00:12]
@@ -3352,8 +3354,8 @@ auto-compile my system configuration.
 ** Background
 This is my third post on working with ~nixpkgs~ and ~R~.
 
-- [[Nix with R and devtools][Part I]] covered ways of working effectively with ~R~ and ~nixpkgs~
-- [[Statistical Rethinking and Nix][Part II]] dealt with composing dependent ~devtools~ packages in a per-package environment, with a focus on ~rethinking~ and ~tidybayes.rethinking~
+- {{{relref(Part I,nix-r-devtools)}}} covered ways of working effectively with ~R~ and ~nixpkgs~
+- {{{relref(Part II,rethinking-r-nix)}}} dealt with composing dependent ~devtools~ packages in a per-package environment, with a focus on ~rethinking~ and ~tidybayes.rethinking~
 
 This final part is about automating the system-wide configuration using ~emacs~.
 Specifically ~doom-emacs~. Naturally, this is the most optimal way to work with
@@ -3429,10 +3431,10 @@ configuration instead of the per-project layout. So I simply set:
     };
 }
 #+END_SRC
-If any of these look strange, refer to the [[Nix with R and devtools][earlier posts]].
+If any of these look strange, refer to the {{{relref(earlier posts,nix-r-devtools)}}}.
 ** Automation Pains
 ~direnv~, ~lorri~ and
-~niv~ (the heroes of [[Statistical Rethinking and Nix][Part II]]) are not really useful for working with the system-wide configuration, but
+~niv~ (the heroes of {{{relref(Part II,rethinking-r-nix)}}}) are not really useful for working with the system-wide configuration, but
 an elegant solution still exists, which leverages ~firestarter~ and
 ~after-save-hooks~ in ~emacs~.
 *** Firestarter
@@ -3683,7 +3685,7 @@ CLOSED: [2020-07-06 Mon 23:09]
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :END:
 #+BEGIN_QUOTE
-A follow up to [[Analytics: Google to Goat][my earlier post on analytics]], and on migrating from Goat Counter to Clicky.
+A follow up to {{{relref(my earlier post on analytics,goat-google)}}}, and on migrating from Goat Counter to Clicky.
 #+END_QUOTE
 
 ** Background
@@ -3747,7 +3749,7 @@ CLOSED: [2020-07-11 Sat 22:45]
 A short tutorial post on multiple screens for laptops with touch-support and ArchLinux. Also evolved into a long rant, with an Easter egg.
 #+END_QUOTE
 ** Background
-Of late, I have been attempting to move away from paper, for environmental reasons[fn:environ]. Years of touch typing in Colemak ([[Switching to Colemak][rationale]], [[Refactoring Dotfiles For Colemak][config changes]]) and a very customized [[https://dotdoom.rgoswami.me][Emacs setup]] (including [[Using Mathematica with Orgmode][mathematica]], [[Temporary LaTeX Documents with Orgmode][temporary latex templates]], [[Emacs for Nix-R][Nix]], and [[An Orgmode Note Workflow][org-roam annotations]]) have more or less kept me away from analog devices. One might even argue that my current website is essentially a set of tricks to move my life into ~orgmode~ completely.
+Of late, I have been attempting to move away from paper, for environmental reasons[fn:environ]. Years of touch typing in Colemak ({{{relref(rationale,colemak-switch)}}}, {{{relref(config changes,colemak-dots-refactor)}}}) and a very customized [[https://dotdoom.rgoswami.me][Emacs setup]] (including {{{relref(mathematica,org-mathematica)}}}, {{{relref(temporary latex templates,org-arb-tex)}}}, {{{relref(Nix,emacs-nix-r)}}}, and {{{relref(org-roam annotations,org-note-workflow)}}}) have more or less kept me away from analog devices. One might even argue that my current website is essentially a set of tricks to move my life into ~orgmode~ completely.
 
 However, there are still a few things I cannot do without a pointing device (and some kind of canvas). Scrawl squiggly lines on papers I'm reviewing. That and, scrawl weird symbols which don't actually follow a coherent mathematical notation but might be later written up in latex to prove a point. Also, and I haven't mastered any of the drawing systems (like [[https://en.wikibooks.org/wiki/LaTeX/PGF/TikZ][Tikz]]) yet, so for squiggly charts I rely on [[https://jamboard.google.com/][Jamboard]] (while teaching) and [[https://github.com/xournalpp/xournalpp][Xournal++]] for collaborations.
 
@@ -3839,7 +3841,7 @@ sudo systemctl--user enable autorandr_launcher.service
 #+END_SRC
 
 ** Conclusion
-We now have a setup which ensures that the touch enabled area is constant, without any explicit manual interventions for when devices are added or removed. There isn't much else to say about this workflow here. Additional screens can be [[Old Laptops as Secondary Monitors][configured from older laptops described here]]. Separate posts can deal with how exactly I meld Zotero, ~org-roam~ and Xournal++ to wreak havoc on all kinds of documents. So, in-lieu of a conclusion, behold a recent scribble with this setup:
+We now have a setup which ensures that the touch enabled area is constant, without any explicit manual interventions for when devices are added or removed. There isn't much else to say about this workflow here. Additional screens can be {{{relref(configured from older laptops described here,laptop-as-second-screens)}}}. Separate posts can deal with how exactly I meld Zotero, ~org-roam~ and Xournal++ to wreak havoc on all kinds of documents. So, in-lieu of a conclusion, behold a recent scribble with this setup:
 
 #+caption: From the planning of [[http://www.wavelf.org/ij6TzydE3kTSF8cwwIUj][this voluntary course]]
 file:images/myXournalScrib.png
@@ -3888,7 +3890,7 @@ Rethinking" by [[https://twitter.com/rlmcelreath][Richard McElreath]], a.k.a. St
 #+END_QUOTE
 
 ** Background
-As [[Statistical Rethinking and Nix][detailed previously]], I recently was part of a course centered around Bayesian modeling for the Icelandic COVID-19 pandemic. The Bayesian mindset needs no introduction, and this post is completely inadequate to explain why anyone should be interested (that's what the book is for!). That said, especially for self-paced study groups, it might help to have some structure.
+As {{{relref(detailed previously,rethinking-r-nix)}}}, I recently was part of a course centered around Bayesian modeling for the Icelandic COVID-19 pandemic. The Bayesian mindset needs no introduction, and this post is completely inadequate to explain why anyone should be interested (that's what the book is for!). That said, especially for self-paced study groups, it might help to have some structure.
 
 ** Solutions
 These are meant to be sample solutions, and everyone *should* solve these for themselves. Each solution contains the packages used, as well as a colophon in the later posts to ensure reproducibility.
@@ -3950,7 +3952,7 @@ A short post detailing the many trials and tribulations of setting brightness on
 #+END_QUOTE
 
 ** Background
-As regular readers might know, I have a multi-screen setup, which accounts for having touch enabled on my primary laptop screen (detailed [[Multiple Monitors with Touchscreens][here]]). A failing of this setup was that I was not able to control the brightness of both monitors at the same time.
+As regular readers might know, I have a multi-screen setup, which accounts for having touch enabled on my primary laptop screen (detailed {{{relref(here,multi-monitor-touch)}}}). A failing of this setup was that I was not able to control the brightness of both monitors at the same time.
 ** Existing Stack
 Since I use ~i3~, my brightness control is simply done with ~bindsym~ lines as follows[fn:wheredot]:
 #+BEGIN_SRC conf
@@ -4063,7 +4065,7 @@ CLOSED: [2020-08-09 Sun 02:29]
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :END:
 ** Background
-My move away from the powerful, but unimaginatively named HPC clusters of IITK [fn:reallythatbad] brought me in close contact with the Lua based [fn:mustisay] [[https://lmod.readthedocs.io/en/latest/index.html][lmod module system]]. Rather than fall into the rabbit hole of [[https://docs.brew.sh/Homebrew-on-Linux][brew]] we will leverage the existing system to add our new libraries. Not finding any good collections of these composable environments, and [[Provisioning Dotfiles on an HPC][having failed once before]] to install Nix as a user without admin access, I decided to [[https://github.com/HaoZeke/hzHPC_lmod][start my own collection of Lmod recipies]]. The rest of this post details the installation proceedure to be carried out in conjunction with the [[https://github.com/HaoZeke/hzHPC_lmod][hzHPC_lmod repo]].
+My move away from the powerful, but unimaginatively named HPC clusters of IITK [fn:reallythatbad] brought me in close contact with the Lua based [fn:mustisay] [[https://lmod.readthedocs.io/en/latest/index.html][lmod module system]]. Rather than fall into the rabbit hole of [[https://docs.brew.sh/Homebrew-on-Linux][brew]] we will leverage the existing system to add our new libraries. Not finding any good collections of these composable environments, and {{{relref(having failed once before,prov-dots)}}} to install Nix as a user without admin access, I decided to [[https://github.com/HaoZeke/hzHPC_lmod][start my own collection of Lmod recipies]]. The rest of this post details the installation proceedure to be carried out in conjunction with the [[https://github.com/HaoZeke/hzHPC_lmod][hzHPC_lmod repo]].
 ** Setting Up
 These are reproduced from the repo for completeness.
 #+BEGIN_SRC bash
@@ -4171,7 +4173,7 @@ myprefix=$HOME/.hpc/help2man/1.48.3
 wget https://gnuftp.uib.no/help2man/help2man-1.48.3.tar.xz
 tar xfv help2man-1.48.3.tar.xz
 cd help2man-1.48.3
-./configure --prefix=$myprefix   
+./configure --prefix=$myprefix
 make -j$(nproc)
 make install
 ml load help2man/1.48.3
@@ -4716,7 +4718,7 @@ myprefix=$HOME/.hpc/flex/2.6.4
 wget https://github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz
 gzip -dc flex-2.6.4.tar.gz | tar xvf -
 cd flex-2.6.4
-./configure --prefix=$myprefix 
+./configure --prefix=$myprefix
 make -j $(nproc)
 make install
 ml load flex/2.6.4
@@ -4891,8 +4893,8 @@ For [[https://2020.carpentrycon.org/][CarpentryCon@Home 2020]], along with [[htt
 ** Materials
 This is a Carpentries style single page lesson on setting up and working with Nix for reproducible environments. It was conceived to be a complimentary resource to the content of [[https://github.com/HaoZeke/CarpentryCon2020_Nix][this repository]], namely:
 - [[https://github.com/HaoZeke/CarpentryCon2020_Nix/blob/master/slides/nixPython/nixPython.pdf][Slides on Python packages with Nix]]
-- [[Nix with R and devtools][Nix with R and devtools]]
-- [[A Short Guide to Statistical Rethinking²][Statistical Rethinking and Nix]]
+- {{{relref(Nix with R and devtools,nix-r-devtools)}}}
+- {{{relref(Statistical Rethinking and Nix,some-sol-sr2)}}}
 - [[https://pad.carpentries.org/cchome-nix-packaging][An Etherpad]]
 - [[https://www.youtube.com/watch?v=np6TPzME0aA][Session recording]]
 ** Ten seconds into Nix
@@ -5085,7 +5087,7 @@ For overriding global packages, it is best to leverage the ~config.nix~ (which i
 }
 #+END_SRC
 ** Python Dependencies
-As R dependency management has been covered [[Nix-R and Devtools][in an earlier post]], we will focus on the management of ~python~ environments.
+As R dependency management has been covered {{{relref(in an earlier post,nix-r-devtools)}}}, we will focus on the management of ~python~ environments.
 *** Generic Environments
 We can define existing packages as follows (and can check for existence with ~nox~) using the ~let..in~ syntax.
 #+caption: Shell with basic ~python~ environment
@@ -5342,7 +5344,7 @@ node2nix -l package-lock.json
 
 ** A Nix Environment
 
-We will use the standard setup described in [[A Tutorial Introduction to Nix][the tutorial post]]:
+We will use the standard setup described in {{{relref(the tutorial post,ccon-tut-nix)}}}:
 #+BEGIN_SRC bash
 nix-env -i niv lorri
 niv init
@@ -5400,7 +5402,7 @@ CLOSED: [2020-08-26 Wed 05:42]
 Short post on using ~mach-nix~ with ~niv~.
 #+END_QUOTE
 ** Background
-In previous posts, there was a [[A Tutorial Introduction to Nix][discussion on a ground up approach to adding packages]] which aren't on the core ~nixpkgs~ channels using GitHub or PyPi sources. However, this lacked a way to do so programmatically, and also a way to convert existing python projects.
+In previous posts, there was a {{{relref(discussion on a ground up approach to adding packages,ccon-tut-nix)}}} which aren't on the core ~nixpkgs~ channels using GitHub or PyPi sources. However, this lacked a way to do so programmatically, and also a way to convert existing python projects.
 
 ** Python Dependency Management
 This time, instead of the more pedagogical approach of building packages from PyPi or GitHub, we will use overlays and the excellent [[https://github.com/DavHau/mach-nix][mach-nix]]
@@ -5522,7 +5524,7 @@ CLOSED: [2020-09-07 Mon 18:30]
 Monkeying around with ~nix~ for HPC systems which have no root access and NFS filesystems.
 #+END_QUOTE
 ** Background
-Nix is not well known for being friendly to users without root access. This is typically made worse by the "exotic" filesystem attributes common to HPC networks (this also plagues [[https://github.com/andrewchambers/hermes/issues/75][hermes]]). An [[Provisioning Dotfiles on an HPC][earlier post]] details how and why ~proot~ failed.
+Nix is not well known for being friendly to users without root access. This is typically made worse by the "exotic" filesystem attributes common to HPC networks (this also plagues [[https://github.com/andrewchambers/hermes/issues/75][hermes]]). An {{{relref(earlier post,prov-dots)}}} details how and why ~proot~ failed.
 The short pitch is simply:
 
 #+DOWNLOADED: screenshot @ 2020-09-07 17:34:25
@@ -5539,7 +5541,7 @@ If your HPC doesn't look that swanky and you'd like it to, then read on. Note th
 #+BEGIN_QUOTE
 The basic concept is to install ~nix~ from source, with appropriate patches, and then mess around with paths until it is ready and willing to work with stores which are not ~/nix~ [fn:thateasy]
 #+END_QUOTE
-This concept is strongly influenced by the work [[https://github.com/jefdaj/nix-no-root][described in this repo]]. The premise is similar to my earlier post [[HPC Dotfiles and LMod][on HPC Dotfiles]]. For the purposes of this post, we will assume that all the packages in the [[HPC Dotfiles and LMod][previous post]]
+This concept is strongly influenced by the work [[https://github.com/jefdaj/nix-no-root][described in this repo]]. The premise is similar to my earlier post {{{relref(on HPC Dotfiles,hpc-dots-lmod)}}}. For the purposes of this post, we will assume that all the packages in the {{{relref(previous post,hpc-dots-lmod)}}}
 exist. ~lmod~ is not required, feel free to use an alternative path management system, or even just ~$HOME/.local~ but if ~lmod~ is present, it is highly recommended [fn:whatalternatives]. We *will need* the following:
 
 - Pinned set of nixpkgs :: We would like to be able to modify a lot of paths, which is normally a bad practice, but then we don't normally rebuild all packages either. Grab a copy of the ~nixpkgs~ by following the instructions below. Now is also the time to fork the repo if you'd like to keep track of your changes.
@@ -5554,7 +5556,7 @@ git clone https://github.com/kobus-v-schoor/dotgit/
 mkdir -p $HOME/.local/bin
 cp dotgit/old/bin/bash_completion dotgit/old/bin/dotgit dotgit/old/bin/dotgit_headers dotgit/old/bin/fish_completion.fish $HOME/.local/bin/ -r
 #+END_SRC
-- lmod packages :: If you do not or cannot use modulefiles as [[HPC Dotfiles and LMod][described in the earlier post]], inspect the module-files being loaded and set paths accordingly.
+- lmod packages :: If you do not or cannot use modulefiles as {{{relref(described in the earlier post,hpc-dots-lmod)}}}, inspect the module-files being loaded and set paths accordingly.
 #+BEGIN_SRC bash
 cd $HOME/Git/Github
 git clone https://github.com/HaoZeke/hzHPC_lmod
@@ -6008,7 +6010,7 @@ patches.
 #+END_QUOTE
 
 ** Background
-After the post on using [[Nix with R and devtools][non-CRAN packages with Nix]], I naively assumed I had covered all possible use-cases involving Nix and R. Unfortunately, because GUI programs which aren't browsers or Emacs tend to fly underneath my personal radar, it wasn't until I was up to teach a [[https://nairps.github.io/2020-09-08-ggc-SBDH-online/][Data Carpentries lesson at Georgia Gwinnett College]] that I realized RStudio has additional messy moving parts.
+After the post on using {{{relref(non-CRAN packages with Nix,nix-r-devtools)}}}, I naively assumed I had covered all possible use-cases involving Nix and R. Unfortunately, because GUI programs which aren't browsers or Emacs tend to fly underneath my personal radar, it wasn't until I was up to teach a [[https://nairps.github.io/2020-09-08-ggc-SBDH-online/][Data Carpentries lesson at Georgia Gwinnett College]] that I realized RStudio has additional messy moving parts.
 
 In particular, the error inspiring this post is:
 #+BEGIN_SRC bash
@@ -6035,7 +6037,7 @@ Similar to the environment created with ~rWrapper~ we will set up a global envir
 }
 #+END_SRC
 
-The extensions to this are fairly standard, and follow the CRAN guidelines in [[Nix with R and devtools][the previous post]]. Installation works the same way too.
+The extensions to this are fairly standard, and follow the CRAN guidelines in {{{relref(the previous post,nix-r-devtools)}}}. Installation works the same way too.
 #+BEGIN_SRC bash
 nix-env -f "<nixpkgs>" -iA rStudioEnv
 #+END_SRC
@@ -6218,7 +6220,7 @@ This leads to some pretty documentation.
 [[file:images/Exhale/2020-09-22_06-44-48_screenshot.png]]
 
 ** Conclusions
-At this point, we have a basic setup, which we can tweak with a bunch of themes, and/or different parsers, but this is still pretty rough around the edges. However, a caveat of this setup is that the actual contents of the source are not visible in the generated documentation. [[Publishing Doxygen and Sphinx with Nix and Rake][In the next post]], we will look at automating this setup for deploying with Travis.
+At this point, we have a basic setup, which we can tweak with a bunch of themes, and/or different parsers, but this is still pretty rough around the edges. However, a caveat of this setup is that the actual contents of the source are not visible in the generated documentation. {{{relref(In the next post,pub-doc-cpp-dox-sph-nix)}}}, we will look at automating this setup for deploying with Travis.
 * DONE Publishing Doxygen and Sphinx with Nix and Rake :@programming:documentation:workflow:nix:cpp:ruby:rake:
 CLOSED: [2020-09-22 Tue 10:30]
 :PROPERTIES:
@@ -6230,7 +6232,7 @@ CLOSED: [2020-09-22 Tue 10:30]
 Automating documentation deployment with Travis, ~rake~ and ~nix~
 #+END_QUOTE
 ** Background
-In [[Documenting C++ with Doxygen and Sphinx - Exhale][the previous post]] we generated documentation using Doxygen with Exhale to handle Sphinx. Now we will clean up the earlier workflow with ~rake~ and ensure the environment is reproducible with ~nix~ while deploying to [[https://travis-ci.com/][Travis CI]].
+In {{{relref(the previous post,doc-cpp-dox-sph-exhale)}}} we generated documentation using Doxygen with Exhale to handle Sphinx. Now we will clean up the earlier workflow with ~rake~ and ensure the environment is reproducible with ~nix~ while deploying to [[https://travis-ci.com/][Travis CI]].
 ** Setup
 A quick reminder of the setup we generated in the last post:
 
@@ -6264,7 +6266,7 @@ Thankfully, we will instead start with a ~build~ script defined as above to tran
 ** Adding Nix
 It wouldn't make sense for me to not stick ~nix~ into this. I recall the dark days of setting up ~Dockerfiles~ to ensure reproducible environments on Travis.
 
-At this point one might assume we will leverage the ~requirements.txt~ based workflow described earlier in [[Niv and Mach-Nix for Nix Python][Niv and Mach-Nix for Nix Python]]. While this would make sense, there are two barriers to its usage:
+At this point one might assume we will leverage the ~requirements.txt~ based workflow described earlier in {{{relref(Niv and Mach-Nix for Nix Python,mach-nix-niv-python)}}}. While this would make sense, there are two barriers to its usage:
 
 - It is slower than a ~poetry~ build, as dependency resolution is performed
 - It does not play well with existing projects
@@ -6279,7 +6281,7 @@ Thus we will look to the [[https://github.com/nix-community/poetry2nix#mkPoetryE
 - In a strange chicken and egg problem, we will have to manually generate the lockfile, thereby creating an impure ~poetry~ project for every update, though the ~nix~ setup will not need it later
   + This is one of the major reasons to prefer ~mach-nix~ for newer projects
 *** Shell Environment
-We prep our sources in the usual way, by running ~niv init~ in the project root to generate the ~nix/~ folder and the sources therein. With all that in mind, the ~shell.nix~ file at this point is fairly standard, keeping the general ~niv~ setup in mind (described in a [[A Tutorial Introduction to Nix][previous Nix tutorial]]):
+We prep our sources in the usual way, by running ~niv init~ in the project root to generate the ~nix/~ folder and the sources therein. With all that in mind, the ~shell.nix~ file at this point is fairly standard, keeping the general ~niv~ setup in mind (described in a {{{relref(previous Nix tutorial,ccon-tut-nix)}}}):
 
 #+BEGIN_SRC nix
 # -*- mode: nix-mode -*-
@@ -6609,7 +6611,7 @@ The goal is to have the audience familiarized with the best practices for reprod
 **** Other Content
 A more in-depth introductory workshop on Nix itself given by me (and Amrita Goswami) at [[https://2020.carpentrycon.org/schedule/#session-10][CarpentryCon2020]] is here:
 - [[https://github.com/HaoZeke/CarpentryCon2020_Nix][CarpentryCon2020 Materials]]
-- [[A Tutorial Introduction to Nix][A tutorial introduction to Nix and Python]]
+- {{{relref(A tutorial introduction to Nix and Python,ccon-tut-nix)}}}
 ** Slides
 The slides are embedded below. The ~orgmode~ source [[https://github.com/HaoZeke/haozeke.github.io/blob/src/presentations/PyConIN2020/nixPyconIN.org][is here on the site's GH repo]].
 #+BEGIN_EXPORT html
@@ -6637,7 +6639,7 @@ Since the advent of the COVID-19 situation, there has been an increase in the de
 #+caption: Zoom webcam placement
 [[file:images/Background/2020-10-03_16-51-07_screenshot.png]]
 
-At this point, given that I was to set up a pre-recorded video for [[Talk Supplements for PyCon India 2020][PyCon India 2020]], I decided to look into alternatives.
+At this point, given that I was to set up a pre-recorded video for {{{relref(PyCon India 2020,pycon-in-2020-meta)}}}, I decided to look into alternatives.
 ** Alternatives
 The search for alternative screen recording systems isn't really a very new one. For group work (like [[https://wc3m.github.io/][W3cm]] [fn:whatthat]), I tend to prefer Skype, since it handles speaker galleries very well. Unfortunately, Skype has no capacity for recording single person calls, at least as yet. This is not the place for an extended debate on the pros and cons of Skype, or Google Meet (only records corporate accounts), or the rest. Instead, lets sum up all these issue with the simple understanding that, if *one person* wants to record a webcam connected to their local computer, along with the screen, it is insane to imagine that the only way to get this is by:
 - Making an account somewhere (Zoom, Meet, Skype, anything)
@@ -6757,7 +6759,7 @@ For this section, I personally use [[https://play.google.com/store/apps/details?
 *** Comments
 In practice, I use the x86 setup, with the secondary laptop acting as a viewer for a virtual screen, mostly because that way I can tune into multiple Zoom meetings (a bonus).
 ** Conclusion
-The final setup is quite robust to changes. Future posts might go into setting up the kind of local networking tools to help move files, code and more between both machines, to improve on the peripheral share approach. Additionally, there are still some manual steps which can and should be automated. I'm not super pleased with the setup, it takes longer than a wireless screen. This post is complimented by the [[Multiple Monitors with Touchscreens][work and setup with touchscreens here]].
+The final setup is quite robust to changes. Future posts might go into setting up the kind of local networking tools to help move files, code and more between both machines, to improve on the peripheral share approach. Additionally, there are still some manual steps which can and should be automated. I'm not super pleased with the setup, it takes longer than a wireless screen. This post is complimented by the {{{relref(work and setup with touchscreens here,multi-monitor-touch)}}}.
 
 * TODO Haskell with Nix for Hacktoberfest :@programming:tools:nix:workflow:python:
 :PROPERTIES:
@@ -6863,7 +6865,7 @@ CLOSED: [2020-10-17 Sat 10:40]
 A meta-post on my lightning talk at NixCon 2020
 #+END_QUOTE
 ** Background
-Much the same as the rationale behind my [[Talk Supplements for PyCon India 2020][meta-post on my talk at PyCon India 2020]], that is:
+Much the same as the rationale behind my {{{relref(meta-post on my talk at PyCon India 2020,pycon-in-2020-meta)}}}, that is:
 - I would like to preserve questions
 - I would like to collect the video, slides and other miscellaneous stuff in one location [fn:officialsite]
 - It would be nice to have my own thoughts here afterwards
@@ -6875,13 +6877,13 @@ Much the same as the rationale behind my [[Talk Supplements for PyCon India 2020
 Short comments from the trenches of High Performance Clusters on working with Nix on kernel locked-in systems without proot support.
 #+END_QUOTE
 **** Linked Posts
-- [[Local Nix without Root][Local Nix without Root]] :: Motivation and installation
-  + [[Provisioning Dotfiles on an HPC][Provisioning Dotfiles on an HPC]] :: Looks into how standard approaches fail (~proot~)
-  + [[HPC Dotfiles and LMod][HPC Dotfiles and LMod]] :: All the ugly manual install steps
+- {{{relref(Local Nix without Root,local-nix-no-root)}}} :: Motivation and installation
+  + {{{relref(Provisioning Dotfiles on an HPC,prov-dots)}}} :: Looks into how standard approaches fail (~proot~)
+  + {{{relref(HPC Dotfiles and LMod,hpc-dots-lmod)}}} :: All the ugly manual install steps
 **** Other Content
 Anything on this site [[https://rgoswami.me/tags/nix/][tagged with Nix]]. Also an introduction to ~nix~ given by me (and Amrita Goswami) at [[https://2020.carpentrycon.org/schedule/#session-10][CarpentryCon2020]] is here:
 - [[https://github.com/HaoZeke/CarpentryCon2020_Nix][CarpentryCon2020 Materials]]
-- [[A Tutorial Introduction to Nix][A tutorial introduction to Nix and Python]]
+- {{{relref(A tutorial introduction to Nix and Python,ccon-tut-nix)}}}
 ** Slides
 - [[file:/revealjs/NixCon2020/darkNix.html][Best viewed here]] using a browser (in a new tab)
 - A ~pdf~ copy of the slides are embedded below
@@ -6970,7 +6972,7 @@ To accomplish this, we basically need to have the following:
 - [[https://github.com/FooSoft/anki-connect][anki-connect]] :: We need a server of sorts set up to allow us to push pull and get errors from the running Anki server, this is an Anki plugin
 - [[https://ankiweb.net/shared/info/937148547][LaTeX process editor]] :: It wouldn't be much better than manually making cards in Anki if we couldn't leverage ~unicode~ characters, so we need to modify the internal Anki build process for TeX
 *** Anki Editor
-As with all ~emacs~ related setup snippets on this site, these should be modified and adapted as needed, especially for those not using [[https://github.com/hlissner/doom-emacs/][doom-emacs]]. 
+As with all ~emacs~ related setup snippets on this site, these should be modified and adapted as needed, especially for those not using [[https://github.com/hlissner/doom-emacs/][doom-emacs]].
 #+BEGIN_SRC emacs-lisp :tangle no :eval never
 (use-package anki-editor
   :after org-noter
@@ -7031,7 +7033,7 @@ images with dvisvgm~ option. The header needs to have (minimally):
 #+begin_src tex
 \documentclass[12pt]{article}
 \special{papersize=3in,5in}
-\usepackage{geometry} 
+\usepackage{geometry}
 \usepackage{unicode-math}
 \usepackage{mathtools}
 \pagestyle{empty}
@@ -7966,7 +7968,7 @@ The layout takes a bit of time to get used to, but it is a lot more transparent 
 
 [fn:whycolemak] Colemak, unlike Dvorak, prioritises finger rolls over alternating hands
 [fn:morespecifics] For more details the [[https://en.wikipedia.org/wiki/Keyboard_layout][Wikipedia article on Keyboard Layouts]] is useful or this [[https://github.com/tmk/tmk_keyboard/blob/master/tmk_core/doc/keymap.md][file on the tmk keyboard]]
-[fn:whyext] [[https://forum.colemak.com/topic/2014-extend-extra-extreme/][DreymaR's Extend mappings]] might be good for QWERTY people 
+[fn:whyext] [[https://forum.colemak.com/topic/2014-extend-extra-extreme/][DreymaR's Extend mappings]] might be good for QWERTY people
 [fn:whatmetrics] The metric collection of [[https://github.com/mw8/white_keyboard_layout][Michael White]] or the [[http://mkweb.bcgsc.ca/carpalx/][CARPALX metrics]]
 
 * DONE Icelandic with Compose Keys on Linux :@personal:workflow:tools:keyboard:linux:
@@ -8286,11 +8288,11 @@ Short post on making minimal changes to derivations in ~nixpkgs~ at a project le
 ** Background
 As part of my work on the [[https://symengine.org][Symengine documentation]][fn:whopaid],  I had originally thought of leveraging ~nix~ for reproducible builds for each of the language bindings with GH-Actions. There exists a derivation in the upstream package repository, but it was outdated ([[https://github.com/NixOS/nixpkgs/blob/66e44425c6dfecbea68a5d6dc221ccd56561d4f1/pkgs/development/libraries/symengine/default.nix][v6.0.0]] instead of v6.0.1) [fn:whocares]. Normally this would simply require a PR to be fixed; but since documenting different language bindings requires specific flags and tests were largely not an issue, I needed to make a project level derivation for each repository.
 ** Project Layout
-The standard ~niv~ setup, as described in the [[A Tutorial Introduction to Nix][longer tutorial post]] will suffice.
+The standard ~niv~ setup, as described in the {{{relref(longer tutorial post,ccon-tut-nix)}}} will suffice.
 #+begin_src bash
 niv init -b master
 #+end_src
-Since the bindings were for ~python~, ~mach-nix~ was leveraged for the ~shell.nix~; reasons for which [[Niv and Mach-Nix for Nix Python][have been outlined elsewhere]]. This led to the following expression:
+Since the bindings were for ~python~, ~mach-nix~ was leveraged for the ~shell.nix~; reasons for which {{{relref(have been outlined elsewhere,mach-nix-niv-python)}}}. This led to the following expression:
 #+begin_src nix :hl_lines 4
 let
   sources = import ./nix/sources.nix;
@@ -8619,8 +8621,8 @@ Given my unfortunate separation from my library back home; it is likely that my 
 
 [fn:sayswho] [[https://www.youtube.com/watch?v=OlnzrxaZViU][YT video on color and e-ink]], [[https://www.youtube.com/watch?v=_6K53j1k1vY][YT video on recent color e-ink tech]] and [[https://www.theverge.com/2021/2/15/22284923/pocketbook-inkpad-color-kaleido-e-reader-available-now-price][Verge release notes]] for the [[https://pocketbook.ch/en-ch/news/pocketbook-inkpad-color-news-ch][PocketBook InkPad Color]]
 [fn:whypost] On an unrelated note, this represents a stylistic departure from older normal posts, with much more of a rambling narrative
-[fn:whynotes] These are annotated [[An Orgmode Note Workflow][in Emacs with org-mode]] when necessary
-[fn:whytype] For which I have been perfecting a rather [[Switching to Colemak][personalized workflow with Colemak]]
+[fn:whynotes] These are annotated {{{relref(in Emacs with org-mode,org-note-workflow)}}} when necessary
+[fn:whytype] For which I have been perfecting a rather {{{relref(personalized workflow with Colemak,colemak-switch)}}}
 [fn:whatelsebloggy] The same can be said of Wikipedia content and tweets; spending time on the written word does not automatically worth putting on an e-reader
 [fn:alsobattery] Also why the battery lasts for days without any strain
 [fn:whytwo] Diigo is great for saving storing sites forever and Pocket is just cheaper Instapaper
@@ -8646,7 +8648,7 @@ Adding encryption and scripts for better mail management
 A short post on post-grant application paperwork
 #+END_QUOTE
 ** Background
-A while ago, [[Grant Proposals - I][I wrote about my experience applying]] for the Rannís [[https://en.rannis.is/funding/research/icelandic-research-fund/][Icelandic Research Fund]]. I mentioned there that I should not go into great detail without knowing if my process was correct. I have since [[https://en.rannis.is/news/allocation-from-the-icelandic-research-fund-for-the-financial-year-2021-1][been awarded]] the three-year grant for my proposal on "Magnetic interactions of itinerant electrons modeled using Bayesian machine learning". It would make sense then, to go into parts of the process in more depth.
+A while ago, {{{relref(I wrote about my experience applying,grant-proposals)}}} for the Rannís [[https://en.rannis.is/funding/research/icelandic-research-fund/][Icelandic Research Fund]]. I mentioned there that I should not go into great detail without knowing if my process was correct. I have since [[https://en.rannis.is/news/allocation-from-the-icelandic-research-fund-for-the-financial-year-2021-1][been awarded]] the three-year grant for my proposal on "Magnetic interactions of itinerant electrons modeled using Bayesian machine learning". It would make sense then, to go into parts of the process in more depth.
 ** The Process
 
 ** Conclusion
@@ -8813,7 +8815,7 @@ Delivered by Rohit Goswami, doctoral researcher at the University of Iceland, Re
 **** Other Content
 Anything on this site [[https://rgoswami.me/tags/nix/][tagged with Nix]] or [[https://rgoswami.me/tags/cpp/][tagged with C++]]. Also an introduction to ~nix~ given by me (and Amrita Goswami) at [[https://2020.carpentrycon.org/schedule/#session-10][CarpentryCon2020]] is here:
 - [[https://github.com/HaoZeke/CarpentryCon2020_Nix][CarpentryCon2020 Materials]]
-- [[A Tutorial Introduction to Nix][A tutorial introduction to Nix and Python]]
+- {{{relref(A tutorial introduction to Nix and Python,ccon-tut-nix)}}}
 ** Slides
 - [[file:/revealjs/iop_april_2021/introcpp2.html][Best viewed here]] using a browser (in a new tab)
 - A ~pdf~ copy of the slides are embedded below
@@ -9174,7 +9176,7 @@ something like that.
 Using ~bundix~ for managing ~ruby~ projects, with a concrete ~jekyll~ example
 #+end_quote
 ** Background
-In the same spirit as my similar post on [[Nix Shells for Node Projects][Nix Shells for Node Projects]]. As a prelude to writing up the details of how this site is generated, I realized I should write up a ~nix~ oriented workflow for ~ruby~ packages managed with ~bundle~. This site (which is in ~hugo~), I also manage many beautiful sites built with ~jekyll~. This should serve as a useful reminder.
+In the same spirit as my similar post on {{{relref(Nix Shells for Node Projects,nix-shell-node)}}}. As a prelude to writing up the details of how this site is generated, I realized I should write up a ~nix~ oriented workflow for ~ruby~ packages managed with ~bundle~. This site (which is in ~hugo~), I also manage many beautiful sites built with ~jekyll~. This should serve as a useful reminder.
 ** Tooling and Idea
 The basic concepts are:
 - Use ~bundle~ to generate a ~Gemfile.lock~ file
@@ -9193,7 +9195,7 @@ nix-shell -p bundix --run "bundix -l"
 nix shell nixpkgs#bundix -c bundix -l
 #+end_src
 ** A Nix Environment
-We will use the standard setup described in [[A Tutorial Introduction to Nix][the tutorial post]]:
+We will use the standard setup described in {{{relref(the tutorial post,ccon-tut-nix)}}}:
 #+BEGIN_SRC bash
 nix-env -i niv lorri
 niv init
@@ -9485,7 +9487,7 @@ zsh_theme = { source = "common/shell/zsh/04a_theme.zsh", target = ".config/shell
 ** Text Editors
 A long time ago I switched from VIM and Sublime to Emacs. I still retain in my ~dotfiles~ enough syntactical sugar and targets to make ~vim~ and Sublime easier to use; mostly using [[https://github.com/junegunn/vim-plug][vim-plug]]. Emacs has a rather complicated set of configurations which are independently managed via ~doom-emacs~ and have their own [[https://dotdoom.rgoswami.me][self documenting site]].
 ** Conclusions
-Though the ~shell.d~ setup is still overly verbose and not as flexible as I had initially hoped, this is still a few steps ahead of my previous setup. No part of this focused on the configurations themselves (more interesting examples, of [[Refactoring Dotfiles For Colemak][switching to Colemak are here]]) Will be fleshing this out more with auxilliary posts on my configuration (browsers, etc.) and its management perhaps.
+Though the ~shell.d~ setup is still overly verbose and not as flexible as I had initially hoped, this is still a few steps ahead of my previous setup. No part of this focused on the configurations themselves (more interesting examples, of {{{relref(switching to Colemak are here,colemak-dots-refactor)}}}) Will be fleshing this out more with auxilliary posts on my configuration (browsers, etc.) and its management perhaps.
 * TODO Unifying UX with Starship
 In the absence of administrative controls, it makes sense to have our customizations work at the lowest common abstraction. Thankfully, projects like [[https://starship.rs/guide/#%F0%9F%9A%80-installation][starship]] have stepped up to provide a unified experience across shells. It will form the core of the new setup.
 * TODO Browser Wars
@@ -9652,11 +9654,11 @@ CLOSED: [2021-07-23 Fri 04:45]
 Struggling to emulate ~klfc~ for VIM Colemak bindings on Darwin (macOS) systems with Hammerspoon and Karabiner
 #+end_quote
 ** Background
-I have mentioned in the past my customized [[Refactoring Dotfiles For Colemak][Colemak dotfiles]] which I used with [[Remapping Keys with XKB and KLFC][a customized keyboard layout]]. Unfortunately, the ~.keylayout~ system of MacOS is far more primitive than the elegant ~klfc~ setup [fn:nothinggood]. For an understanding of what we are trying to get at, the following poorly made video will suffice.
+I have mentioned in the past my customized {{{relref(Colemak dotfiles,colemak-dots-refactor)}}} which I used with {{{relref(a customized keyboard layout,remap-keys-xkb-klfc)}}}. Unfortunately, the ~.keylayout~ system of MacOS is far more primitive than the elegant ~klfc~ setup [fn:nothinggood]. For an understanding of what we are trying to get at, the following poorly made video will suffice.
 
 #+html: {{< youtube BgqlUsenmKU  >}}
 *** VIM Colemak Extensions
-Just as a reminder, my setup (or ~hzColemak~) consists of an augmented VIM workflow, as shown below, and [[Remapping Keys with XKB and KLFC][described in my previous post]].
+Just as a reminder, my setup (or ~hzColemak~) consists of an augmented VIM workflow, as shown below, and {{{relref(described in my previous post,remap-keys-xkb-klfc)}}}.
 
 #+name: fig:layall
 #+caption: Set of layouts
@@ -10544,7 +10546,7 @@ Docker. Virtual Machines. Pipenv. Virtualenv. The struggle to isolate developmen
 **** Other Content
 Anything on this site [[https://rgoswami.me/tags/nix/][tagged with Nix]] or [[https://rgoswami.me/tags/python][tagged with Python]]. Also an introduction to ~nix~ given by me (and Amrita Goswami) at [[https://2020.carpentrycon.org/schedule/#session-10][CarpentryCon2020]] is here:
 - [[https://github.com/HaoZeke/CarpentryCon2020_Nix][CarpentryCon2020 Materials]]
-- [[A Tutorial Introduction to Nix][A tutorial introduction to Nix and Python]]
+- {{{relref(A tutorial introduction to Nix and Python,ccon-tut-nix)}}}
 ** Slides
 - [[file:/revealjs/cip2021_nixpy/wrangpynix.html][Best viewed here]] using a browser (in a new tab)
 - A ~pdf~ copy of the slides are embedded below
@@ -10584,7 +10586,7 @@ CLOSED: [2021-06-12 Sat 00:57]
 Charting paths towards concrete ~lfortran~ usage
 #+end_quote
 ** Background
-As mentioned in [[Fortran, GSoC21 and Me][an earlier post]], I have had the immense pleasure of continuing
+As mentioned in {{{relref(an earlier post,fortran-gsoc-me)}}}, I have had the immense pleasure of continuing
 development of the disruptive ~lfortran~ compiler under the aegis of the [[https://fortran-lang.org/][Fortran
 Lang organization]], financed by the [[https://summerofcode.withgoogle.com/projects/#5790375215628288][Google Summer of Code]] and mentored ably by
 [[https://ondrejcertik.com/][Ondrej Certik]]. A rather interesting consequence of this is that we are strongly
@@ -11867,7 +11869,7 @@ So, after weeks of thousands of words of (semi-)popular writing, countless lines
 - Also, [[https://lfortran.zulipchat.com/][the Zulip instance]] is great for getting in touch with the community
   + One of the nicer parts of being associated with the project in such a visible manner was that I was able to funnel new talent as well
 *** Target Practice
-In terms of finally compiling our minimum viable computational chemistry project, minidftatom; described in the [[GSoC21 W5: LFortran Design Details and ~minidftatom~][Week 5 post]], we are tantalizingly close; so much so that is a mere bugfix or two away; as can be seen from the state [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1219][of this MR]]. Naturally my choice of issues are biased towards my own interests:
+In terms of finally compiling our minimum viable computational chemistry project, minidftatom; described in the {{{relref(Week 5 post,gsoc21-w5)}}}, we are tantalizingly close; so much so that is a mere bugfix or two away; as can be seen from the state [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1219][of this MR]]. Naturally my choice of issues are biased towards my own interests:
 - Better benchmarking of the pure Fortran intrinsics
 - Finish improving the CI (~ninja~)
 - Meson integration
@@ -11879,7 +11881,7 @@ In terms of finally compiling our minimum viable computational chemistry project
 *** Major Accomplishments
 Perhaps more than anything else; the design strategies worked out over the twelve week span will have the most lasting impact. In particular:
 - *Compile Time Intrinsics* :: These are the C++ equivalent of the Fortran standard, and are evaluated when possible at compile time (the backend then just uses the value)
-- *Runtime Library Design* :: Inspite of [[https://fortran-lang.discourse.group/t/fortran-runtime-math-library/755][strong community opposition]] to implementing elementary functions in pure Fortran; we ended up with a very well designed elegant runtime design I am immensely satisfied with. Broadly speaking (detailed in the [[GSoC21 W10: LFortran Runtime Library Design][Week 10 post]]), the design encompasses ~impure~ parts of the library, which cannot be implemented in pure Fortran, and ~pure~ sections which can be implemented without any external calls
+- *Runtime Library Design* :: Inspite of [[https://fortran-lang.discourse.group/t/fortran-runtime-math-library/755][strong community opposition]] to implementing elementary functions in pure Fortran; we ended up with a very well designed elegant runtime design I am immensely satisfied with. Broadly speaking (detailed in the {{{relref(Week 10 post,gsoc21-w10)}}}), the design encompasses ~impure~ parts of the library, which cannot be implemented in pure Fortran, and ~pure~ sections which can be implemented without any external calls
 
 Both of these intrinsic designs were accompanied by practical implementations and a template evolved over time to aid future contributions. One of the most interesting parts of the runtime design was using certifiably correct polynomial approximations generated with [[https://www.sollya.org/][Sollya]].
 
@@ -11916,7 +11918,7 @@ I like writing; but somehow this was one of the most difficult things to write a
 An introduction and rough interpretation
 #+end_quote
 ** Background
-As mentioned [[Regarding Quansight Labs][earlier]], I have the pleasure of being involved in an effort to modernize and maintain the
+As mentioned {{{relref(earlier,joining-quansight-labs21)}}}, I have the pleasure of being involved in an effort to modernize and maintain the
 ~f2py~ code base under the aegis of [[https://www.quansight.com/labs][Quansight Labs]] with  [[https://rgommers.github.io/][Dr. Ralf Gommers]],  [[https://melissawm.github.io/about-me/][Dr.
 Melissa Weber Mendonça]] and [[https://github.com/pearu][Dr. Pearu Peterson]]. Here I will outline a few sample
 tasks which serve as a gentle introduction to the ecosystem.
@@ -12582,7 +12584,7 @@ Upgrading to the bleeding edge of ~nix~ development.
 #+end_quote
 ** Background
 I shall be mentoring a fantastic group at for the inaugural [[http://summer.nixos.org/][Summer of Nix]]. The effort will be focused around the ~flake~ workflow, which is something I have been planning to look into for quite some time. Rather than have a post for each major language workflow, I'll just go over replacing all my existing workflows to use ~flakes~.
-For a reminder, though I won't go into any real details here in this post, my preferred approach to ~nix~ in production is a combination of ~niv~ (which is brilliant) and throwaway ~nix-shell~ expressions, described in great detail in other posts on this blog, like [[Statistical Rethinking and Nix][this one]] or this [[A Tutorial Introduction to Nix][introductory post]].
+For a reminder, though I won't go into any real details here in this post, my preferred approach to ~nix~ in production is a combination of ~niv~ (which is brilliant) and throwaway ~nix-shell~ expressions, described in great detail in other posts on this blog, like {{{relref(this one,rethinking-r-nix)}}} or this {{{relref(introductory post,ccon-tut-nix)}}}.
 ** Getting Started
 A couple of caveats about this post and using development features in general, this post might become outdated rather quickly. Anyway, the version used is:
 #+begin_src bash
@@ -12702,7 +12704,7 @@ A basic flake using the NUR is then:
 }
 #+end_src
 ** Python
-To work with ~python~ I typically use ~mach-nix~ as [[Niv and Mach-Nix for Nix Python][described here]]. However, with a ~flake~.
+To work with ~python~ I typically use ~mach-nix~ as {{{relref(described here,mach-nix-niv-python)}}}. However, with a ~flake~.
 ** Concrete Example: GPAW
 As an example of a relatively interesting package we will consider augmenting [[https://wiki.fysik.dtu.dk/gpaw/index.html][DTU's GPAW]] with a ~nix~ flake.
 ** Resources
@@ -13059,7 +13061,7 @@ For local use, assuming similar installation instructions, it is easier to manip
 
 Where you will need to replace ~"blah"~ with the output of ~(system-name)~.
 ** Conclusions
-Embarrassingly, neither setup provided as pleasant an SSH based workflow as VS Code. However, that probably has a lot more to do with TRAMP than any of the language servers, and in any case [[https://magit.vc/][Magit]] still makes ~emacs~ far superior. In any case, the setup described here is still far superior to not using anything other than ~projectile~ and ~ripgrep~ so I am satisfied for now. The path setup in this post is deliberately polluting for simplification however, and in practice [[https://github.com/HaoZeke/Dotfiles/blob/bombadil/readme.org][my Dotfiles]] are managed a lot better with ~bombadil~ which is something for a later post. Each of these will take some getting used to, and new keybindings will probably be needed, especially for my [[Refactoring Dotfiles For Colemak][idiomatic Colemak setup]].
+Embarrassingly, neither setup provided as pleasant an SSH based workflow as VS Code. However, that probably has a lot more to do with TRAMP than any of the language servers, and in any case [[https://magit.vc/][Magit]] still makes ~emacs~ far superior. In any case, the setup described here is still far superior to not using anything other than ~projectile~ and ~ripgrep~ so I am satisfied for now. The path setup in this post is deliberately polluting for simplification however, and in practice [[https://github.com/HaoZeke/Dotfiles/blob/bombadil/readme.org][my Dotfiles]] are managed a lot better with ~bombadil~ which is something for a later post. Each of these will take some getting used to, and new keybindings will probably be needed, especially for my {{{relref(idiomatic Colemak setup,colemak-dots-refactor)}}}.
 
 [fn:howemacs] More than adequately managed by ~hlissner~'s fantastic [[https://github.com/hlissner/doom-emacs][doom-emacs]]
 [fn:nofair] If you need more information, Doug Davis has a more [[https://ddavis.io/posts/eglot-cpp-ide/][in-depth vanilla emacs write-up]] on ~eglot~ and C++
@@ -13236,7 +13238,7 @@ Yet another post on provisioning machines with ~dotfiles~...
 now with ~chezmoi~
 #+end_quote
 ** Background
-+Barely two months ago+ A few years ago, [[Dotfiles from dotgit to bombadil][I wrote about]] moving away from the
++Barely two months ago+ A few years ago, {{{relref(I wrote about,dotfiles-dotgit-bombadil)}}} moving away from the
 +(now)+ ~python~ based [[https://github.com/EvanPurkhiser/dots][dots]] to the ~rust~ based [[https://github.com/oknozor/toml-bombadil][toml-bombadil]]. Unfortunately, the
 structure I backed myself into there was needlessly complicated, and involved
 manually making entries in the ~bombadil.toml~ file for each sub file. This was a
@@ -13247,7 +13249,7 @@ This post got sidelined a bunch of times over the years, as did a bunch of my
 work in progress posts, mostly because there were always some warts to be ironed
 out.
 *** HPC Configurations
-Around the same time as this post, I was [[HPC Configuration 2021][writing up my trials]] and tribulations
+Around the same time as this post, I was {{{relref(writing up my trials,hpc-conf-2021)}}} and tribulations
 as a lowly user without admin access of the (then) new ~elja~ HPC cluster at the
 University of Iceland. Anyway, since HPC work (user / admin / whatever) is one
 of my main use-cases, this post could also be seen as a sequel of sorts to that
@@ -13272,7 +13274,7 @@ Info
 #+end_alert-heading
 As an aside, there are *a lot* of backlogged posts I meant to get around to
 writing but no longer feel all that strongly about. Most of these are written up
-in the [[Site Rationale][original spirit of this blog]] (TL;DR: just write stuff down).
+in the {{{relref(original spirit of this blog,rationale)}}} (TL;DR: just write stuff down).
 #+end_alert
 
 
@@ -13362,7 +13364,7 @@ I had the honor and pleasure to have two presentations at the [[https://tcevents
 f2py is the gold standard for interfacing Fortran and Python. The most famous downstream consumer of the generated wrappers is undoubtedly the scipy ecosystem. Crucially, f2py is not a compiler, and generates a best effort set of wrappers, aided by special comment lines. One of the key inter-operable approaches to compilation of the subsequent wrappers relies on numpy.distutils. Given the planned obsolescence of this module; we discuss the methodology by which the build phase can be split into a two phase process and document better the pyf enhancements made to facilitate callbacks. A brief outline of test suites and documentation within the numpy ecosystem and proposed enhancement proposals will be discussed as well. We lay out the roadmap towards f2py remaining relevant beyond f77 by implementing derived types and newer features like parallelism with co-arrays. Playing to its strengths as a code-enhancer and leveraging the flexibility of not being constrained by the actual compilation process allows for the reimagining of f2py as a tool and library.
 #+END_QUOTE
 **** Other Content
-- [[NumPy, Meson and ~f2py~][NumPy, Meson and ~f2py~]]
+- {{{relref(NumPy, Meson and ~f2py~,numpy-meson-f2py)}}}
 *** Slides
 - [[file:/revealjs/fortrancon21/quansight/f2py2declater.html][Best viewed here]] using a browser (in a new tab)
 - A ~pdf~ copy of the slides are embedded below
@@ -13383,29 +13385,29 @@ The Fortran standard is a rather imposing document; though with F2018 at around 
 #+END_QUOTE
 **** Other Content
 The whole GSoC series.
-0. [[Fortran, GSoC21 and Me][Fortran, GSoC21 and Me]]
+0. {{{relref(Fortran, GSoC21 and Me,fortran-gsoc-me)}}}
 
-1. [[GSoC21 W1: LFortran Kickoff][GSoC21 W1: LFortran Kickoff]]
+1. {{{relref(GSoC21 W1: LFortran Kickoff,gsoc21-w1)}}}
 
-2. [[GSoC21 W2: LFortran Unraveling][GSoC21 W2: LFortran Unraveling]]
+2. {{{relref(GSoC21 W2: LFortran Unraveling,gsoc21-w2)}}}
 
-3. [[GSoC21 W3: Kind, Characters, and Standards][GSoC21 W3: Kind, Characters, and Standards]]
+3. {{{relref(GSoC21 W3: Kind, Characters, and Standards,gsoc21-w3)}}}
 
-4. [[GSoC21 W4: LFortran, Backends and Bugs][GSoC21 W4: LFortran, Backends and Bugs]]
+4. {{{relref(GSoC21 W4: LFortran, Backends and Bugs,gsoc21-w4)}}}
 
-5. [[GSoC21 W5: LFortran Design Details and ~minidftatom~][GSoC21 W5: LFortran Design Details and ~minidftatom~]]
+5. {{{relref(GSoC21 W5: LFortran Design Details and GSoC21 W5: LFortran Design Details and minidftatom,gsoc21-w5)}}}
 
-6. [[GSoC21 W6: LFortran ASR and Values][GSoC21 W6: LFortran ASR and Values]]
+6. {{{relref(GSoC21 W6: LFortran ASR and Values,gsoc21-w6)}}}
 
-7. [[GSoC21 W7: LFortran Workflow Basics][GSoC21 W7: LFortran Workflow Basics]]
+7. {{{relref(GSoC21 W7: LFortran Workflow Basics,gsoc21-w7)}}}
 
-8. [[GSoC21 W8: LFortran Refactors, and Compile Time Evaluations][GSoC21 W8: LFortran Refactors, and Compile Time Evaluations]]
+8. {{{relref(GSoC21 W8: LFortran Refactors, and Compile Time Evaluations,gsoc21-w8)}}}
 
-9. [[GSoC21 W9: LFortran Bug Hunting Bonanza][GSoC21 W9: LFortran Bug Hunting Bonanza]]
+9. {{{relref(GSoC21 W9: LFortran Bug Hunting Bonanza,gsoc21-w9)}}}
 
-10. [[GSoC21 W10: LFortran Runtime Library Design][GSoC21 W10: LFortran Runtime Library Design]]
+10. {{{relref(GSoC21 W10: LFortran Runtime Library Design,gsoc21-w10)}}}
 
-11. [[GSoC21 LFortran and Computational Chemistry][GSoC21 LFortran and Computational Chemistry]]
+11. {{{relref(GSoC21 LFortran and Computational Chemistry,gsoc21-fin-reprot)}}}
 
 *** Slides
 - [[file:/revealjs/fortrancon21/gsoc/implFSLFortran.html][Best viewed here]] using a browser (in a new tab)
@@ -13988,7 +13990,7 @@ A closer look at the standard Fortran C compatibility layer by
 exploring objects and linkers
 #+end_quote
 ** Background
-[[Simple Fortran Derived Types and Python][Derived types and their interoperability]] have been covered
+{{{relref(Derived types and their interoperability,cython-derivedtype-f2py)}}} have been covered
 previously in the context of usage from Python. However, much of the
 focus of the previous approach revolved around the ~iso_c_binding~
 intrinsic module. A closer inspection of the functionality provided therein is the
@@ -14127,7 +14129,7 @@ objcopy --redefine-sym=__vec_MOD_unit_move=unit_move vec.o
 # Compile and link in one shot
 gcc vec.o vecfc.c -I./ -lgfortran -o gf_vec
 # Profit
-./gf_vec                      
+./gf_vec
 Initializing the struct
 3.000000 2.500000 6.200000
 Fortran function with derived type from C:
@@ -14166,12 +14168,12 @@ just that the symbols mangled differently, the code generated is
 quantitatively different as well.
 
 #+begin_src bash
-ifort vec.o vecfc.o -lc           
+ifort vec.o vecfc.o -lc
 ld: vecfc.o: in function `main':
 vecfc.c:(.text+0x0): multiple definition of `main'; /opt/intel/oneapi/compiler/2021.2.0/linux/bin/intel64/../../compiler/lib/intel64_lin/for_main.o:for_main.c:(.text+0x0): first defined here
 ld: cannot find -lirng
 ifort -c vec.f90 -fPIE
-gcc vec.o vecfc.c -I./ -o gf_vec 
+gcc vec.o vecfc.c -I./ -o gf_vec
 /usr/bin/ld: vec.o: in function `unit_move':
 vec.f90:(.text+0x55): undefined reference to `for_write_seq_lis'
 collect2: error: ld returned 1 exit status
@@ -14195,7 +14197,7 @@ linkers normally cannot detect disagreements in these other areas.
 The first functionality of the ~iso_c_binding~ is actually rather easy
 to implement from a vendor perspective, but vastly simplifying for the
 end-user, the ability to provide a single binding label. Recall the
-~bind(c)~ variant of the [[Simple Fortran Derived Types and Python][previous post]].
+~bind(c)~ variant of the {{{relref(previous post,cython-derivedtype-f2py)}}}.
 
 #+begin_src fortran
 ! vec_bind.f90
@@ -14283,13 +14285,13 @@ end module vec
 However, this understandably does not go very well.
 
 #+begin_src bash
-ifort -c vec_typeb.f90 
+ifort -c vec_typeb.f90
 vec_typeb.f90(7): error #8575: A derived type with the BIND attribute shall not have a type bound procedure part.
      contains
 -----^
 vec_typeb.f90(14): error #8224: A derived type used with the CLASS keyword shall not have the BIND attribute or SEQUENCE property.   [CARTESIAN]
     class(cartesian), intent(in) :: self
-gfortran -c vec.f90 
+gfortran -c vec.f90
 vec.f90:7:13:
 
     7 |      contains
@@ -14367,7 +14369,7 @@ we can begin by writing a wrapper subroutine.
 This does allow for the existing ~C~ interface to work.
 
 #+begin_src bash
-gfortran -c vec_typeb.f90 
+gfortran -c vec_typeb.f90
 objcopy --redefine-sym=__vec_MOD_unit_move=unit_move vec_typeb.o
 gcc vec_typeb.o vecfc.c -I./ -o gf_vec -lgfortran
 ./gf_vec
@@ -14565,7 +14567,7 @@ For F2PY within ~numpy~, however, although there are no direct equivalents in
 structures in ~Python~. This post will bridge Fortran derived types to their
 logically equivalent Python class definitions.
 ** Premise
-As in [[Simple Fortran Derived Types and Python][the previous posts]], we will be interested in a ~bind(c)~ derived type.
+As in {{{relref(the previous posts,cython-derivedtype-f2py)}}}, we will be interested in a ~bind(c)~ derived type.
 #+begin_src fortran
 type :: cartesian
   real(c_double) :: x, y, z
@@ -14589,8 +14591,8 @@ The elements of the Python programming language which can be best used to emulat
 - *Dataclasses* :: These make sense from a logical perspective, however, they are hard to programmatically generate and use in C-extensions, limiting their utility for inter-operability with Fortran.
 - *Classes* :: The most general and arguably the most flexible construct is to generate code for a ~PyTypeObject~, which can be fleshed out to contain both attributes, as well as memory allocation rules.
 
-Of the representations described, the first approximation covered in [[Simple Fortran Derived Types and Python][a previous
-post]] was the ~dictionary~. A major concern [fn:whosaidthat] is that of lineage
+Of the representations described, the first approximation covered in {{{relref(a previous
+post,cython-derivedtype-f2py)}}} was the ~dictionary~. A major concern [fn:whosaidthat] is that of lineage
 and extensibility; ~python~ users would expect that a dictionary can be extended
 with keys, which would not make much sense if the dictionary is meant to
 represent a derived type. Additionally, it is difficult to programmatically
@@ -16083,7 +16085,7 @@ Since Thunderbird tanked with XUL ecosystem eons ago there haven't been many
 contenders. Given the situation with window management, a ~localserver~ approach
 to web-clients like Mailpile [fn:welldesc] would have been perfect... Except it
 is still based around ~python2~ and shows no sign of moving forward. I really
-[[Reclaiming Email with Astroid][like Astroid]], but it doesn't seem to have been updated in a while either. Thunderbird works fine too, and does not require XWayland which is a plus point.
+{{{relref(like Astroid,reclaim-email-astroid)}}}, but it doesn't seem to have been updated in a while either. Thunderbird works fine too, and does not require XWayland which is a plus point.
 *** Electron
 Anything with a recent electron binary (around 13) will just need a few flags.
 #+begin_src bash
@@ -17318,7 +17320,7 @@ but nice.
 [fn:whereswap] This is derived from [[https://nerdstuff.org/posts/2020/2020-004_arch_linux_luks_btrfs_systemd-boot/][this post]], which in turn references the ArchWiki for [[https://wiki.archlinux.org/title/Btrfs#Swap_file][BTRFS]] and [[https://wiki.archlinux.org/title/Swap#Swap_file][swap]].
 [fn:why] Transparent compression is a rather neat feature
 [fn:kindavague] My first attempts at modifying the installation media date back to [[https://github.com/HaoZeke/hzArchiso/commits/main?after=7fe66527b0029053398ca3a97039d29cb786db5f+69&branch=main&qualified_name=refs%2Fheads%2Fmain][2018 though]]
-[fn:sincewhen] Since I largely retired from Android [[LineageOS Maintainer Appreciation][custom kernel / ROM work]]
+[fn:sincewhen] Since I largely retired from Android {{{relref(custom kernel / ROM work,linos-maintainer-appre)}}}
 [fn:whydisclaim] Seriously, *always* read the [[https://wiki.archlinux.org/][ArchWiki]] over blog posts, sometimes the [[https://bbs.archlinux.org/][ArchLinux forums]] are useful too
 
 * DONE Laptop setup notes ~btrfs~ subvolumes :@notes:ramblings:setup:archlinux:
@@ -17340,7 +17342,7 @@ Thoughts on laptop configurations for ArchLinux in 2023, with ~btrfs~ and ~sway~
 This post is a little less complete than most, it has been dated to roughly the correct time chronologically.
 #+end_alert
 ** Background
-I split this post from the [[Customizing ArchLinux Installation Media][previous one]], to make each more self contained.
+I split this post from the {{{relref(previous one,customizing-archlinux-im)}}}, to make each more self contained.
 Since the installation media has more features one might perhaps use ~gparted~
 for resizing disks, use the GUI for managing networks, etc. Personally I
 generally allocate a chunk from whatever other OS is present in ~gparted~, and
@@ -18205,7 +18207,7 @@ Where I consider digitizing colored content.
 ** Background
 It so happened that I recently acquired a rather unique book which (somewhat
 oddly) had no corresponding digital variant [fn:whybother]. I've discussed how I modify books
-and papers [[My Life in E-ink][for consumption on my Kobo Aura HD in the past]], but this comes before
+and papers {{{relref(for consumption on my Kobo Aura HD in the past,my-life-in-eink)}}}, but this comes before
 that. Much of this is essentially a plug for [[https://github.com/4lex4/scantailor-advanced][Scantailor Advanced]] [fn:whatadvanced].
 ** Goals
 Starting with the initial output ~pdf~ files from a scanner's "scan to me" function [fn:whyfiles] the goal is to have all the bells and whistles of a well-done digital book:
@@ -18990,7 +18992,7 @@ arrays from NumPy to Fortran is currently slow. However, via careful handling of
 On constructing reproducible ~R~ environments with ~nix-flakes~, without ~RStudio~
 #+end_quote
 ** Background
-I've written about replacing ~jupyter~ with ~orgmode~ [[Replacing Jupyter with Orgmode][in the past]], and that
+I've written about replacing ~jupyter~ with ~orgmode~ {{{relref(in the past,jupyter-orgmode)}}}, and that
 workflow scales naturally to the case of writing ~R~ code with ~polymode~ and
 ~nix~ as [[https://rgoswami.me/posts/emacs-nix-r/][discussed earlier]] and demonstrated in [[https://rgoswami.me/posts/sr2-ch13-ch14/][several other posts]].
 ** Alternates
@@ -19523,7 +19525,7 @@ foot -- sh -c "rclone sync -P ~/CalibreLibs/Synced pCloud:/Calibre --ask-passwor
 zenity --notification --text="Sync completed"
 #+end_src
 ** Integrating with ~zotero~
-I've dicussed working with [[My Life in E-ink][Zotero before]], but when working with cloud synced
+I've dicussed working with {{{relref(Zotero before,my-life-in-eink)}}}, but when working with cloud synced
 calibre libraries, to prevent duplication of files, relative linking of base
 directory attachments works really well[fn:1].
 
@@ -20419,7 +20421,7 @@ Usage notes for data storage within university constraints.
 ** Background
 The University of Iceland has an "unlimited" OneDrive setup for staff / graduate
 students. This is generally not very helpful, but in conjunction with ~rclone~
-[fn:: Also discussed in [[Managing cloud based ~calibre~ libraries][Managing cloud based ~calibre~ libraries]]] and
+[fn:: Also discussed in {{{relref(managing cloud based calibre libraries,managing-cloud-based-calibre)}}}] and
 ~dvc~ can be made to be of more use.
 ** Baseline
 Like most of my newer projects, ~pixi~ is used to manage the tooling required,
@@ -20524,7 +20526,7 @@ generally useful for projects which can make use of the ~conda~ ecosystem, but
 for most high performance computing software, optimizing compilers and host of
 interdependent build requirements lead to either Spack, Easybuild, Singularity
 or Nix [fn:: Though most clusters don't ship with ~nix~]. More background on
-~spack~ including local environment use was covered in a [[Spack and PyTorch Development Workflows][previous post]].
+~spack~ including local environment use was covered in a {{{relref(previous post,spack-pytorch-dev-workflow)}}}.
 
 At the same time, the [[https://github.com/ingydotnet/git-subrepo][git-subrepo]] helper allows vendoring repository contents,
 which somewhat alleviates the fragility of ~submodules~ while retaining the
@@ -20714,7 +20716,7 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["/sbin/tini", "--"]
 CMD ["/usr/local/bin/entrypoint.sh"]
 #+end_src
-Normally, I'm a fan of using ~tinyssh~ [[TinySSH for Docker Development Environments][for basic containers]] but since this is
+Normally, I'm a fan of using ~tinyssh~ {{{relref(for basic containers,tinyssh-dockerdev-env)}}} but since this is
 meant to be a jump server, we need ~AllowTcpForwarding~ and so ~openssh~ is
 simpler. Combined with this ~entrypoint.sh~:
 #+begin_src bash
@@ -21170,7 +21172,7 @@ It is difficult to keep this section short and not let it spill
 into an unstructured memoir. For a while I considered trying to consolidate my
 online presences but that turned out to be completely impossible without a
 series of posts and avatars[fn:notrefs]. I did however eventually set up a
-sporadically updated [[Collection of WebLinks][collection of web-links]] involving me. There is also, a
+sporadically updated {{{relref(collection of web-links,rg-collection-weblinks)}}} involving me. There is also, a
 separate list of quotes, or other things I have something to say about.
 ** Tangible Positions
 - From May 2025, I am [[http://archive.today/AlM2e][now associated]] with [[https://www.epfl.ch/labs/cosmo/][labCOSMO]] at the École Polytechnique Fédérale de Lausanne (EPFL), working closely with [[https://guillaume.fraux.fr/][Dr. Guillaume Fraux]] and [[https://people.epfl.ch/michele.ceriotti?lang=en][Prof. Michele Ceriotti]]
@@ -21202,7 +21204,7 @@ me[fn:growingUp]. Many of these are tangible, but better ordered in this manner.
   + My work initially revolved around ~f2py~ through the [[https://labs.quansight.org/blog/2020/11/a-second-czi-grant-for-numpy-and-openblas/][CZI NumPy project]] with [[https://melissawm.github.io/about-me/][Dr. Melissa Weber Mendonça]] and [[https://github.com/pearu][Dr. Pearu Peterson]]
   + Passed through working on PyTorch and writing ~meson~ bindings to OpenBLAS
   + Picked up maintaining ASV (in addition to F2PY)
-- I collaborated closely with the brilliant [[https://ondrejcertik.com/][Dr. Ondřej Čertík]] over the course of both on my [[SymEngine and the Season of Docs][GSoD 2020 long project for SymEngine]] and over [[GSoC21 LFortran and Computational Chemistry][GSoC 2021 on the LFortran compiler]]
+- I collaborated closely with the brilliant [[https://ondrejcertik.com/][Dr. Ondřej Čertík]] over the course of both on my {{{relref(GSoD 2020 long project for SymEngine,symengine-gsod20)}}} and over {{{relref(GSoC 2021 on the LFortran compiler,gsoc21-fin-reprot)}}}
 - I was a Fellow at the Institute for Pure and Applied Mathematics (IPAM) for its Spring 2021 program on “[[http://www.ipam.ucla.edu/programs/long-programs/tensor-methods-and-emerging-applications-to-the-physical-and-data-sciences/?tab=participant-list][Tensor Methods and Emerging Applications to the Physical and Data Sciences]]”
 - I have also benefited from sitting in on some formal coursework here, which
   was a fascinatingly useful experience
@@ -21279,7 +21281,7 @@ CLOSED: [1995-08-10]
 An attempt to re-claim and verify my digital presence.
 #+END_QUOTE
 ** Background
-I mentioned [[About][on my about page]], that it is nigh impossible to keep track of every
+I mentioned {{{relref(on my about page,about)}}}, that it is nigh impossible to keep track of every
 digital trace there is of me. That said, it is really not even a countable
 infinite set yet, so it is a good idea to get started before it gets much worse.
 This is minimally curated, and will only be sporadically updated, so take
@@ -21369,7 +21371,7 @@ These are tech talks, for academic presentations, [[https://github.com/haozeke/c
   - [[https://fortran-lang.org/newsletter/2021/03/01/Fortran-Newsletter-March-2021/][March 2021]] :: LFortran contributor
   - [[https://fortran-lang.org/newsletter/2021/05/18/Welcome-GSoC-students/][May 2021]] :: GSoC acceptance
 **** Teaching
-- [[https://www.iopconferences.org/iop/frontend/reg/thome.csp?pageID=1032921&eventID=1664][IOP Workshop on C++ II - Libraries and Simulations]] :: April 13, 2020 (instructor) ([[Talk Supplements for IOP's C++ Workshop][materials]])
+- [[https://www.iopconferences.org/iop/frontend/reg/thome.csp?pageID=1032921&eventID=1664][IOP Workshop on C++ II - Libraries and Simulations]] :: April 13, 2020 (instructor) ({{{relref(materials,iop-cpp-2021-meta)}}})
 - [[https://wc3m.github.io/][Water, Chemicals and more with Computers for Chemistry (WC3m)]] :: July 28-August 28, 2020 (co-lead)
 - [[https://coderefinery.github.io/2020-05-25-online/][2020 MegaCodeRefinery]] (helper)
 ***** Carpentries
@@ -21388,14 +21390,14 @@ These are tech talks, for academic presentations, [[https://github.com/haozeke/c
 - Quoted in a [[https://www.stanforddaily.com/2020/06/08/code-in-place-makes-cs-accessible-to-thousands-worldwide/][Stanford Daily Article on CS106A Code in Place]]
 - [[https://fortran-lang.org/newsletter/2020/06/01/Fortran-Newsletter-June-2020/][Fortran Monthly Newsletter (June 2020)]]
 - Emacs News
-  - [[https://sachachua.com/blog/2021/07/2021-07-26-emacs-news/][2021-07-27]] :: for [[Doom Emacs and Language Servers][Doom Emacs and Language Servers]]
-  - [[https://sachachua.com/blog/2020/05/2020-05-11-emacs-news/][2020-06-22]] :: for [[Temporary LaTeX Documents with Orgmode][Temporary LaTeX Documents with Orgmode]]
-  - [[https://sachachua.com/blog/2020/05/2020-05-11-emacs-news/][2020-06-15]] :: for [[Emacs for Nix-R][Emacs for Nix-R]]
-  - [[https://sachachua.com/blog/2020/05/2020-05-11-emacs-news/][2020-05-11]] :: for [[An Orgmode Note Workflow][An Orgmode Note Workflow]]
-  - [[https://sachachua.com/blog/2020/05/2020-05-04-emacs-news/][2020-05-04]] :: for [[Pandoc to Orgmode with Babel][Pandoc to Orgmode with Babel]]
-  - [[https://sachachua.com/blog/2020/04/2020-04-27-emacs-news/][2020-04-27]] :: for [[Using Mathematica with Orgmode][Using Mathematica with Orgmode]]
+  - [[https://sachachua.com/blog/2021/07/2021-07-26-emacs-news/][2021-07-27]] :: for {{{relref(Doom Emacs and Language Servers,emacs-lang-servers)}}}
+  - [[https://sachachua.com/blog/2020/05/2020-05-11-emacs-news/][2020-06-22]] :: for {{{relref(Temporary LaTeX Documents with Orgmode,org-arb-tex)}}}
+  - [[https://sachachua.com/blog/2020/05/2020-05-11-emacs-news/][2020-06-15]] :: for {{{relref(Emacs for Nix-R,emacs-nix-r)}}}
+  - [[https://sachachua.com/blog/2020/05/2020-05-11-emacs-news/][2020-05-11]] :: for {{{relref(An Orgmode Note Workflow,org-note-workflow)}}}
+  - [[https://sachachua.com/blog/2020/05/2020-05-04-emacs-news/][2020-05-04]] :: for {{{relref(Pandoc to Orgmode with Babel,org-pandoc-babel)}}}
+  - [[https://sachachua.com/blog/2020/04/2020-04-27-emacs-news/][2020-04-27]] :: for {{{relref(Using Mathematica with Orgmode,org-mathematica)}}}
   - [[https://sachachua.com/blog/2020/04/2020-04-13-emacs-news/][2020-04-13]] :: for [[https://dotdoom.rgoswami.me][my dotDoom doom-emacs configuration]]
-  - [[https://sachachua.com/blog/2020/04/2020-04-06-emacs-news/][2020-04-06]] :: for [[Replacing Jupyter with Orgmode][Replacing Jupyter with Orgmode]]
+  - [[https://sachachua.com/blog/2020/04/2020-04-06-emacs-news/][2020-04-06]] :: for {{{relref(Replacing Jupyter with Orgmode,jupyter-orgmode)}}}
 ** Videos
 *** Of Me
 - Everything [[https://www.youtube.com/channel/UC9f_UGqNsa60kmNGj_WkLPw?][on my YouTube channel]]
