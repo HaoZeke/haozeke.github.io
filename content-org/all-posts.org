@@ -21106,6 +21106,43 @@ In practice however, there is not much use for a locally encrypted backup
 especially given the degraded performance. Instead, a ~cron~ script works better
 via ~borg~, keeping encryted, compressed backups, while having fast access to
 local mail.
+* TODO Back to ~bash~ :@personal:tools:workflow:
+#+begin_quote
+Falling backwards into POSIX.
+#+end_quote
+** Background
+I have been using ~zsh~ for over a decade now. For the most part, this has been
+across machines I largely have administrative control over. HPC systems are
+always a notable exception. Over the past half year, I've found myself working
+on dozens of machines where even ~chezmoi~ and ~pixi~/~micromamba~ workflows
+cannot comfortably bring ~$HOME~ ergonomics [fn:: Also my ~zsh~ startup times
+hovered an intolerable 50ms].
+*** The road to ~bash~ is paved with ~$SHELL~ s
+There are far too many today to bother enumerating, but in short order [fn:: Discounting many more ephermeral tests]:
+
+- ~nushell~ :: Pleasant for many use-cases, the process of converting my
+  dotfiles was [[https://github.com/HaoZeke/Dotfiles/compare/chezmoi...toNu][fairly repetitive]], and its incompatibility with ~spack~ made it a
+  non-starter [fn:: Fun for data pipelines and nicer multi-line commands].
+- ~fish~ :: Adopted to resolve the ~spack~ issue. However, I found I was the
+  wrong audience for it; features like global, browser-based customization are
+  not useful for my terminal-centric, ~chezmoi~ focused workflow [fn:: Plus breaking POSIX for the features offered seemed like a bad trade-off].
+- ~xonsh~ :: [[https://rgoswami.me/posts/xonsh-excursion/][Ergonomic]], and better than ~subprocess~ for scripts, but a
+  non-starter in terms of being a good ~$SHELL~ [fn:: i.e. barely any community support]
+
+Eventually I came across [[https://www.codyhiar.com/blog/switching-back-to-bash-from-zsh/][this post by Cody Hiar]] on ~ble.sh~, and decided to take
+the plunge and shift back. A driving force for this is also that most of my
+~dotfiles~ focus on using ~rust~ equivalents of what used to purely ~SHELL~
+specific themes / tools; e.g. ~starship~ over ~powerline10k~.
+** Caveats
+~ble.sh~ is great but it isn't a catch-all solution. In particular, there are
+still inherent issues with using ~bash~ as a customized shell, due to concerns
+about clobbering settings from existing machines, e.g. ~lua~ module
+settings.
+** Conclusions
+POSIX compatibility is here to stay on most machines. It is unlikely that this
+will change in the near future.  To that end, it makes more sense to adaptively
+stick to ~bash~ and save my "[[https://steveklabnik.com/writing/the-language-strangeness-budget/][strangeness budget]]" [fn:: A concern I was recently re-sensitized to by [[https://github.com/Luthaf/][Luthaf]]] for new-fangled programming
+languages instead of shells[fn:: At any rate, I do relish not having to transform one-liners from ~nushell~ and friends back to ~bash~ to pass to co-workers.].
 * Important Note :ignoreheading:ignore:
 # ALWAYS at the bottom, to ensure fresh builds do not break
 * DONE About
@@ -21136,7 +21173,7 @@ series of posts and avatars[fn:notrefs]. I did however eventually set up a
 sporadically updated [[Collection of WebLinks][collection of web-links]] involving me. There is also, a
 separate list of quotes, or other things I have something to say about.
 ** Tangible Positions
-- From May 2025, I am [[http://archive.today/AlM2e][now associated]] with [[https://www.epfl.ch/labs/cosmo/][labCOSMO]] at the École Polytechnique Fédérale de Lausanne (EPFL), working closly with [[https://guillaume.fraux.fr/][Dr. Guillaume Fraux]] and [[https://people.epfl.ch/michele.ceriotti?lang=en][Prof. Michele Ceriotti]]
+- From May 2025, I am [[http://archive.today/AlM2e][now associated]] with [[https://www.epfl.ch/labs/cosmo/][labCOSMO]] at the École Polytechnique Fédérale de Lausanne (EPFL), working closely with [[https://guillaume.fraux.fr/][Dr. Guillaume Fraux]] and [[https://people.epfl.ch/michele.ceriotti?lang=en][Prof. Michele Ceriotti]]
 ** Intangible Positions
 This is a set of things which are primarily online and/or voluntary in a
 non-academic sense.
@@ -21321,7 +21358,7 @@ These are tech talks, for academic presentations, [[https://github.com/haozeke/c
 - Kavli IPMU conference on "[[https://indico.ipmu.jp/event/314/overview][The McKay correspondence, mutation and related topics]]" ([[https://indico.ipmu.jp/event/314/registrations/participants][participant]])
 - [[https://chemeng.iisc.ac.in/rare-events/gallery.html][Gallery of RARE 2019]] at IISc
 - [[https://gitlab.com/openresearchlabs/probabilistic_data_analysis_2020/-/blob/master/session7.md][Probablistic Data Analysis]] (University of Turku)
-- [[https://twitter.com/aiidateam/status/1281323480290660352][AiiDA Virtual Tutotrial 2020]]
+- [[https://twitter.com/aiidateam/status/1281323480290660352][AiiDA Virtual Tutorial 2020]]
 - [[https://tcevents.chem.uzh.ch/event/12/contributions/45/author/73][FortranCon 2020 Author]]
 - [[https://github.com/stan-dev/math/releases/tag/v3.3.0][Stan Math 3.3.0 contributor]]
 - CECAM Participant for:
@@ -21382,7 +21419,7 @@ I've been sitting in on these for a while thanks to [[https://www.math.ias.edu/~
   - "[[https://youtu.be/QTnjqdxG99c?t=3879][Langevin Dynamics in Machine Learning]]" by Michael Jordan
   - "[[https://youtu.be/Wx8J-Kw3fTA?t=4814][Graph Nets: The Next Generation]]" by Max Welling
   - "[[https://youtu.be/IbKWTF4MzMY?t=3787][Priors for Semantic Variables]]" by Yoshua Bengio
-  - "A Blueprint of Standardized and Composable Machine Learning" by Eric Xing
+  - "[[https://www.youtube.com/watch?v=jVBKWfoYRng][A Blueprint of Standardized and Composable Machine Learning]]" by Eric Xing
 
 [fn:whereswaldo] If you do think you have seen me somewhere not on this list, drop me an email
 
