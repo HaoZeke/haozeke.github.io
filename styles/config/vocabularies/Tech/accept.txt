@@ -179,6 +179,7 @@ Nodejs
 Noter
 Probablistic
 Rmarkdown
+Untracked
 Utils
 VPNs
 [Jj]obflow
@@ -292,6 +293,7 @@ screenkey
 setq
 sphinx_book_theme
 sqlite
+src
 stderr
 stdout
 subrepo
