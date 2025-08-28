@@ -51,6 +51,10 @@
 (setq use-package-always-ensure t)
 
 ;; Get more dependencies
+;; XXX(rg): Broken for now, needs the relref workaround:
+;; https://github.com/kaushalmodi/ox-hugo/pull/755
+;; xref versions here:
+;; https://elpa.gnu.org/packages/org.html
 (use-package org)
 (use-package org-contrib)
 (use-package htmlize)
