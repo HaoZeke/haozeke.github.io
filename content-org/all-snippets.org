@@ -1598,7 +1598,7 @@ result in a more stable site with links that are properly managed by Hugo's
 content engine, insulating the site from future Org mode changes.
 
 Eventually I used [[https://github.com/HaoZeke/haozeke.github.io/blob/src/scripts/convert_links.py][a script]] to generate most of the ~relref~ changes, with the
-exception of titles with code snippets:
+exception of titles with code snippets[fn:: and footnotes, where absolute paths work best]:
 #+begin_src bash
 pixi s
 python ./scripts/convert_links.py content-org/all-posts.org all-posts-converted.org

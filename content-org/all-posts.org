@@ -20421,7 +20421,7 @@ Usage notes for data storage within university constraints.
 ** Background
 The University of Iceland has an "unlimited" OneDrive setup for staff / graduate
 students. This is generally not very helpful, but in conjunction with ~rclone~
-[fn:: Also discussed in {{{relref(managing cloud based calibre libraries,managing-cloud-based-calibre)}}}] and
+[fn:: Also discussed in [[http://rgoswami.me/posts/managing-cloud-based-calibre/][this post on managing cloud based calibre libraries]]] and
 ~dvc~ can be made to be of more use.
 ** Baseline
 Like most of my newer projects, ~pixi~ is used to manage the tooling required,
