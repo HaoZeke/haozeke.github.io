@@ -1564,7 +1564,7 @@ sudo security authorizationdb write system.privilege.taskport.debug allow
 #+end_src
 does the trick.
 ** DONE Refactoring an ~ox-hugo~ site for newer ~orgmode~
-CLOSED: [2025-08-29 Fri 01:03]
+CLOSED: [2025-08-29 Fri 00:01]
 :PROPERTIES:
 :EXPORT_HUGO_BUNDLE: refactoring-ox-hugo-orgmode
 :EXPORT_FILE_NAME: index
