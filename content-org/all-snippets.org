@@ -1563,6 +1563,19 @@ spctl developer-mode enable-terminal
 sudo security authorizationdb write system.privilege.taskport.debug allow
 #+end_src
 does the trick.
+** TODO Using ~pixi~ environments for orgmode notebooks
+Basically the executable must be set to the right environment ~:python
+(string-trim (shell-command-to-string "pixi run \"which python\""))~. This means
+a working setup for a per-file notebook can be:
+
+#+begin_src conf
++PROPERTY: header-args:python :session onePy
++PROPERTY: header-args:python :results output :exports both
++PROPERTY: header-args:python :cache yes :tangle pylog.py
++PROPERTY: header-args:python :python "pixi run -e eon python"
+#+end_src
+
+This also handles ~subprocess~ calls without monkeying around with ~prologue~.
 ** DRAFT Pruning ~dvc~ cache
 For situations where the data is tracked in an upstream remote, removing caches locally can be accomplished through:
 #+begin_src bash
