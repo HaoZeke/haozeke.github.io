@@ -1575,10 +1575,7 @@ breaks the manner in which ~ox-hugo~ handles links for sub-tree exports[fn::
 xref [[https://github.com/kaushalmodi/ox-hugo/pull/755#issuecomment-2700856101][this comment]]]. The most robust workaround is to stop using native Org links
 and switch to a manual Hugo short-code via an Org macro.
 
-The process has two parts. First, we need the ~relref~ macro in the Org file:
-#+begin_src orgmode
-#+macro: relref [$1]({{< relref "$2" >}})
-#+end_src
+The process has two parts. First, we need the ~relref~ macro in the Org file with ~#+macro: relref @@hugo:[$1]({< relref "$2" >})@@~ [fn:: Wrap that the link with another ~{}~].
 
 Then every internal link needs to be refactored using the target file slug, optionally appending the anchor if required.
 #+begin_quote
@@ -1598,7 +1595,7 @@ result in a more stable site with links that are properly managed by Hugo's
 content engine, insulating the site from future Org mode changes.
 
 Eventually I used [[https://github.com/HaoZeke/haozeke.github.io/blob/src/scripts/convert_links.py][a script]] to generate most of the ~relref~ changes, with the
-exception of titles with code snippets[fn:: and footnotes, where absolute paths work best]:
+exception of titles with code snippets:
 #+begin_src bash
 pixi s
 python ./scripts/convert_links.py content-org/all-posts.org all-posts-converted.org
