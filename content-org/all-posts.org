@@ -738,7 +738,7 @@ works for ~bash~ ≥ 3.2
 - A post in and of itself would be required to explain why and how users are
   normally restricted from activities in cluster nodes
 - Here, we leverage the [[https://nixos.org/nix/manual/#chap-installation][nix-package management system]] to circumvent these
-- User installation of ~nix~ is sadly non-trivial, so this might be of some use[fn:nixUsr]
+- User installation of ~nix~ is sadly non-trivial, so this might be of some use[fn:: Much of this section is directly adapted from [[https://nixos.wiki/wiki/Nix_Installation_Guide#Installing_without_root_permissions][the NixOS wiki]]]
 *** Testing nix-user-chroot
 1. We will first check namespace support
 #+BEGIN_SRC bash
@@ -807,7 +807,8 @@ message along the lines of:
 Which basically is as bad as it sounds. At this stage, we need a newer compiler
 to even get ~nix~ up and running, but can't without getting an OS update. This
 chicken and egg situation calls for the drastic measure of leveraging ~brew~
-first[fn:brewStuff].
+first[fn:: This used to be called linuxbrew, but the [[https://docs.brew.sh/Homebrew-on-Linux][new site]] makes it clear
+that it's all one ~brew~ now.].
 
 #+BEGIN_SRC bash
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
@@ -834,10 +835,6 @@ rm -rf dotgit
 # echo 'export PATH="$PATH:$HOME/.bin"' >> ~/.bashrc
 echo 'export PATH="$PATH:$HOME/.bin"' >> ~/.zshrc
 #+END_SRC
-
-[fn:nixUsr] Much of this section is directly adapted from [[https://nixos.wiki/wiki/Nix_Installation_Guide#Installing_without_root_permissions][the NixOS wiki]]
-[fn:brewStuff] This used to be called linuxbrew, but the [[https://docs.brew.sh/Homebrew-on-Linux][new site]] makes it clear
-that it's all one ~brew~ now.
 * DONE Shorter Posts :@notes:tools:rationale:workflow:ideas:
 :PROPERTIES:
 :EXPORT_FILE_NAME: shortpost
@@ -2971,7 +2968,7 @@ function prepend() {
     # are the arguments to export
     shift
 
-    # set $original to the contents of the the variable $varname
+    # set $original to the contents of the variable $varname
     # refers to
     original="${!varname}"
 
@@ -2997,7 +2994,7 @@ function append() {
     shift
 
 
-    # set $original to the contents of the the variable $varname
+    # set $original to the contents of the variable $varname
     # refers to
     original="${!varname:-}"
 
@@ -3493,7 +3490,7 @@ CLOSED: [2020-06-19 Fri 05:07]
 A post on working with transient TeX templates in ~orgmode~ without modifying global configurations. This will also serve as a rudimentary introduction to TeX in ~orgmode~.
 #+END_QUOTE
 ** Background
-The sad reality of working in a field dominated by institutional actors which do not care for recognizing software development as a skill is that there are often a lot of ugly LaTeX templates[fn:thatsall]. In particular, often Universities have arbitrary LaTeX templates from the the dark days of 2010 something, which include gratuitous usage of say, ~natbib~ instead of ~biblatex~. In other situations, ~.cls~ files define separate document classes which are not covered by the ~orgmode~ defaults and need to be accounted for.
+The sad reality of working in a field dominated by institutional actors which do not care for recognizing software development as a skill is that there are often a lot of ugly LaTeX templates[fn:thatsall]. In particular, often Universities have arbitrary LaTeX templates from the dark days of 2010 something, which include gratuitous usage of say, ~natbib~ instead of ~biblatex~. In other situations, ~.cls~ files define separate document classes which are not covered by the ~orgmode~ defaults and need to be accounted for.
 ** Standard methods
 Essentially for the exporter, the document is broken into[fn:halptex]:
 - *document_class* :: This cannot be changed arbitrarily and [[https://orgmode.org/manual/LaTeX-specific-export-settings.html#LaTeX-specific-export-settings][has to be]] a valid element of ~org-latex-classes~
@@ -3891,10 +3888,10 @@ Rethinking" by [[https://twitter.com/rlmcelreath][Richard McElreath]], a.k.a. St
 #+END_QUOTE
 
 ** Background
-As [[Statistical Rethinking and Nix][detailed previously]], I recently was part of a course centered around Bayesian modeling for the Icelandic COVID-19 pandemic. The Bayesian mindset needs no introduction, and this post is completely inadequete to explain why anyone should be interested (that's what the book is for!). That said, especially for self-paced study groups, it might help to have some structure.
+As [[Statistical Rethinking and Nix][detailed previously]], I recently was part of a course centered around Bayesian modeling for the Icelandic COVID-19 pandemic. The Bayesian mindset needs no introduction, and this post is completely inadequate to explain why anyone should be interested (that's what the book is for!). That said, especially for self-paced study groups, it might help to have some structure.
 
 ** Solutions
-These are meant to be sample solutions, and everyone *should* solve these for themselves. Each solution contains the packages used, as well as a colophon in the later posts to ensure reproduciblity.
+These are meant to be sample solutions, and everyone *should* solve these for themselves. Each solution contains the packages used, as well as a colophon in the later posts to ensure reproducibility.
 Essentially this consists of four posts:
 - [[https://rgoswami.me/posts/sr2-ch2-ch3-ch4/][Week I]] :: Covers the first four chapters {1,2,3,4}
 - [[https://rgoswami.me/posts/sr2-ch5-ch6-ch7/][Week II]] :: Covers the next three chapters {5,6,7}
@@ -3961,7 +3958,7 @@ bindsym XF86MonBrightnessDown exec light -U 10
 bindsym XF86MonBrightnessUp exec light -A 10
 #+END_SRC
 Note that to get the right ~bindsym~ I use [[https://github.com/wavexx/screenkey][screenkey]] with the ~keysyms~ preference. My software of choice was
-Unfortunately, my existing setup (with ~light~, since that is in the Arch ~community~ repo) did not actually allow dimming external screens arbitarily. To be more exact,
+Unfortunately, my existing setup (with ~light~, since that is in the Arch ~community~ repo) did not actually allow dimming external screens arbitrarily. To be more exact,
 #+BEGIN_SRC bash :results raw
 light -h
 #+END_SRC
@@ -4552,7 +4549,7 @@ This means we're almost done!
 ./b2 install --prefix=$HOME/.hpc/boost/boost-1.76.0
 ml load boost/boost-1.76.0
 #+END_SRC
-*** Cmake
+*** CMake
 #+BEGIN_SRC bash
 cd $hpcroot
 myprefix=$HOME/.hpc/cmake/3.20.1
@@ -4619,7 +4616,7 @@ make -j $(nproc)
 make install
 ml load texinfo/6.7
 #+END_SRC
-*** gperf
+*** ~gperf~
 #+BEGIN_SRC bash
 cd $hpcroot
 myprefix=$HOME/.hpc/gperf/3.1
@@ -4712,7 +4709,7 @@ make -j $(nproc)
 make install
 ml load bison/3.7.1
 #+END_SRC
-*** flex
+*** ~flex~
 #+BEGIN_SRC bash
 cd $hpcroot
 myprefix=$HOME/.hpc/flex/2.6.4
@@ -4724,7 +4721,7 @@ make -j $(nproc)
 make install
 ml load flex/2.6.4
 #+END_SRC
-*** jq
+*** ~jq~
 We first need the ~oniguruma~ [[https://github.com/kkos/oniguruma][regular expression library]].
 #+begin_src bash
 cd $hpcroot
@@ -4892,7 +4889,7 @@ Brief introduction to a nix based project workflow.
 ** Background
 For [[https://2020.carpentrycon.org/][CarpentryCon@Home 2020]], along with [[https://scholar.google.com/citations?user=mviv92EAAAAJ&hl=en][Amrita Goswami]], I am to prepare and deliver a workshop on "[[https://2020.carpentrycon.org/schedule/#session-10][Reproducible Environments with the Nix Packaging System]]". In particular, as a community of practice lesson, the focus is not on packaging (as is typical of most Nix tutorials) nor on the Nix expression language itself, but instead on the use of Nix as a replacement for virtual environments using ~mkShell~.
 ** Materials
-This is a Carpentries style single page lesson on setting up and working with Nix for reproducible environments. It was concieved to be a complimentary resource to the content of [[https://github.com/HaoZeke/CarpentryCon2020_Nix][this repository]], namely:
+This is a Carpentries style single page lesson on setting up and working with Nix for reproducible environments. It was conceived to be a complimentary resource to the content of [[https://github.com/HaoZeke/CarpentryCon2020_Nix][this repository]], namely:
 - [[https://github.com/HaoZeke/CarpentryCon2020_Nix/blob/master/slides/nixPython/nixPython.pdf][Slides on Python packages with Nix]]
 - [[Nix with R and devtools][Nix with R and devtools]]
 - [[A Short Guide to Statistical Rethinking²][Statistical Rethinking and Nix]]
@@ -5036,7 +5033,7 @@ direnv allow
 #+END_SRC
 
 *** Pinning with niv
-Note that inspite of having set up ~niv~, we have not yet used the sources defined therein. We will now fix this, by modifying ~shell.nix~.
+Note that in-spite of having set up ~niv~, we have not yet used the sources defined therein. We will now fix this, by modifying ~shell.nix~.
 #+caption: ~shell.nix~ with ~niv~
 #+BEGIN_SRC nix
 let
@@ -7391,7 +7388,7 @@ Initially, I had planned this post to start with a brief history of the decline 
 *** Packages
 We will need the following:
 - ~astroid~ :: for handling the email interface
-- ~isync/mbsync~ :: for general IMAP account syncrhonization
+- ~isync/mbsync~ :: for general IMAP account synchronization
 - ~lieer~ :: for GMail accounts
 - ~davmail~ :: for Exchange accounts
 - ~notmuch~ :: for indexing emails
@@ -7447,7 +7444,7 @@ sudo mount --bind "$HOME/.mail" /media/mail
 #+end_src
 
 ** ISync
-For general IMAP accounts (anything which isn't backed by ~gmail~ or ~outlook~) an ~mbsync~ approach works best. Exhange accounts need ~davmail~ and are described in a separate sub-section. Before we get to the ~poll.sh~ script and ~astroid~, it is a good idea to run each of these as we set them up, especially as the first run can take quite a long time (around an hour for 9205 messages).
+For general IMAP accounts (anything which isn't backed by ~gmail~ or ~outlook~) an ~mbsync~ approach works best. Exchange accounts need ~davmail~ and are described in a separate sub-section. Before we get to the ~poll.sh~ script and ~astroid~, it is a good idea to run each of these as we set them up, especially as the first run can take quite a long time (around an hour for 9205 messages).
 
 #+begin_src bash
 mbsync -V blah
@@ -20226,7 +20223,7 @@ doubtless usher in a revolution of reduced calculations, if only more people
 could be compelled to use it[fn:perhapscoursework]. I would recommend it
 wholeheartedly as a user, sysadmin, reviewer and under all my other academic
 hats. It seems also, that hosted MongoDB instances are good enough in terms of
-bandwidth and other configuration settings for the HPC calculations Firworks is
+bandwidth and other configuration settings for the HPC calculations Fireworks is
 typically used for[fn:howcomemongofree]. Will cover scaling up via hosted Atlas and VPS instances along with HPC interaction in another post.
 *** Opinions
 With this setup, the actual work can now continue uninterupted by stray qualms
@@ -20397,7 +20394,7 @@ is the following:
 ** Tools
 I personally [[https://enpass.io/][use Enpass]] for handling my passwords.
 Also ~pass~.
-* DRAFT Encryping Thunderbird Profiles for PCloud :@personal:tools:email:workflow:
+* DRAFT Encrypting Thunderbird Profiles for PCloud :@personal:tools:email:workflow:
 #+begin_quote
 
 #+end_quote
@@ -20639,7 +20636,7 @@ through the VPN. Trying to manage multiple such VPNs is difficult.
 - Multiple VPNs :: Switching between VPNs is slow, and running multiple
   simultaneously is generally not feasible.
 - Streamlining Access :: Even with one VPN, accessing many internal machines via
-  direct SSH can be made more convenient with a jumphost and SSH's ProxyJump
+  direct SSH can be made more convenient with a jumphost and the SSH ProxyJump
   feature.
 ** Container setup
 Containerization offers a powerful solution by isolating the VPN connection
@@ -20813,7 +20810,7 @@ sessions, ~scp~, and direct ~sftp~ commands. However, for ~rclone~ ([[https://rc
 which can mount a remote SFTP share, some more work is necessary for the VPN
 jumphost.
 
-~rclone~ can leverage SSH's capabilities, but it does not parse directives from
+~rclone~ can leverage SSH capabilities, but it does not parse directives from
 the global SSH config directly.
 
 We can achieve this by constructing an appropriate ProxyCommand and passing it
@@ -20947,9 +20944,9 @@ end do
 
 Where ~inp_a~ parses a keyword, ~inp_compare~ checks against an expected value,
 and ~inp_i~ parses the value as an integer.
-*** Comitting values to the RTDB
+*** Committing values to the RTDB
 Once stored in a local variable, the value is then committed to the RTDB using
-~rtdb_put~, which is namespaced for modularity and to reduce key conflicts.
+~rtdb_put~, which is prefixed into a namespace for modularity and to reduce key conflicts.
 #+begin_src f90
 if (inp_compare(.false.,'retries',field)) then
   if (.not. inp_i(max_retries)) call errquit(...)
