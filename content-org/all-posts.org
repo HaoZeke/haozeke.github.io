@@ -13,7 +13,7 @@
 
 #+startup: logdone indent overview inlineimages
 
-#+macro: relref [$1]({{< relref "$2" >}})
+#+macro: relref @@hugo:[$1]({{< relref "$2" >}})@@
 
 #+BEGIN_SRC emacs-lisp :exports none :eval always :results none
 (require 'ox-extra)
