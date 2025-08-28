@@ -1563,7 +1563,8 @@ spctl developer-mode enable-terminal
 sudo security authorizationdb write system.privilege.taskport.debug allow
 #+end_src
 does the trick.
-** TODO Refactoring an ~ox-hugo~ site for newer ~orgmode~
+** DONE Refactoring an ~ox-hugo~ site for newer ~orgmode~
+CLOSED: [2025-08-29 Fri 01:03]
 :PROPERTIES:
 :EXPORT_HUGO_BUNDLE: refactoring-ox-hugo-orgmode
 :EXPORT_FILE_NAME: index
@@ -1596,7 +1597,7 @@ I ended up starting with a manual conversion, which was very tedious, but does
 result in a more stable site with links that are properly managed by Hugo's
 content engine, insulating the site from future Org mode changes.
 
-Eventually I used a script to generate most of the ~relref~ changes, with the
+Eventually I used [[https://github.com/HaoZeke/haozeke.github.io/blob/src/scripts/convert_links.py][a script]] to generate most of the ~relref~ changes, with the
 exception of titles with code snippets:
 #+begin_src bash
 pixi s
