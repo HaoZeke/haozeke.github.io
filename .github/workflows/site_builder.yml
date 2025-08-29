@@ -35,6 +35,9 @@ jobs:
       - name: Install Node and Ruby Dependencies
         run: pixi run npm install && pixi run bundle install
 
+      - name: Install dart-sass
+        uses: dw-labs-org/dart-sass-gha@v1
+
       - name: Restore Hugo Cache
         id: hugo-cache-restore
         uses: actions/cache/restore@v4
