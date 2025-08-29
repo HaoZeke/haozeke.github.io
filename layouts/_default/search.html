@@ -1,0 +1,61 @@
+{{- define "main" -}}
+<main class="posts">
+  <h1 class="post-title">Search</h1>
+
+  <section class="search-container">
+    <input type="text" id="search-query" placeholder="Type to search..." />
+
+    <div class="search-filters">
+      <div class="search-filters__group">
+        <span class="search-filters__label">Content:</span>
+        <div class="search-filters__options">
+          {{ range .Site.Params.search.searchableSections }}
+            <div class="search-filters__option">
+              <input type="checkbox" id="search-{{ . }}" name="search-section" value="{{ . }}" checked>
+              <label for="search-{{ . }}">{{ . | humanize | title }}</label>
+            </div>
+          {{ end }}
+        </div>
+      </div>
+      <div class="search-filters__group">
+        <span class="search-filters__label">Include Fields:</span>
+        <div class="search-filters__options">
+          <div class="search-filters__option">
+            <input type="checkbox" id="search-tags" name="search-include" value="tags" checked>
+            <label for="search-tags">Tags</label>
+          </div>
+          <div class="search-filters__option">
+            <input type="checkbox" id="search-categories" name="search-include" value="categories" checked>
+            <label for="search-categories">Categories</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <ul id="search-results">
+    </ul>
+
+</main>
+
+<template id="search-result-template">
+  <li class="search-item">
+    <a href="${link}" class="search-link">
+      <span class="search-title">${title}</span>
+      <span class="post-day">${date} (${readingTime} min.)</span>
+    </a>
+    <div class="search-result-blurb">
+      ${snippet}
+    </div>
+    <div class="search-result-meta">
+        <div class="search-result-categories">${categories}</div>
+        <div class="search-result-tags">${tags}</div>
+    </div>
+  </li>
+</template>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.min.js" integrity="sha512-KnvCNMwWBGCfxdOtUpEtYgoM59HHgjHnsVGSxxgz7QH1DYeURk+am9p3J+gsOevfE29DV0V+/Dd52ykTKxN5fA==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+<script src={{ "js/fuse-config.js" | relURL }}></script>
+{{- end -}}
