@@ -122,6 +122,7 @@ name = "Rohit Goswami (HaoZeke)"
 [params.search]
   enable = true
   backend = "fuse" # can be stork or fuse
+  searchableSections = ["posts", "snippets"]
 
 [params.style]
 site_url = "rgoswami.me" # Based on baseurl
