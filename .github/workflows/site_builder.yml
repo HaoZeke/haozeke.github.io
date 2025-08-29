@@ -15,6 +15,7 @@ concurrency:
 
 jobs:
   build-and-deploy:
+    if: "!contains(github.event.head_commit.message, '(CI)')"
     runs-on: ubuntu-latest
     env:
       HUGO_ENVIRONMENT: production
@@ -56,6 +57,21 @@ jobs:
       - name: Send arXiv Trackbacks
         if: github.event_name == 'push' && github.ref == 'refs/heads/src'
         run: pixi run uv run scripts/arxiv_trackbacks.py --site-url "https://rgoswami.me"
+
+      - name: Commit and Push Updated Trackback Log
+        if: github.event_name == 'push' && github.ref == 'refs/heads/src'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if ! git diff --quiet .sent_trackbacks.log; then
+            git add .sent_trackbacks.log
+            # The commit message MUST contain '(CI)' to be ignored by the next run
+            git commit -m "DOCS: Update sent trackbacks log (CI)"
+            git push
+            echo "Trackback log was updated and pushed to the repository."
+          else
+            echo "No changes to the trackback log."
+          fi
 
       - name: Save Trackback Log
         if: always()
