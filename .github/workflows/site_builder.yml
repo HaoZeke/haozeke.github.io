@@ -53,6 +53,17 @@ jobs:
       - name: Build site with Hugo
         run: pixi run bundle exec rake hugoBuild
 
+      - name: Send arXiv Trackbacks
+        if: github.event_name == 'push' && github.ref == 'refs/heads/src'
+        run: pixi run uv run scripts/arxiv_trackbacks.py --site-url "https://rgoswami.me"
+
+      - name: Save Trackback Log
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: .sent_trackbacks.log
+          key: ${{ steps.trackback-cache-restore.outputs.cache-primary-key || format('{0}-trackbacks-{1}', runner.os, github.ref_name) }}
+
       - name: Deploy to GitHub Pages
         if: github.event_name == 'push' && github.ref == 'refs/heads/src' && !contains(github.event.head_commit.message, 'ImgBot')
         uses: peaceiris/actions-gh-pages@v4
