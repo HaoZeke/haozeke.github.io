@@ -1,0 +1,22 @@
+[workspace]
+authors = ["Rohit Goswami <rog32@hi.is>"]
+channels = ["conda-forge"]
+name = "haozeke.github.io"
+platforms = ["linux-64"]
+version = "0.1.0"
+
+[tasks]
+
+[dependencies]
+pandoc = ">=3.6.4,<4"
+nodejs = ">=22.13.0,<22.14"
+ruby = ">=3.4.2,<4"
+git = ">=2.49.0,<3"
+curl = ">=8.13.0,<9"
+python = ">=3.13.3,<3.14"
+emacs = ">=30.1,<31"
+hugo = ">=0.148.2,<0.149"
+
+[pypi-dependencies]
+pandoc = ">=2.4, <3"
+panflute = ">=2.3.1"

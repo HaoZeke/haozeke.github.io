@@ -12,6 +12,12 @@ GEM
     image_optim_pack (0.10.0.20231105)
       fspath (>= 2.1, < 4)
       image_optim (~> 0.19)
+    image_optim_pack (0.10.0.20231105-x86_64-darwin)
+      fspath (>= 2.1, < 4)
+      image_optim (~> 0.19)
+    image_optim_pack (0.10.0.20231105-x86_64-linux)
+      fspath (>= 2.1, < 4)
+      image_optim (~> 0.19)
     image_size (3.3.0)
     in_threads (1.6.0)
     progress (3.6.0)
@@ -19,6 +25,8 @@ GEM
 
 PLATFORMS
   ruby
+  x86_64-darwin
+  x86_64-linux
 
 DEPENDENCIES
   image_optim
@@ -26,4 +34,4 @@ DEPENDENCIES
   rake (= 13.1.0)
 
 BUNDLED WITH
-   2.4.22
+   2.7.1
