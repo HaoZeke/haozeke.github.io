@@ -18,7 +18,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       HUGO_ENVIRONMENT: production
-      PIXI_NO_PROGRESS: 1
 
     steps:
       - name: Check out repository
