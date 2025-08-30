@@ -275,9 +275,8 @@ pianobar
 pixi
 pkgs
 powerups
+precommit
 prefetch
-presumptous
-proceedure
 proot
 proxying
 pubkey_file
@@ -296,6 +295,7 @@ sqlite
 src
 stderr
 stdout
+subprojects
 subrepo
 teamgantt
 texinfo
