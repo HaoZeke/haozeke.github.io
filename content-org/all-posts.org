@@ -510,9 +510,6 @@ and terminal with some pretty printing and object viewing functionality. It is
 really great, but it is also relatively resource intensive. It turns out that
 thanks to Emacs ESS, it is possible to circumvent Rstudio completely in favor of
 an Emacs-native workflow.
-* TODO Role models and colleges
-* TODO My current courses
-* TODO Rude college admissions
 * DONE Pandora and Proxychains :@personal:tools:workflow:
 :PROPERTIES:
 :EXPORT_FILE_NAME: pandora-proxychains
@@ -674,6 +671,7 @@ Word → Notepad++ → Sublime Text 3 → VIM → Emacs (Spacemacs) → Emacs (d
 :PROPERTIES:
 :EXPORT_FILE_NAME: prov-dots
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("$HOME...")
 :EXPORT_DATE: 2020-03-16 00:06
 :END:
 ** Background
@@ -1151,10 +1149,6 @@ probably.
 This kind of behavior would be pretty unthinkable in other fields. The push to
 clear a benchmark simply discards the basic ideas behind learning a subject in
 the first place.
-* TODO The net is not for socializing
-- I used to go online to be an idea, an embodiment of an idea
-Nowadays we bring our selves to the internet and I don't think that is as
-liberating as the older format.
 * DONE Analytics: Google to Goat :@notes:tools:rationale:workflow:webdev:
 CLOSED: [2020-04-09 Thu 17:17]
 :PROPERTIES:
@@ -1948,7 +1942,7 @@ CLOSED: [2020-05-02 Sat 20:30]
 :PROPERTIES:
 :EXPORT_FILE_NAME: colemak-dots-refactor
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
-:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Colemak necessities")
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Colemak necessities" "$HOME...")
 :END:
 #+BEGIN_QUOTE
 A more actionable follow up to {{{relref(my personal recollections,colemak-switch)}}} relating to my switch to Colemak.
@@ -4057,12 +4051,12 @@ bindsym XF86MonBrightnessUp exec brillo -e -A 10
 
 [fn:wheredot] My dotfiles [[https://github.com/HaoZeke/Dotfiles][are here]]
 
-* TODO Switching from Zplug to Zinit
 * DONE HPC Dotfiles and LMod :@programming:workflow:projects:hpc:
 CLOSED: [2020-08-09 Sun 02:29]
 :PROPERTIES:
 :EXPORT_FILE_NAME: hpc-dots-lmod
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("$HOME...")
 :END:
 ** Background
 My move away from the powerful, but unimaginatively named HPC clusters of IITK [fn:reallythatbad] brought me in close contact with the Lua based [fn:mustisay] [[https://lmod.readthedocs.io/en/latest/index.html][lmod module system]]. Rather than fall into the rabbit hole of [[https://docs.brew.sh/Homebrew-on-Linux][brew]] we will leverage the existing system to add our new libraries. Not finding any good collections of these composable environments, and {{{relref(having failed once before,prov-dots)}}} to install Nix as a user without admin access, I decided to [[https://github.com/HaoZeke/hzHPC_lmod][start my own collection of Lmod recipies]]. The rest of this post details the installation proceedure to be carried out in conjunction with the [[https://github.com/HaoZeke/hzHPC_lmod][hzHPC_lmod repo]].
@@ -8628,7 +8622,6 @@ Given my unfortunate separation from my library back home; it is likely that my 
 [fn:whytwo] Diigo is great for saving storing sites forever and Pocket is just cheaper Instapaper
 [fn:notrecco] [[https://pgaskin.net/NickelMenu/][NickelMenu]] seems to be recommended for newer devices
 [fn:watelse] They're also more convenient than holding a torch in bed with a paperback
-* TODO Nix For Static Sites
 * TODO Improving Astroid :@personal:rant:tools:email:workflow:
 :PROPERTIES:
 :EXPORT_FILE_NAME: improving-astroid
@@ -9252,12 +9245,15 @@ This has been a short introduction to working with the ~nix-shell~ ecosystem. It
 CLOSED: [2021-05-02 Sun 23:12]
 :PROPERTIES:
 :EXPORT_FILE_NAME: dotfiles-dotgit-bombadil
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("$HOME...")
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :END:
 #+begin_quote
 Discussion on dotfile management, a meandering path to my current setup from ~dotgit~ to ~bombadil~.
-EDIT: Superseded by my ~chezmoi~ configuration described here
 #+end_quote
+#+begin_alert
+*EDIT:* Superseded by my ~chezmoi~ configuration {{{relref(described here,mig-dots-chezmoi)}}}
+#+end_alert
 ** Background
 No one gets very far working with stock one-size fits all tools in any discipline but it is especially true of working with computers. The right set of ~dotfiles~ have been compared to priming spells for invocation later, and this is probably true. More than anything else, ~dotfiles~ offer familiarity where there is none, be it from ~cowsay~ or a fancy shell prompt [fn:saywhatshell].
 #+begin_src bash
@@ -9488,8 +9484,6 @@ zsh_theme = { source = "common/shell/zsh/04a_theme.zsh", target = ".config/shell
 A long time ago I switched from VIM and Sublime to Emacs. I still retain in my ~dotfiles~ enough syntactical sugar and targets to make ~vim~ and Sublime easier to use; mostly using [[https://github.com/junegunn/vim-plug][vim-plug]]. Emacs has a rather complicated set of configurations which are independently managed via ~doom-emacs~ and have their own [[https://dotdoom.rgoswami.me][self documenting site]].
 ** Conclusions
 Though the ~shell.d~ setup is still overly verbose and not as flexible as I had initially hoped, this is still a few steps ahead of my previous setup. No part of this focused on the configurations themselves (more interesting examples, of {{{relref(switching to Colemak are here,colemak-dots-refactor)}}}) Will be fleshing this out more with auxilliary posts on my configuration (browsers, etc.) and its management perhaps.
-* TODO Unifying UX with Starship
-In the absence of administrative controls, it makes sense to have our customizations work at the lowest common abstraction. Thankfully, projects like [[https://starship.rs/guide/#%F0%9F%9A%80-installation][starship]] have stepped up to provide a unified experience across shells. It will form the core of the new setup.
 * TODO Browser Wars
 Though most browsers (Firefox and Chrome come to mind) have plenty of cloud synchronization services. There are still things which read off local configurations. For me, Firefox is better mainly due to [[https://addons.mozilla.org/en-US/firefox/addon/tree-style-tab/][tree style tabs]] and [[https://github.com/tridactyl/tridactyl/][Tridactyl]] which are superior to Chrome options, but Chrome supports translations *a lot more* than Firefox, so I do end up using both [fn:whatlang].
 
@@ -10517,13 +10511,6 @@ This gives a ~sphinx~ compatible file:
 #+end_src
 *** Conclusions
 This was a rather annoying excursion into the unpleasant underbelly of ~bibtex~ and ~biblatex~. The ~biber~ solution is actually rather elegant, but most definitely not immediately obvious.
-* TODO Hugo and ox-hugo
-** Starting Hugo
-We will initialize a default site:
-#+begin_src bash
-hugo new site orgsite
-#+end_src
-
 * DONE Talk Supplements for Code In Place 2021 SL Workshop :@conferences:presentations:ramblings:python:
 CLOSED: [2021-05-29 Sat 07:07]
 :PROPERTIES:
@@ -13228,10 +13215,12 @@ I'm not jumping on the ~julia~ bandwagon. I still reach for ~C++~ or ~Fortran~ o
 [fn:whydft] Most of my existing experience with other codes like Quantum Espresso were at CECAM events with VMs... so it wouldn't be fair to plunge into ~dftk~ on my laptop
 
 
-* TODO The State of my Dots :@personal:ramblings:tools:workflow:config:
+* DONE The State of my Dots :@personal:ramblings:tools:workflow:config:
+CLOSED: [2023-08-30 Tue 21:37]
 :PROPERTIES:
 :EXPORT_FILE_NAME: mig-dots-chezmoi
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("$HOME...")
 :END:
 #+begin_quote
 Yet another post on provisioning machines with ~dotfiles~...
@@ -17128,12 +17117,8 @@ In the end I decided to stick to ~hugo~, with a suitable doc theme; though
 simple; because ~ox-hugo~ provides the best ~orgmode~ integration (beyond
 publishing directly with ~orgmode~).
 * TODO Talk Supplements for the 2022 PyData Global Impact Program
-* TODO GSoC'22: A Triumph for Fortran
 * TODO Electronic Structure Library and CECAM
 * TODO Talk Supplements for the 6th IHPC Workshop
-* TODO TUG 2022 and Burnout
-* TODO ~f2py~ and the new UI
-* TODO Rethinking the web again
 * TODO LaTeX and Snakemake for reactive programming workflows
 * TODO Stan Math and Meson
 * TODO Analytics again
@@ -17203,12 +17188,6 @@ specific backend. In short, we want to migrate towards something like ~pipenv~.
 ** Compiled extensions
 We will need a simple example. For our purposes, ~pybind11~ will suffice.
 *** ~meson~ and compiled extensions
-* Migrating to Home Manager
-#+begin_quote
-Leveraging ~nix~ and ~flakes~ in conjunction with ~home-manager~
-#+end_quote
-** Background
-Configuration can be painful.
 * DONE Customizing ArchLinux Installation Media :@notes:ramblings:setup:archlinux:
 CLOSED: [2023-04-30 Sun 15:22]
 :PROPERTIES:
@@ -21108,7 +21087,13 @@ In practice however, there is not much use for a locally encrypted backup
 especially given the degraded performance. Instead, a ~cron~ script works better
 via ~borg~, keeping encryted, compressed backups, while having fast access to
 local mail.
-* TODO Back to ~bash~ :@personal:tools:workflow:
+* TODO Back to ~bash~ :@personal:tools:workflow:dots:
+:PROPERTIES:
+:EXPORT_FILE_NAME: back-to-bash
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Managing Email")
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("$HOME...")
+:END:
 #+begin_quote
 Falling backwards into POSIX.
 #+end_quote
@@ -21118,7 +21103,7 @@ across machines I largely have administrative control over. HPC systems are
 always a notable exception. Over the past half year, I've found myself working
 on dozens of machines where even ~chezmoi~ and ~pixi~/~micromamba~ workflows
 cannot comfortably bring ~$HOME~ ergonomics [fn:: Also my ~zsh~ startup times
-hovered an intolerable 50ms].
+hovered an intolerable 50ms, which I later found out was mostly due to ~spack~].
 *** The road to ~bash~ is paved with ~$SHELL~ s
 There are far too many today to bother enumerating, but in short order [fn:: Discounting many more ephermeral tests]:
 
@@ -21131,10 +21116,19 @@ There are far too many today to bother enumerating, but in short order [fn:: Dis
 - ~xonsh~ :: [[https://rgoswami.me/posts/xonsh-excursion/][Ergonomic]], and better than ~subprocess~ for scripts, but a
   non-starter in terms of being a good ~$SHELL~ [fn:: i.e. barely any community support]
 
+For the most part I had resigned myself to ~fish~. It was fast, needed very few
+plugins [fn:: So fewer failure modes than my favorite ~zsh~].
+
 Eventually I came across [[https://www.codyhiar.com/blog/switching-back-to-bash-from-zsh/][this post by Cody Hiar]] on ~ble.sh~, and decided to take
 the plunge and shift back. A driving force for this is also that most of my
 ~dotfiles~ focus on using ~rust~ equivalents of what used to purely ~SHELL~
 specific themes / tools; e.g. ~starship~ over ~powerline10k~.
+** Designing literate ~bash~ snippets
+Having decided to return to ~bash~, I was nevertheless not eager to return to
+handling my entire configuration in a series of snippets, despite the
+{{{relref(re-structured setup described
+earlier,dotfiles-dotgit-bombadil#current-approach)}}}. Taking inspiration from
+~doom~, I ended up with a literate configuration with the
 ** Caveats
 ~ble.sh~ is great but it isn't a catch-all solution. In particular, there are
 still inherent issues with using ~bash~ as a customized shell, due to concerns
