@@ -8114,9 +8114,11 @@ CLOSED: [2020-12-23 Wed 14:34]
 :PROPERTIES:
 :EXPORT_FILE_NAME: priv-gh-actions
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_LASTMOD: 2025-09-04T04:01:41+02:00
 :END:
 #+begin_quote
-A workflow for managing private submodules in a private repository without personal access tokens for Github actions
+A workflow for managing private submodules in a private repository without
+personal access tokens for Github actions
 #+end_quote
 ** Background
 Ever since Travis CI decided to drink [[https://blog.travis-ci.com/2020-11-02-travis-ci-new-billing][corporate kool-aid]], the search for a new CI has been brought to the fore again. [[https://github.com/features/actions][Github Actions]] seem uniquely suited for private repositories, since most CIs bill for private repos. However, the basic authentication setup for the [[https://github.com/actions/checkout][checkout action]] involves using one SSH key, effectively a personal access token, for both the [[https://github.com/actions/checkout/issues/116#issuecomment-708092052][main project and all submodules]]. This is untenable for anyone working with a team.
@@ -8167,6 +8169,8 @@ We will store the *public portion of the key* as a deploy key in the *private su
 #+begin_src bash
 # Copy contents
 cat priv_sub_a.pub | xclip -selection clipboard
+# For wayland
+cat priv_sub_a.pub | wl-copy
 #+end_src
 
 Note that, as shown in Fig. [[fig:privsub]] we do not need to give write access to this key.
@@ -8264,6 +8268,20 @@ jobs:
       - name: run
         run: |
           ./super_secret
+#+end_src
+** Alternative
+Another way to handle this with less boiler-plate for cloning a private
+repository is to use the ~webfactory/ssh-agent~ action.
+#+begin_src yaml
+- name: Setup SSH for private submodule
+  uses: webfactory/ssh-agent@v0.9.0
+  with:
+    ssh-private-key: ${{ secrets.SUBMODULE_PRIVATE }}
+- name: Pull GPRD submodule
+  run: |
+    git clone git@github.com:TheochemUI/gpr_optim.git subprojects/gpr_optim
+    cd subprojects/gpr_optim
+    git checkout e2ac
 #+end_src
 ** Conclusions
 We have demonstrated a minimally invasive setup for working with a private submodule, which is trivially extensible to multiple such submodules. With this, it appears that GH actions might a viable option (as opposed to say, [[https://app.wercker.com/][Wercker]]), at least for private teams. A more full comparative post might be warranted at a later date.
