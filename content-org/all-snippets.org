@@ -1238,6 +1238,21 @@ or in ~nushell~
 #+begin_src nu
 git diff --name-only --diff-filter=U | lines | first | each { |it| emacsclient -n $it }
 #+end_src
+** DONE Search and merge with ~git~ filtered repositories :git:cmdline:
+CLOSED: [2025-09-04 Thu 02:10]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: git-filter-cherry-pick
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
+Since the commit hashes are altered, checking old pull requests for commits to cherry pick will not work. However the new start and end hashes can be found with:
+#+begin_src bash
+git rev-parse --short :/"header or other commit message text"
+#+end_src
+Followed by the standard:
+#+begin_src bash
+git cherry-pick $SHA_START^..$SHA_END
+#+end_src
 ** TODO GDB Tips
 *** Introduction
    In GDB, you can save the breakpoints to a file and then later load them back into another debugging session. This can be very useful if you have a set of breakpoints that you use frequently.
