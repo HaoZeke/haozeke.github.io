@@ -21302,7 +21302,7 @@ not me would like to see this, other than to prove one of these with respect to
 the rest[fn:whereswaldo].
 ** Profiles
 *** Professional
-- [[https://english.hi.is/staff/rog32][University of Iceland]]
+- [[https://sh.turtletech.us/ui-rg][University of Iceland]]
 - [[https://femtolab.science/people/rohit][FemtoLab]]
 - [[https://g.co/kgs/Y9fpDC][Google Knowledge Panel]]
 *** Voluntary
