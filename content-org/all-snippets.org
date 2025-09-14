@@ -1634,5 +1634,8 @@ For situations where the data is tracked in an upstream remote, removing caches 
 #+begin_src bash
 dvc gc --not-in-remote -w
 #+end_src
+** TODO Branching development with ~subrepo~
+#+begin_src bash
+#+end_src
 * Footnotes
 Warren said 30 s or 30 min for machine learning, anything else will not add any information.
