@@ -20268,6 +20268,8 @@ multiple HPC centers without repeating the setup steps.
 ** Background
 I recently handled releasing a ton of packages to ~conda-forge~ and realized
 that the ~docker~ setup didn't work very well for me.
+* DRAFT Easier ~TeX~ preambles with two-phase ~org~ exports
+e.g. as done for my CV
 * DRAFT Weird academic polishing opportunities
 :PROPERTIES:
 :EXPORT_FILE_NAME: weird-academia
@@ -20976,6 +20978,17 @@ probably stemmed the split. Modern tools (e.g. EON) improve upon this by using
 more structured input files, e.g. using TOML ensures typing which can then be
 independently read into C/C++/Fortran etc. though the issue of consistency at
 runtime remains.
+* TODO Practical ~python~ script parallelism :@notes:python:workflow:tools:
+:PROPERTIES:
+:EXPORT_FILE_NAME: practical-python-script-parallelism
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+begin_quote
+Excursions into I/O bound scripts.
+#+end_quote
+** Background
+One of the most common tasks I end up with involves walking over relatively
+large nested file hierarchies.
 * TODO Monorepo management for reproducible research
 * TODO An excursion into ~nushell~
 ** Background
