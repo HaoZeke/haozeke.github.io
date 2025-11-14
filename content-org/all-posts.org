@@ -21154,12 +21154,13 @@ Eventually I came across [[https://www.codyhiar.com/blog/switching-back-to-bash-
 the plunge and shift back. A driving force for this is also that most of my
 ~dotfiles~ focus on using ~rust~ equivalents of what used to purely ~SHELL~
 specific themes / tools; e.g. ~starship~ over ~powerline10k~.
-** Designing literate ~bash~ snippets
-Having decided to return to ~bash~, I was nevertheless not eager to return to
-handling my entire configuration in a series of snippets, despite the
-{{{relref(re-structured setup described
-earlier,dotfiles-dotgit-bombadil#current-approach)}}}. Taking inspiration from
-~doom~, I ended up with a literate configuration with the
+# ** Designing literate ~bash~ snippets
+# Having decided to return to ~bash~, I was nevertheless not eager to return to
+# handling my entire configuration in a series of snippets, despite the
+# {{{relref(re-structured setup described
+# earlier,dotfiles-dotgit-bombadil#current-approach)}}}. Taking inspiration from
+# ~doom~, I ended up with a literate configuration with the
+# TODO(rg): finish this!!
 ** Caveats
 ~ble.sh~ is great but it isn't a catch-all solution. In particular, there are
 still inherent issues with using ~bash~ as a customized shell, due to concerns
