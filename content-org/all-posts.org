@@ -21118,11 +21118,11 @@ In practice however, there is not much use for a locally encrypted backup
 especially given the degraded performance. Instead, a ~cron~ script works better
 via ~borg~, keeping encryted, compressed backups, while having fast access to
 local mail.
-* TODO Back to ~bash~ :@personal:tools:workflow:dots:
+* DONE Back to ~bash~ :@personal:tools:workflow:dots:
+CLOSED: [2025-11-12 Wed 19:28]
 :PROPERTIES:
 :EXPORT_FILE_NAME: back-to-bash
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
-:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Managing Email")
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("$HOME...")
 :END:
 #+begin_quote
