@@ -1616,6 +1616,59 @@ pixi s
 python ./scripts/convert_links.py content-org/all-posts.org all-posts-converted.org
 #+end_src
 
+** DONE ~pixi~ global environments consistent formatting :tools:R:
+CLOSED: [2025-09-25 Thu 15:46]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: pixi-global-consistent
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
+Formatting ~R~ code which is typically managed in per-project environments can be quite annoying [fn:: since I do not keep ~R~ installed system-wide]. For formatting, defining a global environment with ~pixi~ makes life easier.
+#+begin_src bash :eval never
+pixi global add --environment r_env r-styler --expose pixiR=R
+#+end_src
+This globally managed renamed ~R~ executable can then be used for ~apheleia~ in ~doom~ or in scripts:
+#+begin_src emacs-lisp :eval never
+(set-formatter!
+  'rstyler
+  '("pixiR" "-s" "--no-save" "--no-restore" "-e" "styler::style_text(readLines(file('stdin')))")
+  :modes '(ess-r-mode))
+#+end_src
+Which works well, isolating the formatting logic from transient per-project states and fragile global state.
+** DONE Notify on ~pdf~ compilation
+CLOSED: [2025-10-04 Sat 01:52]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: notify-pdf-compilation
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
+Watching a ~pdf~ render from ~org-mode~ generated ~tex~ files is an exercise in futility. A simple ~watchexec~ command with a notifier is much nicer.
+#+begin_src bash
+watchexec \
+  -e tex -e bib \
+  -- \
+  sh -c '
+    # Main source file – change this if you compile a different document.
+    src="rgDraft_I.tex"
+    pdf="${src%.tex}.pdf"
+
+    # Run Tectonic with shell‑escape enabled.
+    if tectonic -X compile -Z shell-escape "$src"; then
+      notify-send \
+        -u normal \
+        -i document-save \
+        "✅  TeX compiled" \
+        "$pdf ready"
+    else
+      notify-send \
+        -u critical \
+        -i document-save-as \
+        "❌  TeX compilation failed" \
+        "Check terminal for error messages"
+    fi
+  '
+#+end_src
+Could become a more full fleged script later.
 ** TODO Using ~pixi~ environments for orgmode notebooks
 Basically the executable must be set to the right environment ~:python
 (string-trim (shell-command-to-string "pixi run \"which python\""))~. This means
@@ -1637,5 +1690,35 @@ dvc gc --not-in-remote -w
 ** TODO Branching development with ~subrepo~
 #+begin_src bash
 #+end_src
+** TODO Trivial LLMs on old hardware
+Apropos nothing. R1 is the remote machine. L1 is the local machine. Tailscale connects the two.
+#+begin_src bash
+# R1, assuming Ollama is installed
+pixi global install --environment llmlocal ollama
+# or with a GPU
+pixi global install --environment llmlocal "ollama *cuda*"
+export OLLAMA_HOST="0.0.0.0"
+ollama serve
+# another tab
+ollama run gpt-oss:20b
+#+end_src
+
+A first check on the local machine is:
+#+begin_src bash
+curl http://localhost:11434/api/tags
+#+end_src
+
+Followed by some more reasonable usage:
+#+begin_src bash
+# L1
+ssh -N -L 11434:127.0.0.1:11434 $R1_HOST
+export OLLAMA_API_BASE=http://localhost:11434
+pixi global install --environment llmlocal aider-chat gpustat
+aider --model ollama/qwen3-coder:480b-cloud blah.py
+# different tab
+gpustat -i 1
+#+end_src
+
+Also see this post for [[https://markaicode.com/gemma-3-single-gpu-ollama-optimization/][more details]].
 * Footnotes
 Warren said 30 s or 30 min for machine learning, anything else will not add any information.
