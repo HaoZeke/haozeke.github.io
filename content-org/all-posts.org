@@ -21316,11 +21316,12 @@ not me would like to see this, other than to prove one of these with respect to
 the rest[fn:whereswaldo].
 ** Profiles
 *** Professional
+- [[http://archive.today/TyXoV][EPFL page]]
 - [[https://sh.turtletech.us/ui-rg][University of Iceland]]
 - [[https://femtolab.science/people/rohit][FemtoLab]]
-- [[https://g.co/kgs/Y9fpDC][Google Knowledge Panel]]
 *** Voluntary
-- [[https://numpy.org/teams/][NumPy Team]]
+- [[http://archive.today/cmC4v][RealPython author]]
+- [[http://archive.today/AlQks][NumPy Team]]
 - The Carpentries
   - [[https://carpentries.org/instructors#HaoZeke][Instructor]], [[https://carpentries.org/maintainers#HaoZeke][Maintainer]], [[https://2020.carpentrycon.org/task-force/][CarpentyrCon2020 Committee Task Force]], [[https://2020.carpentrycon.org/schedule/#session-10][CarpentryCon2020 Speaker]]
 - [[https://forum.igdore.org/t/rohit-goswami/656][IGDORE]]
@@ -21353,8 +21354,11 @@ the rest[fn:whereswaldo].
 - [[https://gitlab.com/HaoZeke][Gitlab]]
 - [[https://www.goodreads.com/user/show/33462912-rohit-goswami][Goodreads]]
 - [[https://keybase.io/HaoZeke][Keybase]]
+*** About me
+- Lab COSMO [[http://archive.today/AlM2e][joining note]]
 ** Pages and Articles
 *** By Me
+- RealPython article on [[http://archive.today/2UYbl][optimal python script structure]].
 - Articles written for the [[https://studentabladid.is/efni?author=6166dde6acb3ff544309ecd6][Student Paper of the University of Iceland]]
 - Everything on [[https://keybase.io/HaoZeke][any of my many websites]]
 - [[https://www.aiche.org/community/sites/committees/young-professionals/blog/fundamental-research-chemical-engineering-undergrad][Write-up on research with a ChemE undergraduate degree]] for the American Institute of Chemical Engineers (AIChE) Young Professionals Committee (YPC)
@@ -21374,6 +21378,7 @@ These are tech talks, for academic presentations, [[https://github.com/haozeke/c
 **** Volunteering
 - [[https://www.tug.org/TUGboat/Contents/contents41-2.html][TUGBOAT issue for TUG 2020]] proceedings
   - Several mentions as a conference organizer
+- Rowan [[http://archive.today/ljniL][blog-post on transition states]]
 **** Lists
 - [[https://summerofcode.withgoogle.com/projects/#5790375215628288][Google Summer of Code (GSoC) 2021 - LFortran and Computational Chemistry]]
 - [[https://en.rannis.is/news/allocation-from-the-icelandic-research-fund-for-the-financial-year-2021-1][2021 List of projects funded by the Icelandic Research Fund]]
