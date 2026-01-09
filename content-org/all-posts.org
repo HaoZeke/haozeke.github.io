@@ -21171,6 +21171,76 @@ POSIX compatibility is here to stay on most machines. It is unlikely that this
 will change in the near future.  To that end, it makes more sense to adaptively
 stick to ~bash~ and save my "[[https://steveklabnik.com/writing/the-language-strangeness-budget/][strangeness budget]]" [fn:: A concern I was recently re-sensitized to by [[https://github.com/Luthaf/][Luthaf]]] for new-fangled programming
 languages instead of shells[fn:: At any rate, I do relish not having to transform one-liners from ~nushell~ and friends back to ~bash~ to pass to co-workers.].
+* TODO ~jj~ crib-notes
+#+begin_quote
+Reducing maintainer burdens for development workflows
+#+end_quote
+** Background
+** Initialization
+Getting ~jj~ locally through ~cargo binstall~ works well.
+#+begin_src bash
+❯ cargo binstall jj-cli
+❯ jj --version
+jj 0.36.0-70fd8f7697fbc20a9329a6e2f790ef86a8e284d1
+#+end_src
+Which can be setup now.
+#+begin_src bash
+# Setup
+jj git init
+# View history
+jj log -r "all()"
+#+end_src
+** Stop clobbering ~.jj~
+Initialization warns that ~git clean -dfx~ removes the ~.jj~ folder.
+In practice:
+#+begin_src bash
+metatensor [ dlpWriter][△ v4.2.0][🐍 v3.13.7][🦀 v1.91.1]
+❯ git clean -dfxn
+Would remove .jj
+Would remove Cargo.lock
+#+end_src
+
+However, ~-e~ excludes additional arguments.
+
+#+begin_src bash
+metatensor [ dlpWriter][△ v4.2.0][🐍 v3.13.7][🦀 v1.91.1]
+❯ git clean -dfxn -e .jj
+Would remove Cargo.lock
+#+end_src
+
+Which then ends up being an alias.
+
+#+begin_src toml
+[alias]
+  cl = clean -e .jj
+#+end_src
+
+Ergo
+#+begin_src bash
+metatensor [ dlpWriter][△ v4.2.0][🐍 v3.13.7][🦀 v1.91.1]
+❯ git cl -dfxn
+Would remove Cargo.lock
+#+end_src
+** Working with existing branches
+#+begin_src bash
+❯ jj edit finalDLP_1
+Error: Commit 808499726ff2 is immutable
+Hint: Could not modify commit: wtzlnukk 80849972 finalDLP_1 finalDLP_1@origin | chore(api): regenerate declarations
+Hint: Immutable commits are used to protect shared history.
+Hint: For more information, see:
+      - https://docs.jj-vcs.dev/latest/config/#set-of-immutable-commits
+      - `jj help -k config`, "Set of immutable commits"
+Hint: This operation would rewrite 10 or more immutable commits.
+#+end_src
+Which comes from having pushed to a fork, however only ~main~ and ~upstream~ really should be considered immutable, the rest get force-pushed to routinely during review anyway.
+#+begin_src bash
+❯ jj config set --repo revsets.immutable-heads 'main@origin | main@upstream'
+#+end_src
+
+** Replacing ~rerere~
+** Caveats
+I use a lot of ~git-subrepo~ [fn:: for production archives], which isn't a good fit for ~jj~ at the moment.
+** Conclusions
 * Important Note :ignoreheading:ignore:
 # ALWAYS at the bottom, to ensure fresh builds do not break
 * DONE About
