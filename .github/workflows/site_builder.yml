@@ -51,6 +51,15 @@ jobs:
       - name: Configure Git
         run: git config --global core.quotepath false
 
+      - name: Restore Trackback Cache
+        id: trackback-cache-restore
+        uses: actions/cache/restore@v4
+        with:
+          path: .sent_trackbacks.log
+          key: ${{ runner.os }}-trackbacks-${{ github.ref_name }}
+          restore-keys: |
+            ${{ runner.os }}-trackbacks-
+
       - name: Build site with Hugo
         run: pixi run bundle exec rake hugoBuild
 
