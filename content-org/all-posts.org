@@ -21118,6 +21118,268 @@ In practice however, there is not much use for a locally encrypted backup
 especially given the degraded performance. Instead, a ~cron~ script works better
 via ~borg~, keeping encryted, compressed backups, while having fast access to
 local mail.
+* DONE Reconciling eOn for Academia and Open Source :@personal:science:eon:
+CLOSED: [2026-01-10 Sat 02:18]
+:PROPERTIES:
+:EXPORT_FILE_NAME: eon-acad-foss
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("EON")
+:END:
+#+begin_quote
+Or when eOn is not EON...
+#+end_quote
+** Background
+Open source in academia remains fraught by existing "structures of power", as a
+case-study, let's consider a code I worked on and maintain called ~EON~ (or
+~eOn~, now). The exact details of the methods within are not primarily of
+importance, but its history and license are. Historically under the GPL v3
+around 2001 and 2003 by an older student (Prof. Graeme Henkelman) of my PhD
+advisor (Prof. Hannes Jonsson). The code then got a facelift a few times, by Dr.
+Andreas Pedersen and contributors, along with a refreshed publication in 2013,
+primarily driven by Graeme. Around 2018, there was a decision to shift the
+project to BSD-3, so the Amsterdam Modeling Suite could "fold" the code,
+developed at the University of Iceland and UT Austin into [[https://www.scm.com/doc/AMS/Tasks/PES_Exploration.html][their software]] [fn::
+The integration with of EON with AMS (not the other way around) was done by me
+after reaching Iceland].
+
+In 2019, after joining the doctoral program with a Icelandic Research Fund
+doctoral grant, I had taken on the task with some folks at SurfSARA, to
+implement a Gaussian Process Regression dimer methodology for saddle point
+searches. The code was rather unmaintained, with no real publications from 2015
+or so, no users of the SVN as far as I could tell. Since the code was hosted on
+SVN, I started with a private Github instance, ~TheochemUI/EONgit~. Being a
+fledgling NumPy developer and with a decade of FOSS under my belt, I began
+modernizing the code alongside my scientific work.
+
+This post records the history leading to the [[https://matsci.org/t/eon-is-not-eon/66730][Materials Science Community
+Discourse post]] on "eOn is not EON", along with some thoughts about moving
+forward.
+** Collaborating
+*** 2022
+Sometime in 2022, Graeme reached out, on his way in to Iceland for a visit,
+#+begin_quote
+#+begin_verse
+.... (private) 
+Another factor is that I have realized in terms of EON, we are not really merging two codes; rather, you guys have made improvements and I need to get my head around them.  For that, we don’t need anyone else in my group to help.  In fact, sadly to say, I believe that I am the current group expert in the code.  Let me know what you think, and importantly if you will be around mid June.  I can be self-sufficient in terms of housing and getting around.
+Graeme
+#+end_verse
+#+end_quote
+*** 2024
+In 2024, Dr. Miha Gunde reached out to me for presenting EON at a CECAM workshop
+on Long Timescale events, at which point I requested that we go public with the
+Github variant due to the many changes.
+#+begin_quote
+#+begin_verse
+Hi Rohit,
+Yes, that is ok with me!
+Graeme
+
+
+> On Jun 25, 2024, at 5:06 AM, Rohit Goswami - HI <rog32@hi.is> wrote:
+>
+> Hi Graeme (and Hannes),
+> Hope you are keeping well. We have been presenting the Git based variant of `eON` in the tutorials and were wondering if it would be acceptable to make the repository public (makes it easier to take issues  / contributions etc.).  The newer documentation is currently hosted here: https://eongit.surge.sh
+> --- Rohit
+#+end_verse
+#+end_quote
+This triggered a series of mails as I prepared the SVN migration, including
+mapping every username therein to appropriate Github handles by mailing all
+possible prior contributors. The end result correctly records history ([[https://github.com/TheochemUI/eOn/graphs/contributors][eOn
+contributors]]) since 2010, at which point Graeme had shifted from CVS to SVN
+without correctly tracking provenance unfortunately.
+*** 2025
+**** Cookbook recipes
+Around when I wrapped up my doctoral work, I joined the vibrant group led by
+Prof. Michele Ceriotti to support Dr. Guillaume Fraux on their [[https://metatensor.org/][Metatensor
+ecosystem]]. One of the first things in my downtime was of course to integrate
+with eOn, generating the [[https://atomistic-cookbook.org/examples/eon-pet-neb/eon-pet-neb.html][cookbook recipe for using eOn]] for nudged elastic band
+calculations over ASE. As part of this effort I announced to the ~#eon~ channel
+in UT Austin, on *July 26 2025*, that
+#+begin_quote
+hullo, so FYI there's going to be a conda release of eon today. Mostly because I need it for my cookbook recipe demonstrating the ew-NEB-CI. Might be helpful to y'all too
+#+end_quote
+Even though the actual cookbook didn't make it through until *December 2025* due
+to ~conda-forge~ review timelines. Some of the graduate students in July reacted
+positively to the ~prefix~ forge example I demonstrated at the time, i.e.
+#+begin_src bash
+# July
+micromamba install -c "https://repo.prefix.dev/rg-forge" eon
+# For the cookbook, December
+conda install eon
+#+end_src
+but otherwise no response was provided.
+**** Github releases
+In the interim, I published a few papers, and on *September 4, 2025* as part of
+the ~conda-forge~ process, I announced release notes, which Graeme acknowledged
+#+begin_quote
+#+begin_verse
+Rohit Goswami
+  1:35 PM
+Hello. Please open a PR to update the docs with publications since the 2014 release and up-to the date listed here
+https://eondocs.org/releases/v2.8.0/publications
+Basically modifying:
+https://github.com/TheochemUI/eOn/blob/main/docs/source/releases/v2.8.0/publications.md
+and
+https://github.com/TheochemUI/eOn/blob/main/docs/source/bibtex/eonDocs.bib
+I'll be cutting the release (tagging) tomorrow evening. Changes to the docs are still of course welcome, they just won't be in the tag. (edited) 
+Graeme Henkelman
+  3:42 PM
+if there are any git enthusiast here, I can help with providing the document numbers.  I’m not going to do the git request
+#+end_verse
+#+end_quote
+The resulting release notes and website have since been the stable home for the code, both on Github and ~conda-forge~, i.e.:
+- Homepage :: https://eondocs.org, a domain I purchased
+- Github :: https://github.com/TheochemUI/eOn
+- Release notes :: https://eondocs.org/releases/
+**** Community building
+Over the course of the degree, I had given several talks referencing both
+groups, and the strong international collaboration therein, all held together by
+mutual respect and trust. Some users on GitHub began to appear, along with
+questions on the Discussions and eventually, just before my graduation on
+December 19th, 2025, I requested a [[https://matsci.org/t/eon-is-not-eon/66730][MATSCI community discourse]] section for ~eOn~,
+since I believed the package was about to be used widely, given its primacy in
+my dissertation on efficient exploration of chemical kinetics ([[https://arxiv.org/abs/2510.21368][ArXiV]], [[https://opinvisindi.is/items/046d506d-bb62-4354-82aa-f55032207f6d][Opin
+Vísindi]]).
+
+Things were looking up for the code, I thought, moving upwards to [[https://anaconda.org/channels/conda-forge/packages/eon/overview][3.6k downloads
+to date]] of the package on ~conda-forge~.
+** Graeme and the sock-puppets
+In 2026, Graeme reached out to chat about "merging" codes, with three students
+in tow. Slightly bemused, since there had been no issues opened nor pull
+requests for the entire duration, nor had the SVN been updated beyond trivial
+details, like in *January 2025*
+#+begin_quote
+#+begin_verse
+Graeme Henkelman
+  2:18 PM
+well, I just made a bunch of changes throughout and I don’t think that it has been tested much.  the version before I (partially) synced with rohit’s version is stable
+2:19
+I didn’t change any logic; I just followed what Rohit did in terms of updating the eigen library and a few other things
+#+end_verse
+#+end_quote
+I was more than happy to meet with my Texan friends during my first few days back at work for the new year.
+
+On joining the meeting on Monday, January 5 2026, however, I was confronted with the immediate demand to:
+- Give up access to the ~conda-forge~ [[https://github.com/conda-forge/eon-feedstock][recipe]]
+- Rename the repository immediately to whatever
+- Agree that my work was a fork and not the "primary source"
+
+The renaming demand, despite breaking downstream workflows and existing
+publications from my doctorate, was made with increasing force over the past few
+days, with [[https://github.com/conda-forge/eon-feedstock/pull/7][one of the students]] opening a PR to directly take on admin
+duties on the recipe, and another letting me know privately that
+#+begin_quote
+Well, I don't make the final decisions ... I am just doing whatever I get told to process.
+#+end_quote
+which suggests Graeme working through his students instead of his own handle on
+Github. His own comments were equally non-negotiable
+#+begin_quote
+#+begin_verse
+Hi Rohit and all,
+
+It may be that personal differences are too big to overcome at this time.
+
+We are in the process of shifting our svn codes to github, and there is really no problem with a GPR fork of the eon code. I was hoping to merge them, but there may be too many barriers, or rather, different visions of how we move forward. As a fork, however, I do feel that your version, Rohit, should be named as a modified eon code, such as eongpr or eon3 or whatever you want.  As the primary developer, I would like to maintain the original code and name, as well as the prerogative to keep it boring and old-school.  I like the fact that we still have Hannes’ gagafe f77 eam routines in there, and the ancient con format where no one remembers what half of the header lines correspond to. I’m curious if Hannes even remembers what gagafe stands for, and the variables in his commonblock, and how many atoms should be frozen to save time with reduced NEB calculations.  Anyway, I’m being sentimental, but I do feel that there is an important place for old code that is tested and has worked for many years.
+
+Best,
+Graeme
+#+end_verse
+#+end_quote
+Despite the older Fortran routines being present, and compiled even for the ~conda-forge~ binary.
+*** Spilling tea
+Along the way, in advance of the scheduled meeting a few days later, on Thursday,
+January 8 2026, the Texans rather confidently decided to contextualize the issue
+as they saw it to another ~conda-forge~ maintainer, Dr. Jan Janssen, so I got to
+hear 
+#+begin_quote
+(Jan) You forked their original source code of the EON package and then you added a conda recipe for your forked version. This is against the rules of conda-forge which state: "Source is from official source." 
+#+end_quote
+Which of course, made no sense, given that I had been given ample evidence
+throughout the past half decade that the code I was using and presenting was
+indeed the official version of the code, something which Jan was originally unclear about
+#+begin_quote
+#+begin_verse
+(Jan) As far as I understand, the core question is if the Github Version on the Github Organization from Hannes Jonsson is a successor to the version which is hosted on Graeme's SVN server or a fork. As long as Graeme says he never gave away the leadership of the project, any version outside his SVN server is a fork and his SVN remains the official source. 
+
+If Graeme's version is the official version then he can ask the conda-forge core team to transfer the ownership of the eon-feedstock to him, or ask you to add his students as maintainers so they can update the eon-feedstock. 
+#+end_verse
+#+end_quote
+Nevertheless, after being better apprised of the situation, including the
+timeline, did temper his comments down to
+#+begin_quote
+(Jan) .. In terms of quoting, I am a scientist and not a lawyer so my comments are just personal experience - no legal advice.
+#+end_quote
+while admitting the Texans were rather less than forthcoming about the history
+#+begin_quote
+(Jan) And while I was messaging with you as well as the students from Graeme, I want to emphasize that my focus was to find a compromise. I definitely learned a lot about the background during our conversation and I agree that it is a complicated situation that I currently cannot help to resolve.
+#+end_quote
+To his credit, so far, he has since ignored further entreaties over email by the
+Texans to accept the "primary author" [fn:: A position of unlimited power
+imagined by Dr. Henkelman in his words] sources and forcibly revert the code to
+remove half a decade of changes instead of a standard pull-request based contributing workflow.
+*** ~conda-forge/core~
+While it is nice to know the opinions of my fellow maintainers in academia, I
+decided to check in with the actual stewards of the forge [[https://conda-forge.zulipchat.com/#narrow/channel/457337-general/topic/.E2.9C.94.20On.20having.20packages.20taken.20over.20in.20a.20hostile.20manner/with/566636106][on Zulip]], where the it
+was quickly clarified that aggressively "replacing" continually developed
+versions of a code with an older "original" will certainly not be tolerated, to
+wit
+#+begin_quote
+#+begin_verse
+Rohit Goswami: they've also "offered" to "let me" change the name on conda-forge for them to then take up the recipe :'D 
+They seem very confident there's a process for this, but I wasn't aware of one
+
+
+H. Vetinari:
+
+ > Rohit Goswami said:
+
+  > [they] are claiming there's a process to "replace" the package and underlying repo / source with their's if they so wish it
+
+Yeah, that's a hard no. The name eon in conda-forge belongs to your version of the package. We have some procedure being discussed for allowing the reuse of abandoned names (essentially mirroring the same process that can lead to a name transfer on PyPI), but this clearly only works if it's consensual. So if you don't like what they're doing with the package, you have absolutely no obligation to give up the feedstock or the package name.
+#+end_verse
+#+end_quote
+Which should have been, and is in my opinion the end of the discussion, nevertheless Graeme continued to push forward
+#+begin_quote
+#+begin_verse
+Calling your recent developments as unauthorized it not right.  You are free to fork the code and make changes.  The name eon, however, should reside with the original code.  You can simply pick a new name, such as neon, or eon-gpr, and shift over to that.  Jan has explained to us that there is no problem with this.  It only requires that you realize that you have made a modification to a code that has been developed over many years by many people, and so your code is a modification and should be named as such - it is not the original as defined by the primary developers.  If what you have done is of value to the community, great, they will adopt it.  But you can’t claim that the code is ‘eon’ as originally described in the literature and defined by the primary developer.
+
+I’m going to copy Jan so that we can have a transparent discussion.
+
+Graeme
+#+end_verse
+#+end_quote
+To which Jan refrained, having recused on LinkedIn already. Such gaslighting
+might normally be concerning, but for the ample Git history and mail / slack
+history demonstrating good-faith stewardship.
+** Conclusions and the other side
+Allegedly, the code has become too complicated, and yet, no pull requests for
+removing complexity are forthcoming, since the stated intention remains to
+remove the past five years of work and build off the older code, i.e. generating
+a fork of the existing development. At the moment, despite backing from ~/core~,
+the only stance remains declaring that code technically uses ~eOn~ over
+~EON~, a fairly ridiculous distinction. The burden of maintainence means not
+allowing existing code to break, even though the Texans have been repeated
+entreated to collaborate through standard methods, they continue to sulk in the
+background, despite a concillatory email from my end
+#+begin_quote
+#+begin_verse
+Hello
+
+I was chatting with Hannes, and I was subsequently thinking maybe the contributing workflow was not clear enough. The burden of maintenance precludes breaking any existing user facing code, but I'm more than happy to merge pull requests making any kind of simplification, bug fix, documentation update, new feature, etc.
+
+I'm also more than happy to respond / fix issues / reply to discussions / etc.
+
+However, as is standard, breaking changes will not be considered without prior discussion, nor will code which does not pass any of the existing tests. New features must include tests. For all other questions including pointers on meson, C++, Fortran, etc. please let me know.
+
+Best,
+Rohit
+#+end_verse
+#+end_quote
+
+It remains to be seen how this plays out, but academic rigor and FOSS principles
+dictate that there shall continue to be one source for the ~conda-forge~
+package, and nothing shall break the existing provenance[fn:: though there
+remains the possibility of a publication, if "eOn really is not EON"].
 * DONE Back to ~bash~ :@personal:tools:workflow:dots:
 CLOSED: [2025-11-12 Wed 19:28]
 :PROPERTIES:
