@@ -1744,7 +1744,7 @@ dvc gc --not-in-remote -w
 #+begin_src bash
 #+end_src
 ** DONE Trivial LLMs on old hardware :ai:hardware:workflow:
-CLOSED: [2026-01-22 Thu 19:46]
+CLOSED: [2025-11-22 Sat 19:46]
 :PROPERTIES:
 :EXPORT_HUGO_BUNDLE: trivial-llms-old-hardware
 :EXPORT_FILE_NAME: index
