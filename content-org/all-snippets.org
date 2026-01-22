@@ -1737,8 +1737,16 @@ dvc gc --not-in-remote -w
 ** TODO Branching development with ~subrepo~
 #+begin_src bash
 #+end_src
-** TODO Trivial LLMs on old hardware
-Apropos nothing. R1 is the remote machine. L1 is the local machine. Tailscale connects the two.
+** DONE Trivial LLMs on old hardware :ai:hardware:workflow:
+CLOSED: [2026-01-22 Thu 19:46]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: trivial-llms-old-hardware
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
+Apropos nothing. R1 represents the remote machine. L1 denotes the local machine.
+Tailscale connects the two.
+
 #+begin_src bash
 # R1, assuming Ollama is installed
 pixi global install --environment llmlocal ollama
@@ -1750,7 +1758,7 @@ ollama serve
 ollama run gpt-oss:20b
 #+end_src
 
-A first check on the local machine is:
+A preliminary check on the local machine:
 #+begin_src bash
 curl http://localhost:11434/api/tags
 #+end_src
@@ -1765,6 +1773,11 @@ aider --model ollama/qwen3-coder:480b-cloud blah.py
 # different tab
 gpustat -i 1
 #+end_src
+
+Tunneling the API port over SSH via Tailscale ensures a secure connection
+without exposing the Ollama instance to the open web. This workflow facilitates
+the usage of substantial models on lightweight clients, effectively offloading
+the heavy lifting to dedicated hardware, and making good use of older machines.
 
 Also see this post for [[https://markaicode.com/gemma-3-single-gpu-ollama-optimization/][more details]].
 * Footnotes
