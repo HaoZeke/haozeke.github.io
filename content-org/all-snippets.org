@@ -1440,7 +1440,13 @@ including printing the ~EOE~ line several times, i.e. ~echo 'org_babel_sh_eoe'~.
 
 So it is better to set ~PIXI_NO_PROGRESS~ instead and use ~pixi run -q~.
 
-** DRAFT Mesa Bugs with Sway :@note:ramblings:
+** DONE Mesa Bugs with Sway :@note:ramblings:
+CLOSED: [2025-01-26 Thu 19:52]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: mesa-sway-bugs
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments false
+:END:
 Recently upgraded my system only to have ~sway~ crash with an ~egl~ error, which
 was odd, given that I'm on an Intel GPU. At first it seemed to be a ~glvnd~ bug,
 as noted from the ~sway~ issue tracker, but it turned out to be a ~mesa~ bug.
