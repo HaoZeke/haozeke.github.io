@@ -1669,6 +1669,53 @@ watchexec \
   '
 #+end_src
 Could become a more full fleged script later.
+** DONE Lightweight C++ config with ~compile_flags.txt~ :cpp:config:
+CLOSED: [2026-01-22 Thu 19:35]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: compile-flags-txt
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
+For CMake driven C/C++ projects, ~compile_commands.json~ generation can be
+slightly painful, especially for mixed language projects [fn:: like [[https://metatensor.org][metatensor]]].
+A simpler route involves ~clangd~ support for ~compile_flags.txt~, which
+includes simple newline-separated list of flags.
+
+For my recent contributions to the mini-metatomic project, the file looked like
+this:
+#+begin_src text
+-I/usr/include/python3.13/
+-I./metatomic-core/include
+-fopenmp
+#+end_src
+Which allows LSP support in ~emacs~ to function correctly without a
+~compile_commands.json~.
+
+** DONE Disabling Rust auto-formatting in Emacs per-project :emacs:rust:
+CLOSED: [2026-01-22 Thu 19:35]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: dir-locals-formatting-rust
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
+Sometimes aggressive auto-formatting (via ~apheleia~ or ~rustic~) happens to be
+unwelcome for certain projects which prefer a more artisinal approach to
+semantics [fn:: like [[https://metatensor.org][metatensor]]]. Disabling this generally requires setting
+directory-local variables.
+
+I found it necessary to inhibit ~apheleia~ and disable LSP formatting to prevent
+the editor from mangling the code on save.
+#+begin_src emacs-lisp
+;; .dir-locals.el
+((rustic-mode . ((rustic-format-on-save . nil)
+                 (eval . (setq-local +format-with-lsp nil)))))
+((nil . ((eval . (progn
+                   (setq-local apheleia-inhibit t)
+                   (setq-local rustic-format-on-save nil)
+                   (setq-local +format-with-lsp nil))))))
+#+end_src
+Probably ought to be a nicer way, perhaps something in the ~doom~ local
+configuration.
 ** TODO Using ~pixi~ environments for orgmode notebooks
 Basically the executable must be set to the right environment ~:python
 (string-trim (shell-command-to-string "pixi run \"which python\""))~. This means
