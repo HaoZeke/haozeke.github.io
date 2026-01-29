@@ -1722,7 +1722,26 @@ the editor from mangling the code on save.
 #+end_src
 Probably ought to be a nicer way, perhaps something in the ~doom~ local
 configuration.
-** TODO Using ~pixi~ environments for orgmode notebooks
+** DONE Using ~pixi~ environments for orgmode notebooks
+CLOSED: [2026-01-29 Thu 08:20]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: pixi-orgmode-notebooks
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+*** Shell
+To ensure shell blocks recognize project-specific paths and variables, use a named session and initialize the environment once. This allows subsequent blocks to inherit the state without repetitive boilerplate.
+
+#+begin_src conf
+#+PROPERTY: header-args:bash :session vizSH :results silent
+#+end_src
+
+Initialize the environment within the session:
+#+begin_src bash :session vizSH
+export GITROOT=$(git rev-parse --show-toplevel)
+pixi shell -e eon
+#+end_src
+*** Python
 Basically the executable must be set to the right environment ~:python
 (string-trim (shell-command-to-string "pixi run \"which python\""))~. This means
 a working setup for a per-file notebook can be:
@@ -1735,6 +1754,19 @@ a working setup for a per-file notebook can be:
 #+end_src
 
 This also handles ~subprocess~ calls without monkeying around with ~prologue~.
+*** R
+For ~R~, the integration via ~ess~ (Emacs Speaks Statistics) requires a bit more care to ensure the interactive session and the babel execution engine stay in sync. Setting the local path and updating the ~exec-path~ ensures that library lookups don't leak into the system R installation.
+
+#+begin_src emacs-lisp :results none
+(let* ((root (vc-root-dir))
+       (bin-dir (expand-file-name ".pixi/envs/rviz/bin" root))
+       (r-path (expand-file-name "R" bin-dir)))
+  (setq-local inferior-ess-r-program r-path)
+  (setq-local org-babel-R-command (concat r-path " --slave --no-save"))
+  (setq-local exec-path (cons bin-dir exec-path))
+  (setenv "PATH" (concat bin-dir ":" (getenv "PATH")))
+  (setq-local ess-r-executable-list (list r-path)))
+#+end_src
 ** DRAFT Pruning ~dvc~ cache
 For situations where the data is tracked in an upstream remote, removing caches locally can be accomplished through:
 #+begin_src bash
