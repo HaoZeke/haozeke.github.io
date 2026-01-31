@@ -1521,6 +1521,29 @@ meson setup b2dir --native-file nativeFiles/mold.ini --native-file nativeFiles/c
 #+end_src
 Further improvements come from ~ccache~ with ~distcc~, or [[https://github.com/icecc/icecream][icecream]] or for a
 single binary extension, [[https://github.com/mozilla/sccache][sccache]].
+** DONE ~act~ locally for ~sccache~ :cmdline:build:
+CLOSED: [2026-01-31 Sat 08:08]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: act-local-caching
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
+Cache helpers like [[https://github.com/mozilla/sccache][sccache]] tend to break local ~act~ usage, necessitating:
+#+begin_src diff
+      - name: Setup sccache
++        if: ${{ !env.ACT }}
+        uses: mozilla-actions/sccache-action@v0.0.9
+        with:
+          version: "v0.10.0"
+
+      - name: Setup sccache environnement variables
++        if: ${{ !env.ACT }}
+        run: |
+          echo "SCCACHE_GHA_ENABLED=true" >> $GITHUB_ENV
+          echo "RUSTC_WRAPPER=sccache" >> $GITHUB_ENV
+          echo "CMAKE_C_COMPILER_LAUNCHER=sccache" >> $GITHUB_ENV
+          echo "CMAKE_CXX_COMPILER_LAUNCHER=sccache" >> $GITHUB_ENV
+#+end_src
 ** DONE Handling environments with ~cibuildwheel~ :ci:
 CLOSED: [2025-07-19 Sat 19:52]
 :PROPERTIES:
@@ -1570,6 +1593,15 @@ Slack is unusable. Pidgin and Finch are marginally better. [[https://github.com/
   + devtools->Application->Storage->Cookies-> ~d~
 Join them together with a space so it is ~$MAIN $COOKIE~ and use that as the password for Pidgin.
 # TODO(rg) :: Later, setup ~gntrc~ from ~man finch~ to use ~nchat~ like bindings.
+** TODO Audio wrangling
+#+begin_src bash
+# convert from aac to mp3
+ffmpeg -i onNotice.aac output.mp3
+# split into 49MB chunks
+mp3splt -S 49 output.mp3
+# or, native but might cut frames
+split -b 49M output.mp3 49mb_part_ --additional-suffix=.mp3
+#+end_src
 ** DONE Remote ~lldb~ on MacOS :debugging:macos:
 CLOSED: [2025-07-25 Fri 19:51]
 :PROPERTIES:
