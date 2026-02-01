@@ -1850,5 +1850,37 @@ the usage of substantial models on lightweight clients, effectively offloading
 the heavy lifting to dedicated hardware, and making good use of older machines.
 
 Also see this post for [[https://markaicode.com/gemma-3-single-gpu-ollama-optimization/][more details]].
+** DONE ~conda-smithy~ notes for off-brand ~conda~ packages :build:packaging:conda:
+CLOSED: [2026-02-01 Sun 06:50]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: off-brand-conda
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
+*** Migrations
+For dependency resolution and CI workflow snippet generation, rather than
+hard-code dependencies, often we prefer "migration" files, as discussed in [[https://conda-forge.org/docs/maintainer/knowledge_base/#migrators-and-migrations][the
+knowledge base]]. Most commonly these define version constraints, and are ~conda
+smithy rerender~'d to ensure maximum compatibility.
+
+Instead of using the upstream variants, these may also be defined by hand. For
+instance, consider handling an update to PyTorch 2.9 (e.g. from this [[https://github.com/metatensor/gromacs-metatomic-feedstock/blob/main/.ci_support/migrations/pytorch29.yaml][GROMACS
+metatomic package]]):
+#+begin_src yaml
+# .ci_support/migrations/pytorch29.yaml
+__migrator:
+  build_number: 1
+  kind: version
+  migration_number: 1
+libtorch:
+- '2.9'
+pytorch:
+- '2.9'
+#+end_src
+
+Which can be applied to a package outside the ~conda-forge~ ecosystem via:
+#+begin_src bash
+conda smithy rerender
+#+end_src
 * Footnotes
 Warren said 30 s or 30 min for machine learning, anything else will not add any information.
