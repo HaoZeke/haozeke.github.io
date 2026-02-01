@@ -6565,6 +6565,24 @@ A lot has happened on the tooling end, even though the documentation itself has 
 Advanced documentation customization with doxyrest for C++ projects
 #+END_QUOTE
 ** Background
+For almost half a decade my C++ projects have been either scoped to where plain
+Doxygen works well enough [fn:: e.g. [[https://docs.dseams.org][d-SEAMS]], or Symengine], or largely
+undocumented at the C++ API level [fn:: e.g. [[https://eondocs.org][eOn]], which works out since
+computational chemists don't write C++ anyway, the user-docs and YAML are
+enough]. The remaining pain-points of integrating with Sphinx via ~exhale~ or
+~breathe~ {{{relref(shown earlier,doc-cpp-dox-sph-exhale)}}} [fn:: or in
+[[https://chemfiles.org/chemfiles/0.10.4/classes/frame.html][Chemfiles]]] works well, with the exception of not providing the source code to
+view.
+
+For smaller, well written libraries, the drawbacks of not being able to read the
+source are manifold, tending towards over-verbose documentation strings. Back in
+2020 during the {{{relref(season of docs for Symengine,symengine-gsod20)}}}, I
+stuck to pure ~doxygen~ with a [[https://github.com/HaoZeke/doxyYoda][custom theme, doxyYoda]], a setup which served me
+well for Fortran projects like [[https://haozeke.github.io/GaussJacobiQuad/][GaussJacobiQuad]] [fn:: before [[https://forddocs.readthedocs.io/en/stable/][FORD]] became popular
+as well], and continues to be attractive.
+
+Given the advent of ~pixi~, however, it is worth revisiting the ~doxyrest~ setup.
+** Setting up
 * TODO Adding Tutorials to Sphinx Projects :@programming:documentation:tutorials:sphinx:
 :PROPERTIES:
 :EXPORT_FILE_NAME: doc-tut-sph
