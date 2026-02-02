@@ -6588,6 +6588,17 @@ focus will be on implementation within a ~meson~ based project, [[https://rgpot.
 defines an RPC interface for accessing forces and energies, typically for an
 atomistic calculation, before demonstrating the benefit for a much larger
 project, [[https://docs.metatensor.org/metatomic/][metatomic]].
+
+#+attr_html: :class note-alert
+#+begin_alert
+#+begin_alert-heading
+*Note*
+#+end_alert-heading
+For before/after images see:
+- [[https://github.com/OmniPotentRPC/rgpot/pull/25][rgpot (gh-25)]]
+- [[https://github.com/metatensor/metatomic/pull/148][metatomic (gh-148)]]
+#+end_alert
+
 ** Baseline -- ~rgpot~
 In general, the pipeline relies on Doxygen emitting XML, which ~doxyrest~ parses
 via Lua templates to generate reStructuredText, finally consumed by Sphinx. This
@@ -6742,7 +6753,7 @@ provides a nice balance of readability and cross-platform handling without the
 foot-guns of strict POSIX shell scripting, which are best avoided, despite my
 {{{relref(return to bash,back-to-bash)}}}.
 
-*** The Orchestrator Script
+*** The ideal orchestrator script
 Instead of relying solely on ~tox~ and file driven configurations to do the
 heavy lifting of environment setup, we use a ~nu~ script to bootstrap the
 documentation build.
@@ -6817,7 +6828,7 @@ to the ~PATH~ only for the ~doxyrest~ execution block.
 #+end_src
 
 Sphinx and CI configurations are similar to the previous project, with the
-complete [[https://github.com/metatensor/metatomic/pull/148][PR here]].
+complete including a ~bash~ orchestrator in the [[https://github.com/metatensor/metatomic/pull/148][PR here]].
 
 #+begin_details
 #+begin_summary
