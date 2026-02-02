@@ -6684,27 +6684,7 @@ ESCAPE_TRAILING_UNDERSCORES = true
 #+end_src
 
 With this, ~doxyrest~ digests the Doxygen XML into produce RST files that Sphinx
-can ingest. Finally, the standard Sphinx build picks up the artifacts:
-#+begin_src toml
-[feature.docs.tasks.sphinxbld]
-depends-on = [ { task = "mkrst", environment = "docs" }, ]
-cmd = """ sphinx-build docs/source/ docs/build """
-#+end_src
-*** Patches
-The dependency graph mechanism of ~pixi~ [fn:: like ~make~, ~rake~, ~tup~, etc.]
-means applying temporary patches are simple enough to drop-in.
-
-#+begin_src toml
-[feature.docs.tasks.patch-doxyrest]
-description = "Apply temporary fixes for documentation"
-depends-on = ["setup-doxyrest"]
-# hardcoded shibuya fix in doxyrest.py + enum class fix
-cmd = """
-cp scripts/patches/doxyrest/doxyrest.py subprojects/doxyrest/sphinx/doxyrest.py &&
-patch -p1 -N -s < scripts/patches/doxyrest/enum_class_fix.patch || true
-"""
-#+end_src toml
-Where the ~doxybuild~ task can be updated to target the ~patch-doxyrest~ target.
+can ingest.
 *** Sphinx Configuration
 For ~Sphinx~ to process the generated RST correctly, it needs to load the
 ~doxyrest~ extension. Since we are downloading/cloning this into a local
@@ -6723,6 +6703,33 @@ extensions = [
     # ...
 ]
 #+end_src
+
+Finally, the standard Sphinx build can pick up the artifacts:
+
+#+begin_src toml
+[feature.docs.tasks.sphinxbld]
+depends-on = [ { task = "mkrst", environment = "docs" }, ]
+cmd = """ sphinx-build docs/source/ docs/build """
+#+end_src
+
+*** Patches
+The dependency graph mechanism of ~pixi~ [fn:: like ~make~, ~rake~, ~tup~, etc.]
+means applying temporary patches are simple enough to drop-in.
+
+#+begin_src toml
+
+[feature.docs.tasks.patch-doxyrest]
+description = "Apply temporary fixes for documentation"
+depends-on = ["setup-doxyrest"]
+# hardcoded shibuya fix in doxyrest.py + enum class fix
+cmd = """
+cp scripts/patches/doxyrest/doxyrest.py subprojects/doxyrest/sphinx/doxyrest.py &&
+patch -p1 -N -s < scripts/patches/doxyrest/enum_class_fix.patch || true
+"""
+
+#+end_src toml
+
+Where the ~doxybuild~ task can be updated to target the ~patch-doxyrest~ target.
 *** CI deployment
 The primary advantage of encapsulating the build logic within ~pixi~ tasks lies
 in the simplification of Continuous Integration (CI) pipelines. Since the
