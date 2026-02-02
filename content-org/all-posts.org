@@ -6555,34 +6555,310 @@ A lot has happened on the tooling end, even though the documentation itself has 
 [fn:whybother] In this instance, we could have simply called on ~shell.nix~ instead, but it illustrates a more general concept
 [fn:teachmerake] [[https://avdi.codes/tag/rake/page/2/][Avdi's blog has a fantastic introduction]] to ~rake~ and ~Rakefiles~
 [fn:whatshebang] Chris Warbo has a good [[http://chriswarbo.net/projects/nixos/nix_shell_shebangs.html][introduction to the nix shebang]]
-* TODO Documenting C++ with Doxygen and Sphinx - doxyrest :@programming:documentation:workflow:nix:cpp:
+* DONE Documenting C++ with Doxygen and Sphinx - doxyrest :@programming:documentation:workflow:pixi:cpp:
+CLOSED: [2026-02-02 Mon 08:26]
 :PROPERTIES:
 :EXPORT_FILE_NAME: doc-cpp-dox-sph-doxyrest
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("C++ documentation practices")
 :END:
 #+BEGIN_QUOTE
-Advanced documentation customization with doxyrest for C++ projects
+Unifying C++ and Python documentation.
 #+END_QUOTE
 ** Background
 For almost half a decade my C++ projects have been either scoped to where plain
-Doxygen works well enough [fn:: e.g. [[https://docs.dseams.org][d-SEAMS]], or Symengine], or largely
+Doxygen works well enough [fn:: e.g. [[https://docs.dseams.org][d-SEAMS]], or [[https://symengine.org/symengine/md_md_doc_guide.html][Symengine]]], or largely
 undocumented at the C++ API level [fn:: e.g. [[https://eondocs.org][eOn]], which works out since
 computational chemists don't write C++ anyway, the user-docs and YAML are
-enough]. The remaining pain-points of integrating with Sphinx via ~exhale~ or
-~breathe~ {{{relref(shown earlier,doc-cpp-dox-sph-exhale)}}} [fn:: or in
-[[https://chemfiles.org/chemfiles/0.10.4/classes/frame.html][Chemfiles]]] works well, with the exception of not providing the source code to
-view.
+enough]. While integrating with Sphinx via ~exhale~ or ~breathe~ {{{relref(shown
+earlier,doc-cpp-dox-sph-exhale)}}} [fn:: or in [[https://chemfiles.org/chemfiles/0.10.4/classes/frame.html][Chemfiles]]] works well, it often
+fails to provide a seamless source code view or struggles with modern C++
+constructs.
 
-For smaller, well written libraries, the drawbacks of not being able to read the
+For smaller, well formed libraries, the drawbacks of not being able to read the
 source are manifold, tending towards over-verbose documentation strings. Back in
 2020 during the {{{relref(season of docs for Symengine,symengine-gsod20)}}}, I
 stuck to pure ~doxygen~ with a [[https://github.com/HaoZeke/doxyYoda][custom theme, doxyYoda]], a setup which served me
 well for Fortran projects like [[https://haozeke.github.io/GaussJacobiQuad/][GaussJacobiQuad]] [fn:: before [[https://forddocs.readthedocs.io/en/stable/][FORD]] became popular
 as well], and continues to be attractive.
 
-Given the advent of ~pixi~, however, it is worth revisiting the ~doxyrest~ setup.
-** Setting up
+Given the advent of ~pixi~, however, it is worth revisiting the ~doxyrest~ setup
+[fn:: a fantastic, if slightly under-documented code]. For the most part, the
+focus will be on implementation within a ~meson~ based project, [[https://rgpot.rgoswami.me][rgpot]], which
+defines an RPC interface for accessing forces and energies, typically for an
+atomistic calculation, before demonstrating the benefit for a much larger
+project, [[https://docs.metatensor.org/metatomic/][metatomic]].
+** Baseline -- ~rgpot~
+In general, the pipeline relies on Doxygen emitting XML, which ~doxyrest~ parses
+via Lua templates to generate reStructuredText, finally consumed by Sphinx. This
+allows the C++ API to sit seamlessly alongside Python documentation in a single
+Sphinx project, utilizing modern themes like ~furo~ or ~pydata-sphinx-theme~.
+
+#+BEGIN_SRC dot :file ./images/dot/dot-doxyrest-workflow.png :cmdline -Kdot -Tpng -Gdpi=200 :cache yes :eval never :exports none
+digraph G {
+    rankdir=LR;
+    node [shape=box, fontname="Helvetica", style=filled, fillcolor="#f0f0f0"];
+    
+    headers [label="C++ Headers", shape=note, fillcolor="#e1f5fe"];
+    doxygen [label="Doxygen", fillcolor="#fff9c4"];
+    xml [label="XML Blob", shape=note, fillcolor="#e1f5fe"];
+    
+    lua [label="Lua Frames\n(Templates)", shape=component, fillcolor="#ffe0b2"];
+    doxyrest [label="Doxyrest", fillcolor="#fff9c4"];
+    rst [label="reStructuredText", shape=note, fillcolor="#e1f5fe"];
+    
+    sphinx [label="Sphinx", fillcolor="#c8e6c9"];
+    html [label="HTML Docs", shape=folder, fillcolor="#d1c4e9"];
+
+    headers -> doxygen;
+    doxygen -> xml;
+    xml -> doxyrest;
+    lua -> doxyrest [style=dashed];
+    doxyrest -> rst;
+    rst -> sphinx;
+    sphinx -> html;
+}
+#+END_SRC
+
+#+RESULTS[98e00e6de05b2e5a8767c6f8e29d57c74f075ee8]:
+#+NAME: fig:doxyrest-workflow
+#+caption: Overview of the ~doxyrest~ build process
+[[file:./images/dot/dot-doxyrest-workflow.png]]
+
+*** The ~pixi~ task workflow
+For ~rgpot~, I opted to encapsulate the build complexity within ~pixi~ tasks.
+This avoids polluting the repository with git submodules for tooling that is
+essentially a build-time dependency, and has better support for managing
+dependencies.
+
+The workflow is broken down into dependency retrieval, patching, and generation:
+
+#+begin_src toml
+[feature.docs.tasks.setup-doxyrest]
+description = "Clones the doxyrest dependency into the subprojects directory"
+cmd = """
+test -d subprojects/doxyrest || \
+(mkdir -p subprojects && \
+git clone --depth 1 --single-branch \
+https://github.com/vovkos/doxyrest subprojects/doxyrest)
+"""
+#+end_src
+
+The ~setup-doxyrest~ task handles the "shallow clone" approach to keep the
+checkout light.
+*** The Build Cycle
+With the infrastructure in place, the actual build is a two-step process defined
+in ~doxybuild~:
+
+#+begin_src toml
+[feature.docs.tasks.doxybuild]
+description = "Generates XML via Doxygen and converts it to RST via Doxyrest"
+cwd = "docs/source"
+depends-on = ["setup-doxyrest"]
+cmd = "doxygen Doxyfile_potlib.cfg && doxyrest -c doxyrest-config.lua"
+#+end_src
+
+We first generate the XML blobs with Doxygen. Immediately after, ~doxyrest~ is
+invoked with a Lua configuration file, which defines the files used to map the
+generated XML into frames. Internally, ~doxyrest~ relies on *Lua Frames* which
+are templates that mix standard ~reStructuredText~ with injected Lua logic
+(delimited by ~%{ ... }~) and variable substitution (via ~$var~).
+
+In principle, one could write custom frames to radically alter the output, for
+C++ projects we simply point ~FRAME_DIR_LIST~ to the standard "C-family" frames
+provided by the repo we cloned earlier.
+
+#+begin_src lua
+INPUT_FILE = "xml/index.xml"
+OUTPUT_FILE = "api/index.rst"
+INDEX_TITLE = "API Reference"
+
+FRAME_DIR_LIST = {
+    "../../subprojects/doxyrest/frame/common",
+    "../../subprojects/doxyrest/frame/cfamily"
+}
+
+LANGUAGE = "cpp"
+ESCAPE_ASTERISKS = true
+ESCAPE_TRAILING_UNDERSCORES = true
+#+end_src
+
+With this, ~doxyrest~ digests the Doxygen XML into produce RST files that Sphinx
+can ingest. Finally, the standard Sphinx build picks up the artifacts:
+#+begin_src toml
+[feature.docs.tasks.sphinxbld]
+depends-on = [ { task = "mkrst", environment = "docs" }, ]
+cmd = """ sphinx-build docs/source/ docs/build """
+#+end_src
+*** Patches
+The dependency graph mechanism of ~pixi~ [fn:: like ~make~, ~rake~, ~tup~, etc.]
+means applying temporary patches are simple enough to drop-in.
+
+#+begin_src toml
+[feature.docs.tasks.patch-doxyrest]
+description = "Apply temporary fixes for documentation"
+depends-on = ["setup-doxyrest"]
+# hardcoded shibuya fix in doxyrest.py + enum class fix
+cmd = """
+cp scripts/patches/doxyrest/doxyrest.py subprojects/doxyrest/sphinx/doxyrest.py &&
+patch -p1 -N -s < scripts/patches/doxyrest/enum_class_fix.patch || true
+"""
+#+end_src toml
+Where the ~doxybuild~ task can be updated to target the ~patch-doxyrest~ target.
+*** Sphinx Configuration
+For ~Sphinx~ to process the generated RST correctly, it needs to load the
+~doxyrest~ extension. Since we are downloading/cloning this into a local
+subdirectory, we must explicitly update the python path in ~docs/src/conf.py~ so
+Sphinx can find it.
+
+#+begin_src python
+# For doxyrest, the location of this can change
+sys.path.insert(0, os.path.abspath("subprojects/doxyrest/sphinx"))
+
+extensions = [
+    # ... other extensions
+    # c++ helpers
+    "doxyrest",
+    "cpplexer",
+    # ...
+]
+#+end_src
+*** CI deployment
+The primary advantage of encapsulating the build logic within ~pixi~ tasks lies
+in the simplification of Continuous Integration (CI) pipelines. Since the
+environment and build steps reside within ~pixi.toml~, the CI configuration need
+only setup ~pixi~ and invoke the target task.
+
+#+begin_src yaml
+      - uses: prefix-dev/setup-pixi@v0.8.10
+        with:
+          activate-environment: true
+          environments: docs
+      - name: Generate Docs
+        run: pixi r docbld
+#+end_src
+
+This reduces the friction of maintenance significantly, as local reproduction of
+CI failures becomes a matter of running ~pixi r docbld~, and integrates easily
+with other actions, like the [[https://github.com/HaoZeke/doc-previewer][doc-previewer]] to post artifact links directly on
+Pull Requests, facilitating easier review of the generated output without
+digging through Action logs. 
+** Metatomic integration
+For larger projects like [[https://github.com/metatensor/metatomic][metatomic]] which do not use ~pixi~, the process requires a
+bit more manual orchestration. Here, the challenge is replacing the declarative
+task runner with a robust script that ensures dependencies (like the ~doxyrest~
+~lua~ frames) are present before invoking the build.
+
+While a ~Makefile~ or ~bash~ script is the traditional route, using [[https://www.nushell.sh/][nushell]]
+provides a nice balance of readability and cross-platform handling without the
+foot-guns of strict POSIX shell scripting, which are best avoided, despite my
+{{{relref(return to bash,back-to-bash)}}}.
+
+*** The Orchestrator Script
+Instead of relying solely on ~tox~ and file driven configurations to do the
+heavy lifting of environment setup, we use a ~nu~ script to bootstrap the
+documentation build.
+
+First, we define our environment and ensure the local directory structure exists.
+We check if ~doxyrest~ is available in the path (useful for local development)
+or if we need to fetch it.
+
+#+name: setup-env
+#+begin_src nushell
+    let root = ($env.PWD)
+    let deps_dir = ($root | path join "docs/subprojects")
+    let doxyrest_src = ($deps_dir | path join "doxyrest")
+    let install_dir = ($deps_dir | path join "install")
+    let has_doxyrest = (which doxyrest | is-not-empty)
+
+    if not ($deps_dir | path exists) { mkdir $deps_dir }
+#+end_src
+
+Next, if the binary is missing, we download the pre-compiled release. This avoids
+the complexity of setting up a C++ build chain in the CI environment just for a
+doc tool.
+
+#+name: dl-binary
+#+begin_src nushell
+    if not $has_doxyrest and not ($install_dir | path exists) {
+        print "Downloading Doxyrest binary release..."
+        let version = "2.1.3"
+        let target = "linux-amd64"
+        let archive = $"doxyrest-($version)-($target).tar.xz"
+        let url = $"https://github.com/vovkos/doxyrest/releases/download/doxyrest-($version)/($archive)"
+
+        cd $deps_dir
+        http get $url | save $archive
+        tar -xJf $archive
+        
+        if ($install_dir | path exists) { rm -rf $install_dir }
+        mv $"doxyrest-($version)-($target)" $install_dir
+        rm $archive
+        cd $root
+    }
+#+end_src
+
+Even with the binary, we still need the Lua frames (themes/templates) from the
+source repository. We clone this shallowly.
+
+#+name: clone-frames
+#+begin_src nushell
+    if not ($doxyrest_src | path exists) {
+        print $"Cloning doxyrest frames into ($doxyrest_src)..."
+        git clone --depth 1 --single-branch https://github.com/vovkos/doxyrest $doxyrest_src
+    }
+#+end_src
+
+Finally, we run the pipeline. Note that we prepend the local install directory
+to the ~PATH~ only for the ~doxyrest~ execution block.
+
+#+name: run-pipeline
+#+begin_src nushell
+    print "Generating XML with Doxygen..."
+    cd docs
+    if not ("build/doxygen/xml" | path exists) { mkdir build/doxygen/xml }
+    doxygen Doxyfile.metatomic
+
+    print "Generating RST with local Doxyrest..."
+    with-env { PATH: ($env.PATH | prepend ($install_dir | path join "bin")) } {
+        doxyrest -c doxyrest-config.lua
+    }
+
+    print "Building HTML with Sphinx (tox)..."
+    tox -e docs
+#+end_src
+
+Sphinx and CI configurations are similar to the previous project, with the
+complete [[https://github.com/metatensor/metatomic/pull/148][PR here]].
+
+#+begin_details
+#+begin_summary
+Click to see the full ~scripts/mkdoc.nu~ script
+#+end_summary
+#+begin_src nushell :tangle scripts/mkdoc.nu :noweb yes
+#!/usr/bin/env nu
+
+def main [] {
+    <<setup-env>>
+
+    # 1. Grab Doxyrest Binary if missing
+    <<dl-binary>>
+
+    # 2. Clone the frames (still needed for the Lua templates)
+    <<clone-frames>>
+
+    # 3. Run the Pipeline
+    <<run-pipeline>>
+}
+#+end_src
+#+end_details
+** Conclusions
+Personally, I like the look of Doxygen still, and for some themes like [[https://shibuya.lepture.com/][shibuya]],
+manual patches are required (e.g. [[https://github.com/OmniPotentRPC/rgpot/pull/25][monkeypatch @ rgpot]]). Nevertheless there are
+multi-language projects [fn:: like [[https://docs.metatensor.org/metatomic/latest/index.html][metatomic]]] which benefit from having a
+consistent style across languages, so this works out quite well. Probably the
+next step would consistency across even more languages and esoteric builds, like
+those in [[https://metatensor.org/][Metatensor]]. 
 * TODO Adding Tutorials to Sphinx Projects :@programming:documentation:tutorials:sphinx:
 :PROPERTIES:
 :EXPORT_FILE_NAME: doc-tut-sph
