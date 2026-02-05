@@ -58,6 +58,7 @@
 (use-package org)
 (use-package org-contrib)
 (use-package htmlize)
+(use-package tomelr)
 (use-package lua-mode)
 (org-reload) ;; Fixes the issue with collect-keywords
 (use-package ox-hugo)
@@ -107,5 +108,7 @@
 
   (with-eval-after-load 'ox
     (setq org-export-headline-levels 4))) ;default is 3
+(unless (fboundp 'org-hugo-auto-export-mode)
+  (defun org-hugo-auto-export-mode () nil))
 (provide 'setup-ox-hugo)
 ;;; setup-ox-hugo.el ends here
