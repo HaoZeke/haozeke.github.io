@@ -63,23 +63,38 @@ jobs:
       - name: Build site with Hugo
         run: pixi run bundle exec rake hugoBuild
 
+      - name: Verify Build Integrity
+        run: |
+          # Use 400 as a floor if .page_count doesn't exist yet
+          OLD_COUNT=$(cat .page_count 2>/dev/null || echo 400)
+          NEW_COUNT=$(find public -name "*.html" | wc -l)
+          echo "Previous count: $OLD_COUNT | Current count: $NEW_COUNT"
+
+          # Fail if the page count drops by more than 10%
+          if [ "$NEW_COUNT" -lt $((OLD_COUNT * 90 / 100)) ]; then
+            echo "::error::Significant page drop detected! Found $NEW_COUNT pages, expected near $OLD_COUNT."
+            echo "This prevents deploying a broken build where Emacs/Org export crashed."
+            exit 1
+          fi
+          echo "$NEW_COUNT" > .page_count
+
       - name: Send arXiv Trackbacks
         if: github.event_name == 'push' && github.ref == 'refs/heads/src'
         run: pixi run uv run scripts/arxiv_trackbacks.py --site-url "https://rgoswami.me"
 
-      - name: Commit and Push Updated Trackback Log
+      - name: Commit and Push Updated Metrics and Logs
         if: github.event_name == 'push' && github.ref == 'refs/heads/src'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          if ! git diff --quiet .sent_trackbacks.log; then
-            git add .sent_trackbacks.log
-            # The commit message MUST contain '(CI)' to be ignored by the next run
-            git commit -m "DOCS: Update sent trackbacks log (CI)"
+          # Check for changes in both the trackback log and the page count metric
+          if ! git diff --quiet .sent_trackbacks.log .page_count; then
+            git add .sent_trackbacks.log .page_count
+            git commit -m "DOCS: Update metrics and trackbacks (CI)"
             git push
-            echo "Trackback log was updated and pushed to the repository."
+            echo "Metrics and logs were updated and pushed."
           else
-            echo "No changes to the trackback log."
+            echo "No changes to metrics or logs."
           fi
 
       - name: Save Trackback Log
