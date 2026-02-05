@@ -1754,7 +1754,7 @@ the editor from mangling the code on save.
 #+end_src
 Probably ought to be a nicer way, perhaps something in the ~doom~ local
 configuration.
-** DONE Using ~pixi~ environments for orgmode notebooks
+** DONE Using ~pixi~ environments for orgmode notebooks :pixi:orgmode:workflow:
 CLOSED: [2026-01-29 Thu 08:20]
 :PROPERTIES:
 :EXPORT_HUGO_BUNDLE: pixi-orgmode-notebooks
