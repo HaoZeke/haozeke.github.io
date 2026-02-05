@@ -9,10 +9,6 @@ on:
   schedule:
     - cron: "0 0 * * *" # Runs daily at midnight
 
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
-
 jobs:
   build-and-deploy:
     if: "!contains(github.event.head_commit.message, '(CI)')"
@@ -21,58 +17,40 @@ jobs:
       HUGO_ENVIRONMENT: production
 
     steps:
-      - name: Check out repository
+      - name: Check out human source
         uses: actions/checkout@v4
         with:
-          submodules: true # Fetch Hugo themes
-          fetch-depth: 0 # Fetch all history for .GitInfo and .Lastmod
+          submodules: true
+          fetch-depth: 0
 
       - name: Set up Pixi
         uses: prefix-dev/setup-pixi@v0.9.0
         with:
           cache: true
 
-      - name: Install Node and Ruby Dependencies
-        run: pixi run npm install && pixi run bundle install
+      - name: Install Dependencies
+        run: pixi run npm install && pixi run bundle install && pixi run uv sync
 
       - name: Install dart-sass
         uses: dw-labs-org/dart-sass-gha@v1
 
-      - name: Restore Hugo Cache
-        id: hugo-cache-restore
-        uses: actions/cache/restore@v4
-        with:
-          path: public
-          key: ${{ runner.os }}-hugo-${{ hashFiles('**/pixi.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-hugo-
-
-      - name: Configure Git
-        run: git config --global core.quotepath false
-
-      - name: Restore Trackback Cache
-        id: trackback-cache-restore
-        uses: actions/cache/restore@v4
-        with:
-          path: .sent_trackbacks.log
-          key: ${{ runner.os }}-trackbacks-${{ github.ref_name }}
-          restore-keys: |
-            ${{ runner.os }}-trackbacks-
+      - name: Fetch Bot Metrics
+        run: |
+          # Fetch only the files we need from the bot branch without switching branches
+          git fetch origin bot-metrics:bot-metrics || true
+          git checkout bot-metrics -- .sent_trackbacks.log .page_count || echo "Initializing metrics" > /dev/null
 
       - name: Build site with Hugo
         run: pixi run bundle exec rake hugoBuild
 
       - name: Verify Build Integrity
         run: |
-          # Use 400 as a floor if .page_count doesn't exist yet
           OLD_COUNT=$(cat .page_count 2>/dev/null || echo 400)
           NEW_COUNT=$(find public -name "*.html" | wc -l)
           echo "Previous count: $OLD_COUNT | Current count: $NEW_COUNT"
 
-          # Fail if the page count drops by more than 10%
           if [ "$NEW_COUNT" -lt $((OLD_COUNT * 90 / 100)) ]; then
-            echo "::error::Significant page drop detected! Found $NEW_COUNT pages, expected near $OLD_COUNT."
-            echo "This prevents deploying a broken build where Emacs/Org export crashed."
+            echo "::error::Significant page drop! Found $NEW_COUNT, expected ~$OLD_COUNT."
             exit 1
           fi
           echo "$NEW_COUNT" > .page_count
@@ -81,30 +59,28 @@ jobs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/src'
         run: pixi run uv run scripts/arxiv_trackbacks.py --site-url "https://rgoswami.me"
 
-      - name: Commit and Push Updated Metrics and Logs
+      - name: Update and Push Bot Metrics Branch
         if: github.event_name == 'push' && github.ref == 'refs/heads/src'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          # Check for changes in both the trackback log and the page count metric
-          if ! git diff --quiet .sent_trackbacks.log .page_count; then
-            git add .sent_trackbacks.log .page_count
-            git commit -m "DOCS: Update metrics and trackbacks (CI)"
-            git push
-            echo "Metrics and logs were updated and pushed."
-          else
-            echo "No changes to metrics or logs."
-          fi
 
-      - name: Save Trackback Log
-        if: always()
-        uses: actions/cache/save@v4
-        with:
-          path: .sent_trackbacks.log
-          key: ${{ steps.trackback-cache-restore.outputs.cache-primary-key || format('{0}-trackbacks-{1}', runner.os, github.ref_name) }}
+          # Move files to a temporary location to protect them during branch switching
+          mkdir -p ../temp_metrics
+          cp .sent_trackbacks.log .page_count ../temp_metrics/
+
+          # Switch to the bot branch (create if it doesn't exist)
+          git checkout bot-metrics || git checkout --orphan bot-metrics
+          git rm -rf . || true # Clear previous content
+
+          # Bring files back and commit
+          cp ../temp_metrics/.sent_trackbacks.log ../temp_metrics/.page_count .
+          git add .sent_trackbacks.log .page_count
+          git commit -m "Update metrics and trackbacks (CI)" || echo "No changes to metrics"
+          git push origin bot-metrics
 
       - name: Deploy to GitHub Pages
-        if: github.event_name == 'push' && github.ref == 'refs/heads/src' && !contains(github.event.head_commit.message, 'ImgBot')
+        if: github.event_name == 'push' && github.ref == 'refs/heads/src'
         uses: peaceiris/actions-gh-pages@v4
         with:
           deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
@@ -112,5 +88,3 @@ jobs:
           publish_dir: ./public
           keep_files: true
           enable_jekyll: false
-          user_name: "github-actions[bot]"
-          user_email: "github-actions[bot]@users.noreply.github.com"
