@@ -1673,6 +1673,37 @@ This globally managed renamed ~R~ executable can then be used for ~apheleia~ in 
   :modes '(ess-r-mode))
 #+end_src
 Which works well, isolating the formatting logic from transient per-project states and fragile global state.
+** DONE Co-authoring Github commits with ~pixi~ :git:pixi:workflow:
+CLOSED: [2026-02-05 Thu 11:02]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: pixi-shebang-ghcoauth
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
+Seth Larson has a nice [[https://sethmlarson.dev/easy-github-co-authored-by][short post]] on handling co-authors on Github without
+public emails, basically using ~jq~ to generate the ~noreply~ email address.
+
+For systems without ~jq~ or administrative access, augmenting this with ~pixi~
+as the [[https://en.wikipedia.org/wiki/Shebang_(Unix)][shebang]] works well [fn:: now managed by ~chezmoi~ within [[https://rgoswami.me/posts/mig-dots-chezmoi/][my Dotfiles]]]:
+#+begin_src bash
+#!/usr/bin/env -S pixi exec --spec jq -- bash
+
+# From https://sethmlarson.dev/easy-github-co-authored-by
+# xref: https://github.com/awesomebytes/pixibang
+
+login="$@"
+read id display_name < <(echo $(curl -s "https://api.github.com/users/$login" | jq -r '.id, .name'))
+echo "Co-authored-by: $display_name <$id+$login@users.noreply.github.com>"
+#+end_src
+
+Which works as expected:
+#+begin_src bash
+ghcoauthby HaoZeke
+Co-authored-by: Rohit Goswami <4336207+HaoZeke@users.noreply.github.com>
+# more practically
+git commit -m 'feat(mta): add amazing thing' \
+    --trailer '$(coauthoredby HaoZeke)'
+#+end_src
 ** DONE Notify on ~pdf~ compilation
 CLOSED: [2025-10-04 Sat 01:52]
 :PROPERTIES:
