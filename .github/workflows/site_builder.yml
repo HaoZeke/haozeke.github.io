@@ -7,7 +7,11 @@ on:
   pull_request:
     branches: [src]
   schedule:
-    - cron: "0 0 * * *" # Runs daily at midnight
+    - cron: "0 0 * * *"
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
   build-and-deploy:
@@ -29,16 +33,15 @@ jobs:
           cache: true
 
       - name: Install Dependencies
-        run: pixi run npm install && pixi run bundle install && pixi run uv sync
+        run: pixi run npm install && pixi run bundle install
 
       - name: Install dart-sass
         uses: dw-labs-org/dart-sass-gha@v1
 
       - name: Fetch Bot Metrics
         run: |
-          # Fetch only the files we need from the bot branch without switching branches
           git fetch origin bot-metrics:bot-metrics || true
-          git checkout bot-metrics -- .sent_trackbacks.log .page_count || echo "Initializing metrics" > /dev/null
+          git checkout bot-metrics -- .sent_trackbacks.log .page_count || echo "Initializing metrics"
 
       - name: Build site with Hugo
         run: pixi run bundle exec rake hugoBuild
@@ -48,7 +51,7 @@ jobs:
           OLD_COUNT=$(cat .page_count 2>/dev/null || echo 400)
           NEW_COUNT=$(find public -name "*.html" | wc -l)
           echo "Previous count: $OLD_COUNT | Current count: $NEW_COUNT"
-
+          
           if [ "$NEW_COUNT" -lt $((OLD_COUNT * 90 / 100)) ]; then
             echo "::error::Significant page drop! Found $NEW_COUNT, expected ~$OLD_COUNT."
             exit 1
@@ -57,6 +60,7 @@ jobs:
 
       - name: Send arXiv Trackbacks
         if: github.event_name == 'push' && github.ref == 'refs/heads/src'
+        # uv run handles the script execution without needing a pyproject.toml sync
         run: pixi run uv run scripts/arxiv_trackbacks.py --site-url "https://rgoswami.me"
 
       - name: Update and Push Bot Metrics Branch
@@ -64,19 +68,13 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          # Move files to a temporary location to protect them during branch switching
           mkdir -p ../temp_metrics
           cp .sent_trackbacks.log .page_count ../temp_metrics/
-
-          # Switch to the bot branch (create if it doesn't exist)
           git checkout bot-metrics || git checkout --orphan bot-metrics
-          git rm -rf . || true # Clear previous content
-
-          # Bring files back and commit
+          git rm -rf . || true
           cp ../temp_metrics/.sent_trackbacks.log ../temp_metrics/.page_count .
           git add .sent_trackbacks.log .page_count
-          git commit -m "Update metrics and trackbacks (CI)" || echo "No changes to metrics"
+          git commit -m "Update metrics and trackbacks (CI)" || echo "No changes"
           git push origin bot-metrics
 
       - name: Deploy to GitHub Pages
