@@ -116,6 +116,8 @@ name = "Rohit Goswami (HaoZeke)"
 
   # Default theme "light" or "dark"
   defaultTheme = "dark"
+  # Show sharing icons? (currently broken)
+  sharingIcons = false
 
 [services]
   [services.googleAnalytics]
