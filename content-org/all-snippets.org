@@ -1933,9 +1933,9 @@ block containing the variable, so a bit more effort is needed.
     (message "Exported to %s" out)))
 #+end_src
 
-Along with an additional macro for the challenges: 
+Along with an additional macro for the challenge headings, so ~{{{mdheader(### Details)}}}~ with the ~begin_discussion~ segments work: 
 #+begin_src
-#+MACRO: mdheader @@markdown:## $1@@
+#+MACRO: mdheader @@markdown:$1@@
 #+end_src
 and a helper to export on save:
 #+begin_src 
