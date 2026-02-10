@@ -1881,6 +1881,40 @@ the usage of substantial models on lightweight clients, effectively offloading
 the heavy lifting to dedicated hardware, and making good use of older machines.
 
 Also see this post for [[https://markaicode.com/gemma-3-single-gpu-ollama-optimization/][more details]].
+** DONE ~orgmode~ for workbench lessons ::workflow:orgmode:
+CLOSED: [2026-02-10 Tue 16:50]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: orgmode-workbench
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("The Orgmode Almanac")
+:END:
+#+begin_quote
+Lesson planning with ~org~ and the Carpentries workbench
+#+end_quote
+To export with fenced blocks consider:
+#+begin_src emacs-lisp
+(defun export-as-workbench-md ()
+  "Export the current Org buffer to Carpentries-style Markdown using Pandoc."
+  (interactive)
+  (let* ((source-file (buffer-file-name))
+         (output-file (concat (file-name-sans-extension source-file) ".md"))
+         ;; Enable fenced_divs to convert #+begin_name blocks to ::: name
+         (pandoc-cmd (format "pandoc %s -f org -t markdown+fenced_divs -o %s"
+                             (shell-quote-argument source-file)
+                             (shell-quote-argument output-file))))
+    (if source-file
+        (progn
+          (save-buffer)
+          (shell-command pandoc-cmd)
+          (message "Exported to %s" output-file))
+      (error "Buffer is not associated with a file"))))
+#+end_src
+Along with an additional macro for the challenges: 
+#+begin_src
+#+MACRO: mdheader @@markdown:## $1@@
+#+end_src
+Which together, correctly render lessons for ~Rscript -e "sandpaper::serve()"~ as [[https://haozeke.github.io/python_packaging_workbench/][seen here in this Python lesson]].
 ** DONE ~conda-smithy~ notes for off-brand ~conda~ packages :build:packaging:conda:
 CLOSED: [2026-02-01 Sun 06:50]
 :PROPERTIES:
