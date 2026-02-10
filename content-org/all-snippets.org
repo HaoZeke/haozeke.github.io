@@ -1925,7 +1925,7 @@ block containing the variable, so a bit more effort is needed.
          (out (or (cadr (assoc "EXPORT_FILE_NAME" kv))
                   (concat (file-name-sans-extension src) ".md")))
          ;; Grep excludes the line -> Pipe -> Pandoc
-         (cmd (format "grep -v '^#+EXPORT_FILE_NAME:' %s | pandoc -f org -t markdown-smart+fenced_divs -o %s"
+         (cmd (format "grep -vE '^#\\+(EXPORT_FILE_NAME|PROPERTY):' %s | pandoc -f org -t markdown-smart+fenced_divs --shift-heading-level-by=1 -o %s"
                       (shell-quote-argument src)
                       (shell-quote-argument out))))
     
@@ -1933,9 +1933,11 @@ block containing the variable, so a bit more effort is needed.
     (message "Exported to %s" out)))
 #+end_src
 
-Along with an additional macro for the challenge headings, so ~{{{mdheader(### Details)}}}~ with the ~begin_discussion~ segments work: 
+Where the shift heading is because the workbench prefers having ~##~ for all lesson headings.
+
+Along with an additional macro for the challenge headings, so ~{{{markdown(### Details)}}}~ with the ~begin_discussion~ segments work: 
 #+begin_src
-#+MACRO: mdheader @@markdown:$1@@
+#+MACRO: markdown @@markdown:$1@@
 #+end_src
 and a helper to export on save:
 #+begin_src 
@@ -1943,7 +1945,7 @@ and a helper to export on save:
 # eval: (add-hook 'after-save-hook 'export-as-workbench-md nil t)
 # End:
 #+end_src
-Which together, correctly render lessons for ~Rscript -e "sandpaper::serve()"~ as [[https://haozeke.github.io/python_packaging_workbench/][seen here in this Python lesson]].
+Which together, correctly render lessons for ~Rscript -e "sandpaper::serve()"~ as [[https://pydissem.rgoswami.me][seen here in this Python lesson]].
 ** DONE ~conda-smithy~ notes for off-brand ~conda~ packages :build:packaging:conda:
 CLOSED: [2026-02-01 Sun 06:50]
 :PROPERTIES:
