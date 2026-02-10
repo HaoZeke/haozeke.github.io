@@ -1892,31 +1892,45 @@ CLOSED: [2026-02-10 Tue 16:50]
 Lesson planning with ~org~ and the Carpentries workbench
 #+end_quote
 To export with fenced blocks consider:
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :eval never
 (defun export-as-workbench-md ()
   "Export the current Org buffer to Carpentries-style Markdown using Pandoc."
   (interactive)
   (let* ((source-file (buffer-file-name))
-         (keywords (org-collect-keywords '("EXPORT_FILE_NAME")))
-         (export-prop (cadr (assoc "EXPORT_FILE_NAME" keywords)))
-         
-         ;; Fallback to source filename if no export name is defined
-         (output-file (or export-prop 
-                          (concat (file-name-sans-extension source-file) ".md")))
-
+         (output-file (concat (file-name-sans-extension source-file) ".md"))
          ;; Enable fenced_divs to convert #+begin_name blocks to ::: name
-         (pandoc-cmd (format "pandoc %s -f org -t markdown-smart+fenced_divs -o %s"
+         (pandoc-cmd (format "pandoc %s -f org -t markdown+fenced_divs -o %s"
                              (shell-quote-argument source-file)
                              (shell-quote-argument output-file))))
     (if source-file
         (progn
           (save-buffer)
-          ;; Ensure the directory exists if using a relative path like ./episodes/
-          (when (file-name-directory output-file)
-            (make-directory (file-name-directory output-file) t))
           (shell-command pandoc-cmd)
           (message "Exported to %s" output-file))
       (error "Buffer is not associated with a file"))))
+#+end_src
+
+While this works for exporting to the same file name, with only the extension
+changed, using the ~EXPORT_FILE_NAME~ ends up trying to export an ~orgmode~
+block containing the variable, so a bit more effort is needed.
+
+#+begin_src emacs-lisp :eval never
+(defun export-as-workbench-md ()
+  "Save, strip the export line via grep, and pipe to Pandoc."
+  (interactive)
+  (save-buffer)
+  (let* ((src (buffer-file-name))
+         ;; Get the filename from the buffer keywords
+         (kv  (org-collect-keywords '("EXPORT_FILE_NAME")))
+         (out (or (cadr (assoc "EXPORT_FILE_NAME" kv))
+                  (concat (file-name-sans-extension src) ".md")))
+         ;; Grep excludes the line -> Pipe -> Pandoc
+         (cmd (format "grep -v '^#+EXPORT_FILE_NAME:' %s | pandoc -f org -t markdown-smart+fenced_divs -o %s"
+                      (shell-quote-argument src)
+                      (shell-quote-argument out))))
+    
+    (shell-command cmd)
+    (message "Exported to %s" out)))
 #+end_src
 
 Along with an additional macro for the challenges: 
