@@ -21726,6 +21726,172 @@ POSIX compatibility is here to stay on most machines. It is unlikely that this
 will change in the near future.  To that end, it makes more sense to adaptively
 stick to ~bash~ and save my "[[https://steveklabnik.com/writing/the-language-strangeness-budget/][strangeness budget]]" [fn:: A concern I was recently re-sensitized to by [[https://github.com/Luthaf/][Luthaf]]] for new-fangled programming
 languages instead of shells[fn:: At any rate, I do relish not having to transform one-liners from ~nushell~ and friends back to ~bash~ to pass to co-workers.].
+* DONE Windows Compatibility in Scientific C++ :@programming:fortran:windows:build:science:
+CLOSED: [2026-02-16 Sun 11:00]
+:PROPERTIES:
+:EXPORT_FILE_NAME: windows-compat-sci-cpp
+:EXPORT_HUGO_PANDOC_CITATIONS: t
+:EXPORT_BIBLIOGRAPHY: biblio/myWork.bib
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :link-citations true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("EON" "Fortran Frontiers: Bridging Legacy to Modernity")
+:END:
+#+BEGIN_QUOTE
+Notes on cross-platform portability for scientific codes with legacy components.
+#+END_QUOTE
+** Background
+Most computational chemistry codes are developed on Linux. macOS shows up in CI
+matrices or in workshops, a [[https://github.com/TheochemUI/eon-feedstock][conda-forge feedstock]] might cover the major
+platforms, but Windows tends to be tested last and debugged reluctantly [fn::
+which makes stuff like [[https://metatensor.org][metatensor]] pretty impressive]. This is simply a
+consequence of the platforms available in most research groups and the
+priorities of the people writing the code [fn:: I haven't had a windows machine
+in over a decade and a half].
+
+I have been maintaining [[https://eondocs.org][eOn]] [fn:whatiseon] for a while now, through a GPR-dimer
+implementation [@goswamiEfficientImplementationGaussian2025b], an on-the-go
+variant [@goswamiAdaptivePruningIncreased2025b], the NEB-MMF work
+[@goswamiEnhancedClimbingImage2026], my thesis
+[@goswamiEfficientExplorationChemical2025], and more recently the
+[[https://github.com/metatensor/ecosystem-article/tree/main/eon][metatensor ecosystem integration]] [@bigiMetatensorMetatomicFoundational2026]
+[fn:: Reproduction repositories for the associated publications are available:
+[[https://github.com/TheochemUI/gpr_sella_repro][GPR-dimer]], [[https://github.com/TheochemUI/otgpd_repro][OTGPD]], [[https://github.com/haozeke/nebmmf_repro][NEB-MMF]], [[https://github.com/metatensor/ecosystem-article][Metatensor]], and [[https://github.com/HaoZeke/brms_idrot_repro][BRMS rotations]].] and an [[https://atomistic-cookbook.org/examples/eon-pet-neb/eon-pet-neb.html][atomistic
+cookbook recipe]] for NEB with machine learning potentials. Along the way, and
+through contributions to [[https://chemfiles.org][chemfiles]] and [[https://asv.readthedocs.io/en/stable/][asv]], I have collected a tidy set of
+Windows-specific failure modes. Each has cost at least one CI cycle and
+occasionally an afternoon.
+
+** Reserved Filenames
+Windows inherits from DOS a set of [[https://stackoverflow.com/questions/1976007/what-characters-are-forbidden-in-windows-and-linux-directory-names][reserved device names]] that cannot be used as
+filenames, regardless of extension: ~CON~, ~PRN~, ~AUX~, ~NUL~, ~COM1~ through
+~COM9~, ~LPT1~ through ~LPT9~. Case-insensitive, naturally. The [[https://learn.microsoft.com/en-us/windows/win32/fileio/naming-a-file][Microsoft
+documentation]] is comprehensive, but in practice most people discover these
+constraints from a CI failure rather than from reading the docs.
+*** ~aux.py~ in ~asv_runner~ (2023)
+When writing [[https://github.com/airspeed-velocity/asv_runner][asv_runner]], the runner component for the ~asv~ benchmarking tool, I
+had a perfectly reasonable file called ~asv_runner/aux.py~ for auxiliary
+benchmark configuration [fn:whyaux]. On Linux, no problem. On Windows:
+
+#+begin_src text
+ERROR: For req: asv-runner. The wheel has a file 'asv_runner/aux.py'
+trying to install outside the target directory
+#+end_src
+
+The wheel could not even be /installed/, let alone the repository
+cloned [fn:auxclone]. Since ~asv~ is used by NumPy, SciPy, and friends for
+performance tracking, this surfaced quickly. The [[https://github.com/airspeed-velocity/asv_runner/issues/3][fix]] was to rename the file.
+The same issue appeared in [[https://github.com/TheochemUI/pypotlib/issues/1][pypotlib]] shortly after, because apparently one lesson
+is never enough.
+*** ~CON.cpp~ in ~chemfiles~ (2026)
+Three years later, while adding ~.con~ file support to [[https://github.com/chemfiles/chemfiles/pull/527][chemfiles]], I named the
+implementation files ~CON.hpp~ and ~CON.cpp~ after the format they
+implement [fn:confmt]. ~CON~ is of course also a reserved device name.
+
+The files were renamed to ~_CON.hpp~ and ~_CON.cpp~. The list of reserved names
+is short enough to memorize, but apparently long enough to forget between
+projects.
+** Stack Sizes and Legacy Fortran
+The default stack size on Linux is typically 8 MB (~ulimit -s~). On Windows, it
+is 1 MB. This is rarely a problem for modern C++ since ~Eigen::MatrixXd~ and
+friends allocate on the heap, but it matters enormously for legacy Fortran,
+where local arrays live on the stack by default.
+*** The GAGAFE Subroutine
+The eOn code includes Embedded Atom Model potentials implemented in Fortran 77.
+The core routine is called ~GAGAFE~, and I rather enjoy knowing where the name
+comes from [fn:: courtesy of my doctoral thesis advisor..]:
+
+#+BEGIN_QUOTE
+GAGAFE stands for 'group of atoms, group of atoms, force and energy'. In a
+system with two types of atoms, A and B, GAGAFE needed to be called three times,
+once for the A-A interactions, then for the B-B interactions and finally for the
+A-B interactions. This is coming from the code written in the H. C. Andersen
+group at Stanford (starting around 1980 when he wrote his famous paper on the
+velocity Verlet algorithm and the isobaric simulations with the extended
+Lagrangian). The code ran on a PDP-11 computer in combination with an array
+processor. I was a post-doc in the group 1986-1988 and kept this basic structure
+in the F77 code I wrote when I moved to Seattle in 1988. 
+
+-- [[https://hj.hi.is/indexE.html][Hannes J{\'o}nsson]] (private communication)
+#+END_QUOTE
+
+There is something appealing about a subroutine name with a provenance older
+than most of its users. The code has been running continuously for over four
+decades, and it still works.. except on Windows, where the local arrays blow
+the stack.
+
+The subroutine declares arrays dimensioned with compile-time constants:
+
+#+begin_src fortran
+c parameters.cmn
+      parameter (MAXPRS = 200000)
+
+c gagafeDblexp.f
+      DIMENSION phi(MAXPRS), phivirst(MAXPRS)
+      DIMENSION RA1(MAXCOO), RA2(MAXCOO), FA1(MAXCOO), FA2(MAXCOO)
+#+end_src
+
+~phi~ and ~phivirst~ alone consume around 3 MB. Including the remaining arrays,
+the total stack footprint is roughly around 3.6 MB which is well beyond the 1 MB
+Windows default.  The client crashes on entry to the potential routine with exit
+code ~3221225725~ (decimal), which is ~0xC00000FD~: ~STATUS_STACK_OVERFLOW~.
+*** The Fix
+For Meson-based builds, the linker can request a larger stack:
+
+#+begin_src meson
+if is_windows
+    if is_mingw
+        _linkargs += ['-Wl,--stack,16777216']  # 16 MB
+    elif cppc.get_id() == 'msvc'
+        _linkargs += ['/STACK:16777216']
+    endif
+endif
+#+end_src
+
+The alternative is refactoring the Fortran to use ~ALLOCATABLE~ arrays or
+~COMMON~ blocks. For code with this kind of lineage, the linker flag is less
+invasive. More on working with inherited Fortran in general can be found in an
+{{{relref(earlier post,handling-legacy-fortran-code)}}}.
+** Stdout Redirection and ~spdlog~
+The ~spdlog~ logging library provides ~stdout_color_sink_mt~, which uses ANSI
+escape codes on Linux and ~WriteConsole~ on Windows for colored output. The
+catch: ~WriteConsole~ [[https://github.com/gabime/spdlog/issues/1147][only works]] when the output handle is an actual
+console [fn:writeconsole]. When a parent process redirects stdout to a file
+as the eOn Python server does for every client job, ~WriteConsole~ fails
+silently.
+
+The symptom is that the client produces no stdout whatsoever. stderr is empty.
+The exit code may or may not be informative depending on what else breaks
+downstream. The fix is to select the non-color sink:
+
+#+begin_src cpp
+#ifdef _WIN32
+  auto console_sink =
+      std::make_shared<spdlog::sinks::stdout_sink_mt>();
+#else
+  auto console_sink =
+      std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
+#endif
+#+end_src
+
+This took longer to diagnose than it should have, mostly because "no output"
+does not immediately suggest "color codes".
+** Concluding Remarks
+None of these issues are particularly deep. The reserved filenames have been documented since
+DOS. The 1 MB stack has been the default for decades. The ~WriteConsole~
+behavior has an open ~spdlog~ issue from 2020. The common thread is that they
+surface only when CI runs on a platform the developer does not use daily, with
+error messages ranging from cryptic (~0xC00000FD~) to absent.
+
+The practical advice is simple: add Windows to the CI matrix early, and pay
+extra attention to legacy Fortran components where stack allocation is the
+default. And perhaps keep a list of DOS device names somewhere visible.
+
+[fn:whatiseon] eOn is a saddle point search code for long timescale dynamics simulations on atomic systems, combining a Python server with a C++ client. See [[https://eondocs.org][the documentation]] for details.
+[fn:whyaux] It handled auxiliary benchmark configuration. The name made perfect sense in context, which is approximately how all of these stories begin.
+[fn:auxclone] ~git clone~ fails with ~error: invalid path 'asv_runner/aux.py'~ on Windows, because the filesystem refuses to create the file.
+[fn:confmt] The ~.con~ format describes atomic configurations and is native to eOn. The format name predates my involvement by roughly two decades.
+[fn:writeconsole] ~WriteConsole~ writes to the console screen buffer directly, bypassing the standard I/O layer. When the handle is a file, there is no screen buffer to write to.
+
 * TODO ~jj~ crib-notes
 #+begin_quote
 Reducing maintainer burdens for development workflows
