@@ -22020,22 +22020,144 @@ std_io -> success [label="Works on Files"];
 #+CAPTION: The silent failure mechanism: ~WriteConsole~ bypasses standard I/O and fails when the handle is a file, whereas standard sinks use file-compatible APIs.
 [[file:./images/dot/spdlog-sink-flow.png]]
 
-** Concluding Remarks
-None of these issues are particularly deep. The reserved filenames have been documented since
-DOS. The 1 MB stack has been the default for decades. The ~WriteConsole~
-behavior has an open ~spdlog~ issue from 2020. The common thread is that they
-surface only when CI runs on a platform the developer does not use daily, with
-error messages ranging from cryptic (~0xC00000FD~) to absent.
+This has *been fixed* in recent versions of ~spdlog~, and was likely simply masking errors from the ~gagafe~ issue.
+** The MinGW/MSVC ABI Boundary
+On conda-forge, Fortran libraries are built with MinGW (~m2w64~) because there
+is no MSVC Fortran compiler. The entire grimme-lab stack (~xtb~, ~tblite~, ~dftd4~,
+~mctc-lib~) uses MinGW consistently, so internally there is no mismatch. The
+problem appears when a C++ project built with MSVC needs to link against one of
+these libraries.
 
-The practical advice is simple: add Windows to the CI matrix early, and pay
-extra attention to legacy Fortran components where stack allocation is the
-default. And perhaps keep a list of DOS device names somewhere visible.
+This surfaced while enabling Windows builds for the [[https://eondocs.org/releases/v2.10.0/release-notes#v2-10-0-2026-02-15][eOn v2.10.0]] conda-forge
+[[https://github.com/conda-forge/eon-feedstock/pull/18][feedstock]]. eOn links against ~libxtb~ for the tight-binding potential, and
+against ~libtorch~ and ~libmetatensor~ for machine learning potentials. The
+latter two come from the MSVC ecosystem. There is no world in which everything
+uses the same compiler [fn:: wake me when we have the one true universal compiler..].
+*** The Import Library Problem
+MinGW produces ~libxtb.dll.a~ (a GNU-style import library). MSVC's linker does
+not understand this format; it expects ~xtb.lib~. The xtb conda package does not
+ship one because it has no reason to [fn:xtbmingw].
+
+The workaround is to generate an MSVC-compatible import library from the DLL
+exports:
+
+#+begin_src bat
+dumpbin /EXPORTS "%LIBRARY_BIN%\libxtb-6.dll" > xtb_exports.txt
+echo LIBRARY libxtb-6.dll > xtb.def
+echo EXPORTS >> xtb.def
+for /f "skip=19 tokens=4" %%A in (xtb_exports.txt) do (
+    if not "%%A"=="" echo     %%A >> xtb.def
+)
+lib /DEF:xtb.def /OUT:"%LIBRARY_LIB%\xtb.lib" /MACHINE:X64
+#+end_src
+
+This works because ~xtb~ exposes a pure C API (~xtb.h~), and the C ABI is
+compatible between MinGW and MSVC. C++ name mangling would be fatal here, but
+~xtb~ [fn:: and the forward thinking ~tblite~] provide a C interface. The
+dependency chain is illustrated in Figure [[fig:mingw-msvc-abi]].
+
+#+BEGIN_SRC dot :file ./images/dot/mingw-msvc-abi.png :cmdline -Kdot -Tpng -Gdpi=150 :cache yes :exports none
+digraph MinGWMSVC {
+rankdir=TB;
+node [shape=box, fontname="Helvetica", style=filled];
+compound=true;
+
+subgraph cluster_mingw {
+    label="MinGW (m2w64) Toolchain";
+    style=filled;
+    fillcolor="#fff3e0";
+    color="#ffcc80";
+
+    xtb [label="libxtb-6.dll\n(Fortran + C API)", fillcolor="#ffe0b2"];
+    implib_gnu [label="libxtb.dll.a\n(GNU import lib)", fillcolor="#ffe0b2"];
+}
+
+subgraph cluster_msvc {
+    label="MSVC Toolchain";
+    style=filled;
+    fillcolor="#e1f5fe";
+    color="#81d4fa";
+
+    libtorch [label="libtorch\n(torch.lib, c10.lib)", fillcolor="#b3e5fc"];
+    metatensor [label="libmetatensor-torch\n(metatensor.dll.lib)", fillcolor="#b3e5fc"];
+    eon [label="eonclient.exe", fillcolor="#c8e6c9", color="#81c784"];
+}
+
+subgraph cluster_bridge {
+    label="ABI Bridge";
+    style=filled;
+    fillcolor="#f3e5f5";
+    color="#ce93d8";
+
+    generate [label="dumpbin + lib /DEF\n→ xtb.lib", fillcolor="#e1bee7"];
+}
+
+xtb -> implib_gnu [style=dashed, color="#888888"];
+xtb -> generate [label="DLL exports"];
+generate -> eon [label="MSVC-compatible\nimport lib"];
+libtorch -> eon;
+metatensor -> eon;
+}
+#+END_SRC
+
+#+RESULTS[b662e5de8e1d618f0aff0246b2bcb0d2f2aa9081]:
+#+NAME: fig:mingw-msvc-abi
+#+LABEL: fig:mingw-msvc-abi
+#+CAPTION: The ABI bridge: generating an MSVC import library from a MinGW-built DLL allows a single executable to link against both toolchain ecosystems.
+[[file:./images/dot/mingw-msvc-abi.png]]
+
+*** ~find_library~ and Missing Import Libraries
+A related pattern appears in the ~libtorch~ integration from the same
+[[https://github.com/conda-forge/eon-feedstock/pull/18][feedstock PR]]. The meson build finds torch libraries with ~find_library~, which
+defaults to ~required: true~:
+
+#+begin_src meson
+lib_torch_list = ['c10', 'torch', 'torch_cpu', 'torch_global_deps']
+tdeps = []
+foreach lib_name : lib_torch_list
+    tdeps += cppc.find_library(lib_name, dirs: [LIB_TORCH_LIB_PATH])
+endforeach
+#+end_src
+
+On Windows, ~torch_global_deps~ ships as a DLL with no corresponding ~.lib~
+import library. It exists solely to set up runtime library search paths for CUDA
+and has no exported symbols needed at link time. The equivalent CMake build
+handles this gracefully:
+
+#+begin_src cmake
+foreach(lib c10 torch torch_cpu torch_global_deps)
+  find_library(${lib}_LIB ${lib} PATHS ${LIB_TORCH_LIB_PATH} NO_DEFAULT_PATH)
+  if(${lib}_LIB)
+    target_link_libraries(eonclib PUBLIC ${${lib}_LIB})
+  endif()
+endforeach()
+#+end_src
+
+The CMake version silently skips missing libraries. The meson version treats
+every entry as mandatory. The fix is to add ~required: false~ and check
+~.found()~, which is the meson equivalent of the CMake pattern [fn:mesonreqfalse].
+
+** Concluding Remarks
+None of these issues are particularly deep. The reserved filenames have been
+documented since DOS. The 1 MB stack has been the default for decades. The
+MinGW/MSVC split has been the status quo on conda-forge for as long as Fortran
+has been involved. The common thread is that they surface only when CI runs on a
+platform the developer does not use daily, with error messages ranging from
+cryptic (~0xC00000FD~) to absent (~WriteConsole~) to quietly fatal linker
+errors.
+
+The practical advice is simple: add Windows to the CI matrix early, pay extra
+attention to legacy Fortran components where stack allocation is the default,
+and do not assume that "requires library X" implies "requires the toolchain that
+built library X". And perhaps keep a list of DOS device names somewhere visible.
 
 [fn:whatiseon] eOn is a saddle point search code for long timescale dynamics simulations on atomic systems, combining a Python server with a C++ client. See [[https://eondocs.org][the documentation]] for details.
 [fn:whyaux] It handled auxiliary benchmark configuration. The name made perfect sense in context, which is approximately how all of these stories begin.
 [fn:auxclone] ~git clone~ fails with ~error: invalid path 'asv_runner/aux.py'~ on Windows, because the filesystem refuses to create the file.
 [fn:confmt] The ~.con~ format describes atomic configurations and is native to eOn. The format name predates my involvement by roughly two decades.
 [fn:writeconsole] ~WriteConsole~ writes to the console screen buffer directly, bypassing the standard I/O layer. When the handle is a file, there is no screen buffer to write to.
+[fn:xtbmingw] Every package in the xtb dependency chain (mctc-lib, multicharge, dftd4, tblite, xtb) uses ~m2w64_c~ and ~m2w64_fortran~ on Windows. The Python wrappers (xtb-python, tblite-python) sidestep the problem entirely by using CFFI for runtime loading rather than link-time binding.
+[fn:mesonreqfalse] The [[https://mesonbuild.com/Reference-manual_returned_compiler.html#compilerfind_library][meson documentation]] notes that ~find_library~ returns a ~dependency~ object. With ~required: false~, the returned object's ~.found()~ method can be checked before use, mirroring CMake's ~if(${lib}_LIB)~ idiom.
 
 * TODO ~jj~ crib-notes
 #+begin_quote
