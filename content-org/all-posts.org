@@ -21789,7 +21789,60 @@ implement [fn:confmt]. ~CON~ is of course also a reserved device name.
 
 The files were renamed to ~_CON.hpp~ and ~_CON.cpp~. The list of reserved names
 is short enough to memorize, but apparently long enough to forget between
-projects.
+projects. The divergence in kernel handling is shown in Figure [[fig:win-filename-clash]].
+#+BEGIN_SRC dot :file ./images/dot/win-filename-clash.png :cmdline -Kdot -Tpng -Gdpi=150 :cache yes :exports none
+digraph FilenameClash {
+rankdir=TB;
+node [shape=box, fontname="Helvetica", style=filled];
+compound=true;
+
+// The Input
+request [label="git clone .../aux.py\n(Create File Request)", shape=note, fillcolor="#ffffff", penwidth=2];
+
+subgraph cluster_os_handling {
+    label="OS Kernel Handling";
+    style=filled;
+    fillcolor="#f5f5f5"; // Light Grey
+    color="#e0e0e0";
+
+    // Linux Path
+    subgraph cluster_linux {
+        label="Linux / macOS";
+        style=filled;
+        fillcolor="#e1f5fe"; // Blue tint
+        color="#81d4fa";
+        
+        check_linux [label="Check Filename", fillcolor="#b3e5fc"];
+        write_disk [label="Write to Disk\n(Success)", fillcolor="#c8e6c9", color="#81c784"]; // Greenish
+    }
+
+    // Windows Path
+    subgraph cluster_windows {
+        label="Windows";
+        style=filled;
+        fillcolor="#fff3e0"; // Orange tint
+        color="#ffcc80";
+
+        check_win [label="Check Reserved Names\n(CON, PRN, AUX...)", fillcolor="#ffe0b2"];
+        block_win [label="Block Access\n(Error: Invalid Path)", fillcolor="#ffcdd2", color="#e57373"]; // Reddish
+    }
+}
+
+// Edges
+request -> check_linux [lhead=cluster_linux];
+request -> check_win [lhead=cluster_windows];
+
+check_linux -> write_disk;
+check_win -> block_win [label="Match Found"];
+}
+#+END_SRC
+
+#+RESULTS[39cdb5d5992acd534ed95fcea5a6fa954b5668a5]:
+#+NAME: fig:win-filename-clash
+#+LABEL: fig:win-filename-clash
+#+CAPTION: The OS kernel divergence: Windows blocks the request before it even reaches the disk if a reserved name is detected.
+[[file:./images/dot/win-filename-clash.png]]
+
 ** Stack Sizes and Legacy Fortran
 The default stack size on Linux is typically 8 MB (~ulimit -s~). On Windows, it
 is 1 MB. This is rarely a problem for modern C++ since ~Eigen::MatrixXd~ and
@@ -21833,7 +21886,48 @@ c gagafeDblexp.f
 ~phi~ and ~phivirst~ alone consume around 3 MB. Including the remaining arrays,
 the total stack footprint is roughly around 3.6 MB which is well beyond the 1 MB
 Windows default.  The client crashes on entry to the potential routine with exit
-code ~3221225725~ (decimal), which is ~0xC00000FD~: ~STATUS_STACK_OVERFLOW~.
+code ~3221225725~ (decimal), which is ~0xC00000FD~: ~STATUS_STACK_OVERFLOW~ (see Figure [[fig:win-stack-overflow]]).
+
+#+BEGIN_SRC dot :file ./images/dot/win-stack-overflow.png :cmdline -Kdot -Tpng -Gdpi=150 :cache yes :exports none
+digraph StackSize {
+rankdir=LR;
+node [shape=record, fontname="Helvetica", style=filled];
+
+// The Payload
+subgraph cluster_allocation {
+    label="Legacy Fortran Allocation";
+    style=filled;
+    fillcolor="#e1f5fe"; // Blue tint
+    color="#81d4fa";
+    
+    arrays [label="{GAGAFE Subroutine | {Arrays: phi, RA1, FA1... | Total Req: ~3.6 MB}}", fillcolor="#b3e5fc"];
+}
+
+// The Limits
+subgraph cluster_limits {
+    label="OS Default Stack Limits";
+    style=filled;
+    fillcolor="#fff3e0"; // Orange tint
+    color="#ffcc80";
+
+    node [shape=box];
+    
+    linux_stack [label="Linux Default\n(8 MB)", fillcolor="#c8e6c9", width=2];
+    win_stack [label="Windows Default\n(1 MB)", fillcolor="#ffe0b2", width=2];
+}
+
+// Relationships
+arrays -> linux_stack [label="Fits", color="#43a047", penwidth=2];
+arrays -> win_stack [label="Overflows\n(0xC00000FD)", color="#e53935", penwidth=2, style=dashed];
+}
+#+END_SRC
+
+#+RESULTS[ceaf77ad1ee100d26d9f20f64e8a429548fba336]:
+#+NAME: fig:win-stack-overflow
+#+LABEL: fig:win-stack-overflow
+#+CAPTION: Visualizing the stack overflow: The legacy Fortran arrays fit comfortably within the Linux 8 MB default but exceed the Windows 1 MB limit.
+[[file:./images/dot/win-stack-overflow.png]]
+
 *** The Fix
 For Meson-based builds, the linker can request a larger stack:
 
@@ -21874,7 +21968,58 @@ downstream. The fix is to select the non-color sink:
 #+end_src
 
 This took longer to diagnose than it should have, mostly because "no output"
-does not immediately suggest "color codes".
+does not immediately suggest "color codes", a mechanism detailed in Figure [[fig:spdlog-sink-flow]].
+
+#+BEGIN_SRC dot :file ./images/dot/spdlog-sink-flow.png :cmdline -Kdot -Tpng -Gdpi=150 :cache yes :exports none
+digraph SpdlogSink {
+rankdir=TB;
+node [shape=box, fontname="Helvetica", style=filled];
+
+// Context
+input [label="eOn Client Log Message", shape=note, fillcolor="#ffffff", penwidth=2];
+redirection [label="Process Redirection\n(> output.log)", shape=hexagon, fillcolor="#e0e0e0"];
+
+// The Problem
+subgraph cluster_problem {
+    label="Scenario A: Windows Color Sink";
+    style=filled;
+    fillcolor="#fff3e0"; // Orange tint
+    color="#ffcc80";
+
+    api_call [label="Win32 API:\nWriteConsole", fillcolor="#ffe0b2"];
+    check [label="Is Handle a Console?", shape=diamond, fillcolor="#ffffff"];
+    fail [label="Fail / Silent Drop", fillcolor="#ffcdd2", color="#e57373"];
+}
+
+// The Fix
+subgraph cluster_fix {
+    label="Scenario B: Standard Sink (The Fix)";
+    style=filled;
+    fillcolor="#e1f5fe"; // Blue tint
+    color="#81d4fa";
+
+    std_io [label="Standard I/O\n(fwrite / WriteFile)", fillcolor="#b3e5fc"];
+    success [label="Write to File", fillcolor="#c8e6c9", color="#81c784"];
+}
+
+// Edges
+input -> redirection;
+redirection -> api_call [label="Input Handle"];
+redirection -> std_io [label="Input Handle"];
+
+api_call -> check;
+check -> fail [label="No (It is a file)"];
+
+std_io -> success [label="Works on Files"];
+}
+#+END_SRC
+
+#+RESULTS[2c24cd528efc1fa9ee17a81f3fa372317a2ffe2d]:
+#+NAME: fig:spdlog-sink-flow
+#+LABEL: fig:spdlog-sink-flow
+#+CAPTION: The silent failure mechanism: ~WriteConsole~ bypasses standard I/O and fails when the handle is a file, whereas standard sinks use file-compatible APIs.
+[[file:./images/dot/spdlog-sink-flow.png]]
+
 ** Concluding Remarks
 None of these issues are particularly deep. The reserved filenames have been documented since
 DOS. The 1 MB stack has been the default for decades. The ~WriteConsole~
