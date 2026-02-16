@@ -21726,7 +21726,7 @@ POSIX compatibility is here to stay on most machines. It is unlikely that this
 will change in the near future.  To that end, it makes more sense to adaptively
 stick to ~bash~ and save my "[[https://steveklabnik.com/writing/the-language-strangeness-budget/][strangeness budget]]" [fn:: A concern I was recently re-sensitized to by [[https://github.com/Luthaf/][Luthaf]]] for new-fangled programming
 languages instead of shells[fn:: At any rate, I do relish not having to transform one-liners from ~nushell~ and friends back to ~bash~ to pass to co-workers.].
-* DONE Windows Compatibility in Scientific C++ :@programming:fortran:windows:build:science:
+* DONE Windows Compatibility and Scientific Computing :@programming:fortran:windows:build:science:
 CLOSED: [2026-02-16 Sun 11:00]
 :PROPERTIES:
 :EXPORT_FILE_NAME: windows-compat-sci-cpp
