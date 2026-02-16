@@ -21864,7 +21864,7 @@ Lagrangian). The code ran on a PDP-11 computer in combination with an array
 processor. I was a post-doc in the group 1986-1988 and kept this basic structure
 in the F77 code I wrote when I moved to Seattle in 1988. 
 
--- [[https://hj.hi.is/indexE.html][Hannes J{\'o}nsson]] (private communication)
+-- [[https://hj.hi.is/indexE.html][Hannes Jónsson]] (private communication)
 #+END_QUOTE
 
 There is something appealing about a subroutine name with a provenance older
