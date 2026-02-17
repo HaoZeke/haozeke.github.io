@@ -1978,7 +1978,7 @@ Which can be applied to a package outside the ~conda-forge~ ecosystem via:
 #+begin_src bash
 conda smithy rerender
 #+end_src
-** DONE ~julia~ and the ~conda~ libraries :build:packaging:conda:
+** DONE ~julia~ and the ~conda~ libraries :julia:packaging:conda:
 CLOSED: [2026-02-17 Tue 19:06]
 :PROPERTIES:
 :EXPORT_HUGO_BUNDLE: julia-conda-libopenlibm
@@ -1998,5 +1998,17 @@ execstack -c ./.pixi/envs/default/lib/julia/libopenlibm.so
 # e.g. for a doc env...
 execstack -c ./.pixi/envs/doc/lib/julia/libopenlibm.so
 #+end_src
+** DONE PyTorch woes across ~conda~ and ~pip~ :pytorch:packaging:conda:
+CLOSED: [2026-02-17 Tue 23:11]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: pytorch-conda-pip
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
+Sometimes, within the ~pixi~ enviroment, multiple ~torch~ includes can clog the build. In this case:
+#+begin_src bash
+rm -rf .pixi/envs/$ENVNAME/include/torch/csrc/api/include/
+#+end_src
+Probably something to be fixed in the upstream build system..
 * Footnotes
 Warren said 30 s or 30 min for machine learning, anything else will not add any information.
