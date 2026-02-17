@@ -1978,5 +1978,25 @@ Which can be applied to a package outside the ~conda-forge~ ecosystem via:
 #+begin_src bash
 conda smithy rerender
 #+end_src
+** DONE ~julia~ and the ~conda~ libraries :build:packaging:conda:
+CLOSED: [2026-02-17 Tue 19:06]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: julia-conda-libopenlibm
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
+Environments with ~julia~ often seem to have trouble with ~Pkg.install()~ and other commands with
+#+begin_src bash
+ERROR: Unable to load dependent library /home/rgoswami/Git/Github/Julia/ChemGP/.pixi/envs/docs/bin/../lib/julia/libopenlibm.so
+Message:/home/rgoswami/Git/Github/Julia/ChemGP/.pixi/envs/docs/bin/../lib/julia/libopenlibm.so: cannot enable executable stack as shared object requires: Invalid argument
+#+end_src
+
+Not sure why this happens yet, but the fix is:
+#+begin_src bash
+# needs to be set for each env!
+execstack -c ./.pixi/envs/default/lib/julia/libopenlibm.so
+# e.g. for a doc env...
+execstack -c ./.pixi/envs/doc/lib/julia/libopenlibm.so
+#+end_src
 * Footnotes
 Warren said 30 s or 30 min for machine learning, anything else will not add any information.
