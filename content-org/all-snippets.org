@@ -2010,5 +2010,47 @@ Sometimes, within the ~pixi~ enviroment, multiple ~torch~ includes can clog the 
 rm -rf .pixi/envs/$ENVNAME/include/torch/csrc/api/include/
 #+end_src
 Probably something to be fixed in the upstream build system..
+** DONE Standalone TikZ to PNG with ~tectonic~ and ~pixi~ :tex:pixi:build:
+CLOSED: [2026-02-24 Mon 12:00]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: tikz-tectonic-pixi
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
+For blog posts and slides I normally embed Graphviz DOT directly in ~orgmode~ and let the export handle rendering. That works well until a paper schematic needs inline math or a font family that does not cover enough Unicode glyphs [fn:: [[https://indestructibletype.com/Jost.html][Jost]], for instance, is wonderful for headings but lacks the math operators and Greek letters a pipeline diagram inevitably requires.]. At that point, TikZ in a ~standalone~ document class is the path of least resistance: full LaTeX math rendering, arbitrary fonts through the TeX ecosystem, and tightly cropped output without manual trimming.
+
+The build script loops over every ~.tex~ in a directory, compiles to PDF via ~tectonic~, then rasterizes with ~pdftoppm~ (poppler):
+#+begin_src bash
+#!/usr/bin/env bash
+set -euo pipefail
+
+TIKZDIR="v1/pccp/imgs/tikz"
+OUTDIR="v1/pccp/imgs/tikz"
+DPI="${DPI:-300}"
+
+for texfile in "${TIKZDIR}"/*.tex; do
+    name="$(basename "${texfile}" .tex)"
+    echo "Building ${name}..."
+    tectonic "${texfile}" --outdir "${OUTDIR}"
+    pdftoppm -png -r "${DPI}" -singlefile \
+        "${OUTDIR}/${name}.pdf" "${OUTDIR}/${name}"
+    echo "  -> ${OUTDIR}/${name}.png"
+done
+#+end_src
+
+Wiring this into ~pixi~ keeps the dependencies pinned and the invocation trivial:
+#+begin_src toml
+[tasks]
+tikz-figs = { cmd = "bash v1/pccp/imgs/tikz/build_tikz.sh" }
+
+[feature.texbuild.dependencies]
+tectonic = "*"
+poppler = "*"
+
+[environments]
+texbuild = {features = ["texbuild"]}
+#+end_src
+
+Then ~pixi run -e texbuild tikz-figs~ rebuilds everything. Override the resolution with ~DPI=600 pixi run -e texbuild tikz-figs~ for print quality. The same figures can live as ~#+begin_export latex~ blocks in the ~orgmode~ paper source for native export, with the standalone PNGs serving as quick-reference copies or targets for non-TeX workflows.
 * Footnotes
 Warren said 30 s or 30 min for machine learning, anything else will not add any information.
