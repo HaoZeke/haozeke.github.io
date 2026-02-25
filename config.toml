@@ -94,8 +94,6 @@ name = "Rohit Goswami (HaoZeke)"
   # From my fork
   littlefoot = true
   goatCounter = "rgoswami"
-  microsoftClarity = "3z2xvwqu4u"
-  clicky = "101265002"
   prism = false
   codefold = true
   praiseNetlify = true
@@ -119,13 +117,15 @@ name = "Rohit Goswami (HaoZeke)"
   # Show sharing icons? (currently broken)
   sharingIcons = true
 
-[services]
-  [services.googleAnalytics]
-  googleAnalytics = "UA-109503488-16"
 [params.search]
   enable = true
-  backend = "fuse" # can be stork or fuse
+  backend = "docsearch" # can be stork, fuse, or docsearch
   searchableSections = ["posts", "snippets"]
+
+[params.algolia]
+  appID = "W2MTY5JQZQ"
+  apiKey = "cfd9456acb6dec78fa83d1692f00d4ad"
+  indexName = "rgoswami"
 
 [params.style]
 site_url = "rgoswami.me" # Based on baseurl
