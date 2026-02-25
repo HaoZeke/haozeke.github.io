@@ -12,8 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let localIndex = [];
   let isLocalIndexLoaded = false;
 
-  // Load the Hugo JSON index for metadata (tags, categories, readingTime)
-  // that may not be in the Algolia index
   async function loadLocalIndex() {
     try {
       const response = await fetch("/index.json");
@@ -28,10 +26,62 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function findLocalMeta(url) {
     if (!isLocalIndexLoaded) return {};
-    const match = localIndex.find(
-      (item) => item.link === url || item.permalink === url
-    );
+    // Normalize to pathname for comparison
+    var path;
+    try { path = new URL(url).pathname; } catch (_) { path = url; }
+    var match = localIndex.find(function (item) {
+      var itemPath;
+      try { itemPath = new URL(item.link || item.permalink).pathname; } catch (_) { itemPath = item.link || item.permalink; }
+      return itemPath === path;
+    });
     return match || {};
+  }
+
+  // Extract section from a URL path, e.g. /posts/foo/ -> "posts"
+  function sectionFromURL(url) {
+    try {
+      var p = new URL(url).pathname;
+      var parts = p.replace(/^\//, "").split("/");
+      return parts.length > 1 ? parts[0] : "";
+    } catch (_) {
+      return "";
+    }
+  }
+
+  // Extract the best title from a DocSearch hit's hierarchy
+  function titleFromHit(hit) {
+    var h = hit.hierarchy || {};
+    // Use the deepest non-null heading as title
+    for (var i = 6; i >= 1; i--) {
+      if (h["lvl" + i]) return h["lvl" + i];
+    }
+    return h.lvl0 || "(untitled)";
+  }
+
+  // Extract highlighted title from a DocSearch hit
+  function highlightedTitleFromHit(hit) {
+    var hr = hit._highlightResult && hit._highlightResult.hierarchy;
+    if (!hr) return null;
+    for (var i = 6; i >= 1; i--) {
+      var lvl = hr["lvl" + i];
+      if (lvl && lvl.value) return lvl.value;
+    }
+    return hr.lvl0 ? hr.lvl0.value : null;
+  }
+
+  // Deduplicate hits: keep only one entry per base page (url_without_anchor),
+  // preferring lvl1 (page-level) hits over deeper sub-sections
+  function deduplicateHits(hits) {
+    var seen = {};
+    var result = [];
+    hits.forEach(function (hit) {
+      var base = hit.url_without_anchor || hit.url || "";
+      if (!seen[base]) {
+        seen[base] = true;
+        result.push(hit);
+      }
+    });
+    return result;
   }
 
   async function executeSearch() {
@@ -50,50 +100,45 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    const selectedIncludes = Array.from(includeCheckboxes)
-      .filter((cb) => cb.checked)
-      .map((cb) => cb.value);
-
-    // Build Algolia facet filters if the index has a "section" attribute
-    const facetFilters = selectedSections.map((s) => "section:" + s);
-
     try {
+      // DocSearch indices lack a "section" facet, so query without facetFilters
+      // and filter client-side by URL path instead
       const { hits } = await index.search(query, {
-        hitsPerPage: 20,
+        hitsPerPage: 50,
         attributesToRetrieve: [
-          "title",
           "url",
-          "date",
-          "readingTime",
-          "tags",
-          "categories",
-          "snippet",
-          "section",
+          "url_without_anchor",
+          "anchor",
           "content",
           "hierarchy",
+          "type",
         ],
-        facetFilters: [facetFilters],
+        attributesToSnippet: ["content:30"],
       });
 
-      const results = hits.map((hit) => {
-        const url =
-          hit.url || hit.permalink || (hit.hierarchy && hit.hierarchy.lvl0) || "#";
-        const local = findLocalMeta(url);
+      // Client-side section filter based on URL path
+      var filtered = hits.filter(function (hit) {
+        var section = sectionFromURL(hit.url || "");
+        return selectedSections.indexOf(section) !== -1;
+      });
+
+      var unique = deduplicateHits(filtered);
+
+      const results = unique.map(function (hit) {
+        var url = hit.url_without_anchor || hit.url || "#";
+        var local = findLocalMeta(url);
 
         return {
-          title:
-            hit._highlightResult && hit._highlightResult.title
-              ? hit._highlightResult.title.value
-              : hit.title || local.title || "(untitled)",
+          title: highlightedTitleFromHit(hit) || titleFromHit(hit),
           link: url,
-          date: hit.date || local.date || "",
-          readingTime: hit.readingTime || local.readingTime || "?",
-          tags: hit.tags || local.tags || [],
-          categories: hit.categories || local.categories || [],
+          date: local.date || "",
+          readingTime: local.readingTime || "?",
+          tags: local.tags || [],
+          categories: local.categories || [],
           snippet:
             hit._snippetResult && hit._snippetResult.content
               ? hit._snippetResult.content.value
-              : hit.snippet || local.snippet || "",
+              : hit.content || local.snippet || "",
         };
       });
 
@@ -121,40 +166,42 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    results.forEach((item) => {
-      const tagsHTML =
+    results.forEach(function (item) {
+      var tagsHTML =
         item.tags && item.tags.length > 0
           ? '<div class="taxonomy-group"><strong>Tags:</strong> ' +
             item.tags
-              .map(
-                (tag) =>
+              .map(function (tag) {
+                return (
                   '<a class="taxonomy-item" href="/tags/' +
                   tag.toLowerCase().replace(/ /g, "-") +
                   '">' +
                   tag +
                   "</a>"
-              )
+                );
+              })
               .join("") +
             "</div>"
           : "";
 
-      const categoriesHTML =
+      var categoriesHTML =
         item.categories && item.categories.length > 0
           ? '<div class="taxonomy-group"><strong>Categories:</strong> ' +
             item.categories
-              .map(
-                (cat) =>
+              .map(function (cat) {
+                return (
                   '<a class="taxonomy-item" href="/categories/' +
                   cat.toLowerCase().replace(/ /g, "-") +
                   '">' +
                   cat +
                   "</a>"
-              )
+                );
+              })
               .join("") +
             "</div>"
           : "";
 
-      const resultHTML = searchResultTemplate.innerHTML
+      var resultHTML = searchResultTemplate.innerHTML
         .replace(/\${link}/g, item.link)
         .replace(/\${title}/g, item.title)
         .replace(/\${date}/g, item.date)
@@ -167,19 +214,19 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  let debounceTimer;
-  searchQuery.addEventListener("keyup", () => {
+  var debounceTimer;
+  searchQuery.addEventListener("keyup", function () {
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(executeSearch, 200);
   });
-  filterCheckboxes.forEach((cb) => cb.addEventListener("change", executeSearch));
-  includeCheckboxes.forEach((cb) => cb.addEventListener("change", executeSearch));
+  filterCheckboxes.forEach(function (cb) { cb.addEventListener("change", executeSearch); });
+  includeCheckboxes.forEach(function (cb) { cb.addEventListener("change", executeSearch); });
 
   loadLocalIndex();
 
   // Handle ?q= parameter
-  const urlParams = new URLSearchParams(window.location.search);
-  const queryParam = urlParams.get("q") || urlParams.get("search-query");
+  var urlParams = new URLSearchParams(window.location.search);
+  var queryParam = urlParams.get("q") || urlParams.get("search-query");
   if (queryParam) {
     searchQuery.value = queryParam;
     executeSearch();
