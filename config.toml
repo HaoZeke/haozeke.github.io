@@ -106,7 +106,8 @@ name = "Rohit Goswami (HaoZeke)"
   description = "Homepage and blog by Rohit Goswami (HaoZeke)"
   summary = "Homepage and blog by Rohit Goswami (HaoZeke), focused on the physical sciences and code. Opinions may also creep in."
   homeSubtitle = "Reminisces and reflections of the digital entity defined here and below"
-  homeAddl = "Consider checking the [Blog](https://rgoswami.me/posts/) or [Snippets](https://rgoswami.me/snippets/)"
+  # TODO(rg): <u> be handled by the CSS for the links on the index..
+  homeAddl = "Consider checking the [<u>Blog</u>](https://rgoswami.me/posts/) or [<u>Snippets</u>](https://rgoswami.me/snippets/)"
   keywords = "homepage, blog, science, development, programming"
   images = ["/images/RG.png"]
 
