@@ -2010,6 +2010,29 @@ Sometimes, within the ~pixi~ enviroment, multiple ~torch~ includes can clog the 
 rm -rf .pixi/envs/$ENVNAME/include/torch/csrc/api/include/
 #+end_src
 Probably something to be fixed in the upstream build system..
+** DONE Double-checked locking for SLURM container tasks :hpc:ci:slurm:
+CLOSED: [2026-02-27 Fri 11:40]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: slurm-double-checked-locking
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
+
+When a SLURM job launches N tasks from the same container image, every rank runs the entrypoint in parallel. Commands like ~ldconfig~ [fn:: Needed for a [[https://github.com/metatensor/metatrain/pull/1056][CSCS workaround on metatrain]]] that write to shared paths (~/etc/ld.so.cache~) collide: multiple tasks try to write the same file simultaneously, the losers get a corrupt or truncated cache, and the job step crashes.
+
+One slightly naive fix involves serialization with ~flock~:
+#+begin_src yaml
+- flock /tmp/ldconfig.lock -c "ldconfig || true"
+#+end_src
+
+This stops the crash, but now every rank queues up and runs ~ldconfig~ in sequence. On a 128-task job, that would add up.
+
+I just needed two things: mutual exclusion (no concurrent writes) and execute-once (only the first rank does the work). ~flock~ alone gives the first; a marker file gives the second:
+#+begin_src yaml
+- flock /tmp/ldconfig.lock -c "test -f /tmp/ld_$CI_JOB_ID || { ldconfig || true; touch /tmp/ld_$CI_JOB_ID; }"
+#+end_src
+
+The first task acquires the lock, runs ~ldconfig~, and drops ~/tmp/ld_$CI_JOB_ID~. Every subsequent task acquires the same lock, sees the marker, and exits immediately. Two layers because each solves a different problem: ~flock~ prevents the race, the marker prevents redundant work.
 ** DONE Standalone TikZ to PNG with ~tectonic~ and ~pixi~ :tex:pixi:build:
 CLOSED: [2026-02-24 Mon 12:00]
 :PROPERTIES:
