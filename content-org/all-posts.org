@@ -19213,12 +19213,21 @@ practices. I went through the ~ROpenSci~ process and eventually also released to
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :END:
 #+begin_quote
-Handling development dependencies and bugfixes
+Handling development dependencies, CRAN archival, and getting back
 #+end_quote
 ** Background
 I was an opportunity scholar at posit::conf 2024 which I took as an opportunity
 to save ~fastMatMR~ on being [[https://github.com/ropensci/fastMatMR/issues/65][removed from CRAN]] due to its ~cpp11~ dependency.
-Most of this is going to be in the context of the previous post.
+Most of this is going to be in the context of the {{{relref(previous post,writing-r-packages)}}}.
+
+~fastMatMR~ got archived on 2024-08-19. The CRAN check results flagged non-API C
+function calls (~SETLENGTH~, ~SET_GROWABLE_BIT~, ~SET_TRUELENGTH~) in the
+compiled shared object. The calls were not in ~fastMatMR~ source code. They came
+from ~cpp11~ v0.4.6 headers, which ~fastMatMR~ pulls in via ~LinkingTo~. Since
+~cpp11~ is header-only, those internal R API calls compiled directly into
+~fastMatMR~'s ~.so~. R was tightening its API boundary at the time, and the NOTEs
+escalated to archival when I did not address them within CRAN's timeline.
+
 ** Reproducing environments
 With ~pixi~ this is fairly straightforward:
 
@@ -19234,7 +19243,7 @@ git commit -m "BLD: Update pixi lockfile"
 That sets up the basic ~radian~ shell we can use for the rest of this post. The
 new standard for handling package dependencies is no longer
 ~devtools::install_*~ or ~remotes::~, but ~pak~, as seen in [[https://github.com/r-lib/remotes/issues/808][this issue]]. In turn,
-this requires an adjustment to the [[https://rstudio.github.io/renv/reference/config.html?q=pak#renv-config-pak-enabled][renv configuration]], which in turn, is best handled through a repo-local ~.Renviron~ file [fn:rconfigs] with:
+we need to adjust the [[https://rstudio.github.io/renv/reference/config.html?q=pak#renv-config-pak-enabled][renv configuration]], best handled through a repo-local ~.Renviron~ file [fn:rconfigs] with:
 
 #+begin_src sh
 RENV_CONFIG_PAK_ENABLED=TRUE
@@ -19246,24 +19255,209 @@ To quote (and mildly paraphrase) Hadley Wickham [fn:whensaid],
 .. part of being a package developer is experiencing this (broken dependencies) discomfort before your users
 #+end_quote
 
-Which is also echoed by many others in the R community
+Which is also echoed by many others in the R community. The ~renv~ lockfile pins
+exact dependency versions, and that pinning is precisely what prevents you from
+noticing upstream breakage until CRAN emails you. In the case of ~fastMatMR~,
+~renv.lock~ pinned ~cpp11~ at 0.4.6. When ~cpp11~ 0.5.0 landed on CRAN
+(2024-08-27) with the fix for the non-API calls, that fix never reached my local
+dev environment because ~renv~ held the old version.
+
+The trade-off: ~renv~ gives reproducibility across machines, but it also hides
+breakage from you. For a CRAN package, running ~R CMD check~ against the latest
+CRAN versions (not your locked set) is what actually matters.
+
+** Diagnosing the archival
+CRAN's archived package page lists the reason but not the specific check output.
+The [[https://cran-archive.r-project.org/web/checks/][check results archive]] had the details:
+
+#+begin_src
+Compiled code should not call non-API entry points in R.
+  'SETLENGTH', 'SET_GROWABLE_BIT', 'SET_TRUELENGTH'
+#+end_src
+
+If we search for these symbols in ~fastMatMR~'s own ~src/*.cpp~ files, nothing
+turns up. They live in ~cpp11~'s headers, specifically in the growable vector
+implementation used by ~push_back()~. The [[https://github.com/r-lib/cpp11/issues/355][cpp11 issue #355]] tracks this, and
+[[https://cpp11.r-lib.org/news/index.html][cpp11 0.5.0]] removed all three calls.
+
+** The fix
+The one-line fix in ~DESCRIPTION~:
+
+#+begin_src yaml
+LinkingTo:
+    cpp11 (>= 0.5.0)
+#+end_src
+
+When the package builds, ~cpp11 >= 0.5.0~ headers get used, and the non-API
+symbols disappear from the compiled output. No changes to ~fastMatMR~'s own C++
+code were needed for the core fix.
+
+** Vendored header housekeeping
+~fastMatMR~ vendors the [[https://github.com/alugowski/fast_matrix_market][fast_matrix_market]] C++ library (header-only, ~4000
+lines across 15 files). Previously these lived in ~inst/include/~, meaning they
+got installed into the user's R library even though no downstream package links
+to ~fastMatMR~. Moving them to ~src/~ removes them from the installed package
+(they are only needed at compile time) and saves about 168KB.
+
+One gotcha with the move: ~header.hpp~ in the vendored library uses
+~#include <fast_matrix_market/fast_matrix_market.hpp>~ with angle brackets. Under
+~inst/include/~, the ~-I"../inst/include/"~ flag in ~Makevars~ provided the
+resolution. After moving to ~src/fast_matrix_market/~, the same resolution
+requires ~-I.~ so that ~src/~ itself is on the include search path:
+
+#+begin_src makefile
+CXX_STD = CXX17
+PKG_CPPFLAGS = -D_LIBCPP_DISABLE_AVAILABILITY -I.
+#+end_src
+
+I also updated the vendored library from 1.7.4 to 1.7.6 (adds a ~cstdint~
+include for portability, removes an unused ~charconv~ include, upgrades
+~fast_float~ to 6.0.0).
+
+** Pre-submission checks
+We run the standard gauntlet before resubmission:
+
+#+begin_src R
+devtools::check(remote = TRUE, manual = TRUE)
+devtools::check_win_devel()
+rhub::check_for_cran()
+#+end_src
+
+The installed package size NOTE persists (compiled binary 4.7--11.5 MB depending
+on platform) because the template-heavy C++17 library compiles into the shared
+object. This is a NOTE, not an ERROR, and CRAN does not archive for it. The
+~cran-comments.md~ explains the vendored library.
+
+** Conclusions
+Header-only C++ libraries in R packages inherit their dependency's problems at
+compile time. When ~cpp11~ used non-API R internals, every package linking to it
+got flagged. The actual fix (bumping a version constraint) took one line, but
+finding it required tracing symbols through header inclusion chains. If your
+package gets archived, check the [[https://cran-archive.r-project.org/web/checks/][CRAN check results archive]] for specifics,
+then ~grep~ your vendored/linked headers before assuming the problem is in your
+own code.
 
 [fn:rconfigs] Configuration files [[https://support.posit.co/hc/en-us/articles/360047157094-Managing-R-with-Rprofile-Renviron-Rprofile-site-Renviron-site-rsession-conf-and-repos-conf][discussed here]]
 [fn:whensaid] In person walk and talk at posit::conf 2024
 
-* TODO ~ROpenSci~ submissions and ~CRAN~
+* TODO ~ROpenSci~ submissions and ~CRAN~ :@notes:r:packaging:ropensci:
+:PROPERTIES:
+:EXPORT_FILE_NAME: ropensci-and-cran
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
 #+begin_quote
-Where I discuss my experience with the review process and subsequent CRAN release
+The ROpenSci review process and what CRAN actually cares about
 #+end_quote
 
-** The Process
+** Background
+After developing ~fastMatMR~ (covered in the {{{relref(first post,writing-r-packages)}}}), I submitted it
+for [[https://github.com/ropensci/software-review/issues/606][ROpenSci peer review]] and then to CRAN. These are separate processes with
+different priorities: ROpenSci evaluates software design, documentation, and
+community standards; CRAN evaluates portability, policy compliance, and whether
+your package breaks anything.
 
-The final steps were to
+** The ROpenSci process
+Submission goes through their [[https://github.com/ropensci/software-review/issues][software-review]] issue tracker. We fill out a
+template, an editor assigns reviewers, and the review happens in public on the
+issue thread.
 
-** Appeasing ~CRAN~
+For ~fastMatMR~, the review ([[https://github.com/ropensci/software-review/issues/606][issue #606]]) covered:
+- API design (function naming, return types, error handling)
+- Documentation quality (vignettes, examples, README)
+- Test coverage and correctness
+- Whether the package fills a gap in the ecosystem
+
+After addressing reviewer feedback, the package gets transferred to the
+~ropensci~ GitHub organization. This means our repo URL changes (from
+~HaoZeke/fastMatMR~ to ~ropensci/fastMatMR~), which we need to plan for in CI
+configs and documentation links.
+
+ROpenSci also runs automated checks via [[https://docs.ropensci.org/pkgcheck/][pkgcheck]], which we can run locally:
+#+begin_src R
+options(repos = c(
+    ropenscireviewtools = "https://ropensci-review-tools.r-universe.dev",
+    CRAN = "https://cloud.r-project.org"
+))
+install.packages("pkgcheck")
+pkgcheck::pkgcheck(".")
+#+end_src
+
+This is slow but catches things that ~R CMD check~ misses (statistical
+software standards, documentation completeness, etc.).
+
+** CRAN submission
 I used the ~devtools~ workflow discussed in the [[https://r-pkgs.org/release.html][R pkgs book chapter]], along with
 extra checks [[https://www.mzes.uni-mannheim.de/socialsciencedatalab/article/r-package/][from this post from Method Bites]] for finalizing the package for
-~CRAN~. Essentially, as eventually
+CRAN.
+
+We run the full submission sequence:
+#+begin_src R
+# Pre-flight
+urlchecker::url_check()
+devtools::document()
+devtools::build_readme()
+
+# Multi-platform checks
+devtools::check(remote = TRUE, manual = TRUE)
+devtools::check_win_devel()
+rhub::check_for_cran()
+devtools::check_mac_release()
+
+# Reverse dependency check (empty for new packages)
+revdepcheck::revdep_check(num_workers = 4)
+
+# Submit
+devtools::release()
+#+end_src
+
+** What CRAN cares about
+CRAN's priorities differ from ROpenSci's. CRAN is a build farm, not a review
+board. The things that actually block submission:
+
+- *ERRORs on any platform*: the package must build and pass ~R CMD check~ on
+  Linux, macOS, and Windows, across R-release, R-devel, and R-oldrel
+- *Non-API C/C++ calls*: R is actively removing internal API access from package
+  headers. ~SETLENGTH~, ~SET_TRUELENGTH~, and ~SET_GROWABLE_BIT~ were removed
+  from installed headers. Packages calling them get archived.
+- *Examples that write to user directories*: all examples and tests must use
+  ~tempfile()~ / ~tempdir()~
+- *Missing imports*: every function used from another package must be declared in
+  ~NAMESPACE~ or called with ~::~
+
+Things that produce NOTEs but do not block:
+- Installed package size (common for C++ packages)
+- ~Days since last update~ on resubmission
+- HTML validation warnings from missing ~tidy~ command
+
+** The ~cran-comments.md~ file
+This file goes into the submission form. For a resubmission of an archived
+package, we state the archival reason and the fix directly:
+
+#+begin_src markdown
+## Resubmission
+
+This package was archived on 2024-08-19 due to non-API C calls
+(SETLENGTH, SET_GROWABLE_BIT, SET_TRUELENGTH) originating from
+the cpp11 package headers. This release requires cpp11 >= 0.5.0,
+which removed those non-API calls.
+
+## R CMD check results
+
+0 errors | 0 warnings | 1 note
+
+The installed package size note is expected due to the vendored
+fast_matrix_market C++ header-only library.
+#+end_src
+
+** Lessons
+- ROpenSci review is about software quality; CRAN is about build farm compliance.
+  A package can pass one and fail the other.
+- ~LinkingTo~ dependencies compile their headers into your binary. Their bugs
+  become your archival.
+- ~renv~ hides upstream breakage. For CRAN-bound packages, test periodically
+  against unlocked dependencies.
+- Respond to CRAN emails quickly. The window between "please fix" and archival
+  is 2--4 weeks.
 
 * TODO Non-contigous arrays and F2PY
 Recently it was noted on the [[https://fortran-lang.discourse.group/t/the-difficulties-of-using-fortran-in-scipy/6753/41?u=rgoswami][Fortran-Lang discourse]] that passing non-contiguous
