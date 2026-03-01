@@ -1881,7 +1881,7 @@ the usage of substantial models on lightweight clients, effectively offloading
 the heavy lifting to dedicated hardware, and making good use of older machines.
 
 Also see this post for [[https://markaicode.com/gemma-3-single-gpu-ollama-optimization/][more details]].
-** DONE ~orgmode~ for workbench lessons ::workflow:orgmode:
+** DONE ~orgmode~ for workbench lessons :workflow:orgmode:
 CLOSED: [2026-02-10 Tue 16:50]
 :PROPERTIES:
 :EXPORT_HUGO_BUNDLE: orgmode-workbench
