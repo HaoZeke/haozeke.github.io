@@ -22331,19 +22331,169 @@ The CMake version silently skips missing libraries. The meson version treats
 every entry as mandatory. The fix is to add ~required: false~ and check
 ~.found()~, which is the meson equivalent of the CMake pattern [fn:mesonreqfalse].
 
+** Cap'n Proto Code Generation and MSVC
+Adding [[https://capnproto.org/][Cap'n Proto]] RPC support to the [[https://github.com/conda-forge/eon-feedstock/pull/23][v2.11.1 feedstock]] exposed three
+sequential failures on Windows, each revealed only after the previous one was
+fixed. The serve mode integration uses [[https://github.com/OmniPotentRPC/rgpot][rgpot]] as a meson subproject, which
+compiles ~Potentials.capnp~ into C++ sources at build time.
+
+*** ~capnpc~ vs ~capnp compile~
+The original meson build used ~capnpc~ with ~-o~ and ~c++:@OUTDIR@~ as separate
+arguments. On Linux, ~capnpc~ accepted this fine. Windows ~capnpc.EXE~ from
+conda-forge did not recognize ~-o~ at all -- not as a separate token, not
+concatenated. The portable alternative is the ~capnp compile~ subcommand:
+
+#+begin_src bash
+# Portable (works everywhere)
+capnp compile -oc++:outdir --src-prefix=srcdir schema.capnp
+
+# Linux-only (fails on Windows capnpc.EXE)
+capnpc -o c++:outdir --src-prefix=srcdir schema.capnp
+#+end_src
+
+This is not documented as a platform difference in the Cap'n Proto docs. The
+~capnp compile~ interface is the stable one; ~capnpc~ appears to be a
+convenience wrapper with inconsistent flag parsing across platforms.
+
+*** The ~.c++~ File Extension
+~capnp compile -oc++~ generates ~Potentials.capnp.c++~ and ~Potentials.capnp.h~.
+GCC and Clang accept ~.c++~ as a valid C++ extension. MSVC's ~cl.exe~ does
+not [fn:msvcext]. Meson passes the file to the compiler, ~cl.exe~ silently
+ignores it, and the linker fails downstream with ~LNK1181: cannot open input
+file 'Potentials.capnp.c++.obj'~ because the object was never produced.
+
+The fix is a thin Python wrapper that runs ~capnp compile~ and renames the
+output from ~.c++~ to ~.cpp~. The meson ~custom_target~ declares the renamed
+extension:
+
+#+begin_src meson
+python = find_program('python3', 'python')
+capnp = find_program('capnp')
+
+gen_rpc = custom_target(
+    'gen_rpc',
+    input: 'Potentials.capnp',
+    output: ['Potentials.capnp.cpp', 'Potentials.capnp.h'],
+    command: [python, meson.current_source_dir() / 'capnp_compile.py',
+              capnp, '@OUTDIR@', meson.current_source_dir(), '@INPUT@'],
+)
+#+end_src
+
+The wrapper itself is straightforward:
+
+#+begin_src python
+subprocess.check_call([capnp, "compile", f"-oc++:{outdir}",
+                       f"--src-prefix={src_prefix}", schema])
+old = os.path.join(outdir, f"{base}.capnp.c++")
+new = os.path.join(outdir, f"{base}.capnp.cpp")
+if os.path.exists(old):
+    shutil.move(old, new)
+#+end_src
+
+*** Missing Transitive ~ws2_32~ Dependency
+With code generation fixed, the build reached step [131/143] before the
+final link produced 22 unresolved externals:
+
+#+begin_src text
+kj-async.lib(async-io-win32.c++.obj) : error LNK2019: unresolved external symbol __imp_accept
+kj-async.lib(async-io-win32.c++.obj) : error LNK2019: unresolved external symbol __imp_bind
+kj-async.lib(async-io-win32.c++.obj) : error LNK2019: unresolved external symbol __imp_closesocket
+#+end_src
+
+Cap'n Proto's ~kj-async~ uses Winsock2 for async I/O on Windows. On Linux, the
+equivalent functions live in ~libc~ and need no extra linkage. The conda-forge
+~capnproto~ package ships ~kj-async.lib~ as a static library; static libraries
+on Windows do not carry their link dependencies [fn:staticwin]. The consumer
+must link ~ws2_32~ explicitly.
+
+#+begin_src meson
+_ptlrpc_extra_deps = [capnp_rpc_dep]
+if host_machine.system() == 'windows'
+    _ptlrpc_extra_deps += cppc.find_library('ws2_32')
+endif
+
+ptlrpc_dep = declare_dependency(
+    link_with: ptlrpc,
+    sources: gen_rpc,
+    include_directories: _incdirs,
+    dependencies: _ptlrpc_extra_deps,
+)
+#+end_src
+
+Downstream consumers of ~ptlrpc_dep~ get ~ws2_32~ automatically on Windows
+through meson's dependency propagation. The situation is analogous to the xtb
+import library problem described above: the conda-forge package assumes its
+consumers know what system libraries to add. The fix pattern is shown in Figure [[fig:capnp-ws2-chain]].
+
+#+BEGIN_SRC dot :file ./images/dot/capnp-ws2-chain.png :cmdline -Kdot -Tpng -Gdpi=150 :cache yes :exports none
+digraph CapnpWs2 {
+rankdir=TB;
+node [shape=box, fontname="Helvetica", style=filled];
+
+subgraph cluster_conda_capnp {
+    label="conda-forge capnproto (static)";
+    style=filled;
+    fillcolor="#e1f5fe";
+    color="#81d4fa";
+
+    kj_async [label="kj-async.lib\n(references Winsock2)", fillcolor="#b3e5fc"];
+    capnp_rpc [label="capnp-rpc.lib", fillcolor="#b3e5fc"];
+}
+
+subgraph cluster_system {
+    label="Windows SDK";
+    style=filled;
+    fillcolor="#fff3e0";
+    color="#ffcc80";
+
+    ws2_32 [label="ws2_32.lib\n(Winsock2 import lib)", fillcolor="#ffe0b2"];
+}
+
+subgraph cluster_fix {
+    label="ptlrpc_dep (the fix)";
+    style=filled;
+    fillcolor="#f3e5f5";
+    color="#ce93d8";
+
+    ptlrpc [label="declare_dependency(\n  dependencies: [capnp_rpc_dep, ws2_32]\n)", fillcolor="#e1bee7"];
+}
+
+consumer [label="eonclient.exe", fillcolor="#c8e6c9", color="#81c784"];
+
+capnp_rpc -> kj_async [label="links"];
+kj_async -> ws2_32 [label="__imp_accept,\n__imp_bind, ...", style=dashed, color="#e53935"];
+ptlrpc -> capnp_rpc [label="wraps"];
+ptlrpc -> ws2_32 [label="propagates\n(Windows only)", color="#43a047", penwidth=2];
+ptlrpc -> consumer [label="consumed\nby meson deps"];
+}
+#+END_SRC
+
+#+RESULTS[]:
+#+NAME: fig:capnp-ws2-chain
+#+LABEL: fig:capnp-ws2-chain
+#+CAPTION: The missing link: ~kj-async.lib~ references Winsock2 symbols but the conda-forge package does not declare ~ws2_32~ as a dependency. The consumer's ~declare_dependency~ must propagate it explicitly.
+[[file:./images/dot/capnp-ws2-chain.png]]
+
+[fn:msvcext] MSVC [[https://learn.microsoft.com/en-us/cpp/build/reference/tc-tp-tc-tp-specify-source-file-type][recognizes]] ~.c~, ~.cpp~, ~.cxx~, and ~.cc~ by default. The ~/Tp~ flag can force a file to be treated as C++, but meson does not inject it for unknown extensions.
+[fn:staticwin] On Linux, shared libraries (~.so~) record their dependencies in ~DT_NEEDED~ entries, resolved at load time. Static libraries (~.a~) on both platforms are just archives of object files -- but the Linux linker pulls symbols transitively from shared deps while the Windows linker requires every static dependency to be listed explicitly.
+
 ** Concluding Remarks
 None of these issues are particularly deep. The reserved filenames have been
 documented since DOS. The 1 MB stack has been the default for decades. The
 MinGW/MSVC split has been the status quo on conda-forge for as long as Fortran
-has been involved. The common thread is that they surface only when CI runs on a
-platform the developer does not use daily, with error messages ranging from
-cryptic (~0xC00000FD~) to absent (~WriteConsole~) to quietly fatal linker
-errors.
+has been involved. Cap'n Proto's code generation defaults (~capnpc~, ~.c++~
+extensions) assume a GCC-like toolchain. The common thread is that they surface
+only when CI runs on a platform the developer does not use daily, with error
+messages ranging from cryptic (~0xC00000FD~) to absent (~WriteConsole~) to
+quietly fatal linker errors.
 
 The practical advice is simple: add Windows to the CI matrix early, pay extra
 attention to legacy Fortran components where stack allocation is the default,
 and do not assume that "requires library X" implies "requires the toolchain that
-built library X". And perhaps keep a list of DOS device names somewhere visible.
+built library X". When using static libraries from conda-forge on Windows,
+check for missing system library dependencies that shared-library builds
+would resolve automatically. And perhaps keep a list of DOS device names
+somewhere visible.
 
 [fn:whatiseon] eOn is a saddle point search code for long timescale dynamics simulations on atomic systems, combining a Python server with a C++ client. See [[https://eondocs.org][the documentation]] for details.
 [fn:whyaux] It handled auxiliary benchmark configuration. The name made perfect sense in context, which is approximately how all of these stories begin.
