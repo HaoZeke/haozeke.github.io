@@ -22727,6 +22727,11 @@ the rest[fn:whereswaldo].
 - The Carpentries
   - [[http://archive.today/newest/https://carpentries.org/instructors#HaoZeke][Instructor]], [[http://archive.today/newest/https://carpentries.org/maintainers#HaoZeke][Maintainer]], [[http://archive.today/newest/https://2020.carpentrycon.org/task-force/][CarpentyrCon2020 Committee Task Force]], [[http://archive.today/newest/https://2020.carpentrycon.org/schedule/#session-10][CarpentryCon2020 Speaker]]
 - [[http://archive.today/newest/https://forum.igdore.org/t/rohit-goswami/656][IGDORE]]
+- [[http://archive.today/newest/https://joss.theoj.org/about#topic_editors][JOSS Topic Editor]]
+- [[http://archive.today/newest/https://www.nordic-rse.org/about/governance/][Nordic RSE Board]]
+- IEEE Standards
+  - [[http://archive.today/newest/https://standards.ieee.org/ieee/3173/11316/][P3173]] Vice Chair (Endocrine Disrupting Chemical Hazard Labelling)
+  - [[http://archive.today/newest/https://standards.ieee.org/ieee/2881/11176/][P2881]] Participant (Neural Network Architecture Schema)
 - TeX Users Group
   - [[http://archive.today/newest/http://tug.org/tug2020/][TUG 2020 Conference Committee member]]
   - TUG Zulip Admin
@@ -22783,7 +22788,18 @@ These are tech talks, for academic presentations, [[http://archive.today/newest/
 - Green's Function School at [[http://archive.today/newest/https://www.ebert.cup.uni-muenchen.de/kkr/summer_school_2020_des_houches/home][Les Houches 2021]]
 - FortranCon'21 at [[http://archive.today/newest/https://tcevents.chem.uzh.ch/event/14/overview][FortranCon 2021]]
 - SciPy 2022
+- Reproducible HPC without Redundancy with Nix and Reproducible Literate Programming Workflows at [[http://archive.today/newest/https://www.juit.ac.in/pdgc-2022/index1.php][IEEE PDGC 2022]]
+- NumPy Sprint at [[http://archive.today/newest/https://anitab-org.github.io/open-source-day/][Grace Hopper Open Source Day 2022]]
+- NumPy Sprint at [[http://archive.today/newest/https://pydata.org/global2021/][PyData Global 2021]]
+- NumPy Sprint at [[http://archive.today/newest/https://pydata.org/global2022/][PyData Global 2022]]
+- Multiple presentations at [[http://archive.today/newest/https://meetings.aps.org/Meeting/MAR23][APS March Meeting 2023]] and [[http://archive.today/newest/https://meetings.aps.org/Meeting/APR23][APS April Meeting 2023]]
+- Tensor applications at [[http://archive.today/newest/https://www.ipam.ucla.edu/programs/long-programs/tensor-methods-and-emerging-applications-to-the-physical-and-data-sciences/][IPAM TMRC2 2023]]
+- Scaling workflows at [[http://archive.today/newest/https://www.ihpc.is/events/14th-icelandic-hpc-community-workshop][14th Icelandic HPC Community Workshop 2024]]
+- Saddle searches at [[http://archive.today/newest/https://www.cecam.org/workshop-details/long-time-multi-scale-simulations-of-activated-events-from-theory-to-practice-1317][CECAM-LTS-MAP 2024]] and [[http://archive.today/newest/https://mlcm-24.github.io][MLCM 2024]]
+- Multiple presentations at [[http://archive.today/newest/https://meetings.aps.org/Meeting/MAR24][APS March 2024]] and [[http://archive.today/newest/https://meetings.aps.org/Meeting/APR24][APS April 2024]]
+- Thermal beam profiles at [[http://archive.today/newest/https://www.acs.org/meetings/acs-meetings/fall.html][ACS Fall 2024]]
 - Scientific Computing in Rust at [[http://archive.today/newest/https://scientificcomputing.rs/2024/talks/goswami.html][SciCompRS 2024]]
+- Concurrency and standardized APIs at [[http://archive.today/newest/https://meetings.aps.org/Meeting/GPS25][APS Global Physics Summit 2025]] and [[http://archive.today/newest/https://www.psik2025.net/][Psi-K 2025]]
 **** Lightning Talks
 - Nix from the dark ages (without Root) at [[http://archive.today/newest/https://2020.nixcon.org/][NixCon 2020]]
 *** Mentioning Me
