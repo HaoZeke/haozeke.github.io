@@ -22719,142 +22719,152 @@ the rest[fn:whereswaldo].
 ** Profiles
 *** Professional
 - [[http://archive.today/TyXoV][EPFL page]]
-- [[https://sh.turtletech.us/ui-rg][University of Iceland]]
-- [[https://femtolab.science/people/rohit][FemtoLab]]
+- [[http://archive.today/newest/https://sh.turtletech.us/ui-rg][University of Iceland]]
+- [[http://archive.today/newest/https://femtolab.science/people/rohit][FemtoLab]]
 *** Voluntary
 - [[http://archive.today/cmC4v][RealPython author]]
 - [[http://archive.today/AlQks][NumPy Team]]
 - The Carpentries
-  - [[https://carpentries.org/instructors#HaoZeke][Instructor]], [[https://carpentries.org/maintainers#HaoZeke][Maintainer]], [[https://2020.carpentrycon.org/task-force/][CarpentyrCon2020 Committee Task Force]], [[https://2020.carpentrycon.org/schedule/#session-10][CarpentryCon2020 Speaker]]
-- [[https://forum.igdore.org/t/rohit-goswami/656][IGDORE]]
+  - [[http://archive.today/newest/https://carpentries.org/instructors#HaoZeke][Instructor]], [[http://archive.today/newest/https://carpentries.org/maintainers#HaoZeke][Maintainer]], [[http://archive.today/newest/https://2020.carpentrycon.org/task-force/][CarpentyrCon2020 Committee Task Force]], [[http://archive.today/newest/https://2020.carpentrycon.org/schedule/#session-10][CarpentryCon2020 Speaker]]
+- [[http://archive.today/newest/https://forum.igdore.org/t/rohit-goswami/656][IGDORE]]
 - TeX Users Group
-  - [[http://tug.org/tug2020/][TUG 2020 Conference Committee member]]
+  - [[http://archive.today/newest/http://tug.org/tug2020/][TUG 2020 Conference Committee member]]
   - TUG Zulip Admin
 - Maintainer for packages on:
-  - ArchLinux (the [[https://aur.archlinux.org/account/HaoZeke][Arch User Repository]] (AUR))
-  - [[https://github.com/NixOS/nixpkgs/search?q=haozeke][Nixpkgs]]
-  - [[https://github.com/spack/spack/pulls?q=is%3Apr+author%3AHaoZeke][Spack]]
-  - [[https://melpa.org/#/?q=HaoZeke][MELPA]]
-  - [[https://pypi.org/user/rgoswami/][PyPI]]
+  - ArchLinux (the [[http://archive.today/newest/https://aur.archlinux.org/account/HaoZeke][Arch User Repository]] (AUR))
+  - [[http://archive.today/newest/https://github.com/NixOS/nixpkgs/search?q=haozeke][Nixpkgs]]
+  - [[http://archive.today/newest/https://github.com/spack/spack/pulls?q=is%3Apr+author%3AHaoZeke][Spack]]
+  - [[http://archive.today/newest/https://melpa.org/#/?q=HaoZeke][MELPA]]
+  - [[http://archive.today/newest/https://pypi.org/user/rgoswami/][PyPI]]
 *** Academic
-- [[https://publons.com/researcher/2911170/rohit-goswami/][Publons]]
-- [[https://peerj.com/rgoswami/][PeerJ]]
-- [[http://scholar.google.com/citations?user=36gIdJMAAAAJ&hl=en][Google Scholar]]
-- [[https://orcid.org/0000-0002-2393-8056][OrCiD]]
-- [[https://loop.frontiersin.org/people/829611/overview][Loop]]
-- [[https://osf.io/c47v3/][OSF]]
+- [[http://archive.today/newest/https://publons.com/researcher/2911170/rohit-goswami/][Publons]]
+- [[http://archive.today/newest/https://peerj.com/rgoswami/][PeerJ]]
+- [[http://archive.today/newest/http://scholar.google.com/citations?user=36gIdJMAAAAJ&hl=en][Google Scholar]]
+- [[http://archive.today/newest/https://orcid.org/0000-0002-2393-8056][OrCiD]]
+- [[http://archive.today/newest/https://loop.frontiersin.org/people/829611/overview][Loop]]
+- [[http://archive.today/newest/https://osf.io/c47v3/][OSF]]
 # **** Software
 # I am particularly proud of my contributions to to:
 # - d-SEAMS
 *** Societies
-- [[https://engage.aiche.org/network/community-directory/profile?UserKey=8f135c8b-747d-4f79-95fd-84975458e3bd][American Institute of Chemical Engineers]]
-- [[https://ieeexplore.ieee.org/author/37086865956][IEEE]]
+- [[http://archive.today/newest/https://engage.aiche.org/network/community-directory/profile?UserKey=8f135c8b-747d-4f79-95fd-84975458e3bd][American Institute of Chemical Engineers]]
+- [[http://archive.today/newest/https://ieeexplore.ieee.org/author/37086865956][IEEE]]
 *** Communities
-- [[https://figshare.com/authors/Rohit_Goswami/5453063][Figshare]]
+- [[http://archive.today/newest/https://figshare.com/authors/Rohit_Goswami/5453063][Figshare]]
 *** Misc
-- [[https://github.com/HaoZeke][Github]]
-- [[https://gitlab.com/HaoZeke][Gitlab]]
-- [[https://www.goodreads.com/user/show/33462912-rohit-goswami][Goodreads]]
-- [[https://keybase.io/HaoZeke][Keybase]]
+- [[http://archive.today/newest/https://github.com/HaoZeke][Github]]
+- [[http://archive.today/newest/https://gitlab.com/HaoZeke][Gitlab]]
+- [[http://archive.today/newest/https://www.goodreads.com/user/show/33462912-rohit-goswami][Goodreads]]
+- [[http://archive.today/newest/https://keybase.io/HaoZeke][Keybase]]
 *** About me
 - Lab COSMO [[http://archive.today/AlM2e][joining note]]
 ** Pages and Articles
 *** By Me
 - RealPython article on [[http://archive.today/2UYbl][optimal python script structure]].
-- Articles written for the [[https://studentabladid.is/efni?author=6166dde6acb3ff544309ecd6][Student Paper of the University of Iceland]]
-- Everything on [[https://keybase.io/HaoZeke][any of my many websites]]
-- [[https://www.aiche.org/community/sites/committees/young-professionals/blog/fundamental-research-chemical-engineering-undergrad][Write-up on research with a ChemE undergraduate degree]] for the American Institute of Chemical Engineers (AIChE) Young Professionals Committee (YPC)
-- Hackernoon article on [[https://hackernoon.com/locking-and-encrypting-apps-with-encfs-c1484e77f479][Locking and Encrypting Apps with Encfs]]
-- The Water, Chemicals and more with Computers for Chemistry (WC3m) [[https://wc3m.github.io/][course website]]
-- My [[https://github.com/symengine/symengine/wiki/GSoD-2020-Report-Rohit-Goswami:-SymEngine][GSoD (Google Season of Docs) 2020 completion report]] for SymEngine
+- Articles written for the [[http://archive.today/newest/https://studentabladid.is/efni?author=6166dde6acb3ff544309ecd6][Student Paper of the University of Iceland]]
+- Everything on [[http://archive.today/newest/https://keybase.io/HaoZeke][any of my many websites]]
+- [[http://archive.today/newest/https://www.aiche.org/community/sites/committees/young-professionals/blog/fundamental-research-chemical-engineering-undergrad][Write-up on research with a ChemE undergraduate degree]] for the American Institute of Chemical Engineers (AIChE) Young Professionals Committee (YPC)
+- Hackernoon article on [[http://archive.today/newest/https://hackernoon.com/locking-and-encrypting-apps-with-encfs-c1484e77f479][Locking and Encrypting Apps with Encfs]]
+- The Water, Chemicals and more with Computers for Chemistry (WC3m) [[http://archive.today/newest/https://wc3m.github.io/][course website]]
+- My [[http://archive.today/newest/https://github.com/symengine/symengine/wiki/GSoD-2020-Report-Rohit-Goswami:-SymEngine][GSoD (Google Season of Docs) 2020 completion report]] for SymEngine
 **** Collaborative Carpentries Posts
-- A collaborative post on [[https://carpentries.org/blog/2020/08/r-4-migration/][migrating to R 4.0 for The
+- A collaborative post on [[http://archive.today/newest/https://carpentries.org/blog/2020/08/r-4-migration/][migrating to R 4.0 for The
 Carpentries]]
 **** Tech Conferences
-These are tech talks, for academic presentations, [[https://github.com/haozeke/cv][my CV is a better guide]].
-- Reproducible Scalable Workflows with Nix, Papermill and Renku at [[https://in.pycon.org/2020/][PyCon India 2020]]
-- Reproducible Environments with the Nix Packaging System at [[https://2020.carpentrycon.org/schedule/#session-10][CarpentryCon 2020]]
+These are tech talks, for academic presentations, [[http://archive.today/newest/https://github.com/haozeke/cv][my CV is a better guide]].
+- Reproducible Scalable Workflows with Nix, Papermill and Renku at [[http://archive.today/newest/https://in.pycon.org/2020/][PyCon India 2020]]
+- Reproducible Environments with the Nix Packaging System at [[http://archive.today/newest/https://2020.carpentrycon.org/schedule/#session-10][CarpentryCon 2020]]
+- IOP's C++ Libraries and Simulations Workshop at [[http://archive.today/newest/https://www.iopconferences.org/iop/frontend/reg/thome.csp?pageID=1032921&eventID=1664][IOP C++ II 2021]]
+- Code In Place 2021 SL Workshop
+- 42nd Annual Conference of the TeX Users Group at [[http://archive.today/newest/https://tug.org/tug2021/index.html#register][TUG 2021]]
+- IOP CAPS'21 Webdev Workshop at [[http://archive.today/newest/https://www.iopconferences.org/CAPS21][IOP CAPS 2021]]
+- SERI'21 at [[http://archive.today/newest/https://isoft.acm.org/seri2021/][ACM SERI 2021]]
+- JuliaCon 2021 DFT Workshop at [[http://archive.today/newest/https://pretalx.com/juliacon2021/schedule/][JuliaCon'21]]
+- Green's Function School at [[http://archive.today/newest/https://www.ebert.cup.uni-muenchen.de/kkr/summer_school_2020_des_houches/home][Les Houches 2021]]
+- FortranCon'21 at [[http://archive.today/newest/https://tcevents.chem.uzh.ch/event/14/overview][FortranCon 2021]]
+- SciPy 2022
+- Scientific Computing in Rust at [[http://archive.today/newest/https://scientificcomputing.rs/2024/talks/goswami.html][SciCompRS 2024]]
 **** Lightning Talks
-- Nix from the dark ages (without Root) at [[https://2020.nixcon.org/][NixCon 2020]]
+- Nix from the dark ages (without Root) at [[http://archive.today/newest/https://2020.nixcon.org/][NixCon 2020]]
 *** Mentioning Me
 **** Volunteering
-- [[https://www.tug.org/TUGboat/Contents/contents41-2.html][TUGBOAT issue for TUG 2020]] proceedings
+- [[http://archive.today/newest/https://www.tug.org/TUGboat/Contents/contents41-2.html][TUGBOAT issue for TUG 2020]] proceedings
   - Several mentions as a conference organizer
 - Rowan [[http://archive.today/ljniL][blog-post on transition states]]
 **** Lists
-- [[https://summerofcode.withgoogle.com/projects/#5790375215628288][Google Summer of Code (GSoC) 2021 - LFortran and Computational Chemistry]]
-- [[https://en.rannis.is/news/allocation-from-the-icelandic-research-fund-for-the-financial-year-2021-1][2021 List of projects funded by the Icelandic Research Fund]]
-- [[https://developers.google.com/season-of-docs/docs/participants/project-sympy-rohitgoswami][Google Season of Docs (GSoD) 2020 - Symengine]]
-- Spring 2021 [[http://www.ipam.ucla.edu/programs/long-programs/tensor-methods-and-emerging-applications-to-the-physical-and-data-sciences/?tab=participant-list][Institute of Pure and Applied Mathematics (IPAM) Fellow]] for “Tensor Methods and Emerging Applications to the Physical and Data Sciences”
-- [[https://sites.google.com/view/2020crt/home?authuser=0][2020 Categorifications in Representation Theory]] ([[https://sites.google.com/view/2020crt/registered-participants?authuser=0][participant]])
-- [[https://web-eur.cvent.com/event/16fae83c-5b72-4690-a368-829688f0d14b/summary][Heilbronn Annual Conference 2020]] ([[https://web-eur.cvent.com/event/16fae83c-5b72-4690-a368-829688f0d14b/websitePage:1faf08a0-dcdd-4a2c-b4b8-d9d445202377?RefId=HIMR][participant]])
-- [[https://www.cirm-math.fr/Listes/liste_pre_verif.php?id_renc=2255&num_semaine=0][CIRM - Jean-Morlet Chair - Quasi-Monte Carlo Methods and Applications]] ([[https://www.chairejeanmorlet.com/2255.html][info]]) [participant]
-- [[https://www.cirm-math.fr/Listes/liste_pre_verif.php?id_renc=2146&num_semaine=0][CIRM Mathematical Methods of Modern Statistics 2]] ([[https://www.cirm-math.com/cirm-virtual-event-2146.html][info]]) [participant]
-- Kavli IPMU conference on "[[https://indico.ipmu.jp/event/314/overview][The McKay correspondence, mutation and related topics]]" ([[https://indico.ipmu.jp/event/314/registrations/participants][participant]])
-- [[https://chemeng.iisc.ac.in/rare-events/gallery.html][Gallery of RARE 2019]] at IISc
-- [[https://gitlab.com/openresearchlabs/probabilistic_data_analysis_2020/-/blob/master/session7.md][Probablistic Data Analysis]] (University of Turku)
-- [[https://twitter.com/aiidateam/status/1281323480290660352][AiiDA Virtual Tutorial 2020]]
-- [[https://tcevents.chem.uzh.ch/event/12/contributions/45/author/73][FortranCon 2020 Author]]
-- [[https://github.com/stan-dev/math/releases/tag/v3.3.0][Stan Math 3.3.0 contributor]]
+- [[http://archive.today/newest/https://summerofcode.withgoogle.com/projects/#5790375215628288][Google Summer of Code (GSoC) 2021 - LFortran and Computational Chemistry]]
+- [[http://archive.today/newest/https://en.rannis.is/news/allocation-from-the-icelandic-research-fund-for-the-financial-year-2021-1][2021 List of projects funded by the Icelandic Research Fund]]
+- [[http://archive.today/newest/https://developers.google.com/season-of-docs/docs/participants/project-sympy-rohitgoswami][Google Season of Docs (GSoD) 2020 - Symengine]]
+- Spring 2021 [[http://archive.today/newest/http://www.ipam.ucla.edu/programs/long-programs/tensor-methods-and-emerging-applications-to-the-physical-and-data-sciences/?tab=participant-list][Institute of Pure and Applied Mathematics (IPAM) Fellow]] for “Tensor Methods and Emerging Applications to the Physical and Data Sciences”
+- [[http://archive.today/newest/https://sites.google.com/view/2020crt/home?authuser=0][2020 Categorifications in Representation Theory]] ([[http://archive.today/newest/https://sites.google.com/view/2020crt/registered-participants?authuser=0][participant]])
+- [[http://archive.today/newest/https://web-eur.cvent.com/event/16fae83c-5b72-4690-a368-829688f0d14b/summary][Heilbronn Annual Conference 2020]] ([[http://archive.today/newest/https://web-eur.cvent.com/event/16fae83c-5b72-4690-a368-829688f0d14b/websitePage:1faf08a0-dcdd-4a2c-b4b8-d9d445202377?RefId=HIMR][participant]])
+- [[http://archive.today/newest/https://www.cirm-math.fr/Listes/liste_pre_verif.php?id_renc=2255&num_semaine=0][CIRM - Jean-Morlet Chair - Quasi-Monte Carlo Methods and Applications]] ([[http://archive.today/newest/https://www.chairejeanmorlet.com/2255.html][info]]) [participant]
+- [[http://archive.today/newest/https://www.cirm-math.fr/Listes/liste_pre_verif.php?id_renc=2146&num_semaine=0][CIRM Mathematical Methods of Modern Statistics 2]] ([[http://archive.today/newest/https://www.cirm-math.com/cirm-virtual-event-2146.html][info]]) [participant]
+- Kavli IPMU conference on "[[http://archive.today/newest/https://indico.ipmu.jp/event/314/overview][The McKay correspondence, mutation and related topics]]" ([[http://archive.today/newest/https://indico.ipmu.jp/event/314/registrations/participants][participant]])
+- [[http://archive.today/newest/https://chemeng.iisc.ac.in/rare-events/gallery.html][Gallery of RARE 2019]] at IISc
+- [[http://archive.today/newest/https://gitlab.com/openresearchlabs/probabilistic_data_analysis_2020/-/blob/master/session7.md][Probablistic Data Analysis]] (University of Turku)
+- [[http://archive.today/newest/https://twitter.com/aiidateam/status/1281323480290660352][AiiDA Virtual Tutorial 2020]]
+- [[http://archive.today/newest/https://tcevents.chem.uzh.ch/event/12/contributions/45/author/73][FortranCon 2020 Author]]
+- [[http://archive.today/newest/https://github.com/stan-dev/math/releases/tag/v3.3.0][Stan Math 3.3.0 contributor]]
 - CECAM Participant for:
-  - [[https://www.cecam.org/workshop-details/26#participant_tab][CECAM-DE-SMSM: (Machine) learning how to coarse-grain]]
-  - [[https://www.cecam.org/workshop-details/28#participant_tab][CECAM-DE-SMSM: ESPResSo and Python: Versatile Tools for Soft Matter Research]]
+  - [[http://archive.today/newest/https://www.cecam.org/workshop-details/26#participant_tab][CECAM-DE-SMSM: (Machine) learning how to coarse-grain]]
+  - [[http://archive.today/newest/https://www.cecam.org/workshop-details/28#participant_tab][CECAM-DE-SMSM: ESPResSo and Python: Versatile Tools for Soft Matter Research]]
 - Fortran Newsletter Mentions:
-  - [[https://fortran-lang.org/newsletter/2021/04/01/Fortran-Newsletter-April-2021/][April 2021]] :: LFortran contributor
-  - [[https://fortran-lang.org/newsletter/2021/03/01/Fortran-Newsletter-March-2021/][March 2021]] :: LFortran contributor
-  - [[https://fortran-lang.org/newsletter/2021/05/18/Welcome-GSoC-students/][May 2021]] :: GSoC acceptance
+  - [[http://archive.today/newest/https://fortran-lang.org/newsletter/2021/04/01/Fortran-Newsletter-April-2021/][April 2021]] :: LFortran contributor
+  - [[http://archive.today/newest/https://fortran-lang.org/newsletter/2021/03/01/Fortran-Newsletter-March-2021/][March 2021]] :: LFortran contributor
+  - [[http://archive.today/newest/https://fortran-lang.org/newsletter/2021/05/18/Welcome-GSoC-students/][May 2021]] :: GSoC acceptance
 **** Teaching
-- [[https://www.iopconferences.org/iop/frontend/reg/thome.csp?pageID=1032921&eventID=1664][IOP Workshop on C++ II - Libraries and Simulations]] :: April 13, 2020 (instructor) ({{{relref(materials,iop-cpp-2021-meta)}}})
-- [[https://wc3m.github.io/][Water, Chemicals and more with Computers for Chemistry (WC3m)]] :: July 28-August 28, 2020 (co-lead)
-- [[https://coderefinery.github.io/2020-05-25-online/][2020 MegaCodeRefinery]] (helper)
+- [[http://archive.today/newest/https://www.iopconferences.org/iop/frontend/reg/thome.csp?pageID=1032921&eventID=1664][IOP Workshop on C++ II - Libraries and Simulations]] :: April 13, 2020 (instructor) ({{{relref(materials,iop-cpp-2021-meta)}}})
+- [[http://archive.today/newest/https://wc3m.github.io/][Water, Chemicals and more with Computers for Chemistry (WC3m)]] :: July 28-August 28, 2020 (co-lead)
+- [[http://archive.today/newest/https://coderefinery.github.io/2020-05-25-online/][2020 MegaCodeRefinery]] (helper)
 ***** Carpentries
-- [[https://annajiat.github.io/2021-03-29-cmu-online/][Data Carpentry Ecology Social Sciences with R at CMU]] :: March 29-31, 2021 (instructor)
-- [[https://haozeke.github.io/2021-03-16-utah-online/][Network of the National Library of Medicine (NNLM) LC Workshop]] :: March 16-19, 2021 (instructor)
-- [[https://4turesearchdata-carpentries.github.io/2021-03-16-tudelft-online/][SWC workshop at the Eindhoven University of Technology (TU/e)]] :: March 16-17, 23-24, 2021 (instructor)
-- [[https://ucsbcarpentry.github.io/2021-02-18-ucsb-online/][Data Analysis and Visualization in Python for Ecologists at UCSB]] :: February 18-19, 2021 (instructor)
-- [[https://bkmgit.github.io/2020-12-01-TRLN-NNLM-online/][Triangle Research Library Network Library Carpentry Workshop]] :: December 1-4, 2020 (instructor)
-- [[https://sichongp.github.io/2020-11-11-cmu-online/][Data Carpentry Ecology with R at CMU]] :: November 11-13, 2020 (instructor)
-- [[https://marwahaha.github.io/2020-11-04-ITEP-online/][Data Carpentry Workshop at ITEP]] :: November 9-10, 2020 (instructor)
-- [[https://flatironinstitute.github.io/sciware-swc-2020-09-git/][Sciware: Git and GitHub at the Flatiron Institute]] :: September 24 and October 1, 2020 (instructor)
-- [[https://nairps.github.io/2020-09-08-ggc-SBDH-online/][Data Carpentry Workshop for Social Sciences Georgia Gwinnett College]] :: September 8-11, 2020 (instructor)
-- [[https://sadilar.github.io/2020-06-29-SA-ONLINE/][Online Data Carpentry Workshop SADiLaR, South Africa]] :: 29 June - 3 July, 2020 (instructor)
-- [[https://smcclatchy.github.io/2020-06-22-biotechPartners-pm/][Data Carpentry Ecology for Biotech Partners]] :: June 22-July 2, 2020 (instructor)
+- [[http://archive.today/newest/https://annajiat.github.io/2021-03-29-cmu-online/][Data Carpentry Ecology Social Sciences with R at CMU]] :: March 29-31, 2021 (instructor)
+- [[http://archive.today/newest/https://haozeke.github.io/2021-03-16-utah-online/][Network of the National Library of Medicine (NNLM) LC Workshop]] :: March 16-19, 2021 (instructor)
+- [[http://archive.today/newest/https://4turesearchdata-carpentries.github.io/2021-03-16-tudelft-online/][SWC workshop at the Eindhoven University of Technology (TU/e)]] :: March 16-17, 23-24, 2021 (instructor)
+- [[http://archive.today/newest/https://ucsbcarpentry.github.io/2021-02-18-ucsb-online/][Data Analysis and Visualization in Python for Ecologists at UCSB]] :: February 18-19, 2021 (instructor)
+- [[http://archive.today/newest/https://bkmgit.github.io/2020-12-01-TRLN-NNLM-online/][Triangle Research Library Network Library Carpentry Workshop]] :: December 1-4, 2020 (instructor)
+- [[http://archive.today/newest/https://sichongp.github.io/2020-11-11-cmu-online/][Data Carpentry Ecology with R at CMU]] :: November 11-13, 2020 (instructor)
+- [[http://archive.today/newest/https://marwahaha.github.io/2020-11-04-ITEP-online/][Data Carpentry Workshop at ITEP]] :: November 9-10, 2020 (instructor)
+- [[http://archive.today/newest/https://flatironinstitute.github.io/sciware-swc-2020-09-git/][Sciware: Git and GitHub at the Flatiron Institute]] :: September 24 and October 1, 2020 (instructor)
+- [[http://archive.today/newest/https://nairps.github.io/2020-09-08-ggc-SBDH-online/][Data Carpentry Workshop for Social Sciences Georgia Gwinnett College]] :: September 8-11, 2020 (instructor)
+- [[http://archive.today/newest/https://sadilar.github.io/2020-06-29-SA-ONLINE/][Online Data Carpentry Workshop SADiLaR, South Africa]] :: 29 June - 3 July, 2020 (instructor)
+- [[http://archive.today/newest/https://smcclatchy.github.io/2020-06-22-biotechPartners-pm/][Data Carpentry Ecology for Biotech Partners]] :: June 22-July 2, 2020 (instructor)
 **** Quotes
-- Quoted in a [[https://www.stanforddaily.com/2020/06/08/code-in-place-makes-cs-accessible-to-thousands-worldwide/][Stanford Daily Article on CS106A Code in Place]]
-- [[https://fortran-lang.org/newsletter/2020/06/01/Fortran-Newsletter-June-2020/][Fortran Monthly Newsletter (June 2020)]]
+- Quoted in a [[http://archive.today/newest/https://www.stanforddaily.com/2020/06/08/code-in-place-makes-cs-accessible-to-thousands-worldwide/][Stanford Daily Article on CS106A Code in Place]]
+- [[http://archive.today/newest/https://fortran-lang.org/newsletter/2020/06/01/Fortran-Newsletter-June-2020/][Fortran Monthly Newsletter (June 2020)]]
 - Emacs News
-  - [[https://sachachua.com/blog/2021/07/2021-07-26-emacs-news/][2021-07-27]] :: for {{{relref(Doom Emacs and Language Servers,emacs-lang-servers)}}}
-  - [[https://sachachua.com/blog/2020/05/2020-05-11-emacs-news/][2020-06-22]] :: for {{{relref(Temporary LaTeX Documents with Orgmode,org-arb-tex)}}}
-  - [[https://sachachua.com/blog/2020/05/2020-05-11-emacs-news/][2020-06-15]] :: for {{{relref(Emacs for Nix-R,emacs-nix-r)}}}
-  - [[https://sachachua.com/blog/2020/05/2020-05-11-emacs-news/][2020-05-11]] :: for {{{relref(An Orgmode Note Workflow,org-note-workflow)}}}
-  - [[https://sachachua.com/blog/2020/05/2020-05-04-emacs-news/][2020-05-04]] :: for {{{relref(Pandoc to Orgmode with Babel,org-pandoc-babel)}}}
-  - [[https://sachachua.com/blog/2020/04/2020-04-27-emacs-news/][2020-04-27]] :: for {{{relref(Using Mathematica with Orgmode,org-mathematica)}}}
-  - [[https://sachachua.com/blog/2020/04/2020-04-13-emacs-news/][2020-04-13]] :: for [[https://dotdoom.rgoswami.me][my dotDoom doom-emacs configuration]]
-  - [[https://sachachua.com/blog/2020/04/2020-04-06-emacs-news/][2020-04-06]] :: for {{{relref(Replacing Jupyter with Orgmode,jupyter-orgmode)}}}
+  - [[http://archive.today/newest/https://sachachua.com/blog/2021/07/2021-07-26-emacs-news/][2021-07-27]] :: for {{{relref(Doom Emacs and Language Servers,emacs-lang-servers)}}}
+  - [[http://archive.today/newest/https://sachachua.com/blog/2020/05/2020-05-11-emacs-news/][2020-06-22]] :: for {{{relref(Temporary LaTeX Documents with Orgmode,org-arb-tex)}}}
+  - [[http://archive.today/newest/https://sachachua.com/blog/2020/05/2020-05-11-emacs-news/][2020-06-15]] :: for {{{relref(Emacs for Nix-R,emacs-nix-r)}}}
+  - [[http://archive.today/newest/https://sachachua.com/blog/2020/05/2020-05-11-emacs-news/][2020-05-11]] :: for {{{relref(An Orgmode Note Workflow,org-note-workflow)}}}
+  - [[http://archive.today/newest/https://sachachua.com/blog/2020/05/2020-05-04-emacs-news/][2020-05-04]] :: for {{{relref(Pandoc to Orgmode with Babel,org-pandoc-babel)}}}
+  - [[http://archive.today/newest/https://sachachua.com/blog/2020/04/2020-04-27-emacs-news/][2020-04-27]] :: for {{{relref(Using Mathematica with Orgmode,org-mathematica)}}}
+  - [[http://archive.today/newest/https://sachachua.com/blog/2020/04/2020-04-13-emacs-news/][2020-04-13]] :: for [[http://archive.today/newest/https://dotdoom.rgoswami.me][my dotDoom doom-emacs configuration]]
+  - [[http://archive.today/newest/https://sachachua.com/blog/2020/04/2020-04-06-emacs-news/][2020-04-06]] :: for {{{relref(Replacing Jupyter with Orgmode,jupyter-orgmode)}}}
 ** Videos
 *** Of Me
-- Everything [[https://www.youtube.com/channel/UC9f_UGqNsa60kmNGj_WkLPw?][on my YouTube channel]]
-- [[https://www.youtube.com/watch?v=Q1St1VT43sc&feature=youtu.be][Discussion session]] for the CS196A Code in Place AMA with the students
-- Panelist for the CarpentryCon 2020 session on [[https://pad.carpentries.org/cchome-teaching-online][lessons learnt from remote teaching]]
-- Student Presentation at UI on [[https://hi.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=6cda865b-c58a-4a79-89a3-ab9300d6ede6][Scrum for Software Quality Management]]
-- CarpentryCon 2020 [[https://www.youtube.com/watch?v=np6TPzME0aA][session recording]] on "[[https://2020.carpentrycon.org/schedule/#session-10][Reproducible Environments with the Nix Packaging System]]"
+- Everything [[http://archive.today/newest/https://www.youtube.com/channel/UC9f_UGqNsa60kmNGj_WkLPw?][on my YouTube channel]]
+- [[http://archive.today/newest/https://www.youtube.com/watch?v=Q1St1VT43sc&feature=youtu.be][Discussion session]] for the CS196A Code in Place AMA with the students
+- Panelist for the CarpentryCon 2020 session on [[http://archive.today/newest/https://pad.carpentries.org/cchome-teaching-online][lessons learnt from remote teaching]]
+- Student Presentation at UI on [[http://archive.today/newest/https://hi.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=6cda865b-c58a-4a79-89a3-ab9300d6ede6][Scrum for Software Quality Management]]
+- CarpentryCon 2020 [[http://archive.today/newest/https://www.youtube.com/watch?v=np6TPzME0aA][session recording]] on "[[http://archive.today/newest/https://2020.carpentrycon.org/schedule/#session-10][Reproducible Environments with the Nix Packaging System]]"
 *** Including Me
 This category involves recordings where I asked questions, and therefore
 technically involve me in a sense.
-- I appear [[https://www.linkedin.com/posts/univ-ai_neuralnetwork-regularisation-ucla-activity-6689748037511782400-gMSx][in the audience of this clip]] on neural networks and regularization
-- Code in Place AMA with [[https://www.youtube.com/watch?v=J7S_SJ2Adi4&list=PLcil-m27rjnZ2f85ao8_EauguYhzkzSQA&index=5&t=0s][Stanford CS Lecturers]]
-- I [[http://www.youtube.com/watch?v=-Y_OYhoHOb8][appear (audibly)]] to ask a question for the TUG2020 closing seminar by John MacFarlane
+- I appear [[http://archive.today/newest/https://www.linkedin.com/posts/univ-ai_neuralnetwork-regularisation-ucla-activity-6689748037511782400-gMSx][in the audience of this clip]] on neural networks and regularization
+- Code in Place AMA with [[http://archive.today/newest/https://www.youtube.com/watch?v=J7S_SJ2Adi4&list=PLcil-m27rjnZ2f85ao8_EauguYhzkzSQA&index=5&t=0s][Stanford CS Lecturers]]
+- I [[http://archive.today/newest/http://www.youtube.com/watch?v=-Y_OYhoHOb8][appear (audibly)]] to ask a question for the TUG2020 closing seminar by John MacFarlane
 **** HPC Carpentry
-- [[https://pad.carpentries.org/hpccarpentry-tour][A guided tour]]
+- [[http://archive.today/newest/https://pad.carpentries.org/hpccarpentry-tour][A guided tour]]
 **** Fortran Maintainers Monthly Calls
-- [[https://www.youtube.com/watch?v=i-gRNGRzugc][June 2020]]
+- [[http://archive.today/newest/https://www.youtube.com/watch?v=i-gRNGRzugc][June 2020]]
 **** IAS TML Lecture Questions
-I've been sitting in on these for a while thanks to [[https://www.math.ias.edu/~ke.li/][Ke Li]], but this section lists some of the lectures I asked a question in
-  - "[[https://video.ias.edu/tml/2020/0609-AleksanderMadry][What Do Models Learn?]]" by Aleksander Mądry
-  - "[[https://youtu.be/QTnjqdxG99c?t=3879][Langevin Dynamics in Machine Learning]]" by Michael Jordan
-  - "[[https://youtu.be/Wx8J-Kw3fTA?t=4814][Graph Nets: The Next Generation]]" by Max Welling
-  - "[[https://youtu.be/IbKWTF4MzMY?t=3787][Priors for Semantic Variables]]" by Yoshua Bengio
-  - "[[https://www.youtube.com/watch?v=jVBKWfoYRng][A Blueprint of Standardized and Composable Machine Learning]]" by Eric Xing
+I've been sitting in on these for a while thanks to [[http://archive.today/newest/https://www.math.ias.edu/~ke.li/][Ke Li]], but this section lists some of the lectures I asked a question in
+  - "[[http://archive.today/newest/https://video.ias.edu/tml/2020/0609-AleksanderMadry][What Do Models Learn?]]" by Aleksander Mądry
+  - "[[http://archive.today/newest/https://youtu.be/QTnjqdxG99c?t=3879][Langevin Dynamics in Machine Learning]]" by Michael Jordan
+  - "[[http://archive.today/newest/https://youtu.be/Wx8J-Kw3fTA?t=4814][Graph Nets: The Next Generation]]" by Max Welling
+  - "[[http://archive.today/newest/https://youtu.be/IbKWTF4MzMY?t=3787][Priors for Semantic Variables]]" by Yoshua Bengio
+  - "[[http://archive.today/newest/https://www.youtube.com/watch?v=jVBKWfoYRng][A Blueprint of Standardized and Composable Machine Learning]]" by Eric Xing
 
 [fn:whereswaldo] If you do think you have seen me somewhere not on this list, drop me an email
 
