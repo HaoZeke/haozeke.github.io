@@ -22799,7 +22799,9 @@ These are tech talks, for academic presentations, [[http://archive.today/newest/
 - Multiple presentations at [[http://archive.today/newest/https://meetings.aps.org/Meeting/MAR24][APS March 2024]] and [[http://archive.today/newest/https://meetings.aps.org/Meeting/APR24][APS April 2024]]
 - Thermal beam profiles at [[http://archive.today/newest/https://www.acs.org/meetings/acs-meetings/fall.html][ACS Fall 2024]]
 - Scientific Computing in Rust at [[http://archive.today/newest/https://scientificcomputing.rs/2024/talks/goswami.html][SciCompRS 2024]]
+- Saddle search acceleration at [[http://archive.today/newest/https://mlcm-25.github.io/][MLCM 2025]] and Kernel aKMC Conference 2025
 - Concurrency and standardized APIs at [[http://archive.today/newest/https://meetings.aps.org/Meeting/GPS25][APS Global Physics Summit 2025]] and [[http://archive.today/newest/https://www.psik2025.net/][Psi-K 2025]]
+- Concurrency for high throughput adaptive KMC at [[http://archive.today/newest/https://www.acs.org/events/all-events/acs-fall-2025.html][ACS Fall 2025]]
 **** Lightning Talks
 - Nix from the dark ages (without Root) at [[http://archive.today/newest/https://2020.nixcon.org/][NixCon 2020]]
 *** Mentioning Me
