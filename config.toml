@@ -93,7 +93,7 @@ name = "Rohit Goswami (HaoZeke)"
 
   # From my fork
   littlefoot = true
-  goatCounter = "rgoswami"
+  # goatCounter = "rgoswami"
   prism = false
   codefold = true
   praiseNetlify = true
@@ -140,6 +140,10 @@ label = "Utterance 💬"
 
 # [params.intensedebate]
 # accountID = "03433eb5474ac59759898fb85454590c"
+
+[params.plausible]
+dataDomain = "rgoswami.me"
+host = "analytics.turtletech.us"
 
 [params.liberapay]
 accountID = "rohit"
