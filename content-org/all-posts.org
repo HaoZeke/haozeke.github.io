@@ -1536,7 +1536,7 @@ approaches of each package. So the basics of the ideology are listed below.
 Reference management is one of the main reasons to consider a plain-text setup, and mine is no different. The options most commonly seen are:
 - Mendeley :: This is a great option, and the most mobile friendly of the bunch. Sadly, the price tiers aren't very friendly so I have to give it a hard pass.
 - Jabref :: This is fun, but really more of a per-project management system, but it works well for that. The fact that it is Java based was a major issue for me.
-- Zotero :: This is what I personally use and recommend. More on that in a later post.
+- Zotero :: This is what I personally use and recommend[fn:: [[https://turtletech.us/zotero][TurtleTech]] offers a solid Zotero WebDAV sync service, and their [[https://turtletech.us/posts/mendeley-to-zotero-webdav/][migration guide]] covers moving from Mendeley]. More on that in a later post.
 *** Notes
 The idea is to be able to create notes for all kinds of content. Specifically,
 papers or books, along with webpages. This then requires a separate system for
@@ -1604,6 +1604,7 @@ this guide complete, I will also describe the [[https://www.zotero.org/][Zotero]
 Without getting too deep into the weeds here, the basic requirements are:
 - [x] [[https://zotero.org][Zotero]]
 - [x] The [[https://retorque.re/zotero-better-bibtex/][better bibtex extension]]
+- [x] A WebDAV provider for sync ([[https://turtletech.us/zotero][TurtleTech]] works well for this)
 The idea is to then have one top level ~.bib~ file in some handy location which
 you will set up to sync automatically. To make life easier, there is a tiny
 recording of the next steps.
@@ -3835,7 +3836,7 @@ sudo systemctl--user enable autorandr_launcher.service
 #+END_SRC
 
 ** Conclusion
-We now have a setup which ensures that the touch enabled area is constant, without any explicit manual interventions for when devices are added or removed. There isn't much else to say about this workflow here. Additional screens can be {{{relref(configured from older laptops described here,laptop-as-second-screens)}}}. Separate posts can deal with how exactly I meld Zotero, ~org-roam~ and Xournal++ to wreak havoc on all kinds of documents. So, in-lieu of a conclusion, behold a recent scribble with this setup:
+We now have a setup which ensures that the touch enabled area is constant, without any explicit manual interventions for when devices are added or removed. There isn't much else to say about this workflow here. Additional screens can be {{{relref(configured from older laptops described here,laptop-as-second-screens)}}}. Separate posts can deal with how exactly I meld [[https://turtletech.us/zotero][Zotero (with WebDAV sync)]], ~org-roam~ and Xournal++ to wreak havoc on all kinds of documents. So, in-lieu of a conclusion, behold a recent scribble with this setup:
 
 #+caption: From the planning of [[http://www.wavelf.org/ij6TzydE3kTSF8cwwIUj][this voluntary course]]
 file:images/myXournalScrib.png
@@ -8916,7 +8917,7 @@ Calibre provides a handy [[https://www.mobileread.com/forums/showthread.php?p=33
 exported papers to be imported into ~calibre~ and from then into the e-reader as
 expected. Combined with the folder mounts facilitated by ~calibre~ this allows
 for a painless way to ensure a quick export; optimize; sync; read and delete
-workflow.
+workflow. For those looking to [[https://turtletech.us/posts/mendeley-to-zotero-webdav/][migrate from Mendeley or set up Zotero with WebDAV sync]], [[https://turtletech.us/posts/mendeley-to-zotero-webdav/][TurtleTech has a good writeup]] on the process.
 *** Koreader
 Koreader is probably the best thing to happen to e-ink devices since sliced bread. It replaces the need to use any cables with an e-reader; since newer versions have a nice SSH server, and can also update itself. Since this is mostly used as is; and all the information required is on the [[https://github.com/koreader/koreader/wiki][Github Wiki]], there's not much else to say here.
 
@@ -10542,7 +10543,7 @@ Transitioning from ~biblatex~ to ~bibtex~ with ~biber~ for ~sphinx~
 
 I recently started a [[https://ipam21.netlify.app/][set of notes]] using ~jupyter-book~. However, in the process I ran into a horrific bibliography related SNAFU. ~sphinx~ in its infinite wisdom only accepts a rather odd subset of ~bibtex~.
 
-I have been happily exporting my giant bibliography with [[https://www.zotero.org/][Zotero]] (and [[https://retorque.re/zotero-better-bibtex/][better bibtex]]) exporting my references as ~biblatex~ while ~sphinx~ started choking dreadfully. This post describes attempts to reconcile the ~biblatex~ sources without manual intervention.
+I have been happily exporting my giant bibliography with [[https://www.zotero.org/][Zotero]] (and [[https://retorque.re/zotero-better-bibtex/][better bibtex]], synced via [[https://turtletech.us/zotero][WebDAV]]) exporting my references as ~biblatex~ while ~sphinx~ started choking dreadfully. This post describes attempts to reconcile the ~biblatex~ sources without manual intervention.
 *** Input
 The input file was an innocuous looking tiny neat ~biblatex~ file:
 #+begin_src bibtex
@@ -16368,7 +16369,7 @@ trizen -S simplescreenrecorder-wlroots-git
 DISPLAY=":0"  WAYLAND_DISPLAY="wayland-1" simplescreenrecorder
 #+end_src
 *** Reference Management
-I've been a ~zotero~ user for many years now, however it suffers from the same
+I've been a ~zotero~ user for many years now (with [[https://turtletech.us/zotero][WebDAV sync]]), however it suffers from the same
 UI scaling issues and cannot be fixed either by forcing ~xwayland~ execution nor
 by trying other scaling methods. The last resort is to set up a ~user.js~ file in ~$HOME/.zotero/zotero/$PROFILE/user.js~ with:
 #+begin_src js
@@ -20011,7 +20012,7 @@ zenity --notification --text="Sync completed"
 ** Integrating with ~zotero~
 I've dicussed working with {{{relref(Zotero before,my-life-in-eink)}}}, but when working with cloud synced
 calibre libraries, to prevent duplication of files, relative linking of base
-directory attachments works really well[fn:1].
+directory attachments works really well[fn:1]. [[https://turtletech.us/posts/mendeley-to-zotero-webdav/][TurtleTech has a solid writeup]] on the full WebDAV sync setup, which also covers migrating from Mendeley.
 
 #+DOWNLOADED: screenshot @ 2024-07-06 12:46:20
 #+CAPTION: Zotero settings for linking files consistently
@@ -20022,7 +20023,7 @@ Some reasons to do this:
 - The main goal of this is to enable keeping notes per-book, which Calibre
   doesn't support
   + Also to get easy access without duplicated files on the backing WebDAV
-    service (pCloud in my case)
+    service (pCloud in my case, or via [[https://turtletech.us/zotero][TurtleTech]])
 - Allows easier, more natural ~bibtex~ handling in Zotero, without going through
   a sync plugin like [[https://forums.zotero.org/discussion/60898/calibre-zotero-metadata-importer-plug-in][ZMI]]
 
