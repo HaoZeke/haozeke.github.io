@@ -16078,6 +16078,62 @@ All that being said, with ~meson~ support in ~f2py~ from ~1.26~ ([[https://githu
 basic types based modern Fortran [[https://github.com/HaoZeke/GaussJacobiQuad#f2py-generated-interface][can already be used]], so the future remains
 bright.
 
+** Comparison with existing tools
+
+Several tools address Fortran derived type wrapping. Here we compare the opaque
+pointer approach used by f2py with two alternatives.
+
+*** f90wrap
+
+[[https://github.com/jameskermode/f90wrap][f90wrap]] generates ctypes-based Python interfaces for modern Fortran types. It
+parses =.pyf= files (or generates them via f2py) and produces Python wrapper
+classes with getters/setters that call C wrapper functions via ctypes.
+
+Key differences from our f2py approach:
+
+- *Two transitions per access*: Python -> ctypes -> C, versus our single
+  Python -> C/Fortran transition via static =PyTypeObject=
+- *Allocatable arrays*: f90wrap converts =intent(out)= arrays to
+  =intent(in,out)=, requiring pre-allocation from Python. Our approach queries
+  the shape from Fortran and creates correctly-sized NumPy arrays
+- *Type-bound procedures*: f90wrap uses =--move-methods= to heuristically
+  convert routines into class methods. Our approach parses the =contains= block
+  directly
+- *Missing features*: f90wrap does not support parameterized types (KIND/LEN),
+  finalizers, operator overloading, or generic type-bound procedures
+
+*** Shroud
+
+[[https://github.com/LLNL/shroud][Shroud]] (LLNL) generates multi-language wrappers from YAML descriptions. It
+operates primarily on C++ classes and produces Fortran bindings, rather than
+wrapping native Fortran types.
+
+- *YAML-driven*: requires manual type descriptions rather than parsing Fortran
+  source
+- *C++ focus*: supports C++ classes, templates, overloading. Fortran types must
+  be described as C++ equivalents
+- *No opaque Fortran types*: cannot wrap types with allocatable/pointer
+  components or inheritance unless re-expressed as C++ classes
+- *Strong CMake integration*: pairs well with CMake-based projects but lacks
+  meson support
+
+*** Feature matrix
+
+| Feature | f2py (opaque) | f90wrap | Shroud |
+|---------+---------------+---------+--------|
+| Allocatable arrays | YES | PARTIAL | NO |
+| Pointer members | YES (ro) | NO | YES |
+| Inheritance | YES | YES | YES |
+| Type-bound procedures | YES | PARTIAL | YES |
+| Operator overloading | YES | NO | PARTIAL |
+| Finalizers | YES | NO | NO |
+| Parameterized types | YES | NO | NO |
+| Deferred-length chars | YES | PARTIAL | PARTIAL |
+| SEQUENCE types | YES | NO | NO |
+| Runtime generic dispatch | YES | NO | YES |
+| Source parsing | Fortran | .pyf | YAML |
+| Build system | meson | make/cmake | CMake |
+
 [fn:yaymeson] It is at this point (linking, handling dependencies) that ~meson~ pays off over hand compilation
 [fn:egdouble] Hence ~real(8)~ over the more [[https://fortran-lang.discourse.group/t/best-way-to-declare-a-double-precision-in-fortran/69/21?u=rgoswami][explicit alternatives]]
 [fn:seriously] Pun intended
