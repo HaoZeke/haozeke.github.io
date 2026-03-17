@@ -408,7 +408,7 @@ nowadays, I personally used:
   special characters are a bit much to take in at the level of practice you get
   by completing all the previous exercises, but eventually they make for a good workout.
 - [[https://www.typingclub.com/][TypingClub]] :: This is what I ended up working my way through. It is
-  comprehensive, beautiful, and fun.
+  thorough, beautiful, and fun.
 
 Also, later, I ended up using [[https://www.keybr.com/][keybr]] a lot, simply because typing gibberish is a
 good way of practicing, and it is independent of the keyboard layout.
@@ -618,7 +618,7 @@ easier to just write and forget about it.
 ** The Show
 Much has been said about how Bojack Horseman is one of the best shows ever, and
 they're all correct. For that matter I won't be going into the details of how
-every episode ties together a tapestry of lives in a meaningful way, or any of
+every episode weaves together lives in a meaningful way, or any of
 that. The show was amazingly poignant. The characters felt real. Which actually
 leads me to the real issue.
 ** The End
@@ -694,10 +694,9 @@ privileges which aren't normally part of most Dotfile setups.
 - Tracking dotfiles is really close to having a sort of out-of-context journal
 
 Before I settled on using [[https://github.com/kobus-v-schoor/dotgit][the fabulous dotgit]], I considered several
-alternatives, most notably [[https://www.gnu.org/software/stow/][GNU stow]].
+alternatives, especially [[https://www.gnu.org/software/stow/][GNU stow]].
 ** Preliminaries
-It is important to note the environment into which I had to get my
-setup.
+The environment into which I had to get my setup matters here.
 *** SSH Setup
 - The very first thing to do is to use a new ~ssh-key~
 #+BEGIN_SRC bash
@@ -806,7 +805,7 @@ message along the lines of:
 
 Which basically is as bad as it sounds. At this stage, we need a newer compiler
 to even get ~nix~ up and running, but can't without getting an OS update. This
-chicken and egg situation calls for the drastic measure of leveraging ~brew~
+chicken and egg situation calls for the drastic measure of using ~brew~
 first[fn:: This used to be called linuxbrew, but the [[https://docs.brew.sh/Homebrew-on-Linux][new site]] makes it clear
 that it's all one ~brew~ now.].
 
@@ -1242,7 +1241,7 @@ in Place]]. I did also mention I'd try to keep a set of short notes on the
 process. So there[fn:videos].
 ** The Training
 Given the overwhelming number of students, and section leaders, the small groups
-are for fostering a community of teachers.
+are for building a community of teachers.
 
 # Arun Kulshrestha is the section leader. He graduated a while ago from Stanford
 # and was a section leader too.
@@ -1536,7 +1535,7 @@ approaches of each package. So the basics of the ideology are listed below.
 Reference management is one of the main reasons to consider a plain-text setup, and mine is no different. The options most commonly seen are:
 - Mendeley :: This is a great option, and the most mobile friendly of the bunch. Sadly, the price tiers aren't very friendly so I have to give it a hard pass.
 - Jabref :: This is fun, but really more of a per-project management system, but it works well for that. The fact that it is Java based was a major issue for me.
-- Zotero :: This is what I personally use and recommend[fn:: [[https://turtletech.us/zotero][TurtleTech]] offers a solid Zotero WebDAV sync service, and their [[https://turtletech.us/posts/mendeley-to-zotero-webdav/][migration guide]] covers moving from Mendeley]. More on that in a later post.
+- Zotero :: This is what I personally use and recommend[fn:: [[https://turtletech.us/zotero][TurtleTech]] has a solid Zotero WebDAV sync service, and their [[https://turtletech.us/posts/mendeley-to-zotero-webdav/][migration guide]] covers moving from Mendeley]. More on that in a later post.
 *** Notes
 The idea is to be able to create notes for all kinds of content. Specifically,
 papers or books, along with webpages. This then requires a separate system for
@@ -1961,7 +1960,7 @@ Colemak layout:                  |                 QWERTY layout:
  zxcvb km,./            n        |       j          zxcvb nm,./
 #+END_SRC
 ** Sudoers
-It is important to note that the ~sudo~ command does not automatically pick up on your keyboard layout. It is best to set this explicitly. Use ~visudo~ and un-comment ~Defaults env_keep += "LANG LANGUAGE LINGUAS LC_* _XKB_CHARSET"~, or:
+The ~sudo~ command does not automatically pick up on your keyboard layout. It is best to set this explicitly. Use ~visudo~ and un-comment ~Defaults env_keep += "LANG LANGUAGE LINGUAS LC_* _XKB_CHARSET"~, or:
 #+begin_src bash
 su
 echo 'Defaults env_keep += "LANG LANGUAGE LINGUAS LC_* _XKB_CHARSET"' >> /etc/sudoers
@@ -1969,7 +1968,7 @@ echo 'Defaults env_keep += "LANG LANGUAGE LINGUAS LC_* _XKB_CHARSET"' >> /etc/su
 ** Emacs
 Though I have [[https://github.com/hlissner/doom-emacs/issues/783#issuecomment-535805347][mentioned publicly]], that I was using the regular QWERTY motion
 keys, I realized I had actually started to use the mouse more often, simply
-because it was a pain to navigate. Thankfully, ~emacs~ has [[https://github.com/wbolster/evil-colemak-basics][evil-colemak-basics]],
+because it was a pain to move around. Thankfully, ~emacs~ has [[https://github.com/wbolster/evil-colemak-basics][evil-colemak-basics]],
 which is fabulous. For reference, these make it really easy for QWERTY users to
 make the switch if they're previously used to VIM bindings.
 #+BEGIN_SRC rst :results raw :exports results
@@ -1985,7 +1984,7 @@ make the switch if they're previously used to VIM bindings.
 
    * - ``h``, ``n``, ``e``, ``i``
      - ``h``, ``j``, ``k``, ``l``
-     - navigate
+     - move
      - ``mnvo``
      - yes
      -
@@ -2064,7 +2063,7 @@ make the switch if they're previously used to VIM bindings.
 #+RESULTS:
 | Colemak            | Qwerty             | Action                   | States | At Qwerty position? | Remarks                  |
 |--------------------+--------------------+--------------------------+--------+---------------------+--------------------------|
-| =h=, =n=, =e=, =i= | =h=, =j=, =k=, =l= | navigate                 | =mnvo= | yes                 |                          |
+| =h=, =n=, =e=, =i= | =h=, =j=, =k=, =l= | move                     | =mnvo= | yes                 |                          |
 | =k=, =K=           | =n=, =N=           | search next/previous     | =mnvo= | yes                 |                          |
 | =u=, =U=           | =i=, =I=           | insert                   | =_nv_= | yes                 |                          |
 | =l=                | =u=                | undo                     | =_nv_= | yes                 |                          |
@@ -2503,12 +2502,12 @@ in pkgs.mkShell {
 }
 #+END_SRC
 
-Where we note that we can install CRAN packages as easily as regular packages
+Here we can install CRAN packages as easily as regular packages
 (like R), except for the fact that they are kept in a ~pkgs.rPackages~
 environment, as opposed to ~pkgs~. This is actually a common convention most
 languages with central repos. The most interesting thing to note is that,
 similar to the convention for ~nix-python~ setups, packages with a dot in the
-name will be converted to having an underscore, i.e. ~data.table~ ->
+name will be converted to an underscore, i.e. ~data.table~ ->
 ~data_table~.
 
 However, for the rethinking package, and many others, there is no current CRAN
@@ -3774,7 +3773,7 @@ That and the similar ~right~ option, covers around 99% of all possible dual scre
 
 ** Constant Touch
 
-The problem is that by default, the entire combined screen area is assumed to be touch-enabled, which essentially means an awkward area of the screen which is dead to all input (since it doesn't exist). The key insight is that I never have more touch-enabled surfaces than my default screen, no matter how many extended screens are present. So the solution is:
+The problem is that by default, the entire combined screen area is assumed to be touch-enabled, which essentially means an awkward area of the screen which is dead to all input (since it doesn't exist). The insight is that I never have more touch-enabled surfaces than my default screen, no matter how many extended screens are present. So the solution is:
 
 #+BEGIN_QUOTE
 Make sure the touch area is constant.
@@ -3861,7 +3860,7 @@ Of the many types of writing one undertakes in a typical academic career, grant 
 ** Grants
   At some stage, every researcher who doesn't bow out of academia ends up faced with the prospect of proving to a funding agency that they are capable and well-adjusted enough to get money for an extended amount of time.
 *** Lit Surveys
-Unlike papers and reviews, though recent papers are important, it is more relevant to actually project where the field will be in upcoming years to ensure the deliverables are not out-dated. Additionally, it is best to link to widely cited literature, to ensure that the reviewers believe in your holistic understanding.
+Unlike papers and reviews, though recent papers are important, it is more relevant to actually project where the field will be in upcoming years to ensure the deliverables are not out-dated. Additionally, it is best to link to widely cited literature, to ensure that the reviewers believe in your full understanding.
 *** Deliverables
 This part is fun to write, building towards a goal, is a special kind of write up. It allows one to really flesh out a research plan with realistic goals.
 *** Extras
@@ -4125,7 +4124,7 @@ It is recommended to use a minimal set of ~micromamba~ packages.
 *Note that*: [[http://ihpc.is/garpur/][garpur]] and elja already has ~lmod~
 #+END_QUOTE
 
-The scripts in this post will also be part of the [[https://github.com/HaoZeke/haozeke.github.io/][repo]], but keep in mind that these are not meant to be robust ways to install anything, and every command should be run by hand because things will probably break badly. We keep all sources in ~$HOME/tmphpc~ and install everything relative to ~$HOME/.hpc~. Paths are managed by the ~lmod~ system.
+The scripts in this post will also be part of the [[https://github.com/HaoZeke/haozeke.github.io/][repo]], but keep in mind that these are not meant to be reliable ways to install anything, and every command should be run by hand because things will probably break badly. We keep all sources in ~$HOME/tmphpc~ and install everything relative to ~$HOME/.hpc~. Paths are managed by the ~lmod~ system.
 #+begin_src bash
 export hpcroot=$HOME/tmphpc
 mkdir -p $hpcroot
@@ -4921,7 +4920,7 @@ Though this is not bad by any standard, we will try to get a more interactive ma
 The first few things to obtain are:
 - [[https://github.com/madjar/nox][nox]] :: This is a better package management helper
 - [[https://github.com/nmattia/niv][niv]] :: For pinning dependencies as discussed later
-- [[https://github.com/target/lorri][lorri]] :: For working seamlessly with project environments
+- [[https://github.com/target/lorri][lorri]] :: For working smoothly with project environments
 
 *** Exercise 1
 #+BEGIN_QUOTE
@@ -5056,7 +5055,7 @@ nix-shell --run "bash"
 ** mkShell
 The ~mkShell~ function is the focus of our tutorial, and we will mostly work around passing in different environments and hooks. Let us start by defining a hook.
 *** Shell Hooks
-Often, we will want to set an environment variable in our shell in advance. We should not use ~direnv~ for this, and instead we will focus on the ~shellHook~ option. Syntactically, we note that this is of the form:
+Often, we will want to set an environment variable in our shell in advance. We should not use ~direnv~ for this, and instead we will focus on the ~shellHook~ option. Syntactically, this is of the form:
 #+BEGIN_SRC nix
 let
   hook = ''
@@ -5380,7 +5379,7 @@ rm -rf default.nix node-env.nix node-packages.nix node_modules package-lock.json
 nix-shell -p 'nodePackages.node2nix' --run 'node2nix package.json'
 #+END_SRC
 
-The single line update mechanism can be run in the ~nix-shell~ itself, making things marginally less painful.
+The single line update mechanism can be run in the ~nix-shell~ itself. This makes things marginally less painful.
 ** Conclusions
 This has been a short introduction to working with the ~nix-shell~ ecosystem. It isn't as fast as working with the normal setup, and it is a pretty annoying workflow. Given that most CI setups have good support for caching ~npm~ dependencies, it doesn't seem worthwhile at the moment.
 
@@ -5507,7 +5506,7 @@ in pkgs.mkShell { buildInputs = with pkgs; [ customPython ]; }
 
 We can also pull in overrides from ~poetry2nix~ with ~overrides_post~ as [[https://github.com/DavHau/mach-nix/blob/master/examples.md][described here]].
 ** Conclusion
-With the completion of this final remaining hurdle, ~nix~ is now fully realized as a ~python~ management system. At this point the "only" thing remaining is to find an optimal way of leveraging ~nix~ for setting up re-usable data science and scientific computing projects.
+With the completion of this final remaining hurdle, ~nix~ is now fully realized as a ~python~ management system. At this point the "only" thing remaining is to find an optimal way of using ~nix~ for setting up re-usable data science and scientific computing projects.
 
 * DONE Local Nix without Root :@programming:workflow:projects:hpc:nix:tools:
 CLOSED: [2020-09-07 Mon 18:30]
@@ -6346,7 +6345,7 @@ Seeing as Travis provides first class ~nix~ support, as well as excellent integr
 *** Settings
 A minor but necessary evil is setting up a PAP ([[https://docs.github.com/apps/building-oauth-apps/scopes-for-oauth-apps/][personal access token]]) [[https://github.com/settings/tokens][from here]]. Depending on what repositories are being used, the scope should encompass ~repo~ permissions (minimally ~public_repo~), and ~admin:org~ permissions might be required.
 
-Having obtained the token, we will need to navigate to the Settings section on the Travis web-UI and add the token as an environment variable, we might be partial to a name like ~GH_TOKEN~.
+Having obtained the token, we will need to go to the Settings section on the Travis web-UI and add the token as an environment variable, we might be partial to a name like ~GH_TOKEN~.
 
 #+DOWNLOADED: screenshot @ 2020-09-22 09:55:21
 #+caption: Settings at ~travis-ci.com/host/proj/settings~
@@ -6410,7 +6409,7 @@ DOXYFILE = "Doxyfile-prj.cfg"
 OUTDIR = File.join(CWD,"public")
 SPHINXDIR = File.join(CWD,"docs/Sphinx")
 #+END_SRC
-This section should give a fairly clear idea of how the ~Rakefile~ itself is essentially pure ~ruby~ code. We are now beginning to have more holistic control of how our project is structured.
+This section should give a fairly clear idea of how the ~Rakefile~ itself is essentially pure ~ruby~ code. We are now beginning to have more complete control of how our project is structured.
 *** Tasks
 The general form of a ~task~ is simply:
 #+BEGIN_SRC ruby
@@ -6461,7 +6460,7 @@ task :mkSphinx, [:builder] => ["mkDoxy"] do |task, args|
   sh "poetry run sphinx-build source #{OUTDIR} -b #{args.builder}"
 end
 #+END_SRC
-There are some subtleties here, notably:
+There are some subtleties here, in particular:
 - The task is meant to run *without* ~nix~
 - We use the ~args~ setup as before
 **** No Nix Meta
@@ -6474,7 +6473,7 @@ end
 #+END_SRC
 The main take-away here is that we finally call the ~Rake~ library itself, but within the task, which means the dependency tree is respected and we get ~doxygen->sphinx->darkhttpd~ as required.
 **** Nix Builder
-For ~nix~ use we note that we are unable to enter the ~nix~ environment from within the ~Rakefile~ itself. We work around this by being more descriptive.
+For ~nix~ use, we are unable to enter the ~nix~ environment from within the ~Rakefile~ itself. We work around this by being more descriptive.
 #+BEGIN_SRC ruby
 desc "Build Nix Sphinx, use as nix-shell --run 'rake mkNixDoc' --pure"
 task :mkNixDoc, [:builder] => "mkDoxy" do |task, args|
@@ -6551,7 +6550,7 @@ rake -T
 #+END_SRC
 Activate this with the usual ~direnv allow~. This has the added benefit of listing the defined tasks when ~cd~'ing into the project directory.
 ** Conclusions
-A lot has happened on the tooling end, even though the documentation itself has not been updated further. We have managed to setup a robust environment which is both reproducible and also amenable to users who do not have ~nix~. We have also setup a build system, which can help us in many more ways as well (asset optimization through the ~rails~ pipeline). In the next post, we will return to the documentation itself for further tinkering.
+A lot has happened on the tooling end, even though the documentation itself has not been updated further. We have managed to setup a solid environment which is both reproducible and also amenable to users who do not have ~nix~. We have also setup a build system, which can help us in many more ways as well (asset optimization through the ~rails~ pipeline). In the next post, we will return to the documentation itself for further tinkering.
 [fn:whatthen] [[https://python-poetry.org/][Poetry]] and [[https://pipenv-fork.readthedocs.io/][Pipenv]] come to mind
 [fn:whybother] In this instance, we could have simply called on ~shell.nix~ instead, but it illustrates a more general concept
 [fn:teachmerake] [[https://avdi.codes/tag/rake/page/2/][Avdi's blog has a fantastic introduction]] to ~rake~ and ~Rakefiles~
@@ -6573,7 +6572,7 @@ undocumented at the C++ API level [fn:: e.g. [[https://eondocs.org][eOn]], which
 computational chemists don't write C++ anyway, the user-docs and YAML are
 enough]. While integrating with Sphinx via ~exhale~ or ~breathe~ {{{relref(shown
 earlier,doc-cpp-dox-sph-exhale)}}} [fn:: or in [[https://chemfiles.org/chemfiles/0.10.4/classes/frame.html][Chemfiles]]] works well, it often
-fails to provide a seamless source code view or struggles with modern C++
+fails to provide a smooth source code view or struggles with modern C++
 constructs.
 
 For smaller, well formed libraries, the drawbacks of not being able to read the
@@ -6603,7 +6602,7 @@ For before/after images see:
 ** Baseline -- ~rgpot~
 In general, the pipeline relies on Doxygen emitting XML, which ~doxyrest~ parses
 via Lua templates to generate reStructuredText, finally consumed by Sphinx. This
-allows the C++ API to sit seamlessly alongside Python documentation in a single
+allows the C++ API to sit naturally alongside Python documentation in a single
 Sphinx project, utilizing modern themes like ~furo~ or ~pydata-sphinx-theme~.
 
 #+BEGIN_SRC dot :file ./images/dot/dot-doxyrest-workflow.png :cmdline -Kdot -Tpng -Gdpi=200 :cache yes :eval never :exports none
@@ -6741,12 +6740,12 @@ only setup ~pixi~ and invoke the target task.
 This reduces the friction of maintenance significantly, as local reproduction of
 CI failures becomes a matter of running ~pixi r docbld~, and integrates easily
 with other actions, like the [[https://github.com/HaoZeke/doc-previewer][doc-previewer]] to post artifact links directly on
-Pull Requests, facilitating easier review of the generated output without
-digging through Action logs. 
+Pull Requests. This helps with easier review of the generated output without
+digging through Action logs.
 ** Metatomic integration
 For larger projects like [[https://github.com/metatensor/metatomic][metatomic]] which do not use ~pixi~, the process requires a
 bit more manual orchestration. Here, the challenge is replacing the declarative
-task runner with a robust script that ensures dependencies (like the ~doxyrest~
+task runner with a reliable script that ensures dependencies (like the ~doxyrest~
 ~lua~ frames) are present before invoking the build.
 
 While a ~Makefile~ or ~bash~ script is the traditional route, using [[https://www.nushell.sh/][nushell]]
@@ -6888,7 +6887,7 @@ Details of this happy circumstance are reproduced below from the [[https://in.py
 - Title :: Reproducible Scalable Workflows with Nix, Papermill and Renku
 **** Abstract
 #+BEGIN_QUOTE
-The provenance of Jupyter notebook interfaces can no longer be denied in the data-science and analysis community. In particular, fledgling and "fresh out of school" researchers and practitioners are used to using Jupyter notebooks for their initial analysis. As might be expected, these workflows are difficult to reproduce and also store. Caching efficiency and dependency re-use are almost always sub-optimal with virtual environments, compared to native installations, and the same issues (along with additional security concerns) plague docker setups as well. There are a set of Jupyter tools which have evolved to close this gap, like JupyText. However, the fundamental aspect of reproducing workflows on high performance computing clusters, of being able to compose programmatically, compilation rules which efficiently use underlying hardware with minimal user intervention is still not a solved problem. In this talk, I will discuss packaging Python applications and workflows in an end-to-end composable manner using the Nix ecosystem, which leverages a functional programming paradigm and then show how this allows for both user-friendly low-compute analysis, while being scalable on large clusters. To that end, the tools introduced will be:
+The provenance of Jupyter notebook interfaces can no longer be denied in the data-science and analysis community. In particular, fledgling and "fresh out of school" researchers and practitioners are used to using Jupyter notebooks for their initial analysis. As might be expected, these workflows are difficult to reproduce and also store. Caching efficiency and dependency re-use are almost always sub-optimal with virtual environments, compared to native installations, and the same issues (along with additional security concerns) plague docker setups as well. There are a set of Jupyter tools which have evolved to close this gap, like JupyText. However, the fundamental aspect of reproducing workflows on high performance computing clusters, of being able to compose programmatically, compilation rules which efficiently use underlying hardware with minimal user intervention is still not a solved problem. In this talk, I will discuss packaging Python applications and workflows in an end-to-end composable manner using the Nix ecosystem, which uses a functional programming approach and then show how this allows for both user-friendly low-compute analysis, while being scalable on large clusters. To that end, the tools introduced will be:
 
 The Nix programming language (emphasis on developer environments for python with mkShell)
 Jupyter Python kernels (the Xeus kernel for Python debugging) and Jupytext
@@ -6921,7 +6920,7 @@ CLOSED: [2020-10-03 Sat 17:05]
 A post on local recordings
 #+END_QUOTE
 ** Background
-Since the advent of the COVID-19 situation, there has been an increase in the demand for recorded materials. Standard approaches involve Zoom, which is not only proprietary, but also quite a bit of a privacy nightmare. The last straw was the random placement of my speaker bauble head.
+Since the advent of the COVID-19 situation, there has been an increase in the demand for recorded materials. Standard approaches involve Zoom, which is proprietary and quite a bit of a privacy nightmare. The last straw was the random placement of my speaker bauble head.
 
 #+DOWNLOADED: screenshot @ 2020-10-03 16:51:07
 #+caption: Zoom webcam placement
@@ -7047,7 +7046,7 @@ For this section, I personally use [[https://play.google.com/store/apps/details?
 *** Comments
 In practice, I use the x86 setup, with the secondary laptop acting as a viewer for a virtual screen, mostly because that way I can tune into multiple Zoom meetings (a bonus).
 ** Conclusion
-The final setup is quite robust to changes. Future posts might go into setting up the kind of local networking tools to help move files, code and more between both machines, to improve on the peripheral share approach. Additionally, there are still some manual steps which can and should be automated. I'm not super pleased with the setup, it takes longer than a wireless screen. This post is complimented by the {{{relref(work and setup with touchscreens here,multi-monitor-touch)}}}.
+The final setup is quite resilient to changes. Future posts might go into setting up the kind of local networking tools to help move files, code and more between both machines, to improve on the peripheral share approach. Additionally, there are still some manual steps which can and should be automated. I'm not super pleased with the setup, it takes longer than a wireless screen. This post is complimented by the {{{relref(work and setup with touchscreens here,multi-monitor-touch)}}}.
 
 * TODO Haskell with Nix for Hacktoberfest :@programming:tools:nix:workflow:python:
 :PROPERTIES:
@@ -7270,7 +7269,7 @@ As with all ~emacs~ related setup snippets on this site, these should be modifie
 #+END_SRC
 Also, my [[https://dotdoom.rgoswami.me/config.html#text-3][full configuration]] has additional non-essential quality of life keybindings amongst other things.
 *** Anki Connect
-~CTRL+Shift+A~ will bring up the addon settings, and Anki has to be restarted after installing the addons. [[https://github.com/FooSoft/anki-connect][Anki Connect]] itself does not need any further configuration, though the ~readme~ is very comprehensive.
+~CTRL+Shift+A~ will bring up the addon settings, and Anki has to be restarted after installing the addons. [[https://github.com/FooSoft/anki-connect][Anki Connect]] itself does not need any further configuration, though the ~readme~ is very thorough.
 *** TeX Setup
 The [[https://ankiweb.net/shared/info/937148547][LaTeX process editor]] can be set in two stages, wherein we will first ensure that we can use ~xelatex~ and that we can generate an ~svg~.
 #+begin_src json
@@ -7655,7 +7654,7 @@ In brief order:
 - [[https://www.thunderbird.net/en-US/][Thunderbird]] :: This was simply impossible to beat, back in the days of XUL. Infact, Mozilla and the entire "Foundation" should have a special circle reserved for them in hell for what they did to both Firefox (making it a chrome clone) and Thunderbird (stripping it of all the loving crafted extensions)[fn:noreally]. Even after the ridiculous new engine, the community bounced back to make a good set of extensions, some of which [[https://addons.thunderbird.net/en-US/thunderbird/collections/rgoswami/favorites/][are enumerated here]]. Most recently, once again version 78 has broken all addons and made my client unusable again. The *last straw*. Also, of late, Thunderbird needs a paid extension to work well with Exchange accounts.
 - [[https://getmailspring.com/][Mailspring]] :: Always leery of Electron apps, this is a pathetically heavy, plodding mess. Constantly disconnecting and requiring re-authentication, while also being very coy about losing emails. Their "pro" feature set includes a privacy invasive method of figuring out when people read what you send. This has been championed a lot by the Tech media, but it is simply not a working mail client, and the themes are drab anyway. Not to mention the fact that it is *paid*, and *not FOSS*, and had an ugly history with Nylas mail.
 - [[https://www.postbox-inc.com/][Postbox]] :: A fork from Thunderbird, without official Linux support, this [[https://appdb.winehq.org/objectManager.php?sClass=application&iId=9199][runs surprisingly well via Wine]]. That said, it is still annoying to not have a native client, and there are no good extensions.
-- [[https://wiki.gnome.org/Apps/Geary][Geary]] :: The shining hope of the GNOME desktop. Good, but not extensible enough yet. Also lacks a lot of user-facing options, due to the ridiculous design paradigm of GNOME, which appears to be "what if we had no options, people like that right, that's why they use Linux!"
+- [[https://wiki.gnome.org/Apps/Geary][Geary]] :: The shining hope of the GNOME desktop. Good, but not extensible enough yet. Also lacks a lot of user-facing options, due to the ridiculous design philosophy of GNOME, which appears to be "what if we had no options, people like that right, that's why they use Linux!"
 
 
 Perhaps most importantly, none of these clients are stable. They change at the whims of a shadowy development cabal which has no consideration for users. Many years ago, back when Thunderbird ditched XUL, ~mutt~ presented itself as an alternative. At the time, however, it was
@@ -8238,7 +8237,7 @@ These are defined in a single ~json~ as shown.
   ]
 }
 #+end_src
-- The key idea is to have the ~AltGr~ keys placed symmetrically
+- The idea is to have the ~AltGr~ keys placed symmetrically
 - One major issue is that ~Backspace~ has gone from a single stroke of ~CapsLock~ to a three-key-combo
   + This is the least intuitive, and might need to be changed
 - The third level (~Extend+AltGr~) is more accessible than the second in this layout
@@ -8592,7 +8591,7 @@ CLOSED: [2020-12-22 Tue 05:09]
 Short post on making minimal changes to derivations in ~nixpkgs~ at a project level using ~callPackage()~ along with GH-Actions for deployment of ~sphinx~ documentation.
 #+END_QUOTE
 ** Background
-As part of my work on the [[https://symengine.org][Symengine documentation]][fn:whopaid],  I had originally thought of leveraging ~nix~ for reproducible builds for each of the language bindings with GH-Actions. There exists a derivation in the upstream package repository, but it was outdated ([[https://github.com/NixOS/nixpkgs/blob/66e44425c6dfecbea68a5d6dc221ccd56561d4f1/pkgs/development/libraries/symengine/default.nix][v6.0.0]] instead of v6.0.1) [fn:whocares]. Normally this would simply require a PR to be fixed; but since documenting different language bindings requires specific flags and tests were largely not an issue, I needed to make a project level derivation for each repository.
+As part of my work on the [[https://symengine.org][Symengine documentation]][fn:whopaid],  I had originally thought of using ~nix~ for reproducible builds for each of the language bindings with GH-Actions. There exists a derivation in the upstream package repository, but it was outdated ([[https://github.com/NixOS/nixpkgs/blob/66e44425c6dfecbea68a5d6dc221ccd56561d4f1/pkgs/development/libraries/symengine/default.nix][v6.0.0]] instead of v6.0.1) [fn:whocares]. Normally this would simply require a PR to be fixed; but since documenting different language bindings requires specific flags and tests were largely not an issue, I needed to make a project level derivation for each repository.
 ** Project Layout
 The standard ~niv~ setup, as described in the {{{relref(longer tutorial post,ccon-tut-nix)}}} will suffice.
 #+begin_src bash
@@ -8799,7 +8798,7 @@ Though I am a huge proponent of RSS feeds (with [[https://gitlab.com/news-flash/
 ** Hardware
 My primary e-reader is still my [[https://www.kobo.com/koboaurahd?___store=au&style=onestore][Kobo Aura HD]] (complete with a snazzy [[https://www.amazon.com/Cover-Up-eReader-Natural-Cover-Function/dp/B00DZJ5VM0][hemp sleep-cover]]), and has been my go to for almost a decade now since its release. Recently I have augmented my workflow with the [[https://remarkable.com/store/remarkable-2][reMarkable 2]]; though I have yet to break it in very well; mostly because I tend to gravitate towards typing out my thoughts [fn:whytype] instead of writing.
 
-The Kobo Aura HD is still the pinnacle of reading technology to me; mostly because the firmware is easy to bypass; and there is a vibrant community of developers on the [[https://www.mobileread.com/forums/showthread.php?t=210800][MobileRead Forums]]. Display and spec aside; the biggest reason for never replacing it has been been the simple fact that most modern e-readers no longer support SD cards; and much of my workflow depends on storing insane amounts of material offline [fn:alsobattery].
+The Kobo Aura HD is still the pinnacle of reading technology to me; mostly because the firmware is easy to bypass; and there is an active community of developers on the [[https://www.mobileread.com/forums/showthread.php?t=210800][MobileRead Forums]]. Display and spec aside; the biggest reason for never replacing it has been been the simple fact that most modern e-readers no longer support SD cards; and much of my workflow depends on storing insane amounts of material offline [fn:alsobattery].
 
 
 #+DOWNLOADED: screenshot @ 2021-02-20 01:39:20
@@ -8926,7 +8925,7 @@ It is probably worth noting that the in-built re-flow options do tend to cause m
 Given my unfortunate separation from my library back home; it is likely that my e-ink devices will continue to be my primary source of reading material. Plus the long retarded color e-ink market finally seems to be moving out of its stupor [fn:sayswho]. The only possible addendum to this methodology would probably involve integrating ~orgmode~ and the reMarkable 2 sometime. E-ink is here to stay. This setup would probably need revisions involving ~rclone~ or ~syncthing~ if I ever gave up and opted for a "modern" device without an SD slot.
 
 [fn:sayswho] [[https://www.youtube.com/watch?v=OlnzrxaZViU][YT video on color and e-ink]], [[https://www.youtube.com/watch?v=_6K53j1k1vY][YT video on recent color e-ink tech]] and [[https://www.theverge.com/2021/2/15/22284923/pocketbook-inkpad-color-kaleido-e-reader-available-now-price][Verge release notes]] for the [[https://pocketbook.ch/en-ch/news/pocketbook-inkpad-color-news-ch][PocketBook InkPad Color]]
-[fn:whypost] On an unrelated note, this represents a stylistic departure from older normal posts, with much more of a rambling narrative
+[fn:whypost] On an unrelated note, this is a stylistic departure from older normal posts, with much more of a rambling narrative
 [fn:whynotes] These are annotated {{{relref(in Emacs with org-mode,org-note-workflow)}}} when necessary
 [fn:whytype] For which I have been perfecting a rather {{{relref(personalized workflow with Colemak,colemak-switch)}}}
 [fn:whatelsebloggy] The same can be said of Wikipedia content and tweets; spending time on the written word does not automatically worth putting on an e-reader
@@ -8987,7 +8986,7 @@ Symbolic math is one of those fields I feel should be used a lot more in the app
 ** Meeting the Mentors
 Originally, the meeting with my mentoring group was rather anxiety inducing; this was mostly due to my own unfamiliarity with symbolic algebra. Over time though, the meetings quickly became something I started to look forward to; and we were able to collectively come up with a unique; yet sustainable documentation workflow. I was also able to gain insights into the logic underlying the code which would have ordinarily taken longer to process on my own. I also ended up going over some references like @cohencomputer2003 and @cohencomputer2002.
 ** Timelines and Deliverable Assets
-One of the early issues I faced was restricting myself to documentation; with such a vibrant and fast-growing project, there were several avenues I wanted to explore and enhance, not all of which were technically under the ambit of documentation. This was an impulse which I eventually had to ignore; though the team were kind enough to strongly suggest submitting PRs in other directions after the documentation project concluded.
+One of the early issues I faced was restricting myself to documentation; with such an active and fast-growing project, there were several avenues I wanted to explore and improve, not all of which were technically under the ambit of documentation. This was an impulse which I eventually had to ignore; though the team were kind enough to strongly suggest submitting PRs in other directions after the documentation project concluded.
 *** Doxygen Alternatives
 Initially I had hoped to have an all-Sphinx documentation site, with all language bindings parsed into Sphinx. For this I explored [[https://github.com/svenevs/exhale][exhale]], as well as the more flexible [[https://github.com/vovkos/doxyrest][doxyrest]]. None of these could match the flexibility or rich output of Doxygen for C++; so eventually I did the more rational thing and developed a nice theme for Doxygen instead, [[https://github.com/HaoZeke/doxyYoda][doxyYoda]].
 **** Base Doxygen
@@ -9074,7 +9073,7 @@ I got into programming over ten years ago; when I was in the tenth grade I tried
 
 I am not here to vilify Richard Stallman; I have never met the guy. For those interested, and from people with more of a stake in the matter [[https://gcc.gnu.org/pipermail/gcc/2021-March/235091.html][Nathan Sidwell's take]] is pretty solid [fn:whystake]. I simply do not like that I can no longer vouch for my many GPL'd projects anymore. Many will point out (have pointed out actually), that Stallman was always there; and this late stage cancel culture means nothing or is pointless posturing. I reject that stance. I have not always been a stellar human being in my personal interactions; but I strive to both make amends (personally) and also to maintain an image of a better human being. Me, online, is simply a projection of the person I wish to be. This mindset grew from a time back when it was common to have multiple online personas, before the line between one's online identity and real identity was not so blurry. Over time; I hope to be the sort of person who can be both erudite and welcoming; inspite of the fact that it is difficult to not throw diva tantrums (which are often socially acceptable as well). This is also a stance (i.e. iterative improvement) which Stallman clearly does not share. This lack of willingness to change with the times is enough of a reason for this post.
 
-My own data consisting of me and other people I have ranted to in person does not meaningfully represent a community [fn:wherecomm]; but it felt necessary to take a stand. Active rejection of the herd mentality which leads to elevating one person above the rest; and goes on to assert "proportional" justice does not involve removing such a toxic person from leadership roles is important to me. I would like to continue to be proud of my work (such as it is) and of my projects (such as they are) without having to tacitly agree with the views of Stallman or the FSF. I would prefer to wipe the names of all "icons" and "founders" from the record and deal only in terms of the concrete work they have generated. This would prevent sheeple from hero-worshiping and idolizing people (this goes for "good" and "bad" people). In my opinion; Stallman should be removed for failing to be a decent human being. So many stories are told about how "unrelenting" and "passionate" this person is about free software. It is sad then; that he feels the need to be listed so prominently. Society as a whole should reject the sort of repugnant behavior he has displayed; and he should not let that prevent him from contributing to FOSS. That there is no path to anonymous contributions to the FSF is a whole other discussion.
+My own data consisting of me and other people I have ranted to in person does not meaningfully represent a community [fn:wherecomm]; but it felt necessary to take a stand. Active rejection of the herd mentality which leads to raising one person above the rest; and goes on to assert "proportional" justice does not involve removing such a toxic person from leadership roles is important to me. I would like to continue to be proud of my work (such as it is) and of my projects (such as they are) without having to tacitly agree with the views of Stallman or the FSF. I would prefer to wipe the names of all "icons" and "founders" from the record and deal only in terms of the concrete work they have generated. This would prevent sheeple from hero-worshiping and idolizing people (this goes for "good" and "bad" people). In my opinion; Stallman should be removed for failing to be a decent human being. So many stories are told about how "unrelenting" and "passionate" this person is about free software. It is sad then; that he feels the need to be listed so prominently. Society as a whole should reject the sort of repugnant behavior he has displayed; and he should not let that prevent him from contributing to FOSS. That there is no path to anonymous contributions to the FSF is a whole other discussion.
 
 That's the end of this rant.
 
@@ -9946,7 +9945,7 @@ Generated [[https://chrome.google.com/webstore/detail/export-links-of-all-exten/
 [fn:whereinit] Perhaps better known in the context of ~udev.d~ [[https://wiki.archlinux.org/title/Udev][startup scripts]]
 [fn:shellwhysec] Even more true if one wants something ~elvish~ (details [[https://elv.sh/][here]]) or [[https://wiki.archlinux.org/title/Command-line_shell][other shells]]
 [fn:saywhatshell] ~bash~ defaults are particularly egregious
-[fn:whatwhypart] Water damage means I can't type on it anymore, works as a great tablet now
+[fn:whatwhypart] Water damage means I can't type on it anymore, is a great tablet now
 [fn:whyapple] A gift, and therefore cherished inspite of the vagrancies of Apple ~clang~
 * DONE Remapping Keys for ColemakVIM on MacOS :@personal:workflow:macos:tools:
 CLOSED: [2021-07-23 Fri 04:45]
@@ -10480,7 +10479,7 @@ CLOSED: [2021-05-21 Fri 02:29]
 Short recollections of the second iteration of CIP; the course with the largest teaching (and voluntary) staff bringing the joy of programming to thousands
 #+end_quote
 ** Background
-Last year in 2020, as a section leader for the Stanford Code in Place initiative (which generated a series of posts), I was able to hone my teaching skills and bask in the reflected glory of many talented students who were in my Code in Place section. This year I was honored to return not only to lead a section, but also to act as a teaching mentor to a group of first time section leaders.
+Last year in 2020, as a section leader for the Stanford Code in Place initiative (which generated a series of posts), I was able to hone my teaching skills and bask in the reflected glory of many talented students who were in my Code in Place section. This year I was honored to return to lead a section and to act as a teaching mentor to a group of first time section leaders.
 
 #+DOWNLOADED: screenshot @ 2021-05-21 01:48:21
 #+name: fig:sectionleaders
@@ -10526,7 +10525,7 @@ This year, coming at the tail end of an intensive year of online teaching experi
 - This year's set seemed to go by very quickly. Perhaps this can be partially attributed to the fact that the material was no longer new to me; however I did take on additional responsibilities. I can only conjecture that last year Zoom meetings were a novelty.
 - There was a slightly grimmer tone throughout some of the forums, but the team (Chris, Mehran, Kylie, Julie, Brahm and everyone else) were as upbeat and inspiring as ever
 ** Conclusions
-Last year's Code in place mattered a lot to me. It was absolutely fantastic to see and interact with such a vibrant community again; there were some odd hiccups, including some in-sensitivities and incivilities, but nothing major. This year in fact, the program meant even more to me; my mother, who has long been (like the rest of my family) an inspiration and friend, joined and was absolutely incredibly dedicated, hardworking and creative throughout.
+Last year's Code in place mattered a lot to me. It was absolutely fantastic to see and interact with such an active community again; there were some odd hiccups, including some in-sensitivities and incivilities, but nothing major. This year in fact, the program meant even more to me; my mother, who has long been (like the rest of my family) an inspiration and friend, joined and was absolutely incredibly dedicated, hardworking and creative throughout.
 
 I cannot speak to the future, but I know I shall probably once again have the CIP calendar sit unused till the next year, hoping to be called back to partake in the joys of teaching motivated students with brilliant colleagues.
 
@@ -10654,7 +10653,7 @@ url="https://doi.org/10.1137/090764189"
 
 Unfortunately this also generated multiple ~url~ lines, which choke ~sphinx~ of course. Additionally, the workflow is rather fickle e.g. not starting the file with a blank line causes the first reference to be silently skipped.
 *** Biber
-The key concept here is that ~biber~ can take a configuration file to process the ~bib~ file and is also able to copy the formatted file over with ~tool~. So our solution will boil down to writing a configuration file and then using it.
+The concept here is that ~biber~ can take a configuration file to process the ~bib~ file and is also able to copy the formatted file over with ~tool~. So our solution will boil down to writing a configuration file and then using it.
 
 First we get the location of the ~configuration~ (also check the ~version~).
 #+begin_src bash
@@ -10910,7 +10909,7 @@ and [[https://docs.lfortran.org/][documentation]].
   + Discussed the possibility of making a first pass in the ~C++~ backend instead of the ~LLVM~ one
     - Con :: Is not very fast
     - Pro :: Is very easy
-- Notably discussed adding generic types, e.g. ~type(*)~ to *internal* routines for the compiler
+- Also discussed adding generic types, e.g. ~type(*)~ to *internal* routines for the compiler
   + Saves a lot of boilerplate code
   + Could start with a simple ~fypp~ based approach (similar to ~fpm~)
   + Should be fine as long as users do not start using them
@@ -11053,7 +11052,7 @@ Some of the meeting points are to be expanded on below.
 ** Overview
 For the second week of my project on getting ~lfortran~ to compile ~dftatom~ and
 in general form a usable compiler ecosystem to facilitate greater adoption in
-the community, I opted to take a bit of a step back and delve into the
+the community, I opted to take a bit of a step back and dig into the
 historical evolution of both the Fortran standard itself @lyonUsingAnsFortran1980 and also the compiler
 ecosystem. This was also in no small part due to the fact that I ended up moving
 during this week, which forced me to spend a lot of time cleaning and playing
@@ -11276,7 +11275,7 @@ and a statement comes to mind from @clermanModernFortranStyle2012:
 #+begin_quote
 The standard is the contract between the compiler writer and the application developer.
 #+end_quote
-For most of my life I've been the latter, but now, the intricate legalese of the
+For most of my life I've been the latter, but now, the complex legalese of the
 standard haunts much of my day.
 
 This attempt at standards level rigor in particular, for ~kind~ ([[https://gitlab.com/lfortran/lfortran/-/issues/373][#373]]) lead to the discussion on the best way to work with constant expressions at compile time ([[https://gitlab.com/lfortran/lfortran/-/issues/375][#375]]).
@@ -11341,7 +11340,7 @@ familiarizing myself with formal language and automata theory.
 - Discussed forming a functional subset of the ~dftatom~ code for now
   + This is related to the slight change in direction which is being considered
 - Rather than stick to one feature / function from front end to back end, it was decided that a more breadth first approach would be better
-  + Though I am still encouraged to delve into the backend, it is good to set up a fully working rational ASR pass first
+  + Though I am still encouraged to dig into the backend, it is good to set up a fully working rational ASR pass first
 - Eventually, backends aside, work will need to be undertaken for the runtime library as well
 ** Misc Log
 Some other things which came my way this week.
@@ -11630,7 +11629,7 @@ Essentially, as far as the code base goes, we have a class based hierarchy, whic
 
 Code duplication is a non-squinter though, since only ~integer~ and ~real~ have similar implementations, and Ondrej pointed out that over-engineering a design simply because two ~if-esle~ branches are similar is effectively yak shaving.
 ** Conclusions
-~real~ was initially implemented as a string, which has now been replaced by Ondrej in [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1066][1066]], making an extension to it trivial. I expect to focus on getting started on ~functions~ which will have the added benefit of easily adding functionality to the backend (since the ~LLVM~ backend can choose to simply use ~value~). I intend to refocus my efforts towards getting ~minidftatom~ to work as well.
+~real~ was initially implemented as a string, which has now been replaced by Ondrej in [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1066][1066]]. This makes an extension to it trivial. I expect to focus on getting started on ~functions~ which will have the added benefit of easily adding functionality to the backend (since the ~LLVM~ backend can choose to simply use ~value~). I intend to refocus my efforts towards getting ~minidftatom~ to work as well.
 * DONE GSoC21 W7: LFortran Workflow Basics :@notes:gsoc21:fortran:ramblings:
 CLOSED: [2021-07-23 Fri 22:33]
 :PROPERTIES:
@@ -11852,7 +11851,7 @@ end program main
 
 Which ~gfortran~ accepts without a complaint. Not really much of a pain since there is a proposed refactor which is one of the primary goals of the next week after the bug fixes are in but still odd.
 ** Conclusions
-Next week is crucial. The LLVM backend must gracefully accept ~value~ when present, and there are some additional tasks which simply must be completed. All the QoL MRs will be in next week as well. That said, I expect at this point to dedicate more time to the project, which is not a bad thing, but a bit of a sobering realization. Last week I wasn't working over the weekend, but I have several catchup tasks to finish this time around; for draft MRs and issues.
+Next week is critical. The LLVM backend must gracefully accept ~value~ when present, and there are some additional tasks which simply must be completed. All the QoL MRs will be in next week as well. That said, I expect at this point to dedicate more time to the project, which is not a bad thing, but a bit of a sobering realization. Last week I wasn't working over the weekend, but I have several catchup tasks to finish this time around; for draft MRs and issues.
 * DONE GSoC21 W10: LFortran Runtime Library Design :@notes:gsoc21:fortran:ramblings:
 CLOSED: [2021-08-14 Sat 00:28]
 :PROPERTIES:
@@ -11898,7 +11897,7 @@ This was most definitely my most productive week by far.
 - [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1176][Compile time floor (1176)]] :: Fairly standard implementation requiring casts
 - [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1162][Integer2real (1162)]] :: An implicit cast which had not previously been implement
 - [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1169][Compile time int (1169)]] :: Along the lines of ~real()~
-- [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1194][Sincos tests (1194)]] :: Benchmarking and setting up of the new test harness
+- [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1194][Sincos tests (1194)]] :: Benchmarking and setting up of the new test framework
 *** Freshly Assigned Issues
 - [[https://gitlab.com/lfortran/lfortran/-/issues/510][Semantics: Implement correct handling of PARAMETER (510)]]
 - [[https://gitlab.com/lfortran/lfortran/-/issues/507][ASR Pass: Order functions (507)]]
@@ -11916,7 +11915,7 @@ This was a really packed week. Much of the discussion has already taken place in
 - Some compile time function implementations are not standard compliatn
   + ~real~
 - Implicit casting rules fail for certain cases
-  + Notably for all ~Arrays~
+  + Specifically for all ~Arrays~
 Strange bug when intrinsic functions are called on implicit cast
 *** Generic Proceedures
 This was fun to work on.
@@ -12071,7 +12070,7 @@ for which the reduction yields an accurate reduced angle value.
 #+end_quote
 
 ** Benchmarking and Testing
-To make the benchmarking of new ~lfortran~ runtime intrinsic functions as painless as the existing test runner framework; I ended up implementing a new framework for these. Currently this takes different compiler backends and a TOML file along with some ~Jinja2~ templates and makes a ~CMake~ based project which is built and gives out a grid of points along with the ~gfortran~ values and ~abs~ differences. Some things to do there:
+To make the benchmarking of new ~lfortran~ runtime intrinsic is as painless as the existing test runner framework; I ended up implementing a new framework for these. Currently this takes different compiler backends and a TOML file along with some ~Jinja2~ templates and makes a ~CMake~ based project which is built and gives out a grid of points along with the ~gfortran~ values and ~abs~ differences. Some things to do there:
 - [ ] Plot things automatically
 - [ ] Use non-uniform grids
 - Other QoL changes
@@ -12157,7 +12156,7 @@ These are better described in the weeks they were made; and only the highlights 
 
 - *Compile time functions (5)* :: ~real~ [[[https://gitlab.com/lfortran/lfortran/-/merge_requests/1114][1114]]], ~selected_kinds~ [[[https://gitlab.com/lfortran/lfortran/-/merge_requests/1154][1154]]], ~floor~ [[[https://gitlab.com/lfortran/lfortran/-/merge_requests/1176][1176]]], ~int~ [[[https://gitlab.com/lfortran/lfortran/-/merge_requests/1169][1169]]], ~Integer2Real~ cast [[[https://gitlab.com/lfortran/lfortran/-/merge_requests/1162][1162]]]
 
-- *Runtime sin* [[[https://gitlab.com/lfortran/lfortran/-/merge_requests/1167][1167]], [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1173][1173]]] :: Together these showcase the hopes and dreams of the current runtime library implementation
+- *Runtime sin* [[[https://gitlab.com/lfortran/lfortran/-/merge_requests/1167][1167]], [[https://gitlab.com/lfortran/lfortran/-/merge_requests/1173][1173]]] :: Together these show the hopes and dreams of the current runtime library implementation
 
 - *Testing framework for runtime benchmarks* [[[https://gitlab.com/lfortran/lfortran/-/merge_requests/1194][1194]]] :: Jinja based rapid templating setup for benchmarking the runtime functions
 
@@ -12186,7 +12185,7 @@ Both of these intrinsic designs were accompanied by practical implementations an
 
 Implementing features at compile time required an intimate understanding of the ASR, along with the way it is generated and consumed. This took weeks of effort at first; especially given the generated nature of much of the underlying code.
 *** Learning
-Compiler design touches almost every aspect of the compuation; from hardware to linkers, and I managed to expand my understanding of several key concepts early on with @cooperEngineeringCompiler2011a, @mullerElementaryFunctions2016, @levineLinkersLoaders2000 and a host of other texts referenced in the early weeks.
+Compiler design touches almost every aspect of the compuation; from hardware to linkers, and I managed to expand my understanding of several concepts early on with @cooperEngineeringCompiler2011a, @mullerElementaryFunctions2016, @levineLinkersLoaders2000 and a host of other texts referenced in the early weeks.
 
 A special mention must be made of @J318007r1F2018, which happens to be the first full language standard I have read almost cover to cover.
 ** Misc Logs
@@ -12256,7 +12255,7 @@ fpm build --flag "-fallow-argument-mismatch" # anything above 7.x
 #+end_src
 Note that for ~gfortran~ versions greater than ~9.x.x~ an error will be thrown on rank mismatches (as opposed to a warning), but ~7.x.x~ does not recognize the flag and will error out with it.
 
-SLATEC consists of 13 modules, many of which have been packaged elsewhere, making this a bit of a wasted effort.
+SLATEC consists of 13 modules, many of which have been packaged elsewhere. This makes it a bit of a wasted effort.
 * TODO Fortran and Spectroscopies
 :PROPERTIES:
 :EXPORT_FILE_NAME: fortran-spetroscopies
@@ -12493,7 +12492,7 @@ module fib1
       end subroutine
 end module fib1
 #+end_src
-The key differences are the ~c_type~ declarations and the ~bind(c,name='blah')~ attribute. Also, to reduce the number of pointers for easy to copy types, we used ~value~; which causes behavior similar to the pass-by-value paradigm. With this, the a ~C~ driver can be as simple as:
+The main differences are the ~c_type~ declarations and the ~bind(c,name='blah')~ attribute. Also, to reduce the number of pointers for easy to copy types, we used ~value~; which causes behavior similar to the pass-by-value model. With this, the a ~C~ driver can be as simple as:
 #+begin_src C
 /* fibby.c */
 #include<stdlib.h>
@@ -13441,7 +13440,7 @@ CLOSED: [2021-07-25 Sun 01:40]
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :END:
 #+begin_quote
-Leveraging better machines for Jupyter-Julia workshops
+Using better machines for Jupyter-Julia workshops
 #+end_quote
 ** Background
 I haven't ever actually worked with ~julia~ before, however, some of the talks and workshops at this year's [[https://pretalx.com/juliacon2021/schedule/][Juliacon'21]] were of great (applied) interest to me so I decided to follow along. In doing so, since my laptop is woefully inadequate for working through some of the materials (DFT), I decided to augment the installation instructions with remote machine usage notes.
@@ -13600,7 +13599,7 @@ A reasonable question. I have been contributing to and managing FOSS projects fo
 #+caption: A vision of my understanding of FOSS maintenance [[https://xkcd.com/2347][courtesy xkcd]]
 file:./images/xkcd/dependency_2x.png
 ** Interviews
-The interview process was a key factor in my decision making process. In particular, I was able to gainfully grow as a programmer and person through each one; which was incredibly refreshing.
+The interview process was a main factor in my decision making process. In particular, I was able to gainfully grow as a programmer and person through each one; which was incredibly refreshing.
 - [[https://rgommers.github.io/][Ralf Gommers]] :: Ralf and I discussed several projects which might benefit from my commitment along with wider contexts surrounding FOSS ecosystems; I was also reintroduced to the ~meson~ build system
 - [[https://chrisostrouchov.com/about/][Chris Ostrouchov]] :: We discussed the ~nix~ ecosystem and how it could and should be used to gain more ground in the High Performance Computing community [fn:whythis]
 - [[https://github.com/IvanYashchuk][Ivan Yashchuk]] :: I met with Ivan, and we discussed parallelism in C++, the standards committee, and he introduced me to SYCL
@@ -13610,7 +13609,7 @@ For starters I shall be working on the ~f2py~ section of  [[https://melissawm.gi
 ** Misc
 Interestingly, I realized soon after I joined, that some of my old GSoD mentors Aaron Mueuer and Amit are also at Quansight, which was very heartening to know as well.
 ** Conclusions
-This is a huge honor and will help focus and enhance my efforts towards helping the wider scientific computing community.
+This is a huge honor and will help focus and improve my efforts towards helping the wider scientific computing community.
 
 [fn:whythis] Which tied into a larger discussion taking place also at [[https://www.tweag.io/][Tweag]] (and the [[https://irhpc.github.io/][Icelandic HPC cluster]]) revolving around Nix-HPC
 [fn:whatabouttime] For 20-25 hours a week
@@ -13631,7 +13630,7 @@ I was a participant at the 2021 Les Houches school of physics on "[[https://www.
 - Title :: Programming Language Interstices
 **** Abstract
 #+BEGIN_QUOTE
-In this short talk I will discuss the changing landscape of programming languages from the viewpoint of “mixed language” bindings. That is, the representations of various programming languages and their standardisations to aid making library calls and generating wrappers between languages. In particular I will demonstrate the LFortran compilers’ ASR (Abstract Semantic Representation) and outline its usage for generating strictly correct Python wrappers; and discuss recent changes and future plans for the venerable f2py wrapper generator. f2py is currently part of Python’s numpy and is best known for being used extensively to generate scipy’s calls to BLAS and LAPACK; thus it forms a cornerstone of the fast growing Scientific Python ecosystem. Error analysis and the pitfalls of precision take a central role. Time permitting, some discussion of the Python-C and Fortran-C bindings will also take place. The context of these is to be concrete use cases directly applicable to the applied computational sciences.
+In this short talk I will discuss the changing landscape of programming languages from the viewpoint of “mixed language” bindings. That is, the representations of various programming languages and their standardisations to aid making library calls and generating wrappers between languages. In particular I will demonstrate the LFortran compilers’ ASR (Abstract Semantic Representation) and outline its usage for generating strictly correct Python wrappers; and discuss recent changes and future plans for the venerable f2py wrapper generator. f2py is currently part of Python’s numpy and is best known for being used extensively to generate scipy’s calls to BLAS and LAPACK; thus it forms a core of the fast growing Scientific Python ecosystem. Error analysis and the pitfalls of precision take a central role. Time permitting, some discussion of the Python-C and Fortran-C bindings will also take place. The context of these is to be concrete use cases directly applicable to the applied computational sciences.
 #+END_QUOTE
 **** Other Content
 Anything tagged Fortran on this site.
@@ -13662,7 +13661,7 @@ I had the honor and pleasure to have two presentations at the [[https://tcevents
 - Duration :: 20 minutes (15 + 5)
 *** Abstract
 #+BEGIN_QUOTE
-f2py is the gold standard for interfacing Fortran and Python. The most famous downstream consumer of the generated wrappers is undoubtedly the scipy ecosystem. Crucially, f2py is not a compiler, and generates a best effort set of wrappers, aided by special comment lines. One of the key inter-operable approaches to compilation of the subsequent wrappers relies on numpy.distutils. Given the planned obsolescence of this module; we discuss the methodology by which the build phase can be split into a two phase process and document better the pyf enhancements made to facilitate callbacks. A brief outline of test suites and documentation within the numpy ecosystem and proposed enhancement proposals will be discussed as well. We lay out the roadmap towards f2py remaining relevant beyond f77 by implementing derived types and newer features like parallelism with co-arrays. Playing to its strengths as a code-enhancer and leveraging the flexibility of not being constrained by the actual compilation process allows for the reimagining of f2py as a tool and library.
+f2py is the gold standard for interfacing Fortran and Python. The most famous downstream consumer of the generated wrappers is undoubtedly the scipy ecosystem. Crucially, f2py is not a compiler, and generates a best effort set of wrappers, aided by special comment lines. One of the key inter-operable approaches to compilation of the subsequent wrappers relies on numpy.distutils. Given the planned obsolescence of this module; we discuss the methodology by which the build phase can be split into a two phase process and document better the pyf enhancements made to facilitate callbacks. A brief outline of test suites and documentation within the numpy ecosystem and proposed enhancement proposals will be discussed as well. We lay out the roadmap towards f2py remaining relevant beyond f77 by implementing derived types and newer features like parallelism with co-arrays. Playing to its strengths as a code-enhancer and using the flexibility of not being constrained by the actual compilation process allows for the reimagining of f2py as a tool and library.
 #+END_QUOTE
 **** Other Content
 - {{{relref(NumPy Meson and ~f2py~,numpy-meson-f2py)}}}
@@ -14062,7 +14061,7 @@ The most natural way to feed into ~f2py~ would be to directly write out an
 equivalent ~Python-C~ API which effectively mimics the extension module of the
 last section.
 
-The crucial definition essentially takes a dictionary, unrolls into a list, creates the ~C~ structure, then passes it through Fortran and then back.
+The critical definition essentially takes a dictionary, unrolls into a list, creates the ~C~ structure, then passes it through Fortran and then back.
 #+begin_src C
 static PyObject* eucli_unitinc(PyObject* self, PyObject* args) {
     cartesian a;
@@ -14248,7 +14247,7 @@ There are a plethora of libraries for coloring and styling the output. Far too m
 *** F2PY CLI 101
 The ~f2py~ interface is meant to facilitate three different end-user cases:
 - Wrapper generation :: What it says on the tin, this generates some Fortran wrappers and also the ~.c~ files which are later built by any means into a python extension module
-- Signature file generation :: To fully unlock the power and uniqueness of ~f2py~ [fn:whatunique] [[https://numpy.org/devdocs/f2py/signature-file.html][a full grammar of extensions]] are defined, documented and can be used by either commenting codes or just generating the signature files
+- Signature file generation :: To fully enable the power and uniqueness of ~f2py~ [fn:whatunique] [[https://numpy.org/devdocs/f2py/signature-file.html][a full grammar of extensions]] are defined, documented and can be used by either commenting codes or just generating the signature files
 - Compilation :: Via the ~-c~ flag, ~f2py~ becomes a sort of pimp for ~np.distutils~, producing the ~.so~ file without so much as a visible set of source headers and translation units
 
 So far so good. Now the older design will not be discussed here, but it was
@@ -15254,7 +15253,7 @@ representations is present [[https://github.com/HaoZeke/f2py_derived_nep/tree/ma
 I had the pleasure of demonstrating part of this logic to fellow NumPy
 maintainers Dr. Pearu Peterson and Dr. Melissa Weber Mendonça and we were in
 agreement that the class strategy is the most flexible [fn:whoelse]. Pearu suggested
-leveraging pointers passed between Fortran and C in an attempt to cover more
+using pointers passed between Fortran and C in an attempt to cover more
 than ~bind(c)~ compatible code, by generating simpler Fortran wrapper functions
 as well, and those will likely be among the next steps forward. The work of
 @pletzerExposingFortranDerived2008 is also of interest, although their focus was
@@ -15950,7 +15949,7 @@ pytest
 Note that we have not (yet) defined any type bound proceedures, so there are no
 operations defined between ~Point~ objects or anything else.
 ** Binding type bound proceedures
-Given the structure discussed so far, adding a type bound proceedure is nearly seamless. We need to modify the type definition.
+Given the structure discussed so far, adding a type bound proceedure is nearly smooth. We need to modify the type definition.
 #+begin_src fortran
    type :: Point
       real(8) :: x
@@ -16051,7 +16050,7 @@ approach really shines when we consider adding a new type, with an allocatable
 component[fn:saywhat].
 
 That being said, there is more to be done over on the ~f2py~ side before it
-makes sense to delve too deeply into enhancements on the ~Fortran-C-Python~
+makes sense to dig too deeply into enhancements on the ~Fortran-C-Python~
 pipeline. The biggest blocker at the moment is:
 - Suport for ~C_PTR~ in ~f2py~
   + This includes ~void*~ handling
@@ -16113,7 +16112,7 @@ complete/recommended/normative; *use the installation guide* and _follow the Arc
 - *Time* :: Being as this is a laptop configuration, it is best to configure ~chrony~ ([[https://wiki.archlinux.org/title/Chrony][described here]]) as the ~ntp~ client and server of choice
 - *AUR Helper* :: ~trizen~, though I retain a soft spot for ~yay~
 - *Portability* :: Details are presented concisely on [[https://wiki.archlinux.org/title/Laptop][the ArchWiki]]
-- *Device details* :: The ArchWiki [[https://wiki.archlinux.org/title/Lenovo_ThinkPad_X1_Carbon_(Gen_6)][has an entry]], notably including modem setup woes and also ~throttled~ details for better power management (I ended up using [[https://github.com/erpalma/throttled][throttled]] over ~thermald~)
+- *Device details* :: The ArchWiki [[https://wiki.archlinux.org/title/Lenovo_ThinkPad_X1_Carbon_(Gen_6)][has an entry]], which includes modem setup woes and also ~throttled~ details for better power management (I ended up using [[https://github.com/erpalma/throttled][throttled]] over ~thermald~)
 - *Window and login* :: ~sway~, and ~greetd~
 *** Configurations
 In general the idea is to run as few services as possible so ~systemctl
@@ -16234,7 +16233,7 @@ doesn't as yet have [[https://www.explainxkcd.com/wiki/index.php/963:_X11][233 c
 ~Weston~ remains the reference implementation, and GNOME has continued
 championing the cause of Wayland which is great. However, since my foray
 in 2018; tiling window managers have come a long way. Migrating away from the
-MacOS' "tiling managers" was seamless and very reminsicent of my older ~i3-gaps~
+MacOS' "tiling managers" was smooth and very reminsicent of my older ~i3-gaps~
 setup.
 *** High DPI
 An interesting quirk of ~sway~ is that Hi-DPI support is still [[https://github.com/swaywm/wlroots/pull/2064#issuecomment-622647075][at the draft
@@ -16346,14 +16345,14 @@ systemctl restart --user wayland-proxy-virtwl.service
 DISPLAY=":0"  WAYLAND_DISPLAY="wayland-1" QT_QPA_PLATFORM=xcb QT_SCALE_FACTOR=1.5 enpass
 DISPLAY=":0" GDK_BACKEND="x11"  WAYLAND_DISPLAY="wayland-1" gvim
 #+end_src
-When things work out, then the applications will have ~[my-vm]~ in the window title. This still requires that ~xorg-xwayland~ be installed, and in some situations it needs to be restarted, but by and large this is a seamless setup.
+When things work out, then the applications will have ~[my-vm]~ in the window title. This still requires that ~xorg-xwayland~ be installed, and in some situations it needs to be restarted, but by and large this is a smooth setup.
 ** Miscellaneous
 *** Terminal Emulators
 Though ~kitty~ and a few other stalwarts do support ~wayland~, foot seems to be
 the fastest, especially since it has a server client mode much like ~emacs~ with
 ~foot -s~ and ~footclient~.
 *** Screenshots
-~slurm~ and ~grim~ still function well together, making this mostly painless.
+~slurm~ and ~grim~ still function well together. This makes it mostly painless.
 #+begin_src bash
 slurp | grim -g - - | wl-copy
 #+end_src
@@ -16696,7 +16695,7 @@ spack:
     py-torch:
       spec: py-torch@npeye+cuda+debug~fbgemm~mkldnn~nnpack~qnnpack~test
 #+end_src
-Which now works seamlessly with ~spack install~.
+Which now works smoothly with ~spack install~.
 ** Baseline Environment
 Finally, to test changes against the main branch upstream, it is useful to
 define an environment for the same. This can be named since it allows for better
@@ -16759,7 +16758,7 @@ LFortran spin-off) and a talk on F2PY (with a distinguished [[https://twitter.co
 Fortran forms the computational bedrock of the scientific community. Despite the prevalence of the pack libraries (LAPACK, PROPACK etc.) within SciPy and the fact that ~f2py~ has been an integral part of the NumPy ecosystem for decades now, it is seldom brought up. In particular, newer, younger programming languages and projects are consistently brought up as possible contenders to the crown of numerical computing within the Scientific Python ecosystem. Being such a foundational project has a unique set of maintainability challenges as well. Hyrum’s law rings especially true for ~f2py~, scientific projects, both public and private, depend heavily on every aspect of the exposed API. A boon for scientific programming from the very beginning, ~f2py~ has enabled high performance computing without in-depth understanding of either the Python-C API or the Fortran language itself. Even as ~f2py~ reinvents itself for modern Fortran constructs however, backwards compatibility requirements remain (e.g. ~scipy~ lags by two versions). From a brief historical overview of the scientific python ecosystem and interoperability issues we will move through the sustainability efforts through the years. We will cover changes in ~f2py~, both planned and implemented, including the migration towards the Python-C Limited API, the newer ~argparse~ front-end, moving away from ~np.distutils~, restructuring and reducing reliance on features implemented by the NumPy-C API, and supporting newer Fortran standards (with derived types being the poster child of missing Modern Fortran features). The talk will also briefly cover the code-generation and fortranobject constructs. The focus is not meant to be the internals so much as a 50-foot view of each constituent part of ~f2py~ and its long term viability. Part of the discussion will revolve around synergies with existing projects, both within the scientific Python ecosystem (scipy), and Fortran-Lang (LFortran), and by planning to involve younger developers via GSoC. Lastly, we will discuss how the FOSS community stepped up to support ~f2py~ and how we intend to continue to carry modern Fortran as a corner stone of the scientific python ecosystem for many years to come in no small part by providing a common set of interoperability standards in the form of NEPs (NumPy Enhancement Proposals).
 #+END_QUOTE
 **** Short Summary
-This talk covers recent advances to the ~f2py~ project, including preliminary derived type support, better documentation, and restructured design to enhance new contributor experiences. Additionally, we will discuss the structure and role of interoperability libraries and how modern Fortran intends to harmoniously and symbiotically evolve within the Python ecosystem in the context of Fortran-Lang, the ~np.distutils~ deprecation, newer compute devices and the ever changing landscape of high performance programming.
+This talk covers recent advances to the ~f2py~ project, including preliminary derived type support, better documentation, and restructured design to improve new contributor experiences. Additionally, we will discuss the structure and role of interoperability libraries and how modern Fortran intends to harmoniously and symbiotically evolve within the Python ecosystem in the context of Fortran-Lang, the ~np.distutils~ deprecation, newer compute devices and the ever changing landscape of high performance programming.
 *** Slides
 - [[file:/revealjs/scipy_2022/fortranInPerpetuity.html][Best viewed here]] using a browser (in a new tab)
 - A ~pdf~ copy of the slides are embedded below
@@ -16836,7 +16835,7 @@ As a concrete realization of an abstract concept, we will discuss Wailord [2], w
 [5] https://www.kofo.mpg.de/en/research/services/orca
 #+end_quote
 **** Short Summary
-Much of the scientific python ecosystem deals with problems at the level when their structure is already present in memory. However, the generation of input files for driving existing codes, as well as the parsing of results is not typically covered in great detail. This submission bridges the gap between external programs and data-structures, demonstrating via a practical example, the utility of code-generation and parsing expression grammar parsers for reproducible results in quantum chemistry.
+Much of the scientific python ecosystem deals with problems at the level when their structure is already present in memory. However, the generation of input files for driving existing codes, as well as the parsing of results is not typically covered in great detail. This submission bridges the gap between external programs and data-structures. This shows, via a practical example, the utility of code-generation and parsing expression grammar parsers for reproducible results in quantum chemistry.
 ** Thoughts
 SciPyCon exceeded my expectations. Everyone was kind, and I met a good number of
 people from QS and other places who hopefully did not come away with a poor
@@ -17600,7 +17599,7 @@ The general idea is to follow along with the ArchWiki [[https://wiki.archlinux.o
 live-USB.
 ** Conclusions
 Modifying ArchLinux installation media is fun. Even if the exact set of packages
-bundled with ~hzArchiso~ isn't for most, it serves as a useful blueprint for
+bundled with ~hzArchiso~ isn't for most, it is a useful blueprint for
 branching out into their own ISOs. Pull requests and other issues /
 contributions are always welcome as well, and more detailed build information is
 [[https://github.com/HaoZeke/hzArchiso][on the repo]] and [[https://wiki.archlinux.org/title/Archiso][on the ArchWiki]]. Personally, I expect to update the ~iso~ every now and then with
@@ -17796,7 +17795,7 @@ MaximumUid=30000
 *** Wayland notes
 - ~caja~ isn't compatible with ~wayland~ out of the box (but my favorite ~thunar~ is)
 - Thanks to a [[https://bugs.launchpad.net/ubuntu/+source/file-roller/+bug/1923033][very old]] archive-manager (file-roller) bug, there aren't any really good native options for compression
-  + ~peazip~ works as a native file and archive manager though
+  + ~peazip~ is a native file and archive manager though
 - ~kdialog~ turned out to be really useful for handling issues with Chromium browsers
   + Wasn't able to print or attach files or anything otherwise
 *** Laptop Tweaks
@@ -18089,7 +18088,7 @@ _deps += m_dep
 # For clang
 _deps += [declare_dependency(link_args: '-lstdc++')]
 #+end_src
-This makes it easier to pull variables from subprojects in a seamless manner:
+This makes it easier to pull variables from subprojects in a transparent manner:
 Linking to the library itself is best done by declaring a dependency [fn:whatifnot]:
 #+begin_src meson
 # ---------------------- Library Dependencies
@@ -18706,7 +18705,7 @@ probably to be expected.
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
 :END:
 #+begin_quote
-Token hell, or leveraging Github for managing interconnected projects.
+Token hell, or using Github for managing interconnected projects.
 #+end_quote
 ** Background
 Projects have dependencies. They may (often) also have very distinct histories
@@ -18736,7 +18735,7 @@ linked are under disparate organizations.
 *** Basic Workflow Etiquette
 
 We first discuss some of the aspects common to workflow etiquette which will be
-elided in subsequent snippets. Concurrency is important, it saves valuable
+elided in subsequent snippets. Concurrency is important, it saves
 developer time, especially when there's one active developer per pull request.
 When in doubt a reasonable snippet is:
 #+begin_src yaml
@@ -18980,7 +18979,7 @@ plotting systems. These notes arose while binding [[https://github.com/HaoZeke/r
 - I find it odd that ~R~ packages commit so much generated code
   + Can be simplified with a CI bot
 ** Repo setup
-~pixi~ with ~renv~ turns out to be surprisingly robust. I normally begin with:
+~pixi~ with ~renv~ turns out to be surprisingly reliable. I normally begin with:
 #+begin_src bash
 echo ".pixi/" > .gitignore
 gibo dump R C++ | cat >> .gitignore
@@ -19508,7 +19507,7 @@ There are far too many resources covering ~nix-flakes~ [fn:howtoflake].
 ** Conclusions
 More of an introduction to ~nix-flakes~ than anything else, this was long
 overdue, given my association with the Summer of Nix and other ~nix~ community
-efforts. Flakes can seem a little, flakey to say the least, but are a robust
+efforts. Flakes can seem a little, flakey to say the least, but are a solid
 option for (approximately) reproducible [fn:whyapprox] personal projects.
 
 [fn:reallystillexp] They're **still** experimental though
@@ -20396,7 +20395,7 @@ A meta-post on a presentation at the Scientific Computing in Rust 2024 annual wo
 - Workshop listing :: [[https://scientificcomputing.rs/2024/talks/goswami.html][conference site]]
 Blurb:
 #+begin_quote
-We introduce bless, a tool geared towards multiple runs of codes in flux. The key idea is to use Rust's logging libraries to transparently annotate outputs and additionally use a MongoDB database to store the output and metadata. We find this raises interesting problems while handling the outputs of MPI commands asynchronously. Additionally we provide alternatives to (PROG 2>&1) | tee blah.out, with the ability to use a configuration file and prepare a tar.gz of outputs and inputs. This is invaluable when working with minor changes to multiple codebases, as is typical in the early stages of a scientific project.
+We introduce bless, a tool geared towards multiple runs of codes in flux. The idea is to use Rust's logging libraries to transparently annotate outputs and additionally use a MongoDB database to store the output and metadata. We find this raises interesting problems while handling the outputs of MPI commands asynchronously. Additionally we provide alternatives to (PROG 2>&1) | tee blah.out, with the ability to use a configuration file and prepare a tar.gz of outputs and inputs. This is invaluable when working with minor changes to multiple codebases, as is typical in the early stages of a scientific project.
 #+end_quote
 
 ** Slides
@@ -20567,7 +20566,7 @@ cd uhf
 ($(which orca) orca.inp 2>&1) | tee scan_uhf
 #+end_src
 
-Where we note that we redirect both stderr and stdout to a file and
+Here we redirect both stderr and stdout to a file and
 simultaneously to screen, because:
 - ~ORCA~ writes a lot of files, *~78* in this small example
   + The most important information including number of
@@ -20591,7 +20590,7 @@ du ../uhf/scan_uhf scan_uhf.gz
 #+end_src
 
 Further discussion of the intricacies of working with ORCA would take us again
-too far afield, but it is worth noting a tiny script to parse the output and
+too far afield, but here is a tiny script to parse the output and
 eventually generate the plot[fn:alsowailord].
 
 #+begin_src python
@@ -20678,7 +20677,7 @@ Along with deletion (with [[https://www.mongodbtutorial.org/mongodb-crud/mongodb
 #+begin_src js
 db.chem.deleteMany({ "title": /chemistry/i })
 #+end_src
-The key concept here is that the entries can be queried, and they pick up their
+The concept here is that the entries can be queried, and they pick up their
 own ~_id~ variables. This alone will be most of the benefit we need from a
 workflow management system.
 ** Fireworks
@@ -20746,7 +20745,7 @@ Naturally this is applicable across all domains.
 * TODO VPS Baselines and MongoDB
 ** Background
 The key reason to decouple a MongoDB instance from existing HPC architecture is
-to be more robust to changes in clusters. Also, it makes it easier to run on
+to be more resilient to changes in clusters. Also, it makes it easier to run on
 multiple HPC centers without repeating the setup steps.
 * DRAFT Saner conda-forge interactions with a custom forge
 :PROPERTIES:
@@ -20797,7 +20796,7 @@ command to be compliant with ~xonsh~.
 - ~xonsh-mode~ works well with ~emacs~ and is on MELPA
 - [[https://github.com/xxh/xxh][xxh]] makes it pretty trivial to take into foreign SSH machines
 ** Scripting substitutions
-Directly leveraging ~xonsh~ we can rewrite the earlier ~bash~ script into:
+Directly using ~xonsh~ we can rewrite the earlier ~bash~ script into:
 
 #+begin_src python
 from pathlib import Path
@@ -20817,7 +20816,7 @@ def replace_make_shared():
 replace_make_shared()
 #+end_src
 
-*** Leveraging Python
+*** Using Python
 It is instructive to recall how this would work in pure ~python~.
 
 #+begin_src python
@@ -20978,7 +20977,7 @@ This can now be used to serve the WebDAV instance:
 rclone serve webdav HIOneDrive:/.dvcstore --vfs-cache-mode full --addr localhost:9677 --cert cert.pem --key ec_key.pem
 #+end_src
 
-It is important to note that DVC doesn't care about the exact key-pair, and with
+DVC doesn't care about the exact key-pair, and with
 the current setup browsers will (correctly) raise
 ~net::ERR_CERT_AUTHORITY_INVALID~ warnings [fn:: However, this post isn't about using LetsEncrypt or ~certbot~ to get a proper certificate, nor is it relevant] but will now merrily accept the connection (since ~ssl_verify~ is still off):
 
@@ -20993,7 +20992,7 @@ Pushing
 - Ignore folders in the ~.gitignore~, else ~dvc~ may complain that the relevant ~.dvc~ is ignored by ~git~
   + i.e. to ignore ~best_trial_8/~ don't ignore ~best_trial*~ but use ~best_trial*/~
 ** Conclusions
-This isn't necessarily the most robust setup as written, given that the
+This isn't necessarily the most reliable setup as written, given that the
 University reclaims access pretty aggressively, however when coupled with the
 [[https://archive.materialscloud.org/record/2025.91][Materials Archive]] and a [[https://rgoswami.me/snippets/cold-storage-compression/][strong compression technique]] for personal storage via
 ~borg~ it is fairly resilient.
@@ -21018,7 +21017,7 @@ or Nix [fn:: Though most clusters don't ship with ~nix~]. More background on
 At the same time, the [[https://github.com/ingydotnet/git-subrepo][git-subrepo]] helper allows vendoring repository contents,
 which somewhat alleviates the fragility of ~submodules~ while retaining the
 ability to push and pull from upstream [fn:: *Never* rebase the subrepo target,
-and *always* have a forked branch for the subrepo in question!]. Taken together,
+and *always* have a forked branch for the subrepo in question!]. Combined,
 these can work synergistically with a queue aware workflow manager like
 ~snakemake~ for building and running high throughput calculations.
 ** Incorporating with ~subrepo~
@@ -21085,7 +21084,7 @@ CLOSED: [2025-05-11 Sun 17:44]
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Remote usage")
 :END:
 #+begin_quote
-Leveraging containers for streamlined remote interactive and mounted file access to intranet machines
+Using containers to SSH into intranet machines without routing all traffic through a VPN
 #+end_quote
 ** Background
 Most academic or corporate networks gate access to internal resources (like
@@ -21099,9 +21098,9 @@ university subscriptions, but it becomes problematic when:
   separate VPN. Managing these simultaneously or switching between them on a
   host system is often cumbersome or impossible.
 
-These considerations not only affect interactive SSH sessions but also
-complicates using tools for remote file management or other services that need
-to operate through these VPNs.
+These considerations affect interactive SSH sessions and complicate using tools
+for remote file management or other services that need to operate through these
+VPNs.
 *** Tools
 We'll be using [[https://podman.io/][Podman]] with [[https://www.infradead.org/openconnect/][OpenConnect]] and [[https://www.openssh.com/][OpenSSH]] to build a VPN jumphost for
 simplified ~ProxyJump~ configurations and [[https://rclone.org/][rclone]] for SFTP mounting.
@@ -21124,11 +21123,11 @@ through the VPN. Trying to manage multiple such VPNs is difficult.
 - Full Network Routing :: Your entire machine's internet usage goes through the VPN.
 - Multiple VPNs :: Switching between VPNs is slow, and running multiple
   simultaneously is generally not feasible.
-- Streamlining Access :: Even with one VPN, accessing many internal machines via
+- Simpler Access :: Even with one VPN, accessing many internal machines via
   direct SSH can be made more convenient with a jumphost and the SSH ProxyJump
   feature.
 ** Container setup
-Containerization offers a powerful solution by isolating the VPN connection
+Containerization is a powerful solution by isolating the VPN connection
 within a dedicated environment, leaving your host system's networking untouched.
 This container can then act as a secure SSH jumphost.
 
@@ -21328,12 +21327,12 @@ rclone mount "$RCLONE_REMOTE:/home/$USER" ~/mnt/somevpn --vfs-cache-mode full
 Where ~--vfs-cache-mode full~ improves performance by caching files.
 ** Conclusions
 This containerized approach provides an isolated VPN connection and a convenient
-~ProxyJump~ setup, allowing for more streamlined and targeted access to remote
+~ProxyJump~ setup. This allows direct, targeted access to remote
 networks without impacting your entire host's networking. Remote file access via
 ~rclone~ also works well, which means integration with ~emacs~ and other IDEs is
 a snap.
 
-A more robust variant of this basic concept developed into the [[https://github.com/HaoZeke/vpn-proxyjump][vpn-proxyjump]]
+A more solid variant of this basic concept developed into the [[https://github.com/HaoZeke/vpn-proxyjump][vpn-proxyjump]]
 project.
 * DONE Parameter passing in NWChem and the Runtime Database :@notes:hpc:science:components:parameters:nwchem:
 CLOSED: [2025-08-16 Sat 19:06]
@@ -21484,7 +21483,7 @@ I've been using ~zsh~ for over a decade at this point. In general things work
 well. However over time most of my scripts became reliant on ~rust~ tools, like
 ~starship~ to be cross compatible across machines.
 ** Dotfile conversion
-To help streamline the inevitable, a new branch of my ~chezmoi~ dotfiles
+To speed up the inevitable, a new branch of my ~chezmoi~ dotfiles
 contained the changes needed to get to an approximation of my previous setup
 with ~nushell~. These were not [[https://github.com/HaoZeke/Dotfiles/compare/chezmoi...toNu][particularly hard but fairly repetitive]].
 ** Conclusions
@@ -21677,7 +21676,7 @@ contributors]]) since 2010, at which point Graeme had shifted from CVS to SVN
 without correctly tracking provenance unfortunately.
 *** 2025
 **** Cookbook recipes
-Around when I wrapped up my doctoral work, I joined the vibrant group led by
+Around when I wrapped up my doctoral work, I joined the active group led by
 Prof. Michele Ceriotti to support Dr. Guillaume Fraux on their [[https://metatensor.org/][Metatensor
 ecosystem]]. One of the first things in my downtime was of course to integrate
 with eOn, generating the [[https://atomistic-cookbook.org/examples/eon-pet-neb/eon-pet-neb.html][cookbook recipe for using eOn]] for nudged elastic band
@@ -21960,7 +21959,7 @@ occasionally an afternoon.
 Windows inherits from DOS a set of [[https://stackoverflow.com/questions/1976007/what-characters-are-forbidden-in-windows-and-linux-directory-names][reserved device names]] that cannot be used as
 filenames, regardless of extension: ~CON~, ~PRN~, ~AUX~, ~NUL~, ~COM1~ through
 ~COM9~, ~LPT1~ through ~LPT9~. Case-insensitive, naturally. The [[https://learn.microsoft.com/en-us/windows/win32/fileio/naming-a-file][Microsoft
-documentation]] is comprehensive, but in practice most people discover these
+documentation]] is thorough, but in practice most people discover these
 constraints from a CI failure rather than from reading the docs.
 *** ~aux.py~ in ~asv_runner~ (2023)
 When writing [[https://github.com/airspeed-velocity/asv_runner][asv_runner]], the runner component for the ~asv~ benchmarking tool, I
