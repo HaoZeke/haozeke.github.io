@@ -2,8 +2,6 @@ baseurl = "https://rgoswami.me/"
 languageCode = "en-us"
 theme = ["hugo-search-fuse-js", "hello-friend-ng-hz"]
 
-PygmentsCodeFences = true
-PygmentsStyle = "native"
 
 # rssLimit  = 10  # Maximum number of items in the RSS feed.
 copyright = "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License." # This message is only used by the RSS template.
@@ -96,7 +94,7 @@ name = "Rohit Goswami (HaoZeke)"
   prism = false
   codefold = true
   praiseNetlify = true
-  showHumanAuthorBadge = true
+  showHumanAuthorBadge = false
 
   # Set disableReadOtherPosts to true in order to hide the links to other posts.
   disableReadOtherPosts = false
@@ -181,7 +179,7 @@ accountID = "rohit"
 
   [[params.social]]
     name = "email"
-    url  = "mailto:rog32@hi.is"
+    url  = "mailto:rgoswami@ieee.org"
 
   [[params.social]]
     name = "github"
@@ -193,7 +191,7 @@ accountID = "rohit"
 
   [[params.social]]
     name = "googlescholar"
-    url  = "https://scholar.google.co.in/citations?user=36gIdJMAAAAJ&hl=en"
+    url  = "https://scholar.google.com/citations?user=36gIdJMAAAAJ&hl=en"
 
   [[params.social]]
     name = "orcid"
@@ -201,7 +199,11 @@ accountID = "rohit"
 
   [[params.social]]
     name = "publons"
-    url  = "https://publons.com/researcher/2911170/rohit-goswami/"
+    url  = "https://www.webofscience.com/wos/author/record/AAA-8969-2019"
+
+  [[params.social]]
+    name = "bluesky"
+    url  = "https://bsky.app/profile/rgoswami.me"
 
   # [[params.social]]
   #   name = "calendly"
