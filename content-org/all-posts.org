@@ -11029,7 +11029,7 @@ CLOSED: [2021-06-18 Fri 18:59]
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("GSoC21: LFortran")
 :END:
 #+begin_quote
-Delving into language standards and back-ends for ~lfortran~
+Digging into language standards and back-ends for ~lfortran~
 #+end_quote
 ** Background
 As discussed in a previous post in this series, I have been spending roughly
@@ -14850,7 +14850,7 @@ Explorations of object oriented Fortran with ~bind(c)~ derived types for represe
 ** Background
 Derived types are easily one of the most visible of the modern Fortran
 (post-F90) features and are central to object oriented programming paradigms in
-Fortarn.
+Fortran.
 
 For those new to the language, a rough guide to some terminology:
 | *Fortran*               | *Closest C/C++ equivalent* |
