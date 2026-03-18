@@ -129,11 +129,15 @@ name = "Rohit Goswami (HaoZeke)"
 [params.style]
 site_url = "rgoswami.me" # Based on baseurl
 
-[params.utterances]
-issue = "pathname"
-theme = "photon-dark"
-repo  ="haozeke/haozeke.github.io"
-label = "Utterance 💬"
+# [params.utterances]
+# issue = "pathname"
+# theme = "photon-dark"
+# repo  ="haozeke/haozeke.github.io"
+# label = "Utterance"
+
+[params.remark42]
+host = "https://remark42.turtletech.us"
+siteID = "rgoswami.me"
 
 # [params.intensedebate]
 # accountID = "03433eb5474ac59759898fb85454590c"
