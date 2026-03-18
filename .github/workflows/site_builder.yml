@@ -77,12 +77,10 @@ jobs:
           git commit -m "Update metrics and trackbacks (CI)" || echo "No changes"
           git push origin bot-metrics
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy to Cloudflare Pages
         if: github.event_name == 'push' && github.ref == 'refs/heads/src'
-        uses: peaceiris/actions-gh-pages@v4
+        uses: cloudflare/wrangler-action@v3
         with:
-          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-          publish_branch: gh-pages
-          publish_dir: ./public
-          keep_files: true
-          enable_jekyll: false
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy ./public --project-name=rgoswami-me --branch=src
