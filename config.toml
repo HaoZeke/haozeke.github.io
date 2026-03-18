@@ -135,9 +135,13 @@ site_url = "rgoswami.me" # Based on baseurl
 # repo  ="haozeke/haozeke.github.io"
 # label = "Utterance"
 
-[params.remark42]
-host = "https://remark42.turtletech.us"
-siteID = "rgoswami.me"
+# [params.remark42]
+# host = "https://remark42.turtletech.us"
+# siteID = "rgoswami.me"
+
+[params.ttechComments]
+host = "https://comments.turtletech.us"
+siteID = "rg95ru-rgoswami.me"
 
 # [params.intensedebate]
 # accountID = "03433eb5474ac59759898fb85454590c"
