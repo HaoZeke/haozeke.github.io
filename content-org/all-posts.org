@@ -8402,6 +8402,204 @@ and similar[fn:sowhatnow].
 [fn:whynoothers] [[https://www.typingclub.com/][Typingclub]] or [[https://www.typing.com/][typing.com]] or [[https://www.keybr.com/][keybr]] are favorites but don't support Icelandic yet.
 [fn:sowhatnow] Perhaps I too will try my hand at a cleaner ~xcompose~ generator.
 
+* TODO Surviving XKB on Wayland with Kanata :@personal:workflow:tools:keyboard:linux:
+:PROPERTIES:
+:EXPORT_FILE_NAME: xkb-wayland-kanata
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Colemak necessities" "Keboard management")
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:END:
+#+begin_quote
+Moving from klfc and system XKB hacks to a Wayland-native keyboard setup, and a
+look at kanata as a modern alternative.
+#+end_quote
+** Background
+My {{{relref(previous,remap-keys-xkb-klfc)}}} {{{relref(posts,xcompose-keys-linux-icelandic)}}}
+described using ~klfc~ to generate XKB layout files with custom types for Extend
+and AltGr layers. That setup worked well on X11, but Wayland (specifically Sway)
+exposed a fragility: the custom types installed to ~/usr/share/X11/xkb/types/~
+get silently wiped on every ~xkeyboard-config~ package update. After a reboot,
+the Extend layer and AltGr bindings simply stop working, with no visible error.
+** The Problem
+The ~klfc~ workflow installs three things into the system XKB directory:
+- ~symbols/colemak~ -- the key-to-symbol mappings with multi-level types
+- ~types/colemak~ -- custom type definitions for Extend, Shift+Extend, AltGr+Extend
+- Rules entries in ~evdev~ and ~base~ linking the layout name to the types file
+
+Sway uses ~libxkbcommon~ to compile keymaps via RMLVO (Rules, Model, Layout,
+Variant, Options). When a package update overwrites the rules files, the
+~! layout = types~ entry for ~colemak~ disappears. The symbols file references
+custom types that ~libxkbcommon~ can no longer find, so it falls back to
+~ONE_LEVEL~ for every key -- producing a flat layout with no Extend or AltGr.
+** The xkb_file Fix
+Sway supports ~xkb_file~ as an alternative to RMLVO. Instead of specifying
+layout/variant/options and relying on the rules engine to assemble the keymap,
+you provide a pre-compiled, self-contained ~.xkb~ text file.
+
+Generate it with ~xkbcomp~:
+#+begin_src bash :eval never
+cat > keymap-src.xkb <<'EOF'
+xkb_keymap {
+  xkb_keycodes { include "evdev+aliases(qwerty)" };
+  xkb_types    { include "complete+colemak" };
+  xkb_compat   { include "complete" };
+  xkb_symbols  { include "pc+colemak+inet(evdev)+compose(ralt)" };
+  xkb_geometry { include "pc(pc105)" };
+};
+EOF
+xkbcomp -w0 keymap-src.xkb - -xkb > ~/.config/sway/keymap.xkb
+#+end_src
+
+The ~types~ line explicitly includes ~+colemak~, bypassing the broken rules
+lookup. The output is a ~2000-line text file that sway loads directly:
+
+#+begin_src conf :eval never
+input type:keyboard {
+    xkb_file ~/.config/sway/keymap.xkb
+    repeat_delay 200
+    repeat_rate 30
+}
+#+end_src
+
+This survives package updates because it doesn't depend on the system rules
+files at runtime. The symbols and types files still need to exist in
+~/usr/share/X11/xkb/~ for ~xkbcomp~ to find them during generation, but that
+only happens once (or after re-running ~install-system.sh~).
+** klfc in 2026
+~klfc~ itself still works, but it has practical issues:
+- It requires a Haskell toolchain (~cabal~, GHC) to build from source
+- The AUR package has been orphaned
+- It generates X11-era output (XKB files, ~.keylayout~, Windows ~.klc~) but has
+  no awareness of Wayland compositors or their quirks
+- The JSON format, while readable, is a layer on top of XKB that adds
+  indirection without much benefit once you understand the underlying system
+
+For maintaining an existing layout, ~klfc~ is fine -- the generated files are
+static and correct. But for new setups or for people who want something that
+works without modifying system files, there are better options.
+** Kanata
+[[https://github.com/jtroo/kanata][Kanata]] is a Rust-based keyboard remapping daemon that works on Linux (evdev),
+macOS, and Windows. Unlike ~klfc~ (which generates static layout files for the
+OS keyboard subsystem), kanata runs as a user-space daemon that intercepts and
+transforms key events directly.
+*** Why Kanata
+- Runs in user-space, no system file modifications
+- Works on Wayland without workarounds
+- Single configuration file, no compilation step
+- Supports layers, tap-hold, macros, one-shot modifiers
+- Active development and community
+- The config format is a Lisp-like S-expression syntax, which is compact and
+  composable
+*** Colemak with Extend and AltGr
+A kanata config equivalent to my ~klfc~ setup:
+
+#+begin_src lisp :eval never
+;; ~/.config/kanata/config.kbd
+(defcfg
+  process-unmapped-keys yes
+)
+
+(defsrc
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft
+  lctl lmet lalt           spc            ralt rmet rctl
+)
+
+;; Base Colemak layer
+(deflayer colemak
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    f    p    g    j    l    u    y    ;    [    ]    \
+  @ext a    r    s    t    d    h    n    e    i    o    '    ret
+  lsft z    x    c    v    b    k    m    ,    .    /    rsft
+  lctl lmet @ag            spc            ralt rmet rctl
+)
+
+;; Extend layer (CapsLock held)
+(deflayer extend
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    left down up   rght ret  _    _
+  _    _    _    _    S-]  _    S-9  _    _    _    _    _
+  _    _    _              _              _    _    _
+)
+
+;; AltGr layer (Left Alt held) -- Icelandic characters
+(deflayer altgr
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    (unicode u00fa) (unicode u00fd) _    _    _    _
+  _    (unicode u00e1) _    _    (unicode u00fe) (unicode u00f0) _    _    (unicode u00e9) (unicode u00ed) (unicode u00f3) _    _
+  _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _              _              _    _    _
+)
+
+(defalias
+  ext (layer-toggle extend)
+  ag  (layer-toggle altgr)
+)
+#+end_src
+
+This is a starting point. The tap-hold capabilities of kanata also open up
+possibilities that ~klfc~ could not express, like making CapsLock act as
+Backspace on tap and Extend on hold:
+
+#+begin_src lisp :eval never
+(defalias
+  ext (tap-hold 200 200 bspc (layer-toggle extend))
+)
+#+end_src
+
+*** Running as a Service
+#+begin_src bash :eval never
+# Install from crates.io or pre-built release
+cargo install kanata
+
+# Or via pacman on Arch
+pacman -S kanata
+#+end_src
+
+Kanata needs access to ~/dev/uinput~, which requires either running as root or
+adding a udev rule:
+
+#+begin_src bash :eval never
+# /etc/udev/rules.d/99-kanata.rules
+KERNEL=="uinput", MODE="0660", GROUP="input", OPTIONS+="static_node=uinput"
+#+end_src
+
+Then a systemd user service:
+#+begin_src ini :eval never
+# ~/.config/systemd/user/kanata.service
+[Unit]
+Description=Kanata keyboard remapper
+
+[Service]
+ExecStart=/usr/bin/kanata -c %h/.config/kanata/config.kbd
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
+#+end_src
+
+With kanata active, the sway config can drop ~xkb_file~ entirely and use a
+standard layout, since kanata handles the remapping at a lower level.
+** Alternatives Considered
+A few other tools in this space:
+- [[https://github.com/rvaiya/keyd][keyd]] -- C-based daemon, simpler config than kanata, good for basic remapping
+  but less flexible for complex multi-level logic
+- [[https://github.com/kmonad/kmonad][kmonad]] -- Haskell-based (like klfc), mature but less actively maintained
+- [[https://github.com/xremap/xremap][xremap]] -- Rust-based, focused on app-specific remapping, less suited for full
+  layout changes
+- Raw XKB -- maintaining the ~.xkb~ files directly works (and is what I am
+  currently doing), but the syntax is arcane and error-prone
+** Conclusions
+The ~xkb_file~ approach is a solid incremental fix for existing ~klfc~ layouts
+on Wayland. For anyone starting fresh or wanting something more maintainable
+long-term, kanata is worth the migration. The config is more readable, it
+doesn't touch system files, and it brings features (tap-hold, macros,
+per-application layers) that XKB simply cannot express.
+
+[fn:klfcgh] The ~klfc~ repository is at [[https://github.com/39aldo39/klfc/]], last meaningful commit from 2022.
+
 * DONE Private Github Actions without PAT :@notes:tools:github:workflow:
 CLOSED: [2020-12-23 Wed 14:34]
 :PROPERTIES:

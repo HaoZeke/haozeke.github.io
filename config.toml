@@ -93,7 +93,7 @@ name = "Rohit Goswami (HaoZeke)"
   littlefoot = true
   prism = false
   codefold = true
-  praiseNetlify = true
+  praiseNetlify = false
   showHumanAuthorBadge = false
 
   # Set disableReadOtherPosts to true in order to hide the links to other posts.
