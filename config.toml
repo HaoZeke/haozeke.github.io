@@ -199,6 +199,7 @@ siteID = "rg95ru-rgoswami.me"
 
     [languages.en.params.logo]
       path = "/images/home.png"
+      alt = "Rohit Goswami home"
       logoText = "~/haozeke/"
       logoHomeLink = "/"
     # or
