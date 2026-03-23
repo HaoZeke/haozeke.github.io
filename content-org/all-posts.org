@@ -22701,6 +22701,311 @@ somewhere visible.
 [fn:xtbmingw] Every package in the xtb dependency chain (mctc-lib, multicharge, dftd4, tblite, xtb) uses ~m2w64_c~ and ~m2w64_fortran~ on Windows. The Python wrappers (xtb-python, tblite-python) sidestep the problem entirely by using CFFI for runtime loading rather than link-time binding.
 [fn:mesonreqfalse] The [[https://mesonbuild.com/Reference-manual_returned_compiler.html#compilerfind_library][meson documentation]] notes that ~find_library~ returns a ~dependency~ object. With ~required: false~, the returned object's ~.found()~ method can be checked before use, mirroring CMake's ~if(${lib}_LIB)~ idiom.
 
+* TODO Allocatable Fortran wrappers, from 1D to N-D :@notes:python:fortran:numpy:f2py:ramblings:
+:PROPERTIES:
+:EXPORT_FILE_NAME: f2py-allocatable-members
+:EXPORT_HUGO_PANDOC_CITATIONS: t
+:EXPORT_BIBLIOGRAPHY: biblio/Quansight.bib, biblio/refs.bib
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Bridging Fortran \& Python")
+:END:
+#+begin_quote
+Half the work in computational science is moving data between programs that
+disagree about how memory works. Allocatable arrays are where the disagreement
+starts.
+#+end_quote
+** Background
+
+About a year ago {{{relref(I covered,types-fortran-python-opaque)}}} opaque
+pointers as a way to wrap non-~bind(c)~ Fortran derived types without requiring
+more work from the Fortran standard. That post ended with a note about
+allocatable components. Since then, I've been working through a fix on the
+[[https://github.com/HaoZeke/numpy/tree/enh/f2py-derived-type-opaque][enh/f2py-derived-type-opaque]] branch (the code in this post corresponds to the
+[[https://github.com/HaoZeke/numpy/releases/tag/f2py-dt-v1-base][f2py-dt-v1-base]] tag).
+
+Allocatable components have been part of Fortran since 2003 (F2018
+7.5.4.7)[fn:f18ref], and they are everywhere in scientific code. A molecular
+dynamics trajectory stores positions as an allocatable 2D array. A finite
+element mesh stores connectivity the same way. Any type whose size is not known
+at compile time uses ~allocatable~:
+
+#+begin_src f90
+type :: Trajectory
+  integer :: num_points
+  double precision, allocatable :: positions(:,:)
+  double precision, allocatable :: timestamps(:)
+end type Trajectory
+#+end_src
+
+The question is how to get these arrays into and out of Python without
+scrambling the data. That turns out to be rather interesting.
+
+** 1D allocatable members
+*** The Fortran type
+
+Let's start with something small. Like ~DataVec~ which holds a tag and a
+dynamically-sized array:
+
+#+begin_src f90
+module datavec_mod
+  implicit none
+
+  type :: DataVec
+    integer :: tag
+    real, allocatable :: values(:)
+  end type DataVec
+
+end module datavec_mod
+#+end_src
+
+Nothing fancy yet. The ~allocatable~ attribute means the array does not exist
+until someone allocates it, and the size can change at runtime. From Python, this works out to wanting the following ergonomics: 
+- ~None~ when unallocated,
+- a NumPy array when allocated,
+- and assignment to resize.
+
+*** What the wrappers need to do
+
+Four operations, each a ~bind(c)~ function calling back into Fortran:
+
+1. ~allocated()~ (F2018 16.9.3). Is the array present? Returns ~None~ in Python
+   if not.
+2. ~size()~ (F2018 16.9.182). How big is it?
+3. ~c_loc()~ (F2018 18.2.3.3). Give me a C pointer to the data[fn:f2008loc].
+4. Setter: deallocate the old array, allocate at the new size, copy from NumPy.
+
+Here is what f2py generates. I have trimmed the ~use iso_c_binding~ and type
+declarations for space:
+
+#+begin_src f90
+! Is the array allocated?
+function f2py_get_datavec_values_allocated(cptr) result(is_alloc) bind(c)
+  type(c_ptr), value :: cptr
+  logical(c_bool) :: is_alloc
+  type(DataVec), pointer :: obj
+  call c_f_pointer(cptr, obj)
+  is_alloc = allocated(obj%values)
+end function
+
+! Rank (always 1 here, but the same accessor works for N-D)
+function f2py_get_datavec_values_ndim(cptr) result(array_rank) bind(c)
+  type(c_ptr), value :: cptr
+  integer(c_int) :: array_rank
+  type(DataVec), pointer :: obj
+  call c_f_pointer(cptr, obj)
+  array_rank = 1
+end function
+
+! Shape: fills an array with the extent per dimension
+subroutine f2py_get_datavec_values_shape(cptr, shape_out) bind(c)
+  type(c_ptr), value :: cptr
+  integer(c_int) :: shape_out(1)
+  type(DataVec), pointer :: obj
+  call c_f_pointer(cptr, obj)
+  if (allocated(obj%values)) then
+    shape_out(1) = size(obj%values, 1)
+  else
+    shape_out(1) = 0
+  end if
+end subroutine
+
+! Data pointer: returns c_loc of the contiguous array
+function f2py_get_datavec_values_data(cptr) result(data_ptr) bind(c)
+  type(c_ptr), value :: cptr
+  type(c_ptr) :: data_ptr
+  type(DataVec), pointer :: obj
+  call c_f_pointer(cptr, obj)
+  if (allocated(obj%values)) then
+    data_ptr = c_loc(obj%values)
+  else
+    data_ptr = c_null_ptr
+  end if
+end function
+
+! Setter: deallocate, allocate, copy
+subroutine f2py_set_datavec_values(cptr, dim_1, src) bind(c)
+  type(c_ptr), value :: cptr
+  integer(c_int), value :: dim_1
+  type(c_ptr), value :: src
+  type(DataVec), pointer :: obj
+  real(c_float), pointer :: src_arr(:)
+  call c_f_pointer(cptr, obj)
+  if (allocated(obj%values)) deallocate(obj%values)
+  if (dim_1 > 0) then
+    allocate(obj%values(dim_1))
+    call c_f_pointer(src, src_arr, [dim_1])
+    obj%values = src_arr
+  end if
+end subroutine
+#+end_src
+
+Every one of these follows the same pattern: take a ~c_ptr~, call ~c_f_pointer~
+to get a typed Fortran pointer, do the operation, return a C-friendly result.
+The opacity disappears in one call.
+
+*** Python usage
+
+With ~f2py~ generating all of the above, the Python side looks like this:
+
+#+begin_src python
+from datavec_mod import datavec_mod
+
+d = datavec_mod.datavec(tag=1)
+print(d.values)  # None (not yet allocated)
+
+import numpy as np
+d.values = np.array([1.0, 2.0, 3.0], dtype=np.float32)
+print(d.values)   # [1. 2. 3.]
+print(len(d.values))  # 3
+
+d.values = np.array([10.0, 20.0, 30.0, 40.0], dtype=np.float32)
+print(d.values)   # [10. 20. 30. 40.] (resized automatically)
+
+d.values = None   # deallocates the Fortran array
+print(d.values)   # None
+#+end_src
+
+Assigning ~None~ deallocates. Assigning an array of a different size
+reallocates. The user never sees ~c_ptr~ or ~c_f_pointer~.
+
+** 2D and higher-rank allocatables
+
+The 1D case generalizes to arbitrary rank. A 2D member like ~double precision,
+allocatable :: data(:,:)~ uses the same four accessors, with two differences:
+~_shape~ fills two entries, and the setter takes two dimension arguments.
+
+That part is mechanical. The interesting part is the memory layout.
+
+*** The column-major problem
+
+Fortran stores multi-dimensional arrays in column-major order (F2018 8.5.8.1).
+The leftmost subscript varies fastest. A 3x4 array in memory reads
+~(1,1), (2,1), (3,1), (1,2), (2,2), ...~ with columns contiguous.
+
+NumPy defaults to row-major. If we ~memcpy~ the raw Fortran data into a
+row-major NumPy array, the shape and the data layout disagree. Rows and columns
+get swapped. I spent longer than I would like to admit tracking this down in an
+early prototype[fn:rowcol].
+
+The fix is to create a Fortran-ordered NumPy array:
+
+#+begin_src c
+/* rank > 1: allocate with Fortran order */
+if (rank > 1) {
+    arr = PyArray_EMPTY(rank, numpy_dims, npy_enum,
+                        1 /* fortran_order */);
+} else {
+    arr = PyArray_SimpleNew(rank, numpy_dims, npy_enum);
+}
+memcpy(PyArray_DATA(arr), data,
+       total_elements * sizeof(ctype));
+#+end_src
+
+~PyArray_EMPTY~ with ~fortran_order=1~ produces a NumPy array whose memory
+layout matches Fortran's. The ~memcpy~ then works correctly. For 1D there is no
+ambiguity, so ~PyArray_SimpleNew~ is fine.
+
+On the setter side, we request Fortran-contiguous input:
+
+#+begin_src c
+PyObject *arr = PyArray_FROM_OTF(value, npy_enum,
+                                  NPY_ARRAY_F_CONTIGUOUS);
+#+end_src
+
+This ensures the data arrives in column-major order regardless of what the user
+passed in. NumPy handles the reordering transparently.
+
+*** A 2D example
+
+#+begin_src f90
+module matrix_mod
+  implicit none
+
+  type :: Matrix
+    integer :: rows
+    integer :: cols
+    double precision, allocatable :: data(:,:)
+  end type Matrix
+
+end module matrix_mod
+#+end_src
+
+#+begin_src python
+from matrix_mod import matrix_mod
+import numpy as np
+
+mat = matrix_mod.matrix(rows=3, cols=4)
+print(mat.data)  # None
+
+input_data = np.asfortranarray(
+    np.array([[1, 2, 3, 4],
+              [5, 6, 7, 8],
+              [9, 10, 11, 12]], dtype=np.float64))
+mat.data = input_data
+print(mat.data)
+# [[ 1.  2.  3.  4.]
+#  [ 5.  6.  7.  8.]
+#  [ 9. 10. 11. 12.]]
+
+mat.data = None  # deallocates
+mat.data = np.zeros((5, 5), dtype=np.float64, order='F')
+print(mat.data.shape)  # (5, 5)
+#+end_src
+
+The ~np.asfortranarray~ call matters. Without it, the Fortran side interprets
+row-major bytes in column-major order, and the values come back scrambled.
+
+** Mixed allocatables in one type
+
+A type can have both 1D and 2D allocatable members. Each gets its own set of
+Fortran accessors. The scalar members pass through the constructor as before;
+the allocatables are set and read via Python properties after construction.
+
+#+begin_src f90
+module mixedalloc_mod
+  implicit none
+
+  type :: MixedAlloc
+    integer :: tag
+    double precision, allocatable :: vector(:)
+    double precision, allocatable :: matrix(:,:)
+  end type MixedAlloc
+
+end module mixedalloc_mod
+#+end_src
+
+#+begin_src python
+from mixedalloc_mod import mixedalloc_mod
+import numpy as np
+
+mixed = mixedalloc_mod.mixedalloc(tag=99)
+
+mixed.vector = np.array([1.0, 2.0, 3.0])
+print(mixed.vector)  # [1. 2. 3.]
+
+mixed.matrix = np.asfortranarray(
+    np.array([[10.0, 20.0], [30.0, 40.0]]))
+print(mixed.matrix)
+# [[10. 20.]
+#  [30. 40.]]
+
+print(mixed.tag)  # 99
+#+end_src
+
+** Conclusions
+
+1D allocatables: query the size, copy the data. Multi-dimensional allocatables:
+the same, plus Fortran-ordered NumPy arrays to keep the memory layout honest.
+Every accessor follows the same ~c_ptr~ -> ~c_f_pointer~ -> operation ->
+C-friendly return pattern. The user writes Fortran, gets Python, and the
+column-major bookkeeping stays invisible.
+
+Next we'd need to tackle pointer components (read-only
+views into shared data) and deferred-length character strings.
+
+[fn:f18ref] All F2018 section numbers refer to the J3/18-007r1 interpretation document (WD 1539-1).
+[fn:f2008loc] ~c_loc~ on allocatables requires F2008 or later. The 2003 standard restricted it to ~TARGET~ variables, but 2008 relaxed this (F2018 18.2.3.3).
+[fn:rowcol] The symptom: a 3x4 matrix comes back as a 4x3 matrix with the values interleaved in a confusing pattern. The cause: ~memcpy~ into a C-order array. The lesson: always check ~np.isfortran()~ on the result.
 * TODO From manual wrappers to ~f2py~ automation :@notes:python:fortran:numpy:f2py:ramblings:
 :PROPERTIES:
 :EXPORT_FILE_NAME: f2py-automation
