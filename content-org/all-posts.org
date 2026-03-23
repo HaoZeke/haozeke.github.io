@@ -22701,7 +22701,8 @@ somewhere visible.
 [fn:xtbmingw] Every package in the xtb dependency chain (mctc-lib, multicharge, dftd4, tblite, xtb) uses ~m2w64_c~ and ~m2w64_fortran~ on Windows. The Python wrappers (xtb-python, tblite-python) sidestep the problem entirely by using CFFI for runtime loading rather than link-time binding.
 [fn:mesonreqfalse] The [[https://mesonbuild.com/Reference-manual_returned_compiler.html#compilerfind_library][meson documentation]] notes that ~find_library~ returns a ~dependency~ object. With ~required: false~, the returned object's ~.found()~ method can be checked before use, mirroring CMake's ~if(${lib}_LIB)~ idiom.
 
-* TODO Allocatable Fortran wrappers, from 1D to N-D :@notes:python:fortran:numpy:f2py:ramblings:
+* DONE Allocatable Fortran wrappers, from 1D to N-D :@notes:python:fortran:numpy:f2py:ramblings:
+CLOSED: [2026-03-23 Mon 01:31]
 :PROPERTIES:
 :EXPORT_FILE_NAME: f2py-allocatable-members
 :EXPORT_HUGO_PANDOC_CITATIONS: t
