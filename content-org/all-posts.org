@@ -22715,6 +22715,7 @@ Half the work in computational science is moving data between programs that
 disagree about how memory works. Allocatable arrays are where the disagreement
 starts.
 #+end_quote
+
 ** Background
 
 About a year ago {{{relref(I covered,types-fortran-python-opaque)}}} opaque
@@ -22728,24 +22729,16 @@ Allocatable components have been part of Fortran since 2003 (F2018
 7.5.4.7)[fn:f18ref], and they are everywhere in scientific code. A molecular
 dynamics trajectory stores positions as an allocatable 2D array. A finite
 element mesh stores connectivity the same way. Any type whose size is not known
-at compile time uses ~allocatable~:
-
-#+begin_src f90
-type :: Trajectory
-  integer :: num_points
-  double precision, allocatable :: positions(:,:)
-  double precision, allocatable :: timestamps(:)
-end type Trajectory
-#+end_src
+at compile time uses ~allocatable~.
 
 The question is how to get these arrays into and out of Python without
-scrambling the data. That turns out to be rather interesting.
+scrambling the data. As with the opaque pointer post, we will build each layer
+by hand first, then show how ~f2py~ automates the whole thing.
 
-** 1D allocatable members
-*** The Fortran type
+** The Fortran type
 
-Let's start with something small. Like ~DataVec~ which holds a tag and a
-dynamically-sized array:
+Let's start with something small. ~DataVec~ holds a tag and a dynamically-sized
+array:
 
 #+begin_src f90
 module datavec_mod
@@ -22760,93 +22753,323 @@ end module datavec_mod
 #+end_src
 
 Nothing fancy yet. The ~allocatable~ attribute means the array does not exist
-until someone allocates it, and the size can change at runtime. From Python, this works out to wanting the following ergonomics: 
-- ~None~ when unallocated,
-- a NumPy array when allocated,
-- and assignment to resize.
+until someone allocates it, and the size can change at runtime. From Python we
+want ~None~ when unallocated, a NumPy array when allocated, and assignment to
+resize.
 
-*** What the wrappers need to do
+** Manual Fortran wrappers
 
-Four operations, each a ~bind(c)~ function calling back into Fortran:
+Following the same pattern as the ~point~ wrappers from the opaque pointer post,
+we need ~bind(c)~ accessor functions for the allocatable member. Four operations,
+each mechanically derived from the type definition:
 
-1. ~allocated()~ (F2018 16.9.3). Is the array present? Returns ~None~ in Python
-   if not.
-2. ~size()~ (F2018 16.9.182). How big is it?
-3. ~c_loc()~ (F2018 18.2.3.3). Give me a C pointer to the data[fn:f2008loc].
-4. Setter: deallocate the old array, allocate at the new size, copy from NumPy.
-
-Here is what f2py generates. I have trimmed the ~use iso_c_binding~ and type
-declarations for space:
+#+begin_export html
+<details>
+<summary>Full Fortran wrapper module (click to expand)</summary>
+#+end_export
 
 #+begin_src f90
-! Is the array allocated?
-function f2py_get_datavec_values_allocated(cptr) result(is_alloc) bind(c)
-  type(c_ptr), value :: cptr
-  logical(c_bool) :: is_alloc
-  type(DataVec), pointer :: obj
-  call c_f_pointer(cptr, obj)
-  is_alloc = allocated(obj%values)
-end function
+module datavec_wrappers
+  use datavec_mod
+  use iso_c_binding
+  implicit none
+contains
 
-! Rank (always 1 here, but the same accessor works for N-D)
-function f2py_get_datavec_values_ndim(cptr) result(array_rank) bind(c)
-  type(c_ptr), value :: cptr
-  integer(c_int) :: array_rank
-  type(DataVec), pointer :: obj
-  call c_f_pointer(cptr, obj)
-  array_rank = 1
-end function
+  ! Constructor: allocate, set tag, return c_ptr
+  function datavec_create(tag_val) result(cptr) bind(c)
+    integer(c_int), value :: tag_val
+    type(c_ptr) :: cptr
+    type(DataVec), pointer :: obj
+    allocate(obj)
+    obj%tag = tag_val
+    cptr = c_loc(obj)
+  end function
 
-! Shape: fills an array with the extent per dimension
-subroutine f2py_get_datavec_values_shape(cptr, shape_out) bind(c)
-  type(c_ptr), value :: cptr
-  integer(c_int) :: shape_out(1)
-  type(DataVec), pointer :: obj
-  call c_f_pointer(cptr, obj)
-  if (allocated(obj%values)) then
-    shape_out(1) = size(obj%values, 1)
-  else
-    shape_out(1) = 0
-  end if
-end subroutine
+  ! Destructor
+  subroutine datavec_destroy(cptr) bind(c)
+    type(c_ptr), value :: cptr
+    type(DataVec), pointer :: obj
+    call c_f_pointer(cptr, obj)
+    deallocate(obj)
+  end subroutine
 
-! Data pointer: returns c_loc of the contiguous array
-function f2py_get_datavec_values_data(cptr) result(data_ptr) bind(c)
-  type(c_ptr), value :: cptr
-  type(c_ptr) :: data_ptr
-  type(DataVec), pointer :: obj
-  call c_f_pointer(cptr, obj)
-  if (allocated(obj%values)) then
-    data_ptr = c_loc(obj%values)
-  else
-    data_ptr = c_null_ptr
-  end if
-end function
+  ! Is the array allocated?
+  function datavec_values_allocated(cptr) result(is_alloc) bind(c)
+    type(c_ptr), value :: cptr
+    logical(c_bool) :: is_alloc
+    type(DataVec), pointer :: obj
+    call c_f_pointer(cptr, obj)
+    is_alloc = allocated(obj%values)
+  end function
 
-! Setter: deallocate, allocate, copy
-subroutine f2py_set_datavec_values(cptr, dim_1, src) bind(c)
-  type(c_ptr), value :: cptr
-  integer(c_int), value :: dim_1
-  type(c_ptr), value :: src
-  type(DataVec), pointer :: obj
-  real(c_float), pointer :: src_arr(:)
-  call c_f_pointer(cptr, obj)
-  if (allocated(obj%values)) deallocate(obj%values)
-  if (dim_1 > 0) then
-    allocate(obj%values(dim_1))
-    call c_f_pointer(src, src_arr, [dim_1])
-    obj%values = src_arr
-  end if
-end subroutine
+  ! How many elements?
+  function datavec_values_size(cptr) result(n) bind(c)
+    type(c_ptr), value :: cptr
+    integer(c_int) :: n
+    type(DataVec), pointer :: obj
+    call c_f_pointer(cptr, obj)
+    if (allocated(obj%values)) then
+      n = size(obj%values)
+    else
+      n = 0
+    end if
+  end function
+
+  ! C pointer to the contiguous array data
+  function datavec_values_data(cptr) result(data_ptr) bind(c)
+    type(c_ptr), value :: cptr
+    type(c_ptr) :: data_ptr
+    type(DataVec), pointer :: obj
+    call c_f_pointer(cptr, obj)
+    if (allocated(obj%values)) then
+      data_ptr = c_loc(obj%values)
+    else
+      data_ptr = c_null_ptr
+    end if
+  end function
+
+  ! Set: deallocate old, allocate new, copy
+  subroutine datavec_values_set(cptr, n, src) bind(c)
+    type(c_ptr), value :: cptr
+    integer(c_int), value :: n
+    type(c_ptr), value :: src
+    type(DataVec), pointer :: obj
+    real(c_float), pointer :: src_arr(:)
+    call c_f_pointer(cptr, obj)
+    if (allocated(obj%values)) deallocate(obj%values)
+    if (n > 0) then
+      allocate(obj%values(n))
+      call c_f_pointer(src, src_arr, [n])
+      obj%values = src_arr
+    end if
+  end subroutine
+
+end module datavec_wrappers
 #+end_src
 
-Every one of these follows the same pattern: take a ~c_ptr~, call ~c_f_pointer~
-to get a typed Fortran pointer, do the operation, return a C-friendly result.
-The opacity disappears in one call.
+#+begin_export html
+</details>
+#+end_export
 
-*** Python usage
+There isn't much to say about these. They are mechanically derived from the
+type, same as the ~point~ wrappers. The pattern repeats for every member: take a
+~c_ptr~, call ~c_f_pointer~ to get a typed Fortran pointer, do the operation, return
+a C-friendly result. The one thing that is new compared to scalar members is
+~c_loc(obj%values)~ on line 55, which requires F2008 or later[fn:f2008loc].
 
-With ~f2py~ generating all of the above, the Python side looks like this:
+We can test these from a Fortran driver to make sure the wrappers work before we
+touch C:
+
+#+begin_src f90
+program test_datavec_wrappers
+  use datavec_wrappers
+  use iso_c_binding
+  implicit none
+  type(c_ptr) :: dv
+  logical(c_bool) :: alloc
+  integer :: n
+
+  dv = datavec_create(42)
+  alloc = datavec_values_allocated(dv)
+  print *, "Allocated after create:", alloc  ! F
+
+  ! We would call datavec_values_set here with a C array,
+  ! but that requires a C caller. For now, verify the wrappers link.
+  n = datavec_values_size(dv)
+  print *, "Size:", n  ! 0
+
+  call datavec_destroy(dv)
+  print *, "Destroyed."
+end program
+#+end_src
+
+#+begin_src bash
+$ gfortran datavec_mod.f90 datavec_wrappers.f90 test_wrappers.f90 -o test_wrappers
+$ ./test_wrappers
+ Allocated after create: F
+ Size:           0
+ Destroyed.
+#+end_src
+
+So far so good. The wrappers compile and the allocatable member starts
+unallocated, as expected.
+
+*** Testing from C
+
+The Fortran test could not exercise the setter (it needs a C array). So we write
+a C driver that exercises the full lifecycle:
+
+#+begin_src c
+/* test_c.c */
+#include <stdio.h>
+#include <stdbool.h>
+
+extern void *datavec_create(int tag);
+extern void datavec_destroy(void *cptr);
+extern bool datavec_values_allocated(void *cptr);
+extern int datavec_values_size(void *cptr);
+extern void *datavec_values_data(void *cptr);
+extern void datavec_values_set(void *cptr, int n, void *src);
+
+int main() {
+    void *dv = datavec_create(42);
+    printf("Allocated: %d\n", datavec_values_allocated(dv));
+    printf("Size: %d\n", datavec_values_size(dv));
+
+    /* Set values */
+    float vals[] = {1.0f, 2.0f, 3.0f};
+    datavec_values_set(dv, 3, vals);
+    printf("After set - Allocated: %d\n", datavec_values_allocated(dv));
+    printf("After set - Size: %d\n", datavec_values_size(dv));
+
+    /* Read back */
+    float *data = (float *)datavec_values_data(dv);
+    printf("Values: %.1f %.1f %.1f\n", data[0], data[1], data[2]);
+
+    /* Resize */
+    float vals2[] = {10.0f, 20.0f};
+    datavec_values_set(dv, 2, vals2);
+    printf("After resize - Size: %d\n", datavec_values_size(dv));
+    data = (float *)datavec_values_data(dv);
+    printf("Values: %.1f %.1f\n", data[0], data[1]);
+
+    /* Deallocate */
+    datavec_values_set(dv, 0, NULL);
+    printf("After dealloc - Allocated: %d\n",
+           datavec_values_allocated(dv));
+
+    datavec_destroy(dv);
+    printf("Destroyed.\n");
+    return 0;
+}
+#+end_src
+
+As usual I use ~meson~ to build both tests:
+
+#+begin_src meson
+project('datavec_test', 'c', 'fortran',
+        version : '0.1',
+        default_options : ['warning_level=2', 'buildtype=debug'])
+executable('ftest',
+           'datavec_mod.f90',
+           'datavec_wrappers.f90',
+           'test_wrappers.f90')
+executable('ctest',
+           'datavec_mod.f90',
+           'datavec_wrappers.f90',
+           'test_c.c')
+#+end_src
+
+#+begin_src bash
+$ meson setup bbdir
+$ meson compile -C bbdir
+$ ./bbdir/ctest
+Allocated: 0
+Size: 0
+After set - Allocated: 1
+After set - Size: 3
+Values: 1.0 2.0 3.0
+After resize - Size: 2
+Values: 10.0 20.0
+After dealloc - Allocated: 0
+Destroyed.
+#+end_src
+
+The full allocatable lifecycle works from C: create, set, read back, resize,
+deallocate, destroy. The Fortran side manages all the memory; the C side just
+passes pointers and sizes.
+
+** The C/Python layer
+
+Now we need to bridge this into Python. This is where allocatables differ from
+scalars. For a scalar ~get_x~ we just returned a ~double~. For an allocatable array
+we need to:
+
+1. Check allocation status
+2. Query the size
+3. Get the raw data pointer
+4. Build a NumPy array from it
+
+Here is the C getter for ~values~:
+
+#+begin_src c
+#include <Python.h>
+#include <numpy/arrayobject.h>
+
+/* Fortran wrapper declarations */
+extern void *datavec_create(int tag);
+extern void datavec_destroy(void *cptr);
+extern unsigned char datavec_values_allocated(void *cptr);
+extern int datavec_values_size(void *cptr);
+extern void *datavec_values_data(void *cptr);
+extern void datavec_values_set(void *cptr, int n, void *src);
+
+/* Python object: PyCapsule wrapping the Fortran c_ptr */
+typedef struct {
+    PyObject_HEAD
+    PyObject *capsule;
+} PyDataVecObject;
+
+/* Getter for the allocatable 'values' member */
+static PyObject *
+PyDataVec_get_values(PyObject *selfobj, void *closure)
+{
+    PyDataVecObject *self = (PyDataVecObject *)selfobj;
+    void *ptr = PyCapsule_GetPointer(self->capsule, "datavec");
+
+    /* Unallocated -> None */
+    if (!datavec_values_allocated(ptr))
+        Py_RETURN_NONE;
+
+    int n = datavec_values_size(ptr);
+    if (n <= 0) Py_RETURN_NONE;
+
+    void *data = datavec_values_data(ptr);
+    if (data == NULL) Py_RETURN_NONE;
+
+    /* Build a NumPy array and copy the Fortran data */
+    npy_intp dims[1] = {n};
+    PyObject *arr = PyArray_SimpleNew(1, dims, NPY_FLOAT);
+    memcpy(PyArray_DATA((PyArrayObject *)arr), data,
+           n * sizeof(float));
+    return arr;
+}
+#+end_src
+
+The setter is the reverse: extract the NumPy array's data pointer and size, pass
+them to the Fortran setter:
+
+#+begin_src c
+static int
+PyDataVec_set_values(PyObject *selfobj, PyObject *value, void *closure)
+{
+    PyDataVecObject *self = (PyDataVecObject *)selfobj;
+    void *ptr = PyCapsule_GetPointer(self->capsule, "datavec");
+
+    if (value == Py_None) {
+        /* Setting None deallocates */
+        datavec_values_set(ptr, 0, NULL);
+        return 0;
+    }
+
+    PyObject *arr = PyArray_FROM_OTF(value, NPY_FLOAT,
+                                      NPY_ARRAY_C_CONTIGUOUS);
+    if (arr == NULL) return -1;
+
+    int n = (int)PyArray_SIZE((PyArrayObject *)arr);
+    datavec_values_set(ptr, n, PyArray_DATA((PyArrayObject *)arr));
+    Py_DECREF(arr);
+    return 0;
+}
+#+end_src
+
+The rest of the Python type machinery (PyCapsule destructor, ~tp_new~, ~tp_init~,
+~tp_getset~ table) follows the same pattern as the ~point~ type from the previous
+post. I will not repeat it here[fn:boilerplate].
+
+** Python usage (manual wrappers)
+
+With the C extension compiled, the Python side works like this:
 
 #+begin_src python
 from datavec_mod import datavec_mod
@@ -22866,16 +23089,41 @@ d.values = None   # deallocates the Fortran array
 print(d.values)   # None
 #+end_src
 
-Assigning ~None~ deallocates. Assigning an array of a different size
-reallocates. The user never sees ~c_ptr~ or ~c_f_pointer~.
+Assigning ~None~ deallocates. Assigning an array of a different size reallocates.
+The user never sees ~c_ptr~ or ~c_f_pointer~.
+
+** f2py automation
+
+Everything above (the Fortran wrappers, the C getter/setter, the PyCapsule
+boilerplate) is what ~f2py~ generates automatically from the original
+~datavec_mod.f90~. No manual C code, no ~datavec_wrappers~ module. The generated
+output matches the pattern shown above, with one extra refinement: it also
+generates ~_ndim~ and ~_shape~ accessors for N-D generalization.
+
+The generated Fortran wrapper names follow the convention
+~f2py_get_<type>_<member>_<accessor>~. For our ~DataVec~, that is:
+
+- ~f2py_get_datavec_values_allocated~
+- ~f2py_get_datavec_values_ndim~
+- ~f2py_get_datavec_values_shape~
+- ~f2py_get_datavec_values_data~
+- ~f2py_set_datavec_values~
+
+Plus ~f2py_create_datavec~, ~f2py_destroy_datavec~, ~f2py_get_datavec_tag~, and
+~f2py_set_datavec_tag~, for a total of nine generated Fortran ~bind(c)~ functions
+from one type with one allocatable member. One command:
+
+#+begin_src sh
+python -m numpy.f2py datavec_mod.f90 -m datavec --backend meson
+#+end_src
+
+And the Python usage is identical to what we showed with the manual wrappers
+above.
 
 ** 2D and higher-rank allocatables
 
-The 1D case generalizes to arbitrary rank. A 2D member like ~double precision,
-allocatable :: data(:,:)~ uses the same four accessors, with two differences:
-~_shape~ fills two entries, and the setter takes two dimension arguments.
-
-That part is mechanical. The interesting part is the memory layout.
+The 1D case generalizes to arbitrary rank. The interesting part is the memory
+layout.
 
 *** The column-major problem
 
@@ -22888,7 +23136,7 @@ row-major NumPy array, the shape and the data layout disagree. Rows and columns
 get swapped. I spent longer than I would like to admit tracking this down in an
 early prototype[fn:rowcol].
 
-The fix is to create a Fortran-ordered NumPy array:
+The fix in the C getter: create a Fortran-ordered NumPy array.
 
 #+begin_src c
 /* rank > 1: allocate with Fortran order */
@@ -22959,8 +23207,8 @@ row-major bytes in column-major order, and the values come back scrambled.
 ** Mixed allocatables in one type
 
 A type can have both 1D and 2D allocatable members. Each gets its own set of
-Fortran accessors. The scalar members pass through the constructor as before;
-the allocatables are set and read via Python properties after construction.
+accessors. The scalar members pass through the constructor; the allocatables are
+set and read via Python properties after construction.
 
 #+begin_src f90
 module mixedalloc_mod
@@ -23007,6 +23255,7 @@ views into shared data) and deferred-length character strings.
 [fn:f18ref] All F2018 section numbers refer to the J3/18-007r1 interpretation document (WD 1539-1).
 [fn:f2008loc] ~c_loc~ on allocatables requires F2008 or later. The 2003 standard restricted it to ~TARGET~ variables, but 2008 relaxed this (F2018 18.2.3.3).
 [fn:rowcol] The symptom: a 3x4 matrix comes back as a 4x3 matrix with the values interleaved in a confusing pattern. The cause: ~memcpy~ into a C-order array. The lesson: always check ~np.isfortran()~ on the result.
+[fn:boilerplate] The full PyCapsule lifecycle (destructor, tp_new, tp_init, tp_dealloc, tp_getset registration) follows the exact pattern from {{{relref(the opaque pointer post,types-fortran-python-opaque)}}}. The only difference is that allocatable getters return NumPy arrays instead of Python floats.
 * TODO From manual wrappers to ~f2py~ automation :@notes:python:fortran:numpy:f2py:ramblings:
 :PROPERTIES:
 :EXPORT_FILE_NAME: f2py-automation
