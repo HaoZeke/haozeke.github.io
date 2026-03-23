@@ -22701,6 +22701,35 @@ somewhere visible.
 [fn:xtbmingw] Every package in the xtb dependency chain (mctc-lib, multicharge, dftd4, tblite, xtb) uses ~m2w64_c~ and ~m2w64_fortran~ on Windows. The Python wrappers (xtb-python, tblite-python) sidestep the problem entirely by using CFFI for runtime loading rather than link-time binding.
 [fn:mesonreqfalse] The [[https://mesonbuild.com/Reference-manual_returned_compiler.html#compilerfind_library][meson documentation]] notes that ~find_library~ returns a ~dependency~ object. With ~required: false~, the returned object's ~.found()~ method can be checked before use, mirroring CMake's ~if(${lib}_LIB)~ idiom.
 
+* TODO From manual wrappers to ~f2py~ automation :@notes:python:fortran:numpy:f2py:ramblings:
+:PROPERTIES:
+:EXPORT_FILE_NAME: f2py-automation
+:EXPORT_HUGO_PANDOC_CITATIONS: t
+:EXPORT_BIBLIOGRAPHY: biblio/Quansight.bib, biblio/refs.bib
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Bridging Fortran \& Python")
+:END:
+#+begin_quote
+The best code generator is one you forget is running.
+#+end_quote
+** Background
+A couple of years ago I started with some posts on manual wrapping of fortran
+derived types. {{{relref(Post 1,types-fortran-python-cython)}}} covered Cython
+wrappers for Fortran derived types. {{{relref(Post
+2,types-fortran-python-cpython)}}} did the same through the CPython C API.
+{{{relref(Post 3,types-fortran-python-opaque)}}} introduced opaque pointers as
+the general solution for non-~bind(c)~ types, before I started going after
+individual member kinds: {{{relref(allocatables,f2py-allocatable-members)}}},
+{{{relref(pointers and strings,f2py-pointers-and-strings)}}}, and
+{{{relref(finalizers with generics,f2py-finalizers-and-generics)}}}.
+
+Fast-forward to now, and even though I haven't yet gotten all the derived types
+into ~f2py~, the automation has improved through leaps and bounds [fn:: and
+fortran has continued to be relevant of course]. Here we consider putting the
+pieces together as we can today. We take a single Fortran module that uses
+scalar members, allocatable arrays, deferred-length characters, bound
+procedures, and finalizers, and we wrap it with one ~f2py~ command. No manual C
+code, no Cython, no hand-written extension modules.
 * TODO ~jj~ crib-notes
 #+begin_quote
 Reducing maintainer burdens for development workflows
