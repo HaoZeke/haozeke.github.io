@@ -13,6 +13,8 @@
 
 ;;; Code:
 (require 'package)
+(setq package-user-dir
+      (expand-file-name ".emacs-packages" (file-name-directory load-file-name)))
 (setq package-enable-at-startup nil)
 (unless package-archive-contents
   (setq package-archives
