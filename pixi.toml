@@ -6,6 +6,9 @@ platforms = ["linux-64"]
 version = "0.1.0"
 
 [tasks]
+org = "make md"
+build = { cmd = "hugo --minify", depends-on = ["org"] }
+serve = "hugo server -D --bind 0.0.0.0 --port 1313"
 
 [dependencies]
 pandoc = ">=3.6.4,<4"

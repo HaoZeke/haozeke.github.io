@@ -567,3 +567,4 @@ presentations/**/*.html
 # pixi environments
 .pixi
 *.egg-info
+setup/.emacs-packages/
