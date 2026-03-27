@@ -2107,5 +2107,53 @@ torch.testing.assert_close(result, expected, rtol=5e-3, atol=0.05)
 Still a large improvement over the pre-thread-pinning situation, where non-deterministic accumulation on a single machine forced even wider tolerances and made regression tests effectively meaningless. The remaining gap comes from legitimate hardware differences, not from run-to-run randomness.
 
 See [[https://github.com/metatensor/metatrain/pull/1070][metatensor/metatrain#1070]] for the full changeset.
+** DONE Togglable inline review comments in ~orgmode~ LaTeX export :orgmode:tex:workflow:
+CLOSED: [2026-03-27 Thu 17:30]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: orgmode-inline-review-comments
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
+When co-authoring a paper in ~orgmode~ while collaborators edit the LaTeX on Overleaf, the review loop gets awkward: comments live in the ~.tex~, changes happen in the ~.org~, and neither side sees the other's annotations. A togglable inline comment system bridges this gap: each collaborator gets a colored command, and a single boolean flag strips all comments for submission.
+
+In the ~orgmode~ preamble, define a conditional block:
+#+begin_src org
+,#+LATEX_HEADER: \usepackage{xcolor}
+,#+LATEX_HEADER: \newif\ifshowreviewnotes
+,#+LATEX_HEADER: \showreviewnotestrue  % change to \showreviewnotesfalse for submission
+,#+LATEX_HEADER: \ifshowreviewnotes
+,#+LATEX_HEADER:   \newcommand{\mg}[1]{{\color{cyan}[MG: #1]}}
+,#+LATEX_HEADER:   \newcommand{\rg}[1]{{\color{green!50!black}[RG: #1]}}
+,#+LATEX_HEADER: \else
+,#+LATEX_HEADER:   \newcommand{\mg}[1]{}
+,#+LATEX_HEADER:   \newcommand{\rg}[1]{}
+,#+LATEX_HEADER: \fi
+#+end_src
+
+Adding a new reviewer is just another ~\newcommand~ inside the ~\ifshowreviewnotes~ block -- pick a color and a two-letter prefix.
+
+Then scatter comments inline using ~orgmode~'s ~@@latex:...@@~ syntax:
+#+begin_src org
+The reflector inverts the force component along $\hat{\mathbf{d}}$.
+@@latex:\mg{what is d here? the dimer axis or the NEB tangent?}
+\rg{Clarified: $\hat{\mathbf{d}} = \hat{\mathbf{N}}$ for the dimer.
+Added a sentence defining the notation.}@@
+#+end_src
+
+This renders as colored bracketed text in the PDF:
+- =[MG: what is d here?]= in cyan
+- =[RG: Clarified: ...]= in green
+
+The comment and reply sit right next to the text they refer to, so the conversation is spatially grounded. When a collaborator pastes their Overleaf ~\mg{...}~ comments, you can drop them into the ~.org~ with the response and the actual fix all in the same spot.
+
+For submission, flip the flag:
+#+begin_src diff
+- \showreviewnotestrue
++ \showreviewnotesfalse
+#+end_src
+
+All ~\mg~, ~\rg~, etc. become no-ops -- zero output, no stale comment text leaking into the published PDF, and no need to hunt through the source deleting annotations. The comments remain in the ~.org~ as a permanent record of the review conversation.
+
+This pairs well with ~latexdiff~ for generating the highlighted-changes PDF that journals want alongside the clean submission.
 * Footnotes
 Warren said 30 s or 30 min for machine learning, anything else will not add any information.
