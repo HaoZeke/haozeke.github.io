@@ -23256,6 +23256,581 @@ deferred-length character strings.
 [fn:f2008loc] ~c_loc~ on allocatables requires F2008 or later. The 2003 standard restricted it to ~TARGET~ variables, but 2008 relaxed this (F2018 18.2.3.3).
 [fn:rowcol] The symptom: a $3 \times 4$ matrix comes back as a $4 \times 3$ matrix with the values interleaved in a confusing pattern. The cause: ~memcpy~ into a C-order array. The lesson: always check ~np.isfortran()~ on the result.
 [fn:boilerplate] The full PyCapsule lifecycle (destructor, tp_new, tp_init, tp_dealloc, tp_getset registration) follows the exact pattern from {{{relref(the opaque pointer post,types-fortran-python-opaque)}}}. The only difference is that allocatable getters return NumPy arrays instead of Python floats.
+* DONE Pointer Members and Deferred-Length Strings :@notes:python:fortran:numpy:f2py:ramblings:
+CLOSED: [2026-03-27 Fri 18:42]
+:PROPERTIES:
+:EXPORT_FILE_NAME: f2py-pointers-and-strings
+:EXPORT_HUGO_PANDOC_CITATIONS: t
+:EXPORT_BIBLIOGRAPHY: biblio/Quansight.bib, biblio/refs.bib
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Bridging Fortran \& Python")
+:END:
+#+begin_quote
+A pointer is a promise about data you do not own. A deferred-length string is a
+promise about storage you have not yet allocated. Wrapping either for Python
+means honoring contracts that C cannot express.
+#+end_quote
+
+** Background
+
+{{{relref(Last time,f2py-allocatable-members)}}} covered allocatable array
+members: manual Fortran wrappers, the C layer with NumPy, and how f2py
+automates it all. Two more member types are needed to round out the
+wrapping story: pointer components and deferred-length character strings.
+
+Pointer components (F2018 7.5.4.6)[fn:f18ref] do not own their data. They
+reference existing storage via pointer association (F2018 10.2.2). Deferred-
+length allocatable characters (F2018 7.4.4.2 paragraph 3) use the colon syntax
+~character(:), allocatable~ for strings whose length is determined at runtime.
+
+As before, we build each layer by hand first, then show how f2py generates the
+similar but automated code. F2PY code here corresponds to the [[https://github.com/HaoZeke/numpy/releases/tag/f2py-dt-v1-base][f2py-dt-v1-base]] tag.
+
+** Pointer members
+
+*** The Fortran type
+
+A ~DataView~ holds a label and a pointer to a shared array. The shared array
+has the ~target~ attribute (F2018 8.5.17):
+
+#+begin_src f90
+module pointer_member_mod
+  use iso_c_binding
+  implicit none
+  double precision, target :: shared_data(5)
+
+  type :: DataView
+    integer :: label
+    double precision, pointer :: view(:) => null()
+  end type DataView
+
+contains
+  subroutine init_shared_data()
+    shared_data = [10.0d0, 20.0d0, 30.0d0, 40.0d0, 50.0d0]
+  end subroutine
+
+  subroutine attach_view(dv)
+    type(DataView), intent(inout) :: dv
+    call init_shared_data()
+    dv%view => shared_data
+  end subroutine
+
+  subroutine detach_view(dv)
+    type(DataView), intent(inout) :: dv
+    nullify(dv%view)
+  end subroutine
+end module
+#+end_src
+
+The ~=> null()~ default initialization means the pointer starts disassociated
+rather than undefined. This is good practice and required a crackfortran fix
+[fn:: more on that below].
+
+*** How pointers differ from allocatables
+
+Allocatable members own their storage. Deallocating frees the memory. Pointer
+members reference storage owned by something else. Nullifying a pointer does not
+free the target; it just breaks the association.
+
+This drives the wrapping strategy: allocatable members get both getters and
+setters. Pointer members get only a getter. A setter would require managing
+pointer association and target lifetimes across the Fortran/C boundary, and
+getting it wrong produces dangling pointers with no runtime check[fn:dangling].
+
+*** Manual Fortran wrappers
+
+The wrappers use ~associated()~ (F2018 16.9.16) instead of ~allocated()~:
+
+#+begin_export html
+<details>
+<summary>Full pointer wrapper module (click to expand)</summary>
+#+end_export
+
+#+begin_src f90
+module dataview_wrappers
+  use pointer_member_mod
+  use iso_c_binding
+  implicit none
+contains
+  function dataview_create(label_val) result(cptr) bind(c)
+    integer(c_int), value :: label_val
+    type(c_ptr) :: cptr
+    type(DataView), pointer :: obj
+    allocate(obj)
+    obj%label = label_val
+    cptr = c_loc(obj)
+  end function
+
+  subroutine dataview_destroy(cptr) bind(c)
+    type(c_ptr), value :: cptr
+    type(DataView), pointer :: obj
+    call c_f_pointer(cptr, obj)
+    deallocate(obj)
+  end subroutine
+
+  function dataview_view_associated(cptr) result(is_assoc) bind(c)
+    type(c_ptr), value :: cptr
+    logical(c_bool) :: is_assoc
+    type(DataView), pointer :: obj
+    call c_f_pointer(cptr, obj)
+    is_assoc = associated(obj%view)
+  end function
+
+  function dataview_view_size(cptr) result(n) bind(c)
+    type(c_ptr), value :: cptr
+    integer(c_int) :: n
+    type(DataView), pointer :: obj
+    call c_f_pointer(cptr, obj)
+    if (associated(obj%view)) then
+      n = size(obj%view)
+    else
+      n = 0
+    end if
+  end function
+
+  function dataview_view_data(cptr) result(data_ptr) bind(c)
+    type(c_ptr), value :: cptr
+    type(c_ptr) :: data_ptr
+    type(DataView), pointer :: obj
+    call c_f_pointer(cptr, obj)
+    if (associated(obj%view)) then
+      data_ptr = c_loc(obj%view(1))
+    else
+      data_ptr = c_null_ptr
+    end if
+  end function
+
+  subroutine dataview_attach(cptr) bind(c)
+    type(c_ptr), value :: cptr
+    type(DataView), pointer :: obj
+    call c_f_pointer(cptr, obj)
+    call attach_view(obj)
+  end subroutine
+
+  subroutine dataview_detach(cptr) bind(c)
+    type(c_ptr), value :: cptr
+    type(DataView), pointer :: obj
+    call c_f_pointer(cptr, obj)
+    call detach_view(obj)
+  end subroutine
+end module
+#+end_src
+
+#+begin_export html
+</details>
+#+end_export
+
+Compare with the allocatable wrappers from the previous post. The structure is
+identical: take a ~c_ptr~, call ~c_f_pointer~, do the operation. The only
+difference is ~associated()~ instead of ~allocated()~, and there is no setter.
+
+*** Testing from C
+
+#+begin_src c
+/* test_ptr.c */
+#include <stdio.h>
+#include <stdbool.h>
+
+extern void *dataview_create(int label);
+extern void dataview_destroy(void *cptr);
+extern bool dataview_view_associated(void *cptr);
+extern int dataview_view_size(void *cptr);
+extern void *dataview_view_data(void *cptr);
+extern void dataview_attach(void *cptr);
+extern void dataview_detach(void *cptr);
+
+int main() {
+    void *dv = dataview_create(42);
+    printf("Associated: %d\n", dataview_view_associated(dv));
+
+    dataview_attach(dv);
+    printf("After attach - Associated: %d\n",
+           dataview_view_associated(dv));
+    printf("Size: %d\n", dataview_view_size(dv));
+
+    double *data = (double *)dataview_view_data(dv);
+    printf("Values: %.1f %.1f %.1f %.1f %.1f\n",
+           data[0], data[1], data[2], data[3], data[4]);
+
+    dataview_detach(dv);
+    printf("After detach - Associated: %d\n",
+           dataview_view_associated(dv));
+
+    dataview_destroy(dv);
+    printf("Destroyed.\n");
+    return 0;
+}
+#+end_src
+
+As usual I use ~meson~ to build both tests (the character test shares this
+build file):
+
+#+begin_src meson
+project('pointer_char_test', 'c', 'fortran',
+        version : '0.1',
+        default_options : ['warning_level=2', 'buildtype=debug'])
+executable('test_ptr',
+           'pointer_member_mod.f90',
+           'dataview_wrappers.f90',
+           'test_ptr.c')
+executable('test_char',
+           'deferred_char_mod.f90',
+           'nameditem_wrappers.f90',
+           'test_char.c')
+#+end_src
+
+#+begin_src bash
+$ meson setup bbdir && meson compile -C bbdir
+$ ./bbdir/test_ptr
+Associated: 0
+After attach - Associated: 1
+Size: 5
+Values: 10.0 20.0 30.0 40.0 50.0
+After detach - Associated: 0
+Destroyed.
+#+end_src
+
+The pointer starts disassociated (~=> null()~), gets associated via
+~attach_view~, reads back the shared data, and gets nullified via
+~detach_view~. The C side never owns the data.
+
+*** The C/Python getter (read-only)
+
+The C getter follows the same pattern as allocatables, but the setter raises
+~AttributeError~:
+
+#+begin_src c
+static PyObject *
+PyDataView_get_view(PyObject *selfobj, void *closure)
+{
+    PyDataViewObject *self = (PyDataViewObject *)selfobj;
+    void *ptr = PyCapsule_GetPointer(self->capsule, "dataview");
+
+    if (!dataview_view_associated(ptr))
+        Py_RETURN_NONE;
+
+    int n = dataview_view_size(ptr);
+    if (n <= 0) Py_RETURN_NONE;
+
+    void *data = dataview_view_data(ptr);
+    npy_intp dims[1] = {n};
+    PyObject *arr = PyArray_SimpleNew(1, dims, NPY_DOUBLE);
+    memcpy(PyArray_DATA((PyArrayObject *)arr), data,
+           n * sizeof(double));
+    return arr;
+}
+
+static int
+PyDataView_set_view(PyObject *selfobj, PyObject *value,
+                    void *closure)
+{
+    PyErr_SetString(PyExc_AttributeError,
+                    "view is a Fortran pointer member (read-only)");
+    return -1;
+}
+#+end_src
+
+This is a deliberate choice. Pointer assignment from C into a Fortran derived
+type would require the C side to provide a valid ~TARGET~ variable with the right
+lifetime. Getting this wrong produces dangling pointers, and Fortran gives no
+runtime check for that.
+
+** The ~=> null()~ crackfortran fix
+
+While building these wrappers, I hit a parser bug. Fortran lets you
+default-initialize pointer components with ~=> null()~ (F2018 R741, 7.5.4.6):
+
+#+begin_src f90
+type :: PtrHolder
+  double precision, pointer :: data(:) => null()
+end type PtrHolder
+#+end_src
+
+crackfortran's ~updatevars~ splits entity declarations on spaces. The
+declaration ~data(:) => null()~ got tokenized into three pieces: ~data(:)~,
+~=>~, and ~null()~. This created a spurious ~null~ member in the parsed output.
+
+The fix strips ~=> null()~ before the space-based splitting:
+
+#+begin_src python
+entitydecl_clean = re.sub(
+    r'\s*=>\s*null\s*\(\s*\)', '', entitydecl, flags=re.I)
+#+end_src
+
+Case-insensitive to handle both ~null()~ and ~NULL()~.
+
+** Deferred-length character members
+
+*** The Fortran type
+
+A deferred-length allocatable character uses a colon for the length type
+parameter (F2018 7.4.4.2 paragraph 3):
+
+#+begin_src f90
+module deferred_char_mod
+  use iso_c_binding
+  implicit none
+
+  type :: NamedItem
+    integer :: id
+    character(:), allocatable :: label
+  end type NamedItem
+end module
+#+end_src
+
+The ~(:)~ means the length is determined at allocation time (F2018 9.7.1.1).
+This differs from fixed-length characters like ~character(len=20)~, where
+shorter strings are padded with spaces.
+
+*** Manual Fortran wrappers
+
+The wrapper pattern is closer to allocatable arrays than to fixed-length
+characters. We need ~allocated()~, ~len()~ (F2018 16.9.109), a getter that
+copies character-by-character, and a setter that does typed allocation:
+
+#+begin_export html
+<details>
+<summary>Full deferred-length char wrapper module (click to expand)</summary>
+#+end_export
+
+#+begin_src f90
+module nameditem_wrappers
+  use deferred_char_mod
+  use iso_c_binding
+  implicit none
+contains
+  function nameditem_create(id_val) result(cptr) bind(c)
+    integer(c_int), value :: id_val
+    type(c_ptr) :: cptr
+    type(NamedItem), pointer :: obj
+    allocate(obj)
+    obj%id = id_val
+    cptr = c_loc(obj)
+  end function
+
+  subroutine nameditem_destroy(cptr) bind(c)
+    type(c_ptr), value :: cptr
+    type(NamedItem), pointer :: obj
+    call c_f_pointer(cptr, obj)
+    deallocate(obj)
+  end subroutine
+
+  function nameditem_label_allocated(cptr) result(is_alloc) bind(c)
+    type(c_ptr), value :: cptr
+    logical(c_bool) :: is_alloc
+    type(NamedItem), pointer :: obj
+    call c_f_pointer(cptr, obj)
+    is_alloc = allocated(obj%label)
+  end function
+
+  function nameditem_label_len(cptr) result(n) bind(c)
+    type(c_ptr), value :: cptr
+    integer(c_int) :: n
+    type(NamedItem), pointer :: obj
+    call c_f_pointer(cptr, obj)
+    if (allocated(obj%label)) then
+      n = len(obj%label)
+    else
+      n = 0
+    end if
+  end function
+
+  subroutine nameditem_label_get(cptr, buf, buflen) bind(c)
+    type(c_ptr), value :: cptr
+    character(kind=c_char), intent(out) :: buf(*)
+    integer(c_int), value :: buflen
+    type(NamedItem), pointer :: obj
+    integer :: i, copy_len
+    call c_f_pointer(cptr, obj)
+    if (.not. allocated(obj%label)) return
+    copy_len = min(len(obj%label), buflen)
+    do i = 1, copy_len
+      buf(i) = obj%label(i:i)
+    end do
+  end subroutine
+
+  subroutine nameditem_label_set(cptr, buf, buflen) bind(c)
+    type(c_ptr), value :: cptr
+    character(kind=c_char), intent(in) :: buf(*)
+    integer(c_int), value :: buflen
+    type(NamedItem), pointer :: obj
+    integer :: i
+    call c_f_pointer(cptr, obj)
+    if (allocated(obj%label)) deallocate(obj%label)
+    if (buflen > 0) then
+      allocate(character(buflen) :: obj%label)
+      do i = 1, buflen
+        obj%label(i:i) = buf(i)
+      end do
+    end if
+  end subroutine
+end module
+#+end_src
+
+#+begin_export html
+</details>
+#+end_export
+
+The character-by-character copy (~obj%label(i:i) = buf(i)~) is necessary because
+Fortran characters and C ~char~ arrays have different internal
+representations[fn:charloc]. The setter uses ~allocate(character(buflen) ::
+obj%label)~ (F2018 9.7.1.1), the typed allocation form where the length appears
+in the type-spec.
+
+*** Testing from C
+
+#+begin_src c
+/* test_char.c */
+#include <stdio.h>
+#include <string.h>
+#include <stdbool.h>
+
+extern void *nameditem_create(int id);
+extern void nameditem_destroy(void *cptr);
+extern bool nameditem_label_allocated(void *cptr);
+extern int nameditem_label_len(void *cptr);
+extern void nameditem_label_get(void *cptr, char *buf, int buflen);
+extern void nameditem_label_set(void *cptr, const char *buf,
+                                int buflen);
+
+int main() {
+    void *ni = nameditem_create(7);
+    printf("Allocated: %d\n", nameditem_label_allocated(ni));
+
+    nameditem_label_set(ni, "hello", 5);
+    printf("After set - Allocated: %d\n",
+           nameditem_label_allocated(ni));
+    printf("Length: %d\n", nameditem_label_len(ni));
+
+    char buf[64] = {0};
+    nameditem_label_get(ni, buf, 5);
+    printf("Label: %s\n", buf);
+
+    nameditem_label_set(ni, "world!", 6);
+    printf("After resize - Length: %d\n", nameditem_label_len(ni));
+    memset(buf, 0, sizeof(buf));
+    nameditem_label_get(ni, buf, 6);
+    printf("Label: %s\n", buf);
+
+    nameditem_label_set(ni, "", 0);
+    printf("After dealloc - Allocated: %d\n",
+           nameditem_label_allocated(ni));
+
+    nameditem_destroy(ni);
+    printf("Destroyed.\n");
+    return 0;
+}
+#+end_src
+
+#+begin_src bash
+$ meson setup bbdir && meson compile -C bbdir
+$ ./bbdir/test_char
+Allocated: 0
+After set - Allocated: 1
+Length: 5
+Label: hello
+After resize - Length: 6
+Label: world!
+After dealloc - Allocated: 0
+Destroyed.
+#+end_src
+
+Variable-length reassignment works because the setter deallocates before
+allocating with the new length.
+
+*** The C/Python layer
+
+The C getter queries allocation and length, copies into a buffer, trims trailing
+spaces[fn:padding], and returns a Python string:
+
+#+begin_src c
+static PyObject *
+PyNamedItem_get_label(PyObject *selfobj, void *closure)
+{
+    PyNamedItemObject *self = (PyNamedItemObject *)selfobj;
+    void *ptr = PyCapsule_GetPointer(self->capsule, "nameditem");
+
+    if (!nameditem_label_allocated(ptr))
+        Py_RETURN_NONE;
+
+    int str_len = nameditem_label_len(ptr);
+    if (str_len <= 0) return PyUnicode_FromString("");
+
+    char *buffer = (char *)malloc(str_len + 1);
+    nameditem_label_get(ptr, buffer, str_len);
+    buffer[str_len] = '\0';
+
+    /* Trim trailing spaces */
+    int trimmed = str_len;
+    while (trimmed > 0 && buffer[trimmed-1] == ' ') trimmed--;
+
+    PyObject *result =
+        PyUnicode_FromStringAndSize(buffer, trimmed);
+    free(buffer);
+    return result;
+}
+#+end_src
+
+The setter accepts a Python string or ~None~:
+
+#+begin_src c
+static int
+PyNamedItem_set_label(PyObject *selfobj, PyObject *value,
+                      void *closure)
+{
+    PyNamedItemObject *self = (PyNamedItemObject *)selfobj;
+    void *ptr = PyCapsule_GetPointer(self->capsule, "nameditem");
+
+    if (value == Py_None) {
+        nameditem_label_set(ptr, "", 0);
+        return 0;
+    }
+    Py_ssize_t py_len;
+    const char *str =
+        PyUnicode_AsUTF8AndSize(value, &py_len);
+    nameditem_label_set(ptr, str, (int)py_len);
+    return 0;
+}
+#+end_src
+
+~PyUnicode_AsUTF8AndSize~ gives zero-copy access to the Python string's UTF-8
+buffer.
+
+** f2py automation
+
+Both pointer members and deferred-length characters are handled by the same
+~f2py~ pipeline. For pointer members, the generated code uses ~associated()~
+instead of ~allocated()~ and omits the setter. For deferred-length characters,
+it generates the same ~_allocated~/~_len~/~_get~/~_set~ pattern shown above.
+
+One command wraps both:
+
+#+begin_src sh
+python -m numpy.f2py pointer_member_mod.f90 -m ptrmod --backend meson
+python -m numpy.f2py deferred_char_mod.f90 -m charmod --backend meson
+#+end_src
+
+** Conclusions
+
+Pointer members: ~associated()~ instead of ~allocated()~, getter-only (no
+setter), ~None~ when disassociated. Read-only access is the safe default because
+pointer assignment across the Fortran/C boundary would require managing target
+lifetimes that C cannot track.
+
+Deferred-length characters: follow the allocatable pattern (~allocated()~,
+~len()~, character-by-character copy) but operate on strings instead of arrays.
+Typed allocation with ~allocate(character(len) :: member)~ handles resizing.
+
+The ~crackfortran~ fix for ~=> null()~ was a parser bug, not a code generation
+problem. Once we strip the initialization syntax before tokenization, pointer
+components with default initialization just work.
+
+Finalizers and generic type-bound procedures are still to come.
+
+[fn:f18ref] All F2018 section numbers refer to the J3/18-007r1 interpretation document (WD 1539-1).
+[fn:dangling] F2018 10.2.2 paragraph 8: "If the target is deallocated, the association status of any pointer associated with the target becomes undefined." There is no way to check for this from C.
+[fn:charloc] Some compilers implement deferred-length characters with a hidden descriptor that stores both the data pointer and the length. Using ~c_loc~ directly on such a character may return the descriptor address rather than the data address.
+[fn:padding] I hit this with gfortran 13. The ~len()~ intrinsic returns the right value, but the in-memory representation has trailing spaces past the nominal length.
 * TODO From manual wrappers to ~f2py~ automation :@notes:python:fortran:numpy:f2py:ramblings:
 :PROPERTIES:
 :EXPORT_FILE_NAME: f2py-automation
