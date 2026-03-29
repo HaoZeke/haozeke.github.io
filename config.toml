@@ -133,10 +133,13 @@ site_url = "rgoswami.me" # Based on baseurl
 host = "https://comments.turtletech.us"
 siteID = "rg95ru-rgoswami.me"
 
-[params.umami]
-  dataDomain = "rgoswami.me"
-  host = "analytics.turtletech.us"
-  websiteId = "51fa82d4-6933-4071-8be8-ab49a3fbf4f6"
+# [params.umami]
+#   dataDomain = "rgoswami.me"
+#   host = "analytics.turtletech.us"
+#   websiteId = "51fa82d4-6933-4071-8be8-ab49a3fbf4f6"
+
+[params.antics]
+  host = "https://antics.turtletech.us"
 
 [params.source]
     org_dir = "content-org"
