@@ -2155,7 +2155,7 @@ For submission, flip the flag:
 All ~\mg~, ~\rg~, etc. become no-ops -- zero output, no stale comment text leaking into the published PDF, and no need to hunt through the source deleting annotations. The comments remain in the ~.org~ as a permanent record of the review conversation.
 
 This pairs well with ~latexdiff~ for generating the highlighted-changes PDF that journals want alongside the clean submission.
-** DRAFT Keeping a laptop responsive under ~rust-analyzer~ memory pressure :linux:rust:systemd:zram:cgroups:chezmoi:
+** DRAFT Keeping a laptop responsive under ~rust-analyzer~ memory pressure :linux:rust:systemd:zram:cgroups:oomd:chezmoi:
 :PROPERTIES:
 :EXPORT_HUGO_BUNDLE: rust-laptop-freeze-mitigation
 :EXPORT_FILE_NAME: index
@@ -2184,7 +2184,7 @@ swap-priority = 100
 fs-type = swap
 #+end_src
 
-The matching VM settings invert the low-swappiness rule. ~vm.page-cluster = 0~ disables swap read-ahead, which is pointless for RAM-to-RAM transfers:
+The matching VM settings invert the low-swappiness rule. ~vm.page-cluster = 0~ disables swap read-ahead, which is pointless for RAM-to-RAM transfers. ~vm.compaction_proactiveness = 0~ disables the background compaction thread that can stall userspace for hundreds of milliseconds when high-order allocations materialize. ~vm.min_free_kbytes = 262144~ gives ~kswapd~ an emergency reserve of ~256 MiB~ so it never allocates under pressure:
 
 #+begin_src conf
 # /etc/sysctl.d/99-memory.conf
@@ -2192,6 +2192,8 @@ vm.swappiness = 100
 vm.page-cluster = 0
 vm.vfs_cache_pressure = 100
 vm.watermark_scale_factor = 50
+vm.compaction_proactiveness = 0
+vm.min_free_kbytes = 262144
 #+end_src
 
 ~sudo sysctl --system~ makes the kernel rebalance within seconds. Same workload, ~free -h~ after the switch:
@@ -2231,7 +2233,24 @@ exec systemd-run --user --scope --quiet \
 
 ~rustup which~ resolves the toolchain-specific binary directly, so the shim bypasses ~PATH~ and cannot recurse into itself. ~systemd-cgls --user | grep rust-analyzer~ confirms the process sits inside ~rust-analyzer.slice~; ~systemctl --user show rust-analyzer.slice -p MemoryCurrent~ shows live RSS.
 
-Magic SysRq stays as an escape hatch for the rare case where something wedges the compositor or GPU path and the keyboard can still reach the kernel:
+The kernel OOM killer fires only when ~MemAvailable~ approaches zero, which is after the thrash has already started. ~systemd-oomd~ watches kernel PSI -- the cumulative time in the last 10 seconds that tasks spent blocked on memory -- and kills 10-30 seconds earlier. Arch ships it but leaves it disabled:
+
+#+begin_src conf
+# /etc/systemd/oomd.conf.d/aggressive.conf
+[OOM]
+DefaultMemoryPressureDurationSec=20s
+#+end_src
+
+#+begin_src conf
+# /etc/systemd/system/user-.slice.d/50-oomd.conf
+[Slice]
+ManagedOOMMemoryPressure=kill
+ManagedOOMMemoryPressureLimit=50%
+#+end_src
+
+After ~sudo systemctl enable --now systemd-oomd~, any user session whose memory-pressure PSI exceeds 50% for 20 seconds loses its largest process to a SIGKILL instead of a multi-minute freeze. ~oomctl~ lists monitored slices; ~journalctl -u systemd-oomd~ shows kill history with per-process scores and the PSI numbers that triggered the action.
+
+Magic SysRq stays as a final escape hatch for the rare case where something wedges the compositor or GPU path and neither oomd nor the kernel OOM can reach it, but the keyboard still reaches the kernel:
 
 #+begin_src conf
 # /etc/sysctl.d/99-sysrq.conf
@@ -2240,6 +2259,8 @@ kernel.sysrq = 1
 
 =Alt+SysRq+F= forces an OOM kill on the largest memory consumer; =R E I S U B= (with ~1 s gaps while holding =Alt+SysRq=) reboots cleanly and flushes the journal.
 
-All four files live under ~chezmoi~ at [[https://github.com/HaoZeke/dotfiles][HaoZeke/dotfiles]]: ~dot_config/systemd/user/rust-analyzer.slice~, ~dot_local/bin/executable_rust-analyzer~, and a ~.chezmoiscripts/run_onchange_linux_memory_tuning.sh.tmpl~ that installs the ~/etc/*~ blobs under ~sudo~ with ~cmp -s~ guards so unchanged content never re-prompts. Reimaging a laptop restores the full stack with one ~chezmoi apply~.
+One operational footnote: a pre-existing disk swapfile at priority ~-1~ may still hold pages that were written out before zram came up. ~swapon --show~ reveals this (non-zero ~USED~ against the file entry). ~sudo swapoff /path/to/swapfile~ followed by ~sudo swapon /path/to/swapfile~ drains those pages back through RAM so zram absorbs the cold ones via normal reclaim -- a one-time migration after enabling zram.
+
+All six files live under ~chezmoi~ at [[https://github.com/HaoZeke/dotfiles][HaoZeke/dotfiles]]: ~dot_config/systemd/user/rust-analyzer.slice~, ~dot_local/bin/executable_rust-analyzer~, and a ~.chezmoiscripts/run_onchange_linux_memory_tuning.sh.tmpl~ that installs ~/etc/sysctl.d/99-memory.conf~, ~/etc/systemd/zram-generator.conf~, ~/etc/systemd/oomd.conf.d/aggressive.conf~, and ~/etc/systemd/system/user-.slice.d/50-oomd.conf~ under ~sudo~ with ~cmp -s~ guards so unchanged content never re-prompts. Reimaging a laptop restores the full stack with one ~chezmoi apply~.
 * Footnotes
 Warren said 30 s or 30 min for machine learning, anything else will not add any information.
