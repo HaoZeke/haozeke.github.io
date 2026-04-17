@@ -22723,7 +22723,7 @@ pointers as a way to wrap non-~bind(c)~ Fortran derived types without requiring
 more work from the Fortran standard. That post ended with a note about
 allocatable components. Since then, I've been working through a fix on the
 [[https://github.com/HaoZeke/numpy/tree/enh/f2py-derived-type-opaque][enh/f2py-derived-type-opaque]] branch (the code in this post corresponds to the
-[[https://github.com/HaoZeke/numpy/releases/tag/f2py-dt-v1-base][f2py-dt-v1-base]] tag).
+[[https://github.com/HaoZeke/numpy/releases/tag/post/f2py-allocatable-members][post/f2py-allocatable-members]] tag).
 
 Allocatable components have been part of Fortran since 2003 (F2018
 7.5.4.7)[fn:f18ref], and they are everywhere in scientific code. A molecular
@@ -23249,8 +23249,9 @@ Every accessor follows the same ~c_ptr~ -> ~c_f_pointer~ -> operation ->
 C-friendly return pattern. The user writes Fortran, gets Python, and the
 column-major bookkeeping stays invisible.
 
-Next up: pointer components (read-only views into shared data) and
-deferred-length character strings.
+{{{relref(Next up,f2py-pointers-and-strings)}}}: pointer components
+(read-only views into shared data) and deferred-length character
+strings.
 
 [fn:f18ref] All F2018 section numbers refer to the J3/18-007r1 interpretation document (WD 1539-1).
 [fn:f2008loc] ~c_loc~ on allocatables requires F2008 or later. The 2003 standard restricted it to ~TARGET~ variables, but 2008 relaxed this (F2018 18.2.3.3).
@@ -23284,7 +23285,7 @@ length allocatable characters (F2018 7.4.4.2 paragraph 3) use the colon syntax
 ~character(:), allocatable~ for strings whose length is determined at runtime.
 
 As before, we build each layer by hand first, then show how f2py generates the
-similar but automated code. F2PY code here corresponds to the [[https://github.com/HaoZeke/numpy/releases/tag/f2py-dt-v1-base][f2py-dt-v1-base]] tag.
+similar but automated code. F2PY code here corresponds to the [[https://github.com/HaoZeke/numpy/releases/tag/post/f2py-pointers-and-strings][post/f2py-pointers-and-strings]] tag.
 
 ** Pointer members
 
@@ -23825,7 +23826,8 @@ The ~crackfortran~ fix for ~=> null()~ was a parser bug, not a code generation
 problem. Once we strip the initialization syntax before tokenization, pointer
 components with default initialization just work.
 
-Finalizers and generic type-bound procedures are still to come.
+{{{relref(Next up,f2py-finalizers-generics)}}}: finalizers and
+generic type-bound procedures.
 
 [fn:f18ref] All F2018 section numbers refer to the J3/18-007r1 interpretation document (WD 1539-1).
 [fn:dangling] F2018 10.2.2 paragraph 8: "If the target is deallocated, the association status of any pointer associated with the target becomes undefined." There is no way to check for this from C.
