@@ -2155,5 +2155,85 @@ For submission, flip the flag:
 All ~\mg~, ~\rg~, etc. become no-ops -- zero output, no stale comment text leaking into the published PDF, and no need to hunt through the source deleting annotations. The comments remain in the ~.org~ as a permanent record of the review conversation.
 
 This pairs well with ~latexdiff~ for generating the highlighted-changes PDF that journals want alongside the clean submission.
+** DRAFT Keeping a laptop responsive under ~rust-analyzer~ memory pressure :linux:rust:systemd:earlyoom:
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: rust-laptop-freeze-mitigation
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
+On any non-trivial Rust workspace ~rust-analyzer~ and ~cargo check~ climb to 8-16 GB RSS. The Linux kernel's defaults (~vm.watermark_scale_factor=10~, ~vm.swappiness=60~) reclaim too late, so pressure sits in a swap-thrashing region for minutes before the OOM killer fires. The kernel stays alive; interactive latency collapses to zero. Offloading builds to a remote box helps, but ~rust-analyzer~ runs locally and drives most freezes.
+
+~earlyoom~ kills the worst offender before the kernel's own logic reacts:
+#+begin_src bash
+sudo pacman -S earlyoom
+sudo systemctl enable --now earlyoom
+#+end_src
+
+~/etc/default/earlyoom~ biases the kill toward the Rust toolchain while protecting the session:
+#+begin_src conf
+EARLYOOM_ARGS="-r 60 -m 8,4 -s 10,5 \
+  --avoid '^(init|systemd|Xorg|sshd|dbus)$' \
+  --prefer '^(rust-analyzer|rust-analyzer-proc|rustc|cargo|clangd|node|chrome|electron)$' \
+  -n --syslog"
+#+end_src
+
+~-m 8,4~ sends ~SIGTERM~ at 8 % free RAM and ~SIGKILL~ at 4 %, well ahead of the thrash region.
+
+The VM itself needs retuning; ~vm.watermark_scale_factor~ matters most, since the default of 10 matches a 1 GB laptop from 2008, not a 32 GB workstation:
+#+begin_src conf
+# /etc/sysctl.d/99-memory.conf
+vm.swappiness = 10
+vm.vfs_cache_pressure = 50
+vm.watermark_scale_factor = 200
+#+end_src
+#+begin_src bash
+sudo sysctl --system
+#+end_src
+
+Magic SysRq covers the cases where a process wedges the GPU or display server and ~earlyoom~ cannot talk to it:
+#+begin_src conf
+# /etc/sysctl.d/99-sysrq.conf
+kernel.sysrq = 1
+#+end_src
+
+=Alt+SysRq+F= triggers an OOM kill; =R E I S U B= (with ~1 s gaps while holding =Alt+SysRq=) reboots cleanly and preserves the journal.
+
+A ~systemd~ user-slice cap prevents a single editor or language server from consuming the session. Drop-in at ~~/.config/systemd/user.control/app.slice.d/memory.conf~:
+#+begin_src conf
+[Slice]
+MemoryHigh=12G
+MemoryMax=16G
+MemorySwapMax=2G
+#+end_src
+
+~MemoryHigh~ throttles before ~MemoryMax~ kills, so ~rust-analyzer~ drops its internal caches instead of dying mid-query.
+
+~cargo~ itself needs tighter defaults. ~jobs=4~ and ~debug="line-tables-only"~ cut peak ~rustc~ RSS without costing much; backtraces still resolve to the correct line, only variable inspection under ~rust-gdb~ disappears:
+#+begin_src toml
+# ~/.cargo/config.toml
+[build]
+jobs = 4
+
+[profile.dev]
+codegen-units = 16
+debug = "line-tables-only"
+
+[profile.test]
+codegen-units = 16
+debug = "line-tables-only"
+#+end_src
+
+~rust-analyzer~ defaults to a full-parallelism ~cargo check~ on every save, which triggers most of the freezes on its own:
+#+begin_src json
+{
+  "rust-analyzer.check.command": "check",
+  "rust-analyzer.check.extraArgs": ["--jobs=2"],
+  "rust-analyzer.cargo.extraEnv": { "CARGO_BUILD_JOBS": "2" },
+  "rust-analyzer.files.excludeDirs": ["target", "node_modules", ".git"],
+  "rust-analyzer.lru.capacity": 128
+}
+#+end_src
+
+~journalctl -k -g 'oom|Out of memory' --since '1 day ago'~ shows kills from either path. ~systemd-cgtop -m~ gives a live per-cgroup memory view, useful for identifying which editor extension went runaway before editing any configs again.
 * Footnotes
 Warren said 30 s or 30 min for machine learning, anything else will not add any information.
