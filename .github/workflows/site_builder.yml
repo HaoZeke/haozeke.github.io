@@ -42,6 +42,8 @@ jobs:
         run: |
           git fetch origin bot-metrics:bot-metrics || true
           git checkout bot-metrics -- .sent_trackbacks.log .page_count || echo "Initializing metrics"
+          git checkout bot-metrics -- .unverified_trackbacks.log 2>/dev/null \
+            || echo "No prior unverified log; starting fresh"
 
       - name: Build site with Hugo
         run: pixi run bundle exec rake hugoBuild
@@ -51,7 +53,7 @@ jobs:
           OLD_COUNT=$(cat .page_count 2>/dev/null || echo 400)
           NEW_COUNT=$(find public -name "*.html" | wc -l)
           echo "Previous count: $OLD_COUNT | Current count: $NEW_COUNT"
-          
+
           if [ "$NEW_COUNT" -lt $((OLD_COUNT * 90 / 100)) ]; then
             echo "::error::Significant page drop! Found $NEW_COUNT, expected ~$OLD_COUNT."
             exit 1
@@ -61,7 +63,7 @@ jobs:
       - name: Send arXiv Trackbacks
         if: github.event_name == 'push' && github.ref == 'refs/heads/src'
         # uv run handles the script execution without needing a pyproject.toml sync
-        run: pixi run uv run scripts/arxiv_trackbacks.py --site-url "https://rgoswami.me"
+        run: pixi run uv run scripts/arxiv_trackbacks.py --site-url "https://rgoswami.me" --verify
 
       - name: Update and Push Bot Metrics Branch
         if: github.event_name == 'push' && github.ref == 'refs/heads/src'
@@ -70,10 +72,13 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           mkdir -p ../temp_metrics
           cp .sent_trackbacks.log .page_count ../temp_metrics/
+          [ -f .unverified_trackbacks.log ] && cp .unverified_trackbacks.log ../temp_metrics/ || true
           git checkout bot-metrics || git checkout --orphan bot-metrics
           git rm -rf . || true
           cp ../temp_metrics/.sent_trackbacks.log ../temp_metrics/.page_count .
+          [ -f ../temp_metrics/.unverified_trackbacks.log ] && cp ../temp_metrics/.unverified_trackbacks.log . || true
           git add .sent_trackbacks.log .page_count
+          [ -f .unverified_trackbacks.log ] && git add .unverified_trackbacks.log || true
           git commit -m "Update metrics and trackbacks (CI)" || echo "No changes"
           git push origin bot-metrics
 
