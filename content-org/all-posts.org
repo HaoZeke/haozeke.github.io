@@ -23249,10 +23249,6 @@ Every accessor follows the same ~c_ptr~ -> ~c_f_pointer~ -> operation ->
 C-friendly return pattern. The user writes Fortran, gets Python, and the
 column-major bookkeeping stays invisible.
 
-{{{relref(Next up,f2py-pointers-and-strings)}}}: pointer components
-(read-only views into shared data) and deferred-length character
-strings.
-
 [fn:f18ref] All F2018 section numbers refer to the J3/18-007r1 interpretation document (WD 1539-1).
 [fn:f2008loc] ~c_loc~ on allocatables requires F2008 or later. The 2003 standard restricted it to ~TARGET~ variables, but 2008 relaxed this (F2018 18.2.3.3).
 [fn:rowcol] The symptom: a $3 \times 4$ matrix comes back as a $4 \times 3$ matrix with the values interleaved in a confusing pattern. The cause: ~memcpy~ into a C-order array. The lesson: always check ~np.isfortran()~ on the result.
@@ -23825,9 +23821,6 @@ Typed allocation with ~allocate(character(len) :: member)~ handles resizing.
 The ~crackfortran~ fix for ~=> null()~ was a parser bug, not a code generation
 problem. Once we strip the initialization syntax before tokenization, pointer
 components with default initialization just work.
-
-{{{relref(Next up,f2py-finalizers-generics)}}}: finalizers and
-generic type-bound procedures.
 
 [fn:f18ref] All F2018 section numbers refer to the J3/18-007r1 interpretation document (WD 1539-1).
 [fn:dangling] F2018 10.2.2 paragraph 8: "If the target is deallocated, the association status of any pointer associated with the target becomes undefined." There is no way to check for this from C.
