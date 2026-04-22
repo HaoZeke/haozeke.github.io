@@ -6,5 +6,7 @@
 
 emacs --batch --eval \
 	"(progn (setenv \"OX_HUGO_TMP_DIR\" \"$3\") \
-    (load-file (expand-file-name \"setup-ox-hugo.el\" \"$2\" )))" \
+    (load-file (expand-file-name \"setup-ox-hugo.el\" \"$2\" )) \
+    (setq org-element-use-cache t) \
+    (org-element-cache-reset))" \
 	$1 -f org-hugo-export-all-wim-to-md --kill
