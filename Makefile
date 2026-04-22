@@ -103,6 +103,8 @@ emacs-batch:
 	$(EMACS) --batch --eval "(progn\
 	(setenv \"OX_HUGO_TMP_DIR\" \"$(ox_hugo_tmp_dir)\")\
 	(load-file (expand-file-name \"setup-ox-hugo.el\" \"$(OX_HUGO_SETUP_DIR)\"))\
+	(setq org-element-use-cache t)\
+	(org-element-cache-reset)\
 	)" $(ORG_FILE) \
 	-f $(FUNC) \
 	--kill
