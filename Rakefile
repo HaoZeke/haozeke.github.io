@@ -4,6 +4,7 @@ require 'image_optim'
 # Variables
 ORG_FILES = Rake::FileList.new("content-org/**/*.*org") do |fl|
   fl.exclude("**/tmp/*")
+  fl.exclude("**/*.Rorg")
 end
 
 # Debug
