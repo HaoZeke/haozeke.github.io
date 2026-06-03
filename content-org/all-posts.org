@@ -24243,6 +24243,188 @@ I've been sitting in on these for a while thanks to [[http://archive.today/newes
 * COMMENT Local Variables
 This file is too large to be auto-exported on each save.
 
+* DONE A Field Guide to NEB Path Visualizations :@notes:science:eon:neb:visualization:
+CLOSED: [2026-06-02 Tue 18:00]
+:PROPERTIES:
+:EXPORT_FILE_NAME: neb-visualizations
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("EON")
+:END:
+#+begin_quote
+A converged nudged elastic band is a table of numbers until you plot it the
+right way. These are the views I reach for, and the question each one answers.
+#+end_quote
+
+** Background
+A [[https://research.rgoswami.me/glossary/#glossary-neb][nudged elastic band]]
+(NEB) hands you a chain of images strung between a reactant and a product and
+relaxed onto the
+[[https://research.rgoswami.me/glossary/#glossary-mep][minimum energy path]].
+eOn writes it to disk as a few files: energies, parallel forces, and coordinates.
+The chemistry lives in how you read them: the barrier height, where the saddle
+sits on the
+[[https://research.rgoswami.me/glossary/#glossary-pes][potential energy
+surface]], whether the path detours, and whether the sampling actually pinned
+the path or merely wandered near it.
+
+Rowan has a readable piece on guessing transition states (their tooling stays
+proprietary; the intuition is free) at
+[[https://rowansci.com/blog/guessing-transition-states][rowansci.com]]. We
+borrow that intuition, then spend the post turning one real band into pictures
+with open tools.
+
+The running example is the 1,3-dipolar cycloaddition of ethylene and
+N\(_2\)O forming 4,5-dihydro-1,2,3-oxadiazole, a standard NEB benchmark of eight
+atoms. It runs on a laptop with a machine-learned potential (PET-MAD through
+[[https://docs.metatensor.org/metatomic/][metatomic]]) and an energy-weighted
+NEB in [[https://eondocs.org][eOn]]. Everything below is built and reproduced in
+the [[https://github.com/HaoZeke/nebviz_repro][nebviz_repro]] repository; the
+method is the subject of a short companion paper on 2D RMSD projections.
+
+** Setup
+The environment is one =pixi.toml=. It pins a CPU build of Torch, so it runs
+anywhere without a GPU.
+
+#+begin_src toml :tangle pixi.toml
+[workspace]
+channels = ["conda-forge", "https://repo.prefix.dev/rg-forge", "metatensor"]
+name = "nebviz"
+platforms = ["linux-64"]
+version = "0.1.0"
+
+[pypi-options]
+extra-index-urls = ["https://download.pytorch.org/whl/cpu"]
+index-strategy = "unsafe-best-match"
+
+[dependencies]
+ira = ">=2.2.0,<3"
+snakemake = ">=9.16.3,<10"
+libtorch = ">=2.9.1,<3"
+eon = ">=2.9.0,<3"
+
+[pypi-dependencies]
+rgpycrumbs = ">=0.1.2,<0.2"
+ase = ">=3.27.0,<4"
+requests = "*"
+metatrain = "*"
+#+end_src
+
+#+begin_src bash
+pixi shell        # enter the environment
+snakemake -c4     # relax endpoints, build the IDPP path, run NEB, plot
+#+end_src
+
+Running the band leaves three artifacts that drive every plot below: =neb_*.dat=
+(one table per optimization step, holding the reaction coordinate, energy,
+parallel force, and lowest eigenvalue), =neb.con= (the converged band), and
+=neb_path_*.con= (the band at each step, which feeds the 2D surface). Every
+figure is one call to =rgpycrumbs eon plt-neb=, which reads these files.
+
+** One dimension, three coordinates
+The canonical NEB result is energy against a reaction coordinate. The catch is
+that "reaction coordinate" has three reasonable definitions, and they answer
+different questions.
+
+#+begin_src bash
+# energy vs cumulative path length (the barrier)
+rgpycrumbs eon plt-neb --con-file neb.con --plot-type profile --rc-mode path \
+  --plot-structures crit_points -o neb-1d-path.png
+# vs image index, and vs RMSD from the reactant
+rgpycrumbs eon plt-neb --con-file neb.con --plot-type profile --rc-mode index -o neb-1d-index.png
+rgpycrumbs eon plt-neb --con-file neb.con --plot-type profile --rc-mode rmsd  -o neb-1d-rmsd.png
+#+end_src
+
+#+caption: Energy vs path length. The barrier reads off the peak; the interpolant is a piecewise cubic Hermite spline that honors the parallel forces, so the curve respects dE/ds at every image instead of wiggling between points. Dark to light traces the optimization; the converged path is black.
+[[file:images/neb-viz/neb-viz-1d-path.png]]
+
+The path-length view gives the activation energy: this band falls from a roughly
+1.1 eV initial barrier to near 0.4 eV over 120 steps, with the product about
+0.8 eV below the reactant. The index view spaces images evenly, which is the
+fair way to compare two bands carrying a different image count. The
+[[https://research.rgoswami.me/glossary/#glossary-rmsd][RMSD]]-from-reactant view
+(aligned with IRA) measures the coordinate in Angstroms of real geometric change
+instead of optimizer bookkeeping.
+
+#+caption: Energy vs image index. Even spacing makes bands of different image counts comparable.
+[[file:images/neb-viz/neb-viz-1d-index.png]]
+
+#+caption: Energy vs RMSD from the reactant: the coordinate becomes Angstroms of real geometric change.
+[[file:images/neb-viz/neb-viz-1d-rmsd.png]]
+
+All three say the same reassuring thing: the final path is smooth and
+well-converged. None of them tells you whether the sampling was any good, or
+what the surface looks like a step off the path. For that you need a second
+dimension.
+
+** Two dimensions: the RMSD projection
+The trick is to give the band a plane to live in. We measure each image by its
+permutation-invariant RMSD from the reactant and from the product (IRA handles
+the atom matching), which places the path in intrinsic \((r, p)\) coordinates.
+The NEB parallel forces project onto that plane as synthetic gradients, and
+energies and gradients together feed a gradient-enhanced
+[[https://research.rgoswami.me/glossary/#glossary-gpr][Gaussian process]] with an
+inverse-multiquadric kernel to interpolate a full energy surface \(E(r, p)\). A
+final rigid rotation aligns the frame to reaction progress \(s\) and orthogonal
+deviation \(d\).
+
+#+caption: The projection pipeline: 3N-dimensional NEB output to IRA RMSD coordinates, tangential forces to synthetic gradients, a gradient-enhanced GP surface, then a rotation into reaction-progress coordinates.
+[[file:images/neb-viz/neb-viz-pipeline.png]]
+
+#+begin_src bash
+rgpycrumbs eon plt-neb --con-file neb.con --output-file neb-2d.png \
+  --plot-type landscape --project-path --show-pts --landscape-path all \
+  --plot-structures crit_points --surface-type grad_imq_ny --ira-kmax 14 \
+  --show-legend --additional-con orca_saddle.xyz "ORCA B3LYP-D3"
+#+end_src
+
+#+caption: The cycloaddition in (s, d) coordinates: GP energy surface (color), sampled structures (black dots), converged path (open circles), posterior-variance contours (dashed), and the ORCA B3LYP-D3 saddle (white star).
+[[file:images/neb-viz/neb-viz-2d-cyclo.png]]
+
+Now the second dimension shows what the profiles cannot. The sampled structures cluster tightly along the
+converged path, which confirms a single clean pathway rather than a band that
+drifted. The barrier region (yellow) separates a shallow reactant basin from a
+deeper product basin (blue). The white star, an independent ORCA B3LYP-D3 saddle
+projected onto the same surface, sits right on the estimate, so two functionals
+agree on where the saddle is. The Bayesian part helps here too: the dashed
+posterior-variance contours tighten along the sampled path and blow out in the
+periphery, a built-in reliability map for the surface. A 1D profile shows none
+of this.
+
+** When the path turns
+The cycloaddition is nearly linear, so its 1D profiles are not misleading, only
+incomplete. Other reactions punish the 1D view outright. A Grignard addition and
+a conrotatory bicyclobutane ring opening both proceed through real geometric
+turns, and the projection shows the path bowing away from the reactant-to-product
+diagonal: tortuosity that a one-dimensional coordinate folds flat and hides.
+
+#+caption: Grignard addition. The path bows away from the reactant-to-product diagonal, a real geometric turn the 1D coordinate folds flat.
+[[file:images/neb-viz/neb-viz-2d-grignard.png]]
+
+#+caption: Conrotatory bicyclobutane ring opening, with a sharp geometric kink visible in the (s, d) plane.
+[[file:images/neb-viz/neb-viz-2d-bicyclo.png]]
+
+** A note on OCI-NEB
+The figures label these bands RONEB, the refinement worth naming. Plain
+climbing-image NEB drives the highest image uphill along the band tangent toward
+the saddle; it rarely fails but crawls near the top, and it can settle on a
+point short of a genuine first-order saddle. OCI-NEB (off-path
+climbing-image NEB) adds a
+[[https://research.rgoswami.me/glossary/#glossary-mmf][minimum-mode following]]
+refinement: once the band is close, it runs a dimer search from the climbing
+image to sharpen onto the true index-1 saddle, with a force-monotonicity
+safeguard that aborts if the dimer force rises three steps running. The payoff
+is a cleanly negative lowest eigenvalue at the top image where bare CI-NEB often
+leaves it near zero. The method and its benchmarks are in the Enhanced
+Climbing-Image NEB paper (Goswami and Jonsson, /Frontiers in Chemistry/, 2026).
+
+** Closing
+A NEB run is cheap to run and quick to misread. The 1D profile gives you the
+barrier; the index view makes runs comparable; the RMSD coordinate grounds it in
+real geometry; the 2D projection shows the sampling quality, the
+detours, and a posterior-variance reliability check the profiles cannot. Reach for
+the view that answers your question, and keep the command in your notes so the
+next path is one line away.
+
 * Footnotes
 
 # Local Variables:
