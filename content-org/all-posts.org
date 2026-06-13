@@ -24254,7 +24254,7 @@ CLOSED: [2026-06-02 Tue 18:00]
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("EON")
 :END:
 #+begin_quote
-A smooth barrier can't prove path convergence.
+A smooth barrier doesn't certify path convergence.
 #+end_quote
 
 ** Background
@@ -24288,7 +24288,7 @@ legible while still exercising the machinery with PET-MAD
 and bicyclobutane later because they bend. A one-dimensional profile gets smug
 precisely there.
 
-** Reproducing the figures
+** Figure reproduction
 The environment lives in the
 [[https://github.com/HaoZeke/nebviz_repro][companion repository]]. I don't want a
 stale ~pixi.toml~ pasted into a blog post and slowly drifting away from the run.
