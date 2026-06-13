@@ -24415,7 +24415,7 @@ hide behind a final image. The table plots answer narrower questions: did the
 barrier stabilize, which images still move, and how evenly did the
 final images spread out?
 
-#+caption: Barrier height and maximum parallel force over the NEB optimization. A stable barrier without a stable force can't prove convergence.
+#+caption: Barrier height and maximum parallel force over the NEB optimization. A stable barrier without a stable force doesn't certify convergence.
 [[file:images/neb-viz/neb-viz-convergence.png]]
 
 #+caption: Parallel-force heatmap by image and optimization step. The top image never monopolizes band motion.
