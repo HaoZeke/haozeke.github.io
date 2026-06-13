@@ -24291,11 +24291,11 @@ bicyclobutane examples later in the post are included because they bend. That
 is where a one-dimensional profile starts to feel too pleased with itself.
 
 ** Reproducing the figures
-The [[https://github.com/HaoZeke/nebviz_repro][companion repository]] is the source
-of truth for the environment. I do not want a stale ~pixi.toml~ pasted into a
-blog post and slowly diverging from the run. The repository pins the eOn,
-readcon v2, rgpycrumbs, chemparseplot, Snakemake, ASE, matplotlib, NumPy, and
-PET-MAD stack used for the figures.
+The environment lives in the
+[[https://github.com/HaoZeke/nebviz_repro][companion repository]]. I do not want a
+stale ~pixi.toml~ pasted into a blog post and slowly diverging from the run.
+The repository pins the eOn, readcon v2, rgpycrumbs, chemparseplot, Snakemake,
+ASE, matplotlib, NumPy, and PET-MAD stack used for the figures.
 
 #+begin_src bash
 git clone https://github.com/HaoZeke/nebviz_repro
