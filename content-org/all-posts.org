@@ -24254,54 +24254,48 @@ CLOSED: [2026-06-02 Tue 18:00]
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("EON")
 :END:
 #+begin_quote
-A converged NEB gives me coordinates, energies, forces, and one blunt
-question: did the band describe chemistry, or did it stitch together sparse
-samples?
+A smooth barrier is not a converged reaction path.
 #+end_quote
 
 ** Background
-A [[https://research.rgoswami.me/glossary/#glossary-neb][nudged elastic band]]
-threads images between a reactant and a product, then relaxes them onto the
-[[https://research.rgoswami.me/glossary/#glossary-mep][MEP]]. The
-climbing-image variant drives the highest-energy image uphill along the band
-tangent [@henkelmanClimbingImageNudged2000]. [[https://eondocs.org][eOn]]
-writes per-step energy and parallel-force tables, final-band geometries, and
-path snapshots [@chillEONSoftwareLong2014]. Those files answer separate
-questions only after plotting: barrier height, saddle placement, path detours,
-sampling density, and convergence.
+I keep ending up with the same debugging problem in reaction path work. A
+[[https://research.rgoswami.me/glossary/#glossary-neb][nudged elastic band]]
+gives a reasonable looking energy profile, the highest image sits somewhere
+near the saddle, and the run directory contains enough files to make the result
+look more settled than it is. The chemistry is not in the line alone. It is in
+where the images moved, what forces remain, and whether the band sampled the
+part of configuration space the plot is trying to summarize.
 
-The research-site anchors for this post:
-- [[https://research.rgoswami.me/research/transition-state/][transition-state methods]] for the broader NEB, dimer, and MMF thread
-- [[https://research.rgoswami.me/papers/goswamitwodimensionalrmsdprojections2026/][2D RMSD projections]] for the figures below [@goswamiTwodimensionalRMSDProjections2026]
-- [[https://research.rgoswami.me/papers/goswamienhancedclimbingimage2026/][enhanced CI-NEB]] for the OCI-NEB labels [@goswamiEnhancedClimbingImage2026]
-- [[https://research.rgoswami.me/papers/goswamireproducibleorchestrationbest2026/][NEB workflow orchestration]] and the
-  [[https://atomistic-cookbook.org/examples/eon-pet-neb/eon-pet-neb.html][Atomistic Cookbook eOn + PET-MAD recipe]]
-  for the runnable setup [@goswamiReproducibleOrchestrationBest2026]
-
-Rowan has a readable piece on guessing transition states at
-[[https://rowansci.com/blog/guessing-transition-states][rowansci.com]].
-Their tooling stays proprietary. The intuition transfers cleanly: a transition
-state search needs both a geometry story and an energy peak.
-
-The running example uses the 1,3-dipolar cycloaddition of ethylene and
-nitrous oxide to form 4,5-dihydro-1,2,3-oxadiazole, an eight-atom NEB
-benchmark. It runs with PET-MAD [@mazitovPETMADLightweightUniversal2025]
-through [[https://docs.metatensor.org/metatomic/][metatomic]]
-[@bigiMetatensorMetatomicFoundational2026] and energy-weighted OCI-NEB in eOn.
-That small molecule keeps the figures readable without pretending that NEBs
-scale gently. The
-[[https://github.com/HaoZeke/nebviz_repro][companion repository]] contains the
-inputs, lock file, Snakemake workflow, readcon v2 checks, and plotting
-commands. The
+This post is a small visual companion to the
+[[https://research.rgoswami.me/research/transition-state/][transition-state work]] on
+my research site. The method labels follow the published
+[[https://research.rgoswami.me/papers/goswamienhancedclimbingimage2026/][OCI-NEB]]
+paper [@goswamiEnhancedClimbingImage2026]. The 2D plots follow the
+[[https://research.rgoswami.me/papers/goswamitwodimensionalrmsdprojections2026/][RMSD projection]]
+paper [@goswamiTwodimensionalRMSDProjections2026]. The runnable stack follows
+the [[https://research.rgoswami.me/papers/goswamireproducibleorchestrationbest2026/][NEB orchestration]]
+paper and the
 [[https://atomistic-cookbook.org/examples/eon-pet-neb/eon-pet-neb.html][Atomistic Cookbook eOn + PET-MAD recipe]]
-gives the cookbook version of the same stack.
+[@goswamiReproducibleOrchestrationBest2026]. The point is not to invent a new
+workflow in prose. It is to show what I look at once eOn has put a real NEB on
+disk.
 
-** Setup
-Treat the repository, not this article, as the source of truth for the environment.
-The current workflow pins eOn, Snakemake, IRA, readcon v2, rgpycrumbs,
-chemparseplot, ASE, matplotlib, NumPy, Torch, and metatrain. The default
-environment uses CPU-only packages so these figures regenerate on an ordinary
-Linux machine.
+The main example is the 1,3-dipolar cycloaddition of ethylene and nitrous oxide
+to form 4,5-dihydro-1,2,3-oxadiazole. It is small enough to keep the figures
+legible, but it still exercises the machinery: PET-MAD
+[@mazitovPETMADLightweightUniversal2025] through
+[[https://docs.metatensor.org/metatomic/][metatomic]]
+[@bigiMetatensorMetatomicFoundational2026], eOn
+[@chillEONSoftwareLong2014], energy-weighted CI, and OCI-NEB. The Grignard and
+bicyclobutane examples later in the post are included because they bend. That
+is where a one-dimensional profile starts to feel too pleased with itself.
+
+** Reproducing the figures
+The [[https://github.com/HaoZeke/nebviz_repro][companion repository]] is the source
+of truth for the environment. I do not want a stale ~pixi.toml~ pasted into a
+blog post and slowly diverging from the run. The repository pins the eOn,
+readcon v2, rgpycrumbs, chemparseplot, Snakemake, ASE, matplotlib, NumPy, and
+PET-MAD stack used for the figures.
 
 #+begin_src bash
 git clone https://github.com/HaoZeke/nebviz_repro
@@ -24318,28 +24312,25 @@ snakemake --configfile config/general_config.yml -n -p
 snakemake --configfile config/general_config.yml -c4 all_figures
 #+end_src
 
-The full target exports the PET-MAD model, prepares endpoints, minimizes them,
-runs OCI-NEB for three systems, validates generated =.con= trajectories with
-readcon v2, and writes the blog figures under
-=eonRuns/results/03_figures/blog=. The eOn configuration generated by
-Snakemake sets =ci_mmf = true= and includes the dimer block used by OCI-NEB.
+The target exports the PET-MAD model, prepares and minimizes endpoints, writes
+eOn input files, runs OCI-NEB for three systems, validates the resulting ~.con~
+files with readcon v2, and writes the figures to
+~eonRuns/results/03_figures/blog~. The generated eOn configuration sets
+~ci_mmf = true~ and includes the dimer block used by OCI-NEB. The useful files
+are the final band (~neb.con~), the per-step energy/force tables
+(~neb_*.dat~), the path snapshots (~neb_path*.con~), the version record
+(~stack.json~), and the readcon v2 summary.
 
-The workflow leaves the data in these files:
-- =results/02_neb/<system>/neb.con= :: final band
-- =results/02_neb/<system>/neb_*.dat= :: per-step reaction coordinate, energy,
-  and parallel force
-- =results/02_neb/<system>/neb_path*.con= :: path snapshots for the 2D surface
-- =results/03_figures/blog/stack.json= :: exact versions used for the figures
-- =results/03_figures/blog/readcon-v2-summary.csv= :: readcon v2 parsing check
-
-The workflow generates every profile and landscape below through
-=python -m rgpycrumbs.cli eon plt-neb=. The extra diagnostics use the same eOn
-tables directly.
+The profile and landscape figures below come from
+~python -m rgpycrumbs.cli eon plt-neb~. The three diagnostics at the end read
+the same eOn tables directly.
 
 ** One dimension, three coordinates
-The usual NEB plot puts energy vertically and reaction progress horizontally.
-Reaction progress needs a convention. I draw three coordinates because each one
-catches a different failure mode.
+The default NEB plot is useful, but it smuggles in a choice of reaction
+coordinate. I usually draw three of them. Path length gives the conventional
+barrier. Image index makes bands with different image counts easier to compare.
+[[https://research.rgoswami.me/glossary/#glossary-rmsd][RMSD]] from the
+reactant puts the horizontal axis back in Angstroms after IRA alignment.
 
 #+begin_src bash
 python -m rgpycrumbs.cli eon plt-neb \
@@ -24351,12 +24342,11 @@ python -m rgpycrumbs.cli eon plt-neb \
 #+caption: Energy against path length. The peak gives the barrier. The piecewise cubic Hermite spline uses the parallel forces, so the curve respects dE/ds at every image instead of wiggling between points. Dark to light traces the optimization. The converged path appears in black.
 [[file:images/neb-viz/neb-viz-1d-path.png]]
 
-The path-length plot gives the activation energy. This band drops from a
-roughly 1.1 eV initial barrier to about 0.4 eV after 120 steps. The product sits
-about 0.8 eV below the reactant. The index plot spaces images evenly, which
-helps when comparing bands with different image counts. The
-[[https://research.rgoswami.me/glossary/#glossary-rmsd][RMSD]]-from-reactant plot
-reports Angstroms of geometry after IRA alignment, not optimizer bookkeeping.
+For the cycloaddition, the path-length view shows the barrier dropping as the
+band settles and the product sitting below the reactant. That is the familiar
+picture, and it is still the first sanity check. The problem is what it does not
+show: sideways motion, sparse sampling, and whether the high image is sitting in
+a narrow channel or merely on the best-looking point along a poor path.
 
 #+caption: Energy vs image index. Even spacing makes bands of different image counts comparable.
 [[file:images/neb-viz/neb-viz-1d-index.png]]
@@ -24364,19 +24354,19 @@ reports Angstroms of geometry after IRA alignment, not optimizer bookkeeping.
 #+caption: Energy vs RMSD from the reactant: the coordinate becomes Angstroms of real geometric change.
 [[file:images/neb-viz/neb-viz-1d-rmsd.png]]
 
-Together, the three 1D plots give a smooth final band. They don't report
-sideways sampling, off-path drift, or uncertainty away from the path. For that,
-I use the projection.
+These are not redundant plots. They are three different lies, each useful in a
+controlled way. When they agree, I trust the scalar story a bit more. When they
+disagree, I look at the geometry.
 
 ** Projection into two dimensions
-To put the path in a plane, I measure each image by IRA RMSD to the reactant
-and product. Those two distances give coordinates $r$ and $p$. The NEB parallel
-forces project into the same plane as synthetic gradients. Energies plus
-gradients train a gradient-enhanced
+The 2D projection is where the run becomes inspectable. Each structure is
+measured by IRA RMSD to the reactant and product, giving coordinates $r$ and
+$p$. The NEB parallel forces project into the same plane as synthetic gradients.
+Energies and gradients then train a gradient-enhanced
 [[https://research.rgoswami.me/glossary/#glossary-gpr][Gaussian process]] with an
-inverse-multiquadric kernel. A final rigid rotation maps $r,p$ onto reaction
-progress $s$ and deviation $d$. The 2D RMSD projection paper gives the
-derivation and validation cases [@goswamiTwodimensionalRMSDProjections2026].
+inverse-multiquadric kernel. A final rotation maps $r,p$ onto reaction progress
+$s$ and orthogonal deviation $d$. The derivation and the failure modes are in
+the 2D RMSD projection paper [@goswamiTwodimensionalRMSDProjections2026].
 
 #+caption: Projection pipeline from 3N-dimensional NEB output to IRA RMSD coordinates, synthetic gradients, a gradient-enhanced GP surface, and the rotated s-d frame.
 [[file:images/neb-viz/neb-viz-pipeline.png]]
@@ -24394,23 +24384,23 @@ python -m rgpycrumbs.cli eon plt-neb \
 #+caption: Cycloaddition in the s-d frame. The plot shows the GP energy surface in color, sampled structures as black dots, the converged path as open circles, posterior-variance contours as dashed curves, and the ORCA B3LYP-D3 saddle as a white star.
 [[file:images/neb-viz/neb-viz-2d-cyclo.png]]
 
-The 2D plot does the validation work the profiles can't do. Black points hug
-the converged path, so the optimization sampled one pathway rather than a
-diffuse cloud across the surface. The color field places the barrier between a
-shallow reactant basin and a deeper product basin. The independent ORCA
-B3LYP-D3 saddle [@asgeirssonNudgedElasticBand2021] sits in the same barrier
-region as the PET-MAD/eOn path. Dashed posterior-variance contours shrink along
-sampled structures and widen at the edge, marking where the interpolation has
-data support. Scalar barrier or RMSD values report a mismatch. The projection
-locates that mismatch in the reaction landscape.
+This is not decoration. The color field, sampled points, force-derived
+gradients, posterior-variance contours, path history, and reference saddle all
+live in the same frame. For this case the black points hug the converged path,
+so the optimization sampled one channel rather than a broad cloud. The
+independent ORCA B3LYP-D3 saddle [@asgeirssonNudgedElasticBand2021] lands in
+the same barrier region as the PET-MAD/eOn path. The dashed variance contours
+shrink near sampled structures and widen at the edge, which is exactly the
+warning label I want on an interpolated surface. A scalar barrier can say that
+two calculations disagree. The projection says where.
 
 ** When the path turns
-The cycloaddition nearly follows a straight reactant-product line. Its 1D
-profiles lose context, but they don't lie badly. The Grignard rearrangement
+The cycloaddition is almost too polite. The Grignard addition
 [@birkholzUsingBondingGuide2015] and the bicyclobutane ring opening from the
-mlFSM work [@marksIncorporationInternalCoordinates2025] bend harder. In the s-d
-plane, both paths bow away from the reactant-product diagonal. A 1D coordinate
-folds that tortuosity into a longer horizontal distance.
+mlFSM work [@marksIncorporationInternalCoordinates2025] are better stress
+tests. In the $s,d$ plane both paths bow away from the reactant-product
+diagonal. A 1D coordinate cannot show the turn; it can only stretch the
+horizontal axis and hope nobody asks what happened sideways.
 
 #+caption: Grignard addition. The path bows away from the reactant-to-product diagonal, a real geometric turn the 1D coordinate folds flat.
 [[file:images/neb-viz/neb-viz-2d-grignard.png]]
@@ -24419,12 +24409,13 @@ folds that tortuosity into a longer horizontal distance.
 [[file:images/neb-viz/neb-viz-2d-bicyclo.png]]
 
 ** Table diagnostics
-The 2D projection carries the main validation signal: geometry, energies,
-force-derived gradients, sampling density, posterior uncertainty, reference
-saddles, and path history live in the same coordinate frame. I still add three
-table-level diagnostics because they answer narrower convergence questions:
-barrier and force evolution, force distribution along images, and final-band
-image spacing.
+The surface carries the richer validation signal, but I still want the plain
+tables nearby. The companion run is a useful reminder of why. The Grignard case
+has force spikes, MMF backoffs, and dimer mode loss before it settles enough for
+the visualization target. That is normal reaction-path ugliness, not something
+to hide behind a final image. The table plots answer narrower questions: did
+the barrier stabilize, where is the band still moving, and how evenly did the
+final images spread out?
 
 #+caption: Barrier height and maximum parallel force over the NEB optimization. A stable barrier without a stable force is not convergence.
 [[file:images/neb-viz/neb-viz-convergence.png]]
@@ -24436,36 +24427,37 @@ image spacing.
 [[file:images/neb-viz/neb-viz-sampling-density.png]]
 
 ** Method labels
-The figures label these bands OCI-NEB, matching the published name for the
-enhanced CI-NEB method with Hessian eigenmode alignment
-[@goswamiEnhancedClimbingImage2026], not a plotting option. Plain CI-NEB drives
-the highest image uphill along the band tangent toward the saddle. The method
-can find the right region and still spend the slow part near the top. It can
-also stop with a near-zero lowest eigenvalue rather than a true first-order
-saddle.
+The figures say OCI-NEB because that is the published name of the enhanced
+CI-NEB method with Hessian eigenmode alignment
+[@goswamiEnhancedClimbingImage2026]. This is not a plotting label. Plain CI-NEB
+drives the highest image uphill along the band tangent
+[@henkelmanClimbingImageNudged2000]. It can locate the right region and still
+spend the slow part near the top, or stop near a flat mode rather than a proper
+first-order saddle.
 
 OCI-NEB keeps the band context and switches the top image into
 [[https://research.rgoswami.me/glossary/#glossary-mmf][MMF]] when the curvature
-information indicates the right transition basin. In the Frontiers paper,
-Baker-Chan/PET-MAD runs used 57 percent fewer energy and force calls at the
-median, with a 95 percent credible interval from 50 to 64 percent. The Pt 111
-heptamer set used 31 percent fewer calls across 59 transitions. Fixed switching
-at 0.5 eV/A spent 46 percent more calls than the adaptive criterion. For this
-post, the labeled top image should carry a negative lowest eigenvalue. A flat
-or positive value means the plot found the right neighborhood without a saddle.
+information says the transition basin is worth treating as a saddle search. In
+the Frontiers paper, Baker-Chan/PET-MAD runs used 57 percent fewer energy and
+force calls at the median, with a 95 percent credible interval from 50 to 64
+percent. The Pt 111 heptamer set used 31 percent fewer calls across 59
+transitions. Fixed switching at 0.5 eV/A spent 46 percent more calls than the
+adaptive criterion. Those numbers are not a promise that NEBs are easy. They
+are a reminder that the expensive part is often deciding when the top image is
+ready for saddle work.
 
 ** Conclusions
-NEB costs force calls in the usual sense: each extra image and each failed
-relaxation asks for more evaluations. The interpretive cost also matters: a
-smooth one-dimensional barrier can hide a bent path, sparse sampling, or force
-patterns that still need work.
+The habit I want is simple: do not let one clean barrier plot carry more
+chemistry than it can bear. Path length gives the barrier, image index compares
+bands, RMSD reports geometry, and the 2D projection checks whether the sampled
+path actually supports the story. The force and spacing diagnostics keep the
+optimizer honest.
 
-I keep the views separate. Path length gives the barrier. Image index compares
-bands with different image counts. RMSD reports geometry. The 2D projection
-checks sampling and off-path uncertainty. The diagnostics show whether the band
-has stopped moving in the places that matter. The cookbook gets the eOn/PET-MAD
-run onto disk, the companion repo regenerates the figures, and the cited papers
-define the methods.
+The [[https://atomistic-cookbook.org/examples/eon-pet-neb/eon-pet-neb.html][cookbook]]
+gets the eOn/PET-MAD calculation onto disk. The
+[[https://github.com/HaoZeke/nebviz_repro][companion repository]] regenerates the
+figures and records the stack. The papers define the methods. The plots are
+only worth keeping if they make it harder to fool myself.
 
 * Footnotes
 
