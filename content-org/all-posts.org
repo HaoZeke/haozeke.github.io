@@ -24284,10 +24284,9 @@ legible while still exercising the machinery with PET-MAD
 [[https://docs.metatensor.org/metatomic/][metatomic]]
 [@bigiMetatensorMetatomicFoundational2026], eOn
 [@chillEONSoftwareLong2014], energy-weighted CI, and OCI-NEB. I add Grignard
-and bicyclobutane later because they bend. Their value is geometric, not
-cosmetic.
+and bicyclobutane later because they bend.
 
-** Reproducing the figures
+** Figure reproduction
 The [[https://github.com/HaoZeke/nebviz_repro][companion repository]] carries the
 pinned environment and the Snakemake workflow. The blog keeps only the entry
 points:
@@ -24311,9 +24310,9 @@ The target exports PET-MAD, prepares and minimizes endpoints, writes eOn input
 files, runs OCI-NEB for three systems, validates the resulting ~.con~ files with
 readcon v2, and writes figures to ~eonRuns/results/03_figures/blog~. The eOn
 configuration includes ~ci_mmf = true~ and the dimer block used by OCI-NEB.
-~stack.json~ records eonclient 2.14.0 (4a52123), readcon 0.8.0, rgpycrumbs
-1.7.0, chemparseplot 1.7.0, NumPy 2.4.2, and matplotlib 3.10.9 for the figure
-run.
+~stack.json~ records ~eonclient~ 2.14.0 at commit 4a52123, readcon 0.8.0,
+rgpycrumbs 1.7.0, chemparseplot 1.7.0, NumPy 2.4.2, and matplotlib 3.10.9 for
+the figure run.
 
 The figures below come from ~python -m rgpycrumbs.cli eon plt-neb~ and the
 tables written by eOn: the final band (~neb.con~), per-step energy/force data
@@ -24338,7 +24337,7 @@ python -m rgpycrumbs.cli eon plt-neb \
 
 For the cycloaddition, the path-length view shows the barrier dropping as the
 band settles and the product sitting below the reactant. That familiar picture
-is still the first check. It cannot show sideways motion, sparse sampling, or
+still gives the first check. It can't show sideways motion, sparse sampling, or
 whether the high image sits in a narrow channel.
 
 #+caption: Energy vs image index. Even spacing makes bands of different image counts comparable.
@@ -24352,10 +24351,10 @@ while image index shows migration. RMSD can expose geometric motion that path
 length folds into arc length.
 
 ** Projection into two dimensions
-The 2D projection makes the geometric check explicit. Each structure is
-measured by IRA RMSD to the reactant and product, giving coordinates $r$ and
-$p$. The NEB parallel forces project into the same plane as synthetic gradients.
-Energies and gradients train a gradient-enhanced
+The 2D projection makes the geometric check explicit. I measure each structure
+by IRA RMSD to the reactant and product, giving coordinates $r$ and $p$. The NEB
+parallel forces project into the same plane as synthetic gradients. Energies and
+gradients train a gradient-enhanced
 [[https://research.rgoswami.me/glossary/#glossary-gpr][Gaussian process]] with an
 inverse-multiquadric kernel. A final rotation maps $r,p$ onto reaction progress
 $s$ and orthogonal deviation $d$. The RMSD projection paper gives the
@@ -24377,7 +24376,7 @@ python -m rgpycrumbs.cli eon plt-neb \
 #+caption: Cycloaddition in the s-d frame. The plot shows the GP energy surface in color, sampled structures as black dots, the converged path as open circles, posterior-variance contours as dashed curves, and the ORCA B3LYP-D3 saddle as a white star.
 [[file:images/neb-viz/neb-viz-2d-cyclo.png]]
 
-The surface is diagnostic. The color field, sampled points, force-derived
+The surface carries the diagnostic load. The color field, sampled points, force-derived
 gradients, posterior variance, path history, and reference saddle share the
 same frame. Here the black points hug the converged path, so the optimization
 sampled one channel rather than a broad cloud. The independent ORCA B3LYP-D3
@@ -24387,7 +24386,7 @@ structures and widen at the edge, marking data support for the interpolation. A
 scalar barrier can say that two calculations differ. The projection says where.
 
 ** When the path turns
-The cycloaddition is restrained. The Grignard addition
+The cycloaddition stays close to the diagonal. The Grignard addition
 [@birkholzUsingBondingGuide2015] and the bicyclobutane ring opening from the
 mlFSM work [@marksIncorporationInternalCoordinates2025] give better stress
 tests. In the $s,d$ plane both paths bow away from the reactant-product
@@ -24403,8 +24402,8 @@ hiding direction.
 ** Table diagnostics
 Surfaces carry more signal when the force tables remain nearby. The Grignard
 case has force spikes, MMF back-off steps, and dimer mode loss before it
-settles enough for the visualization target. That is normal reaction-path
-ugliness, and it belongs in the reproducible record. The table plots answer
+settles enough for the visualization target. That normal reaction-path
+ugliness belongs in the reproducible record. The table plots answer
 narrower questions: did the barrier stabilize, which images still move, and how
 evenly did the final images spread out?
 
@@ -24437,10 +24436,10 @@ criterion. Those numbers don't make NEBs forgiving. They say the expensive part
 often lies in deciding when the top image can take over saddle work.
 
 ** Conclusions
-One barrier plot is not enough. Path length gives the barrier; image index
-compares bands; RMSD reports geometry; the 2D projection asks whether sampled
-structures support the surface; force and spacing plots expose optimizer
-behavior.
+One barrier plot can't carry the result. Path length gives the barrier. Image
+index compares bands. RMSD reports geometry. The 2D projection asks whether
+sampled structures support the surface. Force and spacing plots expose
+optimizer behavior.
 
 The [[https://atomistic-cookbook.org/examples/eon-pet-neb/eon-pet-neb.html][cookbook]]
 gets the eOn/PET-MAD calculation onto disk. The
