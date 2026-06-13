@@ -24254,7 +24254,7 @@ CLOSED: [2026-06-02 Tue 18:00]
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("EON")
 :END:
 #+begin_quote
-Smooth barriers do not certify path convergence.
+Smooth barriers don't certify path convergence.
 #+end_quote
 
 ** Background
@@ -24286,8 +24286,9 @@ and bicyclobutane later because those paths turn.
 
 ** Figure reproduction
 The [[https://github.com/HaoZeke/nebviz_repro][companion repository]] carries the
-pinned environment and the Snakemake workflow. The post should not duplicate an
-environment file that will drift; the repository carries that contract.
+pinned environment and the Snakemake workflow. The post shouldn't duplicate an
+environment file that drifts away from the run. The repository carries that
+contract.
 
 #+begin_src bash
 git clone https://github.com/HaoZeke/nebviz_repro
@@ -24376,15 +24377,15 @@ python -m rgpycrumbs.cli eon plt-neb \
 #+caption: Cycloaddition in the s-d frame. The plot shows the GP energy surface in color, sampled structures as black dots, the converged path as open circles, posterior-variance contours as dashed curves, and the ORCA B3LYP-D3 saddle as a white star.
 [[file:images/neb-viz/neb-viz-2d-cyclo.png]]
 
-This does more than recolor the profile. The color field, sampled points,
-force-derived gradients, posterior variance, path history, and reference saddle
-share one coordinate system. Here the black points hug the converged path, so
-the optimization sampled one channel rather than a broad cloud. The independent
-ORCA B3LYP-D3 saddle [@asgeirssonNudgedElasticBand2021] sits in the same
-barrier region as the PET-MAD/eOn path. The dashed variance contours shrink
-near sampled structures and widen at the edge, marking data support for the
-interpolation. A scalar barrier can say that two calculations differ. The
-projection says where.
+The projection does more than recolor the profile. The color field, sampled
+points, force-derived gradients, posterior variance, path history, and
+reference saddle share one coordinate system. Here the black points hug the
+converged path, so the optimization sampled one channel rather than a broad
+cloud. The independent ORCA B3LYP-D3 saddle
+[@asgeirssonNudgedElasticBand2021] sits in the same barrier region as the
+PET-MAD/eOn path. The dashed variance contours shrink near sampled structures
+and widen at the edge, marking data support for the interpolation. A scalar
+barrier can say that two calculations differ. The projection says where.
 
 ** When the path turns
 The cycloaddition stays close to the diagonal. The Grignard addition
