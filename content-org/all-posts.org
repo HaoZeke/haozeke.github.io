@@ -24254,7 +24254,7 @@ CLOSED: [2026-06-02 Tue 18:00]
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("EON")
 :END:
 #+begin_quote
-A converged NEB gives me a handful of files and one recurring question: did the
+A converged NEB gives me three file families and one recurring question: did the
 path describe the chemistry, or did the optimizer connect weak samples?
 #+end_quote
 
@@ -24272,7 +24272,7 @@ density, and convergence.
 The research-site anchors for this post:
 - [[https://research.rgoswami.me/research/transition-state/][transition-state methods]] for the broader NEB, dimer, and MMF thread
 - [[https://research.rgoswami.me/papers/goswamitwodimensionalrmsdprojections2026/][2D RMSD projections]] for the figures below [@goswamiTwodimensionalRMSDProjections2026]
-- [[https://research.rgoswami.me/papers/goswamienhancedclimbingimage2026/][enhanced CI-NEB]] for the RONEB labels [@goswamiEnhancedClimbingImage2026]
+- [[https://research.rgoswami.me/papers/goswamienhancedclimbingimage2026/][enhanced CI-NEB]] for the OCI-NEB labels [@goswamiEnhancedClimbingImage2026]
 - [[https://research.rgoswami.me/papers/goswamireproducibleorchestrationbest2026/][NEB workflow orchestration]] and the
   [[https://atomistic-cookbook.org/examples/eon-pet-neb/eon-pet-neb.html][Atomistic Cookbook eOn + PET-MAD recipe]]
   for the runnable setup [@goswamiReproducibleOrchestrationBest2026]
@@ -24280,11 +24280,11 @@ The research-site anchors for this post:
 Rowan has a readable piece on guessing transition states at
 [[https://rowansci.com/blog/guessing-transition-states][rowansci.com]].
 Their tooling stays proprietary. The intuition transfers cleanly: a transition
-state search needs a geometry story, not only an energy maximum.
+state search needs both a geometry story and an energy peak.
 
 The running example uses the 1,3-dipolar cycloaddition of ethylene and
-N\(_2\)O to form 4,5-dihydro-1,2,3-oxadiazole, an eight-atom NEB benchmark. It
-runs on a laptop with PET-MAD through
+nitrous oxide to form 4,5-dihydro-1,2,3-oxadiazole, an eight-atom NEB
+benchmark. It runs on a laptop with PET-MAD through
 [[https://docs.metatensor.org/metatomic/][metatomic]] [@bigiMetatensorMetatomicFoundational2026]
 and an energy-weighted NEB in eOn. The
 [[https://github.com/HaoZeke/nebviz_repro][reproduction repository]] contains the
@@ -24333,7 +24333,7 @@ The workflow writes three file families:
 Every figure below calls =rgpycrumbs eon plt-neb= on those files.
 
 ** One dimension, three coordinates
-The usual NEB plot puts energy on one axis and reaction progress on the other.
+The usual NEB plot puts energy vertically and reaction progress horizontally.
 Reaction progress needs a convention. I draw three coordinates because each one
 catches a different failure mode.
 
@@ -24363,11 +24363,11 @@ reports Angstroms of geometry after IRA alignment, not optimizer bookkeeping.
 #+caption: Energy vs RMSD from the reactant: the coordinate becomes Angstroms of real geometric change.
 [[file:images/neb-viz/neb-viz-1d-rmsd.png]]
 
-Together, the three 1D plots give a smooth final band. They do not report
+Together, the three 1D plots give a smooth final band. They don't report
 sideways sampling, off-path drift, or uncertainty away from the path. For that,
 I use the projection.
 
-** Two-dimensional RMSD projection
+** Projection into two dimensions
 To put the path in a plane, I measure each image by IRA RMSD to the reactant
 and product. Those two distances give coordinates $r$ and $p$. The NEB parallel
 forces project into the same plane as synthetic gradients. Energies plus
@@ -24400,7 +24400,7 @@ lack.
 
 ** When the path turns
 The cycloaddition nearly follows a straight reactant-product line. Its 1D
-profiles lose context, but they do not lie badly. The Grignard addition and
+profiles lose context, but they don't lie badly. The Grignard addition and
 bicyclobutane ring opening bend harder. In the s-d plane, both paths bow away
 from the reactant-product diagonal. A 1D coordinate folds that tortuosity into
 a longer horizontal distance.
@@ -24411,20 +24411,20 @@ a longer horizontal distance.
 #+caption: Bicyclobutane ring opening, with a sharp geometric kink visible in the s-d plane.
 [[file:images/neb-viz/neb-viz-2d-bicyclo.png]]
 
-** RONEB and OCI-NEB
-The figures label these bands RONEB. That label points to the enhanced CI-NEB
-method with Hessian eigenmode alignment
+** Method labels
+The figures label these bands OCI-NEB, matching the published name for the
+enhanced CI-NEB method with Hessian eigenmode alignment
 [@goswamiEnhancedClimbingImage2026], not a plotting option. Plain CI-NEB drives
 the highest image uphill along the band tangent toward the saddle. The method
 can find the right region and still spend the slow part near the top. It can
 also stop with a near-zero lowest eigenvalue rather than a true first-order
 saddle.
 
-RONEB keeps the band context and switches the top image into
+OCI-NEB keeps the band context and switches the top image into
 [[https://research.rgoswami.me/glossary/#glossary-mmf][MMF]] when the curvature
 information indicates the right transition basin. In the Frontiers paper,
 Baker-Chan/PET-MAD runs used 57 percent fewer energy and force calls at the
-median, with a 95 percent credible interval from 50 to 64 percent. The Pt(111)
+median, with a 95 percent credible interval from 50 to 64 percent. The Pt 111
 heptamer set used 31 percent fewer calls across 59 transitions. Fixed switching
 at 0.5 eV/A spent 46 percent more calls than the adaptive criterion. For this
 post, the labeled top image should carry a negative lowest eigenvalue. A flat
