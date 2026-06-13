@@ -1857,7 +1857,7 @@ pixi global install --environment llmlocal "ollama *cuda*"
 export OLLAMA_HOST="0.0.0.0"
 ollama serve
 # another tab
-ollama run gpt-oss:20b
+ollama run MODEL_NAME
 #+end_src
 
 A preliminary check on the local machine:
@@ -1988,8 +1988,8 @@ CLOSED: [2026-02-17 Tue 19:06]
 :END:
 Environments with ~julia~ often seem to have trouble with ~Pkg.install()~ and other commands with
 #+begin_src bash
-ERROR: Unable to load dependent library /home/rgoswami/Git/Github/Julia/ChemGP/.pixi/envs/docs/bin/../lib/julia/libopenlibm.so
-Message:/home/rgoswami/Git/Github/Julia/ChemGP/.pixi/envs/docs/bin/../lib/julia/libopenlibm.so: cannot enable executable stack as shared object requires: Invalid argument
+ERROR: Unable to load dependent library /path/to/project/.pixi/envs/docs/bin/../lib/julia/libopenlibm.so
+Message:/path/to/project/.pixi/envs/docs/bin/../lib/julia/libopenlibm.so: cannot enable executable stack as shared object requires: Invalid argument
 #+end_src
 
 Not sure why this happens yet, but the fix is:
@@ -2155,6 +2155,77 @@ For submission, flip the flag:
 All ~\mg~, ~\rg~, etc. become no-ops -- zero output, no stale comment text leaking into the published PDF, and no need to hunt through the source deleting annotations. The comments remain in the ~.org~ as a permanent record of the review conversation.
 
 This pairs well with ~latexdiff~ for generating the highlighted-changes PDF that journals want alongside the clean submission.
+** DONE Continuing numbered Org lists across intervening paragraphs :orgmode:tex:workflow:
+CLOSED: [2026-06-12 Fri 20:45]
+:PROPERTIES:
+:EXPORT_HUGO_BUNDLE: orgmode-enumerate-counter-cookies
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc false :comments true
+:END:
+Org mode numbered lists can mislead when ordinary paragraphs sit between items.
+This often appears when each numbered item has a short explanatory paragraph.
+The source can look numbered:
+
+#+begin_src org
+1. *[First item]* ...
+
+Extra notes for the first item.
+
+2. *[Second item]* ...
+
+Extra notes for the second item.
+
+3. *[Third item]* ...
+#+end_src
+
+but Org emits a fresh ~enumerate~ block after each intervening paragraph, so
+LaTeX prints each later item as ~1.~.
+
+The fix uses an Org counter cookie. Place the cookie after a real ordered-list
+marker:
+
+#+begin_src org
+1. [@2] *[Second item]* ...
+
+Extra notes for the second item.
+
+1. [@3] *[Third item]* ...
+
+Extra notes for the third item.
+
+1. [@4] *[Fourth item]* ...
+#+end_src
+
+The tempting shorthand fails:
+
+#+begin_src org
+[@4]. *[Fourth item]* ...
+#+end_src
+
+That line lacks an ordered-list marker. With Org mode 9.7 it exports literally
+as ~[@4].~ in the LaTeX/PDF path.
+
+The corrected export carries an explicit LaTeX counter before each item:
+
+#+begin_src tex
+\begin{enumerate}
+\setcounter{enumi}{3}
+\item \textbf{{[}Fourth item]} ...
+\end{enumerate}
+#+end_src
+
+For a quick regression check, inspect both the intermediate ~.tex~ and the
+rendered PDF text:
+
+#+begin_src bash
+make export
+rg -F '\setcounter{enumi}{3}' document.tex
+pdftotext -layout document.pdf - \
+  | rg '^[[:space:]]*4\. \[Fourth item'
+#+end_src
+
+That catches both failures: no LaTeX counter, and a PDF that prints another
+~1.~ where the fourth item belongs.
 ** DRAFT Keeping a laptop responsive under ~rust-analyzer~ memory pressure :linux:rust:systemd:zram:cgroups:oomd:chezmoi:
 :PROPERTIES:
 :EXPORT_HUGO_BUNDLE: rust-laptop-freeze-mitigation
