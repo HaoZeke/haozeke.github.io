@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620" role="img" aria-labelledby="title desc">
+  <title id="title">Mail deletion semantics</title>
+  <desc id="desc">Gmail labels, Exchange flags, and archive retention have different deletion behavior.</desc>
+  <style>
+    text { font-family: Inter, ui-sans-serif, system-ui, sans-serif; fill: #1f2937; }
+    .title { font-size: 28px; font-weight: 700; }
+    .label { font-size: 20px; font-weight: 700; }
+    .small { font-size: 15px; }
+    .tiny { font-size: 12px; fill: #4b5563; }
+    .gmail { fill: #eff6ff; stroke: #2563eb; stroke-width: 2; rx: 8; }
+    .exchange { fill: #fff7ed; stroke: #c2410c; stroke-width: 2; rx: 8; }
+    .archive { fill: #ecfdf5; stroke: #047857; stroke-width: 2; rx: 8; }
+    .warning { fill: #fef2f2; stroke: #b91c1c; stroke-width: 2; rx: 8; }
+    .line { stroke: #94a3b8; stroke-width: 2; }
+  </style>
+
+  <rect x="0" y="0" width="1200" height="620" fill="#f9fafb"/>
+  <text x="50" y="54" class="title">Delete is not one operation</text>
+  <text x="50" y="82" class="small">Treat deletion as account-specific policy, then make cleanup explicit.</text>
+
+  <rect x="70" y="140" width="320" height="330" class="gmail"/>
+  <text x="105" y="185" class="label">Gmail + lieer</text>
+  <line x1="105" y1="205" x2="355" y2="205" class="line"/>
+  <text x="105" y="245" class="small">Primary primitive:</text>
+  <text x="105" y="275" class="label">Labels</text>
+  <text x="105" y="325" class="small">Safe action: apply a trash</text>
+  <text x="105" y="350" class="small">or archive label and sync.</text>
+  <text x="105" y="405" class="tiny">Raw IMAP expunge is the wrong mental model.</text>
+
+  <rect x="440" y="140" width="320" height="330" class="exchange"/>
+  <text x="475" y="185" class="label">Exchange + DavMail</text>
+  <line x1="475" y1="205" x2="725" y2="205" class="line"/>
+  <text x="475" y="245" class="small">Primary primitive:</text>
+  <text x="475" y="275" class="label">IMAP flags</text>
+  <text x="475" y="325" class="small">Expunge can propagate to</text>
+  <text x="475" y="350" class="small">the Microsoft mailbox.</text>
+  <text x="475" y="405" class="tiny">Use folder-specific rules and manual review.</text>
+
+  <rect x="810" y="140" width="320" height="330" class="archive"/>
+  <text x="845" y="185" class="label">Archive host</text>
+  <line x1="845" y1="205" x2="1095" y2="205" class="line"/>
+  <text x="845" y="245" class="small">Primary primitive:</text>
+  <text x="845" y="275" class="label">Retention</text>
+  <text x="845" y="325" class="small">Keep first, clean later,</text>
+  <text x="845" y="350" class="small">document what propagates.</text>
+  <text x="845" y="405" class="tiny">A boring archive beats a clever accident.</text>
+
+  <rect x="230" y="510" width="740" height="62" class="warning"/>
+  <text x="270" y="548" class="small">The same keybinding should not mean the same thing across Gmail, Exchange, and a local archive.</text>
+</svg>

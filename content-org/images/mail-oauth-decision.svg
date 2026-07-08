@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620" role="img" aria-labelledby="title desc">
+  <title id="title">OAuth decision flow</title>
+  <desc id="desc">Decision flow for direct OAuth versus a DavMail bridge.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#374151"/>
+    </marker>
+    <style>
+      text { font-family: Inter, ui-sans-serif, system-ui, sans-serif; fill: #1f2937; }
+      .title { font-size: 28px; font-weight: 700; }
+      .label { font-size: 18px; font-weight: 700; }
+      .small { font-size: 14px; }
+      .tiny { font-size: 12px; fill: #4b5563; }
+      .decision { fill: #fef3c7; stroke: #b45309; stroke-width: 2.5; }
+      .yes { fill: #ecfdf5; stroke: #047857; stroke-width: 2; rx: 8; }
+      .no { fill: #fef2f2; stroke: #b91c1c; stroke-width: 2; rx: 8; }
+      .bridge { fill: #eef2ff; stroke: #4338ca; stroke-width: 2; rx: 8; }
+      .safe { fill: #f8fafc; stroke: #334155; stroke-width: 2; rx: 8; }
+      .arrow { stroke: #374151; stroke-width: 2.2; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1200" height="620" fill="#f8fafc"/>
+  <text x="50" y="54" class="title">Choosing where OAuth complexity lives</text>
+  <text x="50" y="82" class="small">Direct OAuth is fine when the tenant cooperates. DavMail is the bridge when it does not.</text>
+
+  <polygon points="600,125 785,230 600,335 415,230" class="decision"/>
+  <text x="510" y="215" class="label">Usable Azure app</text>
+  <text x="516" y="242" class="label">registration?</text>
+  <text x="505" y="270" class="tiny">client, consent, scopes, redirect</text>
+
+  <rect x="90" y="180" width="250" height="118" class="yes"/>
+  <text x="128" y="218" class="label">Yes</text>
+  <text x="128" y="248" class="small">Direct OAuth client</text>
+  <text x="128" y="272" class="tiny">Himalaya, GUI client, or custom flow</text>
+
+  <rect x="860" y="180" width="250" height="118" class="no"/>
+  <text x="898" y="218" class="label">No</text>
+  <text x="898" y="248" class="small">Use DavMail as edge</text>
+  <text x="898" y="272" class="tiny">manual or device-code style login</text>
+
+  <rect x="830" y="395" width="305" height="118" class="bridge"/>
+  <text x="868" y="433" class="label">Local service boundary</text>
+  <text x="868" y="463" class="small">IMAP, SMTP, CalDAV on localhost</text>
+  <text x="868" y="487" class="tiny">downstream tools do not know OAuth</text>
+
+  <rect x="405" y="420" width="390" height="92" class="safe"/>
+  <text x="445" y="455" class="label">Do not publish or casually sync</text>
+  <text x="445" y="484" class="small">refresh tokens, tenant-specific secrets, live mailbox IDs</text>
+
+  <path class="arrow" d="M415 230 C380 230 365 230 340 230"/>
+  <path class="arrow" d="M785 230 C820 230 835 230 860 230"/>
+  <path class="arrow" d="M985 298 L985 395"/>
+  <path class="arrow" d="M830 455 L795 455"/>
+  <path class="arrow" d="M215 298 C215 415 345 455 405 455"/>
+
+  <text x="356" y="215" class="tiny">cooperative tenant</text>
+  <text x="795" y="215" class="tiny">institutional gap</text>
+</svg>
