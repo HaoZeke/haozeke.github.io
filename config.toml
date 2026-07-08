@@ -96,6 +96,9 @@ name = "Rohit Goswami (HaoZeke)"
   praiseNetlify = false
   showHumanAuthorBadge = false
 
+  # Page-specific stylesheets (see static/css/)
+  customCSS = ["/css/packages.css"]
+
   # Set disableReadOtherPosts to true in order to hide the links to other posts.
   disableReadOtherPosts = false
 
@@ -217,6 +220,10 @@ siteID = "rg95ru-rgoswami.me"
     identifier = "about"
     name       = "About"
     url        = "/about"
+  [[menu.main]]
+    identifier = "packages"
+    name       = "Packages"
+    url        = "/packages"
   [[menu.main]]
     identifier = "blog"
     name       = "Blog"

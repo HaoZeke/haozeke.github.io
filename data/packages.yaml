@@ -1,0 +1,306 @@
+# Maintained packages inventory for https://rgoswami.me/packages/
+# Edit this file to add/remove packages. Run: python scripts/check_packages_catalog.py
+# Optional refresh helpers live in scripts/ (offline-friendly check is the CI gate).
+
+updated: "2026-07-08"
+title: Packages I maintain
+intro: >
+  A single inventory of packages I maintain or co-maintain across common
+  registries. Versions are snapshots for orientation; registry links are
+  authoritative. Seeded from AUR maintainer HaoZeke, conda-forge feedstocks,
+  PyPI, and crates.io user HaoZeke.
+
+ecosystems:
+  - id: aur
+    name: AUR
+    label: Arch User Repository
+    description: Arch Linux packages under maintainer HaoZeke.
+    hub_url: "https://aur.archlinux.org/packages/?SeB=m&K=HaoZeke"
+    registry_host: aur.archlinux.org
+    packages:
+      - name: journey-cloud
+        version: "2.14.6-1"
+        summary: Private diary, journal and companion (Journey Cloud).
+        registry_url: "https://aur.archlinux.org/packages/journey-cloud"
+        homepage: "https://journey.cloud/"
+      - name: klfc
+        version: "1.5.7-5"
+        summary: Create advanced keyboard layouts in various formats.
+        registry_url: "https://aur.archlinux.org/packages/klfc"
+        homepage: "https://github.com/39aldo39/klfc"
+      - name: pp-git
+        version: "r174.7e2866f-1"
+        summary: Text preprocessor designed for Pandoc (Markdown / reST).
+        registry_url: "https://aur.archlinux.org/packages/pp-git"
+        homepage: "http://cdsoft.fr/pp"
+        notes: May be marked out-of-date on the AUR.
+      - name: tmetric-rpm
+        version: "20.2.4-1"
+        summary: TMetric time tracker, packaged from the RPM to reduce breakage.
+        registry_url: "https://aur.archlinux.org/packages/tmetric-rpm"
+        homepage: "https://tmetric.com"
+      - name: ttf-neuton
+        version: "01git-1"
+        summary: Neuton — clean, dark, Dutch-inspired serif font.
+        registry_url: "https://aur.archlinux.org/packages/ttf-neuton"
+        homepage: "https://fonts.google.com/specimen/Neuton"
+
+  - id: conda-forge
+    name: conda-forge
+    label: conda-forge
+    description: >
+      Feedstocks where HaoZeke appears as a recipe maintainer or regular
+      co-maintainer. Includes personal tools and metatensor ecosystem work.
+    hub_url: "https://github.com/conda-forge?q=HaoZeke"
+    registry_host: anaconda.org
+    packages:
+      - name: eon
+        version: "2.16.0"
+        summary: Algorithms for long timescales and PES exploration (EON).
+        registry_url: "https://anaconda.org/conda-forge/eon"
+        feedstock_url: "https://github.com/conda-forge/eon-feedstock"
+        homepage: "https://github.com/TheochemUI/EON"
+      - name: rgpycrumbs
+        version: "1.8.0"
+        summary: Dispatcher-based analytical and visualization suite for chemical physics.
+        registry_url: "https://anaconda.org/conda-forge/rgpycrumbs"
+        feedstock_url: "https://github.com/conda-forge/rgpycrumbs-feedstock"
+      - name: pychum
+        version: "1.4.2"
+        summary: Input file generators for computational chemistry.
+        registry_url: "https://anaconda.org/conda-forge/pychum"
+        feedstock_url: "https://github.com/conda-forge/pychum-feedstock"
+      - name: anneal
+        version: "0.5.0"
+        summary: Simulated annealing and quenching for Python.
+        registry_url: "https://anaconda.org/conda-forge/anneal"
+        feedstock_url: "https://github.com/conda-forge/anneal-feedstock"
+        homepage: "https://github.com/HaoZeke/anneal"
+      - name: pytest-pep723
+        version: "0.1.0"
+        summary: Pytest plugin verifying PEP 723 inline script metadata covers imports.
+        registry_url: "https://anaconda.org/conda-forge/pytest-pep723"
+        feedstock_url: "https://github.com/conda-forge/pytest-pep723-feedstock"
+        homepage: "https://github.com/HaoZeke/pytest-pep723"
+      - name: chemparseplot
+        version: "1.8.0"
+        summary: Chemical plotters and parsers.
+        registry_url: "https://anaconda.org/conda-forge/chemparseplot"
+        feedstock_url: "https://github.com/conda-forge/chemparseplot-feedstock"
+      - name: sphinx-rustdoc-postprocess
+        version: "0.1.0"
+        summary: Helper for including Rust sources into Sphinx docs.
+        registry_url: "https://anaconda.org/conda-forge/sphinx-rustdoc-postprocess"
+        feedstock_url: "https://github.com/conda-forge/sphinx-rustdoc-postprocess-feedstock"
+      - name: pyflowy
+        version: "0.0.1"
+        summary: Python bindings for flowy.
+        registry_url: "https://anaconda.org/conda-forge/pyflowy"
+        feedstock_url: "https://github.com/conda-forge/pyflowy-feedstock"
+      - name: ira
+        version: "2.2.0"
+        summary: Iterative Rotations Assignments (IRA) for molecular analysis.
+        registry_url: "https://anaconda.org/conda-forge/ira"
+        feedstock_url: "https://github.com/conda-forge/ira-feedstock"
+      - name: probsamplers
+        version: "0.1.2"
+        summary: Probability samplers for MCMC methods.
+        registry_url: "https://anaconda.org/conda-forge/probsamplers"
+        feedstock_url: "https://github.com/conda-forge/probsamplers-feedstock"
+      - name: asv
+        version: "0.6.6"
+        summary: Python benchmarking tool with web-based reporting.
+        registry_url: "https://anaconda.org/conda-forge/asv"
+        feedstock_url: "https://github.com/conda-forge/asv-feedstock"
+        role: co-maintainer
+      - name: asv_runner
+        version: "0.2.5"
+        summary: Core Python benchmark code for ASV.
+        registry_url: "https://anaconda.org/conda-forge/asv_runner"
+        feedstock_url: "https://github.com/conda-forge/asv_runner-feedstock"
+        role: co-maintainer
+      - name: asv_bench_memray
+        version: "0.1.2"
+        summary: Memray benchmark plugin for asv.
+        registry_url: "https://anaconda.org/conda-forge/asv_bench_memray"
+        feedstock_url: "https://github.com/conda-forge/asv_bench_memray-feedstock"
+      - name: latex-rubber
+        version: "1.6.1"
+        summary: Automated system for building LaTeX documents.
+        registry_url: "https://anaconda.org/conda-forge/latex-rubber"
+        feedstock_url: "https://github.com/conda-forge/latex-rubber-feedstock"
+      - name: libmetatensor
+        version: "0.2.2"
+        summary: Self-describing sparse tensor format for atomistic ML.
+        registry_url: "https://anaconda.org/conda-forge/libmetatensor"
+        feedstock_url: "https://github.com/conda-forge/libmetatensor-feedstock"
+        role: co-maintainer
+      - name: metatensor
+        version: "0.2"
+        summary: Meta-package for the metatensor ecosystem.
+        registry_url: "https://anaconda.org/conda-forge/metatensor"
+        feedstock_url: "https://github.com/conda-forge/metatensor-feedstock"
+        role: co-maintainer
+      - name: python-metatensor-core
+        version: "0.2.2"
+        summary: Python bindings for metatensor-core.
+        registry_url: "https://anaconda.org/conda-forge/python-metatensor-core"
+        feedstock_url: "https://github.com/conda-forge/python-metatensor-core-feedstock"
+        role: co-maintainer
+      - name: python-metatensor-torch
+        version: "0.10.0"
+        summary: Python bindings for metatensor-torch.
+        registry_url: "https://anaconda.org/conda-forge/python-metatensor-torch"
+        feedstock_url: "https://github.com/conda-forge/python-metatensor-torch-feedstock"
+        role: co-maintainer
+      - name: python-metatensor-operations
+        version: "0.5.0"
+        summary: Operations to manipulate metatensor data types.
+        registry_url: "https://anaconda.org/conda-forge/python-metatensor-operations"
+        feedstock_url: "https://github.com/conda-forge/python-metatensor-operations-feedstock"
+        role: co-maintainer
+      - name: python-metatensor-learn
+        version: "0.5.0"
+        summary: Building blocks for atomistic ML models (PyTorch / NumPy).
+        registry_url: "https://anaconda.org/conda-forge/python-metatensor-learn"
+        feedstock_url: "https://github.com/conda-forge/python-metatensor-learn-feedstock"
+        role: co-maintainer
+      - name: libmetatensor-torch
+        version: "0.10.0"
+        summary: TorchScript/C++ bindings to metatensor.
+        registry_url: "https://anaconda.org/conda-forge/libmetatensor-torch"
+        feedstock_url: "https://github.com/conda-forge/libmetatensor-torch-feedstock"
+        role: co-maintainer
+      - name: libmetatomic-torch
+        version: "0.1.15"
+        summary: Atomistic ML models usable everywhere (C++ / Torch).
+        registry_url: "https://anaconda.org/conda-forge/libmetatomic-torch"
+        feedstock_url: "https://github.com/conda-forge/libmetatomic-torch-feedstock"
+        role: co-maintainer
+      - name: python-metatomic-torch
+        version: "0.1.15"
+        summary: Python bindings for metatomic-torch.
+        registry_url: "https://anaconda.org/conda-forge/python-metatomic-torch"
+        feedstock_url: "https://github.com/conda-forge/python-metatomic-torch-feedstock"
+        role: co-maintainer
+
+  - id: pypi
+    name: PyPI
+    label: Python Package Index
+    description: Python packages published under HaoZeke / related accounts.
+    hub_url: "https://pypi.org/user/HaoZeke/"
+    registry_host: pypi.org
+    packages:
+      - name: rgpycrumbs
+        version: "1.9.13"
+        summary: Dispatcher-based analytical and computational suite for chemical physics.
+        registry_url: "https://pypi.org/project/rgpycrumbs/"
+      - name: pychum
+        version: "1.4.2"
+        summary: Input file generators for computational chemistry.
+        registry_url: "https://pypi.org/project/pychum/"
+      - name: anneal
+        version: "0.5.0"
+        summary: Various annealing and quenching techniques.
+        registry_url: "https://pypi.org/project/anneal/"
+        homepage: "https://github.com/HaoZeke/anneal"
+      - name: pytest-pep723
+        version: "0.1.0"
+        summary: Pytest plugin to verify PEP 723 inline script metadata covers all imports.
+        registry_url: "https://pypi.org/project/pytest-pep723/"
+        homepage: "https://github.com/HaoZeke/pytest-pep723"
+      - name: chemparseplot
+        version: "1.9.7"
+        summary: Parsers and plotting tools for computational chemistry.
+        registry_url: "https://pypi.org/project/chemparseplot/"
+      - name: sphinx-rustdoc-postprocess
+        version: "0.1.0"
+        summary: Post-process sphinxcontrib-rust RST (markdown leftovers via pandoc).
+        registry_url: "https://pypi.org/project/sphinx-rustdoc-postprocess/"
+      - name: wailord
+        version: "0.0.2"
+        summary: Python library to interact with ORCA.
+        registry_url: "https://pypi.org/project/wailord/"
+        homepage: "https://wailord.xyz"
+      - name: pydseamslib
+        version: "0.0.2"
+        summary: Python bindings for seams-core.
+        registry_url: "https://pypi.org/project/pydseamslib/"
+
+  - id: crates
+    name: crates.io
+    label: Rust crates
+    description: Crates published under crates.io user HaoZeke.
+    hub_url: "https://crates.io/users/HaoZeke"
+    registry_host: crates.io
+    packages:
+      - name: anneal-core
+        version: "0.5.0"
+        summary: Simulated annealing components built on eindir typed primitives.
+        registry_url: "https://crates.io/crates/anneal-core"
+        homepage: "https://github.com/HaoZeke/anneal"
+      - name: bless
+        version: "0.2.0"
+        summary: CLI logging helper for repeated runs with metadata tracking.
+        registry_url: "https://crates.io/crates/bless"
+        homepage: "https://github.com/HaoZeke/bless"
+      - name: dlpk
+        version: "0.4.0"
+        summary: DLPack integration for Rust.
+        registry_url: "https://crates.io/crates/dlpk"
+        homepage: "https://github.com/metatensor/dlpk"
+      - name: eindir-core
+        version: "0.5.0"
+        summary: Typed primitives for ND objective functions and bounded sampling.
+        registry_url: "https://crates.io/crates/eindir-core"
+        homepage: "https://github.com/HaoZeke/eindir"
+      - name: gauss-jacobi-quad
+        version: "0.2.0"
+        summary: Rust bindings for GaussJacobiQuad (Fortran via C ABI).
+        registry_url: "https://crates.io/crates/gauss-jacobi-quad"
+        homepage: "https://github.com/HaoZeke/GaussJacobiQuad"
+      - name: ookcite-mcp
+        version: "0.4.10"
+        summary: MCP server for OokCite citation validation and formatting.
+        registry_url: "https://crates.io/crates/ookcite-mcp"
+        homepage: "https://github.com/TurtleTech-ehf/ookcite-mcp"
+      - name: radsex-core
+        version: "0.2.3"
+        summary: Core library for RADSex sex-determination analysis.
+        registry_url: "https://crates.io/crates/radsex-core"
+        homepage: "https://github.com/HaoZeke/rsx-rs"
+      - name: readcon-core
+        version: "0.14.0"
+        summary: Oxidized CON file reader/writer with FFI for C/C++.
+        registry_url: "https://crates.io/crates/readcon-core"
+        homepage: "https://github.com/lode-org/readcon-core"
+      - name: readcon-db
+        version: "0.1.2"
+        summary: Mmap-backed CON frame corpus (Heed/LMDB) with multi-language FFI.
+        registry_url: "https://crates.io/crates/readcon-db"
+        homepage: "https://github.com/lode-org/readcon-db"
+      - name: rgpot-core
+        version: "2.2.1"
+        summary: Core Rust library for rgpot RPC potential energy surfaces.
+        registry_url: "https://crates.io/crates/rgpot-core"
+        homepage: "https://github.com/OmniPotentRPC/rgpot"
+      - name: rsx-cli
+        version: "0.2.5"
+        summary: CLI for RAD-seq sex-determination marker analysis.
+        registry_url: "https://crates.io/crates/rsx-cli"
+        homepage: "https://github.com/HaoZeke/rsx-rs"
+      - name: rsxcore
+        version: "0.2.5"
+        summary: Rust library for RAD-seq sex-determination marker analysis.
+        registry_url: "https://crates.io/crates/rsxcore"
+        homepage: "https://github.com/HaoZeke/rsx-rs"
+      - name: rtrash
+        version: "0.1.3"
+        summary: Fast freedesktop.org trash tool with an rm-compatible interface.
+        registry_url: "https://crates.io/crates/rtrash"
+        homepage: "https://github.com/HaoZeke/rtrash"
+      - name: snapper-fmt
+        version: "0.7.8"
+        summary: Semantic line-break formatter for Org, LaTeX, Markdown, plaintext.
+        registry_url: "https://crates.io/crates/snapper-fmt"
+        homepage: "https://github.com/TurtleTech-ehf/snapper"

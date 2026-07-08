@@ -41,6 +41,19 @@ sitemap:
 #+begin_description
 Search in full-text, the entire contents of the site.
 #+end_description
+* DONE Packages
+:PROPERTIES:
+:EXPORT_HUGO_SECTION: /
+:EXPORT_FILE_NAME: packages
+:EXPORT_DATE: 2026-07-08
+:END:
+#+begin_description
+Inventory of packages I maintain across AUR, conda-forge, PyPI, and crates.io.
+#+end_description
+Packages I publish or help maintain, grouped by registry. This page is the
+stable checklist I use when reviewing packaging work --- not a live CI dashboard.
+
+@@hugo:{{< packages-catalog >}}@@
 * DONE Categories
 :PROPERTIES:
 :EXPORT_HUGO_SECTION: /categories/
@@ -23967,6 +23980,7 @@ non-academic sense.
 - I am a certified Software Carpentries [[https://carpentries.org/instructors/#HaoZeke][instructor]]
 - I [[https://carpentries.org/maintainers/#HaoZeke][officially maintain]], for the Software Carpentries, the lesson on R ([[https://github.com/swcarpentry/r-novice-inflammation][r-novice-inflammation]])
 - I [[https://aur.archlinux.org/packages/?SeB=m&K=HaoZeke][also maintain]] some packages on the AUR (ArchLinux User Repository)
+- A consolidated inventory of packages I maintain across AUR, conda-forge, PyPI, and crates.io lives on the {{{relref(Packages,packages)}}} page
 - I [[https://forum.xda-developers.com/xperia-z5/orig-development/cm-14-1-lineageos-t3536846][maintain(ed)]] the official LineageOS image for the Xperia Z5 Dual
 ** Historical Connections
 What follows is a more informal set of places I am or have been associated with or are of significance to

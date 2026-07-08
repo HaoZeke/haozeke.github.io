@@ -24,3 +24,7 @@ uv = ">=0.8.13,<0.9"
 [pypi-dependencies]
 pandoc = ">=2.4, <3"
 panflute = ">=2.3.1"
+
+[tasks.check-packages]
+cmd = "python scripts/check_packages_catalog.py && python -m unittest tests.test_packages_catalog -v"
+description = "Validate data/packages.yaml shape and registry hosts"

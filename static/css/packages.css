@@ -1,0 +1,283 @@
+/* Packages inventory — uses theme CSS variables from hello-friend-ng-hz */
+
+.packages-catalog {
+  --pkg-radius: 10px;
+  --pkg-gap: 0.85rem;
+  --pkg-aur: #1793d1;
+  --pkg-cf: #43b02a;
+  --pkg-pypi: #3775a9;
+  --pkg-crates: #f74c00;
+  margin: 0 0 2.5rem;
+}
+
+.packages-hero {
+  margin-bottom: 1.25rem;
+}
+
+.packages-lede {
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: var(--fg);
+  margin: 0 0 1rem;
+}
+
+.packages-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  margin: 0;
+}
+
+.packages-stat {
+  display: flex;
+  flex-direction: column;
+  min-width: 4.5rem;
+  padding: 0.55rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: var(--pkg-radius);
+  background: var(--bg-secondary);
+}
+
+.packages-stat__n {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 1.45rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--fg);
+}
+
+.packages-stat__n--sm {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.packages-stat__l {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--fg-secondary);
+  margin-top: 0.2rem;
+}
+
+.packages-stat--muted {
+  opacity: 0.9;
+}
+
+.packages-jump {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 0 1.75rem;
+  padding: 0.75rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--border);
+}
+
+.packages-jump__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  text-decoration: none !important;
+  color: var(--fg) !important;
+  font-size: 0.9rem;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.packages-jump__chip:hover {
+  background: var(--highlight);
+}
+
+.packages-jump__chip--aur { border-color: color-mix(in srgb, var(--pkg-aur) 55%, var(--border)); }
+.packages-jump__chip--conda-forge { border-color: color-mix(in srgb, var(--pkg-cf) 55%, var(--border)); }
+.packages-jump__chip--pypi { border-color: color-mix(in srgb, var(--pkg-pypi) 55%, var(--border)); }
+.packages-jump__chip--crates { border-color: color-mix(in srgb, var(--pkg-crates) 55%, var(--border)); }
+
+.packages-jump__count {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.78rem;
+  padding: 0.05rem 0.4rem;
+  border-radius: 999px;
+  background: var(--bg-secondary);
+  color: var(--fg-secondary);
+}
+
+.packages-eco {
+  margin: 0 0 2.25rem;
+  padding-top: 0.25rem;
+  scroll-margin-top: 3.5rem;
+}
+
+.packages-eco__head {
+  margin-bottom: 0.9rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 2px solid var(--border);
+}
+
+.packages-eco--aur .packages-eco__head { border-bottom-color: color-mix(in srgb, var(--pkg-aur) 70%, var(--border)); }
+.packages-eco--conda-forge .packages-eco__head { border-bottom-color: color-mix(in srgb, var(--pkg-cf) 70%, var(--border)); }
+.packages-eco--pypi .packages-eco__head { border-bottom-color: color-mix(in srgb, var(--pkg-pypi) 70%, var(--border)); }
+.packages-eco--crates .packages-eco__head { border-bottom-color: color-mix(in srgb, var(--pkg-crates) 70%, var(--border)); }
+
+.packages-eco__title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+}
+
+.packages-eco__title {
+  margin: 0;
+  font-size: 1.45rem;
+  letter-spacing: -0.02em;
+}
+
+.packages-eco__badge {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.8rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: 6px;
+  background: var(--bg-secondary);
+  color: var(--fg-secondary);
+}
+
+.packages-eco__label {
+  margin: 0.2rem 0 0;
+  font-size: 0.85rem;
+  color: var(--fg-secondary);
+}
+
+.packages-eco__desc {
+  margin: 0.45rem 0 0;
+  max-width: 48rem;
+  color: var(--fg);
+  opacity: 0.92;
+}
+
+.packages-eco__hub {
+  margin: 0.4rem 0 0;
+  font-size: 0.9rem;
+}
+
+.packages-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16.5rem, 1fr));
+  gap: var(--pkg-gap);
+}
+
+.pkg-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid var(--border);
+  border-radius: var(--pkg-radius);
+  background: var(--bg);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  min-height: 7.5rem;
+}
+
+.pkg-card:hover {
+  border-color: color-mix(in srgb, var(--link) 45%, var(--border));
+  box-shadow: 0 2px 10px color-mix(in srgb, var(--fg) 8%, transparent);
+}
+
+.pkg-card__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.pkg-card__name {
+  margin: 0;
+  font-size: 1.02rem;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-weight: 650;
+  line-height: 1.25;
+  word-break: break-word;
+}
+
+.pkg-card__name a {
+  text-decoration: none !important;
+}
+
+.pkg-card__ver {
+  flex-shrink: 0;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.72rem;
+  padding: 0.12rem 0.4rem;
+  border-radius: 4px;
+  background: var(--highlight);
+  color: var(--fg-secondary);
+}
+
+.pkg-card__summary {
+  margin: 0;
+  flex: 1;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: var(--fg-secondary);
+}
+
+.pkg-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem 0.7rem;
+  margin-top: 0.15rem;
+  font-size: 0.8rem;
+}
+
+.pkg-card__link {
+  text-decoration: none !important;
+  border-bottom: 1px dotted currentColor;
+}
+
+.pkg-card__role {
+  margin-left: auto;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--fg-secondary);
+  opacity: 0.85;
+}
+
+.pkg-card__notes {
+  margin: 0;
+  font-size: 0.78rem;
+  font-style: italic;
+  color: var(--fg-secondary);
+}
+
+.packages-foot {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.88rem;
+  color: var(--fg-secondary);
+}
+
+.packages-foot code {
+  font-size: 0.85em;
+}
+
+.packages-empty {
+  padding: 1rem;
+  border: 1px dashed var(--border);
+  border-radius: var(--pkg-radius);
+}
+
+@media (max-width: 684px) {
+  .packages-grid {
+    grid-template-columns: 1fr;
+  }
+  .packages-jump {
+    position: static;
+  }
+}

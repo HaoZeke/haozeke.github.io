@@ -1,0 +1,109 @@
+{{- /*
+  Renders site.Data.packages as a multi-ecosystem inventory.
+  Data shape: data/packages.yaml → .ecosystems[].packages[]
+*/ -}}
+{{- /* site.Data works on Hugo shipped in pixi (0.148); hugo.Data is newer. */ -}}
+{{- $data := site.Data.packages -}}
+{{- if not $data -}}
+  <p class="packages-empty"><em>Package catalog missing</em> (<code>data/packages.yaml</code>).</p>
+{{- else -}}
+{{- $ecosystems := $data.ecosystems -}}
+{{- $total := 0 -}}
+{{- range $ecosystems -}}{{- $total = add $total (len .packages) -}}{{- end -}}
+
+<section class="packages-catalog" aria-label="Maintained packages inventory">
+  <header class="packages-hero">
+    <p class="packages-lede">
+      {{- with $data.intro -}}{{ . | markdownify }}{{- end -}}
+    </p>
+    <div class="packages-stats" role="list">
+      <div class="packages-stat" role="listitem">
+        <span class="packages-stat__n">{{ $total }}</span>
+        <span class="packages-stat__l">packages</span>
+      </div>
+      <div class="packages-stat" role="listitem">
+        <span class="packages-stat__n">{{ len $ecosystems }}</span>
+        <span class="packages-stat__l">ecosystems</span>
+      </div>
+      {{- with $data.updated -}}
+      <div class="packages-stat packages-stat--muted" role="listitem">
+        <span class="packages-stat__n packages-stat__n--sm">{{ . }}</span>
+        <span class="packages-stat__l">catalog date</span>
+      </div>
+      {{- end -}}
+    </div>
+  </header>
+
+  <nav class="packages-jump" aria-label="Jump to ecosystem">
+    {{- range $ecosystems }}
+    <a class="packages-jump__chip packages-jump__chip--{{ .id }}" href="#eco-{{ .id }}">
+      <span class="packages-jump__name">{{ .name }}</span>
+      <span class="packages-jump__count">{{ len .packages }}</span>
+    </a>
+    {{- end }}
+  </nav>
+
+  {{- range $eco := $ecosystems }}
+  <section class="packages-eco packages-eco--{{ $eco.id }}" id="eco-{{ $eco.id }}">
+    <header class="packages-eco__head">
+      <div class="packages-eco__title-row">
+        <h2 class="packages-eco__title">{{ $eco.name }}</h2>
+        <span class="packages-eco__badge">{{ len $eco.packages }}</span>
+      </div>
+      {{- if and $eco.label (ne $eco.label $eco.name) -}}
+      <p class="packages-eco__label">{{ $eco.label }}</p>
+      {{- end -}}
+      {{- with $eco.description -}}
+      <p class="packages-eco__desc">{{ . | markdownify }}</p>
+      {{- end -}}
+      {{- with $eco.hub_url -}}
+      <p class="packages-eco__hub">
+        <a href="{{ . }}" rel="noopener noreferrer">Browse on registry ↗</a>
+      </p>
+      {{- end -}}
+    </header>
+
+    <div class="packages-grid">
+      {{- range $pkg := $eco.packages }}
+      <article class="pkg-card">
+        <header class="pkg-card__head">
+          <h3 class="pkg-card__name">
+            <a href="{{ $pkg.registry_url }}" rel="noopener noreferrer">{{ $pkg.name }}</a>
+          </h3>
+          {{- with $pkg.version -}}
+          <span class="pkg-card__ver" title="Catalog snapshot version">{{ . }}</span>
+          {{- end -}}
+        </header>
+        {{- with $pkg.summary -}}
+        <p class="pkg-card__summary">{{ . }}</p>
+        {{- end -}}
+        <footer class="pkg-card__meta">
+          <a class="pkg-card__link" href="{{ $pkg.registry_url }}" rel="noopener noreferrer">registry</a>
+          {{- with $pkg.feedstock_url -}}
+          <a class="pkg-card__link" href="{{ . }}" rel="noopener noreferrer">feedstock</a>
+          {{- end -}}
+          {{- with $pkg.homepage -}}
+          <a class="pkg-card__link" href="{{ . }}" rel="noopener noreferrer">home</a>
+          {{- end -}}
+          {{- with $pkg.role -}}
+          <span class="pkg-card__role">{{ . }}</span>
+          {{- end -}}
+        </footer>
+        {{- with $pkg.notes -}}
+        <p class="pkg-card__notes">{{ . }}</p>
+        {{- end -}}
+      </article>
+      {{- end }}
+    </div>
+  </section>
+  {{- end }}
+
+  <footer class="packages-foot">
+    <p>
+      Catalog source: <code>data/packages.yaml</code> in
+      <a href="https://github.com/HaoZeke/haozeke.github.io" rel="noopener noreferrer">haozeke.github.io</a>.
+      Add a row there (or run the optional refresh script) when a package lands.
+    </p>
+  </footer>
+</section>
+{{- end -}}
