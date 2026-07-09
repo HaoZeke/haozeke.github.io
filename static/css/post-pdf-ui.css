@@ -165,3 +165,20 @@ body.dark-theme .pdf-export__menu {
   .pdf-export--title { align-items: flex-start; width: 100%; }
   .pdf-export--catalog .pdf-export__menu { margin-left: 0; }
 }
+
+.packages-pdfs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  width: 100%;
+  margin-top: 0.35rem;
+}
+
+.packages-pdfs .pdf-export--catalog {
+  margin: 0;
+}
+
+/* Only show Export label on the first control in the stack */
+.packages-pdfs .pdf-export--catalog + .pdf-export--catalog .pdf-export__label {
+  visibility: hidden;
+}

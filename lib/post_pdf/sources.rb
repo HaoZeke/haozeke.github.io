@@ -27,6 +27,11 @@ module PostPdf
       File.file?(path) ? path : nil
     end
 
+    def write_access_json
+      path = File.join(@root, "static/data/write-access.json")
+      File.file?(path) ? path : nil
+    end
+
     def documents(base_url: "https://rgoswami.me")
       docs = []
       markdown_paths.each do |path|
@@ -35,6 +40,9 @@ module PostPdf
       end
       if (yaml = packages_yaml)
         docs << Document.from_packages(yaml, base_url: base_url)
+      end
+      if (json = write_access_json)
+        docs << Document.from_write_access(json, base_url: base_url)
       end
       docs
     end

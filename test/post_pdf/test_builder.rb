@@ -60,6 +60,29 @@ class TestBuilder < Minitest::Test
               version: "1"
               summary: s
     YAML
+    FileUtils.mkdir_p(File.join(@root, "static/data"))
+    File.write(File.join(@root, "static/data/write-access.json"), <<~JSON)
+      {
+        "generated": "2026-01-01",
+        "total": 1,
+        "org_count": 1,
+        "forge_count": 1,
+        "notables": [],
+        "forges": [
+          {
+            "id": "github",
+            "name": "GitHub",
+            "orgs": [
+              {
+                "org": "HaoZeke",
+                "count": 1,
+                "repos": [{"name": "x", "access": "admin", "private": false}]
+              }
+            ]
+          }
+        ]
+      }
+    JSON
     @printer = FakePrinter.new
     @out = File.join(@root, "static/pdf")
   end
@@ -74,15 +97,15 @@ class TestBuilder < Minitest::Test
 
   def test_incremental_skips_unchanged
     r1 = builder.run
-    assert_equal 3, r1.built.size # alpha, beta, packages
+    assert_equal 4, r1.built.size # alpha, beta, packages, write-access
     assert_empty r1.skipped
     assert_empty r1.errors
     first_calls = @printer.calls.size
-    assert_equal 6, first_calls # 3 docs × 2 themes
+    assert_equal 8, first_calls # 4 docs × 2 themes
 
     r2 = builder.run
     assert_empty r2.built
-    assert_equal 3, r2.skipped.size
+    assert_equal 4, r2.skipped.size
     assert_equal first_calls, @printer.calls.size # no new prints
   end
 
@@ -101,12 +124,13 @@ class TestBuilder < Minitest::Test
     assert_includes r.built, "alpha"
     assert_includes r.skipped, "beta"
     assert_includes r.skipped, "packages"
+    assert_includes r.skipped, "write-access"
   end
 
   def test_force_rebuilds_all
     builder.run
     r = builder(force: true).run
-    assert_equal 3, r.built.size
+    assert_equal 4, r.built.size
   end
 
   def test_prunes_removed_sources
@@ -123,6 +147,7 @@ class TestBuilder < Minitest::Test
     index = JSON.parse(File.read(File.join(@out, "index.json")))
     assert_equal %w[light dark], index["themes"]
     assert index["entries"].key?("packages")
+    assert index["entries"].key?("write-access")
     assert index["entries"].key?("alpha")
   end
 end

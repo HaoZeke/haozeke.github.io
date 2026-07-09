@@ -117,4 +117,55 @@ class TestDocument < Minitest::Test
     assert_equal "cool-tip", doc.slug
     assert_includes doc.url, "/snippets/cool-tip/"
   end
+
+  def test_from_write_access
+    path = File.join(@dir, "write-access.json")
+    File.write(path, <<~JSON)
+      {
+        "generated": "2026-07-09",
+        "total": 3,
+        "org_count": 2,
+        "forge_count": 1,
+        "notables": [
+          {"name": "numpy/numpy", "forge": "github", "access": "write"}
+        ],
+        "forges": [
+          {
+            "id": "github",
+            "name": "GitHub",
+            "orgs": [
+              {
+                "org": "HaoZeke",
+                "count": 2,
+                "repos": [
+                  {"name": "anneal", "access": "admin", "private": false},
+                  {"name": "secret", "access": "admin", "private": true}
+                ]
+              },
+              {
+                "org": "metatensor",
+                "count": 1,
+                "repos": [
+                  {"name": "metatensor", "access": "write", "private": false}
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    JSON
+    doc = PostPdf::Document.from_write_access(path)
+    assert_equal "write-access", doc.slug
+    assert_equal "catalog", doc.kind
+    assert_equal "Write access", doc.title
+    assert_includes doc.meta_line, "3 repos"
+    assert_includes doc.body_html, "Notables"
+    assert_includes doc.body_html, "numpy/numpy"
+    assert_includes doc.body_html, "anneal"
+    assert_includes doc.body_html, "private"
+    assert_includes doc.body_html, "metatensor"
+    html = doc.render_html(theme: "dark", css_text: "/*css*/")
+    assert_includes html, "kind-catalog"
+    assert_includes html, "write access"
+  end
 end

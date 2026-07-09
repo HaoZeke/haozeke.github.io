@@ -68,9 +68,18 @@
                placeholder="name or summary…" autocomplete="off" spellcheck="false" />
       </label>
       <p class="packages-filter__status" id="packages-filter-status" aria-live="polite"></p>
-      {{- /* Catalog PDF: ledger export, not a post title button */ -}}
-      {{- $.Page.Scratch.Set "pdfExportStyle" "catalog" -}}
-      {{- partial "pdf-export.html" $.Page -}}
+      {{- /* Separate PDFs: packages ledger vs write-access ledger */ -}}
+      <div class="packages-pdfs">
+        {{- $.Page.Scratch.Set "pdfExportStyle" "catalog" -}}
+        {{- $.Page.Scratch.Set "pdfExportSlug" "packages" -}}
+        {{- $.Page.Scratch.Set "pdfExportLabel" "Packages PDF" -}}
+        {{- partial "pdf-export.html" $.Page -}}
+        {{- $.Page.Scratch.Set "pdfExportSlug" "write-access" -}}
+        {{- $.Page.Scratch.Set "pdfExportLabel" "Write-access PDF" -}}
+        {{- $.Page.Scratch.Set "pdfExportHideLabel" true -}}
+        {{- partial "pdf-export.html" $.Page -}}
+        {{- $.Page.Scratch.Delete "pdfExportHideLabel" -}}
+      </div>
     </div>
   </header>
 

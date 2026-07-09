@@ -49,7 +49,8 @@ Env knobs:
 | Kind | Source | UI |
 |------|--------|-----|
 | `post` | `content/posts/*.md`, `content/snippets/**/index.md` | Title-cluster **Download PDF** |
-| `catalog` | `data/packages.yaml` | Packages tools bar **Catalog PDF** |
+| `catalog` | `data/packages.yaml` | Packages tools → **Packages PDF** |
+| `catalog` | `static/data/write-access.json` | Packages tools → **Write-access PDF** (separate) |
 
 Opt out: `pdf: false` in front matter, or `params.postPdf = false`.
 
