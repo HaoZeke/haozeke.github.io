@@ -106,8 +106,19 @@ task :postPdfRestore do
   end
 end
 
+desc "Export public write-access JSON from full inventory (aggregates keep private counts; names public-only)"
+task :writeAccessExport do
+  require "post_pdf"
+  result = PostPdf::WriteAccess.export!(root: Dir.pwd)
+  if result[:skipped]
+    puts "writeAccessExport: skipped (#{result[:reason]})"
+  else
+    puts "writeAccessExport: #{result[:total]} total · #{result[:public_total]} public · #{result[:private_total]} private → #{result[:public_path]}"
+  end
+end
+
 desc "Build per-page light/dark PDFs (incremental; needs chromium)"
-task postPdf: [:postPdfRestore] do
+task postPdf: %i[postPdfRestore writeAccessExport] do
   require "post_pdf"
   force = ENV["POST_PDF_FORCE"] == "1"
   skip = ENV["POST_PDF_SKIP"] == "1"

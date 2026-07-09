@@ -130,21 +130,26 @@ module PostPdf
       HTML
     end
 
-    # Separate dense ledger for forge write access (not mixed into packages PDF).
-    # PUBLIC REPOS ONLY — never emit private names into static PDFs.
+    # Write-access ledger PDF. Reads the *public* artifact from
+    # PostPdf::WriteAccess (aggregates may include private counts; listed
+    # names are public only). Defense-in-depth: still strip private:true.
     def self.from_write_access(json_path, base_url: "https://rgoswami.me")
       require "json"
       data = JSON.parse(File.read(json_path))
-      forges = Array(data["forges"]).map { |f| public_forge(f) }.compact
-      notables = Array(data["notables"]).reject { |n| n["private"] }
-      generated = data["generated"]
+      # If someone fed a full inventory by mistake, scrub first.
+      data = WriteAccess.public_payload(data) if write_access_needs_scrub?(data)
 
-      total = forges.sum { |f| Array(f["orgs"]).sum { |o| Array(o["repos"]).size } }
-      org_n = forges.sum { |f| Array(f["orgs"]).size }
-      forge_n = forges.size
+      forges = Array(data["forges"])
+      notables = Array(data["notables"])
+      generated = data["generated"]
+      total = data["total"] || forges.sum { |f| f["total"] || 0 }
+      public_total = data["public_total"] || forges.sum { |f| f["public_total"] || 0 }
+      private_total = data["private_total"] || forges.sum { |f| f["private_total"] || 0 }
+      org_n = data["org_count"] || forges.sum { |f| f["org_count"] || Array(f["orgs"]).size }
+      forge_n = data["forge_count"] || forges.size
 
       body = +%(<div class="catalog catalog--write-access">)
-      body << %(<p class="catalog-note">Public repositories only.</p>)
+      body << %(<p class="catalog-note">Listed names are public. Private repositories appear only in aggregate counts.</p>)
 
       unless notables.empty?
         body << %(<section class="catalog-section">)
@@ -154,52 +159,61 @@ module PostPdf
       end
 
       forges.each do |forge|
-        orgs = Array(forge["orgs"]).sort_by { |o| -Array(o["repos"]).size }
+        orgs = Array(forge["orgs"]).sort_by { |o| -(o["count"] || 0) }
         next if orgs.empty?
 
-        forge_total = orgs.sum { |o| Array(o["repos"]).size }
+        forge_total = forge["total"] || orgs.sum { |o| o["count"] || 0 }
+        forge_priv = forge["private_total"] || orgs.sum { |o| o["private_count"] || 0 }
         body << %(<section class="catalog-section">)
         body << %(<h2 class="eco-head">#{h(forge["name"] || forge["id"])} <span class="eco-n">#{forge_total}</span></h2>)
+        if forge_priv.positive?
+          body << %(<p class="catalog-note">#{forge_priv} private (not listed by name)</p>)
+        end
         orgs.each do |org|
-          repos = Array(org["repos"]).sort_by { |r| r["name"].to_s.downcase }
-          next if repos.empty?
-
-          body << %(<h3 class="reg-head">#{h(org["org"])} <span class="eco-n">#{repos.size}</span></h3>)
-          body << repos_table(repos)
+          repos = Array(org["repos"]).reject { |r| WriteAccess.private_repo?(r) }
+                    .sort_by { |r| r["name"].to_s.downcase }
+          count = org["count"] || (repos.size + (org["private_count"] || 0))
+          priv = org["private_count"] || 0
+          body << %(<h3 class="reg-head">#{h(org["org"])} <span class="eco-n">#{count}</span></h3>)
+          if priv.positive?
+            body << %(<p class="catalog-note">#{priv} private (not listed)</p>)
+          end
+          body << repos_table(repos) if repos.any?
+          body << %(<p class="catalog-note">(no public repos listed)</p>) if repos.empty? && priv.positive?
         end
         body << %(</section>)
       end
 
       body << %(</div>)
 
+      meta_bits = [
+        generated && "updated #{generated}",
+        "#{total} repo#{'s' unless total == 1}",
+        "#{public_total} public",
+        (private_total.positive? ? "#{private_total} private" : nil),
+        "#{org_n} org#{'s' unless org_n == 1}",
+        "#{forge_n} forge#{'s' unless forge_n == 1}"
+      ].compact
+
       new(
         kind: "catalog",
         slug: "write-access",
         title: "Write access",
-        meta_line: [
-          generated && "updated #{generated}",
-          "#{total} public repo#{'s' unless total == 1}",
-          "#{org_n} org#{'s' unless org_n == 1}",
-          "#{forge_n} forge#{'s' unless forge_n == 1}"
-        ].compact.join(" · "),
+        meta_line: meta_bits.join(" · "),
         url: File.join(base_url, "packages") + "/#eco-upstream",
         body_html: body,
-        banner_note: "write access · public only"
+        banner_note: "write access"
       )
     end
 
-    def self.public_forge(forge)
-      orgs = Array(forge["orgs"]).filter_map do |org|
-        repos = Array(org["repos"]).reject { |r| r["private"] }
-        next if repos.empty?
-
-        org.merge("repos" => repos, "count" => repos.size)
+    def self.write_access_needs_scrub?(data)
+      Array(data["forges"]).any? do |f|
+        Array(f["orgs"]).any? do |o|
+          Array(o["repos"]).any? { |r| WriteAccess.private_repo?(r) }
+        end
       end
-      return nil if orgs.empty?
-
-      forge.merge("orgs" => orgs)
     end
-    private_class_method :public_forge
+    private_class_method :write_access_needs_scrub?
 
     def self.notables_table(notables)
       rows = notables.map do |n|

@@ -159,17 +159,18 @@ class TestDocument < Minitest::Test
     assert_equal "write-access", doc.slug
     assert_equal "catalog", doc.kind
     assert_equal "Write access", doc.title
-    assert_includes doc.meta_line, "2 public repo"
+    assert_match(/2 public/, doc.meta_line)
     assert_includes doc.body_html, "Notables"
     assert_includes doc.body_html, "numpy/numpy"
     assert_includes doc.body_html, "anneal"
     assert_includes doc.body_html, "metatensor"
-    assert_includes doc.body_html, "Public repositories only"
+    assert_includes doc.body_html, "aggregate"
+    assert_includes doc.body_html, "private (not listed"
+    # names must never appear; the word "private" may appear in aggregate copy only
     refute_includes doc.body_html, "ST_secret"
     refute_includes doc.body_html, "password-store"
-    refute_includes doc.body_html, "private"
     html = doc.render_html(theme: "dark", css_text: "/*css*/")
     assert_includes html, "kind-catalog"
-    assert_includes html, "public only"
+    assert_includes html, "write access"
   end
 end

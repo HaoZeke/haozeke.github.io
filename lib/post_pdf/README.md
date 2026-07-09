@@ -58,3 +58,21 @@ Opt out: `pdf: false` in front matter, or `params.postPdf = false`.
 
 Atkinson Hyperlegible (`static/fonts/atkinson/`), print CSS in
 `assets/post-pdf/print.css`, site chrome in `static/css/post-pdf-ui.css`.
+
+## Write-access inventory (public artifact)
+
+Full forge inventory (may include private repo *names*) stays local:
+
+- `data/write-access.full.json` or `.tmp/write-access.full.json` (gitignored)
+- or `WRITE_ACCESS_FULL=/path/to/full.json`
+
+```bash
+bundle exec rake writeAccessExport   # also runs before postPdf
+```
+
+Writes `static/data/write-access.json` with:
+
+- **aggregates**: `total`, `public_total`, `private_total` (and per-org counts)
+- **names**: public repositories only
+
+PDF and site UI both consume the public file. Private names never ship.

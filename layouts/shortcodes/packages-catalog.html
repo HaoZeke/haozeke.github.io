@@ -392,9 +392,12 @@
         out.push({
           org: o.org,
           count: o.count,
+          public_count: o.public_count,
+          private_count: o.private_count || 0,
           forge: f.id,
           host: f.host || o.host,
           url: o.url,
+          /* repos array is public-only (private names never ship in JSON) */
           repos: o.repos
         });
       });
@@ -556,10 +559,16 @@
       a.rel = 'noopener noreferrer';
       a.textContent = (org.host || 'github.com') + '/' + org.org;
       meta.appendChild(a);
-      meta.appendChild(document.createTextNode(' · ' + org.count + ' repo' + (org.count === 1 ? '' : 's')));
+      var pub = (org.public_count != null) ? org.public_count : (org.repos || []).length;
+      var priv = org.private_count || 0;
+      var bits = org.count + ' repo' + (org.count === 1 ? '' : 's');
+      if (priv > 0) bits += ' · ' + pub + ' public · ' + priv + ' private (not listed)';
+      meta.appendChild(document.createTextNode(' · ' + bits));
     }
     list.innerHTML = '';
+    /* Public names only — private repos exist only as aggregate counts above */
     (org.repos || []).forEach(function (repo) {
+      if (repo.private) return;
       var row = document.createElement('div');
       row.className = 'wa__row';
       row.setAttribute('role', 'listitem');
@@ -570,7 +579,6 @@
       ra.textContent = repo.name;
       row.appendChild(ra);
       row.appendChild(chip('wa__chip--' + (repo.access || 'write'), repo.access || 'write'));
-      if (repo.private) row.appendChild(chip('wa__chip--private', 'private'));
       var link = document.createElement('a');
       link.className = 'wa__link';
       link.href = repo.url || ('https://github.com/' + repo.full_name);
@@ -579,6 +587,12 @@
       row.appendChild(link);
       list.appendChild(row);
     });
+    if ((org.private_count || 0) > 0 && !(org.repos || []).length) {
+      var empty = document.createElement('p');
+      empty.className = 'wa__empty';
+      empty.textContent = org.private_count + ' private repositories (names not listed).';
+      list.appendChild(empty);
+    }
     panel.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   }
 
