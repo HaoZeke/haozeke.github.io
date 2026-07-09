@@ -131,17 +131,20 @@ module PostPdf
     end
 
     # Separate dense ledger for forge write access (not mixed into packages PDF).
+    # PUBLIC REPOS ONLY — never emit private names into static PDFs.
     def self.from_write_access(json_path, base_url: "https://rgoswami.me")
       require "json"
       data = JSON.parse(File.read(json_path))
-      forges = Array(data["forges"])
-      total = data["total"] || forges.sum { |f| Array(f["orgs"]).sum { |o| o["count"] || Array(o["repos"]).size } }
-      org_n = data["org_count"] || forges.sum { |f| Array(f["orgs"]).size }
-      forge_n = data["forge_count"] || forges.size
-      notables = Array(data["notables"])
+      forges = Array(data["forges"]).map { |f| public_forge(f) }.compact
+      notables = Array(data["notables"]).reject { |n| n["private"] }
       generated = data["generated"]
 
+      total = forges.sum { |f| Array(f["orgs"]).sum { |o| Array(o["repos"]).size } }
+      org_n = forges.sum { |f| Array(f["orgs"]).size }
+      forge_n = forges.size
+
       body = +%(<div class="catalog catalog--write-access">)
+      body << %(<p class="catalog-note">Public repositories only.</p>)
 
       unless notables.empty?
         body << %(<section class="catalog-section">)
@@ -151,16 +154,17 @@ module PostPdf
       end
 
       forges.each do |forge|
-        orgs = Array(forge["orgs"]).sort_by { |o| -(o["count"] || Array(o["repos"]).size) }
+        orgs = Array(forge["orgs"]).sort_by { |o| -Array(o["repos"]).size }
         next if orgs.empty?
 
-        forge_total = orgs.sum { |o| o["count"] || Array(o["repos"]).size }
+        forge_total = orgs.sum { |o| Array(o["repos"]).size }
         body << %(<section class="catalog-section">)
         body << %(<h2 class="eco-head">#{h(forge["name"] || forge["id"])} <span class="eco-n">#{forge_total}</span></h2>)
         orgs.each do |org|
           repos = Array(org["repos"]).sort_by { |r| r["name"].to_s.downcase }
-          n = org["count"] || repos.size
-          body << %(<h3 class="reg-head">#{h(org["org"])} <span class="eco-n">#{n}</span></h3>)
+          next if repos.empty?
+
+          body << %(<h3 class="reg-head">#{h(org["org"])} <span class="eco-n">#{repos.size}</span></h3>)
           body << repos_table(repos)
         end
         body << %(</section>)
@@ -174,15 +178,28 @@ module PostPdf
         title: "Write access",
         meta_line: [
           generated && "updated #{generated}",
-          "#{total} repo#{'s' unless total == 1}",
+          "#{total} public repo#{'s' unless total == 1}",
           "#{org_n} org#{'s' unless org_n == 1}",
           "#{forge_n} forge#{'s' unless forge_n == 1}"
         ].compact.join(" · "),
         url: File.join(base_url, "packages") + "/#eco-upstream",
         body_html: body,
-        banner_note: "write access"
+        banner_note: "write access · public only"
       )
     end
+
+    def self.public_forge(forge)
+      orgs = Array(forge["orgs"]).filter_map do |org|
+        repos = Array(org["repos"]).reject { |r| r["private"] }
+        next if repos.empty?
+
+        org.merge("repos" => repos, "count" => repos.size)
+      end
+      return nil if orgs.empty?
+
+      forge.merge("orgs" => orgs)
+    end
+    private_class_method :public_forge
 
     def self.notables_table(notables)
       rows = notables.map do |n|
@@ -209,23 +226,23 @@ module PostPdf
     end
 
     def self.repos_table(repos)
+      # Callers must already exclude private; drop any that slipped through.
+      repos = Array(repos).reject { |r| r["private"] }
       return %(<p class="catalog-note">(empty)</p>) if repos.empty?
 
       rows = repos.map do |r|
         name = h(r["name"] || r["full_name"])
         access = h(r["access"] || "write")
-        vis = r["private"] ? "private" : "public"
-        %(<tr><td class="pkg-name">#{name}</td><td class="pkg-ver">#{access}</td><td class="pkg-sum">#{vis}</td></tr>)
+        %(<tr><td class="pkg-name">#{name}</td><td class="pkg-ver">#{access}</td></tr>)
       end
       <<~HTML
         <table class="catalog-table catalog-table--wa-repos">
           <colgroup>
             <col class="col-name" />
             <col class="col-ver" />
-            <col class="col-sum" />
           </colgroup>
           <thead>
-            <tr><th scope="col">repository</th><th scope="col">access</th><th scope="col">visibility</th></tr>
+            <tr><th scope="col">repository</th><th scope="col">access</th></tr>
           </thead>
           <tbody>
             #{rows.join("\n")}

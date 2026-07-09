@@ -326,10 +326,9 @@ body.kind-catalog .pdf-banner {
   padding-bottom: 0.45rem;
 }
 
-/* Write-access ledger: repo · access · visibility */
-.catalog-table--wa-repos col.col-name { width: 62%; }
-.catalog-table--wa-repos col.col-ver  { width: 18%; }
-.catalog-table--wa-repos col.col-sum  { width: 20%; }
+/* Write-access ledger: public repos only — repository · access */
+.catalog-table--wa-repos col.col-name { width: 78%; }
+.catalog-table--wa-repos col.col-ver  { width: 22%; }
 
 .catalog-table--wa-notable col.col-name { width: 58%; }
 .catalog-table--wa-notable col.col-ver  { width: 20%; }

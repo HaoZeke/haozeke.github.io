@@ -118,7 +118,7 @@ class TestDocument < Minitest::Test
     assert_includes doc.url, "/snippets/cool-tip/"
   end
 
-  def test_from_write_access
+  def test_from_write_access_excludes_private
     path = File.join(@dir, "write-access.json")
     File.write(path, <<~JSON)
       {
@@ -139,7 +139,8 @@ class TestDocument < Minitest::Test
                 "count": 2,
                 "repos": [
                   {"name": "anneal", "access": "admin", "private": false},
-                  {"name": "secret", "access": "admin", "private": true}
+                  {"name": "ST_secret", "access": "admin", "private": true},
+                  {"name": ".password-store", "access": "admin", "private": true}
                 ]
               },
               {
@@ -158,14 +159,17 @@ class TestDocument < Minitest::Test
     assert_equal "write-access", doc.slug
     assert_equal "catalog", doc.kind
     assert_equal "Write access", doc.title
-    assert_includes doc.meta_line, "3 repos"
+    assert_includes doc.meta_line, "2 public repo"
     assert_includes doc.body_html, "Notables"
     assert_includes doc.body_html, "numpy/numpy"
     assert_includes doc.body_html, "anneal"
-    assert_includes doc.body_html, "private"
     assert_includes doc.body_html, "metatensor"
+    assert_includes doc.body_html, "Public repositories only"
+    refute_includes doc.body_html, "ST_secret"
+    refute_includes doc.body_html, "password-store"
+    refute_includes doc.body_html, "private"
     html = doc.render_html(theme: "dark", css_text: "/*css*/")
     assert_includes html, "kind-catalog"
-    assert_includes html, "write access"
+    assert_includes html, "public only"
   end
 end

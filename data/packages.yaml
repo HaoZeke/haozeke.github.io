@@ -534,8 +534,8 @@ ecosystems:
 upstream:
   title: Write access
   description: Repositories I can push to.
-  total: 867
-  org_count: 99
+  total: 383
+  org_count: 57
   forge_count: 2
   data_url: /data/write-access.json
   notables:
@@ -647,13 +647,13 @@ upstream:
   - id: github
     name: GitHub
     host: github.com
-    total: 652
-    org_count: 64
+    total: 338
+    org_count: 48
   - id: gitlab
     name: GitLab
     host: gitlab.com
-    total: 215
-    org_count: 35
+    total: 45
+    org_count: 9
 retired:
   title: Retired
   description: Packaging I no longer update.
