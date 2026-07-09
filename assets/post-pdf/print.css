@@ -1,0 +1,238 @@
+/* Post PDF print stylesheet — Atkinson Hyperlegible, light/dark.
+   Font URLs are rewritten at build time to absolute file:// paths. */
+
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  src: url("FONTDIR/AtkinsonHyperlegible-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  src: url("FONTDIR/AtkinsonHyperlegible-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  src: url("FONTDIR/AtkinsonHyperlegible-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  src: url("FONTDIR/AtkinsonHyperlegible-BoldItalic.ttf") format("truetype");
+  font-weight: 700;
+  font-style: italic;
+}
+
+:root {
+  --font: "Atkinson Hyperlegible", system-ui, sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --accent: #6b5ce7;
+  --accent-border: color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+.theme-light {
+  --bg: #fbfaf7;
+  --fg: #1a1a1a;
+  --muted: #5c5c5c;
+  --border: #e4e0d8;
+  --code-bg: #f0ede6;
+  --quote-bar: #6b5ce7;
+  --link: #4a3fc7;
+  --accent: #6b5ce7;
+  --row-alt: #f3f1eb;
+}
+
+.theme-dark {
+  --bg: #16161a;
+  --fg: #ece8e1;
+  --muted: #a39e94;
+  --border: #2e2e36;
+  --code-bg: #25252d;
+  --quote-bar: #9b8cff;
+  --link: #b4a9ff;
+  --accent: #9b8cff;
+  --row-alt: #1e1e24;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--fg);
+  line-height: 1.65;
+  font-size: 16px;
+  text-rendering: optimizeLegibility;
+}
+
+@page {
+  size: A4;
+  margin: 14mm 15mm 16mm;
+}
+
+@media print {
+  html, body { background: var(--bg) !important; }
+  body.theme-dark { background: #16161a !important; }
+  body.theme-light { background: #fbfaf7 !important; }
+  a { border-bottom: none !important; }
+}
+
+.pdf-page {
+  max-width: 48rem;
+  margin: 0 auto;
+  color: var(--fg);
+  background: var(--bg);
+}
+
+.pdf-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding-bottom: 0.65rem;
+  margin-bottom: 1.1rem;
+  border-bottom: 2px solid var(--accent);
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.pdf-banner strong {
+  color: var(--fg);
+  font-size: 0.9rem;
+  letter-spacing: -0.01em;
+}
+
+.pdf-page h1 {
+  font-size: 1.75rem;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  margin: 0 0 0.45rem;
+  page-break-after: avoid;
+}
+
+.pdf-page h2 {
+  font-size: 1.2rem;
+  margin: 1.45rem 0 0.55rem;
+  letter-spacing: -0.015em;
+  page-break-after: avoid;
+}
+
+.pdf-page h3 {
+  font-size: 1.02rem;
+  margin: 1.1rem 0 0.4rem;
+  page-break-after: avoid;
+}
+
+.pdf-meta {
+  color: var(--muted);
+  font-size: 0.88rem;
+  margin: 0 0 1.25rem;
+}
+
+.pdf-meta span + span::before {
+  content: "·";
+  margin: 0 0.4rem;
+  opacity: 0.5;
+}
+
+.pdf-page p { margin: 0 0 0.8rem; orphans: 3; widows: 3; }
+.pdf-page a {
+  color: var(--link);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent-border);
+}
+.pdf-page blockquote {
+  margin: 0.9rem 0;
+  padding: 0.1rem 0 0.1rem 0.85rem;
+  border-left: 3px solid var(--quote-bar);
+  color: var(--muted);
+  font-style: italic;
+}
+.pdf-page code {
+  font-family: var(--mono);
+  font-size: 0.88em;
+  background: var(--code-bg);
+  padding: 0.08em 0.3em;
+  border-radius: 3px;
+}
+.pdf-page pre {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.7rem 0.85rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+  page-break-inside: avoid;
+  line-height: 1.45;
+}
+.pdf-page pre code { background: none; padding: 0; }
+.pdf-page dl { margin: 0.7rem 0 1rem; }
+.pdf-page dt { font-weight: 700; margin-top: 0.5rem; page-break-after: avoid; }
+.pdf-page dd { margin: 0.15rem 0 0.35rem 1rem; color: var(--muted); }
+.pdf-page ul, .pdf-page ol { margin: 0 0 0.9rem; padding-left: 1.25rem; }
+.pdf-page li { margin: 0.2rem 0; }
+
+.pdf-footer {
+  margin-top: 1.75rem;
+  padding-top: 0.7rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.75rem;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* Catalog (packages) layout */
+.catalog-lede {
+  color: var(--muted);
+  margin: 0 0 1.25rem;
+}
+.catalog-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  margin: 0 0 1.25rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+.catalog-stats strong { color: var(--fg); }
+.catalog-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  margin: 0 0 1.25rem;
+  page-break-inside: auto;
+}
+.catalog-table th,
+.catalog-table td {
+  text-align: left;
+  padding: 0.35rem 0.45rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.catalog-table th {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  border-bottom: 2px solid var(--border);
+}
+.catalog-table tr:nth-child(even) td { background: var(--row-alt); }
+.catalog-table .pkg-name { font-weight: 700; }
+.catalog-table .pkg-ver { color: var(--muted); white-space: nowrap; }
+.eco-head {
+  margin-top: 1.5rem;
+  page-break-after: avoid;
+}

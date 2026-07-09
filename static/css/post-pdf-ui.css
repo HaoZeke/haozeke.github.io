@@ -1,0 +1,167 @@
+/* Per-page PDF download controls — posts + packages catalog */
+
+.pdf-export {
+  --pdf-accent: #6b5ce7;
+  --pdf-accent-soft: color-mix(in srgb, var(--pdf-accent) 14%, transparent);
+  --pdf-accent-border: color-mix(in srgb, var(--pdf-accent) 35%, transparent);
+  font-family: inherit;
+}
+
+html[data-theme="dark"] .pdf-export,
+body.dark-theme .pdf-export,
+.dark .pdf-export {
+  --pdf-accent: #9b8cff;
+  --pdf-accent-soft: color-mix(in srgb, var(--pdf-accent) 18%, transparent);
+  --pdf-accent-border: color-mix(in srgb, var(--pdf-accent) 40%, transparent);
+}
+
+.pdf-export--title {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.4rem;
+  flex: 0 0 auto;
+  margin: 0.15rem 0 0.35rem;
+}
+
+.post-title-with-pdf {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.85rem 1.1rem;
+}
+
+.post-title-with-pdf .post-title {
+  flex: 1 1 14rem;
+  min-width: 0;
+  margin: 0;
+}
+
+.pdf-export__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.85rem;
+  border-radius: 10px;
+  border: 1px solid var(--pdf-accent-border);
+  background: var(--pdf-accent-soft);
+  color: inherit;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-decoration: none !important;
+  border-bottom: 1px solid var(--pdf-accent-border) !important;
+  box-shadow: none !important;
+  white-space: nowrap;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.pdf-export__btn:hover {
+  background: color-mix(in srgb, var(--pdf-accent) 24%, transparent);
+  border-color: var(--pdf-accent) !important;
+  color: inherit !important;
+}
+
+.pdf-export__btn:focus-visible {
+  outline: 2px solid var(--pdf-accent);
+  outline-offset: 2px;
+}
+
+.pdf-export__icon {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+  stroke: var(--pdf-accent);
+}
+
+.pdf-export__menu {
+  display: flex;
+  gap: 0.3rem;
+  padding: 0.28rem;
+  border-radius: 12px;
+  border: 1px solid var(--border, #e4e0d8);
+  background: var(--bg, transparent);
+}
+
+html[data-theme="dark"] .pdf-export__menu,
+body.dark-theme .pdf-export__menu {
+  border-color: var(--border, #2e2e36);
+}
+
+.pdf-export__menu a {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--fg-secondary, #5c5c5c);
+  padding: 0.32rem 0.6rem;
+  border-radius: 7px;
+  cursor: pointer;
+  text-decoration: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.pdf-export__menu a:hover,
+.pdf-export__menu a.is-active {
+  background: var(--pdf-accent-soft);
+  color: inherit !important;
+}
+
+.pdf-export__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+}
+.pdf-export__dot--light { background: #fbfaf7; color: #1a1a1a; }
+.pdf-export__dot--dark { background: #16161a; color: #ece8e1; }
+
+.pdf-export__hint {
+  font-size: 0.7rem;
+  color: var(--fg-secondary, #5c5c5c);
+  letter-spacing: 0.01em;
+}
+
+/* Packages catalog: bar variant sitting in packages-tools */
+.pdf-export--catalog {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem 0.75rem;
+  margin: 0.35rem 0 0;
+  padding: 0.5rem 0.65rem;
+  border-radius: 10px;
+  border: 1px solid var(--border, #e4e0d8);
+  background: color-mix(in srgb, var(--pdf-accent) 6%, transparent);
+}
+
+.pdf-export--catalog .pdf-export__label {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg-secondary, #5c5c5c);
+}
+
+.pdf-export--catalog .pdf-export__btn {
+  padding: 0.38rem 0.7rem;
+  font-size: 0.82rem;
+}
+
+.pdf-export--catalog .pdf-export__menu {
+  margin-left: auto;
+}
+
+@media (max-width: 560px) {
+  .pdf-export--title { align-items: flex-start; width: 100%; }
+  .pdf-export--catalog .pdf-export__menu { margin-left: 0; }
+}

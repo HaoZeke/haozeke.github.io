@@ -1,0 +1,58 @@
+{{- /*
+  Per-page PDF download control.
+  Params:
+    .         Page context
+    style     "title" (default, posts) | "catalog" (packages ledger)
+*/ -}}
+{{- $enabled := site.Params.postPdf | default true -}}
+{{- if not $enabled -}}{{- /* disabled site-wide */ -}}
+{{- else if eq (.Params.pdf | default true) false -}}{{- /* page opted out */ -}}
+{{- else -}}
+{{- $style := .Scratch.Get "pdfExportStyle" | default "title" -}}
+{{- $slug := "" -}}
+{{- if eq $style "catalog" -}}
+  {{- $slug = "packages" -}}
+{{- else -}}
+  {{- $slug = .File.ContentBaseName -}}
+{{- end -}}
+{{- if $slug -}}
+{{- $light := printf "/pdf/%s-light.pdf" $slug -}}
+{{- $dark  := printf "/pdf/%s-dark.pdf"  $slug -}}
+{{- $lightFile := printf "static/pdf/%s-light.pdf" $slug -}}
+{{- $hasLight := fileExists $lightFile -}}
+{{- /* Prefer site theme default; both themes always listed when built */ -}}
+{{- $defaultTheme := site.Params.defaultTheme | default "dark" -}}
+{{- $primary := cond (eq $defaultTheme "light") $light $dark -}}
+{{- if $hasLight -}}
+<div class="pdf-export pdf-export--{{ $style }}" data-pdf-slug="{{ $slug }}">
+  {{- if eq $style "catalog" -}}
+  <span class="pdf-export__label">Export</span>
+  {{- end -}}
+  <a class="pdf-export__btn" href="{{ $primary }}" download
+     title="Download this page as PDF (Atkinson Hyperlegible)">
+    <svg class="pdf-export__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+      <polyline points="14 2 14 8 20 8"/>
+      <line x1="12" y1="18" x2="12" y2="11"/>
+      <polyline points="9 14 12 18 15 14"/>
+    </svg>
+    {{- if eq $style "catalog" -}}Catalog PDF{{- else -}}Download PDF{{- end -}}
+  </a>
+  <div class="pdf-export__menu" role="group" aria-label="PDF theme">
+    <a href="{{ $light }}" download class="{{ if eq $defaultTheme `light` }}is-active{{ end }}">
+      <span class="pdf-export__dot pdf-export__dot--light" aria-hidden="true"></span>
+      Light
+    </a>
+    <a href="{{ $dark }}" download class="{{ if eq $defaultTheme `dark` }}is-active{{ end }}">
+      <span class="pdf-export__dot pdf-export__dot--dark" aria-hidden="true"></span>
+      Dark
+    </a>
+  </div>
+  {{- if ne $style "catalog" -}}
+  <span class="pdf-export__hint">Atkinson Hyperlegible</span>
+  {{- end -}}
+</div>
+{{- end -}}
+{{- end -}}
+{{- end -}}

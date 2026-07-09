@@ -38,6 +38,19 @@ jobs:
       - name: Install dart-sass
         uses: dw-labs-org/dart-sass-gha@v1
 
+      - name: Cache per-page PDFs
+        uses: actions/cache@v4
+        with:
+          path: static/pdf
+          key: post-pdf-${{ runner.os }}-${{ hashFiles('assets/post-pdf/print.css', 'lib/post_pdf/**', 'data/packages.yaml') }}-${{ hashFiles('content-org/**/*.org') }}
+          restore-keys: |
+            post-pdf-${{ runner.os }}-
+
+      - name: Install Chromium for PDF export
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y chromium-browser || sudo apt-get install -y chromium
+
       - name: Fetch Bot Metrics
         run: |
           git fetch origin bot-metrics:bot-metrics || true

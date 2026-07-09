@@ -568,3 +568,10 @@ presentations/**/*.html
 .pixi
 *.egg-info
 setup/.emacs-packages/
+
+# Post PDF build scratch + generated binaries (CI/local cache restores)
+.tmp/post-pdf/
+static/pdf/*.pdf
+# keep manifest/index out of ignore so empty tree is fine; they are generated too:
+static/pdf/.manifest.json
+static/pdf/index.json

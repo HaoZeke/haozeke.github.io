@@ -1,5 +1,7 @@
-require 'rake'
-require 'image_optim'
+# frozen_string_literal: true
+
+require "rake"
+require "image_optim"
 
 # Variables
 ORG_FILES = Rake::FileList.new("content-org/**/*.*org") do |fl|
@@ -8,19 +10,16 @@ ORG_FILES = Rake::FileList.new("content-org/**/*.*org") do |fl|
 end
 
 # Debug
-# puts ORG_FILES
-# puts oxSetup
-# puts oxTmp
 Rake.application.options.trace_rules = true
 oxTmp = Dir.pwd + "/.tmp/ox-hugo-dev"
 oxSetup = Dir.pwd + "/setup"
 rgScripts = Dir.pwd + "/scripts"
 
 # Global
-image_optim = ImageOptim.new(:skip_missing_workers => true)
+image_optim = ImageOptim.new(skip_missing_workers: true)
 
 # Tasks
-task :default => :hugoServe
+task default: :hugoServe
 
 desc "Clean the generated content"
 task :clean do
@@ -34,44 +33,79 @@ task :getPandoc do
 end
 
 desc "Serve site with Hugo"
-task :hugoServe, [:port] => [:md] do |t, args|
-  args.with_defaults(:port => "1337")
+task :hugoServe, [:port] => [:md] do |_t, args|
+  args.with_defaults(port: "1337")
   sh "hugo server --port #{args.port} --buildDrafts --buildFuture --navigateToChanged"
 end
 
 desc "Build site with Hugo"
-task :hugoBuild, [:cachedir] => ["md"] do |t, args|
-  args.with_defaults(:cachedir => "$(pwd)/cacheDir/images")
+task :hugoBuild, [:cachedir] => %i[md postPdf] do |_t, args|
+  args.with_defaults(cachedir: "$(pwd)/cacheDir/images")
   sh "hugo --minify --enableGitInfo --gc --buildFuture --cacheDir #{args.cachedir}"
 end
 
 desc "Orgmode to markdown with Emacs"
-task :md => ORG_FILES.ext(".md")
+task md: ORG_FILES.ext(".md")
 
 rule ".md" => ->(f) { source_for_md(f) } do |t|
   file t.name => t.source do
-    %x(#{rgScripts}/mkMD.sh #{t.source} #{oxSetup} #{oxTmp})
+    `#{rgScripts}/mkMD.sh #{t.source} #{oxSetup} #{oxTmp}`
   end
   Rake::Task[t.name].invoke
 end
-# 50.7 with -m
-# 33.8 without
-# 53 with multitask
 
 # For zsh:
 # rake optImages\[content-org\]
 desc "Optimize images"
-task :optImages, [:sources] do |t, args|
-  args.with_defaults(:sources => "public")
+task :optImages, [:sources] do |_t, args|
+  args.with_defaults(sources: "public")
   image_optim.optimize_images!(Dir.glob("#{args.sources}**/**/*.{png,jpg,jpeg,svg,gif}")) do |unoptimized, optimized|
     puts "Testing #{unoptimized}"
-    if optimized
-      puts "==> Optimized inplace"
-    end
+    puts "==> Optimized inplace" if optimized
   end
+end
+
+# --- Post PDF (Ruby, incremental, unit-tested) ---
+
+$LOAD_PATH.unshift(File.expand_path("lib", __dir__))
+
+desc "Unit tests for post PDF generator (no chromium)"
+task :test_post_pdf do
+  ruby "-Ilib:test", "test/post_pdf/run.rb"
+end
+
+desc "Build per-page light/dark PDFs (incremental; needs chromium)"
+task :postPdf do
+  require "post_pdf"
+  force = ENV["POST_PDF_FORCE"] == "1"
+  skip = ENV["POST_PDF_SKIP"] == "1"
+  if skip
+    puts "postPdf: skipped (POST_PDF_SKIP=1)"
+    next
+  end
+
+  printer = PostPdf::Chromium.new
+  unless printer.available?
+    warn "postPdf: chromium not found — skipping PDF generation (set POST_PDF_SKIP=1 to silence)"
+    next
+  end
+
+  builder = PostPdf::Builder.new(root: Dir.pwd, force: force, printer: printer)
+  result = builder.run
+  puts "postPdf: built=#{result.built.size} skipped=#{result.skipped.size} removed=#{result.removed.size} errors=#{result.errors.size}"
+  result.built.first(10).each { |s| puts "  + #{s}" }
+  puts "  … #{result.built.size - 10} more" if result.built.size > 10
+  result.errors.each { |e| warn "  ! #{e['slug']}: #{e['error']}" }
+  abort "postPdf: #{result.errors.size} error(s)" unless result.errors.empty?
+end
+
+desc "Force rebuild all post PDFs"
+task :postPdfForce do
+  ENV["POST_PDF_FORCE"] = "1"
+  Rake::Task[:postPdf].invoke
 end
 
 # From https://avdi.codes/rake-part-3-rules/
 def source_for_md(md_file)
-  ORG_FILES.detect { |f| f.ext('') == md_file.ext('') }
+  ORG_FILES.detect { |f| f.ext("") == md_file.ext("") }
 end

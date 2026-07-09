@@ -67,6 +67,9 @@
                placeholder="name or summary…" autocomplete="off" spellcheck="false" />
       </label>
       <p class="packages-filter__status" id="packages-filter-status" aria-live="polite"></p>
+      {{- /* Catalog PDF: ledger export, not a post title button */ -}}
+      {{- $.Page.Scratch.Set "pdfExportStyle" "catalog" -}}
+      {{- partial "pdf-export.html" $.Page -}}
     </div>
   </header>
 

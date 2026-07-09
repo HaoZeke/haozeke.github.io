@@ -36,3 +36,15 @@ description = "Online registry scan vs data/packages.yaml (drift report)"
 [tasks.scan-packages-nix]
 cmd = "python scripts/scan_package_registries.py --nixpkgs-root /tmp/nixpkgs-2511"
 description = "Registry scan including local nixpkgs tree if present"
+
+[tasks.test-post-pdf]
+cmd = "bundle exec rake test_post_pdf"
+description = "Unit tests for per-page PDF generator (no chromium)"
+
+[tasks.post-pdf]
+cmd = "bundle exec rake postPdf"
+description = "Incremental light/dark PDFs for posts/snippets/packages"
+
+[tasks.post-pdf-force]
+cmd = "POST_PDF_FORCE=1 bundle exec rake postPdf"
+description = "Force rebuild all post PDFs"
