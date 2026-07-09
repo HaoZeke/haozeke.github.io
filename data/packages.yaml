@@ -4,13 +4,12 @@
 
 updated: '2026-07-09'
 title: Packages I maintain
-intro: Packages I maintain or co-maintain, container images I publish, and repositories I can push to
-  on GitHub and GitLab.
+intro: What I package, co-maintain, or can push to — registries, containers, and a few forges.
 ecosystems:
 - id: aur
   name: AUR
   label: Arch User Repository
-  description: Arch Linux packages under maintainer HaoZeke.
+  description: Arch packages I maintain on the AUR.
   hub_url: https://aur.archlinux.org/packages/?SeB=m&K=HaoZeke
   registry_host: aur.archlinux.org
   packages:
@@ -43,10 +42,7 @@ ecosystems:
 - id: conda-forge
   name: conda-forge
   label: conda-forge
-  description: 'Feedstocks where HaoZeke appears as a recipe maintainer or regular co-maintainer. Includes
-    personal tools and metatensor ecosystem work.
-
-    '
+  description: Feedstocks I maintain or co-maintain — personal tools and metatensor-stack work.
   hub_url: https://prefix.dev/channels/conda-forge
   registry_host: prefix.dev
   packages:
@@ -182,7 +178,7 @@ ecosystems:
 - id: pypi
   name: PyPI
   label: Python Package Index
-  description: Python packages published under HaoZeke / related accounts.
+  description: PyPI releases under my accounts.
   hub_url: https://pypi.org/user/HaoZeke/
   registry_host: pypi.org
   packages:
@@ -253,7 +249,7 @@ ecosystems:
 - id: crates
   name: crates.io
   label: Rust crates
-  description: Crates published under crates.io user HaoZeke.
+  description: crates.io releases under my account.
   hub_url: https://crates.io/users/HaoZeke
   registry_host: crates.io
   packages:
@@ -330,10 +326,7 @@ ecosystems:
 - id: spack
   name: Spack
   label: Spack package manager
-  description: 'Packages in spack/spack-packages where HaoZeke appears in maintainers(). Includes metatensor-stack
-    work and a few older science codes.
-
-    '
+  description: Spack packages I maintain — metatensor stack and a few older science codes.
   hub_url: https://github.com/search?q=repo%3Aspack%2Fspack-packages+HaoZeke+filename%3Apackage.py&type=code
   registry_host: packages.spack.io
   packages:
@@ -448,7 +441,7 @@ ecosystems:
 - id: melpa
   name: MELPA
   label: Milkypostman’s Emacs Lisp Package Archive
-  description: Emacs packages on MELPA.
+  description: Emacs packages I ship on MELPA.
   hub_url: https://melpa.org/#/
   registry_host: melpa.org
   packages:
@@ -460,7 +453,7 @@ ecosystems:
 - id: containers
   name: Containers
   label: Docker Hub and GHCR
-  description: Container images on Docker Hub and GHCR. Pull counts are catalog snapshots.
+  description: Images I publish on Docker Hub and GHCR. Pull counts are a snapshot, not live.
   hub_url: https://hub.docker.com/u/haozeke
   registry_host: hub.docker.com
   packages:
@@ -512,7 +505,7 @@ ecosystems:
 - id: cran
   name: CRAN
   label: Comprehensive R Archive Network
-  description: R packages on CRAN under maintainer Rohit Goswami (rgoswami@ieee.org).
+  description: R packages I maintain on CRAN.
   hub_url: https://cran.r-project.org/web/checks/check_results_rgoswami_at_ieee.org.html
   registry_host: cran.r-project.org
   packages:
@@ -526,8 +519,7 @@ ecosystems:
 - id: ropensci
   name: rOpenSci
   label: rOpenSci peer-reviewed R packages
-  description: Packages in the rOpenSci suite (peer review + r-universe). Often also on CRAN; this surface
-    is the rOpenSci docs and review home.
+  description: Peer-reviewed through rOpenSci (docs and r-universe). Often also on CRAN.
   hub_url: https://ropensci.org/packages/
   registry_host: ropensci.org
   packages:
@@ -541,7 +533,7 @@ ecosystems:
     notes: Also on CRAN; r-universe builds under ropensci.
 upstream:
   title: Write access
-  description: Repositories I can push to, grouped by forge and organization.
+  description: Orgs and repos where I have push access, by forge.
   total: 867
   org_count: 99
   forge_count: 2
@@ -664,13 +656,13 @@ upstream:
     org_count: 35
 retired:
   title: Retired
-  description: Packaging I no longer keep up.
+  description: Packaging I dropped or no longer tend.
   registries:
   - id: nixpkgs
     name: nixpkgs
     label: NixOS / nixpkgs
     hub_url: https://search.nixos.org/packages?channel=25.11
-    note: Still listed as maintainer on nixos-25.11. Cleared on nixos-unstable.
+    note: Still on the maintainer list for nixos-25.11; cleared on unstable.
     packages:
     - name: conan
       version: 2.21.0
