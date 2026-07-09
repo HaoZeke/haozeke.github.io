@@ -61,8 +61,8 @@ module PostPdf
 
       body = +%(<p class="catalog-lede">#{h(data["intro"] || data["title"] || "Packages")}</p>)
       body << %(<div class="catalog-stats">)
-      body << %(<span><strong>#{total}</strong> registry entries</span>)
-      body << %(<span><strong>#{ecosystems.size}</strong> surfaces</span>)
+      body << %(<span><strong>#{total}</strong> registry #{total == 1 ? "entry" : "entries"}</span>)
+      body << %(<span><strong>#{ecosystems.size}</strong> #{ecosystems.size == 1 ? "surface" : "surfaces"}</span>)
       body << %(<span><strong>#{retired_n}</strong> retired</span>) if retired_n.positive?
       body << %(</div>)
 
@@ -88,8 +88,8 @@ module PostPdf
         title: data["title"] || "Packages",
         meta_line: [
           "updated #{data["updated"]}",
-          "#{total} packages",
-          "#{ecosystems.size} ecosystems"
+          "#{total} package#{'s' unless total == 1}",
+          "#{ecosystems.size} ecosystem#{'s' unless ecosystems.size == 1}"
         ].compact.join(" · "),
         url: File.join(base_url, "packages") + "/",
         body_html: body,

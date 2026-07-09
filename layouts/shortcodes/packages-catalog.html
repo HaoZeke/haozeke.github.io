@@ -18,25 +18,26 @@
 {{- end -}}
 
 <section class="packages-catalog" aria-label="Maintained packages inventory" data-total="{{ $total }}">
+  {{- $ecoN := len $ecosystems -}}
   <header class="packages-mast">
-    <p class="packages-kicker">maintainer index · {{ len $ecosystems }} surfaces</p>
+    <p class="packages-kicker">maintainer index · {{ $ecoN }} {{ if eq $ecoN 1 }}surface{{ else }}surfaces{{ end }}</p>
     <p class="packages-lede">
       {{- with $data.intro -}}{{ . | markdownify }}{{- end -}}
     </p>
     <p class="packages-meta">
-      <span><strong>{{ $total }}</strong> registry entries</span>
+      <span><strong>{{ $total }}</strong> registry {{ if eq $total 1 }}entry{{ else }}entries{{ end }}</span>
       <span class="packages-meta__sep" aria-hidden="true">·</span>
-      <span><strong>{{ len $ecosystems }}</strong> ecosystems</span>
+      <span><strong>{{ $ecoN }}</strong> {{ if eq $ecoN 1 }}ecosystem{{ else }}ecosystems{{ end }}</span>
       {{- if gt $upCount 0 -}}
       <span class="packages-meta__sep" aria-hidden="true">·</span>
-      <span><strong>{{ $upCount }}</strong> write-access repos</span>
+      <span><strong>{{ $upCount }}</strong> write-access {{ if eq $upCount 1 }}repo{{ else }}repos{{ end }}</span>
       {{- with $upstream.forge_count -}}
       <span class="packages-meta__sep" aria-hidden="true">·</span>
-      <span><strong>{{ . }}</strong> forges</span>
+      <span><strong>{{ . }}</strong> {{ if eq . 1 }}forge{{ else }}forges{{ end }}</span>
       {{- end -}}
       {{- with $upstream.org_count -}}
       <span class="packages-meta__sep" aria-hidden="true">·</span>
-      <span><strong>{{ . }}</strong> orgs</span>
+      <span><strong>{{ . }}</strong> {{ if eq . 1 }}org{{ else }}orgs{{ end }}</span>
       {{- end -}}
       {{- end -}}
       {{- with $data.updated -}}
@@ -546,7 +547,7 @@
       a.rel = 'noopener noreferrer';
       a.textContent = (org.host || 'github.com') + '/' + org.org;
       meta.appendChild(a);
-      meta.appendChild(document.createTextNode(' · ' + org.count + ' repos'));
+      meta.appendChild(document.createTextNode(' · ' + org.count + ' repo' + (org.count === 1 ? '' : 's')));
     }
     list.innerHTML = '';
     (org.repos || []).forEach(function (repo) {
