@@ -3,6 +3,7 @@
 require "cgi"
 require "time"
 require_relative "markdown"
+require_relative "mathjax"
 require_relative "version"
 
 module PostPdf
@@ -315,6 +316,7 @@ module PostPdf
 
       theme = theme.to_s
       note = [banner_note, theme, "Atkinson Hyperlegible"].compact.join(" · ")
+      math = (kind == "post" && MathJax.needed?(body_html)) ? MathJax.head_tags : ""
       <<~HTML
         <!DOCTYPE html>
         <html lang="en">
@@ -324,6 +326,7 @@ module PostPdf
           <style>
         #{css_text}
           </style>
+          #{math}
         </head>
         <body class="theme-#{theme} kind-#{kind}">
           <article class="pdf-page">

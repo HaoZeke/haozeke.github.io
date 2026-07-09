@@ -173,4 +173,33 @@ class TestDocument < Minitest::Test
     assert_includes html, "kind-catalog"
     assert_includes html, "write access"
   end
+
+  def test_mathjax_injected_when_math_present
+    path = write_post(
+      "mathy",
+      "Inline \\(E = mc^2\\) and more.",
+      title: "Mathy",
+      draft: false
+    )
+    posts = File.join(@dir, "content/posts")
+    FileUtils.mkdir_p(posts)
+    dest = File.join(posts, "mathy.md")
+    FileUtils.mv(path, dest)
+    doc = PostPdf::Document.from_post(dest)
+    html = doc.render_html(theme: "light", css_text: "body{}")
+    assert_includes html, "MathJax"
+    assert_includes html, "tex-svg"
+    assert_includes doc.body_html, "\\("
+  end
+
+  def test_no_mathjax_without_math
+    path = write_post("plain", "No formulas here.", title: "Plain", draft: false)
+    posts = File.join(@dir, "content/posts")
+    FileUtils.mkdir_p(posts)
+    dest = File.join(posts, "plain.md")
+    FileUtils.mv(path, dest)
+    doc = PostPdf::Document.from_post(dest)
+    html = doc.render_html(theme: "light", css_text: "body{}")
+    refute_includes html, "MathJax"
+  end
 end

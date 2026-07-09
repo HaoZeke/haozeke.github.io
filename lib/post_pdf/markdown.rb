@@ -20,14 +20,53 @@ module PostPdf
       body = expand_figures(text.to_s, root: root, base_url: base_url)
       body = scrub_remaining_shortcodes(body)
       body = rewrite_markdown_images(body, root: root, base_url: base_url)
+      body, math_slots = protect_math(body)
       opts = {
         hard_wrap: false,
         syntax_highlighter: nil
       }
       opts[:input] = "GFM" if defined?(Kramdown::Parser::GFM)
       html = Kramdown::Document.new(body, opts).to_html
+      html = restore_math(html, math_slots)
       rewrite_html_img_srcs(html, root: root, base_url: base_url)
     end
+
+# Keep TeX delimiters out of kramdown; normalize ox-hugo \\( \\).
+def protect_math(text)
+  slots = []
+  # Match 1–2 backslashes before delimiters (ox-hugo often double-escapes)
+  t = text.gsub(/\\{1,2}\[(.+?)\\{1,2}\]/m) do
+    tex = normalize_tex(Regexp.last_match(1))
+    slots << "\\[#{tex}\\]"
+    math_token(slots.size - 1)
+  end
+  t = t.gsub(/\\{1,2}\((.+?)\\{1,2}\)/m) do
+    tex = normalize_tex(Regexp.last_match(1))
+    slots << "\\(#{tex}\\)"
+    math_token(slots.size - 1)
+  end
+  t = t.gsub(/\$\$(.+?)\$\$/m) do
+    tex = normalize_tex(Regexp.last_match(1))
+    slots << "$$#{tex}$$"
+    math_token(slots.size - 1)
+  end
+  [t, slots]
+end
+
+def math_token(i)
+  "@@MATH#{i}@@"
+end
+
+def restore_math(html, slots)
+  slots.each_with_index do |tex, i|
+    html = html.gsub(math_token(i), tex)
+  end
+  html
+end
+
+def normalize_tex(tex)
+  tex.to_s.gsub("\\_", "_")
+end
 
     # Expand {{< figure src="..." caption="..." >}} into HTML figures.
     def expand_figures(text, root: nil, base_url: "https://rgoswami.me")

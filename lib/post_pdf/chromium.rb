@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "fileutils"
 require "open3"
 require "rbconfig"
 
@@ -49,6 +50,8 @@ module PostPdf
       FileUtils.mkdir_p(File.dirname(abs_pdf))
 
       uri = "file://#{abs_html}"
+      # virtual-time-budget: allow async MathJax + remote images to settle
+      budget = ENV.fetch("POST_PDF_VIRTUAL_TIME_MS", "20000")
       cmd = [
         @binary,
         "--headless=new",
@@ -56,6 +59,10 @@ module PostPdf
         "--no-pdf-header-footer",
         "--disable-extensions",
         "--no-first-run",
+        "--hide-scrollbars",
+        "--run-all-compositor-stages-before-draw",
+        "--virtual-time-budget=#{budget}",
+        "--allow-file-access-from-files",
         "--print-to-pdf=#{abs_pdf}",
         uri
       ]
