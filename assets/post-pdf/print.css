@@ -63,34 +63,45 @@
   print-color-adjust: exact !important;
 }
 
+/* Zero page margin so theme bg fills the sheet (Chromium paints white otherwise). */
+@page {
+  size: A4;
+  margin: 0;
+}
+
 html, body {
   margin: 0;
   padding: 0;
+  min-height: 100%;
   font-family: var(--font);
   background: var(--bg);
   color: var(--fg);
-  line-height: 1.65;
-  font-size: 16px;
+  line-height: 1.55;
+  font-size: 15px;
   text-rendering: optimizeLegibility;
 }
 
-@page {
-  size: A4;
-  margin: 14mm 15mm 16mm;
+body.theme-dark,
+body.theme-light {
+  padding: 11mm 11mm 13mm;
 }
 
 @media print {
-  html, body { background: var(--bg) !important; }
+  html, body {
+    background: var(--bg) !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
   body.theme-dark { background: #16161a !important; }
   body.theme-light { background: #fbfaf7 !important; }
   a { border-bottom: none !important; }
 }
 
 .pdf-page {
-  max-width: 48rem;
-  margin: 0 auto;
+  max-width: none;
+  margin: 0;
   color: var(--fg);
-  background: var(--bg);
+  background: transparent;
 }
 
 .pdf-banner {
@@ -194,45 +205,123 @@ html, body {
   gap: 1rem;
 }
 
-/* Catalog (packages) layout */
-.catalog-lede {
-  color: var(--muted);
-  margin: 0 0 1.25rem;
+/* Catalog (packages) — dense fixed-column ledger */
+.catalog {
+  margin: 0;
 }
-.catalog-stats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem 1.25rem;
-  margin: 0 0 1.25rem;
-  font-size: 0.9rem;
-  color: var(--muted);
-}
-.catalog-stats strong { color: var(--fg); }
-.catalog-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.82rem;
-  margin: 0 0 1.25rem;
+
+.catalog-section {
+  margin: 0 0 0.85rem;
+  /* allow multi-page ecosystems; keep headers with first rows via eco-head */
   page-break-inside: auto;
 }
+
+.catalog-section--retired {
+  margin-top: 1rem;
+  padding-top: 0.55rem;
+  border-top: 1px solid var(--border);
+}
+
+.eco-head {
+  font-size: 0.95rem;
+  letter-spacing: -0.015em;
+  margin: 0 0 0.35rem;
+  page-break-after: avoid;
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+}
+
+.reg-head {
+  font-size: 0.85rem;
+  margin: 0.55rem 0 0.25rem;
+  page-break-after: avoid;
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+.eco-n {
+  font-weight: 400;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.catalog-note {
+  margin: 0 0 0.35rem;
+  font-size: 0.72rem;
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+.catalog-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  font-size: 0.7rem;
+  line-height: 1.35;
+  margin: 0 0 0.55rem;
+}
+
+.catalog-table col.col-name { width: 26%; }
+.catalog-table col.col-ver  { width: 14%; }
+.catalog-table col.col-sum  { width: 60%; }
+
 .catalog-table th,
 .catalog-table td {
   text-align: left;
-  padding: 0.35rem 0.45rem;
+  padding: 0.16rem 0.35rem;
   border-bottom: 1px solid var(--border);
   vertical-align: top;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
+
 .catalog-table th {
-  font-size: 0.72rem;
+  font-size: 0.62rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   color: var(--muted);
-  border-bottom: 2px solid var(--border);
+  border-bottom: 1.5px solid var(--border);
+  padding-bottom: 0.22rem;
 }
-.catalog-table tr:nth-child(even) td { background: var(--row-alt); }
-.catalog-table .pkg-name { font-weight: 700; }
-.catalog-table .pkg-ver { color: var(--muted); white-space: nowrap; }
-.eco-head {
-  margin-top: 1.5rem;
-  page-break-after: avoid;
+
+.catalog-table tbody tr {
+  page-break-inside: avoid;
+}
+
+.catalog-table tbody tr:nth-child(even) td {
+  background: var(--row-alt);
+}
+
+.catalog-table .pkg-name {
+  font-weight: 700;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+}
+
+.catalog-table .pkg-ver {
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  white-space: nowrap;
+}
+
+.catalog-table .pkg-sum {
+  color: var(--fg);
+}
+
+/* Slightly tighter catalog title block */
+body.kind-catalog .pdf-page h1 {
+  font-size: 1.45rem;
+  margin-bottom: 0.25rem;
+}
+body.kind-catalog .pdf-meta {
+  margin-bottom: 0.85rem;
+  font-size: 0.8rem;
+}
+body.kind-catalog .pdf-banner {
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.45rem;
 }

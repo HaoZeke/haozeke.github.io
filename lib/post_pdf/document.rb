@@ -59,57 +59,70 @@ module PostPdf
       total = ecosystems.sum { |e| Array(e["packages"]).size }
       retired_n = Array(retired["registries"]).sum { |r| Array(r["packages"]).size }
 
-      body = +%(<p class="catalog-lede">#{h(data["intro"] || data["title"] || "Packages")}</p>)
-      body << %(<div class="catalog-stats">)
-      body << %(<span><strong>#{total}</strong> registry #{total == 1 ? "entry" : "entries"}</span>)
-      body << %(<span><strong>#{ecosystems.size}</strong> #{ecosystems.size == 1 ? "surface" : "surfaces"}</span>)
-      body << %(<span><strong>#{retired_n}</strong> retired</span>) if retired_n.positive?
-      body << %(</div>)
-
+      # Dense ledger: section headers + fixed-column tables. No repeated blurbs.
+      body = +%(<div class="catalog">)
       ecosystems.each do |eco|
         pkgs = Array(eco["packages"])
-        body << %(<h2 class="eco-head">#{h(eco["name"])} <span class="pdf-meta">(#{pkgs.size})</span></h2>)
-        body << %(<p class="catalog-lede">#{h(eco["description"].to_s.strip)}</p>) unless eco["description"].to_s.strip.empty?
+        next if pkgs.empty?
+
+        body << %(<section class="catalog-section">)
+        body << %(<h2 class="eco-head">#{h(eco["name"])} <span class="eco-n">#{pkgs.size}</span></h2>)
         body << catalog_table(pkgs)
+        body << %(</section>)
       end
 
       if retired_n.positive?
-        body << %(<h2 class="eco-head">Retired</h2>)
+        body << %(<section class="catalog-section catalog-section--retired">)
+        body << %(<h2 class="eco-head">Retired <span class="eco-n">#{retired_n}</span></h2>)
         Array(retired["registries"]).each do |reg|
           pkgs = Array(reg["packages"])
-          body << %(<h3>#{h(reg["name"])} (#{pkgs.size})</h3>)
+          next if pkgs.empty?
+
+          note = reg["note"].to_s.strip
+          body << %(<h3 class="reg-head">#{h(reg["name"])} <span class="eco-n">#{pkgs.size}</span></h3>)
+          body << %(<p class="catalog-note">#{h(note)}</p>) unless note.empty?
           body << catalog_table(pkgs, retired: true)
         end
+        body << %(</section>)
       end
+      body << %(</div>)
 
       new(
         kind: "catalog",
         slug: "packages",
         title: data["title"] || "Packages",
         meta_line: [
-          "updated #{data["updated"]}",
+          data["updated"] && "updated #{data["updated"]}",
           "#{total} package#{'s' unless total == 1}",
-          "#{ecosystems.size} ecosystem#{'s' unless ecosystems.size == 1}"
+          "#{ecosystems.size} ecosystem#{'s' unless ecosystems.size == 1}",
+          (retired_n.positive? ? "#{retired_n} retired" : nil)
         ].compact.join(" · "),
         url: File.join(base_url, "packages") + "/",
         body_html: body,
-        banner_note: "maintainer inventory"
+        banner_note: "packages"
       )
     end
 
     def self.catalog_table(pkgs, retired: false)
-      return "<p class=\"catalog-lede\">(empty)</p>" if pkgs.empty?
+      return %(<p class="catalog-note">(empty)</p>) if pkgs.empty?
 
       rows = pkgs.map do |p|
         name = h(p["name"])
         ver = h(p["version"] || p["last_touched"] || "—")
         summary = h(p["summary"] || "—")
-        %(<tr><td class="pkg-name">#{name}</td><td class="pkg-ver">#{ver}</td><td>#{summary}</td></tr>)
+        %(<tr><td class="pkg-name">#{name}</td><td class="pkg-ver">#{ver}</td><td class="pkg-sum">#{summary}</td></tr>)
       end
-      col2 = retired ? "last touched" : "version"
+      col2 = retired ? "touched" : "version"
       <<~HTML
         <table class="catalog-table">
-          <thead><tr><th>package</th><th>#{col2}</th><th>summary</th></tr></thead>
+          <colgroup>
+            <col class="col-name" />
+            <col class="col-ver" />
+            <col class="col-sum" />
+          </colgroup>
+          <thead>
+            <tr><th scope="col">package</th><th scope="col">#{col2}</th><th scope="col">summary</th></tr>
+          </thead>
           <tbody>
             #{rows.join("\n")}
           </tbody>
@@ -161,7 +174,7 @@ module PostPdf
         #{css_text}
           </style>
         </head>
-        <body class="theme-#{theme}">
+        <body class="theme-#{theme} kind-#{kind}">
           <article class="pdf-page">
             <div class="pdf-banner">
               <strong>#{SITE_LABEL}</strong>
@@ -172,7 +185,7 @@ module PostPdf
             #{body_html}
             <div class="pdf-footer">
               <span>#{self.class.h(url)}</span>
-              <span>Offline PDF · template v#{TEMPLATE_VERSION}</span>
+              <span>template v#{TEMPLATE_VERSION}</span>
             </div>
           </article>
         </body>

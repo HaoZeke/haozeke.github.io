@@ -85,10 +85,14 @@ class TestDocument < Minitest::Test
     assert_equal "packages", doc.slug
     assert_includes doc.body_html, "klfc"
     assert_includes doc.body_html, "catalog-table"
+    assert_includes doc.body_html, "col-name"
     assert_includes doc.body_html, "Retired"
     assert_includes doc.body_html, "rang"
+    # no repeated ecosystem essay blurbs in the dense ledger
+    refute_includes doc.body_html, "Arch packages"
     dark = doc.render_html(theme: "dark", css_text: "/*css*/")
     assert_includes dark, "theme-dark"
+    assert_includes dark, "kind-catalog"
   end
 
   def test_unknown_theme_raises
