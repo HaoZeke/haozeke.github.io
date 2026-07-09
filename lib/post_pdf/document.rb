@@ -22,7 +22,7 @@ module PostPdf
       @banner_note = banner_note
     end
 
-    def self.from_post(path, base_url: "https://rgoswami.me")
+    def self.from_post(path, base_url: "https://rgoswami.me", root: nil)
       require_relative "front_matter"
       raw = File.read(path)
       meta, body = FrontMatter.parse(raw)
@@ -39,6 +39,7 @@ module PostPdf
       meta_bits = [authors, date, tags].reject { |s| s.nil? || s.empty? }
       series = Array(meta["series"]).first
       banner = series ? series.to_s : section
+      site_root = root || site_root_for(path)
 
       new(
         kind: "post",
@@ -46,10 +47,25 @@ module PostPdf
         title: title,
         meta_line: meta_bits.join(" · "),
         url: File.join(base_url, section, slug) + "/",
-        body_html: Markdown.to_html(body),
+        body_html: Markdown.to_html(body, root: site_root, base_url: base_url),
         banner_note: banner
       )
     end
+
+    def self.site_root_for(path)
+      dir = File.expand_path(File.dirname(path))
+      # content/posts/foo.md → site root
+      6.times do
+        return dir if File.file?(File.join(dir, "hugo.toml")) ||
+                      File.file?(File.join(dir, "config.toml")) ||
+                      File.directory?(File.join(dir, "static"))
+        parent = File.dirname(dir)
+        break if parent == dir
+        dir = parent
+      end
+      File.expand_path("../..", path)
+    end
+    private_class_method :site_root_for
 
     def self.from_packages(yaml_path, base_url: "https://rgoswami.me")
       require "yaml"

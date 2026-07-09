@@ -35,7 +35,7 @@ module PostPdf
     def documents(base_url: "https://rgoswami.me")
       docs = []
       markdown_paths.each do |path|
-        doc = Document.from_post(path, base_url: base_url)
+        doc = Document.from_post(path, base_url: base_url, root: @root)
         docs << doc if doc
       end
       if (yaml = packages_yaml)

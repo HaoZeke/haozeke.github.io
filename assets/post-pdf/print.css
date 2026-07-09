@@ -341,3 +341,27 @@ body.kind-catalog .pdf-banner {
 .catalog--write-access .catalog-table {
   margin-bottom: 0.35rem;
 }
+
+/* Embedded figures from Hugo shortcodes / markdown */
+.pdf-page figure.pdf-figure,
+.pdf-page figure {
+  margin: 0.9rem 0 1.1rem;
+  page-break-inside: avoid;
+  text-align: center;
+}
+.pdf-page figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg-elev, var(--code-bg));
+}
+.pdf-page figcaption {
+  margin-top: 0.4rem;
+  font-size: 0.72rem;
+  line-height: 1.4;
+  color: var(--muted);
+  text-align: left;
+}
