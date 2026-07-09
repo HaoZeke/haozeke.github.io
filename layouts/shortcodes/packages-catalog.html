@@ -1,96 +1,150 @@
 {{- /*
-  Renders site.Data.packages as a multi-ecosystem inventory.
-  Data shape: data/packages.yaml → .ecosystems[].packages[]
+  Maintainer ledger: site.Data.packages → ecosystems[].packages[] (+ optional upstream)
 */ -}}
-{{- /* site.Data works on Hugo shipped in pixi (0.148); hugo.Data is newer. */ -}}
 {{- $data := site.Data.packages -}}
 {{- if not $data -}}
-  <p class="packages-empty"><em>Package catalog missing</em> (<code>data/packages.yaml</code>).</p>
+  <p class="packages-empty">Package catalog missing (<code>data/packages.yaml</code>).</p>
 {{- else -}}
 {{- $ecosystems := $data.ecosystems -}}
 {{- $total := 0 -}}
 {{- range $ecosystems -}}{{- $total = add $total (len .packages) -}}{{- end -}}
+{{- $upstream := $data.upstream -}}
+{{- $upCount := 0 -}}
+{{- with $upstream -}}{{- $upCount = .total | default 0 -}}{{- end -}}
+{{- $retired := $data.retired -}}
+{{- $retiredCount := 0 -}}
+{{- with $retired -}}
+  {{- range .registries -}}{{- $retiredCount = add $retiredCount (len .packages) -}}{{- end -}}
+{{- end -}}
 
-<section class="packages-catalog" aria-label="Maintained packages inventory">
-  <header class="packages-hero">
+<section class="packages-catalog" aria-label="Maintained packages inventory" data-total="{{ $total }}">
+  <header class="packages-mast">
+    <p class="packages-kicker">maintainer index · {{ len $ecosystems }} surfaces</p>
     <p class="packages-lede">
       {{- with $data.intro -}}{{ . | markdownify }}{{- end -}}
     </p>
-    <div class="packages-stats" role="list">
-      <div class="packages-stat" role="listitem">
-        <span class="packages-stat__n">{{ $total }}</span>
-        <span class="packages-stat__l">packages</span>
-      </div>
-      <div class="packages-stat" role="listitem">
-        <span class="packages-stat__n">{{ len $ecosystems }}</span>
-        <span class="packages-stat__l">ecosystems</span>
-      </div>
-      {{- with $data.updated -}}
-      <div class="packages-stat packages-stat--muted" role="listitem">
-        <span class="packages-stat__n packages-stat__n--sm">{{ . }}</span>
-        <span class="packages-stat__l">catalog date</span>
-      </div>
+    <p class="packages-meta">
+      <span><strong>{{ $total }}</strong> registry entries</span>
+      <span class="packages-meta__sep" aria-hidden="true">·</span>
+      <span><strong>{{ len $ecosystems }}</strong> ecosystems</span>
+      {{- if gt $upCount 0 -}}
+      <span class="packages-meta__sep" aria-hidden="true">·</span>
+      <span><strong>{{ $upCount }}</strong> write-access repos</span>
+      {{- with $upstream.forge_count -}}
+      <span class="packages-meta__sep" aria-hidden="true">·</span>
+      <span><strong>{{ . }}</strong> forges</span>
       {{- end -}}
+      {{- with $upstream.org_count -}}
+      <span class="packages-meta__sep" aria-hidden="true">·</span>
+      <span><strong>{{ . }}</strong> orgs</span>
+      {{- end -}}
+      {{- end -}}
+      {{- with $data.updated -}}
+      <span class="packages-meta__sep" aria-hidden="true">·</span>
+      <span>snapshot <time datetime="{{ . }}">{{ . }}</time></span>
+      {{- end -}}
+    </p>
+
+    <div class="packages-dist" role="img" aria-label="Package counts by ecosystem">
+      {{- range $eco := $ecosystems -}}
+      {{- $n := len $eco.packages -}}
+      {{- $pct := 0 -}}
+      {{- if gt $total 0 -}}{{- $pct = div (mul $n 100) $total -}}{{- end -}}
+      <a class="packages-dist__row packages-dist__row--{{ $eco.id }}" href="#eco-{{ $eco.id }}">
+        <span class="packages-dist__name">{{ $eco.name }}</span>
+        <span class="packages-dist__track" aria-hidden="true">
+          <span class="packages-dist__fill" style="width: {{ $pct }}%"></span>
+        </span>
+        <span class="packages-dist__n">{{ $n }}</span>
+      </a>
+      {{- end -}}
+    </div>
+
+    <div class="packages-tools">
+      <label class="packages-filter">
+        <span class="packages-filter__label">Filter</span>
+        <input type="search" id="packages-filter" class="packages-filter__input"
+               placeholder="name or summary…" autocomplete="off" spellcheck="false" />
+      </label>
+      <p class="packages-filter__status" id="packages-filter-status" aria-live="polite"></p>
     </div>
   </header>
 
-  <nav class="packages-jump" aria-label="Jump to ecosystem">
+  <nav class="packages-toc" aria-label="Jump to section">
     {{- range $ecosystems }}
-    <a class="packages-jump__chip packages-jump__chip--{{ .id }}" href="#eco-{{ .id }}">
-      <span class="packages-jump__name">{{ .name }}</span>
-      <span class="packages-jump__count">{{ len .packages }}</span>
+    <a href="#eco-{{ .id }}" class="packages-toc__link packages-toc__link--{{ .id }}">
+      <span class="packages-toc__name">{{ .name }}</span>
+      <span class="packages-toc__n">{{ len .packages }}</span>
+    </a>
+    {{- end }}
+    {{- if gt $upCount 0 }}
+    <a href="#eco-upstream" class="packages-toc__link packages-toc__link--upstream">
+      <span class="packages-toc__name">Write access</span>
+      <span class="packages-toc__n">{{ $upCount }}</span>
+    </a>
+    {{- end }}
+    {{- if gt $retiredCount 0 }}
+    <a href="#eco-retired" class="packages-toc__link packages-toc__link--retired">
+      <span class="packages-toc__name">Retired</span>
+      <span class="packages-toc__n">{{ $retiredCount }}</span>
     </a>
     {{- end }}
   </nav>
 
   {{- range $eco := $ecosystems }}
-  <section class="packages-eco packages-eco--{{ $eco.id }}" id="eco-{{ $eco.id }}">
+  <section class="packages-eco packages-eco--{{ $eco.id }}" id="eco-{{ $eco.id }}" data-ecosystem="{{ $eco.id }}">
     <header class="packages-eco__head">
       <div class="packages-eco__title-row">
         <h2 class="packages-eco__title">{{ $eco.name }}</h2>
-        <span class="packages-eco__badge">{{ len $eco.packages }}</span>
+        <span class="packages-eco__count">{{ len $eco.packages }}</span>
+        {{- if and $eco.label (ne $eco.label $eco.name) -}}
+        <span class="packages-eco__label">{{ $eco.label }}</span>
+        {{- end -}}
       </div>
-      {{- if and $eco.label (ne $eco.label $eco.name) -}}
-      <p class="packages-eco__label">{{ $eco.label }}</p>
-      {{- end -}}
       {{- with $eco.description -}}
       <p class="packages-eco__desc">{{ . | markdownify }}</p>
       {{- end -}}
       {{- with $eco.hub_url -}}
-      <p class="packages-eco__hub">
-        <a href="{{ . }}" rel="noopener noreferrer">Browse on registry ↗</a>
-      </p>
+      <p class="packages-eco__hub"><a href="{{ . }}" rel="noopener noreferrer">Open registry listing</a></p>
       {{- end -}}
     </header>
 
-    <div class="packages-grid">
+    <div class="packages-ledger" role="list">
+      <div class="packages-ledger__cols" aria-hidden="true">
+        <span>package</span>
+        <span>ver</span>
+        <span>summary</span>
+        <span>links</span>
+      </div>
       {{- range $pkg := $eco.packages }}
-      <article class="pkg-card">
-        <header class="pkg-card__head">
-          <h3 class="pkg-card__name">
-            <a href="{{ $pkg.registry_url }}" rel="noopener noreferrer">{{ $pkg.name }}</a>
-          </h3>
-          {{- with $pkg.version -}}
-          <span class="pkg-card__ver" title="Catalog snapshot version">{{ . }}</span>
-          {{- end -}}
-        </header>
-        {{- with $pkg.summary -}}
-        <p class="pkg-card__summary">{{ . }}</p>
-        {{- end -}}
-        <footer class="pkg-card__meta">
-          <a class="pkg-card__link" href="{{ $pkg.registry_url }}" rel="noopener noreferrer">registry</a>
+      <article class="pkg-row" role="listitem"
+               data-name="{{ $pkg.name | lower }}"
+               data-summary="{{ $pkg.summary | default "" | lower }}">
+        <h3 class="pkg-row__name">
+          <a href="{{ $pkg.registry_url }}" rel="noopener noreferrer">{{ $pkg.name }}</a>
+        </h3>
+        <span class="pkg-row__ver">{{ with $pkg.version }}{{ . }}{{ else }}—{{ end }}</span>
+        <p class="pkg-row__summary">{{ with $pkg.summary }}{{ . }}{{ else }}—{{ end }}</p>
+        <div class="pkg-row__links">
+          <a href="{{ $pkg.registry_url }}" rel="noopener noreferrer">registry</a>
           {{- with $pkg.feedstock_url -}}
-          <a class="pkg-card__link" href="{{ . }}" rel="noopener noreferrer">feedstock</a>
+          <a href="{{ . }}" rel="noopener noreferrer">feedstock</a>
+          {{- end -}}
+          {{- with $pkg.recipe_url -}}
+          <a href="{{ . }}" rel="noopener noreferrer">recipe</a>
+          {{- end -}}
+          {{- with $pkg.stats_url -}}
+          <a href="{{ . }}" rel="noopener noreferrer">stats</a>
           {{- end -}}
           {{- with $pkg.homepage -}}
-          <a class="pkg-card__link" href="{{ . }}" rel="noopener noreferrer">home</a>
+          <a href="{{ . }}" rel="noopener noreferrer">home</a>
           {{- end -}}
           {{- with $pkg.role -}}
-          <span class="pkg-card__role">{{ . }}</span>
+          <span class="pkg-row__role">{{ . }}</span>
           {{- end -}}
-        </footer>
+        </div>
         {{- with $pkg.notes -}}
-        <p class="pkg-card__notes">{{ . }}</p>
+        <p class="pkg-row__notes">{{ . }}</p>
         {{- end -}}
       </article>
       {{- end }}
@@ -98,12 +152,482 @@
   </section>
   {{- end }}
 
+  {{- with $upstream }}
+  <section class="packages-eco packages-eco--upstream" id="eco-upstream" data-ecosystem="upstream">
+    <details class="wa" id="write-access"
+             data-src="{{ .data_url | default "/data/write-access.json" | relURL }}">
+      <summary class="wa__bar">
+        <span class="wa__bar-main">
+          <span class="wa__bar-title">{{ .title | default "Write access" }}</span>
+          <span class="wa__bar-count">{{ .total }}</span>
+          {{- with .forge_count -}}
+          <span class="wa__bar-sub">{{ . }} forges</span>
+          {{- end -}}
+          {{- with .org_count -}}
+          <span class="wa__bar-sub">{{ . }} orgs</span>
+          {{- end -}}
+        </span>
+        <span class="wa__bar-action" aria-hidden="true">
+          <span class="wa__bar-action-closed">show</span>
+          <span class="wa__bar-action-open">hide</span>
+        </span>
+      </summary>
+
+      <div class="wa__panel">
+        {{- with .description -}}
+        <p class="wa__lede">{{ . | markdownify }}</p>
+        {{- end -}}
+
+        {{- with .forge_summary }}
+        <div class="wa__forges" id="wa-forges" role="tablist" aria-label="Forge">
+          <button type="button" class="wa__forge is-active" data-forge="all" role="tab" aria-selected="true">All</button>
+          {{- range . }}
+          <button type="button" class="wa__forge" data-forge="{{ .id }}" role="tab" aria-selected="false">
+            {{ .name }}
+            <span class="wa__forge-n">{{ .total }}</span>
+          </button>
+          {{- end }}
+        </div>
+        {{- end }}
+
+        {{- with .notables }}
+        <div class="wa__block">
+          <h3 class="wa__label">Highlights</h3>
+          <div class="wa__ledger" role="list" id="wa-notables">
+            {{- range . }}
+            <div class="wa__row" role="listitem" data-forge="{{ .forge | default "github" }}">
+              <a class="wa__repo" href="{{ .url }}" rel="noopener noreferrer">{{ .name }}</a>
+              <span class="wa__chip wa__chip--forge-{{ .forge | default "github" }}">{{ .forge | default "github" }}</span>
+              {{- with .access -}}
+              <span class="wa__chip wa__chip--{{ . }}">{{ . }}</span>
+              {{- end -}}
+              <a class="wa__link" href="{{ .url }}" rel="noopener noreferrer">open</a>
+            </div>
+            {{- end }}
+          </div>
+        </div>
+        {{- end }}
+
+        <div class="wa__block">
+          <div class="wa__org-head">
+            <h3 class="wa__label">Organizations</h3>
+            <label class="wa__filter">
+              <span class="wa__filter-label">Filter</span>
+              <input type="search" id="wa-org-filter" class="wa__filter-input"
+                     placeholder="org name…" autocomplete="off" spellcheck="false" />
+            </label>
+          </div>
+          <p class="wa__status" id="write-access-status" hidden></p>
+          <div class="wa__org-table" id="write-access-orgs" role="list"></div>
+          <div class="wa__repos" id="write-access-repos" hidden>
+            <div class="wa__repos-head">
+              <h3 class="wa__label" id="wa-repos-title">Repositories</h3>
+              <span class="wa__repos-meta" id="wa-repos-meta"></span>
+            </div>
+            <div class="wa__ledger" id="wa-repos-list" role="list"></div>
+          </div>
+        </div>
+      </div>
+    </details>
+  </section>
+  {{- end }}
+
+  {{- with $retired }}
+  <section class="packages-eco packages-eco--retired" id="eco-retired" data-ecosystem="retired">
+    <details class="wa retired-wa" id="retired-packaging">
+      <summary class="wa__bar">
+        <span class="wa__bar-main">
+          <span class="wa__bar-title">{{ .title | default "Retired" }}</span>
+          <span class="wa__bar-count">{{ $retiredCount }}</span>
+          {{- with .registries -}}
+          <span class="wa__bar-sub">{{ len . }} registries</span>
+          {{- end -}}
+        </span>
+        <span class="wa__bar-action" aria-hidden="true">
+          <span class="wa__bar-action-closed">show</span>
+          <span class="wa__bar-action-open">hide</span>
+        </span>
+      </summary>
+
+      <div class="wa__panel">
+        {{- with .description -}}
+        <p class="wa__lede">{{ . | markdownify }}</p>
+        {{- end -}}
+
+        {{- range $reg := .registries }}
+        <details class="retired-reg" id="retired-{{ $reg.id }}">
+          <summary class="retired-reg__head">
+            <span class="retired-reg__title">{{ $reg.name }}</span>
+            {{- if and $reg.label (ne $reg.label $reg.name) -}}
+            <span class="retired-reg__label">{{ $reg.label }}</span>
+            {{- end -}}
+            <span class="retired-reg__count">{{ len $reg.packages }}</span>
+            {{- with $reg.hub_url -}}
+            <a class="retired-reg__hub" href="{{ . }}" rel="noopener noreferrer" onclick="event.stopPropagation()">registry</a>
+            {{- end -}}
+            <span class="retired-reg__toggle" aria-hidden="true">
+              <span class="retired-reg__toggle-closed">show</span>
+              <span class="retired-reg__toggle-open">hide</span>
+            </span>
+          </summary>
+          {{- with $reg.note -}}
+          <p class="retired-reg__note">{{ . }}</p>
+          {{- end -}}
+
+          <div class="packages-ledger retired-reg__ledger" role="list">
+            <div class="packages-ledger__cols retired-reg__cols" aria-hidden="true">
+              <span>package</span>
+              <span>last touched</span>
+              <span>summary</span>
+              <span>links</span>
+            </div>
+            {{- range $pkg := $reg.packages }}
+            <article class="pkg-row retired-reg__row" role="listitem"
+                     data-name="{{ $pkg.name | lower }}"
+                     data-summary="{{ $pkg.summary | default "" | lower }} {{ $reg.name | lower }}">
+              <h3 class="pkg-row__name">
+                <a href="{{ $pkg.registry_url }}" rel="noopener noreferrer">{{ $pkg.name }}</a>
+              </h3>
+              <span class="pkg-row__ver retired-reg__when" title="{{ with $pkg.last_touched_note }}{{ . }}{{ else }}last touched{{ end }}">
+                {{ with $pkg.last_touched }}{{ . }}{{ else }}—{{ end }}
+              </span>
+              <p class="pkg-row__summary">
+                {{- with $pkg.summary }}{{ . }}{{ else }}—{{ end -}}
+                {{- with $pkg.version }} <span class="retired-reg__ver">v{{ . }}</span>{{ end -}}
+              </p>
+              <div class="pkg-row__links">
+                <a href="{{ $pkg.registry_url }}" rel="noopener noreferrer">registry</a>
+                {{- with $pkg.homepage -}}
+                <a href="{{ . }}" rel="noopener noreferrer">home</a>
+                {{- end -}}
+              </div>
+              {{- with $pkg.last_touched_note -}}
+              <p class="pkg-row__notes">{{ . }}</p>
+              {{- end -}}
+            </article>
+            {{- end }}
+          </div>
+        </details>
+        {{- end }}
+      </div>
+    </details>
+  </section>
+  {{- end }}
+
   <footer class="packages-foot">
+
+
     <p>
-      Catalog source: <code>data/packages.yaml</code> in
+      Catalog file: <code>data/packages.yaml</code> in
       <a href="https://github.com/HaoZeke/haozeke.github.io" rel="noopener noreferrer">haozeke.github.io</a>.
-      Add a row there (or run the optional refresh script) when a package lands.
+      Shape check: <code>pixi run check-packages</code>.
     </p>
   </footer>
 </section>
+
+<script>
+(function () {
+  var input = document.getElementById('packages-filter');
+  var status = document.getElementById('packages-filter-status');
+  if (input) {
+    var rows = Array.prototype.slice.call(document.querySelectorAll('.pkg-row'));
+    var ecos = Array.prototype.slice.call(document.querySelectorAll('.packages-eco'));
+    function apply() {
+      var q = (input.value || '').trim().toLowerCase();
+      var shown = 0;
+      rows.forEach(function (row) {
+        var hay = (row.getAttribute('data-name') || '') + ' ' + (row.getAttribute('data-summary') || '');
+        var ok = !q || hay.indexOf(q) !== -1;
+        row.hidden = !ok;
+        if (ok) shown++;
+      });
+      ecos.forEach(function (eco) {
+        if (eco.id === 'eco-upstream') return;
+        var any = eco.querySelectorAll('.pkg-row:not([hidden])').length > 0;
+        eco.hidden = !any;
+      });
+      if (!status) return;
+      if (!q) { status.textContent = ''; return; }
+      status.textContent = shown + ' match' + (shown === 1 ? '' : 'es');
+    }
+    input.addEventListener('input', apply);
+  }
+
+  /* Write access: multi-forge lazy JSON */
+  var details = document.getElementById('write-access');
+  if (!details) return;
+
+  var dataCache = null;
+  var maxOrg = 1;
+  var activeKey = null; /* forge:org */
+  var forgeFilter = 'all';
+
+  function chip(cls, text) {
+    var s = document.createElement('span');
+    s.className = 'wa__chip ' + cls;
+    s.textContent = text;
+    return s;
+  }
+
+  function allOrgs() {
+    if (!dataCache) return [];
+    var out = [];
+    (dataCache.forges || []).forEach(function (f) {
+      if (forgeFilter !== 'all' && f.id !== forgeFilter) return;
+      (f.orgs || []).forEach(function (o) {
+        out.push({
+          org: o.org,
+          count: o.count,
+          forge: f.id,
+          host: f.host || o.host,
+          url: o.url,
+          repos: o.repos
+        });
+      });
+    });
+    out.sort(function (a, b) {
+      if (b.count !== a.count) return b.count - a.count;
+      return a.org.toLowerCase().localeCompare(b.org.toLowerCase());
+    });
+    return out;
+  }
+
+  function allNotables() {
+    if (!dataCache) return null;
+    var out = [];
+    (dataCache.forges || []).forEach(function (f) {
+      (f.notables || []).forEach(function (n) {
+        out.push({
+          name: n.name || n.full_name,
+          access: n.access || 'write',
+          url: n.url,
+          forge: n.forge || f.id
+        });
+      });
+    });
+    /* fallback: top-level notables array */
+    if (!out.length && dataCache.notables) {
+      dataCache.notables.forEach(function (n) {
+        out.push({
+          name: n.name || n.full_name,
+          access: n.access || 'write',
+          url: n.url || ('https://github.com/' + (n.full_name || n.name)),
+          forge: n.forge || 'github'
+        });
+      });
+    }
+    out.sort(function (a, b) { return a.name.toLowerCase().localeCompare(b.name.toLowerCase()); });
+    return out;
+  }
+
+  function renderNotables() {
+    var host = document.getElementById('wa-notables');
+    if (!host) return;
+    var list = allNotables();
+    /* before JSON: filter static Hugo rows */
+    if (!list) {
+      var any = false;
+      host.querySelectorAll('.wa__row').forEach(function (row) {
+        var f = row.getAttribute('data-forge') || 'github';
+        var show = forgeFilter === 'all' || f === forgeFilter;
+        row.hidden = !show;
+        if (show) any = true;
+      });
+      var empty = document.getElementById('wa-notables-empty');
+      if (empty) empty.hidden = any;
+      return;
+    }
+    host.innerHTML = '';
+    var visible = 0;
+    list.forEach(function (n) {
+      if (forgeFilter !== 'all' && n.forge !== forgeFilter) return;
+      visible++;
+      var row = document.createElement('div');
+      row.className = 'wa__row';
+      row.setAttribute('role', 'listitem');
+      row.setAttribute('data-forge', n.forge);
+      var a = document.createElement('a');
+      a.className = 'wa__repo';
+      a.href = n.url;
+      a.rel = 'noopener noreferrer';
+      a.textContent = n.name;
+      row.appendChild(a);
+      row.appendChild(chip('wa__chip--forge-' + n.forge, n.forge));
+      row.appendChild(chip('wa__chip--' + n.access, n.access));
+      var link = document.createElement('a');
+      link.className = 'wa__link';
+      link.href = n.url;
+      link.rel = 'noopener noreferrer';
+      link.textContent = 'open';
+      row.appendChild(link);
+      host.appendChild(row);
+    });
+    var empty = document.getElementById('wa-notables-empty');
+    if (!empty) {
+      empty = document.createElement('p');
+      empty.id = 'wa-notables-empty';
+      empty.className = 'wa__empty';
+      empty.textContent = 'No highlights for this forge.';
+      host.parentNode.insertBefore(empty, host.nextSibling);
+    }
+    empty.hidden = visible > 0;
+  }
+
+  function filterNotables() {
+    renderNotables();
+  }
+
+  function renderOrgs(filter) {
+    var host = document.getElementById('write-access-orgs');
+    if (!host) return;
+    host.innerHTML = '';
+    var q = (filter || '').trim().toLowerCase();
+    var orgs = allOrgs();
+    maxOrg = 1;
+    orgs.forEach(function (o) { if (o.count > maxOrg) maxOrg = o.count; });
+
+    orgs.forEach(function (org) {
+      if (q && org.org.toLowerCase().indexOf(q) === -1) return;
+      var key = org.forge + ':' + org.org;
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'wa__org-row' + (activeKey === key ? ' is-active' : '');
+      btn.setAttribute('role', 'listitem');
+      btn.dataset.key = key;
+
+      var name = document.createElement('span');
+      name.className = 'wa__org-name';
+      name.textContent = org.org;
+
+      var forge = chip('wa__chip--forge-' + org.forge, org.forge);
+
+      var track = document.createElement('span');
+      track.className = 'wa__org-track';
+      track.setAttribute('aria-hidden', 'true');
+      var fill = document.createElement('span');
+      fill.className = 'wa__org-fill';
+      fill.style.width = (maxOrg ? Math.max(2, Math.round((org.count / maxOrg) * 100)) : 0) + '%';
+      track.appendChild(fill);
+
+      var n = document.createElement('span');
+      n.className = 'wa__org-n';
+      n.textContent = String(org.count);
+
+      btn.appendChild(name);
+      btn.appendChild(forge);
+      btn.appendChild(track);
+      btn.appendChild(n);
+      btn.addEventListener('click', function () { selectOrg(org); });
+      host.appendChild(btn);
+    });
+  }
+
+  function selectOrg(org) {
+    activeKey = org.forge + ':' + org.org;
+    renderOrgs((document.getElementById('wa-org-filter') || {}).value);
+
+    var panel = document.getElementById('write-access-repos');
+    var list = document.getElementById('wa-repos-list');
+    var title = document.getElementById('wa-repos-title');
+    var meta = document.getElementById('wa-repos-meta');
+    if (!panel || !list) return;
+    panel.hidden = false;
+    if (title) title.textContent = org.org;
+    if (meta) {
+      meta.innerHTML = '';
+      meta.appendChild(chip('wa__chip--forge-' + org.forge, org.forge));
+      meta.appendChild(document.createTextNode(' '));
+      var a = document.createElement('a');
+      a.href = org.url || ('https://' + (org.host || 'github.com') + '/' + org.org);
+      a.rel = 'noopener noreferrer';
+      a.textContent = (org.host || 'github.com') + '/' + org.org;
+      meta.appendChild(a);
+      meta.appendChild(document.createTextNode(' · ' + org.count + ' repos'));
+    }
+    list.innerHTML = '';
+    (org.repos || []).forEach(function (repo) {
+      var row = document.createElement('div');
+      row.className = 'wa__row';
+      row.setAttribute('role', 'listitem');
+      var ra = document.createElement('a');
+      ra.className = 'wa__repo';
+      ra.href = repo.url || ('https://github.com/' + repo.full_name);
+      ra.rel = 'noopener noreferrer';
+      ra.textContent = repo.name;
+      row.appendChild(ra);
+      row.appendChild(chip('wa__chip--' + (repo.access || 'write'), repo.access || 'write'));
+      if (repo.private) row.appendChild(chip('wa__chip--private', 'private'));
+      var link = document.createElement('a');
+      link.className = 'wa__link';
+      link.href = repo.url || ('https://github.com/' + repo.full_name);
+      link.rel = 'noopener noreferrer';
+      link.textContent = 'open';
+      row.appendChild(link);
+      list.appendChild(row);
+    });
+    panel.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+
+  function loadWriteAccess() {
+    if (dataCache) return Promise.resolve(dataCache);
+    var src = details.getAttribute('data-src');
+    var st = document.getElementById('write-access-status');
+    if (st) { st.hidden = false; st.textContent = 'Loading…'; }
+    return fetch(src)
+      .then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      })
+      .then(function (data) {
+        /* back-compat: old single-forge shape */
+        if (!data.forges && data.orgs) {
+          data.forges = [{
+            id: 'github', name: 'GitHub', host: 'github.com',
+            total: data.total, org_count: data.org_count,
+            notables: data.notables || [], orgs: data.orgs
+          }];
+        }
+        dataCache = data;
+        if (st) st.hidden = true;
+        renderOrgs('');
+        renderNotables();
+        var filt = document.getElementById('wa-org-filter');
+        if (filt && !filt._bound) {
+          filt._bound = true;
+          filt.addEventListener('input', function () { renderOrgs(filt.value); });
+        }
+        var tabs = document.getElementById('wa-forges');
+        if (tabs && !tabs._bound) {
+          tabs._bound = true;
+          tabs.addEventListener('click', function (e) {
+            var btn = e.target.closest('.wa__forge');
+            if (!btn) return;
+            forgeFilter = btn.getAttribute('data-forge') || 'all';
+            tabs.querySelectorAll('.wa__forge').forEach(function (b) {
+              var on = b === btn;
+              b.classList.toggle('is-active', on);
+              b.setAttribute('aria-selected', on ? 'true' : 'false');
+            });
+            activeKey = null;
+            var panel = document.getElementById('write-access-repos');
+            if (panel) panel.hidden = true;
+            renderOrgs((document.getElementById('wa-org-filter') || {}).value);
+            filterNotables();
+          });
+        }
+        return data;
+      })
+      .catch(function (err) {
+        if (st) {
+          st.hidden = false;
+          st.textContent = 'Could not load list (' + err.message + ').';
+        }
+      });
+  }
+
+  details.addEventListener('toggle', function () {
+    if (details.open) loadWriteAccess();
+  });
+})();
+</script>
 {{- end -}}

@@ -28,3 +28,11 @@ panflute = ">=2.3.1"
 [tasks.check-packages]
 cmd = "python scripts/check_packages_catalog.py && python -m unittest tests.test_packages_catalog -v"
 description = "Validate data/packages.yaml shape and registry hosts"
+
+[tasks.scan-packages]
+cmd = "python scripts/scan_package_registries.py"
+description = "Online registry scan vs data/packages.yaml (drift report)"
+
+[tasks.scan-packages-nix]
+cmd = "python scripts/scan_package_registries.py --nixpkgs-root /tmp/nixpkgs-2511"
+description = "Registry scan including local nixpkgs tree if present"

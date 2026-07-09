@@ -1,0 +1,82 @@
+name: Packages catalog scan
+
+on:
+  workflow_dispatch:
+  schedule:
+    # weekly Monday 06:17 UTC
+    - cron: "17 6 * * 1"
+  push:
+    branches: [src]
+    paths:
+      - "data/packages.yaml"
+      - "scripts/scan_package_registries.py"
+      - "scripts/check_packages_catalog.py"
+      - ".github/workflows/packages_catalog_scan.yml"
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: packages-catalog-scan
+  cancel-in-progress: true
+
+jobs:
+  offline-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Install PyYAML
+        run: pip install pyyaml
+      - name: Shape check + unit tests
+        run: |
+          python scripts/check_packages_catalog.py
+          python -m unittest tests.test_packages_catalog -v
+
+  registry-scan:
+    runs-on: ubuntu-latest
+    needs: offline-check
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Install PyYAML
+        run: pip install pyyaml
+      - name: Sparse-clone nixpkgs (25.11) for retired scan
+        run: |
+          git clone --depth 1 --branch nixos-25.11 --single-branch \
+            --filter=blob:none --sparse \
+            https://github.com/NixOS/nixpkgs.git /tmp/nixpkgs-scan
+          cd /tmp/nixpkgs-scan
+          git sparse-checkout set maintainers pkgs
+      - name: Scan registries vs catalog
+        id: scan
+        continue-on-error: true
+        run: |
+          python scripts/scan_package_registries.py \
+            --nixpkgs-root /tmp/nixpkgs-scan \
+            --json /tmp/packages-scan-report.json
+          echo "exit=$?" >> "$GITHUB_OUTPUT"
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: packages-scan-report
+          path: /tmp/packages-scan-report.json
+          if-no-files-found: ignore
+      - name: Open or update drift issue
+        if: steps.scan.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python scripts/scan_package_registries.py \
+            --nixpkgs-root /tmp/nixpkgs-scan \
+            --json /tmp/packages-scan-report.json \
+            --open-issue \
+            --repo "${{ github.repository }}"
+          # still fail the job so the run is red when drift exists
+          exit 1
