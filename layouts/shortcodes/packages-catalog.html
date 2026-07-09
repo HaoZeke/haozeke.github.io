@@ -240,7 +240,8 @@
           <span class="wa__bar-title">{{ .title | default "Retired" }}</span>
           <span class="wa__bar-count">{{ $retiredCount }}</span>
           {{- with .registries -}}
-          <span class="wa__bar-sub">{{ len . }} registries</span>
+          {{- $rn := len . -}}
+          <span class="wa__bar-sub">{{ $rn }} {{ if eq $rn 1 }}registry{{ else }}registries{{ end }}</span>
           {{- end -}}
         </span>
         <span class="wa__bar-action" aria-hidden="true">
