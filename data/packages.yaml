@@ -42,7 +42,7 @@ ecosystems:
 - id: conda-forge
   name: conda-forge
   label: conda-forge
-  description: conda-forge feedstocks I maintain or co-maintain. Personal tools and metatensor-stack recipes.
+  description: Recipes I maintain or co-maintain.
   hub_url: https://prefix.dev/channels/conda-forge
   registry_host: prefix.dev
   packages:
@@ -178,7 +178,7 @@ ecosystems:
 - id: pypi
   name: PyPI
   label: Python Package Index
-  description: Packages I release on the Python Package Index.
+  description: Packages I release.
   hub_url: https://pypi.org/user/HaoZeke/
   registry_host: pypi.org
   packages:
@@ -249,7 +249,7 @@ ecosystems:
 - id: crates
   name: crates.io
   label: Rust crates
-  description: Crates I publish on crates.io.
+  description: Crates I publish.
   hub_url: https://crates.io/users/HaoZeke
   registry_host: crates.io
   packages:
@@ -326,7 +326,7 @@ ecosystems:
 - id: spack
   name: Spack
   label: Spack package manager
-  description: Spack packages I maintain, including the metatensor stack and older science codes.
+  description: Packages I maintain.
   hub_url: https://github.com/search?q=repo%3Aspack%2Fspack-packages+HaoZeke+filename%3Apackage.py&type=code
   registry_host: packages.spack.io
   packages:
@@ -441,7 +441,7 @@ ecosystems:
 - id: melpa
   name: MELPA
   label: Milkypostman’s Emacs Lisp Package Archive
-  description: Emacs packages I publish.
+  description: Packages I publish.
   hub_url: https://melpa.org/#/
   registry_host: melpa.org
   packages:
@@ -453,7 +453,7 @@ ecosystems:
 - id: containers
   name: Containers
   label: Docker Hub and GHCR
-  description: Docker Hub and GitHub Container Registry images I publish. Pull counts freeze at catalog update.
+  description: Images I publish. Pull counts freeze at catalog update.
   hub_url: https://hub.docker.com/u/haozeke
   registry_host: hub.docker.com
   packages:
@@ -505,7 +505,7 @@ ecosystems:
 - id: cran
   name: CRAN
   label: Comprehensive R Archive Network
-  description: R packages I maintain.
+  description: Packages I maintain.
   hub_url: https://cran.r-project.org/web/checks/check_results_rgoswami_at_ieee.org.html
   registry_host: cran.r-project.org
   packages:
@@ -519,7 +519,7 @@ ecosystems:
 - id: ropensci
   name: rOpenSci
   label: rOpenSci peer-reviewed R packages
-  description: rOpenSci peer review and r-universe docs. Same packages also land on the R archive.
+  description: Peer-reviewed packages.
   hub_url: https://ropensci.org/packages/
   registry_host: ropensci.org
   packages:
@@ -533,7 +533,7 @@ ecosystems:
     notes: Also on CRAN; r-universe builds under ropensci.
 upstream:
   title: Write access
-  description: GitHub and GitLab organizations where I have push access.
+  description: Repositories I can push to.
   total: 867
   org_count: 99
   forge_count: 2
@@ -662,7 +662,7 @@ retired:
     name: nixpkgs
     label: NixOS / nixpkgs
     hub_url: https://search.nixos.org/packages?channel=25.11
-    note: Listed maintainer on nixos-25.11; cleared on unstable.
+    note: Still listed on nixos-25.11; cleared on unstable.
     packages:
     - name: conan
       version: 2.21.0
