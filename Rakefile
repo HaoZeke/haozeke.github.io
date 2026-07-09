@@ -74,8 +74,40 @@ task :test_post_pdf do
   ruby "-Ilib:test", "test/post_pdf/run.rb"
 end
 
+def post_pdf_out_dir
+  File.expand_path(ENV.fetch("POST_PDF_OUT", "static/pdf"), Dir.pwd)
+end
+
+def post_pdf_branch
+  ENV.fetch("POST_PDF_BRANCH", PostPdf::OrphanBranch::DEFAULT_BRANCH)
+end
+
+desc "Restore PDFs from orphan branch for incremental rebuild"
+task :postPdfRestore do
+  require "post_pdf"
+  skip = ENV["POST_PDF_SKIP"] == "1"
+  if skip
+    puts "postPdfRestore: skipped (POST_PDF_SKIP=1)"
+    next
+  end
+
+  branch = post_pdf_branch
+  out = post_pdf_out_dir
+  orphan = PostPdf::OrphanBranch.new(
+    source_dir: out,
+    branch: branch,
+    remote_url: ENV["POST_PDF_REMOTE_URL"]
+  )
+  result = orphan.restore!
+  if result[:skipped]
+    puts "postPdfRestore: no #{branch} yet (#{result[:reason]})"
+  else
+    puts "postPdfRestore: restored #{result[:restored]} files from #{branch}"
+  end
+end
+
 desc "Build per-page light/dark PDFs (incremental; needs chromium)"
-task :postPdf do
+task postPdf: [:postPdfRestore] do
   require "post_pdf"
   force = ENV["POST_PDF_FORCE"] == "1"
   skip = ENV["POST_PDF_SKIP"] == "1"
@@ -90,12 +122,17 @@ task :postPdf do
     next
   end
 
-  builder = PostPdf::Builder.new(root: Dir.pwd, force: force, printer: printer)
+  builder = PostPdf::Builder.new(
+    root: Dir.pwd,
+    out_dir: post_pdf_out_dir,
+    force: force,
+    printer: printer
+  )
   result = builder.run
   puts "postPdf: built=#{result.built.size} skipped=#{result.skipped.size} removed=#{result.removed.size} errors=#{result.errors.size}"
   result.built.first(10).each { |s| puts "  + #{s}" }
   puts "  … #{result.built.size - 10} more" if result.built.size > 10
-  result.errors.each { |e| warn "  ! #{e['slug']}: #{e['error']}" }
+  result.errors.each { |e| warn "  ! #{e["slug"]}: #{e["error"]}" }
   abort "postPdf: #{result.errors.size} error(s)" unless result.errors.empty?
 end
 
@@ -103,6 +140,32 @@ desc "Force rebuild all post PDFs"
 task :postPdfForce do
   ENV["POST_PDF_FORCE"] = "1"
   Rake::Task[:postPdf].invoke
+end
+
+desc "Force-push static/pdf to orphan branch (single commit; CV pdfs pattern)"
+task :postPdfPublish do
+  require "post_pdf"
+  skip = ENV["POST_PDF_SKIP"] == "1"
+  if skip
+    puts "postPdfPublish: skipped (POST_PDF_SKIP=1)"
+    next
+  end
+
+  out = post_pdf_out_dir
+  pdf_count = Dir.glob(File.join(out, "*.pdf")).size
+  if pdf_count.zero?
+    warn "postPdfPublish: no PDFs in #{out} — nothing to publish"
+    next
+  end
+
+  branch = post_pdf_branch
+  orphan = PostPdf::OrphanBranch.new(
+    source_dir: out,
+    branch: branch,
+    remote_url: ENV["POST_PDF_REMOTE_URL"]
+  )
+  result = orphan.publish!
+  puts "postPdfPublish: force-pushed #{result[:pdfs]} PDFs → #{result[:branch]} (#{result[:message]})"
 end
 
 # From https://avdi.codes/rake-part-3-rules/

@@ -48,3 +48,11 @@ description = "Incremental light/dark PDFs for posts/snippets/packages"
 [tasks.post-pdf-force]
 cmd = "POST_PDF_FORCE=1 bundle exec rake postPdf"
 description = "Force rebuild all post PDFs"
+
+[tasks.post-pdf-publish]
+cmd = "bundle exec rake postPdfPublish"
+description = "Force-push PDFs to orphan post-pdfs branch (single commit)"
+
+[tasks.post-pdf-restore]
+cmd = "bundle exec rake postPdfRestore"
+description = "Restore PDFs from orphan post-pdfs for incremental rebuild"

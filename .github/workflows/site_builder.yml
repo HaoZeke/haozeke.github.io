@@ -13,12 +13,17 @@ concurrency:
   group: "pages"
   cancel-in-progress: true
 
+permissions:
+  contents: write
+
 jobs:
   build-and-deploy:
     if: "!contains(github.event.head_commit.message, '(CI)')"
     runs-on: ubuntu-latest
     env:
       HUGO_ENVIRONMENT: production
+      # Orphan branch for PDF binaries (rgCV `pdfs` pattern); never on src
+      POST_PDF_BRANCH: post-pdfs
 
     steps:
       - name: Check out human source
@@ -38,14 +43,6 @@ jobs:
       - name: Install dart-sass
         uses: dw-labs-org/dart-sass-gha@v1
 
-      - name: Cache per-page PDFs
-        uses: actions/cache@v4
-        with:
-          path: static/pdf
-          key: post-pdf-${{ runner.os }}-${{ hashFiles('assets/post-pdf/print.css', 'lib/post_pdf/**', 'data/packages.yaml') }}-${{ hashFiles('content-org/**/*.org') }}
-          restore-keys: |
-            post-pdf-${{ runner.os }}-
-
       - name: Install Chromium for PDF export
         run: |
           sudo apt-get update
@@ -59,7 +56,14 @@ jobs:
             || echo "No prior unverified log; starting fresh"
 
       - name: Build site with Hugo
+        # rake hugoBuild → md + postPdf (restores orphan tip, incremental rebuild)
         run: pixi run bundle exec rake hugoBuild
+
+      - name: Publish PDFs to orphan post-pdfs branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/src'
+        env:
+          POST_PDF_REMOTE_URL: https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+        run: pixi run bundle exec rake postPdfPublish
 
       - name: Verify Build Integrity
         run: |
