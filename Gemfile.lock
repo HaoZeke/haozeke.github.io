@@ -1,6 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    drb (2.2.3)
     exifr (1.5.1)
     fspath (3.1.2)
     image_optim (0.31.4)
@@ -24,7 +25,10 @@ GEM
       rexml (>= 3.4.4)
     kramdown-parser-gfm (1.1.0)
       kramdown (~> 2.0)
-    minitest (5.27.0)
+    minitest (6.0.6)
+      drb (~> 2.0)
+      prism (~> 1.5)
+    prism (1.9.0)
     progress (3.6.0)
     rake (13.3.1)
     rexml (3.4.4)
@@ -39,7 +43,7 @@ DEPENDENCIES
   image_optim_pack
   kramdown (~> 2.5)
   kramdown-parser-gfm (~> 1.1)
-  minitest (~> 5.25)
+  minitest (~> 6.0)
   rake (= 13.3.1)
 
 BUNDLED WITH
