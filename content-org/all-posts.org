@@ -22683,19 +22683,19 @@ ptlrpc -> consumer [label="consumed\nby meson deps"];
 [[file:./images/dot/capnp-ws2-chain.png]]
 
 *** ~interface~ is a Windows macro
-The Cap'n Proto saga did not end with code generation. On recent eOn
+The Cap'n Proto work did not end with code generation. On recent eOn
 feedstock bumps (through [[https://github.com/conda-forge/eon-feedstock][v2.16]]), MSVC builds that include Cap'n Proto RPC
 headers fail with a cascade of template errors that mention
-~IPrintDialogServices~ and other COM symbols. The root cause is not Cap'n
-Proto's types; it is ~windows.h~.
+~IPrintDialogServices~ and other COM symbols. Cap'n Proto's types are fine;
+~windows.h~ is not.
 
 Win32 headers define ~interface~ as a macro (legacy COM sugar). Cap'n Proto
 templates use ~interface~ as a C++ identifier. The preprocessor rewrites the
-templates into nonsense before the compiler sees them. The diagnostic is
-almost designed to send you hunting through COM headers rather than the
-actual schema-generated code.
+templates into nonsense before the compiler sees them. The diagnostic points
+at COM headers, so the first instinct is to chase ~IPrintDialogServices~
+instead of the schema-generated code.
 
-The feedstock ~build.bat~ force-includes a tiny guard before every
+The feedstock ~build.bat~ force-includes a short guard before every
 translation unit:
 
 #+begin_src c
@@ -22709,28 +22709,29 @@ translation unit:
 #+end_src
 
 with ~cl.exe~ flags ~/FI<path>/msvc_capnp_guard.h~, ~/DNOMINMAX~, and
-~/DWIN32_LEAN_AND_MEAN~. Undefining ~interface~ is the load-bearing line;
-~NOMINMAX~ and ~WIN32_LEAN_AND_MEAN~ keep the rest of the Windows header
-surface from fighting the rest of the C++ stack. Upstream ~rgpot~ absorbed
-the earlier ~fix_capnpc~ / rename-to-~.cpp~ logic, so the feedstock patch
-was dropped, but the ~interface~ guard remains a Windows packaging concern
-until Cap'n Proto or the SDK stop colliding on that token.
+~/DWIN32_LEAN_AND_MEAN~. The ~#undef interface~ line is required for a
+clean compile; ~NOMINMAX~ and ~WIN32_LEAN_AND_MEAN~ limit how much of the
+Windows header surface collides with the rest of the C++ stack. Upstream
+~rgpot~ absorbed the earlier ~fix_capnpc~ / rename-to-~.cpp~ logic, so the
+feedstock patch was dropped, but the ~interface~ guard remains a Windows
+packaging step until Cap'n Proto or the SDK stop colliding on that token.
 
 ** Flang, MSVC, and one feedstock activation
 By the time in-tree Fortran returned on win-64 (feedstock [[https://github.com/conda-forge/eon-feedstock/issues/15][issue 15]], EAM /
 GAGAFE / CuH2 and friends), conda-forge's default Fortran on Windows was
-~llvm-flang~, while C++ and the final link stayed on MSVC. That is a third
-toolchain triangle next to MinGW-xtb and Cap'n Proto: flang for the legacy
-pots, ~cl.exe~ for C++, ~link.exe~ for the binary.
+~llvm-flang~, while C++ and the final link stayed on MSVC. That forms a third
+compiler mix next to MinGW-xtb and Cap'n Proto: flang for the legacy pots,
+~cl.exe~ for C++, ~link.exe~ for the binary.
 
 *** ~llvm-ar~ archives that ~link.exe~ refuses
-Enabling ~compiler('fortran')~ in meson pulls flang's activation, which
+Enabling ~compiler('fortran')~ in meson pulls flang activation, which
 steers the archiver toward ~llvm-ar~. Static archives built that way
 (~libptlrpc~, Cap'n Proto ~kj-async~, and friends) then fail the MSVC link
 with ~LNK1107: invalid or corrupt file~. The archives are not corrupt;
-they are the wrong /format/ for ~link.exe~.
+they use a format ~link.exe~ does not accept.
 
-The fix is blunt and effective in ~build.bat~:
+~build.bat~ forces MSVC as the C/C++ tools and ~lib.exe~ as the archiver
+while flang still compiles the Fortran sources:
 
 #+begin_src bat
 set "CC=cl.exe"
@@ -22741,9 +22742,8 @@ set "NM=dumpbin"
 set "RANLIB=:"
 #+end_src
 
-Force MSVC as the C/C++ tools and ~lib.exe~ as the archiver even while
-flang compiles the Fortran sources. Prefer ~link.exe~ over ~lld-link~ from
-the clang/flang activation for the same reason.
+Keep ~link.exe~ rather than ~lld-link~ from the clang/flang activation so
+the final link and the archives share one ABI.
 
 *** ~flang_rt~ and ~LNK1104~
 Flang-built objects need the flang runtime import library
@@ -22762,8 +22762,7 @@ Stack size still needs the Meson ~/STACK:16777216~ (or MinGW
 ~-Wl,--stack,~) treatment from the GAGAFE section: enabling Fortran on
 Windows does not enlarge the default 1 MB stack.
 
-The combined shape of the win-64 feedstock activation is sketched in
-Figure [[fig:flang-msvc-capnp]].
+Figure [[fig:flang-msvc-capnp]] summarizes the win-64 feedstock activation.
 
 #+BEGIN_SRC dot :file ./images/dot/flang-msvc-capnp.png :cmdline -Kdot -Tpng -Gdpi=200 :cache yes :exports none
 digraph FlangMsvcCapnp {
@@ -22813,27 +22812,26 @@ digraph FlangMsvcCapnp {
 [fn:staticwin] On Linux, shared libraries (~.so~) record their dependencies in ~DT_NEEDED~ entries, resolved at load time. Static libraries (~.a~) on both platforms are just archives of object files -- but the Linux linker pulls symbols transitively from shared deps while the Windows linker requires every static dependency to be listed explicitly.
 
 ** Concluding Remarks
-None of these issues are particularly deep. The reserved filenames have been
-documented since DOS. The 1 MB stack has been the default for decades. The
-MinGW/MSVC split has been the status quo on conda-forge for as long as Fortran
-has been involved. Cap'n Proto's code generation defaults (~capnpc~, ~.c++~
-extensions) assume a GCC-like toolchain, and Win32's ~interface~ macro is older
-than Cap'n Proto itself. Mixing llvm-flang with MSVC link is the newest member
-of the same family: three toolchains, one ~build.bat~, and linker errors that
-look like corruption (~LNK1107~) or missing files (~LNK1104~). The common thread
-is that they surface only when CI runs on a platform the developer does not use
-daily, with error messages ranging from cryptic (~0xC00000FD~) to absent
-(~WriteConsole~) to quietly fatal linker and preprocessor failures.
+Each failure mode here is shallow once named. Reserved filenames date to DOS.
+The 1 MB stack has been the Windows default for decades. The MinGW/MSVC split
+has been the conda-forge status quo for as long as Fortran packages have
+existed there. Cap'n Proto's code generation defaults (~capnpc~, ~.c++~
+extensions) target a GCC-like compiler stack, and Win32's ~interface~ macro is
+older than Cap'n Proto itself. Mixing llvm-flang with MSVC link joins the same
+list: three compilers, one ~build.bat~, and linker errors that read as
+corruption (~LNK1107~) or missing files (~LNK1104~). They surface when CI runs
+on a platform the developer does not use daily, with messages ranging from
+cryptic (~0xC00000FD~) to absent (~WriteConsole~) to hard linker and
+preprocessor stops.
 
-The practical advice is simple: add Windows to the CI matrix early, pay extra
-attention to legacy Fortran components where stack allocation is the default,
-and do not assume that "requires library X" implies "requires the toolchain that
-built library X". When using static libraries from conda-forge on Windows,
-check for missing system library dependencies that shared-library builds
-would resolve automatically. When Fortran and C++ share a feedstock activation,
-pin the archiver and runtime ~LIBPATH~ to the linker you actually run. And
-perhaps keep a list of DOS device names -- and Win32 macros that collide with
-C++ identifiers -- somewhere visible.
+What to do: add Windows to the CI matrix early; watch legacy Fortran where
+stack allocation is the default; treat "depends on library X" as distinct from
+"uses the compiler stack that built library X". When static libraries from
+conda-forge land on Windows, check for system libraries that shared builds
+would pull automatically. When Fortran and C++ share a feedstock activation,
+pin the archiver and runtime ~LIBPATH~ to the linker that produces the binary.
+Keep a short list of DOS device names and Win32 macros that collide with C++
+identifiers within reach.
 
 [fn:whatiseon] eOn is a saddle point search code for long timescale dynamics simulations on atomic systems, combining a Python server with a C++ client. See [[https://eondocs.org][the documentation]] for details.
 [fn:whyaux] It handled auxiliary benchmark configuration. The name made perfect sense in context, which is approximately how all of these stories begin.
