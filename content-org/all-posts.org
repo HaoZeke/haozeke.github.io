@@ -22682,6 +22682,133 @@ ptlrpc -> consumer [label="consumed\nby meson deps"];
 #+CAPTION: The missing link: ~kj-async.lib~ references Winsock2 symbols but the conda-forge package does not declare ~ws2_32~ as a dependency. The consumer's ~declare_dependency~ must propagate it explicitly.
 [[file:./images/dot/capnp-ws2-chain.png]]
 
+*** ~interface~ is a Windows macro
+The Cap'n Proto saga did not end with code generation. On recent eOn
+feedstock bumps (through [[https://github.com/conda-forge/eon-feedstock][v2.16]]), MSVC builds that include Cap'n Proto RPC
+headers fail with a cascade of template errors that mention
+~IPrintDialogServices~ and other COM symbols. The root cause is not Cap'n
+Proto's types; it is ~windows.h~.
+
+Win32 headers define ~interface~ as a macro (legacy COM sugar). Cap'n Proto
+templates use ~interface~ as a C++ identifier. The preprocessor rewrites the
+templates into nonsense before the compiler sees them. The diagnostic is
+almost designed to send you hunting through COM headers rather than the
+actual schema-generated code.
+
+The feedstock ~build.bat~ force-includes a tiny guard before every
+translation unit:
+
+#+begin_src c
+#pragma once
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+#ifdef interface
+#undef interface
+#endif
+#+end_src
+
+with ~cl.exe~ flags ~/FI<path>/msvc_capnp_guard.h~, ~/DNOMINMAX~, and
+~/DWIN32_LEAN_AND_MEAN~. Undefining ~interface~ is the load-bearing line;
+~NOMINMAX~ and ~WIN32_LEAN_AND_MEAN~ keep the rest of the Windows header
+surface from fighting the rest of the C++ stack. Upstream ~rgpot~ absorbed
+the earlier ~fix_capnpc~ / rename-to-~.cpp~ logic, so the feedstock patch
+was dropped, but the ~interface~ guard remains a Windows packaging concern
+until Cap'n Proto or the SDK stop colliding on that token.
+
+** Flang, MSVC, and one feedstock activation
+By the time in-tree Fortran returned on win-64 (feedstock [[https://github.com/conda-forge/eon-feedstock/issues/15][issue 15]], EAM /
+GAGAFE / CuH2 and friends), conda-forge's default Fortran on Windows was
+~llvm-flang~, while C++ and the final link stayed on MSVC. That is a third
+toolchain triangle next to MinGW-xtb and Cap'n Proto: flang for the legacy
+pots, ~cl.exe~ for C++, ~link.exe~ for the binary.
+
+*** ~llvm-ar~ archives that ~link.exe~ refuses
+Enabling ~compiler('fortran')~ in meson pulls flang's activation, which
+steers the archiver toward ~llvm-ar~. Static archives built that way
+(~libptlrpc~, Cap'n Proto ~kj-async~, and friends) then fail the MSVC link
+with ~LNK1107: invalid or corrupt file~. The archives are not corrupt;
+they are the wrong /format/ for ~link.exe~.
+
+The fix is blunt and effective in ~build.bat~:
+
+#+begin_src bat
+set "CC=cl.exe"
+set "CXX=cl.exe"
+set "AR=lib"
+set "ARFLAGS="
+set "NM=dumpbin"
+set "RANLIB=:"
+#+end_src
+
+Force MSVC as the C/C++ tools and ~lib.exe~ as the archiver even while
+flang compiles the Fortran sources. Prefer ~link.exe~ over ~lld-link~ from
+the clang/flang activation for the same reason.
+
+*** ~flang_rt~ and ~LNK1104~
+Flang-built objects need the flang runtime import library
+(~flang_rt.runtime.dynamic.lib~). It lives under the clang resource
+directory (~flang -print-resource-dir~), not under ~%LIBRARY_LIB%~ where
+MSVC looks by default. Without an extra ~LIB=~ entry, the final link fails
+with ~LNK1104: cannot open file 'flang_rt.runtime.dynamic.lib'~.
+
+#+begin_src bat
+for /f "delims=" %%R in ('flang -print-resource-dir 2^>nul') do (
+    set "LIB=%%R\lib\x86_64-pc-windows-msvc;%LIB%"
+)
+#+end_src
+
+Stack size still needs the Meson ~/STACK:16777216~ (or MinGW
+~-Wl,--stack,~) treatment from the GAGAFE section: enabling Fortran on
+Windows does not enlarge the default 1 MB stack.
+
+The combined shape of the win-64 feedstock activation is sketched in
+Figure [[fig:flang-msvc-capnp]].
+
+#+BEGIN_SRC dot :file ./images/dot/flang-msvc-capnp.png :cmdline -Kdot -Tpng -Gdpi=200 :cache yes :exports none
+digraph FlangMsvcCapnp {
+  graph [fontname="Jost", fontsize=12, bgcolor="white", rankdir=TB, nodesep=0.35, ranksep=0.45, pad=0.12];
+  node [fontname="Jost", fontsize=12, shape=box, style="rounded,filled", fillcolor="white", color="#004D40", fontcolor="#004D40", penwidth=1.5, margin="0.16,0.10"];
+  edge [fontname="Jost", fontsize=11, color="#004D40", fontcolor="#004D40", penwidth=1.3];
+
+  subgraph cluster_tools {
+    label="conda-forge win-64 activation";
+    color="#004D40"; fontname="Jost"; fontsize=12;
+    cl [label="MSVC cl.exe / link.exe\n(C++ + final link)"];
+    flang [label="llvm-flang\n(in-tree Fortran pots)", fillcolor="#F1DB4B"];
+    ar_bad [label="llvm-ar default\n(.a archives)", fillcolor="#FF655D", fontcolor="white", color="#FF655D"];
+    ar_ok [label="AR=lib.exe\n(MSVC archives)", fillcolor="#004D40", fontcolor="white", color="#004D40"];
+  }
+
+  subgraph cluster_link {
+    label="What breaks without overrides";
+    color="#004D40"; fontname="Jost"; fontsize=12;
+    lnk1107 [label="LNK1107 on .a\n(static ptlrpc / kj)", fillcolor="#FF655D", fontcolor="white", color="#FF655D"];
+    lnk1104 [label="LNK1104 flang_rt\n.runtime.dynamic.lib", fillcolor="#FF655D", fontcolor="white", color="#FF655D"];
+    iface [label="windows.h #define interface\ncorrupts capnp templates", fillcolor="#FF655D", fontcolor="white", color="#FF655D"];
+  }
+
+  fix [label="build.bat fixes:\nAR=lib; LIBPATH=flang_rt;\n/FI msvc_capnp_guard.h\n+ NOMINMAX + LEAN_AND_MEAN", fillcolor="#004D40", fontcolor="white", color="#004D40"];
+  out [label="eonclient.exe\n(serve + Fortran + xtb)", fillcolor="#F1DB4B"];
+
+  flang -> ar_bad [label="meson default"];
+  ar_bad -> lnk1107;
+  flang -> lnk1104 [label="runtime lib"];
+  cl -> iface [label="includes RPC headers"];
+  lnk1107 -> fix [style=dashed];
+  lnk1104 -> fix [style=dashed];
+  iface -> fix [style=dashed];
+  ar_ok -> fix [style=dashed, label="override"];
+  fix -> out;
+  cl -> out [style=dashed];
+}
+#+END_SRC
+
+#+NAME: fig:flang-msvc-capnp
+#+LABEL: fig:flang-msvc-capnp
+#+CAPTION: One feedstock activation, three failure classes: wrong archiver format, missing flang runtime path, and Win32 ~interface~ macro pollution of Cap'n Proto headers.
+[[file:./images/dot/flang-msvc-capnp.png]]
+
 [fn:msvcext] MSVC [[https://learn.microsoft.com/en-us/cpp/build/reference/tc-tp-tc-tp-specify-source-file-type][recognizes]] ~.c~, ~.cpp~, ~.cxx~, and ~.cc~ by default. The ~/Tp~ flag can force a file to be treated as C++, but meson does not inject it for unknown extensions.
 [fn:staticwin] On Linux, shared libraries (~.so~) record their dependencies in ~DT_NEEDED~ entries, resolved at load time. Static libraries (~.a~) on both platforms are just archives of object files -- but the Linux linker pulls symbols transitively from shared deps while the Windows linker requires every static dependency to be listed explicitly.
 
@@ -22690,18 +22817,23 @@ None of these issues are particularly deep. The reserved filenames have been
 documented since DOS. The 1 MB stack has been the default for decades. The
 MinGW/MSVC split has been the status quo on conda-forge for as long as Fortran
 has been involved. Cap'n Proto's code generation defaults (~capnpc~, ~.c++~
-extensions) assume a GCC-like toolchain. The common thread is that they surface
-only when CI runs on a platform the developer does not use daily, with error
-messages ranging from cryptic (~0xC00000FD~) to absent (~WriteConsole~) to
-quietly fatal linker errors.
+extensions) assume a GCC-like toolchain, and Win32's ~interface~ macro is older
+than Cap'n Proto itself. Mixing llvm-flang with MSVC link is the newest member
+of the same family: three toolchains, one ~build.bat~, and linker errors that
+look like corruption (~LNK1107~) or missing files (~LNK1104~). The common thread
+is that they surface only when CI runs on a platform the developer does not use
+daily, with error messages ranging from cryptic (~0xC00000FD~) to absent
+(~WriteConsole~) to quietly fatal linker and preprocessor failures.
 
 The practical advice is simple: add Windows to the CI matrix early, pay extra
 attention to legacy Fortran components where stack allocation is the default,
 and do not assume that "requires library X" implies "requires the toolchain that
 built library X". When using static libraries from conda-forge on Windows,
 check for missing system library dependencies that shared-library builds
-would resolve automatically. And perhaps keep a list of DOS device names
-somewhere visible.
+would resolve automatically. When Fortran and C++ share a feedstock activation,
+pin the archiver and runtime ~LIBPATH~ to the linker you actually run. And
+perhaps keep a list of DOS device names -- and Win32 macros that collide with
+C++ identifiers -- somewhere visible.
 
 [fn:whatiseon] eOn is a saddle point search code for long timescale dynamics simulations on atomic systems, combining a Python server with a C++ client. See [[https://eondocs.org][the documentation]] for details.
 [fn:whyaux] It handled auxiliary benchmark configuration. The name made perfect sense in context, which is approximately how all of these stories begin.
@@ -24448,13 +24580,13 @@ python -m rgpycrumbs.cli eon plt-neb \
   --output-file results/03_figures/blog/neb-viz-2d-cyclo.png \
   --plot-type landscape --project-path --show-pts --landscape-path all \
   --plot-structures crit_points --surface-type grad_imq --ira-kmax 14 \
-  --title Cycloaddition --cmap-landscape viridis \
+  --title Cycloaddition --theme ruhi --cmap-landscape ruhi_diverging \
   --strip-renderer xyzrender --perspective-tilt 8 --rotation 15x,55y,0z \
   --show-legend --additional-con resources/ewNEB/configurations/system100-sp.xyz \
   ORCA
 #+end_src
 
-#+caption: Cycloaddition in the s-d frame. Viridis energy surface, sampled structures as black dots, converged path as open circles, posterior-variance contours as dashed curves, and the ORCA B3LYP-D3 saddle as a star (strip label: ORCA).
+#+caption: Cycloaddition in the s-d frame. Ruhi energy surface, sampled structures as black dots, converged path as open circles, posterior-variance contours as dashed curves, and the ORCA B3LYP-D3 saddle as a star (strip label: ORCA).
 [[file:images/neb-viz/neb-viz-2d-cyclo.png]]
 
 The projection does more than recolor the profile. The color field, sampled
