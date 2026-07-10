@@ -118,70 +118,67 @@ def plot_pipeline(output_dir: Path) -> None:
     if shutil.which("dot") is None:
         raise RuntimeError("graphviz 'dot' is required to render neb-viz-pipeline.png")
 
+    # Vertical layout: a flat LR strip collapses to ~80px tall in the content
+    # column; TB keeps labels readable at full column width.
     source = r"""
 digraph NEBProjectionPipeline {
   graph [
     fontname="Jost",
-    fontsize=12,
+    fontsize=15,
     bgcolor="white",
-    rankdir=LR,
-    nodesep=0.45,
-    ranksep=0.55,
-    pad=0.12,
+    rankdir=TB,
+    nodesep=0.40,
+    ranksep=0.45,
+    pad=0.18,
     splines=true
   ];
   node [
     fontname="Jost",
-    fontsize=12,
+    fontsize=15,
     shape=box,
     style="rounded,filled",
     fillcolor="white",
     color="#004D40",
     fontcolor="#004D40",
-    penwidth=1.6,
-    margin="0.18,0.12"
+    penwidth=2.0,
+    margin="0.30,0.18",
+    width=3.6
   ];
   edge [
     fontname="Jost",
-    fontsize=11,
+    fontsize=13,
     color="#004D40",
     fontcolor="#004D40",
-    penwidth=1.4,
-    arrowsize=0.8
+    penwidth=1.8,
+    arrowsize=1.0
   ];
 
   neb [
-    label="NEB band\n3N coords\nE, F_parallel",
+    label="1. NEB band  ·  3N coords, E, F_parallel",
     fillcolor="#FF655D",
     fontcolor="white",
     color="#FF655D"
   ];
-  ira [
-    label="IRA RMSD\nr = d(R)\np = d(P)"
-  ];
-  grad [
-    label="Synthetic\ngradients\nin (r, p)"
-  ];
+  ira [label="2. IRA RMSD  ·  r = d(R), p = d(P)"];
+  grad [label="3. Synthetic gradients in (r, p)"];
   gp [
-    label="Grad-enhanced GP\nIMQ kernel\nmean + variance",
+    label="4. Grad-enhanced GP  ·  IMQ kernel, mean + variance",
     fillcolor="#F1DB4B",
     color="#004D40"
   ];
-  sd [
-    label="Rotate frame\ns progress\nd orthogonal"
-  ];
+  sd [label="5. Rotate frame  ·  s progress, d orthogonal"];
   out [
-    label="s-d landscape\npath + samples\nvariance contours",
+    label="6. s-d landscape  ·  path, samples, variance contours",
     fillcolor="#004D40",
     fontcolor="white",
     color="#004D40"
   ];
 
-  neb -> ira  [label="align"];
-  ira -> grad [label="project F"];
-  grad -> gp  [label="fit"];
-  gp  -> sd   [label="basis"];
-  sd  -> out  [label="plot"];
+  neb -> ira;
+  ira -> grad;
+  grad -> gp;
+  gp -> sd;
+  sd -> out;
 }
 """
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -194,7 +191,7 @@ digraph NEBProjectionPipeline {
                 "dot",
                 "-Kdot",
                 "-Tpng",
-                "-Gdpi=200",
+                "-Gdpi=220",
                 "-o",
                 str(output_dir / "neb-viz-pipeline.png"),
                 str(dot_path),
