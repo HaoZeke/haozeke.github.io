@@ -24375,8 +24375,76 @@ inverse-multiquadric kernel. A final rotation maps $r,p$ onto reaction progress
 $s$ and orthogonal deviation $d$. The RMSD projection paper gives the
 derivation and failure modes [@goswamiTwodimensionalRMSDProjections2026].
 
+#+BEGIN_SRC dot :file ./images/dot/neb-viz-pipeline.png :cmdline -Kdot -Tpng -Gdpi=200 :cache yes :exports none
+digraph NEBProjectionPipeline {
+  graph [
+    fontname="Jost",
+    fontsize=12,
+    bgcolor="white",
+    rankdir=LR,
+    nodesep=0.45,
+    ranksep=0.55,
+    pad=0.12,
+    splines=true
+  ];
+  node [
+    fontname="Jost",
+    fontsize=12,
+    shape=box,
+    style="rounded,filled",
+    fillcolor="white",
+    color="#004D40",
+    fontcolor="#004D40",
+    penwidth=1.6,
+    margin="0.18,0.12"
+  ];
+  edge [
+    fontname="Jost",
+    fontsize=11,
+    color="#004D40",
+    fontcolor="#004D40",
+    penwidth=1.4,
+    arrowsize=0.8
+  ];
+
+  neb [
+    label="NEB band\n3N coords\nE, F_parallel",
+    fillcolor="#FF655D",
+    fontcolor="white",
+    color="#FF655D"
+  ];
+  ira [
+    label="IRA RMSD\nr = d(R)\np = d(P)"
+  ];
+  grad [
+    label="Synthetic\ngradients\nin (r, p)"
+  ];
+  gp [
+    label="Grad-enhanced GP\nIMQ kernel\nmean + variance",
+    fillcolor="#F1DB4B",
+    color="#004D40"
+  ];
+  sd [
+    label="Rotate frame\ns progress\nd orthogonal"
+  ];
+  out [
+    label="s-d landscape\npath + samples\nvariance contours",
+    fillcolor="#004D40",
+    fontcolor="white",
+    color="#004D40"
+  ];
+
+  neb -> ira  [label="align"];
+  ira -> grad [label="project F"];
+  grad -> gp  [label="fit"];
+  gp  -> sd   [label="basis"];
+  sd  -> out  [label="plot"];
+}
+#+END_SRC
+
+#+NAME: fig:neb-viz-pipeline
 #+caption: Projection pipeline from 3N-dimensional NEB output to IRA RMSD coordinates, synthetic gradients, a gradient-enhanced GP surface, and the rotated s-d frame.
-[[file:images/neb-viz/neb-viz-pipeline.png]]
+[[file:./images/dot/neb-viz-pipeline.png]]
 
 #+begin_src bash
 python -m rgpycrumbs.cli eon plt-neb \
