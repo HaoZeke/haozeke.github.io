@@ -24343,10 +24343,11 @@ reactant puts the horizontal coordinate back in Angstroms after IRA alignment.
 python -m rgpycrumbs.cli eon plt-neb \
   --con-file results/02_neb/system_100/neb.con \
   --output-file results/03_figures/blog/neb-viz-1d-path.png \
-  --plot-type profile --rc-mode path --plot-structures crit_points
+  --plot-type profile --rc-mode path --plot-structures crit_points \
+  --strip-renderer xyzrender --perspective-tilt 8 --rotation 15x,55y,0z
 #+end_src
 
-#+caption: Energy against path length. The peak gives the barrier. The piecewise cubic Hermite spline uses the parallel forces, so the curve respects dE/ds at every image instead of wiggling between points. Dark to light traces the optimization. The converged path appears in black.
+#+caption: Energy against path length. The peak gives the barrier. The piecewise cubic Hermite spline uses the parallel forces, so the curve respects dE/ds at every image instead of wiggling between points. Dark to light traces the optimization. The converged path is black; R, SP, and P sit in a strip under the panel rather than on the curve.
 [[file:images/neb-viz/neb-viz-1d-path.png]]
 
 For the cycloaddition, the path-length view tells the expected first story: the
@@ -24354,10 +24355,10 @@ barrier drops as the band settles, and the product lies below the reactant. It
 can't show sideways motion, sparse sampling, or whether the high image sits in
 a narrow channel.
 
-#+caption: Energy vs image index. Even spacing makes bands of different image counts comparable. Smooth cubic through the energies (not Hermite: force slopes are not dE/d(index)).
+#+caption: Energy vs image index. Even spacing makes bands of different image counts comparable. Smooth cubic through the energies (not Hermite: force slopes are not dE/d(index)). Same strip layout as the path-length panel.
 [[file:images/neb-viz/neb-viz-1d-index.png]]
 
-#+caption: Energy vs RMSD from the reactant: the coordinate becomes Angstroms of real geometric change.
+#+caption: Energy vs RMSD from the reactant: the coordinate becomes Angstroms of real geometric change. Structures remain below the axes so the curve stays readable.
 [[file:images/neb-viz/neb-viz-1d-rmsd.png]]
 
 I keep all three because they fail differently. Path length can look settled
