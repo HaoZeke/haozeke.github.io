@@ -24585,7 +24585,7 @@ python -m rgpycrumbs.cli eon plt-neb \
 #+end_src
 
 #+caption: Cycloaddition in the s-d frame. Ruhi energy surface, sampled structures as black dots, converged path as open circles, posterior-variance contours as dashed curves, and the ORCA B3LYP-D3 saddle as a star (strip label: ORCA).
-[[file:images/neb-viz/neb-viz-2d-cyclo.png]]
+[[file:images/neb-viz/neb-viz-2d-cyclo-ruhi.png]]
 
 The projection does more than recolor the profile. The color field, sampled
 points, force-derived gradients, posterior variance, path history, and
@@ -24606,10 +24606,10 @@ diagonal. The 1D coordinate pays for that turn by stretching arc length and
 hiding direction.
 
 #+caption: Grignard addition. The path bows off the reactant-to-product line in the s-d plane; Birkholz's reference saddle sits near the band SP. The 1D coordinate folds that turn into arc length.
-[[file:images/neb-viz/neb-viz-2d-grignard.png]]
+[[file:images/neb-viz/neb-viz-2d-grignard-ruhi.png]]
 
 #+caption: Bicyclobutane ring opening. A geometric kink shows up as off-diagonal motion; the mlFSM reference saddle is marked separately from the band SP.
-[[file:images/neb-viz/neb-viz-2d-bicyclo.png]]
+[[file:images/neb-viz/neb-viz-2d-bicyclo-ruhi.png]]
 
 ** Table diagnostics
 Surfaces carry more signal when the force tables remain nearby. The Grignard
