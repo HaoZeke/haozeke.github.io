@@ -24330,6 +24330,8 @@ per-step energy/force data (~neb_*.dat~), and path snapshots
 ~python -m rgpycrumbs.cli eon plt-neb~. The three table diagnostics read the eOn
 tables directly.
 
+This repository also carries a figure reproduction bundle under =repro/neb-visualizations/=. It is not the full computational benchmark. The committed CSV files are reduced exports from the NEB outputs. They contain the data needed for the blog figures. Run =pixi run -C repro/neb-visualizations figures= to regenerate the PNGs from the tables.
+
 ** One dimension, three coordinates
 The usual NEB profile already encodes a decision: what counts as horizontal
 distance. I draw three scalar views. Path length gives the conventional
@@ -24352,7 +24354,7 @@ barrier drops as the band settles, and the product lies below the reactant. It
 can't show sideways motion, sparse sampling, or whether the high image sits in
 a narrow channel.
 
-#+caption: Energy vs image index. Even spacing makes bands of different image counts comparable.
+#+caption: Energy vs image index. Even spacing makes bands of different image counts comparable. Smooth cubic through the energies (not Hermite: force slopes are not dE/d(index)).
 [[file:images/neb-viz/neb-viz-1d-index.png]]
 
 #+caption: Energy vs RMSD from the reactant: the coordinate becomes Angstroms of real geometric change.
@@ -24447,6 +24449,13 @@ The Pt 111 heptamer set used 31 percent fewer calls across 59 transitions.
 Fixed switching at 0.5 eV/A spent 46 percent more calls than the adaptive
 criterion. Those numbers don't make NEBs forgiving. They say the expensive part
 often lies in deciding when the top image can take over saddle work.
+
+** Related publications
+This post is the practical field guide and visualization companion to three papers. As with the derived type wrapping series, we build the figures and diagnostics by hand in the repro first, then document how they support the methods.
+
+The two-dimensional RMSD projection technique for path visualization and validation is described in "Two-Dimensional RMSD Projections for Reaction Path Visualization and Validation" [@goswamiTwodimensionalRMSDProjections2026]. The enhanced climbing-image NEB with Hessian eigenmode alignment (including the OCI-NEB refinement) appears in "Enhanced Climbing Image Nudged Elastic Band Method with Hessian Eigenmode Alignment" (Goswami, Gunde and Jónsson) [@goswamiEnhancedClimbingImage2026]. The reproducible orchestration of the full NEB workflows and best practices is in "Reproducible Orchestration of Best Practices for Reaction Path Optimization with the Nudged Elastic Band" [@goswamiReproducibleOrchestrationBest2026].
+
+The figures, the three 1D coordinate views, the 2D landscape with posterior variance, and the table diagnostics (convergence, force heatmap, sampling) here directly support and illustrate the claims and workflows in those works. The code and reduced data for exactly the figures in this post live in =repro/neb-visualizations/=.
 
 ** Conclusions
 The check I want after an NEB run has four parts: scalar profiles for the
