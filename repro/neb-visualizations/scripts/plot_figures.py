@@ -22,8 +22,8 @@ SYSTEM_LABELS = {
 COLORS = {
     "ink": "#1f2933",
     "muted": "#657786",
-    "teal": "#007c78",
-    "coral": "#d95f4f",
+    "teal": "#004D40",
+    "coral": "#FF655D",
     "gold": "#b7791f",
     "plum": "#6b4c9a",
 }
@@ -307,18 +307,18 @@ def plot_convergence(profiles: list[dict[str, float | int | str]], output_dir: P
     barriers = np.asarray([max(float(row["energy"]) for row in grouped[it]) for it in iterations])
     max_force = np.asarray([max(abs(float(row["f_para"])) for row in grouped[it]) for it in iterations])
 
-    fig, ax1 = plt.subplots(figsize=(7.1, 4.1))
-    ax1.plot(iterations, barriers, color=COLORS["teal"], lw=2.0, label="barrier")
-    ax1.set_xlabel("NEB optimization step")
+    fig, (ax1, ax2) = plt.subplots(
+        2, 1, sharex=True, figsize=(7.2, 5.4), layout="constrained",
+        gridspec_kw={"height_ratios": [1.15, 1.0]},
+    )
+    ax1.plot(iterations, barriers, color=COLORS["teal"], lw=2.1, marker="o", ms=3.5)
     ax1.set_ylabel("Barrier / eV", color=COLORS["teal"])
     ax1.tick_params(axis="y", labelcolor=COLORS["teal"])
-    ax2 = ax1.twinx()
-    ax2.plot(iterations, max_force, color=COLORS["coral"], lw=2.0, label="max |parallel force|")
-    ax2.set_ylabel("Max |parallel force| / eV A$^{-1}$", color=COLORS["coral"])
+    ax1.set_title("Barrier and force convergence (Cycloaddition)")
+    ax2.plot(iterations, max_force, color=COLORS["coral"], lw=2.1, marker="o", ms=3.5)
+    ax2.set_xlabel("NEB optimization step")
+    ax2.set_ylabel(r"Max $|F_\parallel|$ / eV $\mathrm{\AA}^{-1}$", color=COLORS["coral"])
     ax2.tick_params(axis="y", labelcolor=COLORS["coral"])
-    ax1.set_title("Barrier and force convergence")
-    lines = ax1.get_lines() + ax2.get_lines()
-    ax1.legend(lines, [line.get_label() for line in lines], loc="upper right")
     save(fig, output_dir, "neb-viz-convergence.png")
 
 
@@ -332,12 +332,21 @@ def plot_force_heatmap(profiles: list[dict[str, float | int | str]], output_dir:
         for j, image in enumerate(images):
             heat[i, j] = force_by_image.get(image, np.nan)
 
-    fig, ax = plt.subplots(figsize=(7.1, 4.2))
-    mesh = ax.imshow(heat, aspect="auto", origin="lower", cmap="magma", extent=[min(images), max(images), min(iterations), max(iterations)])
-    fig.colorbar(mesh, ax=ax, label="|parallel force| / eV A$^{-1}$")
+    fig, ax = plt.subplots(figsize=(7.2, 4.4))
+    mesh = ax.imshow(
+        heat, aspect="auto", origin="lower", cmap="magma", interpolation="nearest",
+        extent=[min(images) - 0.5, max(images) + 0.5, min(iterations) - 0.5, max(iterations) + 0.5],
+    )
+    fig.colorbar(mesh, ax=ax, label=r"$|F_\parallel|$ / eV $\mathrm{\AA}^{-1}$")
+    final_rows = grouped[iterations[-1]]
+    climb = int(max(final_rows, key=lambda r: float(r["energy"]))["image"])
+    ax.axvline(climb, color="white", ls="--", lw=1.2, alpha=0.9, label=f"highest image ({climb})")
     ax.set_xlabel("Image index")
     ax.set_ylabel("NEB optimization step")
-    ax.set_title("Where the band still moves")
+    ax.set_title("Where the band still moves (Cycloaddition)")
+    ax.set_xticks(images[:: max(1, len(images) // 10)])
+    ax.set_yticks(iterations[:: max(1, len(iterations) // 10)])
+    ax.legend(loc="upper left", fontsize=9)
     save(fig, output_dir, "neb-viz-force-heatmap.png")
 
 
@@ -353,7 +362,7 @@ def plot_sampling_density(geometry: list[dict[str, float | int | str]], output_d
         color = [COLORS["teal"], COLORS["gold"], COLORS["plum"]][idx]
         ax.plot(x, spacing, marker="o", lw=1.7, ms=4.0, color=color, label=SYSTEM_LABELS[system])
     ax.set_xlabel("Segment index")
-    ax.set_ylabel("Projected spacing / A")
+    ax.set_ylabel(r"Path-length spacing / $\mathrm{\AA}$")
     ax.set_title("Final-band image spacing")
     ax.legend(loc="best")
     save(fig, output_dir, "neb-viz-sampling-density.png")

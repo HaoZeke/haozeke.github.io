@@ -24351,9 +24351,9 @@ python -m rgpycrumbs.cli eon plt-neb \
 [[file:images/neb-viz/neb-viz-1d-path.png]]
 
 For the cycloaddition, the path-length view tells the expected first story: the
-barrier drops as the band settles, and the product lies below the reactant. It
-can't show sideways motion, sparse sampling, or whether the high image sits in
-a narrow channel.
+barrier falls from about 1.52 eV on the initial band to about 1.03 eV by step 29,
+and the product sits about 0.34 eV below the reactant. It can't show sideways
+motion, sparse sampling, or whether the high image sits in a narrow channel.
 
 #+caption: Energy vs image index. Even spacing makes bands of different image counts comparable. Smooth cubic through the energies (not Hermite: force slopes are not dE/d(index)). Same strip layout as the path-length panel.
 [[file:images/neb-viz/neb-viz-1d-index.png]]
@@ -24447,12 +24447,14 @@ python -m rgpycrumbs.cli eon plt-neb \
   --con-file results/02_neb/system_100/neb.con \
   --output-file results/03_figures/blog/neb-viz-2d-cyclo.png \
   --plot-type landscape --project-path --show-pts --landscape-path all \
-  --plot-structures crit_points --surface-type grad_imq_ny --ira-kmax 14 \
+  --plot-structures crit_points --surface-type grad_imq --ira-kmax 14 \
+  --title Cycloaddition --cmap-landscape viridis \
+  --strip-renderer xyzrender --perspective-tilt 8 --rotation 15x,55y,0z \
   --show-legend --additional-con resources/ewNEB/configurations/system100-sp.xyz \
-  "ORCA B3LYP-D3"
+  ORCA
 #+end_src
 
-#+caption: Cycloaddition in the s-d frame. The plot shows the GP energy surface in color, sampled structures as black dots, the converged path as open circles, posterior-variance contours as dashed curves, and the ORCA B3LYP-D3 saddle as a white star.
+#+caption: Cycloaddition in the s-d frame. Viridis energy surface, sampled structures as black dots, converged path as open circles, posterior-variance contours as dashed curves, and the ORCA B3LYP-D3 saddle as a star (strip label: ORCA).
 [[file:images/neb-viz/neb-viz-2d-cyclo.png]]
 
 The projection does more than recolor the profile. The color field, sampled
@@ -24473,10 +24475,10 @@ tests. In the $s,d$ plane both paths bow away from the reactant-product
 diagonal. The 1D coordinate pays for that turn by stretching arc length and
 hiding direction.
 
-#+caption: Grignard addition. The path bows away from the reactant-to-product diagonal, a real geometric turn the 1D coordinate folds flat.
+#+caption: Grignard addition. The path bows off the reactant-to-product line in the s-d plane; Birkholz's reference saddle sits near the band SP. The 1D coordinate folds that turn into arc length.
 [[file:images/neb-viz/neb-viz-2d-grignard.png]]
 
-#+caption: Bicyclobutane ring opening, with a sharp geometric kink visible in the s-d plane.
+#+caption: Bicyclobutane ring opening. A geometric kink shows up as off-diagonal motion; the mlFSM reference saddle is marked separately from the band SP.
 [[file:images/neb-viz/neb-viz-2d-bicyclo.png]]
 
 ** Table diagnostics
@@ -24487,13 +24489,13 @@ ugliness belongs in the reproducible record. The table plots answer
 narrower questions: did the barrier stabilize, which images still move, and how
 evenly did the final images spread out?
 
-#+caption: Barrier height and maximum parallel force over the NEB optimization. A stable barrier without a stable force doesn't certify convergence.
+#+caption: Cycloaddition barrier (top) and max parallel force (bottom) over all 29 NEB steps. The barrier settles near 1.03 eV while the force stays elevated: a flat barrier is not force convergence.
 [[file:images/neb-viz/neb-viz-convergence.png]]
 
-#+caption: Parallel-force heatmap by image and optimization step. The top image never monopolizes band motion.
+#+caption: Parallel-force heatmap by image and optimization step for the cycloaddition. Integer image indices; dashed line marks the highest-energy image. Late motion sits product-side of the climb, not only at the top image.
 [[file:images/neb-viz/neb-viz-force-heatmap.png]]
 
-#+caption: Final path-length spacing for the three example systems. Uneven spacing need not indicate a wrong path, but it changes what a profile can say.
+#+caption: Final-band path-length spacing for the three example systems. Uneven spacing need not mean a wrong path, but it changes what a 1D profile can claim.
 [[file:images/neb-viz/neb-viz-sampling-density.png]]
 
 ** Method labels
