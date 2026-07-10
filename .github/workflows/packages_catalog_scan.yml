@@ -63,7 +63,7 @@ jobs:
           echo "exit=$?" >> "$GITHUB_OUTPUT"
       - name: Upload report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: packages-scan-report
           path: /tmp/packages-scan-report.json
