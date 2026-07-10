@@ -1955,7 +1955,7 @@ CLOSED: [2020-05-02 Sat 20:30]
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Colemak necessities" "$HOME...")
 :END:
 #+BEGIN_QUOTE
-A more actionable follow up to {{{relref(my personal recollections,colemak-switch)}}} relating to my switch to Colemak.
+A more actionable follow up to [[*Switching to Colemak][my personal recollections]] relating to my switch to Colemak.
 #+END_QUOTE
 ** Background
 I have, in the past written about how I {{{relref(made the switch,colemak-switch)}}} to Colemak. However,
@@ -22158,8 +22158,10 @@ variant [@goswamiAdaptivePruningIncreased2025b], the NEB-MMF work
 [[https://github.com/metatensor/ecosystem-article/tree/main/eon][metatensor ecosystem integration]] [@bigiMetatensorMetatomicFoundational2026]
 [fn:: Reproduction repositories for the associated publications are available:
 [[https://github.com/TheochemUI/gpr_sella_repro][GPR-dimer]], [[https://github.com/TheochemUI/otgpd_repro][OTGPD]], [[https://github.com/haozeke/nebmmf_repro][NEB-MMF]], [[https://github.com/metatensor/ecosystem-article][Metatensor]], and [[https://github.com/HaoZeke/brms_idrot_repro][BRMS rotations]].] and an [[https://atomistic-cookbook.org/examples/eon-pet-neb/eon-pet-neb.html][atomistic
-cookbook recipe]] for NEB with machine learning potentials. Along the way, and
-through contributions to [[https://chemfiles.org][chemfiles]] and [[https://asv.readthedocs.io/en/stable/][asv]], I have collected a tidy set of
+cookbook recipe]] for NEB with machine learning potentials. Path diagnostics for
+those NEB runs live in [[*Visual Diagnostics for NEB Paths][Visual Diagnostics for NEB Paths]].
+Along the way, and through contributions to [[https://chemfiles.org][chemfiles]] and
+[[https://asv.readthedocs.io/en/stable/][asv]], I have collected a tidy set of
 Windows-specific failure modes. Each has cost at least one CI cycle and
 occasionally an afternoon.
 
@@ -24423,7 +24425,9 @@ running through PET-MAD
 [[https://docs.metatensor.org/metatomic/][metatomic]]
 [@bigiMetatensorMetatomicFoundational2026], eOn
 [@chillEONSoftwareLong2014], energy-weighted CI, and OCI-NEB. I add Grignard
-and bicyclobutane later because those paths turn.
+and bicyclobutane later because those paths turn. Windows packaging snags that
+show up next to these scientific builds are collected in
+[[*Windows Compatibility and Scientific Computing][Windows Compatibility and Scientific Computing]].
 
 ** Figure reproduction
 The [[https://github.com/HaoZeke/nebviz_repro][companion repository]] carries the

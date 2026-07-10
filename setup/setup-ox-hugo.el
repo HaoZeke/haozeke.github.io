@@ -53,8 +53,6 @@
 (setq use-package-always-ensure t)
 
 ;; Get more dependencies
-;; XXX(rg): Broken for now, needs the relref workaround:
-;; https://github.com/kaushalmodi/ox-hugo/pull/755
 ;; xref versions here:
 ;; https://elpa.gnu.org/packages/org.html
 (use-package org)
@@ -64,6 +62,13 @@
 (use-package lua-mode)
 (org-reload) ;; Fixes the issue with collect-keywords
 (use-package ox-hugo)
+;; Prefer the in-tree exporter (Org 9.7+ same-file cross-post link fix) over the
+;; MELPA copy until upstream merges. MELPA still supplies ox-blackfriday and
+;; companions; this reloads only ox-hugo.el.
+(let ((vendor-ox-hugo (expand-file-name "vendor/ox-hugo.el"
+                                        (file-name-directory load-file-name))))
+  (when (file-exists-p vendor-ox-hugo)
+    (load vendor-ox-hugo nil 'nomessage)))
 ;; Some sane settings
 (setq-default require-final-newline t)
 (setq-default indent-tabs-mode nil)

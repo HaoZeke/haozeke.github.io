@@ -261,6 +261,10 @@ TSWLatexianTemp*
 # auto folder when using emacs and auctex
 ./auto/*
 *.el
+# Track site ox-hugo setup and the in-tree exporter override
+!setup/
+!setup/**/
+!setup/**/*.el
 
 # expex forward references with \gathertags
 *-tags.tex
