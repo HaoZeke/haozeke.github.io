@@ -1655,6 +1655,15 @@ pixi s
 python ./scripts/convert_links.py content-org/all-posts.org all-posts-converted.org
 #+end_src
 
+*** Update [2026-07-10]
+The ~ox-hugo~ same-file cross-post failure under Org 9.7+ is fixed in the
+exporter (path/search-option split + restoring ~file:~ after interpret). This
+site loads that fix from ~setup/vendor/ox-hugo.el~. Internal post links in
+~content-org/all-posts.org~ were converted back to normal Org links
+(~[[Post title][description]]~); reverse of the ~relref~ macro conversion above
+via ~scripts/convert_relref_to_org_links.py~. The historical workaround text in
+this snippet is unchanged.
+
 ** DONE ~pixi~ global environments consistent formatting :tools:R:pixi:
 CLOSED: [2025-09-25 Thu 15:46]
 :PROPERTIES:
