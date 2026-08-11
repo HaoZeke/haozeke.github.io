@@ -2,7 +2,7 @@
 # Edit this file to add/remove packages. Run: python scripts/check_packages_catalog.py
 # Re-scan nixpkgs: python scripts/scan_nixpkgs_maintainers.py /path/to/nixpkgs HaoZeke
 
-updated: '2026-07-09'
+updated: '2026-08-11'
 title: Packages I maintain
 intro: Packages I maintain, images I push, and repositories I can commit to.
 ecosystems:
@@ -13,6 +13,26 @@ ecosystems:
   hub_url: https://aur.archlinux.org/packages/?SeB=m&K=HaoZeke
   registry_host: aur.archlinux.org
   packages:
+  - name: bless-cli
+    version: 0.2.0-1
+    summary: CLI logging helper for repeated runs with metadata tracking.
+    registry_url: https://aur.archlinux.org/packages/bless-cli
+    homepage: https://github.com/HaoZeke/bless
+  - name: d-seams
+    version: 2.0.1-1
+    summary: Deferred structural elucidation analysis for molecular simulations.
+    registry_url: https://aur.archlinux.org/packages/d-seams
+    homepage: https://dseams.info
+  - name: eon
+    version: 2.16.0-1
+    summary: Algorithms for long timescales and PES exploration (EON).
+    registry_url: https://aur.archlinux.org/packages/eon
+    homepage: https://github.com/TheochemUI/EON
+  - name: flowy-code
+    version: 1.0.0-1
+    summary: Probabilistic lava emplacement simulator.
+    registry_url: https://aur.archlinux.org/packages/flowy-code
+    homepage: https://github.com/flowy-code/flowy
   - name: journey-cloud
     version: 2.14.6-1
     summary: Private diary, journal and companion (Journey Cloud).
@@ -29,6 +49,46 @@ ecosystems:
     registry_url: https://aur.archlinux.org/packages/pp-git
     homepage: http://cdsoft.fr/pp
     notes: May be marked out-of-date on the AUR.
+  - name: python-anneal
+    version: 0.5.0-1
+    summary: Simulated annealing and quenching techniques for Python.
+    registry_url: https://aur.archlinux.org/packages/python-anneal
+    homepage: https://github.com/HaoZeke/anneal
+  - name: python-chemparseplot
+    version: 1.9.8-1
+    summary: Parsers and plotting tools for computational chemistry.
+    registry_url: https://aur.archlinux.org/packages/python-chemparseplot
+    homepage: https://pypi.org/project/chemparseplot/
+  - name: python-pychum
+    version: 1.4.3-1
+    summary: Input file generators for computational chemistry.
+    registry_url: https://aur.archlinux.org/packages/python-pychum
+    homepage: https://pypi.org/project/pychum/
+  - name: python-pytest-pep723
+    version: 0.1.0-1
+    summary: Pytest plugin verifying PEP 723 inline script metadata covers imports.
+    registry_url: https://aur.archlinux.org/packages/python-pytest-pep723
+    homepage: https://pypi.org/project/pytest-pep723/
+  - name: python-rgpycrumbs
+    version: 1.9.20-1
+    summary: Dispatcher-based analytical and computational suite for chemical physics.
+    registry_url: https://aur.archlinux.org/packages/python-rgpycrumbs
+    homepage: https://pypi.org/project/rgpycrumbs/
+  - name: python-wailord
+    version: 0.2.0-1
+    summary: Python library to interact with ORCA.
+    registry_url: https://aur.archlinux.org/packages/python-wailord
+    homepage: https://pypi.org/project/wailord/
+  - name: readcon-core
+    version: 0.14.0-1
+    summary: Oxidized CON file reader/writer with C ABI.
+    registry_url: https://aur.archlinux.org/packages/readcon-core
+    homepage: https://github.com/lode-org/readcon-core
+  - name: rtrash
+    version: 0.1.4-2
+    summary: Fast freedesktop.org trash tool with an rm-compatible interface.
+    registry_url: https://aur.archlinux.org/packages/rtrash
+    homepage: https://github.com/HaoZeke/rtrash
   - name: tmetric-rpm
     version: 20.2.4-1
     summary: TMetric time tracker, packaged from the RPM to reduce breakage.
