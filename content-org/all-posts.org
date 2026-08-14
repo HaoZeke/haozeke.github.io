@@ -22475,6 +22475,7 @@ function call in the macro argument list. Fourteen files.
 
 Same class as ~interface~: MSVC is stricter about a rule the other compilers
 treat as a suggestion.
+
 ** The MinGW/MSVC ABI Boundary
 On conda-forge, Fortran libraries are built with MinGW (~m2w64~) because there
 is no MSVC Fortran compiler. The entire grimme-lab stack (~xtb~, ~tblite~, ~dftd4~,
@@ -22913,22 +22914,28 @@ Each failure mode here is shallow once named. Reserved filenames date to DOS.
 The 1 MB stack has been the Windows default for decades. The MinGW/MSVC split
 has been the conda-forge status quo for as long as Fortran packages have
 existed there. Cap'n Proto's code generation defaults (~capnpc~, ~.c++~
-extensions) target a GCC-like compiler stack, and Win32's ~interface~ macro is
-older than Cap'n Proto itself. Mixing llvm-flang with MSVC link joins the same
-list: three compilers, one ~build.bat~, and linker errors that read as
-corruption (~LNK1107~) or missing files (~LNK1104~). They surface when CI runs
-on a platform the developer does not use daily, with messages ranging from
-cryptic (~0xC00000FD~) to absent (~WriteConsole~) to hard linker and
-preprocessor stops.
+extensions) target a GCC-like compiler stack, and Win32's ~interface~ and
+~far~ macros are older than Cap'n Proto itself. Mixing llvm-flang with MSVC
+link joins the same list: three compilers, one ~build.bat~, and linker errors
+that read as corruption (~LNK1107~), missing files (~LNK1104~), or duplicate
+Fortran names (~LNK2005~). Flang on that target still cannot lower a
+by-value ~BIND(C)~ derived type. MSVC constexpr will not swallow a function
+call that GCC treats as unused. They surface when CI runs on a platform the
+developer does not use daily, with messages ranging from cryptic
+(~0xC00000FD~) to absent (~WriteConsole~) to hard linker and preprocessor
+stops.
 
-What to do: add Windows to the CI matrix early; watch legacy Fortran where
-stack allocation is the default; treat "depends on library X" as distinct from
-"uses the compiler stack that built library X". When static libraries from
-conda-forge land on Windows, check for system libraries that shared builds
-would pull automatically. When Fortran and C++ share a feedstock activation,
-pin the archiver and runtime ~LIBPATH~ to the linker that produces the binary.
-Keep a short list of DOS device names and Win32 macros that collide with C++
-identifiers within reach.
+What to do: add Windows to the CI matrix early, including the tests that
+~#include <dlfcn.h>~; watch legacy Fortran where stack allocation is the
+default; treat "depends on library X" as distinct from "uses the compiler
+stack that built library X". When static libraries from conda-forge land on
+Windows, check for system libraries that shared builds would pull
+automatically, and check the import-lib *filename* (~metatensor.dll.lib~ is
+not ~metatensor.lib~). When Fortran and C++ share a feedstock activation,
+pin the archiver and runtime ~LIBPATH~ to the linker that produces the
+binary. Keep a short list of DOS device names and Win32 macros that collide
+with C++ identifiers within reach. Do not put ~foo()~ in a macro argument
+that expands next to ~static constexpr~.
 
 ** Reading list
 The quantum chemistry codes and methods this port had to keep working on
@@ -22943,6 +22950,7 @@ or any CSL style, so it can go straight into a bibliography.
 [fn:writeconsole] ~WriteConsole~ writes to the console screen buffer directly, bypassing the standard I/O layer. When the handle is a file, there is no screen buffer to write to.
 [fn:xtbmingw] Every package in the xtb dependency chain (mctc-lib, multicharge, dftd4, tblite, xtb) uses ~m2w64_c~ and ~m2w64_fortran~ on Windows. The Python wrappers (xtb-python, tblite-python) sidestep the problem entirely by using CFFI for runtime loading rather than link-time binding.
 [fn:mesonreqfalse] The [[https://mesonbuild.com/Reference-manual_returned_compiler.html#compilerfind_library][meson documentation]] notes that ~find_library~ returns a ~dependency~ object. With ~required: false~, the returned object's ~.found()~ method can be checked before use, mirroring CMake's ~if(${lib}_LIB)~ idiom.
+[fn:quillmsvc] The [[https://github.com/TheochemUI/eOn/actions/runs/22723984535/job/65893741547][Windows CI log]] and the quill ~MacroMetadata~ initializer. The logger pointer is never a constexpr operand; MSVC still walks the macro argument.
 
 * DONE Allocatable Fortran wrappers, from 1D to N-D :@notes:python:fortran:numpy:f2py:ramblings:
 CLOSED: [2026-03-23 Mon 01:31]
