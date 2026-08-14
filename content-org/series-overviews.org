@@ -24,8 +24,8 @@ applications.
 :EXPORT_FILE_NAME: _index
 :EXPORT_HUGO_SECTION: series/wayland-wayfinders
 :END:
-A series of posts focused on leveraging Wayland with sway for efficient setups,
-optimized resource usage, and enhanced theming.
+Sway scratchpads, ~foot~ clients, and ~systemd~ targets. Less RAM, and a
+light or dark terminal without restarting the session.
 
 
 * DONE Keyboard Management
@@ -33,5 +33,5 @@ optimized resource usage, and enhanced theming.
 :EXPORT_FILE_NAME: _index
 :EXPORT_HUGO_SECTION: series/keyboard-management
 :END:
-A series of posts focused on efficient keyboard setups, remapping keys, and
-enhancing productivity across different operating systems.
+Colemak, XKB, Karabiner, and Kanata. Remaps that survive Linux, macOS, and
+the occasional public machine.

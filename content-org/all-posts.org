@@ -22241,7 +22241,7 @@ check_win -> block_win [label="Match Found"];
 #+RESULTS[39cdb5d5992acd534ed95fcea5a6fa954b5668a5]:
 #+NAME: fig:win-filename-clash
 #+LABEL: fig:win-filename-clash
-#+CAPTION: The OS kernel divergence: Windows blocks the request before it even reaches the disk if a reserved name is detected.
+#+CAPTION: Linux writes =aux.py=. Windows treats =AUX= as a device and refuses the path before it reaches the disk.
 [[file:./images/dot/win-filename-clash.png]]
 
 ** Stack Sizes and Legacy Fortran
@@ -22326,7 +22326,7 @@ arrays -> win_stack [label="Overflows\n(0xC00000FD)", color="#e53935", penwidth=
 #+RESULTS[ceaf77ad1ee100d26d9f20f64e8a429548fba336]:
 #+NAME: fig:win-stack-overflow
 #+LABEL: fig:win-stack-overflow
-#+CAPTION: Visualizing the stack overflow: The legacy Fortran arrays fit comfortably within the Linux 8 MB default but exceed the Windows 1 MB limit.
+#+CAPTION: GAGAFE's 3.6 MB stack arrays fit Linux's 8 MB default and overflow Windows' 1 MB default.
 [[file:./images/dot/win-stack-overflow.png]]
 
 *** The Fix
@@ -22418,7 +22418,7 @@ std_io -> success [label="Works on Files"];
 #+RESULTS[2c24cd528efc1fa9ee17a81f3fa372317a2ffe2d]:
 #+NAME: fig:spdlog-sink-flow
 #+LABEL: fig:spdlog-sink-flow
-#+CAPTION: The silent failure mechanism: ~WriteConsole~ bypasses standard I/O and fails when the handle is a file, whereas standard sinks use file-compatible APIs.
+#+CAPTION: ~spdlog~'s Windows color sink calls ~WriteConsole~, which drops the line when stdout is a file.
 [[file:./images/dot/spdlog-sink-flow.png]]
 
 This has *been fixed* in recent versions of ~spdlog~, and was likely simply masking errors from the ~gagafe~ issue.
@@ -22504,7 +22504,7 @@ metatensor -> eon;
 #+RESULTS[b662e5de8e1d618f0aff0246b2bcb0d2f2aa9081]:
 #+NAME: fig:mingw-msvc-abi
 #+LABEL: fig:mingw-msvc-abi
-#+CAPTION: The ABI bridge: generating an MSVC import library from a MinGW-built DLL allows a single executable to link against both toolchain ecosystems.
+#+CAPTION: ~dumpbin~ plus ~lib /DEF~ turns a MinGW ~libxtb~ DLL into an MSVC import library so ~eonclient~ can link both toolchains.
 [[file:./images/dot/mingw-msvc-abi.png]]
 
 *** ~find_library~ and Missing Import Libraries
@@ -22678,7 +22678,7 @@ ptlrpc -> consumer [label="consumed\nby meson deps"];
 #+RESULTS[]:
 #+NAME: fig:capnp-ws2-chain
 #+LABEL: fig:capnp-ws2-chain
-#+CAPTION: The missing link: ~kj-async.lib~ references Winsock2 symbols but the conda-forge package does not declare ~ws2_32~ as a dependency. The consumer's ~declare_dependency~ must propagate it explicitly.
+#+CAPTION: ~kj-async.lib~ calls Winsock2. The conda-forge package does not pull in ~ws2_32~. The consumer ~declare_dependency~ has to.
 [[file:./images/dot/capnp-ws2-chain.png]]
 
 *** ~interface~ is a Windows macro
@@ -24648,11 +24648,13 @@ criterion. Those numbers don't make NEBs forgiving. They say the expensive part
 often lies in deciding when the top image can take over saddle work.
 
 ** Related publications
-This post is the practical field guide and visualization companion to three papers. As with the derived type wrapping series, we build the figures and diagnostics by hand in the repro first, then document how they support the methods.
+The methods are in the papers. This page is the plots.
 
-The two-dimensional RMSD projection technique for path visualization and validation is described in "Two-Dimensional RMSD Projections for Reaction Path Visualization and Validation" [@goswamiTwodimensionalRMSDProjections2026]. The enhanced climbing-image NEB with Hessian eigenmode alignment (including the OCI-NEB refinement) appears in "Enhanced Climbing Image Nudged Elastic Band Method with Hessian Eigenmode Alignment" (Goswami, Gunde and Jónsson) [@goswamiEnhancedClimbingImage2026]. The reproducible orchestration of the full NEB workflows and best practices is in "Reproducible Orchestration of Best Practices for Reaction Path Optimization with the Nudged Elastic Band" [@goswamiReproducibleOrchestrationBest2026].
+- The $s,d$ frame: [@goswamiTwodimensionalRMSDProjections2026]
+- OCI-NEB and the call-count numbers: [@goswamiEnhancedClimbingImage2026]
+- The Snakemake / eOn lifecycle: [@goswamiReproducibleOrchestrationBest2026]
 
-The figures, the three 1D coordinate views, the 2D landscape with posterior variance, and the table diagnostics (convergence, force heatmap, sampling) here directly support and illustrate the claims and workflows in those works. The code and reduced data for exactly the figures in this post live in =repro/neb-visualizations/=.
+The PNGs on this page come from the reduced tables in =repro/neb-visualizations/=.
 
 ** Conclusions
 The check I want after an NEB run has four parts: scalar profiles for the
