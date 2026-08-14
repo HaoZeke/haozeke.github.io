@@ -1139,7 +1139,7 @@ performed, random forests algorithms perform bagging.
 ** Reading list
 Bagging, random forests, and the statistical learning texts they come from,
 collected as a citation list:
-[[https://ookcite.turtletech.us/shared/Fp1hs68pGzxM][3 references]]. The collection exports to BibTeX
+[[https://ookcite.turtletech.us/shared/XxEbn71qq8R2][5 references]]. The collection exports to BibTeX
 or any CSL style, so it can go straight into a bibliography.
 
 [fn:smooth] This is mostly true for reasonably smooth true functions
@@ -5314,6 +5314,12 @@ Tyson Whitehead from Compute Canada was kind enough to bring the folllowing addi
 - [[https://git.computecanada.ca/nix/training/-/tree/20180115-sharcnet][SHARCNET live presentation materials]] from 2018
 ** Conclusions
 The standard dive into Nix is based on building derivations and playing with language, which is in no means a bad one, just too long for the time allocated. The best way to get into Nix is to start using it for everything.
+
+** Reading list
+Nix, reproducible environments, and the deployment work the tutorial builds on,
+collected as a citation list:
+[[https://ookcite.turtletech.us/shared/pnp72FXomHq3][3 references]]. The collection exports to BibTeX
+or any CSL style, so it can go straight into a bibliography.
 
 [fn:whynotsingle] For reasons pertaining to latency and ease-of-use, we will assume the multi-user installation
 * DONE Nix Shells for Node Projects :@programming:tools:nix:workflow:node:
@@ -10683,7 +10689,7 @@ The future is Fortran!
 ** Reading list
 The computational chemistry and free energy methods that got me to Fortran,
 collected as a citation list:
-[[https://ookcite.turtletech.us/shared/kZ1ivNciVB9n][8 references]]. The collection exports to BibTeX
+[[https://ookcite.turtletech.us/shared/vyq9SzL_84QD][12 references]]. The collection exports to BibTeX
 or any CSL style, so it can go straight into a bibliography.
 
 [fn:whyelse] Also a mentor and inspiration of mine (within my family) used Fortran for graduate research...
@@ -11041,6 +11047,12 @@ This gives a ~sphinx~ compatible file:
 #+end_src
 *** Conclusions
 This was a rather annoying excursion into the unpleasant underbelly of ~bibtex~ and ~biblatex~. The ~biber~ solution is actually rather elegant, but most definitely not immediately obvious.
+** Reading list
+Bibliography tooling and the citation formats this conversion moves between,
+collected as a citation list:
+[[https://ookcite.turtletech.us/shared/TYQYLAUV9l-U][3 references]]. The collection exports to BibTeX
+or any CSL style, so it can go straight into a bibliography.
+
 * DONE Talk Supplements for Code In Place 2021 SL Workshop :@conferences:presentations:ramblings:python:
 CLOSED: [2021-05-29 Sat 07:07]
 :PROPERTIES:
@@ -12331,9 +12343,9 @@ end program
 Rather than move forward with the closing comments; and going into more detail about the manner in which further ~sollya~ based polynomial approximations are being looked into; I will end this post here; as a trailer and invitation to the closing report. This has been the last of the weekly updates. This doesn't mean anything will change other than the format. I quite like keeping track of the work I do in this manner; keeps me honest and not complacent [fn:butresearch]. For those of you following along; this has been a fun ride; for those who come to this in the future; feel free to follow along from the beginning and drop comments below.
 
 ** Reading list
-Runtime library design, the standard-library work it draws on, and the numerical
-methods behind it, collected as a citation list:
-[[https://ookcite.turtletech.us/shared/LZ7it8VYthn2][4 references]]. The collection exports to BibTeX
+Runtime library design, argument reduction, and the floating-point texts behind
+them, collected as a citation list:
+[[https://ookcite.turtletech.us/shared/TxSs9qIIbUk1][7 references]]. The collection exports to BibTeX
 or any CSL style, so it can go straight into a bibliography.
 
 [fn:whybashwhere] From this [[https://stackoverflow.com/questions/13099202/awk-script-for-finding-smallest-value-from-column/13100039][stackoverflow post]] of course
@@ -12435,7 +12447,7 @@ I like writing; but somehow this was one of the most difficult things to write a
 ** Reading list
 LFortran, computational chemistry, and the numerical background for the summer's
 work, collected as a citation list:
-[[https://ookcite.turtletech.us/shared/VGXEl3aGYYpd][3 references]]. The collection exports to BibTeX
+[[https://ookcite.turtletech.us/shared/iUuCJUXGleVN][6 references]]. The collection exports to BibTeX
 or any CSL style, so it can go straight into a bibliography.
 
 * TODO About F2PY
@@ -14953,7 +14965,7 @@ sustainable Fortran code.
 ** Reading list
 Fortran 2003 interoperability and the scientific codes that lean on it,
 collected as a citation list:
-[[https://ookcite.turtletech.us/shared/oCsjwaG3Zgz9][4 references]]. The collection exports to BibTeX
+[[https://ookcite.turtletech.us/shared/vUG2LJmWQ8HU][5 references]]. The collection exports to BibTeX
 or any CSL style, so it can go straight into a bibliography.
 
 [fn:whatnm] As in all things, ~info nm~ provides the details on interpreting the remaining symbols
@@ -16313,6 +16325,12 @@ All that being said, with ~meson~ support in ~f2py~ from ~1.26~ ([[https://githu
 basic types based modern Fortran [[https://github.com/HaoZeke/GaussJacobiQuad#f2py-generated-interface][can already be used]], so the future remains
 bright.
 
+** Reading list
+Fortran derived types, interoperability, and the references for wrapping them,
+collected as a citation list:
+[[https://ookcite.turtletech.us/shared/25M5WTsT-cng][3 references]]. The collection exports to BibTeX
+or any CSL style, so it can go straight into a bibliography.
+
 [fn:yaymeson] It is at this point (linking, handling dependencies) that ~meson~ pays off over hand compilation
 [fn:egdouble] Hence ~real(8)~ over the more [[https://fortran-lang.discourse.group/t/best-way-to-declare-a-double-precision-in-fortran/69/21?u=rgoswami][explicit alternatives]]
 [fn:seriously] Pun intended
@@ -17089,6 +17107,11 @@ Presentations of projects ought to be tracked, for posterity and the projects
 themselves. It was good to have the opportunity to highlight projects I believe
 in, and to introduce ~f2py~'s GSoC student ([[https://namamishanker.github.io/][Namami Shankar]]) to the community. I
 suppose, if invited, I would return.
+** Reading list
+The talks, posters and software deposits behind the SciPy 2022 material,
+collected as a citation list:
+[[https://ookcite.turtletech.us/shared/PQgk25S0SK54][4 references]]. The collection exports to BibTeX
+or any CSL style, so it can go straight into a bibliography.
 
 * TODO Configuring a personal VPS
 :PROPERTIES:
@@ -21704,7 +21727,7 @@ runtime remains.
 ** Reading list
 NWChem, its runtime database, and the surrounding work on scientific software
 design, collected as a citation list:
-[[https://ookcite.turtletech.us/shared/CFwh4xXW8oC1][6 references]]. The collection exports to BibTeX
+[[https://ookcite.turtletech.us/shared/0Ci5YjNEq9Gi][6 references]]. The collection exports to BibTeX
 or any CSL style, so it can go straight into a bibliography.
 
 * TODO Practical ~python~ script parallelism :@notes:python:workflow:tools:
@@ -22946,7 +22969,7 @@ that expands next to ~static constexpr~.
 ** Reading list
 The quantum chemistry codes and methods this port had to keep working on
 Windows, collected as a citation list:
-[[https://ookcite.turtletech.us/shared/cwiiggHuB7d4][5 references]]. The collection exports to BibTeX
+[[https://ookcite.turtletech.us/shared/R27l38fDpUKv][5 references]]. The collection exports to BibTeX
 or any CSL style, so it can go straight into a bibliography.
 
 [fn:whatiseon] eOn is a saddle point search code for long timescale dynamics simulations on atomic systems, combining a Python server with a C++ client. See [[https://eondocs.org][the documentation]] for details.
@@ -24783,9 +24806,8 @@ figures and records the stack. The papers define the methods.
 ** Reading list
 Papers behind the diagnostics here, the OCI-NEB and RMSD-projection methods, the
 potentials, and the codes that run them, collected as a citation list:
-[[https://ookcite.turtletech.us/shared/2_CTQzzDT0Rd][11 references]]. The collection exports to BibTeX
+[[https://ookcite.turtletech.us/shared/L2QsKqxSwBhu][11 references]]. The collection exports to BibTeX
 or any CSL style, so it can go straight into a bibliography.
-
 
 * Footnotes
 
