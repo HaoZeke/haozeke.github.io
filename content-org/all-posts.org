@@ -22900,8 +22900,14 @@ same pile as the other vesin patches in eOn [[https://github.com/TheochemUI/eOn/
 The metatomic ABI test opened the engine with POSIX ~dlfcn.h~. Linux and
 macOS CI were green. conda-forge win-64 compiled the test and stopped.
 The feedstock first skipped the file, then patched it, then upstream grew
-~DynLib~ (~LoadLibraryA~ / ~dlopen~) in eOn [[https://github.com/TheochemUI/eOn/pull/376][#376]]. The feedstock patch
-drops on the next tarball that contains that commit.
+~DynLib~ (~LoadLibraryA~ / ~dlopen~) in eOn [[https://github.com/TheochemUI/eOn/pull/376][#376]]. That commit is on
+~main~ and in the v3.0.0 / v3.1.0 tarballs, so the feedstock no longer
+carries the patch.
+
+That makes the *test* portable. The production loaders
+(~MetatomicEngineLoader~, ~XTBEngineLoader~) still ~#ifndef _WIN32~ and
+return ~nullptr~ on Windows. They do not call ~DynLib~. A green ABI test
+is not ~LoadLibrary~ of a metatomic or xtb engine.
 
 A unit test that only exists on POSIX is not a Windows test. It is a
 Linux test that pretends to be portable.
