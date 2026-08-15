@@ -24214,6 +24214,471 @@ components with default initialization just work.
 [fn:dangling] F2018 10.2.2 paragraph 8: "If the target is deallocated, the association status of any pointer associated with the target becomes undefined." There is no way to check for this from C.
 [fn:charloc] Some compilers implement deferred-length characters with a hidden descriptor that stores both the data pointer and the length. Using ~c_loc~ directly on such a character may return the descriptor address rather than the data address.
 [fn:padding] I hit this with gfortran 13. The ~len()~ intrinsic returns the right value, but the in-memory representation has trailing spaces past the nominal length.
+* TODO Finalizers and Generic Bindings :@notes:python:fortran:numpy:f2py:ramblings:
+:PROPERTIES:
+:EXPORT_FILE_NAME: f2py-finalizers-and-generics
+:EXPORT_HUGO_PANDOC_CITATIONS: t
+:EXPORT_BIBLIOGRAPHY: biblio/Quansight.bib, biblio/refs.bib
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Bridging Fortran \& Python")
+:END:
+#+begin_quote
+~deallocate~ is the cleanup. The ~FINAL~ subroutine is just the
+hook the runtime already promised to call.
+#+end_quote
+** Background
+[[Pointer Members and Deferred-Length Strings][Last time]] was members
+that do not own their data, or do not know their length until
+runtime. This page is the ~CONTAINS~ block of the type: finalizers
+(F2018 7.5.6) and generic type-bound procedures (F2018 7.5.5).
+
+Both live where ~crackfortran~ does not look. The type-level
+~CONTAINS~ block is skipped. Everything below scans the Fortran
+source itself.
+
+The code corresponds to the
+[[https://github.com/HaoZeke/numpy/releases/tag/post/f2py-finalizers-generics][post/f2py-finalizers-generics]]
+tag.
+
+** Finalizers
+F2018 7.5.6.2 is three steps when an entity dies: call a matching
+~FINAL~, finalize each finalizable component, finalize the parent.
+~DEALLOCATE~ on a finalizable entity is one of the triggers (7.5.6.3).
+The opaque-pointer destructor already ~deallocate~s. That is the
+whole wrapper.
+
+#+begin_src f90
+type :: Tracked
+  integer :: value
+contains
+  final :: tracked_finalize
+end type Tracked
+#+end_src
+
+#+begin_src f90
+subroutine tracked_destroy(cptr) bind(c)
+  type(c_ptr), value :: cptr
+  type(Tracked), pointer :: obj
+  call c_f_pointer(cptr, obj)
+  deallocate(obj)
+end subroutine
+#+end_src
+
+No C code calls ~tracked_finalize~. A module counter that increments
+inside the finalizer goes 0, 1, 2 as you destroy two objects.
+
+From Python the chain is ~del obj~ -> capsule destructor ->
+~tracked_destroy~ -> ~deallocate~ -> the Fortran runtime.
+
+The scanner's only job is to keep ~FINAL~ names off the callable
+routine list. Calling a finalizer from Python is nonsense.
+
+** Generic TBPs
+~GENERIC :: scale => scale_int, scale_real~ is compile-time
+overload resolution, not ~SELECT TYPE~. The C boundary sits after
+that choice, so each specific binding gets its own ~bind(c)~
+wrapper. The generic name does not.
+
+The current ~f2py~ mapping is ugly and honest: the generic name
+aliases the first specific. ~scl.scale_real(2.5)~ still works
+because every specific is a method. Replicating Fortran's compile-time
+overload in CPython would be ~singledispatchmethod~, and it
+is not in this patch [fn:pydispatch].
+
+** Conclusions
+Finalizers are free if you already deallocate. Generics are one
+wrapper per specific and a name that currently means "the first
+one". Both need a source scan because ~crackfortran~ never enters
+the type ~CONTAINS~ block.
+
+[fn:f18ref] All F2018 section numbers refer to the J3/18-007r1
+interpretation document (WD 1539-1).
+[fn:finalparsing] Find ~type :: Tracked~, enter the block, find
+~contains~, match ~FINAL~. Intentionally not ~crackfortran~.
+[fn:pydispatch] ~functools.singledispatchmethod~ exists since 3.8.
+A later generator could wire it. This one does not.
+
+* TODO Parameterized Types and MSVC Complex Portability :@notes:python:fortran:numpy:f2py:ramblings:
+:PROPERTIES:
+:EXPORT_FILE_NAME: f2py-parameterized-types
+:EXPORT_HUGO_PANDOC_CITATIONS: t
+:EXPORT_BIBLIOGRAPHY: biblio/Quansight.bib, biblio/refs.bib
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Bridging Fortran \& Python")
+:END:
+#+begin_quote
+KIND is a contract with the hardware. C and Python do not have that
+contract. The wrappers have to invent one.
+#+end_quote
+** Background
+The earlier posts in this series assume a fixed type. Fortran 2003
+parameterized derived types (PDTs, F2018 7.5.3) do not:
+
+#+begin_src f90
+type :: RealVec(k)
+  integer, kind :: k = kind(0.0d0)
+  real(k) :: x, y, z
+  integer :: length
+end type RealVec
+#+end_src
+
+~k = 8~ is double. ~k = 4~ is float. Those are different C types, so
+they are different wrapper sets. I hit four parser and codegen bugs
+getting this through ~f2py~. A fifth, MSVC ~_Complex~, landed in the
+same patch because the generated C had to compile on Windows too.
+
+The code corresponds to the
+[[https://github.com/HaoZeke/numpy/releases/tag/post/f2py-parameterized-types][post/f2py-parameterized-types]]
+tag. This is the Windows hook that
+[[Windows Compatibility and Scientific Computing][the Windows post]]
+does not cover: not a reserved name, not a stack size, just C11
+complex vs ~npy_cdouble~.
+
+** Hand-written multi-kind
+A ~RealVec(8)~ getter returns ~c_double~. A ~RealVec(4)~ getter returns
+~c_float~. For $K$ kinds and $M$ members that is $K \times M$
+functions. Fine for a test. Not fine as a habit.
+
+#+begin_src f90
+function realvec_k8_get_x(cptr) result(val) bind(c)
+  type(c_ptr), value :: cptr
+  real(c_double) :: val
+  type(RealVec(8)), pointer :: obj
+  call c_f_pointer(cptr, obj)
+  val = obj%x
+end function
+#+end_src
+
+~type(RealVec)~ without the kind is invalid Fortran. That is already
+the first generated-code bug.
+
+** Four things that broke
+*** Bare type names
+Generated wrappers wrote ~type(RealVec)~. The compiler wants
+~type(RealVec(8))~. Resolve KIND defaults (~kind(0.0d0)~ -> ~8~) and
+emit the full specifier.
+
+*** ~kind(0.0d0)~ in routine arguments
+A dummy ~real(kind(0.0d0))~ arrives from ~crackfortran~ as
+~kindselector={'kind': 'kind(0.0d0)'}~. The ISO C map has no such
+key, so it fell back to ~real(c_float)~. Double in, float out.
+
+Type members get resolved once, in place. Routine arguments get
+resolved on the fly: evaluate the kind expression, retry the lookup
+with ~8~. Mutating the argument AST leaked into other passes.
+
+*** ~k~ as a Python attribute
+~integer, kind :: k~ sits in the vars dict next to ~x~. Without a
+filter, Python grew a settable ~k~ and a constructor argument.
+~k~ is metadata. Skip anything with ~kind~ or ~len~ in ~attrspec~
+except where the constructor *must* take KIND to pick a
+specialization.
+
+*** The type-spec regex
+~type(RealVec(kind(0.0d0)))~ failed to match because the character
+class stopped before ~.~. Adding ~.+-~ is strictly additive.
+~cracktypespec~ also needed to accept ~type(Name(params))~, besides
+~type(Name)~. After that, ~typespec='type'~ and the derived-type
+pipeline actually sees the dummy.
+
+** flang-new
+LLVM Flang still does not do PDTs. A try-compile of a four-line
+~type :: vec(k)~ is cached and the tests ~skipif~ on it. Do not
+pretend the wrappers work on a compiler that cannot parse the source.
+
+** MSVC and ~_Complex~
+The generated C used C11:
+
+#+begin_src c
+double _Complex z;
+z = re + im * _Complex_I;
+#+end_src
+
+MSVC does not have ~_Complex~. NumPy already does:
+
+#+begin_src c
+npy_cdouble z = npy_cpack(re, im);
+double real_part = npy_creal(z);
+#+end_src
+
+On GCC/Clang those macros are ~_Complex~. On MSVC they are
+~_Dcomplex~. Same source, both compilers. This is the portable
+complex story; the reserved-name / stack / ~interface~ catalogue is
+elsewhere.
+
+** KIND vs LEN
+KIND is compile-time width. One Fortran function set per value,
+suffix ~_k4~ / ~_k8~, a ~kind_value~ on the Python object, capsule
+names that encode the kind so a k=4 capsule cannot be fed to a k=8
+getter.
+
+LEN is a runtime extent. One function set. Every ~c_f_pointer~
+needs the LEN, even for a scalar member, because
+~type(FlexVec(n=n))~ is not optional. Store ~n~ on the object and
+in the capsule context so the destructor can deallocate.
+
+** Conclusions
+PDTs are not "one more member kind". They fork the C type, the
+Fortran specifier, and the constructor. The regex bug was a missing
+~.~. The MSVC bug was assuming C11. LEN is allocatable arrays with
+the length nailed to the type instead of ~allocated()~.
+
+[fn:f18ref] All F2018 section numbers refer to the J3/18-007r1
+interpretation document (WD 1539-1).
+
+* TODO Inheritance and Operator Overloading :@notes:python:fortran:numpy:f2py:ramblings:
+:PROPERTIES:
+:EXPORT_FILE_NAME: f2py-inheritance-operators
+:EXPORT_HUGO_PANDOC_CITATIONS: t
+:EXPORT_BIBLIOGRAPHY: biblio/Quansight.bib, biblio/refs.bib
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Bridging Fortran \& Python")
+:END:
+#+begin_quote
+Fortran and Python disagree about what inheritance means. The wrappers
+have to pick a side per operation.
+#+end_quote
+** Background
+[[Finalizers and Generic Bindings][Last time]] was type-bound procedures
+that sit in ~CONTAINS~. Type extension (~extends()~, F2018 7.5.7) and
+~interface operator()~ (F2018 7.5.11) are the bits that make a derived
+type feel like a Python class.
+
+The code corresponds to the
+[[https://github.com/HaoZeke/numpy/releases/tag/post/f2py-inheritance-operators][post/f2py-inheritance-operators]]
+tag.
+
+** ~extends()~
+~ChargedParticle~ extends ~Particle~ with ~spin~. It has three members.
+You might expect the child to reuse the parent's getters. It cannot.
+
+The capsule stores a ~ChargedParticle~. ~c_f_pointer~ into
+~type(Particle)~ happens to work on every compiler I have tried, because
+inherited components sit first. The standard does not promise that
+[fn:layoutluck]. So the child gets its own ~charged_get_mass~ that
+reconstructs a ~ChargedParticle~ pointer and reads ~obj%mass~ through
+that descriptor.
+
+In CPython, ~tp_base~ is enough for ~isinstance(cp, Particle)~.
+It does not donate attributes. Each type still has a full getset table.
+
+** Operators
+~interface operator(+)~ / ~operator(==)~ become ~bind(c)~ functions of
+two ~c_ptr~s. Arithmetic allocates a new object and returns it.
+Comparison returns ~logical(c_bool)~.
+
+CPython wants ~PyNumberMethods.nb_add~ and ~tp_richcompare~. If either
+operand is the wrong type, return ~NotImplemented~ so CPython can try
+the other side [fn:notimpl].
+
+#+begin_src c
+static PyObject *
+Pyvec2_nb_add(PyObject *left, PyObject *right) {
+    if (!Py_IS_TYPE(left, &Pyvec2_Type) ||
+        !Py_IS_TYPE(right, &Pyvec2_Type)) {
+        Py_RETURN_NOTIMPLEMENTED;
+    }
+    /* capsules -> vec2_wrap_add -> wrap result */
+}
+#+end_src
+
+** f2py
+~crackfortran~ already sees ~extends()~. Codegen sets ~tp_base~ and
+re-emits parent members on the child. Operator interfaces are scanned
+from the module body and mapped to number or richcompare slots.
+
+** Conclusions
+~isinstance~ is ~tp_base~. Attribute access is type-specific because
+the pointer is opaque. ~+~ and ~==~ are two ~c_ptr~s and a new
+allocation or a bool. Returning ~NotImplemented~ is the whole of
+Python's cooperative operators.
+
+[fn:layoutluck] Inherited components are first on every compiler I have
+tested. "Works on every compiler I tried" is not "the standard says so".
+[fn:notimpl] If ~a + b~ fails, CPython tries ~b.__radd__(a)~ before
+giving up.
+
+* TODO Polymorphic Dispatch, Procedure Pointers, and Parser Fixes :@notes:python:fortran:numpy:f2py:ramblings:
+:PROPERTIES:
+:EXPORT_FILE_NAME: f2py-polymorphic-proc-ptrs
+:EXPORT_HUGO_PANDOC_CITATIONS: t
+:EXPORT_BIBLIOGRAPHY: biblio/Quansight.bib, biblio/refs.bib
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Bridging Fortran \& Python")
+:END:
+#+begin_quote
+An integer and a ~SELECT CASE~ are enough for runtime type across
+~bind(c)~. The standard does not owe us more than that.
+#+end_quote
+** Background
+[[Parameterized Types and MSVC Complex Portability][Last time]] KIND values
+already forced a runtime dispatch table on the Python object. ~class(T)~
+is the same idea, pointed at a type instead of a kind.
+
+The code corresponds to the
+[[https://github.com/HaoZeke/numpy/releases/tag/post/f2py-polymorphic-proc-ptrs][post/f2py-polymorphic-proc-ptrs]]
+tag.
+
+** ~class(T)~
+~class(shape)~ can hold any extension of ~shape~. ~f2py~ used to rewrite
+that as ~type(shape)~ at parse time. The wrapper then declared
+~type(shape)~, and a ~SELECT TYPE~ inside the Fortran routine never saw
+a ~circle~.
+
+The hand-written way is a tag next to the pointer:
+
+#+begin_src f90
+subroutine wrap_compute_area(s_ptr, type_tag) bind(c)
+  type(c_ptr), value :: s_ptr
+  integer(c_int), value :: type_tag
+  select case (type_tag)
+  case (1)
+    block
+      type(shape), pointer :: s
+      call c_f_pointer(s_ptr, s)
+      call compute_area(s)
+    end block
+  case (2)
+    block
+      type(circle), pointer :: s
+      call c_f_pointer(s_ptr, s)
+      call compute_area(s)
+    end block
+  end select
+end subroutine
+#+end_src
+
+~f2py~ assigns tags in topological order (parents first), stores
+~type_tag~ on the Python object, and uses ~PyObject_IsInstance~ so a
+~circle~ still passes a ~shape~ check. ~crackfortran~ now keeps
+~class~ as ~type~ plus a ~polymorphic~ attribute instead of throwing
+the polymorphism away.
+
+** Procedure pointer components
+These sit in the component part, before ~CONTAINS~ (F2018 R741):
+
+#+begin_src f90
+type :: with_proc_ptr
+  procedure(real_func), pointer, nopass :: func => null()
+end type
+#+end_src
+
+~crackfortran~ does not parse ~PROCEDURE~ inside a type. Same source
+scan as finalizers: find the declaration, resolve the abstract
+interface for the signature, generate ~bind(c)~ wrappers that call
+~obj%func(x)~ after ~c_f_pointer~. From Python it looks like a method.
+
+** ~PRIVATE~ members
+I first generated every accessor and then filtered. Simpler to skip
+~private~ in ~attrspec~ at codegen time. The type stays wrappable.
+A type with no public members can still be constructed and passed to
+routines, which is what you want for an opaque handle.
+
+** ~iso_fortran_env~
+~use iso_fortran_env, only: int32, real64~ used to fail because
+intrinsic modules have no source for the parser. Three hardcoded maps
+covered some names and not others. The fix injects the F2018 tables
+(16.10.2, 18.2) into the module vars at parse time and lets
+~postcrack2()~ do the usual substitution. ~USE ... ONLY~ still
+filters.
+
+While I was in that map, ~('complex', '8')~ was wired to
+~npy_cfloat~. In Fortran, complex kind 8 is two 8-byte components,
+i.e. ~npy_cdouble~. C people read "8" as the whole object. I did too,
+once.
+
+** Conclusions
+~class(T)~ is a tag plus ~SELECT CASE~. Procedure pointers are a
+source scan. ~PRIVATE~ is a skip, not a second pass. Intrinsic modules
+need their tables injected because there is no file to crack. The
+complex-kind mixup is the same "8 means what" confusion as KIND on
+reals.
+
+* TODO Defined I/O, Coarrays, and ~CLASS(*)~ :@notes:python:fortran:numpy:f2py:ramblings:
+:PROPERTIES:
+:EXPORT_FILE_NAME: f2py-defined-io-coarray-classstar
+:EXPORT_HUGO_PANDOC_CITATIONS: t
+:EXPORT_BIBLIOGRAPHY: biblio/Quansight.bib, biblio/refs.bib
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Bridging Fortran \& Python")
+:END:
+#+begin_quote
+Fortran can do all of this. The hard part is getting it through ~bind(c)~.
+#+end_quote
+** Background
+[[Polymorphic Dispatch, Procedure Pointers, and Parser Fixes][Last time]] the
+type tag plus ~SELECT CASE~ was enough for ~class(T)~. The same trampoline
+shows up again for ~CLASS(*)~. This page is three leftovers from F2018 7.5
+that do not get their own series: defined I/O, coarray components, and
+unlimited polymorphism.
+
+The code corresponds to the
+[[https://github.com/HaoZeke/numpy/releases/tag/post/f2py-defined-io-coarray-classstar][post/f2py-defined-io-coarray-classstar]]
+tag.
+
+** Defined I/O
+Fortran 2008 lets a type own its text form (F2018 12.6.4.8). A
+~GENERIC :: write(formatted)~ binding fires on a ~DT~ edit descriptor
+(F2018 13.7.6). Python's equivalent is ~tp_str~.
+
+The wrapper does not invent a formatter. It writes to an internal file
+and copies the characters out:
+
+#+begin_src f90
+subroutine fpoint_to_string(cptr, buf, buflen, actual_len) bind(c)
+  type(c_ptr), value :: cptr
+  character(kind=c_char), intent(out) :: buf(*)
+  integer(c_int), value :: buflen
+  integer(c_int), intent(out) :: actual_len
+  type(formatted_point), pointer :: obj
+  character(len=buflen) :: tmp
+  integer :: i
+  call c_f_pointer(cptr, obj)
+  write(tmp, '(DT)') obj
+  actual_len = len_trim(tmp)
+  do i = 1, min(actual_len, buflen)
+    buf(i) = tmp(i:i)
+  end do
+end subroutine
+#+end_src
+
+~READ(FORMATTED)~ goes the other way as a ~from_string~ class method.
+The TBP scanner picks up ~generic :: write(formatted) => ...~ and stores
+it under a reserved key so codegen can fill ~tp_str~.
+
+** Coarray components
+A ~codimension[:]~ allocatable is, on one image, a normal allocatable.
+Strip ~CODIMENSION~ from the attrspec and reuse the array path. I
+replaced six separate skip-points with one helper.
+
+Remote access is the same wrapper with a cosubscript:
+
+#+begin_src f90
+buf(1:n) = obj%grid(:)[image]
+#+end_src
+
+gfortran ~-fcoarray=single~ makes ~this_image()~ return 1 and
+~grid[1]~ local data. Multi-image users bring OpenCoarrays themselves.
+The generator always emits the remote getter.
+
+** ~CLASS(*)~
+~class(T)~ has a finite set of extensions. ~CLASS(*)~ does not (F2018
+7.3.2.3). Cross-module types are out of scope. Inside one module the
+set is the Fortran intrinsics plus every derived type we already wrap.
+
+The C side inspects the Python object (~PyLong_Check~, ~PyFloat_Check~,
+~PyObject_TypeCheck~ against our types), stuffs the value behind a
+~c_ptr~, and passes an integer tag. The Fortran wrapper ~SELECT CASE~s
+into a typed local and calls the original routine. Fortran's own
+~SELECT TYPE~ then matches.
+
+** Conclusions
+None of this extends ~bind(c)~. Internal files, local array slices, and
+typed locals are Fortran doing Fortran, with C only carrying a pointer
+and a tag. Defined I/O becomes ~str()~. Coarrays reuse the allocatable
+path. ~CLASS(*)~ is the same trampoline as ~class(T)~, just with a
+longer case list.
+
 * TODO From manual wrappers to ~f2py~ automation :@notes:python:fortran:numpy:f2py:ramblings:
 :PROPERTIES:
 :EXPORT_FILE_NAME: f2py-automation
@@ -24232,8 +24697,12 @@ wrappers for Fortran derived types. [[Fortran OOP and Python][Post 2]] did the s
 [[Types from Fortran to Python via Opaque Pointers][Post 3]] introduced opaque pointers as
 the general solution for non-~bind(c)~ types, before I started going after
 individual member kinds: [[Allocatable Fortran wrappers, from 1D to N-D][allocatables]],
-[[Pointer Members and Deferred-Length Strings][pointers and strings]], and
-{{{relref(finalizers with generics,f2py-finalizers-and-generics)}}}.
+[[Pointer Members and Deferred-Length Strings][pointers and strings]],
+[[Finalizers and Generic Bindings][finalizers]],
+[[Parameterized Types and MSVC Complex Portability][PDTs]],
+[[Inheritance and Operator Overloading][inheritance]],
+[[Polymorphic Dispatch, Procedure Pointers, and Parser Fixes][polymorphic ~class(T)~]],
+and [[Defined I/O, Coarrays, and ~CLASS(*)~][defined I/O and ~CLASS(*)~]].
 
 Fast-forward to now, and even though I haven't yet gotten all the derived types
 into ~f2py~, the automation has improved through leaps and bounds [fn:: and
