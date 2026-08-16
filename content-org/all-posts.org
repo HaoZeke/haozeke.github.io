@@ -24564,9 +24564,8 @@ list, and not pretending C can overload.
 :END:
 
 #+begin_quote
-Precision is not a number. It is a contract between the programmer and the
-hardware. Fortran encodes this contract in the type system. C and Python do
-not. Bridging both gaps at once is what this post covers.
+KIND is the byte width. LEN is the extent. C has neither, so the wrapper
+carries both.
 #+end_quote
 
 ** Background
@@ -24784,7 +24783,7 @@ is ~AttributeError~. That is the next section, not a reversal.
 
 ** Problem 3: crackfortran could not parse parameterized type arguments
 
-This is the root cause of Problem 2 (and a compilation failure on its own). When crackfortran sees ~type(RealVec(kind(0.0d0)))~ as an argument type, it needs to recognize that as a ~type~ specifier. Recognition happens via a regex:
+This is the root cause of Problem 1 (and a compilation failure on its own). When crackfortran sees ~type(RealVec(kind(0.0d0)))~ as an argument type, it needs to recognize that as a ~type~ specifier. Recognition happens via a regex:
 
 #+begin_src python
 # Before:
@@ -25067,6 +25066,11 @@ v.data = np.random.randn(50)
 print(v.n)          # 50
 print(v.data.shape) # (50,)
 #+end_src
+
+** Conclusions
+
+The descriptor is the type. A bare ~c_ptr~ is not enough once LEN is in
+play. ~kind(0.0d0)~ is not a dict key, and the type regex had no ~.~.
 
 [fn:f18ref] ISO/IEC 1539-1:2018, "Fortran 2018". Section 7.5.3 "Type parameterization".
 
@@ -25495,8 +25499,8 @@ members). Operator interfaces are scanned from the module body and mapped to
 :END:
 
 #+begin_quote
-Standards describe the floor, not the ceiling. An integer and a ~SELECT CASE~
-turn out to be enough for runtime type dispatch across the Fortran/C boundary.
+An integer and a ~SELECT CASE~ are enough for ~class(T)~ across the Fortran/C
+boundary.
 #+end_quote
 
 ** Background
@@ -25729,7 +25733,8 @@ That last one is the punchline. C's 8 is two floats. Fortran's 8 is two doubles.
 :END:
 
 #+begin_quote
-Fortran can do all of this. The hard part is getting it through ~bind(c)~.
+~WRITE(DT)~ to an internal file is ~str()~. ~CLASS(*)~ is a tag plus a typed
+local. Coarray local is allocatable with the ~CODIMENSION~ stripped.
 #+end_quote
 
 ** Background
@@ -25947,7 +25952,7 @@ end select
 
 Because the =SELECT CASE= branches call the original routine with correctly-typed local variables, Fortran's =SELECT TYPE= in the target routine matches correctly.[fn:3]
 
-** What we built
+** Conclusions
 
 | Feature | Approach | Runtime dependency |
 |---------+----------+--------------------|
@@ -25956,9 +25961,8 @@ Because the =SELECT CASE= branches call the original routine with correctly-type
 | Coarray remote | Cosubscript access | -fcoarray=single (gfortran builtin) |
 | CLASS(*) | Type tag + SELECT CASE trampoline | None |
 
-The common thread: none of these extend the Fortran standard's interoperability rules. They work within =bind(c)= by using Fortran's own internal mechanisms (internal files, local array access, typed local variables) as trampolines between the C calling convention and the full Fortran type system.
-
-With these additions, f2py's derived type support covers all of F2018 section 7.5.
+None of this extends the interoperability rules. Internal files, a local
+array view, and a typed local are enough to stay inside ~bind(c)~.
 
 [fn:1] The original code had six separate =if 'codimension' in attrspec: continue= checks scattered across getters, setters, and allocatable helpers.
 [fn:2] Cross-module types are out of scope. We only wrap what the current module defines.
