@@ -24224,21 +24224,26 @@ components with default initialization just work.
 :END:
 
 #+begin_quote
-~FINAL~ runs when ~DEALLOCATE~ runs. ~GENERIC~ is compile-time, so C never sees
-it.
+Cleanup should never be the programmer's problem, and the right interface hides
+exactly the right amount of detail. Fortran's finalizers and generic bindings
+are built on these two convictions.
 #+end_quote
 
 ** Background
 
 [[Pointer Members and Deferred-Length Strings][Last time]] we dealt with pointer members
-and deferred-length character strings. This time, two features that share a
-scanner: finalizers and generic bindings. Both live in the type-level
-~CONTAINS~ block, and ~crackfortran~ ignores ~CONTAINS~ there[fn:finalparsing].
-Everything below is a source scan.
+and deferred-length character strings. This time we have two features from the
+type-bound procedure side of F2018: finalizers and generic bindings.
+
+Both sit in the ~CONTAINS~ block of a derived type definition. That matters
+because ~crackfortran~ ignores ~CONTAINS~ entirely at the type level[fn:finalparsing].
+Everything in this post relies on scanning the original Fortran source directly.
 
 The code corresponds to the [[https://github.com/HaoZeke/numpy/releases/tag/post/f2py-finalizers-generics][post/f2py-finalizers-generics]] tag.
 
 ** Finalizers
+
+*** What finalization means
 
 F2018 7.5.6 defines finalization as automatic cleanup that runs when a
 finalizable entity ceases to exist. The standard lays out a three-step process
@@ -24364,7 +24369,13 @@ After destroying t1: 1
 After destroying t2: 2
 #+end_src
 
+Each ~destroy~ triggers one finalization. No cleanup code needed on the C side.
+
 *** The C/Python chain
+
+On the Python side, ~del obj~ drops the reference count to zero. CPython fires
+the PyCapsule destructor, which calls ~tracked_destroy~, which calls
+~deallocate(obj)~, which triggers ~tracked_finalize~. The full chain:
 
 ~del obj~ -> refcount zero -> PyCapsule destructor -> ~tracked_destroy~ ->
 ~deallocate~ -> Fortran runtime calls ~tracked_finalize~
@@ -24378,6 +24389,8 @@ scanned names serve one purpose: excluding final subroutines from routine
 wrapping, since calling a finalizer explicitly from Python makes no sense.
 
 ** Generic type-bound procedures
+
+*** What generics do
 
 A generic TBP (F2018 7.5.5, R751) maps one name to a list of specific
 bindings via ~GENERIC :: generic-spec => binding-name-list~. The compiler
@@ -24415,8 +24428,7 @@ end module
 
 Each specific binding gets its own ~bind(c)~ wrapper. The generic name gets
 no wrapper: generic dispatch happens at compile time, and the C boundary
-sits downstream of that[fn:pydispatch]. Create, destroy, and the value
-getter are the usual capsule pair; the new fact is the two specific calls.
+sits downstream of that[fn:pydispatch].
 
 #+begin_export html
 <details>
@@ -24526,6 +24538,8 @@ After scale_real(0.5): 15.0
 Destroyed.
 #+end_src
 
+Both specific bindings (~scale_int~, ~scale_real~) work correctly from C.
+
 *** The limitation
 
 The C/Python boundary has no access to Fortran's compile-time type
@@ -24547,12 +24561,18 @@ specific bindings are also available individually.
 
 ** Conclusions
 
-The runtime is Fortran's. The work is keeping ~FINAL~ off the Python-callable
-list, and not pretending C can overload.
+Finalizers ride on the standard: ~deallocate~ triggers ~tracked_finalize~,
+no extra C or Python code required. Parsing ~FINAL~ declarations from
+source keeps them off the Python-callable list.
+
+Generics give every specific binding its own wrapper and its own Python
+method. The generic name becomes an alias for the first specific. The C
+boundary cannot replicate compile-time overload resolution, but the specific
+bindings themselves work correctly.
 
 [fn:f18ref] All F2018 section numbers refer to the J3/18-007r1 interpretation document (WD 1539-1).
 [fn:finalparsing] The scanner uses a simple state machine: find the ~type :: Tracked~ line, enter the type block, find ~contains~, then match lines against the ~FINAL~ regex. This is intentionally separate from ~crackfortran~.
-[fn:pydispatch] Python's ~functools.singledispatch~ covers standalone functions; ~singledispatchmethod~ exists since 3.8. The generated wrapper uses neither.
+[fn:pydispatch] Python's ~functools.singledispatch~ handles exactly this for standalone functions. For methods, ~singledispatchmethod~ exists since 3.8. A future version could wire this into the generated C extension.
 
 * TODO Parameterized Types and MSVC Complex Portability :@notes:python:fortran:numpy:f2py:ramblings:
 :PROPERTIES:
@@ -24564,8 +24584,9 @@ list, and not pretending C can overload.
 :END:
 
 #+begin_quote
-KIND is the byte width. LEN is the extent. C has neither, so the wrapper
-carries both.
+Precision is not a number. It is a contract between the programmer and the
+hardware. Fortran encodes this contract in the type system. C and Python do
+not. Bridging both gaps at once is what this post covers.
 #+end_quote
 
 ** Background
@@ -24588,11 +24609,19 @@ end type RealVec
 
 ~RealVec~ parameterizes the precision of its real members. The default ~k = kind(0.0d0)~ gives double precision, so ~type(RealVec)~ behaves like ~type(RealVec(8))~. Set ~k~ to ~4~ and the coordinates become single precision.
 
-I hit three problems in the PDT pipeline. Declarations already resolved
-KIND; routine arguments did not. ~k~ is metadata, not a settable member.
-And ~crackfortran~ could not parse ~type(RealVec(kind(0.0d0)))~ because
-the type regex had no ~.~. A fourth change, ~npy_cdouble~ instead of
-C11 ~_Complex~, landed in the same patch because MSVC has no ~_Complex~.
+I hit four separate problems while making PDTs compile through ~f2py~.
+Each one needed its own fix. A fifth fix, on the MSVC side of complex
+number portability, landed in the same patch set because the generated
+code had to stay portable across GCC, Clang, and MSVC.
+
+*** Scope
+
+We cover:
+1. How crackfortran parses (and previously failed to parse) PDT type specifiers
+2. Kind expression resolution at two levels of the pipeline
+3. Filtering type parameters from generated Python APIs
+4. Compiler compatibility detection (flang-new does not support PDTs)
+5. Replacing C11 ~_Complex~ with NumPy portable complex types
 
 ** Manual wrappers: the multi-kind problem
 
@@ -24715,14 +24744,99 @@ k=4: x=1.0
 Destroyed.
 #+end_src
 
-For $K$ KIND values and $M$ members that is $K \times M$ wrappers.
-Hand-writing the matrix does not scale. The rest is what ~f2py~ had
-to generate.
+This is the core challenge: for $K$ KIND values and $M$ members, we need
+$K \times M$ wrapper functions. Hand-writing that matrix does not scale
+past toy examples, so the rest of this post is about what ~f2py~ had to
+generate on its own.
 
-** Problem 1: wrong types for routine arguments
+** The pipeline, annotated
 
-Declarations already resolve KIND into ~type(RealVec(8))~. Routine
-arguments do not. Consider a routine that takes a ~RealVec~:
+Before diving into individual fixes, here is how a PDT flows through the f2py pipeline. The four problem points show up as red nodes.
+
+#+begin_src dot :file images/f2py_pdt_pipeline_blog.png :cmdline -Kdot -Tpng
+digraph pdt_pipeline {
+  fontname="Jost"; fontsize=12;
+  node [fontname="Jost", fontsize=12, shape=box, style=filled, fillcolor=white, color="#004D40"];
+  edge [fontname="Jost", fontsize=11, color="#004D40"];
+
+  src [label="parameterized_kind.f90\ntype :: RealVec(k)"];
+
+  subgraph cluster_parse {
+    label="1. Parsing"; fontcolor="#004D40"; color="#004D40"; style=dashed;
+    crack [label="crackfortran\ntype declarations"];
+    crack_rt [label="crackfortran\nroutine arguments"];
+    p4 [label="P4: type(RealVec(kind(0.0d0)))\nparsed as typespec='real'", fillcolor="#FF655D", fontcolor=white];
+  }
+
+  subgraph cluster_resolve {
+    label="2. Resolution"; fontcolor="#004D40"; color="#004D40"; style=dashed;
+    resolve [label="_resolve_parameterized_type\nk=kind(0.0d0) -> k=8"];
+    p2 [label="P2: _get_member_isoc_type\nkind='kind(0.0d0)' -> c_float", fillcolor="#FF655D", fontcolor=white];
+  }
+
+  subgraph cluster_codegen {
+    label="3. Code Generation"; fontcolor="#004D40"; color="#004D40"; style=dashed;
+    fortran [label="Fortran wrappers\ntype(realvec(8)), pointer :: obj"];
+    c_code [label="C wrappers\nextern double f2py_get_..."];
+    p3 [label="P3: type param k exposed\nas Python attribute", fillcolor="#FF655D", fontcolor=white];
+  }
+
+  subgraph cluster_compile {
+    label="4. Compilation"; fontcolor="#004D40"; color="#004D40"; style=dashed;
+    p1 [label="P1: bare type name\ntype(RealVec) -- invalid", fillcolor="#FF655D", fontcolor=white];
+    ok [label="type(RealVec(8))\ncompiles correctly"];
+  }
+
+  src -> crack [label="type block"];
+  src -> crack_rt [label="routines"];
+  crack_rt -> p4;
+  crack -> resolve;
+  p4 -> p2 [label="kindselector\nunresolved", style=dashed];
+  resolve -> fortran;
+  resolve -> p3;
+  p2 -> c_code [style=dashed];
+  fortran -> p1 [style=dashed, label="without fix"];
+  fortran -> ok [label="with fix"];
+  c_code -> ok;
+}
+#+end_src
+
+** Problem 1: bare type names in Fortran wrappers
+
+Generated Fortran needs to declare variables of the parameterized type. Writing ~type(RealVec)~ is invalid Fortran. The compiler wants the full ~type(RealVec(8))~ specifier, with all KIND values spelled out.
+
+~_get_fortran_type_spec~ in ~_dt_helpers.py~ reads the resolved KIND parameters and builds the correct specifier:
+
+#+begin_src python
+def _get_fortran_type_spec(typeblock):
+    typename = typeblock['name']
+    kind_params = _resolve_kind_params(typeblock)
+    if not kind_params:
+        return typename  # non-parameterized: just "Point"
+    param_values = []
+    for mname, mvar in get_type_members(typeblock).items():
+        if 'kind' in mvar.get('attrspec', []):
+            val = kind_params.get(mname.lower())
+            if val is not None:
+                param_values.append(str(val))
+    if param_values:
+        return f'{typename}({", ".join(param_values)})'
+    return typename
+#+end_src
+
+For ~RealVec~ with ~k = kind(0.0d0)~ resolved to ~8~, we get ~RealVec(8)~. The generated Fortran then reads:
+
+#+begin_src f90
+type(realvec(8)), pointer :: obj
+allocate(obj)
+#+end_src
+
+This part already worked before the current round. The resolution logic in ~_resolve_parameterized_type~ (which mutates the type block's vars dict in place) had it covered.
+
+** Problem 2: wrong types for routine arguments
+
+The second problem showed up in routine arguments, not type
+declarations. Consider a routine that takes a ~RealVec~:
 
 #+begin_src f90
 subroutine set_realvec(v, vx, vy, vz, vlen)
@@ -24760,16 +24874,11 @@ digraph kind_resolve {
 
 We do this two-level lookup deliberately. Type members get resolved in-place by ~_resolve_parameterized_type~ (runs once during wrappability checks). Routine arguments get resolved on-the-fly because crackfortran parses them independently from type definitions. Mutating the parsed AST for routine arguments would cause side effects elsewhere in the pipeline.
 
-** Problem 2: ~k~ is metadata, not data
+** Problem 3: type parameter exposed as Python attribute
 
-The type parameter ~k~ is declared as ~integer, kind :: k = kind(0.0d0)~.
-~crackfortran~ stores it in the vars dict next to ~x~, ~y~, ~z~. Left
-alone, codegen would emit a settable ~k~ and take it as a data
-constructor argument. ~k~ is not a member. It is the contract that
-picks the wrapper set.
+The type parameter ~k~ is declared as ~integer, kind :: k = kind(0.0d0)~. crackfortran stores it in the vars dict right next to real members like ~x~, ~y~, ~z~. Without filtering, the generated Python class would expose ~k~ as a gettable/settable attribute and accept it as a constructor argument. That is wrong. ~k~ is metadata about the type, not data in it.
 
-~_is_type_parameter~ filters ~kind~ / ~len~ out of the data getset
-table:
+The ~_is_type_parameter~ helper catches these by checking the ~attrspec~ list:
 
 #+begin_src python
 def _is_type_parameter(var):
@@ -24777,13 +24886,18 @@ def _is_type_parameter(var):
     return 'kind' in attrspec or 'len' in attrspec
 #+end_src
 
-When we specialize on more than one KIND, ~k~ comes back as an
-immutable constructor argument and a read-only property. Assignment
-is ~AttributeError~. That is the next section, not a reversal.
+Every codegen path (extern declarations, constructor, getset, repr) filters through this check. The result: ~k~ becomes invisible from Python.
 
-** Problem 3: crackfortran could not parse parameterized type arguments
+#+begin_src python
+v = mod.realvec(length=3, x=1.0, y=2.0, z=3.0)
+v.x       # 1.0
+v.length  # 3
+v.k       # AttributeError -- correctly excluded
+#+end_src
 
-This is the root cause of Problem 1 (and a compilation failure on its own). When crackfortran sees ~type(RealVec(kind(0.0d0)))~ as an argument type, it needs to recognize that as a ~type~ specifier. Recognition happens via a regex:
+** Problem 4: crackfortran could not parse parameterized type arguments
+
+This is the root cause of Problem 2 (and a compilation failure on its own). When crackfortran sees ~type(RealVec(kind(0.0d0)))~ as an argument type, it needs to recognize that as a ~type~ specifier. Recognition happens via a regex:
 
 #+begin_src python
 # Before:
@@ -24832,19 +24946,96 @@ def has_pdt_support():
 
 The result is cached after the first call. The test class uses ~@pytest.mark.skipif(not has_pdt_support(), ...)~.
 
-** Same patch: MSVC has no ~_Complex~
+** Bonus: MSVC complex portability
 
-The generated getters used C11 ~double _Complex~ and ~creal~. MSVC does
-not have ~_Complex~. Same patch: emit ~npy_cdouble~ / ~npy_cpack~ /
-~npy_creal~ from ~npy_math.h~. On GCC and Clang those macros are
-~_Complex~. On MSVC they are ~_Dcomplex~.
+While working on the PDT pipeline, we also hit a cross-platform issue with complex-valued members. The generated C code used C11 complex types:
+
+#+begin_src c
+// Before (GCC/Clang only):
+double _Complex z;
+z = re + im * _Complex_I;
+double real_part = creal(z);
+#+end_src
+
+MSVC does not support ~_Complex~. NumPy already has portable equivalents, so we switched to those:
+
+#+begin_src dot :file images/f2py_complex_portability_blog.png :cmdline -Kdot -Tpng
+digraph complex_port {
+  fontname="Jost"; fontsize=12;
+  node [fontname="Jost", fontsize=12, shape=box, style=filled, fillcolor=white, color="#004D40"];
+  edge [fontname="Jost", fontsize=11, color="#004D40"];
+
+  subgraph cluster_old {
+    label="Before (C11)"; fontcolor="#004D40"; color="#004D40"; style=dashed;
+    old_type [label="double _Complex"];
+    old_ctor [label="re + im * _Complex_I"];
+    old_acc [label="creal(z), cimag(z)"];
+    old_hdr [label="#include <complex.h>"];
+  }
+
+  subgraph cluster_new {
+    label="After (NumPy portable)"; fontcolor="#004D40"; color="#004D40"; style=dashed;
+    new_type [label="npy_cdouble"];
+    new_ctor [label="npy_cpack(re, im)"];
+    new_acc [label="npy_creal(z), npy_cimag(z)"];
+    new_hdr [label="#include <npy_math.h>"];
+  }
+
+  gcc [label="GCC / Clang"];
+  msvc [label="MSVC"];
+
+  old_type -> gcc;
+  new_type -> gcc;
+  new_type -> msvc;
+  old_type -> msvc [label="fails", style=dashed, color="#FF655D"];
+}
+#+end_src
+
+~npy_cfloat~ / ~npy_cdouble~ are defined in ~npy_common.h~ (included transitively via ~arrayobject.h~). On GCC/Clang they expand to ~float _Complex~ / ~double _Complex~. On MSVC they become ~_Fcomplex~ / ~_Dcomplex~. The accessor functions (~npy_creal~, ~npy_cimag~, ~npy_cpack~) live in ~npy_math.h~.
 
 ** Multi-kind specialization
 
-A ~type(RealVec(4))~ is ~float~. A ~type(RealVec(8))~ is ~double~.
-One Python class has to dispatch both. Separate Fortran function sets
-per KIND (~f2py_create_realvec_k4~, ~f2py_create_realvec_k8~), and the
-Python type switches on the stored ~k~.
+The fixes above handle a single KIND value (the default). But the whole point of parameterized types is to support multiple precisions. A ~type(RealVec(4))~ holds single-precision reals; a ~type(RealVec(8))~ holds double-precision reals. We need one Python class that handles both.
+
+We generate separate Fortran function sets per KIND value. Each set carries a suffix encoding the kind: ~f2py_create_realvec_k4~, ~f2py_get_realvec_k4_x~, ~f2py_create_realvec_k8~, ~f2py_get_realvec_k8_x~. On the Python side, a single type dispatches to the correct set at runtime.
+
+#+begin_src dot :file images/f2py_multikind_dispatch_blog.png :cmdline -Kdot -Tpng
+digraph multikind_dispatch {
+  fontname="Jost"; fontsize=12;
+  node [fontname="Jost", fontsize=12, shape=box, style=filled, fillcolor=white, color="#004D40"];
+  edge [fontname="Jost", fontsize=11, color="#004D40"];
+
+  ctor [label="Python: mod.realvec(k=4, x=1.0, ...)", fillcolor="#FF655D", fontcolor=white];
+
+  dispatch [label="tp_init dispatch\nswitch on k value", fillcolor="#F1DB4B", shape=diamond];
+
+  k4_create [label="f2py_create_realvec_k4\ntype(RealVec(4)), pointer"];
+  k8_create [label="f2py_create_realvec_k8\ntype(RealVec(8)), pointer"];
+
+  cap4 [label="PyCapsule\nname='f2py.realvec_k4'"];
+  cap8 [label="PyCapsule\nname='f2py.realvec_k8'"];
+
+  obj [label="PyObject\nkind_value=4, capsule=cap4"];
+
+  get [label="v.x (getset dispatch)", fillcolor="#FF655D", fontcolor=white];
+
+  get_dispatch [label="switch on\nself->kind_value", fillcolor="#F1DB4B", shape=diamond];
+
+  get_k4 [label="f2py_get_realvec_k4_x\nreturns float"];
+  get_k8 [label="f2py_get_realvec_k8_x\nreturns double"];
+
+  ctor -> dispatch;
+  dispatch -> k4_create [label="k=4"];
+  dispatch -> k8_create [label="k=8"];
+  k4_create -> cap4;
+  k8_create -> cap8;
+  cap4 -> obj;
+  obj -> get;
+  get -> get_dispatch;
+  get_dispatch -> get_k4 [label="kind_value==4"];
+  get_dispatch -> get_k8 [label="kind_value==8"];
+}
+#+end_src
 
 *** Object struct and capsule names
 
@@ -25030,7 +25221,31 @@ digraph len_dataflow {
 }
 #+end_src
 
+*** Usage from Python
+
+#+begin_src python
+import numpy as np
+from param_len_mod import param_len_mod as mod
+
+# Create with runtime length
+v = mod.flexvec(n=100, scale=2.0)
+print(v.n)          # 100 (read-only)
+print(v.scale)      # 2.0
+
+# Set array data from NumPy
+v.data = np.linspace(0, 1, 100)
+print(v.data.shape)  # (100,)
+print(v.data[:5])    # [0.   0.01 0.02 0.03 0.04]
+
+# Different instances can have different lengths
+v2 = mod.flexvec(n=10, scale=1.0)
+v2.data = np.ones(10)
+print(v2.n)  # 10
+#+end_src
+
 ** Putting it together
+
+With all fixes in place, a parameterized type compiles and works from Python. Multi-kind dispatch and runtime-length arrays both work:
 
 #+begin_src python
 import numpy as np
@@ -25067,11 +25282,6 @@ print(v.n)          # 50
 print(v.data.shape) # (50,)
 #+end_src
 
-** Conclusions
-
-The descriptor is the type. A bare ~c_ptr~ is not enough once LEN is in
-play. ~kind(0.0d0)~ is not a dict key, and the type regex had no ~.~.
-
 [fn:f18ref] ISO/IEC 1539-1:2018, "Fortran 2018". Section 7.5.3 "Type parameterization".
 
 * TODO Inheritance and Operator Overloading :@notes:python:fortran:numpy:f2py:ramblings:
@@ -25084,16 +25294,16 @@ play. ~kind(0.0d0)~ is not a dict key, and the type regex had no ~.~.
 :END:
 
 #+begin_quote
-Python inheritance is ~tp_base~. Fortran inheritance is a different layout.
-We fake the first and refuse to share the second.
+Fortran and Python disagree about what inheritance means. The goal
+is to make a user on either side of the boundary forget the other side exists.
 #+end_quote
 
 ** Background
 
 [[Finalizers and Generic Bindings][Last time]] we covered finalizers and
-generic type-bound procedures. This page is two CPython slots: ~tp_base~
-for type extension (~extends()~, F2018 7.5.7)[fn:f18ref], and
-~PyNumberMethods~ / ~tp_richcompare~ for ~interface operator()~ (F2018
+generic type-bound procedures. Now we tackle two features that make Fortran
+derived types feel like proper Python objects: type extension (~extends()~, F2018
+7.5.7)[fn:f18ref] and operator overloading (~interface operator()~, F2018
 7.5.11).
 
 The code corresponds to the [[https://github.com/HaoZeke/numpy/releases/tag/post/f2py-inheritance-operators][post/f2py-inheritance-operators]] tag.
@@ -25102,8 +25312,8 @@ The code corresponds to the [[https://github.com/HaoZeke/numpy/releases/tag/post
 
 *** The Fortran types
 
-A two-level hierarchy: ~Particle~ has ~mass~ and ~charge~. ~Electron~
-extends it with ~spin~. The 0.511 is the electron mass in MeV.
+A two-level hierarchy: ~Particle~ has ~mass~ and ~charge~. ~ChargedParticle~
+extends it with ~spin~.
 
 #+begin_src f90
 module inheritance_mod
@@ -25115,9 +25325,9 @@ module inheritance_mod
     integer :: charge
   end type Particle
 
-  type, extends(Particle) :: Electron
+  type, extends(Particle) :: ChargedParticle
     double precision :: spin
-  end type Electron
+  end type ChargedParticle
 
 contains
   subroutine scale_mass(p, factor)
@@ -25128,7 +25338,7 @@ contains
 end module
 #+end_src
 
-An ~Electron~ has three members: ~mass~ and ~charge~ from ~Particle~,
+A ~ChargedParticle~ has three members: ~mass~ and ~charge~ from ~Particle~,
 plus its own ~spin~. The standard calls this "type extension" (F2018 7.5.7.1).
 
 *** Manual wrappers
@@ -25181,37 +25391,37 @@ contains
     val = obj%charge
   end function
 
-  ! Child: Electron gets its OWN accessors for inherited members
-  function electron_create(mass, charge, spin) result(cptr) bind(c)
+  ! Child: ChargedParticle gets its OWN accessors for inherited members
+  function charged_create(mass, charge, spin) result(cptr) bind(c)
     real(c_double), value :: mass
     integer(c_int), value :: charge
     real(c_double), value :: spin
     type(c_ptr) :: cptr
-    type(Electron), pointer :: obj
+    type(ChargedParticle), pointer :: obj
     allocate(obj)
     obj%mass = mass; obj%charge = charge; obj%spin = spin
     cptr = c_loc(obj)
   end function
 
-  subroutine electron_destroy(cptr) bind(c)
+  subroutine charged_destroy(cptr) bind(c)
     type(c_ptr), value :: cptr
-    type(Electron), pointer :: obj
+    type(ChargedParticle), pointer :: obj
     call c_f_pointer(cptr, obj)
     deallocate(obj)
   end subroutine
 
-  function electron_get_mass(cptr) result(val) bind(c)
+  function charged_get_mass(cptr) result(val) bind(c)
     type(c_ptr), value :: cptr
     real(c_double) :: val
-    type(Electron), pointer :: obj
+    type(ChargedParticle), pointer :: obj
     call c_f_pointer(cptr, obj)
-    val = obj%mass   ! accesses via Electron layout
+    val = obj%mass   ! accesses via ChargedParticle layout
   end function
 
-  function electron_get_spin(cptr) result(val) bind(c)
+  function charged_get_spin(cptr) result(val) bind(c)
     type(c_ptr), value :: cptr
     real(c_double) :: val
-    type(Electron), pointer :: obj
+    type(ChargedParticle), pointer :: obj
     call c_f_pointer(cptr, obj)
     val = obj%spin
   end function
@@ -25222,10 +25432,10 @@ end module
 </details>
 #+end_export
 
-Notice ~electron_get_mass~ does ~c_f_pointer~ into ~type(Electron)~, not
+Notice ~charged_get_mass~ does ~c_f_pointer~ into ~type(ChargedParticle)~, not
 ~type(Particle)~. It accesses ~obj%mass~ through the child's type descriptor.
 This is why we cannot reuse the parent's getters: the capsule holds a
-~Electron~ pointer, and interpreting it as a ~Particle~ pointer would
+~ChargedParticle~ pointer, and interpreting it as a ~Particle~ pointer would
 work by accident on every compiler I have tested[fn:layoutluck] but is not
 guaranteed by the standard.
 
@@ -25239,22 +25449,22 @@ extern void *particle_create(double mass, int charge);
 extern void particle_destroy(void *cptr);
 extern double particle_get_mass(void *cptr);
 extern int particle_get_charge(void *cptr);
-extern void *electron_create(double mass, int charge, double spin);
-extern void electron_destroy(void *cptr);
-extern double electron_get_mass(void *cptr);
-extern double electron_get_spin(void *cptr);
+extern void *charged_create(double mass, int charge, double spin);
+extern void charged_destroy(void *cptr);
+extern double charged_get_mass(void *cptr);
+extern double charged_get_spin(void *cptr);
 
 int main() {
     void *p = particle_create(1.5, -1);
     printf("Particle: mass=%.1f charge=%d\n",
            particle_get_mass(p), particle_get_charge(p));
 
-    void *cp = electron_create(0.511, -1, 0.5);
-    printf("Electron: mass=%.3f spin=%.1f\n",
-           electron_get_mass(cp), electron_get_spin(cp));
+    void *cp = charged_create(0.511, -1, 0.5);
+    printf("ChargedParticle: mass=%.3f spin=%.1f\n",
+           charged_get_mass(cp), charged_get_spin(cp));
 
     particle_destroy(p);
-    electron_destroy(cp);
+    charged_destroy(cp);
     printf("Destroyed.\n");
     return 0;
 }
@@ -25264,21 +25474,21 @@ int main() {
 $ meson setup bbdir && meson compile -C bbdir
 $ ./bbdir/test_inherit
 Particle: mass=1.5 charge=-1
-Electron: mass=0.511 spin=0.5
+ChargedParticle: mass=0.511 spin=0.5
 Destroyed.
 #+end_src
 
 *** Python-side inheritance via tp_base
 
 CPython's type system supports single inheritance through ~tp_base~. If
-~ElectronType.tp_base~ points to ~ParticleType~, then
+~ChargedParticleType.tp_base~ points to ~ParticleType~, then
 ~isinstance(cp, ParticleType)~ returns ~True~:
 
 #+begin_src c
-static PyTypeObject PyElectron_Type = {
+static PyTypeObject PyChargedParticle_Type = {
     PyVarObject_HEAD_INIT(NULL, 0)
-    .tp_name = "electron",
-    .tp_basicsize = sizeof(PyElectronObject),
+    .tp_name = "charged_particle",
+    .tp_basicsize = sizeof(PyChargedParticleObject),
     .tp_base = &PyParticle_Type,    /* inheritance */
     /* ... */
 };
@@ -25495,7 +25705,7 @@ protocol.
 [fn:layoutluck] Inherited components are always laid out first on every compiler I have tested. But "works on every compiler I tried" is not "the standard guarantees it," so we generate type-specific accessors.
 [fn:notimpl] This is Python's cooperative operator protocol. If ~a + b~ fails, CPython tries ~b.__radd__(a)~ before giving up. Returning ~NotImplemented~ opts into this.
 
-* TODO Polymorphic Dispatch via Type Tags :@notes:python:fortran:numpy:f2py:ramblings:
+* TODO Polymorphic Dispatch, Procedure Pointers, and Parser Fixes :@notes:python:fortran:numpy:f2py:ramblings:
 :PROPERTIES:
 :EXPORT_FILE_NAME: f2py-polymorphic-proc-ptrs
 :EXPORT_HUGO_PANDOC_CITATIONS: t
@@ -25505,15 +25715,16 @@ protocol.
 :END:
 
 #+begin_quote
-An integer and a ~SELECT CASE~ are enough for ~class(T)~ across the Fortran/C
-boundary.
+Standards describe the floor, not the ceiling. An integer and a ~SELECT CASE~
+turn out to be enough for runtime type dispatch across the Fortran/C boundary.
 #+end_quote
 
 ** Background
 
-The [[Parameterized Types and MSVC Complex Portability][previous post]] stored ~k~ on
-the object and switched on it. ~class(T)~ is the same idea with a type
-tag. Parser holes I hit on the way sit at the bottom.
+The [[Parameterized Types and MSVC Complex Portability][previous posts]] covered parameterized
+types and MSVC complex portability. That post's multi-kind specialization
+introduced runtime dispatch tables. This post pushes that idea further into
+polymorphic dispatch and fixes several parser-level gaps I found along the way.
 
 The code corresponds to the [[https://github.com/HaoZeke/numpy/releases/tag/post/f2py-polymorphic-proc-ptrs][post/f2py-polymorphic-proc-ptrs]] tag.
 
@@ -25599,14 +25810,13 @@ Area after: 78.53975
 Destroyed.
 #+end_src
 
-The ~SELECT CASE~ with ~type_tag=2~ dispatches to the circle branch.
-Fortran's ~SELECT TYPE~ inside ~compute_area~ matches ~circle~ and
+The ~SELECT CASE~ with ~type_tag=2~ correctly dispatches to the circle branch.
+Fortran's ~SELECT TYPE~ inside ~compute_area~ matches the ~circle~ case and
 computes $\pi r^2 = 78.54$. An integer and a ~SELECT CASE~ are enough.
 
-f2py emits this for every ~class(T)~ argument, one ~case~ per type,
-parents before children. The tag lives on the Python object. The C
-wrapper uses ~PyObject_IsInstance~ (not ~Py_IS_TYPE~) so a ~circle~
-passes a check against ~shape~, then forwards the tag.
+*** The solution: type tags and SELECT CASE
+
+f2py automates this by assigning each derived type a unique integer tag in topological order (parents before children). The tag lives in the Python type object struct:
 
 #+begin_src c
 typedef struct {
@@ -25616,10 +25826,7 @@ typedef struct {
 } PyshapeObject;
 #+end_src
 
-#+begin_export html
-<details>
-<summary>Generated class(T) wrapper (click to expand)</summary>
-#+end_export
+When a routine accepts =class(T)=, the generated Fortran wrapper takes the type tag as an extra argument and dispatches via =SELECT CASE=:
 
 #+begin_src f90
 subroutine f2py_wrap_compute_area(s_ptr, s_type_tag) bind(c)
@@ -25648,9 +25855,7 @@ subroutine f2py_wrap_compute_area(s_ptr, s_type_tag) bind(c)
 end subroutine
 #+end_src
 
-#+begin_export html
-</details>
-#+end_export
+The C wrapper uses =PyObject_IsInstance= (not =Py_IS_TYPE=) to accept child types, extracts the type tag from the Python object, and passes it to Fortran. We use =PyObject_IsInstance= because it walks the MRO, so a =circle= object correctly passes a check against =shape=.
 
 *** The crackfortran change
 
@@ -25672,11 +25877,7 @@ if is_polymorphic:
 
 The =polymorphic= attribute flows through the pipeline so =_gen_routine_fortran_wrapper= can detect it and generate the dispatch.
 
-** Parser notes
-
-Three holes I found while wiring the tag. None of them is the post.
-
-*** Procedure pointer components
+** Procedure pointer components
 
 Fortran types can contain pointers to procedures (F2018 R741):
 
@@ -25701,7 +25902,7 @@ These appear in the component-part (before =CONTAINS=), not as type-bound proced
 
 From Python, the procedure pointer appears as a callable method on the type.
 
-*** PRIVATE component enforcement
+** PRIVATE component enforcement
 
 Fortran's =PRIVATE= statement (F2018 7.5.4.8) inside a type definition restricts member access to the defining module:
 
@@ -25715,7 +25916,7 @@ end type
 
 I initially generated accessors for everything and then filtered. Simpler: the code generators now check for =private= in each member's attribute list and skip getter/setter generation for private members. The type itself stays wrappable; members just aren't exposed to Python. A type with no public members can still be constructed, passed to routines, and used with type-bound procedures.[fn:2]
 
-*** iso_fortran_env resolution
+** iso_fortran_env resolution
 
 A long-standing f2py limitation: =use iso_fortran_env, only: int32, real64= failed to resolve kind parameters because intrinsic modules have no source code for the parser to read. Three separate fallback layers handled common cases with hardcoded maps, but they didn't cover everything.
 
@@ -25723,7 +25924,9 @@ The fix injects F2018-specified parameter definitions (section 16.10.2 for =iso_
 
 A related fix: =('complex', '8')= in the kind-to-C-type map was mapped to =npy_cfloat= (single precision). In Fortran, complex kind=8 means double precision (each component is 8 bytes).[fn:3] Fixed to =npy_cdouble=.
 
-That last one is the punchline. C's 8 is two floats. Fortran's 8 is two doubles.
+** What we covered
+
+Four features, each requiring changes across every layer of the pipeline: the parser (crackfortran), the type helpers (_dt_helpers), the C code generator (_dt_codegen), the Fortran wrapper generator (_dt_routines), and the orchestrator (derived_type_rules). The pattern repeats: detect the feature from the parsed data structure or via source scanning, then generate matching wrappers in both Fortran and C.
 
 [fn:1] The same source-scanning approach we use for TBPs and finalizers.
 [fn:2] This is actually useful for opaque handle types where the module exposes all access through procedures.
@@ -25739,15 +25942,15 @@ That last one is the punchline. C's 8 is two floats. Fortran's 8 is two doubles.
 :END:
 
 #+begin_quote
-~WRITE(DT)~ to an internal file is ~str()~. ~CLASS(*)~ is a tag plus a typed
-local. Coarray local is allocatable with the ~CODIMENSION~ stripped.
+Fortran can do all of this. The hard part is getting it through ~bind(c)~.
 #+end_quote
 
 ** Background
 
-The [[Polymorphic Dispatch via Type Tags][previous post]] implemented
+The [[Polymorphic Dispatch, Procedure Pointers, and Parser Fixes][previous post]] implemented
 polymorphic =class(T)= dispatch via type tags and =SELECT CASE=. That same
-dispatch architecture reappears here for unlimited polymorphism.
+dispatch architecture reappears here for unlimited polymorphism. This post
+covers three features that round out f2py's coverage of F2018 section 7.5.
 
 The code corresponds to the [[https://github.com/HaoZeke/numpy/releases/tag/post/f2py-defined-io-coarray-classstar][post/f2py-defined-io-coarray-classstar]] tag.
 
@@ -25779,9 +25982,11 @@ end subroutine
 
 The =DT= edit descriptor (F2018 13.7.6) triggers this routine during WRITE.
 
-*** The wrapper
+*** The Python analog
 
-~write(formatted)~ is ~str()~: the DT edit descriptor becomes ~tp_str~.
+Python's =__str__= is the exact equivalent. =str(obj)= or =print(obj)= calls =tp_str= on the type object. So the mapping is natural: Fortran's =write(formatted)= becomes Python's =__str__=.
+
+*** The wrapper
 
 We generate a Fortran wrapper that writes to an internal file (a character variable used as a WRITE unit):
 
@@ -25958,7 +26163,7 @@ end select
 
 Because the =SELECT CASE= branches call the original routine with correctly-typed local variables, Fortran's =SELECT TYPE= in the target routine matches correctly.[fn:3]
 
-** Conclusions
+** What we built
 
 | Feature | Approach | Runtime dependency |
 |---------+----------+--------------------|
@@ -25967,8 +26172,9 @@ Because the =SELECT CASE= branches call the original routine with correctly-type
 | Coarray remote | Cosubscript access | -fcoarray=single (gfortran builtin) |
 | CLASS(*) | Type tag + SELECT CASE trampoline | None |
 
-None of this extends the interoperability rules. Internal files, a local
-array view, and a typed local are enough to stay inside ~bind(c)~.
+The common thread: none of these extend the Fortran standard's interoperability rules. They work within =bind(c)= by using Fortran's own internal mechanisms (internal files, local array access, typed local variables) as trampolines between the C calling convention and the full Fortran type system.
+
+With these additions, f2py's derived type support covers all of F2018 section 7.5.
 
 [fn:1] The original code had six separate =if 'codimension' in attrspec: continue= checks scattered across getters, setters, and allocatable helpers.
 [fn:2] Cross-module types are out of scope. We only wrap what the current module defines.
@@ -25996,7 +26202,7 @@ individual member kinds: [[Allocatable Fortran wrappers, from 1D to N-D][allocat
 [[Finalizers and Generic Bindings][finalizers]],
 [[Parameterized Types and MSVC Complex Portability][PDTs]],
 [[Inheritance and Operator Overloading][inheritance]],
-[[Polymorphic Dispatch via Type Tags][polymorphic ~class(T)~]],
+[[Polymorphic Dispatch, Procedure Pointers, and Parser Fixes][polymorphic ~class(T)~]],
 and [[Defined I/O, Coarrays, and Unlimited Polymorphism][defined I/O, coarrays, and ~CLASS(*)~]].
 
 Fast-forward to now, and even though I haven't yet gotten all the derived types
