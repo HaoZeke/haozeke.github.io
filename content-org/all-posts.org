@@ -25483,7 +25483,13 @@ members). Operator interfaces are scanned from the module body and mapped to
 
 ** Conclusions
 
-~isinstance~ is a lie we tell on purpose. The accessors are not.
+Type extension maps to ~tp_base~, giving ~isinstance()~ support. Children
+re-declare parent getset entries because the opaque pointer pattern requires
+type-specific accessors.
+
+Operator overloading maps to ~PyNumberMethods~ and ~tp_richcompare~. Type
+mismatches return ~NotImplemented~ following Python's cooperative operator
+protocol.
 
 [fn:f18ref] All F2018 section numbers refer to the J3/18-007r1 interpretation document (WD 1539-1).
 [fn:layoutluck] Inherited components are always laid out first on every compiler I have tested. But "works on every compiler I tried" is not "the standard guarantees it," so we generate type-specific accessors.
