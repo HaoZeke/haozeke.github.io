@@ -172,6 +172,7 @@ task :postPdfMintLinks do
 
   index = JSON.parse(File.read(index_path))
   entries = index["entries"] || {}
+  PostPdf::AnticsLinks.enrich_years!(entries, root: Dir.pwd)
   minter = PostPdf::AnticsLinks.new(token: token)
   result = minter.mint(entries)
   dest = File.expand_path(ENV.fetch("POST_PDF_LINKS", "data/pdf-links.json"), Dir.pwd)
