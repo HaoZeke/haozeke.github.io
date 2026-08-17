@@ -24211,7 +24211,8 @@ components with default initialization just work.
 [fn:dangling] F2018 10.2.2 paragraph 8: "If the target is deallocated, the association status of any pointer associated with the target becomes undefined." There is no way to check for this from C.
 [fn:charloc] Some compilers implement deferred-length characters with a hidden descriptor that stores both the data pointer and the length. Using ~c_loc~ directly on such a character may return the descriptor address rather than the data address.
 [fn:padding] I hit this with gfortran 13. The ~len()~ intrinsic returns the right value, but the in-memory representation has trailing spaces past the nominal length.
-* TODO Finalizers and Generic Bindings :@notes:python:fortran:numpy:f2py:ramblings:
+* DONE Finalizers and Generic Bindings :@notes:python:fortran:numpy:f2py:ramblings:
+CLOSED: [2026-08-10 Mon 20:14]
 :PROPERTIES:
 :EXPORT_FILE_NAME: f2py-finalizers-generics
 :EXPORT_HUGO_PANDOC_CITATIONS: t
@@ -24571,7 +24572,8 @@ bindings themselves work correctly.
 [fn:finalparsing] The scanner uses a simple state machine: find the ~type :: Tracked~ line, enter the type block, find ~contains~, then match lines against the ~FINAL~ regex. This is intentionally separate from ~crackfortran~.
 [fn:pydispatch] Python's ~functools.singledispatch~ handles exactly this for standalone functions. For methods, ~singledispatchmethod~ exists since 3.8. A future version could wire this into the generated C extension.
 
-* TODO Parameterized Types and MSVC Complex Portability :@notes:python:fortran:numpy:f2py:ramblings:
+* DONE Parameterized Types and MSVC Complex Portability :@notes:python:fortran:numpy:f2py:ramblings:
+CLOSED: [2026-08-16 Sun 15:52]
 :PROPERTIES:
 :EXPORT_FILE_NAME: f2py-parameterized-types
 :EXPORT_HUGO_PANDOC_CITATIONS: t
