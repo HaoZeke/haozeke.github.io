@@ -4673,6 +4673,30 @@ subtree-number being exported.
 (defsubst org-hugo--cpe-title (e) (aref e 2))
 (defsubst org-hugo--cpe-anchor (e) (aref e 3))
 
+(defun org-hugo--plain-title-string (data info)
+  "Return DATA as a markup-free title string.
+
+INFO is the Hugo export plist.  Do not send DATA through the
+ASCII backend: Org 9.7 `org-ascii-code' formats with
+`:ascii-verbatim-format', which is absent from Hugo INFO, so
+headlines like ~bash~ become `format' of nil."
+  (when data
+    (if (stringp data)
+        (org-string-nw-p data)
+      (let* ((get-raw (lambda (object contents _)
+                        (or contents
+                            (org-element-property :value object))))
+             (raw-backend
+              (org-export-create-backend
+               :parent 'ascii
+               :transcoders (mapcar (lambda (type)
+                                      (cons type get-raw))
+                                    '(bold code italic strike-through
+                                           underline verbatim)))))
+        (org-string-nw-p
+         (substring-no-properties
+          (org-export-data-with-backend data raw-backend info)))))))
+
 (defun org-hugo--get-cross-post-index (info)
   "Build or return cached same-file cross-post destination index.
 
@@ -4693,11 +4717,12 @@ Uses one `org-element-at-point' per headline (not full-buffer parse)."
                           el info :inherit-export-file-name))
                    (own-file (org-string-nw-p
                               (org-element-property :EXPORT_FILE_NAME el)))
-                   (title
-                    (let ((raw (org-element-property :title el)))
-                      (and raw
-                           (substring-no-properties
-                            (org-export-data-with-backend raw 'ascii info)))))
+                   (raw-title (org-element-property :title el))
+                   (title (org-hugo--plain-title-string raw-title info))
+                   (title-org
+                    (and raw-title
+                         (org-string-nw-p
+                          (org-trim (org-element-interpret-data raw-title)))))
                    (anchor (org-hugo--get-anchor el info))
                    (custom-id (org-string-nw-p
                                (org-element-property :CUSTOM_ID el)))
@@ -4709,7 +4734,10 @@ Uses one `org-element-at-point' per headline (not full-buffer parse)."
                 (when custom-id (puthash custom-id entry by-custom-id))
                 (when id (puthash id entry by-id))
                 (when (org-string-nw-p title)
-                  (puthash title entry by-title)))))
+                  (puthash title entry by-title))
+                (when (and (org-string-nw-p title-org)
+                           (not (equal title-org title)))
+                  (puthash title-org entry by-title)))))
           t 'file)
          (goto-char (point-min))
          (while (re-search-forward "<<\\([^<>\n]+\\)>>" nil t)
@@ -4855,10 +4883,9 @@ full AST."
                           (org-hugo--cpe-title entry)
                         (and destination
                              (equal destination-type 'headline)
-                             (substring-no-properties
-                              (org-export-data-with-backend
-                               (org-element-property :title destination)
-                               'ascii info)))))
+                             (org-hugo--plain-title-string
+                              (org-element-property :title destination)
+                              info))))
                      (destination-anchor
                       (if entry
                           (org-hugo--cpe-anchor entry)

@@ -583,5 +583,5 @@ static/pdf/*
 # Full write-access inventory (may include private repo names). Public artifact is static/data/write-access.json
 data/write-access.full.json
 .tmp/write-access.full.json
-vendor/
+/vendor/
 .bundle/
