@@ -24752,6 +24752,7 @@ generate on its own.
 
 Before diving into individual fixes, here is how a PDT flows through the f2py pipeline. The four problem points show up as red nodes.
 
+#+CAPTION: crackfortran, kind resolution, codegen, and compile. Red nodes are the four places a PDT used to fall out of the pipeline.
 #+begin_src dot :file images/f2py_pdt_pipeline_blog.png :cmdline -Kdot -Tpng
 digraph pdt_pipeline {
   fontname="Jost"; fontsize=12;
@@ -24850,6 +24851,7 @@ After crackfortran parses this, ~vx~ has ~kindselector={'kind': 'kind(0.0d0)'}~.
 
 The fix adds a resolution fallback:
 
+#+CAPTION: =kind(0.0d0)= misses the ISO-C dict and falls back to =c_float=. Evaluating the expression retries as =('real', '8')= and hits =c_double=.
 #+begin_src dot :file images/f2py_kind_resolve_blog.png :cmdline -Kdot -Tpng
 digraph kind_resolve {
   fontname="Jost"; fontsize=12;
@@ -24958,6 +24960,7 @@ double real_part = creal(z);
 
 MSVC does not support ~_Complex~. NumPy already has portable equivalents, so we switched to those:
 
+#+CAPTION: C11 =double _Complex= builds on GCC and Clang and fails on MSVC. =npy_cdouble= is the portable type on all three.
 #+begin_src dot :file images/f2py_complex_portability_blog.png :cmdline -Kdot -Tpng
 digraph complex_port {
   fontname="Jost"; fontsize=12;
@@ -24998,6 +25001,7 @@ The fixes above handle a single KIND value (the default). But the whole point of
 
 We generate separate Fortran function sets per KIND value. Each set carries a suffix encoding the kind: ~f2py_create_realvec_k4~, ~f2py_get_realvec_k4_x~, ~f2py_create_realvec_k8~, ~f2py_get_realvec_k8_x~. On the Python side, a single type dispatches to the correct set at runtime.
 
+#+CAPTION: Constructor and getter switch on =k=. =k=4= and =k=8= are different Fortran function sets and different capsule names.
 #+begin_src dot :file images/f2py_multikind_dispatch_blog.png :cmdline -Kdot -Tpng
 digraph multikind_dispatch {
   fontname="Jost"; fontsize=12;
@@ -25186,6 +25190,7 @@ static void flexvec_capsule_destructor(PyObject *cap) {
 
 *** LEN data flow
 
+#+CAPTION: =n= is stored on the Python object and in the capsule context. Every accessor, including the scalar =scale=, passes =n= into =c_f_pointer=.
 #+begin_src dot :file images/f2py_len_dataflow_blog.png :cmdline -Kdot -Tpng
 digraph len_dataflow {
   fontname="Jost"; fontsize=12;
