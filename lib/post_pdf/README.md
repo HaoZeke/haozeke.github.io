@@ -45,7 +45,7 @@ Env knobs:
 | `POST_PDF_FORCE` | unset | Rebuild all |
 | `POST_PDF_SKIP` | unset | No-op all PDF tasks |
 | `ANTICS_API_KEY` | unset | Account key for `rake postPdfMintLinks`. Unset skips mint; buttons stay same-origin. |
-| `POST_PDF_LINKS` | `data/pdf-links.json` | Written table of `slug -> {light,dark}` short URLs. |
+| `POST_PDF_LINKS` | `data/pdf_links.json` | Written table of `slug -> {light,dark}` short URLs. |
 
 ## Page kinds
 
