@@ -32,13 +32,34 @@
 {{- $lightFile := printf "static/pdf/%s-light.pdf" $slug -}}
 {{- $hasLight := fileExists $lightFile -}}
 {{- $defaultTheme := site.Params.defaultTheme | default "dark" -}}
-{{- $primary := cond (eq $defaultTheme "light") $light $dark -}}
+{{- $row := dict -}}
+{{- with site.Data.pdf_links -}}
+  {{- with index . $slug -}}
+    {{- $row = . -}}
+  {{- end -}}
+{{- end -}}
+{{- $lightHref := $light -}}
+{{- $darkHref := $dark -}}
+{{- $lightShort := false -}}
+{{- $darkShort := false -}}
+{{- with $row -}}
+  {{- with index . "light" -}}
+    {{- $lightHref = . -}}
+    {{- $lightShort = true -}}
+  {{- end -}}
+  {{- with index . "dark" -}}
+    {{- $darkHref = . -}}
+    {{- $darkShort = true -}}
+  {{- end -}}
+{{- end -}}
+{{- $primary := cond (eq $defaultTheme "light") $lightHref $darkHref -}}
+{{- $primaryShort := cond (eq $defaultTheme "light") $lightShort $darkShort -}}
 {{- if $hasLight -}}
 <div class="pdf-export pdf-export--{{ $style }}" data-pdf-slug="{{ $slug }}">
   {{- if and (eq $style "catalog") (ne (.Scratch.Get "pdfExportHideLabel") true) -}}
   <span class="pdf-export__label">Export</span>
   {{- end -}}
-  <a class="pdf-export__btn" href="{{ $primary }}" download
+  <a class="pdf-export__btn" href="{{ $primary }}"{{ if not $primaryShort }} download{{ end }}
      title="Download as PDF (Atkinson Hyperlegible)">
     <svg class="pdf-export__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
          stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -50,11 +71,11 @@
     {{ $label }}
   </a>
   <div class="pdf-export__menu" role="group" aria-label="PDF theme for {{ $slug }}">
-    <a href="{{ $light }}" download class="{{ if eq $defaultTheme `light` }}is-active{{ end }}">
+    <a href="{{ $lightHref }}"{{ if not $lightShort }} download{{ end }} class="{{ if eq $defaultTheme `light` }}is-active{{ end }}">
       <span class="pdf-export__dot pdf-export__dot--light" aria-hidden="true"></span>
       Light
     </a>
-    <a href="{{ $dark }}" download class="{{ if eq $defaultTheme `dark` }}is-active{{ end }}">
+    <a href="{{ $darkHref }}"{{ if not $darkShort }} download{{ end }} class="{{ if eq $defaultTheme `dark` }}is-active{{ end }}">
       <span class="pdf-export__dot pdf-export__dot--dark" aria-hidden="true"></span>
       Dark
     </a>

@@ -21,6 +21,7 @@ Incremental rebuild restores the previous tip first:
 ```
 rake postPdfRestore   # fetch post-pdfs → static/pdf
 rake postPdf          # depends on restore; only re-renders changed digests
+rake postPdfMintLinks # mint Antics native links (needs ANTICS_API_KEY)
 rake postPdfPublish   # orphan commit + force-push
 ```
 

@@ -39,7 +39,7 @@ task :hugoServe, [:port] => [:md] do |_t, args|
 end
 
 desc "Build site with Hugo"
-task :hugoBuild, [:cachedir] => %i[md postPdf] do |_t, args|
+task :hugoBuild, [:cachedir] => %i[md postPdf postPdfMintLinks] do |_t, args|
   args.with_defaults(cachedir: "$(pwd)/cacheDir/images")
   sh "hugo --minify --enableGitInfo --gc --buildFuture --cacheDir #{args.cachedir}"
 end
@@ -151,6 +151,35 @@ desc "Force rebuild all post PDFs"
 task :postPdfForce do
   ENV["POST_PDF_FORCE"] = "1"
   Rake::Task[:postPdf].invoke
+end
+
+desc "Mint Antics native short links for PDF files (needs ANTICS_API_KEY)"
+task :postPdfMintLinks do
+  require "post_pdf"
+  require "json"
+
+  token = ENV["ANTICS_API_KEY"].to_s.strip
+  if token.empty?
+    puts "postPdfMintLinks: skipped (ANTICS_API_KEY unset)"
+    next
+  end
+
+  index_path = File.join(post_pdf_out_dir, "index.json")
+  unless File.file?(index_path)
+    warn "postPdfMintLinks: no #{index_path} — nothing to mint"
+    next
+  end
+
+  index = JSON.parse(File.read(index_path))
+  entries = index["entries"] || {}
+  minter = PostPdf::AnticsLinks.new(token: token)
+  result = minter.mint(entries)
+  dest = File.expand_path(ENV.fetch("POST_PDF_LINKS", "data/pdf-links.json"), Dir.pwd)
+  FileUtils.mkdir_p(File.dirname(dest))
+  minter.write_json!(dest, result.table)
+  puts "postPdfMintLinks: created=#{result.created} replayed=#{result.replayed} errors=#{result.errors.size} → #{dest}"
+  result.errors.each { |e| warn "  ! #{e["slug"]}/#{e["theme"]}: #{e["error"]}" }
+  abort "postPdfMintLinks: #{result.errors.size} error(s)" unless result.errors.empty?
 end
 
 desc "Force-push static/pdf to orphan branch (single commit; CV pdfs pattern)"

@@ -56,7 +56,9 @@ jobs:
             || echo "No prior unverified log; starting fresh"
 
       - name: Build site with Hugo
-        # rake hugoBuild → md + postPdf (restores orphan tip, incremental rebuild)
+        # rake hugoBuild → md + postPdf + Antics PDF short links + hugo
+        env:
+          ANTICS_API_KEY: ${{ secrets.ANTICS_API_KEY }}
         run: pixi run bundle exec rake hugoBuild
 
       - name: Publish PDFs to orphan post-pdfs branch
