@@ -41,6 +41,8 @@ module PostPdf
       entries
     end
 
+    TOML_FRONT_MATTER_RE = /\A\+\+\+\s*\n(.*?)\n\+\+\+\s*\n/m
+
     def self.year_from_content(root, slug, meta = {})
       kind = meta["kind"].to_s
       if kind == "catalog" || slug == "packages"
@@ -63,13 +65,46 @@ module PostPdf
       candidates.each do |path|
         next unless File.file?(path)
 
-        require_relative "front_matter"
-        fm, = FrontMatter.parse(File.read(path))
-        year = year_for(fm)
+        year = year_from_markup(File.read(path))
+        return year if year
+      end
+
+      year_from_org(root, slug)
+    end
+
+    def self.year_from_markup(text)
+      require_relative "front_matter"
+      fm, = FrontMatter.parse(text)
+      year = year_for(fm["year"] || fm["date"] || fm["lastmod"])
+      return year if year
+
+      header = TOML_FRONT_MATTER_RE.match(text)&.[](1)
+      return nil unless header
+
+      if header =~ /^(?:date|lastmod)\s*=\s*["']?(\S+)/
+        return year_for(Regexp.last_match(1))
+      end
+
+      nil
+    end
+
+    def self.year_from_org(root, slug)
+      pattern = /
+        CLOSED:\s*\[(\d{4}-\d{2}-\d{2})[^\]]*\]\s*
+        :PROPERTIES:\s*
+        :EXPORT_FILE_NAME:\s*#{Regexp.escape(slug)}\b
+      /mx
+      Dir.glob(File.join(root, "content-org/**/*.org")).each do |path|
+        text = File.read(path)
+        match = pattern.match(text)
+        next unless match
+
+        year = year_for(match[1])
         return year if year
       end
       nil
     end
+    private_class_method :year_from_org
 
     def self.yaml_updated(path)
       return nil unless File.file?(path)

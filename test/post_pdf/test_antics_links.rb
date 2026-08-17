@@ -88,9 +88,30 @@ class TestAnticsLinks < Minitest::Test
       File.join(dir, "content/posts/rm2-ss.md"),
       "---\ntitle: x\ndate: 2021-08-17T01:00:00+00:00\n---\n\nbody\n"
     )
-    entries = { "rm2-ss" => { "title" => "x", "files" => { "dark" => "x" } } }
+    File.write(
+      File.join(dir, "content/posts/islr-ch2-ch3.md"),
+      "+++\ntitle = \"ISLR\"\ndate = 2020-01-15T05:28:00-06:00\n+++\n\nbody\n"
+    )
+    File.write(
+      File.join(dir, "content/posts/snippets-index.md"),
+      "---\ntitle: Snippets\nlastmod: 2026-06-12T21:07:48-05:00\n---\n\nbody\n"
+    )
+    FileUtils.mkdir_p(File.join(dir, "content-org"))
+    File.write(
+      File.join(dir, "content-org/all-posts.org"),
+      "* DONE Finalizers\nCLOSED: [2026-08-10 Mon 20:14]\n:PROPERTIES:\n:EXPORT_FILE_NAME: f2py-finalizers-generics\n:END:\n"
+    )
+    entries = {
+      "rm2-ss" => { "title" => "x", "files" => { "dark" => "x" } },
+      "islr-ch2-ch3" => { "title" => "ISLR", "files" => { "dark" => "x" } },
+      "snippets-index" => { "title" => "Snippets", "files" => { "dark" => "x" } },
+      "f2py-finalizers-generics" => { "title" => "Finalizers", "files" => { "dark" => "x" } }
+    }
     PostPdf::AnticsLinks.enrich_years!(entries, root: dir)
     assert_equal "2021", entries["rm2-ss"]["year"]
+    assert_equal "2020", entries["islr-ch2-ch3"]["year"]
+    assert_equal "2026", entries["snippets-index"]["year"]
+    assert_equal "2026", entries["f2py-finalizers-generics"]["year"]
   ensure
     FileUtils.remove_entry(dir)
   end
