@@ -1,0 +1,702 @@
+{
+  "islr-ch2-ch3": {
+    "light": "https://sh.turtletech.us/CznLVp3Hqb",
+    "dark": "https://sh.turtletech.us/h9nMexgHci"
+  },
+  "islr-ch4": {
+    "light": "https://sh.turtletech.us/rM2VbWGRpk",
+    "dark": "https://sh.turtletech.us/HZBwTDy32y"
+  },
+  "islr-ch5": {
+    "light": "https://sh.turtletech.us/s9HZ6sDmyE",
+    "dark": "https://sh.turtletech.us/UFttKpQFL4"
+  },
+  "islr-ch6": {
+    "light": "https://sh.turtletech.us/JBYB2sgrNE",
+    "dark": "https://sh.turtletech.us/4LnyB38Anq"
+  },
+  "islr-ch7": {
+    "light": "https://sh.turtletech.us/C7xdm7uSuw",
+    "dark": "https://sh.turtletech.us/oCUVhAZg4P"
+  },
+  "linux-email-davmail-terra": {
+    "light": "https://sh.turtletech.us/2m94WdJhWy",
+    "dark": "https://sh.turtletech.us/2V95rQ7eVX"
+  },
+  "mackay-all-a": {
+    "light": "https://sh.turtletech.us/XPHGmmPwJr",
+    "dark": "https://sh.turtletech.us/x4uHhr7JYj"
+  },
+  "packages": {
+    "light": "https://sh.turtletech.us/5NkcupikQB",
+    "dark": "https://sh.turtletech.us/f86fTzdHgN"
+  },
+  "write-access": {
+    "light": "https://sh.turtletech.us/qLssyfM7hP",
+    "dark": "https://sh.turtletech.us/DeEyZaQKbQ"
+  },
+  "anki-decks-orgmode": {
+    "light": "https://sh.turtletech.us/viMtGLZ6do",
+    "dark": "https://sh.turtletech.us/NJeLQdR5LN"
+  },
+  "back-to-bash": {
+    "light": "https://sh.turtletech.us/gCbjQXNZ6c",
+    "dark": "https://sh.turtletech.us/RtH2qcPuRb"
+  },
+  "bojack-horseman": {
+    "light": "https://sh.turtletech.us/bQAYSk3x3F",
+    "dark": "https://sh.turtletech.us/Y2nQ25KiHq"
+  },
+  "ccon-tut-nix": {
+    "light": "https://sh.turtletech.us/mFsEo2dF4f",
+    "dark": "https://sh.turtletech.us/FrPtCzXfCo"
+  },
+  "cip-2021-slw-meta": {
+    "light": "https://sh.turtletech.us/Px2awh8cxh",
+    "dark": "https://sh.turtletech.us/sVD7GbiftL"
+  },
+  "cip2021-fin": {
+    "light": "https://sh.turtletech.us/ETboRTEpz8",
+    "dark": "https://sh.turtletech.us/mqZTyBMDz9"
+  },
+  "colemak-dots-refactor": {
+    "light": "https://sh.turtletech.us/JZwJ7qrfzV",
+    "dark": "https://sh.turtletech.us/mZbKeBVpzd"
+  },
+  "colemak-switch": {
+    "light": "https://sh.turtletech.us/93AWvx4473",
+    "dark": "https://sh.turtletech.us/RMWyiYkfVQ"
+  },
+  "compton-zoom-shadow": {
+    "light": "https://sh.turtletech.us/GvAToTa5MB",
+    "dark": "https://sh.turtletech.us/vJ3EYYfd2N"
+  },
+  "cpp-library-blueprints-pybind": {
+    "light": "https://sh.turtletech.us/AaVbCud2pM",
+    "dark": "https://sh.turtletech.us/vf9vBdBKeP"
+  },
+  "customizing-archlinux-im": {
+    "light": "https://sh.turtletech.us/5yuVMRMViX",
+    "dark": "https://sh.turtletech.us/tZGZJiAbHx"
+  },
+  "cython-derivedtype-f2py": {
+    "light": "https://sh.turtletech.us/Cw4QU86ycE",
+    "dark": "https://sh.turtletech.us/fWkXMvqArv"
+  },
+  "d3git": {
+    "light": "https://sh.turtletech.us/cF8Qo4C9VD",
+    "dark": "https://sh.turtletech.us/f6LSKjYxJx"
+  },
+  "dart-sass-hugo-themes": {
+    "light": "https://sh.turtletech.us/Z3dnkfopC7",
+    "dark": "https://sh.turtletech.us/WenCkbpoQP"
+  },
+  "doc-cpp-dox-sph-doxyrest": {
+    "light": "https://sh.turtletech.us/SCxCgBuXba",
+    "dark": "https://sh.turtletech.us/XrcHPtinSj"
+  },
+  "doc-cpp-dox-sph-exhale": {
+    "light": "https://sh.turtletech.us/wSZb6a8Cn6",
+    "dark": "https://sh.turtletech.us/KUKJ7M499X"
+  },
+  "dotfiles-dotgit-bombadil": {
+    "light": "https://sh.turtletech.us/jNgmMUxAVr",
+    "dark": "https://sh.turtletech.us/dB7QCNJtGC"
+  },
+  "dvc-onedrive": {
+    "light": "https://sh.turtletech.us/McowjyWsMV",
+    "dark": "https://sh.turtletech.us/tG8d9n8FZh"
+  },
+  "emacs-lang-servers": {
+    "light": "https://sh.turtletech.us/i26cMZ4hSS",
+    "dark": "https://sh.turtletech.us/EJh4yKi3kh"
+  },
+  "emacs-nix-r": {
+    "light": "https://sh.turtletech.us/5f3zLRELp7",
+    "dark": "https://sh.turtletech.us/8vZHwheZri"
+  },
+  "eon-acad-foss": {
+    "light": "https://sh.turtletech.us/HJEmg4wFvw",
+    "dark": "https://sh.turtletech.us/tBKy5FKGeQ"
+  },
+  "expl-backlight-control": {
+    "light": "https://sh.turtletech.us/fXa8Nqr4PW",
+    "dark": "https://sh.turtletech.us/GXuU8RsPUY"
+  },
+  "f2py-allocatable-members": {
+    "light": "https://sh.turtletech.us/GpyuFJofKi",
+    "dark": "https://sh.turtletech.us/Jzt3mYSsND"
+  },
+  "f2py-finalizers-generics": {
+    "light": "https://sh.turtletech.us/CkieCoJXvJ",
+    "dark": "https://sh.turtletech.us/Uwc77xJUAT"
+  },
+  "f2py-parameterized-types": {
+    "light": "https://sh.turtletech.us/QyoqAGgQTF",
+    "dark": "https://sh.turtletech.us/kf8BwrXFEZ"
+  },
+  "f2py-pointers-and-strings": {
+    "light": "https://sh.turtletech.us/aPw4oFbeJo",
+    "dark": "https://sh.turtletech.us/bU3VKpjkRy"
+  },
+  "fortran-gsoc-me": {
+    "light": "https://sh.turtletech.us/XsCbLjr8Tn",
+    "dark": "https://sh.turtletech.us/hG7m4xvbYf"
+  },
+  "fortran-oop-python": {
+    "light": "https://sh.turtletech.us/Sr5FykRsvj",
+    "dark": "https://sh.turtletech.us/3YS33qfTdH"
+  },
+  "fortrancon-2021-meta": {
+    "light": "https://sh.turtletech.us/TiUG7dsRnt",
+    "dark": "https://sh.turtletech.us/RsdyoByknN"
+  },
+  "fsf-me-stallman": {
+    "light": "https://sh.turtletech.us/WPDzGMiwya",
+    "dark": "https://sh.turtletech.us/UrtdStZ7kJ"
+  },
+  "ghNotif": {
+    "light": "https://sh.turtletech.us/g34cxejhRk",
+    "dark": "https://sh.turtletech.us/3SAFMF696H"
+  },
+  "goat-clicky": {
+    "light": "https://sh.turtletech.us/VMxSRJJGuX",
+    "dark": "https://sh.turtletech.us/fXKMF8Hjcp"
+  },
+  "goat-google": {
+    "light": "https://sh.turtletech.us/BSpLEpmPfz",
+    "dark": "https://sh.turtletech.us/mhNLZPBHy9"
+  },
+  "grant-proposals": {
+    "light": "https://sh.turtletech.us/T5JczQFNC6",
+    "dark": "https://sh.turtletech.us/6Gd9Wn5UBD"
+  },
+  "gsoc21-fin-reprot": {
+    "light": "https://sh.turtletech.us/QwUNRxm7eN",
+    "dark": "https://sh.turtletech.us/N4vaKLbPsy"
+  },
+  "gsoc21-w1": {
+    "light": "https://sh.turtletech.us/5sVvkyzQaB",
+    "dark": "https://sh.turtletech.us/hqTM3WADaN"
+  },
+  "gsoc21-w10": {
+    "light": "https://sh.turtletech.us/jPJD2G2gNy",
+    "dark": "https://sh.turtletech.us/T2LL2oAtdZ"
+  },
+  "gsoc21-w2": {
+    "light": "https://sh.turtletech.us/EqRxwkbaQT",
+    "dark": "https://sh.turtletech.us/ENeNCeyh9u"
+  },
+  "gsoc21-w3": {
+    "light": "https://sh.turtletech.us/qKJn4zB5CX",
+    "dark": "https://sh.turtletech.us/6HgEuggMAK"
+  },
+  "gsoc21-w4": {
+    "light": "https://sh.turtletech.us/sUA4YfmTYV",
+    "dark": "https://sh.turtletech.us/oLTeHzTyRe"
+  },
+  "gsoc21-w5": {
+    "light": "https://sh.turtletech.us/MiXZKzfzpL",
+    "dark": "https://sh.turtletech.us/K3oP5ZaNbY"
+  },
+  "gsoc21-w6": {
+    "light": "https://sh.turtletech.us/37TdYYp9LR",
+    "dark": "https://sh.turtletech.us/vsU5ut7uNX"
+  },
+  "gsoc21-w7": {
+    "light": "https://sh.turtletech.us/Q5CgNYcf6d",
+    "dark": "https://sh.turtletech.us/AzXTcgr7fV"
+  },
+  "gsoc21-w8": {
+    "light": "https://sh.turtletech.us/HQ3gGaErse",
+    "dark": "https://sh.turtletech.us/Cbz7JY4Nc7"
+  },
+  "gsoc21-w9": {
+    "light": "https://sh.turtletech.us/ksuWtUUJMH",
+    "dark": "https://sh.turtletech.us/YTMFc7yYHc"
+  },
+  "handling-legacy-fortran-code": {
+    "light": "https://sh.turtletech.us/pi43RC44gn",
+    "dark": "https://sh.turtletech.us/EtfqUMefPM"
+  },
+  "hpc-conf-2021": {
+    "light": "https://sh.turtletech.us/TxmKtfKxkQ",
+    "dark": "https://sh.turtletech.us/fjXsWEMejG"
+  },
+  "hpc-dots-lmod": {
+    "light": "https://sh.turtletech.us/oLKa7uZQuM",
+    "dark": "https://sh.turtletech.us/UnPHKvzVuD"
+  },
+  "iop-caps-webdev-2021-meta": {
+    "light": "https://sh.turtletech.us/FqV9gVfBKX",
+    "dark": "https://sh.turtletech.us/XSxyzR4TAj"
+  },
+  "iop-cpp-2021-meta": {
+    "light": "https://sh.turtletech.us/EEMaLpNPNt",
+    "dark": "https://sh.turtletech.us/bqiB9ywc8R"
+  },
+  "iso-c-type-bound-fortran": {
+    "light": "https://sh.turtletech.us/NfyePFByKY",
+    "dark": "https://sh.turtletech.us/qCfEZmsii8"
+  },
+  "joining-quansight-labs21": {
+    "light": "https://sh.turtletech.us/oFRfjWwsrn",
+    "dark": "https://sh.turtletech.us/nySRGm4B6r"
+  },
+  "juliacon-remote-machines": {
+    "light": "https://sh.turtletech.us/ZXEK44FcT7",
+    "dark": "https://sh.turtletech.us/e9h7Msqvbe"
+  },
+  "jupyter-orgmode": {
+    "light": "https://sh.turtletech.us/GA7UMGmjWy",
+    "dark": "https://sh.turtletech.us/GsHvv2RYBR"
+  },
+  "keybindings-colevimhz-macos": {
+    "light": "https://sh.turtletech.us/UEnXFDZJEA",
+    "dark": "https://sh.turtletech.us/yuBU53aqch"
+  },
+  "laptop-as-second-screens": {
+    "light": "https://sh.turtletech.us/GVsVLkwxZQ",
+    "dark": "https://sh.turtletech.us/SGLT3RGPv3"
+  },
+  "laptop-setup-btrfs-notes": {
+    "light": "https://sh.turtletech.us/ZtADXDvTNQ",
+    "dark": "https://sh.turtletech.us/myasGhmTW6"
+  },
+  "leshouches-2021-meta": {
+    "light": "https://sh.turtletech.us/wS2GjWm8DK",
+    "dark": "https://sh.turtletech.us/rJjXtiWtLe"
+  },
+  "linos-maintainer-appre": {
+    "light": "https://sh.turtletech.us/drrRgrbgYF",
+    "dark": "https://sh.turtletech.us/UgFgGVMio6"
+  },
+  "local-nix-no-root": {
+    "light": "https://sh.turtletech.us/3AB8dKarxq",
+    "dark": "https://sh.turtletech.us/UGCxpNzNYi"
+  },
+  "losslesscut-zoom-ama": {
+    "light": "https://sh.turtletech.us/s5ZzYuSmZh",
+    "dark": "https://sh.turtletech.us/BXvFh7Pb3S"
+  },
+  "lowering-resource-usage-foot-systemd": {
+    "light": "https://sh.turtletech.us/GvxzwrjhMj",
+    "dark": "https://sh.turtletech.us/Nk7XyfZ3FE"
+  },
+  "mach-nix-niv-python": {
+    "light": "https://sh.turtletech.us/PpmCYYkoJ4",
+    "dark": "https://sh.turtletech.us/rERiSpmLbP"
+  },
+  "managing-cloud-based-calibre": {
+    "light": "https://sh.turtletech.us/yF9myuWrbQ",
+    "dark": "https://sh.turtletech.us/aobZ3nHKB9"
+  },
+  "managing-scanned-books": {
+    "light": "https://sh.turtletech.us/kjLpcjUo47",
+    "dark": "https://sh.turtletech.us/5sMDQfgkND"
+  },
+  "mig-dots-chezmoi": {
+    "light": "https://sh.turtletech.us/2u5BUTQabu",
+    "dark": "https://sh.turtletech.us/wgmwDbWgc3"
+  },
+  "multi-monitor-touch": {
+    "light": "https://sh.turtletech.us/J6AxyAKMmY",
+    "dark": "https://sh.turtletech.us/Hco47BdyrH"
+  },
+  "my-life-in-eink": {
+    "light": "https://sh.turtletech.us/H265V7GdAM",
+    "dark": "https://sh.turtletech.us/KUG3XVt5YB"
+  },
+  "neb-visualizations": {
+    "light": "https://sh.turtletech.us/ur2jMLPYa8",
+    "dark": "https://sh.turtletech.us/QKjiEdSr6b"
+  },
+  "nix-channel-nur": {
+    "light": "https://sh.turtletech.us/iqYXRqeXkX",
+    "dark": "https://sh.turtletech.us/wGxnbuKGzi"
+  },
+  "nix-prj-spec-doc": {
+    "light": "https://sh.turtletech.us/pprRmK3ctC",
+    "dark": "https://sh.turtletech.us/6dAhNDr7tY"
+  },
+  "nix-r-devtools": {
+    "light": "https://sh.turtletech.us/c7GmG9AJq3",
+    "dark": "https://sh.turtletech.us/LULNZ9dvV9"
+  },
+  "nix-shell-node": {
+    "light": "https://sh.turtletech.us/UJaDGmuqmU",
+    "dark": "https://sh.turtletech.us/NnLkukWkYQ"
+  },
+  "nixcon-in-2020-meta": {
+    "light": "https://sh.turtletech.us/kMa2YL8NPe",
+    "dark": "https://sh.turtletech.us/crMPnHxGxg"
+  },
+  "numpy-meson-f2py": {
+    "light": "https://sh.turtletech.us/VPn6oNe5VK",
+    "dark": "https://sh.turtletech.us/5CCEYKLVPR"
+  },
+  "org-arb-tex": {
+    "light": "https://sh.turtletech.us/S3zfczVssM",
+    "dark": "https://sh.turtletech.us/oUNreuggpo"
+  },
+  "org-mathematica": {
+    "light": "https://sh.turtletech.us/rEPy7n6mCy",
+    "dark": "https://sh.turtletech.us/2UyENJTLCj"
+  },
+  "org-note-workflow": {
+    "light": "https://sh.turtletech.us/e3Riir6kH2",
+    "dark": "https://sh.turtletech.us/cgEGYVEGst"
+  },
+  "org-pandoc-babel": {
+    "light": "https://sh.turtletech.us/qDypWSfkDU",
+    "dark": "https://sh.turtletech.us/fjimfRgY5j"
+  },
+  "pandora-proxychains": {
+    "light": "https://sh.turtletech.us/jUpZM8CbXq",
+    "dark": "https://sh.turtletech.us/pT7mpEUWCH"
+  },
+  "parameter-passing-nwchem-rtdb": {
+    "light": "https://sh.turtletech.us/Yq96LhWx3b",
+    "dark": "https://sh.turtletech.us/4d8tRgSAMp"
+  },
+  "poetry-direnv": {
+    "light": "https://sh.turtletech.us/NPeuW95kMe",
+    "dark": "https://sh.turtletech.us/CsgJNo4SVq"
+  },
+  "priv-gh-actions": {
+    "light": "https://sh.turtletech.us/Dm2kPLEERE",
+    "dark": "https://sh.turtletech.us/2SxdJSZ2WL"
+  },
+  "prov-dots": {
+    "light": "https://sh.turtletech.us/RzX9VEsBk7",
+    "dark": "https://sh.turtletech.us/gfgQnCfgoq"
+  },
+  "pub-doc-cpp-dox-sph-nix": {
+    "light": "https://sh.turtletech.us/gZtGFkHf3C",
+    "dark": "https://sh.turtletech.us/Yv3Mgdy7Qu"
+  },
+  "pycon-in-2020-meta": {
+    "light": "https://sh.turtletech.us/iWGVg5CSmg",
+    "dark": "https://sh.turtletech.us/cvFRpAEtVe"
+  },
+  "rationale": {
+    "light": "https://sh.turtletech.us/T9Ber8bdMt",
+    "dark": "https://sh.turtletech.us/xUurPyawZd"
+  },
+  "reclaim-email-astroid": {
+    "light": "https://sh.turtletech.us/AZSUVEaKJd",
+    "dark": "https://sh.turtletech.us/sYqFwsXiBq"
+  },
+  "remap-keys-xkb-klfc": {
+    "light": "https://sh.turtletech.us/oNCxJ7r4uM",
+    "dark": "https://sh.turtletech.us/DRnHWNfrta"
+  },
+  "remote-access-cvpn": {
+    "light": "https://sh.turtletech.us/LXEaVm8xdf",
+    "dark": "https://sh.turtletech.us/k8yCmgERK3"
+  },
+  "rep-zoom-obs": {
+    "light": "https://sh.turtletech.us/Two5mR5aR6",
+    "dark": "https://sh.turtletech.us/jiTJkDTaY4"
+  },
+  "rethinking-r-nix": {
+    "light": "https://sh.turtletech.us/nQXkApp3gK",
+    "dark": "https://sh.turtletech.us/FrxManKwuh"
+  },
+  "revisiting-wayland-2021-archlinux": {
+    "light": "https://sh.turtletech.us/Sn7sah7BNd",
+    "dark": "https://sh.turtletech.us/tiorpk87Ze"
+  },
+  "rg-collection-weblinks": {
+    "light": "https://sh.turtletech.us/fDC3eVUK2p",
+    "dark": "https://sh.turtletech.us/Xako7YKj8z"
+  },
+  "sane-custom-forge": {
+    "light": "https://sh.turtletech.us/gaDo2BcAbP",
+    "dark": "https://sh.turtletech.us/XZYjXsx72p"
+  },
+  "scicomprs-2024-meta": {
+    "light": "https://sh.turtletech.us/cdBptNrUqJ",
+    "dark": "https://sh.turtletech.us/hvPzEouMRJ"
+  },
+  "scipycon-2022-meta": {
+    "light": "https://sh.turtletech.us/fBdeUfSp74",
+    "dark": "https://sh.turtletech.us/nBojaCHqtC"
+  },
+  "scp-onboarding": {
+    "light": "https://sh.turtletech.us/BT2Am9ehR4",
+    "dark": "https://sh.turtletech.us/V3N83oQHDy"
+  },
+  "scp-smallgrp-meet1": {
+    "light": "https://sh.turtletech.us/kd72BuNBv6",
+    "dark": "https://sh.turtletech.us/EDLkCzmbf8"
+  },
+  "scp-smallgrp-trainig": {
+    "light": "https://sh.turtletech.us/FhfvrA5wdP",
+    "dark": "https://sh.turtletech.us/awGQStck6U"
+  },
+  "scp-smallgrp": {
+    "light": "https://sh.turtletech.us/UcaEuXQLZu",
+    "dark": "https://sh.turtletech.us/BZgMx3k6Lh"
+  },
+  "seri-2021-meta": {
+    "light": "https://sh.turtletech.us/MBFu5wFZ42",
+    "dark": "https://sh.turtletech.us/7DuFPFfzur"
+  },
+  "shortpost": {
+    "light": "https://sh.turtletech.us/tabtaV977K",
+    "dark": "https://sh.turtletech.us/PLBhjwzSyC"
+  },
+  "some-sol-sr2": {
+    "light": "https://sh.turtletech.us/MJ8T5XMtGM",
+    "dark": "https://sh.turtletech.us/Xj3i7bkhhD"
+  },
+  "spack-pytorch-dev-workflow": {
+    "light": "https://sh.turtletech.us/2gqYVweEQU",
+    "dark": "https://sh.turtletech.us/DpwU5qA2bF"
+  },
+  "symengine-gsod20": {
+    "light": "https://sh.turtletech.us/6rGTgXqjYz",
+    "dark": "https://sh.turtletech.us/PUbfnpck2Y"
+  },
+  "tinyssh-dockerdev-env": {
+    "light": "https://sh.turtletech.us/39vuDpqrEj",
+    "dark": "https://sh.turtletech.us/Aqds5pij9r"
+  },
+  "trees-and-bags": {
+    "light": "https://sh.turtletech.us/owtWpRH5s7",
+    "dark": "https://sh.turtletech.us/kn9YbcnjHN"
+  },
+  "tug-2021-meta": {
+    "light": "https://sh.turtletech.us/fozTsqKun9",
+    "dark": "https://sh.turtletech.us/eVA9DnBfq2"
+  },
+  "types-fortran-python-opaque": {
+    "light": "https://sh.turtletech.us/5vv3iCwHWA",
+    "dark": "https://sh.turtletech.us/qdaatPsYDb"
+  },
+  "windows-compat-sci-cpp": {
+    "light": "https://sh.turtletech.us/ZgSna9U6zs",
+    "dark": "https://sh.turtletech.us/QMkfKKKSWg"
+  },
+  "writing-r-packages": {
+    "light": "https://sh.turtletech.us/rRnX5mSsWF",
+    "dark": "https://sh.turtletech.us/dbnB9LwADY"
+  },
+  "xcompose-keys-linux-icelandic": {
+    "light": "https://sh.turtletech.us/m8Doj72ypQ",
+    "dark": "https://sh.turtletech.us/MJ4tqEskza"
+  },
+  "xonsh-excursion": {
+    "light": "https://sh.turtletech.us/95zaZztNNe",
+    "dark": "https://sh.turtletech.us/g7rQe9N9uj"
+  },
+  "zotero-biblatex-bibtex": {
+    "light": "https://sh.turtletech.us/N6cmWUSmyF",
+    "dark": "https://sh.turtletech.us/ouYpGfmxw4"
+  },
+  "_index": {
+    "light": "https://sh.turtletech.us/JYLUdfpBoF",
+    "dark": "https://sh.turtletech.us/yTkgNHHzcc"
+  },
+  "act-local-caching": {
+    "light": "https://sh.turtletech.us/zVXyhEu4zL",
+    "dark": "https://sh.turtletech.us/6HYFF2BJaj"
+  },
+  "auto-disc-meson-tests": {
+    "light": "https://sh.turtletech.us/rkz9QbjBiU",
+    "dark": "https://sh.turtletech.us/Jfp5FtPCZj"
+  },
+  "caching-accel-meson": {
+    "light": "https://sh.turtletech.us/jF3ed2b4dN",
+    "dark": "https://sh.turtletech.us/jBUWLCU978"
+  },
+  "catch2-meson-tests": {
+    "light": "https://sh.turtletech.us/xzQ4nw49yv",
+    "dark": "https://sh.turtletech.us/dKmMoj4kMf"
+  },
+  "cold-storage-compression": {
+    "light": "https://sh.turtletech.us/B7tk73D7Ku",
+    "dark": "https://sh.turtletech.us/KhPe8wXgSP"
+  },
+  "compile-flags-txt": {
+    "light": "https://sh.turtletech.us/RcLVPvkGan",
+    "dark": "https://sh.turtletech.us/iJm9p97pLr"
+  },
+  "db-btl-drives": {
+    "light": "https://sh.turtletech.us/7yfkN3V5N6",
+    "dark": "https://sh.turtletech.us/vEHAnH5uyh"
+  },
+  "dir-locals-formatting-rust": {
+    "light": "https://sh.turtletech.us/EWjbMgDeyR",
+    "dark": "https://sh.turtletech.us/BBAw8dT7RY"
+  },
+  "docker-dev-envs": {
+    "light": "https://sh.turtletech.us/j9Qp4x73S5",
+    "dark": "https://sh.turtletech.us/H9yXfW2YVM"
+  },
+  "environments-cibuildwheel": {
+    "light": "https://sh.turtletech.us/NbtKtk9QxU",
+    "dark": "https://sh.turtletech.us/6hApdVqJ7W"
+  },
+  "forward-multiport": {
+    "light": "https://sh.turtletech.us/Q5Ur4wH9i7",
+    "dark": "https://sh.turtletech.us/YiTFDLyvBQ"
+  },
+  "git-filter-cherry-pick": {
+    "light": "https://sh.turtletech.us/dikixXG5Gi",
+    "dark": "https://sh.turtletech.us/rEtHWJo2cr"
+  },
+  "git-subrepo-josh-filter": {
+    "light": "https://sh.turtletech.us/F2Z7hLiDEX",
+    "dark": "https://sh.turtletech.us/8eV4itr9kQ"
+  },
+  "git-unmerged-cycle": {
+    "light": "https://sh.turtletech.us/We2CegkzU5",
+    "dark": "https://sh.turtletech.us/5Zm74CdsMQ"
+  },
+  "gui-tmux-desktop": {
+    "light": "https://sh.turtletech.us/SsZYVNJZuS",
+    "dark": "https://sh.turtletech.us/QSDtdPZvzA"
+  },
+  "hyread-adb-rules": {
+    "light": "https://sh.turtletech.us/R9WHp4otV5",
+    "dark": "https://sh.turtletech.us/DE634geWJt"
+  },
+  "julia-conda-libopenlibm": {
+    "light": "https://sh.turtletech.us/LTGxZXeNrr",
+    "dark": "https://sh.turtletech.us/LuTbFY6qfQ"
+  },
+  "jup-dat-helper": {
+    "light": "https://sh.turtletech.us/pmto8mRgr6",
+    "dark": "https://sh.turtletech.us/LvwjUgoGys"
+  },
+  "lldb-macos-remote": {
+    "light": "https://sh.turtletech.us/fLQSpqtWqJ",
+    "dark": "https://sh.turtletech.us/L7GAhX7Zg8"
+  },
+  "local-precommit-dependencies": {
+    "light": "https://sh.turtletech.us/heqV7ug4zw",
+    "dark": "https://sh.turtletech.us/DGw4wgZXGT"
+  },
+  "mach-nix-shell-env": {
+    "light": "https://sh.turtletech.us/SQsT4vKY2N",
+    "dark": "https://sh.turtletech.us/4fGg55ybnd"
+  },
+  "mamba-colab-usage": {
+    "light": "https://sh.turtletech.us/ihDS3jfPSL",
+    "dark": "https://sh.turtletech.us/8T6tHYEDgN"
+  },
+  "manual-tests-popd-spin": {
+    "light": "https://sh.turtletech.us/j4R6BqUmaW",
+    "dark": "https://sh.turtletech.us/gYcRZJ8dio"
+  },
+  "mesa-sway-bugs": {
+    "light": "https://sh.turtletech.us/7QxMBRcZqd",
+    "dark": "https://sh.turtletech.us/BNVbaPjqbr"
+  },
+  "nix-collection-overwrite-attrs": {
+    "light": "https://sh.turtletech.us/Exji65TMaz",
+    "dark": "https://sh.turtletech.us/Lew8zkZoTq"
+  },
+  "nix-shell-locale": {
+    "light": "https://sh.turtletech.us/2s3APpKKxw",
+    "dark": "https://sh.turtletech.us/iwxqqunZTy"
+  },
+  "notify-pdf-compilation": {
+    "light": "https://sh.turtletech.us/rLwKkeTfAF",
+    "dark": "https://sh.turtletech.us/HVNUczWBcw"
+  },
+  "off-brand-conda": {
+    "light": "https://sh.turtletech.us/VzAbdt4dfu",
+    "dark": "https://sh.turtletech.us/FXX9CtZtnC"
+  },
+  "orgmode-enumerate-counter-cookies": {
+    "light": "https://sh.turtletech.us/CKNC9AeHTg",
+    "dark": "https://sh.turtletech.us/AphN7QPUD4"
+  },
+  "orgmode-inline-review-comments": {
+    "light": "https://sh.turtletech.us/YtW8yuMm3r",
+    "dark": "https://sh.turtletech.us/PeHfxwMnBd"
+  },
+  "orgmode-workbench": {
+    "light": "https://sh.turtletech.us/VruownHL2B",
+    "dark": "https://sh.turtletech.us/WgQFmug2Tg"
+  },
+  "oshelf-ocr-dl": {
+    "light": "https://sh.turtletech.us/opbHk2jbgJ",
+    "dark": "https://sh.turtletech.us/4XyqRBaBoe"
+  },
+  "pixi-global-consistent": {
+    "light": "https://sh.turtletech.us/GUZwFadDgQ",
+    "dark": "https://sh.turtletech.us/ajFW9nfoqw"
+  },
+  "pixi-orgmode-notebooks": {
+    "light": "https://sh.turtletech.us/zWRy9zx4sg",
+    "dark": "https://sh.turtletech.us/kSg5tExjy4"
+  },
+  "pixi-shebang-ghcoauth": {
+    "light": "https://sh.turtletech.us/mtbZtmVNfN",
+    "dark": "https://sh.turtletech.us/4RQk2UxDFp"
+  },
+  "precommit-selections": {
+    "light": "https://sh.turtletech.us/qNxgJDDCzC",
+    "dark": "https://sh.turtletech.us/aL77iqrbBX"
+  },
+  "prog-lang-man": {
+    "light": "https://sh.turtletech.us/U4tmo2HwsC",
+    "dark": "https://sh.turtletech.us/V6qqu4wh5Y"
+  },
+  "pytorch-conda-pip": {
+    "light": "https://sh.turtletech.us/UzWYv8E7sj",
+    "dark": "https://sh.turtletech.us/rBTDNi6gHZ"
+  },
+  "pytorch-deterministic-regression": {
+    "light": "https://sh.turtletech.us/yxAWCKveuK",
+    "dark": "https://sh.turtletech.us/zHkoZjrJds"
+  },
+  "refactoring-ox-hugo-orgmode": {
+    "light": "https://sh.turtletech.us/PRnWfbFaJ9",
+    "dark": "https://sh.turtletech.us/G35Q8W9qPz"
+  },
+  "rm2-ss": {
+    "light": "https://sh.turtletech.us/VJB7RS5XPx",
+    "dark": "https://sh.turtletech.us/LWLQGM85wL"
+  },
+  "share-db-bluetooth-keys": {
+    "light": "https://sh.turtletech.us/6m6ozJxdtP",
+    "dark": "https://sh.turtletech.us/Vokg8pRVzb"
+  },
+  "slurm-double-checked-locking": {
+    "light": "https://sh.turtletech.us/to6dueYHcx",
+    "dark": "https://sh.turtletech.us/mDwBRn9YWj"
+  },
+  "ssh-port-forwarding": {
+    "light": "https://sh.turtletech.us/BTAFQgdARB",
+    "dark": "https://sh.turtletech.us/guRe3xneBu"
+  },
+  "sway-mon-ext": {
+    "light": "https://sh.turtletech.us/smKUNjFp3e",
+    "dark": "https://sh.turtletech.us/fnr2gYv9PW"
+  },
+  "terminal-slack-pidgin": {
+    "light": "https://sh.turtletech.us/TimnQPNw9w",
+    "dark": "https://sh.turtletech.us/TY7ksHNEb8"
+  },
+  "tikz-tectonic-pixi": {
+    "light": "https://sh.turtletech.us/qTxHEPC9vv",
+    "dark": "https://sh.turtletech.us/p9aVyJh9CR"
+  },
+  "trivial-llms-old-hardware": {
+    "light": "https://sh.turtletech.us/knVfXink24",
+    "dark": "https://sh.turtletech.us/2GjuydojZy"
+  },
+  "watch-files": {
+    "light": "https://sh.turtletech.us/6kTXETXacd",
+    "dark": "https://sh.turtletech.us/htVKdPWbPx"
+  },
+  "zotero-connector-blog-posts": {
+    "light": "https://sh.turtletech.us/5n5pVNJcL3",
+    "dark": "https://sh.turtletech.us/YEPUM8zkHU"
+  }
+}
