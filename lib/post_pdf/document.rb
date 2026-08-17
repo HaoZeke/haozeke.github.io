@@ -48,7 +48,12 @@ module PostPdf
         title: title,
         meta_line: meta_bits.join(" · "),
         url: File.join(base_url, section, slug) + "/",
-        body_html: Markdown.to_html(body, root: site_root, base_url: base_url),
+        body_html: Markdown.to_html(
+          body,
+          root: site_root,
+          base_url: base_url,
+          page_dir: File.dirname(File.expand_path(path))
+        ),
         banner_note: banner
       )
     end

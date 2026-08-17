@@ -55,4 +55,31 @@ class TestMarkdown < Minitest::Test
     html = PostPdf::Markdown.to_html(text, root: @root, base_url: "https://rgoswami.me")
     assert_includes html, "https://rgoswami.me/ox-hugo/missing.png"
   end
+
+  def test_bundle_relative_figure_resolves_beside_index
+    bundle = File.join(@root, "content/snippets/rm2-ss")
+    img_dir = File.join(bundle, "images/reMarkable_Screen_Sharing")
+    FileUtils.mkdir_p(img_dir)
+    dest = File.join(img_dir, "shot.png")
+    FileUtils.cp(@img, dest)
+
+    text = '{{< figure src="images/reMarkable_Screen_Sharing/shot.png" caption="Figure 1: shot" >}}'
+    html = PostPdf::Markdown.to_html(text, root: @root, page_dir: bundle)
+    refute_includes html, "https://rgoswami.me/images/"
+    assert_includes html, "file://"
+    assert_includes html, "shot.png"
+    assert html.include?(File.expand_path(dest))
+  end
+
+  def test_content_org_images_are_candidates
+    org = File.join(@root, "content-org/images/reMarkable_Screen_Sharing")
+    FileUtils.mkdir_p(org)
+    dest = File.join(org, "shot.png")
+    FileUtils.cp(@img, dest)
+
+    text = "![alt](images/reMarkable_Screen_Sharing/shot.png)"
+    html = PostPdf::Markdown.to_html(text, root: @root)
+    assert_includes html, "file://"
+    assert html.include?(File.expand_path(dest))
+  end
 end

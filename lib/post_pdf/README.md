@@ -80,5 +80,7 @@ PDF and site UI both consume the public file. Private names never ship.
 ## Images
 
 Hugo `{{< figure src="..." >}}` shortcodes are expanded to real figures (not stripped).
+Relative `src` values resolve next to the page bundle (`index.md`), then
+`content-org/`, `static/`, and `public/`.
 Site-relative paths resolve to `static/` / `public/` as `file://` when present; otherwise
 `https://rgoswami.me/...` so CI can still embed images that already ship on the site.
