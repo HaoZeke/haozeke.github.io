@@ -22298,6 +22298,7 @@ CLOSED: [2026-02-16 Sun 11:00]
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :link-citations true
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("EON" "Fortran Frontiers: Bridging Legacy to Modernity")
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :images '("/ox-hugo/flang-msvc-capnp.png")
 :END:
 #+BEGIN_QUOTE
 Notes on cross-platform portability for scientific codes with legacy components.
@@ -23284,6 +23285,11 @@ unallocated.
 The Fortran test could not exercise the setter (it needs a C array). So we write
 a C driver that exercises the full lifecycle:
 
+#+begin_export html
+<details>
+<summary>C test (click to expand)</summary>
+#+end_export
+
 #+begin_src c
 /* test_c.c */
 #include <stdio.h>
@@ -23359,6 +23365,10 @@ Values: 10.0 20.0
 After dealloc - Allocated: 0
 Destroyed.
 #+end_src
+
+#+begin_export html
+</details>
+#+end_export
 
 The full allocatable lifecycle works from C: create, set, read back, resize,
 deallocate, destroy. The Fortran side manages all the memory; the C side just
@@ -23808,6 +23818,11 @@ difference is ~associated()~ instead of ~allocated()~, and there is no setter.
 
 *** Testing from C
 
+#+begin_export html
+<details>
+<summary>C test (click to expand)</summary>
+#+end_export
+
 #+begin_src c
 /* test_ptr.c */
 #include <stdio.h>
@@ -23843,6 +23858,10 @@ int main() {
     return 0;
 }
 #+end_src
+
+#+begin_export html
+</details>
+#+end_export
 
 As usual I use ~meson~ to build both tests (the character test shares this
 build file):
@@ -24061,6 +24080,11 @@ in the type-spec.
 
 *** Testing from C
 
+#+begin_export html
+<details>
+<summary>C test (click to expand)</summary>
+#+end_export
+
 #+begin_src c
 /* test_char.c */
 #include <stdio.h>
@@ -24116,6 +24140,10 @@ Label: world!
 After dealloc - Allocated: 0
 Destroyed.
 #+end_src
+
+#+begin_export html
+</details>
+#+end_export
 
 Variable-length reassignment works because the setter deallocates before
 allocating with the new length.
@@ -24331,6 +24359,11 @@ standard does the work.
 
 *** Testing from C
 
+#+begin_export html
+<details>
+<summary>C test (click to expand)</summary>
+#+end_export
+
 #+begin_src c
 /* test_finalizer.c */
 #include <stdio.h>
@@ -24366,6 +24399,10 @@ Created two objects.
 After destroying t1: 1
 After destroying t2: 2
 #+end_src
+
+#+begin_export html
+</details>
+#+end_export
 
 Each ~destroy~ triggers one finalization. No cleanup code needed on the C side.
 
@@ -24487,6 +24524,11 @@ end module
 
 *** Testing from C
 
+#+begin_export html
+<details>
+<summary>C test (click to expand)</summary>
+#+end_export
+
 #+begin_src c
 /* test_generic.c */
 #include <stdio.h>
@@ -24536,6 +24578,10 @@ After scale_real(0.5): 15.0
 Destroyed.
 #+end_src
 
+#+begin_export html
+</details>
+#+end_export
+
 Both specific bindings (~scale_int~, ~scale_real~) work correctly from C.
 
 *** The limitation
@@ -24580,6 +24626,7 @@ CLOSED: [2026-08-16 Sun 15:52]
 :EXPORT_BIBLIOGRAPHY: biblio/Quansight.bib, biblio/refs.bib
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Bridging Fortran \& Python")
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :images '("/ox-hugo/f2py_kind_resolve_blog.png")
 :END:
 
 #+begin_quote
@@ -24708,6 +24755,11 @@ end module
 
 Testing from C:
 
+#+begin_export html
+<details>
+<summary>C test (click to expand)</summary>
+#+end_export
+
 #+begin_src c
 /* test_pdt.c */
 #include <stdio.h>
@@ -24742,6 +24794,10 @@ k=8: x=1.0 length=42
 k=4: x=1.0
 Destroyed.
 #+end_src
+
+#+begin_export html
+</details>
+#+end_export
 
 This is the core challenge: for $K$ KIND values and $M$ members, we need
 $K \times M$ wrapper functions. Hand-writing that matrix does not scale
@@ -25445,6 +25501,11 @@ guaranteed by the standard.
 
 *** Testing from C
 
+#+begin_export html
+<details>
+<summary>C test (click to expand)</summary>
+#+end_export
+
 #+begin_src c
 /* test_inherit.c */
 #include <stdio.h>
@@ -25481,6 +25542,10 @@ Particle: mass=1.5 charge=-1
 ChargedParticle: mass=0.511 spin=0.5
 Destroyed.
 #+end_src
+
+#+begin_export html
+</details>
+#+end_export
 
 *** Python-side inheritance via tp_base
 
@@ -25615,6 +25680,11 @@ end module
 
 *** Testing from C
 
+#+begin_export html
+<details>
+<summary>C test (click to expand)</summary>
+#+end_export
+
 #+begin_src c
 /* test_operator.c */
 #include <stdio.h>
@@ -25668,6 +25738,10 @@ v1 == v2: 0
 v1 == v1: 1
 Destroyed.
 #+end_src
+
+#+begin_export html
+</details>
+#+end_export
 
 Arithmetic returns a new heap-allocated object. Comparison returns a boolean.
 
@@ -25781,6 +25855,11 @@ end subroutine
 
 Testing from C:
 
+#+begin_export html
+<details>
+<summary>C test (click to expand)</summary>
+#+end_export
+
 #+begin_src c
 /* test_poly.c */
 #include <stdio.h>
@@ -25813,6 +25892,10 @@ Area before: 0.0
 Area after: 78.53975
 Destroyed.
 #+end_src
+
+#+begin_export html
+</details>
+#+end_export
 
 The ~SELECT CASE~ with ~type_tag=2~ correctly dispatches to the circle branch.
 Fortran's ~SELECT TYPE~ inside ~compute_area~ matches the ~circle~ case and
@@ -26014,6 +26097,11 @@ end subroutine
 
 Testing from C:
 
+#+begin_export html
+<details>
+<summary>C test (click to expand)</summary>
+#+end_export
+
 #+begin_src c
 /* test_dio.c */
 #include <stdio.h>
@@ -26044,6 +26132,10 @@ $ meson setup bbdir && meson compile -C bbdir
 $ ./bbdir/test_dio
 str(p) = "point(  1.50,   2.50,   3.50)"
 #+end_src
+
+#+begin_export html
+</details>
+#+end_export
 
 The DT descriptor invokes =write_point=, which formats the coordinates. The C
 wrapper trims trailing spaces and returns a =PyUnicode=. =READ(FORMATTED)= maps
