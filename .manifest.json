@@ -1,0 +1,1756 @@
+{
+  "version": 1,
+  "updated": "2026-08-23T10:11:02Z",
+  "entries": {
+    "islr-ch2-ch3": {
+      "digest": "0768583ab26aad111dbdc9bba80b3d4086399be14b9fcdbaf1a2a271796ba973",
+      "kind": "post",
+      "title": "islr-ch2-ch3",
+      "files": {
+        "light": "islr-ch2-ch3-light.pdf",
+        "dark": "islr-ch2-ch3-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/islr-ch2-ch3/"
+    },
+    "islr-ch4": {
+      "digest": "6d53421d243a6cb8f182fe99ece6bfcab7d792aa5c388d57d6ea08e423a05be1",
+      "kind": "post",
+      "title": "islr-ch4",
+      "files": {
+        "light": "islr-ch4-light.pdf",
+        "dark": "islr-ch4-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/islr-ch4/"
+    },
+    "islr-ch5": {
+      "digest": "8557ea4c90ad70186f127006d07022d3af4b7bc9c144b510317064ff1b4a2b0a",
+      "kind": "post",
+      "title": "islr-ch5",
+      "files": {
+        "light": "islr-ch5-light.pdf",
+        "dark": "islr-ch5-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/islr-ch5/"
+    },
+    "islr-ch6": {
+      "digest": "98b7cc7c58953141b4ce4daf1a760f1afdc6a7f42ff882d37eaa0001297f9c22",
+      "kind": "post",
+      "title": "islr-ch6",
+      "files": {
+        "light": "islr-ch6-light.pdf",
+        "dark": "islr-ch6-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/islr-ch6/"
+    },
+    "islr-ch7": {
+      "digest": "4a88411b834fe2e11661e6826c56afd23d969fdd67607b87265d8bb43860f929",
+      "kind": "post",
+      "title": "islr-ch7",
+      "files": {
+        "light": "islr-ch7-light.pdf",
+        "dark": "islr-ch7-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/islr-ch7/"
+    },
+    "linux-email-davmail-terra": {
+      "digest": "a9e48d41f3da7bd0f996702912b93d3ae66e64c3f25b5c543e98b006fb9421be",
+      "kind": "post",
+      "title": "linux-email-davmail-terra",
+      "files": {
+        "light": "linux-email-davmail-terra-light.pdf",
+        "dark": "linux-email-davmail-terra-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/linux-email-davmail-terra/"
+    },
+    "mackay-all-a": {
+      "digest": "366b427e20199a1f2fbfb61207aeee05dc4a58fbee5198938834160047002c1a",
+      "kind": "post",
+      "title": "mackay-all-a",
+      "files": {
+        "light": "mackay-all-a-light.pdf",
+        "dark": "mackay-all-a-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/mackay-all-a/"
+    },
+    "packages": {
+      "digest": "63c84033a68a7afb855ee96a8de64efd1fd4b6c2213db5e37ae2ade4da37e39b",
+      "kind": "catalog",
+      "title": "Packages I maintain",
+      "files": {
+        "light": "packages-light.pdf",
+        "dark": "packages-dark.pdf"
+      },
+      "url": "https://rgoswami.me/packages/"
+    },
+    "write-access": {
+      "digest": "b14a55bc38398c007f3f120ba885451f86eb9abd97e55df9d313cacb593262ae",
+      "kind": "catalog",
+      "title": "Write access",
+      "files": {
+        "light": "write-access-light.pdf",
+        "dark": "write-access-dark.pdf"
+      },
+      "url": "https://rgoswami.me/packages/#eco-upstream"
+    },
+    "anki-decks-orgmode": {
+      "digest": "e97dbffe007cd0fc149679156700510dbf365a81a3c9bada60ea8e00bbd45323",
+      "kind": "post",
+      "title": "Anki Decks with Orgmode",
+      "files": {
+        "light": "anki-decks-orgmode-light.pdf",
+        "dark": "anki-decks-orgmode-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/anki-decks-orgmode/"
+    },
+    "back-to-bash": {
+      "digest": "defd7cf77041bc8c6d64163bad9412e75165b6e305bd03d280d4cd7cbb6d1861",
+      "kind": "post",
+      "title": "Back to bash",
+      "files": {
+        "light": "back-to-bash-light.pdf",
+        "dark": "back-to-bash-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/back-to-bash/"
+    },
+    "bojack-horseman": {
+      "digest": "6ea7c35315f36b9027ab9c8c66bb4c45513b53861de8844be77c4c352f8b589d",
+      "kind": "post",
+      "title": "Bojack Horseman",
+      "files": {
+        "light": "bojack-horseman-light.pdf",
+        "dark": "bojack-horseman-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/bojack-horseman/"
+    },
+    "ccon-tut-nix": {
+      "digest": "c3748372b6475d56a8b5fb482826fe00d50eefcb27310343aba55aa304df39f9",
+      "kind": "post",
+      "title": "A Tutorial Introduction to Nix",
+      "files": {
+        "light": "ccon-tut-nix-light.pdf",
+        "dark": "ccon-tut-nix-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/ccon-tut-nix/"
+    },
+    "cip-2021-slw-meta": {
+      "digest": "87f649a4e3b9bd100a7acb50c08daa1eb002a6f760c07cb1501d6ff1bfa66dec",
+      "kind": "post",
+      "title": "Talk Supplements for Code In Place 2021 SL Workshop",
+      "files": {
+        "light": "cip-2021-slw-meta-light.pdf",
+        "dark": "cip-2021-slw-meta-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/cip-2021-slw-meta/"
+    },
+    "cip2021-fin": {
+      "digest": "4a9262d806584313bed7cc2a619dfa103403ab3e07d9de239b7570c4fe1140ff",
+      "kind": "post",
+      "title": "Wrapping Up Code in Place 2021",
+      "files": {
+        "light": "cip2021-fin-light.pdf",
+        "dark": "cip2021-fin-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/cip2021-fin/"
+    },
+    "colemak-dots-refactor": {
+      "digest": "e330cf5f955c2cf2aea308b722dd3b98486c3435dba809169fd0b92f03423ba2",
+      "kind": "post",
+      "title": "Refactoring Dotfiles For Colemak",
+      "files": {
+        "light": "colemak-dots-refactor-light.pdf",
+        "dark": "colemak-dots-refactor-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/colemak-dots-refactor/"
+    },
+    "colemak-switch": {
+      "digest": "4061f7b2095dfcdbfc19b794976e0908521a2953ae49f8375a68d30eb7a3378e",
+      "kind": "post",
+      "title": "Switching to Colemak",
+      "files": {
+        "light": "colemak-switch-light.pdf",
+        "dark": "colemak-switch-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/colemak-switch/"
+    },
+    "compton-zoom-shadow": {
+      "digest": "0fdbb6cfa274f2197551932bf8b7dcadb882f4c0123571afabafeaa7d9449a23",
+      "kind": "post",
+      "title": "Compton to Picom and Zoom Glitches",
+      "files": {
+        "light": "compton-zoom-shadow-light.pdf",
+        "dark": "compton-zoom-shadow-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/compton-zoom-shadow/"
+    },
+    "cpp-library-blueprints-pybind": {
+      "digest": "8110f699665e7e5a7a82f80d98cae45df7f1c306b4d93149e0d385c70d8d926d",
+      "kind": "post",
+      "title": "CPP Library Blueprints for Python Bindings",
+      "files": {
+        "light": "cpp-library-blueprints-pybind-light.pdf",
+        "dark": "cpp-library-blueprints-pybind-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/cpp-library-blueprints-pybind/"
+    },
+    "customizing-archlinux-im": {
+      "digest": "b253e3ee0a1fc8663f55739b11b7398a0f6bf07203d9a1751913f8041e1f9940",
+      "kind": "post",
+      "title": "Customizing ArchLinux Installation Media",
+      "files": {
+        "light": "customizing-archlinux-im-light.pdf",
+        "dark": "customizing-archlinux-im-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/customizing-archlinux-im/"
+    },
+    "cython-derivedtype-f2py": {
+      "digest": "99d2fdd7af87e192d177f89a0da079584e243c078310e6fb56524745c57971cf",
+      "kind": "post",
+      "title": "Simple Fortran Derived Types and Python",
+      "files": {
+        "light": "cython-derivedtype-f2py-light.pdf",
+        "dark": "cython-derivedtype-f2py-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/cython-derivedtype-f2py/"
+    },
+    "d3git": {
+      "digest": "387e4521f0c9dc227140b1be8f85305f303f1f7377e331aa4d0bcb8e54837b37",
+      "kind": "post",
+      "title": "D3 for Git",
+      "files": {
+        "light": "d3git-light.pdf",
+        "dark": "d3git-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/d3git/"
+    },
+    "dart-sass-hugo-themes": {
+      "digest": "fdede5f7678a6b23fecdc9a5b155f7fb7e2af6d4fb113cb873a32e3db95a45a8",
+      "kind": "post",
+      "title": "Dart Sass and Hugo Themes",
+      "files": {
+        "light": "dart-sass-hugo-themes-light.pdf",
+        "dark": "dart-sass-hugo-themes-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/dart-sass-hugo-themes/"
+    },
+    "doc-cpp-dox-sph-doxyrest": {
+      "digest": "8ff900d2705afd63461dd43fce82b55ddb33bb66c03de7cc519bac6cb64b96cc",
+      "kind": "post",
+      "title": "Documenting C++ with Doxygen and Sphinx - doxyrest",
+      "files": {
+        "light": "doc-cpp-dox-sph-doxyrest-light.pdf",
+        "dark": "doc-cpp-dox-sph-doxyrest-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/doc-cpp-dox-sph-doxyrest/"
+    },
+    "doc-cpp-dox-sph-exhale": {
+      "digest": "1f24e3de4137b9b15ff88411ab2f1e7aa3aede4fa8723c39a47f0a91697680b2",
+      "kind": "post",
+      "title": "Documenting C++ with Doxygen and Sphinx - Exhale",
+      "files": {
+        "light": "doc-cpp-dox-sph-exhale-light.pdf",
+        "dark": "doc-cpp-dox-sph-exhale-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/doc-cpp-dox-sph-exhale/"
+    },
+    "dotfiles-dotgit-bombadil": {
+      "digest": "8b231ad1002b3b5b96815cda39c76268a48de8977bbce57dfa868d27f4d9b653",
+      "kind": "post",
+      "title": "Dotfiles from dotgit to bombadil",
+      "files": {
+        "light": "dotfiles-dotgit-bombadil-light.pdf",
+        "dark": "dotfiles-dotgit-bombadil-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/dotfiles-dotgit-bombadil/"
+    },
+    "dvc-onedrive": {
+      "digest": "1641077caef73e4ddcb0b35bd3e5c1e8597528f4369a5db79fffed259f50b6a2",
+      "kind": "post",
+      "title": "Storing data with DVC and OneDrive",
+      "files": {
+        "light": "dvc-onedrive-light.pdf",
+        "dark": "dvc-onedrive-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/dvc-onedrive/"
+    },
+    "emacs-lang-servers": {
+      "digest": "fe3fa2850067b73b37bad105d28a3638ba675f42c21535525e7fc7d6d5e5abdf",
+      "kind": "post",
+      "title": "Doom Emacs and Language Servers",
+      "files": {
+        "light": "emacs-lang-servers-light.pdf",
+        "dark": "emacs-lang-servers-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/emacs-lang-servers/"
+    },
+    "emacs-nix-r": {
+      "digest": "6ec858820935c01790d840da313e0c991a9dfe0392bd675d577d58f6a3057cbb",
+      "kind": "post",
+      "title": "Emacs for Nix-R",
+      "files": {
+        "light": "emacs-nix-r-light.pdf",
+        "dark": "emacs-nix-r-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/emacs-nix-r/"
+    },
+    "eon-acad-foss": {
+      "digest": "74184c823e3bb00103e5442090f7aeaddc3201c9e9e5c91f91a74fe39dc12726",
+      "kind": "post",
+      "title": "Reconciling eOn for Academia and Open Source",
+      "files": {
+        "light": "eon-acad-foss-light.pdf",
+        "dark": "eon-acad-foss-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/eon-acad-foss/"
+    },
+    "expl-backlight-control": {
+      "digest": "3f496489e50c2953f33e5e4b1e57d66e14a9456a00fb9044bd27074fcec84bd6",
+      "kind": "post",
+      "title": "Explorations with Backlight Controllers",
+      "files": {
+        "light": "expl-backlight-control-light.pdf",
+        "dark": "expl-backlight-control-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/expl-backlight-control/"
+    },
+    "f2py-allocatable-members": {
+      "digest": "7cbc3282bec4fac8a487d23536f114da43f33245b099a4861209c7076b06354f",
+      "kind": "post",
+      "title": "Allocatable Fortran wrappers, from 1D to N-D",
+      "files": {
+        "light": "f2py-allocatable-members-light.pdf",
+        "dark": "f2py-allocatable-members-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/f2py-allocatable-members/"
+    },
+    "f2py-finalizers-generics": {
+      "digest": "d33cbc4f4dceb6b9c4a40309c39656730812399fc9605b6151fd574f40770ee9",
+      "kind": "post",
+      "title": "Finalizers and Generic Bindings",
+      "files": {
+        "light": "f2py-finalizers-generics-light.pdf",
+        "dark": "f2py-finalizers-generics-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/f2py-finalizers-generics/"
+    },
+    "f2py-parameterized-types": {
+      "digest": "90ccb5784a7e35c29789d962be5aaffecfbbd1b12bc5d05e4e64b718eb434254",
+      "kind": "post",
+      "title": "Parameterized Types and MSVC Complex Portability",
+      "files": {
+        "light": "f2py-parameterized-types-light.pdf",
+        "dark": "f2py-parameterized-types-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/f2py-parameterized-types/"
+    },
+    "f2py-pointers-and-strings": {
+      "digest": "44a0abe9d8ac8dbfff48b54af9c0a7dab45de440764f5a489da0cd63f1a92499",
+      "kind": "post",
+      "title": "Pointer Members and Deferred-Length Strings",
+      "files": {
+        "light": "f2py-pointers-and-strings-light.pdf",
+        "dark": "f2py-pointers-and-strings-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/f2py-pointers-and-strings/"
+    },
+    "fortran-gsoc-me": {
+      "digest": "886b54ef77f2346f1947fac2f5d7943685c68d721a5a763ee226fdcf6b28f044",
+      "kind": "post",
+      "title": "Fortran, GSoC21 and Me",
+      "files": {
+        "light": "fortran-gsoc-me-light.pdf",
+        "dark": "fortran-gsoc-me-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/fortran-gsoc-me/"
+    },
+    "fortran-oop-python": {
+      "digest": "3a9f6a5c42e8843364da07c96d6bdef6e9444694ef1b65afd268a4c679461780",
+      "kind": "post",
+      "title": "Fortran OOP and Python",
+      "files": {
+        "light": "fortran-oop-python-light.pdf",
+        "dark": "fortran-oop-python-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/fortran-oop-python/"
+    },
+    "fortrancon-2021-meta": {
+      "digest": "8f216cb5755574867c04c5bbf797057e323e7ffe0643a61004d58f06f68aa722",
+      "kind": "post",
+      "title": "Presentation Supplements for FortranCon'21",
+      "files": {
+        "light": "fortrancon-2021-meta-light.pdf",
+        "dark": "fortrancon-2021-meta-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/fortrancon-2021-meta/"
+    },
+    "fsf-me-stallman": {
+      "digest": "e32b37dea1220f9192425ad08e57d6ef9160f3f018e0b68148cae257b1efb46d",
+      "kind": "post",
+      "title": "Free Software and Me",
+      "files": {
+        "light": "fsf-me-stallman-light.pdf",
+        "dark": "fsf-me-stallman-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/fsf-me-stallman/"
+    },
+    "ghNotif": {
+      "digest": "fd477b13dfc3345b50c90a88a84232175ac30e8c295686ebc9aa3ca4d8cf08c4",
+      "kind": "post",
+      "title": "Taming Github Notifications",
+      "files": {
+        "light": "ghNotif-light.pdf",
+        "dark": "ghNotif-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/ghNotif/"
+    },
+    "goat-clicky": {
+      "digest": "f6b1cd432a72ff15b0df294e70e3300df7a64c5183999a704309ace6e3afdb20",
+      "kind": "post",
+      "title": "Analytics II: Goat to Clicky",
+      "files": {
+        "light": "goat-clicky-light.pdf",
+        "dark": "goat-clicky-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/goat-clicky/"
+    },
+    "goat-google": {
+      "digest": "442620907759d9ef4c2d19cc640e6c95194c0037c65c6b8c2cea7aeebb31c490",
+      "kind": "post",
+      "title": "Analytics: Google to Goat",
+      "files": {
+        "light": "goat-google-light.pdf",
+        "dark": "goat-google-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/goat-google/"
+    },
+    "grant-proposals": {
+      "digest": "37436f976f4e7a4cc163e045af83b6e8f5e9dfefe29f7f963b9283051d7aa46d",
+      "kind": "post",
+      "title": "Grant Proposals - I",
+      "files": {
+        "light": "grant-proposals-light.pdf",
+        "dark": "grant-proposals-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/grant-proposals/"
+    },
+    "gsoc21-fin-reprot": {
+      "digest": "9cfc16ea00b94e4c6641332d844362072d120b538b209446d71ee5458cd73e1b",
+      "kind": "post",
+      "title": "GSoC21 LFortran and Computational Chemistry",
+      "files": {
+        "light": "gsoc21-fin-reprot-light.pdf",
+        "dark": "gsoc21-fin-reprot-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/gsoc21-fin-reprot/"
+    },
+    "gsoc21-w1": {
+      "digest": "3b371aac893751d3513e412088066d1a8cbbe0c3139f541930d4ccdde2bea241",
+      "kind": "post",
+      "title": "GSoC21 W1: LFortran Kickoff",
+      "files": {
+        "light": "gsoc21-w1-light.pdf",
+        "dark": "gsoc21-w1-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/gsoc21-w1/"
+    },
+    "gsoc21-w10": {
+      "digest": "4c2667d50f48148104ff04952da8a1de6aebabd499519ddca7e4118b33dd3411",
+      "kind": "post",
+      "title": "GSoC21 W10: LFortran Runtime Library Design",
+      "files": {
+        "light": "gsoc21-w10-light.pdf",
+        "dark": "gsoc21-w10-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/gsoc21-w10/"
+    },
+    "gsoc21-w2": {
+      "digest": "8a58a7a5a4dc80427989e885fff935e9dc73413c1b50a19f45824ad0b35c4fa1",
+      "kind": "post",
+      "title": "GSoC21 W2: LFortran Unraveling",
+      "files": {
+        "light": "gsoc21-w2-light.pdf",
+        "dark": "gsoc21-w2-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/gsoc21-w2/"
+    },
+    "gsoc21-w3": {
+      "digest": "51cb57caa0bcfe8a230c061dc1bbb5bdbe6ddfd81962d14b1d10d18fc02df691",
+      "kind": "post",
+      "title": "GSoC21 W3: Kind, Characters, and Standards",
+      "files": {
+        "light": "gsoc21-w3-light.pdf",
+        "dark": "gsoc21-w3-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/gsoc21-w3/"
+    },
+    "gsoc21-w4": {
+      "digest": "61a5817aaf055f7f18dc19711b1c90e21fc400d50193ce748d28a54c44b95b93",
+      "kind": "post",
+      "title": "GSoC21 W4: LFortran, Backends and Bugs",
+      "files": {
+        "light": "gsoc21-w4-light.pdf",
+        "dark": "gsoc21-w4-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/gsoc21-w4/"
+    },
+    "gsoc21-w5": {
+      "digest": "d88eca88bbbe057ae3aec950943385e02467aef69f1d897178b33c968897a1f4",
+      "kind": "post",
+      "title": "GSoC21 W5: LFortran Design Details and minidftatom",
+      "files": {
+        "light": "gsoc21-w5-light.pdf",
+        "dark": "gsoc21-w5-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/gsoc21-w5/"
+    },
+    "gsoc21-w6": {
+      "digest": "f14885d7936a5171f74ec404540c17e6cc2618bac57ee943b56721b2a63a5473",
+      "kind": "post",
+      "title": "GSoC21 W6: LFortran ASR and Values",
+      "files": {
+        "light": "gsoc21-w6-light.pdf",
+        "dark": "gsoc21-w6-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/gsoc21-w6/"
+    },
+    "gsoc21-w7": {
+      "digest": "16125f7a582e36cb908f508fd0bca60777bcd8315c1a470023efd872c4420ceb",
+      "kind": "post",
+      "title": "GSoC21 W7: LFortran Workflow Basics",
+      "files": {
+        "light": "gsoc21-w7-light.pdf",
+        "dark": "gsoc21-w7-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/gsoc21-w7/"
+    },
+    "gsoc21-w8": {
+      "digest": "8dc57d4ea9546101e5a85a4eff751a3545fd117ee66546afc4465ad4e6b5fde2",
+      "kind": "post",
+      "title": "GSoC21 W8: LFortran Refactors, and Compile Time Evaluations",
+      "files": {
+        "light": "gsoc21-w8-light.pdf",
+        "dark": "gsoc21-w8-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/gsoc21-w8/"
+    },
+    "gsoc21-w9": {
+      "digest": "dad636694f72225228f118b21ef224d7bca018c4b802d6a28c78f38070c0cf17",
+      "kind": "post",
+      "title": "GSoC21 W9: LFortran Bug Hunting Bonanza",
+      "files": {
+        "light": "gsoc21-w9-light.pdf",
+        "dark": "gsoc21-w9-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/gsoc21-w9/"
+    },
+    "handling-legacy-fortran-code": {
+      "digest": "ee17045f4dd45cc81d5b19b5ffe36df340dd66773c70ee600a00177582195b74",
+      "kind": "post",
+      "title": "Handling Legacy Fortran Code",
+      "files": {
+        "light": "handling-legacy-fortran-code-light.pdf",
+        "dark": "handling-legacy-fortran-code-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/handling-legacy-fortran-code/"
+    },
+    "hpc-conf-2021": {
+      "digest": "5d33b6c7873264c8299a65644acfc2e7ca4ef39cc2040df1dc2ff48ab1b9868d",
+      "kind": "post",
+      "title": "HPC Configuration 2021",
+      "files": {
+        "light": "hpc-conf-2021-light.pdf",
+        "dark": "hpc-conf-2021-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/hpc-conf-2021/"
+    },
+    "hpc-dots-lmod": {
+      "digest": "e6e907d2bf824897607027a951d0eb90dedc9925af734fc4d2786f3d9424f4fa",
+      "kind": "post",
+      "title": "HPC Dotfiles and LMod",
+      "files": {
+        "light": "hpc-dots-lmod-light.pdf",
+        "dark": "hpc-dots-lmod-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/hpc-dots-lmod/"
+    },
+    "iop-caps-webdev-2021-meta": {
+      "digest": "cbc075834a93aa114ad43ec3b851d2e81df01da90f9e344ddc6f3a62f0bb0d9a",
+      "kind": "post",
+      "title": "Talk Supplements for IOP CAPS'21 Webdev Workshop",
+      "files": {
+        "light": "iop-caps-webdev-2021-meta-light.pdf",
+        "dark": "iop-caps-webdev-2021-meta-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/iop-caps-webdev-2021-meta/"
+    },
+    "iop-cpp-2021-meta": {
+      "digest": "188a4f4f269477ec126ce00c66fb236c13e4cea6a36653354a0ab2a31dbcef0b",
+      "kind": "post",
+      "title": "Talk Supplements for IOP's C++ Workshop",
+      "files": {
+        "light": "iop-cpp-2021-meta-light.pdf",
+        "dark": "iop-cpp-2021-meta-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/iop-cpp-2021-meta/"
+    },
+    "iso-c-type-bound-fortran": {
+      "digest": "045f45f14875420f44a3cc11461f34ecc42f539f2ba9f55030485baf47e3e477",
+      "kind": "post",
+      "title": "Exploring ISO_C_BINDING and type-bound procedures",
+      "files": {
+        "light": "iso-c-type-bound-fortran-light.pdf",
+        "dark": "iso-c-type-bound-fortran-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/iso-c-type-bound-fortran/"
+    },
+    "joining-quansight-labs21": {
+      "digest": "9ec278f536a6307b3591c73d535073677145b289f4c86f1a8402d46caf74e968",
+      "kind": "post",
+      "title": "Regarding Quansight Labs",
+      "files": {
+        "light": "joining-quansight-labs21-light.pdf",
+        "dark": "joining-quansight-labs21-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/joining-quansight-labs21/"
+    },
+    "juliacon-remote-machines": {
+      "digest": "364e2f043f70a7f13af9f107d0ef9631793508ba2a72c37141adbbd18f9f2474",
+      "kind": "post",
+      "title": "JuliaCon and Remote Machines",
+      "files": {
+        "light": "juliacon-remote-machines-light.pdf",
+        "dark": "juliacon-remote-machines-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/juliacon-remote-machines/"
+    },
+    "jupyter-orgmode": {
+      "digest": "3903185cba38501177126dde357297471a9dcdb5b6a6c49dede63754836dcc49",
+      "kind": "post",
+      "title": "Replacing Jupyter with Orgmode",
+      "files": {
+        "light": "jupyter-orgmode-light.pdf",
+        "dark": "jupyter-orgmode-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/jupyter-orgmode/"
+    },
+    "keybindings-colevimhz-macos": {
+      "digest": "38e065a053eb133f2c2b6edf4089e86784781aeb299c7299f00d19efe1ac472c",
+      "kind": "post",
+      "title": "Remapping Keys for ColemakVIM on MacOS",
+      "files": {
+        "light": "keybindings-colevimhz-macos-light.pdf",
+        "dark": "keybindings-colevimhz-macos-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/keybindings-colevimhz-macos/"
+    },
+    "laptop-as-second-screens": {
+      "digest": "fa52876e582c7272090f0e4070cb59331da20a3f9ba1a3eb14267a2c556fd53d",
+      "kind": "post",
+      "title": "Old Laptops as Secondary Monitors",
+      "files": {
+        "light": "laptop-as-second-screens-light.pdf",
+        "dark": "laptop-as-second-screens-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/laptop-as-second-screens/"
+    },
+    "laptop-setup-btrfs-notes": {
+      "digest": "0d39bfa2ee6f5511daa0c09557cc4f7e5ff7e88190d8ce6d50d8431bd47ec5ce",
+      "kind": "post",
+      "title": "Laptop setup notes btrfs subvolumes",
+      "files": {
+        "light": "laptop-setup-btrfs-notes-light.pdf",
+        "dark": "laptop-setup-btrfs-notes-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/laptop-setup-btrfs-notes/"
+    },
+    "leshouches-2021-meta": {
+      "digest": "87d5bbc3644ea7ea3933dbf9d09eebf0255bcf8e207795bf5dfc4ef8786c617a",
+      "kind": "post",
+      "title": "Presentation Supplements for Greens Function School",
+      "files": {
+        "light": "leshouches-2021-meta-light.pdf",
+        "dark": "leshouches-2021-meta-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/leshouches-2021-meta/"
+    },
+    "linos-maintainer-appre": {
+      "digest": "29683a7f3bf35e07cbab64703f2a6b4ac4834ca84076a531ddcb59d3c1fc7edc",
+      "kind": "post",
+      "title": "LineageOS Maintainer Appreciation",
+      "files": {
+        "light": "linos-maintainer-appre-light.pdf",
+        "dark": "linos-maintainer-appre-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/linos-maintainer-appre/"
+    },
+    "local-nix-no-root": {
+      "digest": "270cacc553483a2b03335b8ae8edc2f471b55cb87b000b56da99caffdd0bdd03",
+      "kind": "post",
+      "title": "Local Nix without Root",
+      "files": {
+        "light": "local-nix-no-root-light.pdf",
+        "dark": "local-nix-no-root-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/local-nix-no-root/"
+    },
+    "losslesscut-zoom-ama": {
+      "digest": "90b2e30020fb028f4866e9cd66aaa462671bf19f524a7c16186680187f444ed4",
+      "kind": "post",
+      "title": "LosslessCut, Zoom and an AMA for CS106A",
+      "files": {
+        "light": "losslesscut-zoom-ama-light.pdf",
+        "dark": "losslesscut-zoom-ama-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/losslesscut-zoom-ama/"
+    },
+    "lowering-resource-usage-foot-systemd": {
+      "digest": "bfdbde4a3cdc5ccc8dd41df7e2f6255418fa907e0e21c1291be66c8ec3559f51",
+      "kind": "post",
+      "title": "Lowering resource usage with foot and systemd",
+      "files": {
+        "light": "lowering-resource-usage-foot-systemd-light.pdf",
+        "dark": "lowering-resource-usage-foot-systemd-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/lowering-resource-usage-foot-systemd/"
+    },
+    "mach-nix-niv-python": {
+      "digest": "53d6b660a925afb88ea1297b936f98ee181b1bc55c39099cab17976eb4998a53",
+      "kind": "post",
+      "title": "Niv and Mach-Nix for Nix Python",
+      "files": {
+        "light": "mach-nix-niv-python-light.pdf",
+        "dark": "mach-nix-niv-python-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/mach-nix-niv-python/"
+    },
+    "managing-cloud-based-calibre": {
+      "digest": "b5c45960b118c18394ccf61102f1cc71cc3673132e2f783b6dff0459e8daf0ec",
+      "kind": "post",
+      "title": "Managing cloud based calibre libraries",
+      "files": {
+        "light": "managing-cloud-based-calibre-light.pdf",
+        "dark": "managing-cloud-based-calibre-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/managing-cloud-based-calibre/"
+    },
+    "managing-scanned-books": {
+      "digest": "7a0550f733982482fc8b11fbee17f3b9dba8d3bd86bc0ac8444725d965190574",
+      "kind": "post",
+      "title": "Managing Scanned Books",
+      "files": {
+        "light": "managing-scanned-books-light.pdf",
+        "dark": "managing-scanned-books-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/managing-scanned-books/"
+    },
+    "mig-dots-chezmoi": {
+      "digest": "024b4e5b1239298aaa4252caaa282ffd25f0e9be426706add9aa8d9d4d3702a4",
+      "kind": "post",
+      "title": "The State of my Dots",
+      "files": {
+        "light": "mig-dots-chezmoi-light.pdf",
+        "dark": "mig-dots-chezmoi-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/mig-dots-chezmoi/"
+    },
+    "multi-monitor-touch": {
+      "digest": "396f64768740fc4d91f7af19b24276e68f8287a48dd5ac4bf8b94141d5f6b50d",
+      "kind": "post",
+      "title": "Multiple Monitors with Touchscreens",
+      "files": {
+        "light": "multi-monitor-touch-light.pdf",
+        "dark": "multi-monitor-touch-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/multi-monitor-touch/"
+    },
+    "my-life-in-eink": {
+      "digest": "756857647c43e95602293710674a564c2f12d79b2def214b4a03f03e69adafe6",
+      "kind": "post",
+      "title": "My Life in E-ink",
+      "files": {
+        "light": "my-life-in-eink-light.pdf",
+        "dark": "my-life-in-eink-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/my-life-in-eink/"
+    },
+    "neb-visualizations": {
+      "digest": "89818841b95da71959a782c40542aea9639d48761fd68ca6145fd54de08eae76",
+      "kind": "post",
+      "title": "Visual Diagnostics for NEB Paths",
+      "files": {
+        "light": "neb-visualizations-light.pdf",
+        "dark": "neb-visualizations-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/neb-visualizations/"
+    },
+    "nix-channel-nur": {
+      "digest": "09eeb59d4b3788e486aca012b386f2edbc8e559bd9f6a5b0517fc0958e269aba",
+      "kind": "post",
+      "title": "Nix, Channels and the NUR",
+      "files": {
+        "light": "nix-channel-nur-light.pdf",
+        "dark": "nix-channel-nur-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/nix-channel-nur/"
+    },
+    "nix-prj-spec-doc": {
+      "digest": "b9c9655ec1eb5086d31e01d8d124a167c9a5e520c489a0bd986929c5382af045",
+      "kind": "post",
+      "title": "Project Specific Expressions from Nixpkgs for Sphinx documentation",
+      "files": {
+        "light": "nix-prj-spec-doc-light.pdf",
+        "dark": "nix-prj-spec-doc-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/nix-prj-spec-doc/"
+    },
+    "nix-r-devtools": {
+      "digest": "850b0f3f1b2d0965d917dd84021739f96969cc36fe4632a72158e04ae1a1c7f7",
+      "kind": "post",
+      "title": "Nix with R and devtools",
+      "files": {
+        "light": "nix-r-devtools-light.pdf",
+        "dark": "nix-r-devtools-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/nix-r-devtools/"
+    },
+    "nix-shell-node": {
+      "digest": "2c9cccfd69d8ba4e4c753d837c456437660b3d18198b143eacda57e1befd5d8f",
+      "kind": "post",
+      "title": "Nix Shells for Node Projects",
+      "files": {
+        "light": "nix-shell-node-light.pdf",
+        "dark": "nix-shell-node-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/nix-shell-node/"
+    },
+    "nixcon-in-2020-meta": {
+      "digest": "ae6cab541cf0f4068abed56aad20be370cb1ee37bac0e4351f926f77dfa4b893",
+      "kind": "post",
+      "title": "Talk Supplements for NixCon 2020",
+      "files": {
+        "light": "nixcon-in-2020-meta-light.pdf",
+        "dark": "nixcon-in-2020-meta-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/nixcon-in-2020-meta/"
+    },
+    "numpy-meson-f2py": {
+      "digest": "67c3dadc0237ec2ad0165aecd057fa160c6b740e085010285cce3a5cde53c424",
+      "kind": "post",
+      "title": "NumPy, Meson and f2py",
+      "files": {
+        "light": "numpy-meson-f2py-light.pdf",
+        "dark": "numpy-meson-f2py-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/numpy-meson-f2py/"
+    },
+    "org-arb-tex": {
+      "digest": "babcd78c84b0bf4260f7eb73d13597031c55fff74b9cbf8e2e2dfa18f6ea9a38",
+      "kind": "post",
+      "title": "Temporary LaTeX Documents with Orgmode",
+      "files": {
+        "light": "org-arb-tex-light.pdf",
+        "dark": "org-arb-tex-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/org-arb-tex/"
+    },
+    "org-mathematica": {
+      "digest": "5c24123f4f9ae9241873002b801e7eec46c2a0b04727ef09afd1dd26b2192b46",
+      "kind": "post",
+      "title": "Using Mathematica with Orgmode",
+      "files": {
+        "light": "org-mathematica-light.pdf",
+        "dark": "org-mathematica-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/org-mathematica/"
+    },
+    "org-note-workflow": {
+      "digest": "8fb1588b0400278de8449f958e1d86cb0fd8d21dea603ccc6affd4250cfab5ad",
+      "kind": "post",
+      "title": "An Orgmode Note Workflow",
+      "files": {
+        "light": "org-note-workflow-light.pdf",
+        "dark": "org-note-workflow-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/org-note-workflow/"
+    },
+    "org-pandoc-babel": {
+      "digest": "186d4e26d7da5653ff45031e3b49f69743e943b34945ca958351dfe839e04733",
+      "kind": "post",
+      "title": "Pandoc to Orgmode with Babel",
+      "files": {
+        "light": "org-pandoc-babel-light.pdf",
+        "dark": "org-pandoc-babel-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/org-pandoc-babel/"
+    },
+    "pandora-proxychains": {
+      "digest": "998373cb33eb9608ff978ad4d5b5d87ac6b99256293278762d66dc7180e190ca",
+      "kind": "post",
+      "title": "Pandora and Proxychains",
+      "files": {
+        "light": "pandora-proxychains-light.pdf",
+        "dark": "pandora-proxychains-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/pandora-proxychains/"
+    },
+    "parameter-passing-nwchem-rtdb": {
+      "digest": "12edba13b464fdfbf6e40e247551230077f5e638aac4b561d1cebba19037f3bb",
+      "kind": "post",
+      "title": "Parameter passing in NWChem and the Runtime Database",
+      "files": {
+        "light": "parameter-passing-nwchem-rtdb-light.pdf",
+        "dark": "parameter-passing-nwchem-rtdb-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/parameter-passing-nwchem-rtdb/"
+    },
+    "poetry-direnv": {
+      "digest": "e7aef95ceb910b2be8e6fd19cf53d09682b3a01250b329db15ff8e466b36a5f2",
+      "kind": "post",
+      "title": "Poetry and Direnv",
+      "files": {
+        "light": "poetry-direnv-light.pdf",
+        "dark": "poetry-direnv-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/poetry-direnv/"
+    },
+    "priv-gh-actions": {
+      "digest": "90ffdd2f113b3319a380965c823a9e9fca4775401f8e970e6ebe868ab8056953",
+      "kind": "post",
+      "title": "Private Github Actions without PAT",
+      "files": {
+        "light": "priv-gh-actions-light.pdf",
+        "dark": "priv-gh-actions-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/priv-gh-actions/"
+    },
+    "prov-dots": {
+      "digest": "e23c00bcabd4073164040a13c95e7a8b072da14fa456b45587add81d72424d9c",
+      "kind": "post",
+      "title": "Provisioning Dotfiles on an HPC",
+      "files": {
+        "light": "prov-dots-light.pdf",
+        "dark": "prov-dots-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/prov-dots/"
+    },
+    "pub-doc-cpp-dox-sph-nix": {
+      "digest": "55aed53c3f0a5e9861944897e22c151ac70cd3da0fa0a7821addde17c8c13f4d",
+      "kind": "post",
+      "title": "Publishing Doxygen and Sphinx with Nix and Rake",
+      "files": {
+        "light": "pub-doc-cpp-dox-sph-nix-light.pdf",
+        "dark": "pub-doc-cpp-dox-sph-nix-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/pub-doc-cpp-dox-sph-nix/"
+    },
+    "pycon-in-2020-meta": {
+      "digest": "b29feb17d242b613ea154c70eb507162cdfbeae3b65e88da7e7f2989a21437e6",
+      "kind": "post",
+      "title": "Talk Supplements for PyCon India 2020",
+      "files": {
+        "light": "pycon-in-2020-meta-light.pdf",
+        "dark": "pycon-in-2020-meta-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/pycon-in-2020-meta/"
+    },
+    "rationale": {
+      "digest": "3dbc4192fa7471941722b3aea5dd8a7b118c982f0a03f548b18939f2d109ffe0",
+      "kind": "post",
+      "title": "Site Rationale",
+      "files": {
+        "light": "rationale-light.pdf",
+        "dark": "rationale-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/rationale/"
+    },
+    "reclaim-email-astroid": {
+      "digest": "57dee0aee570da1b2ea2d7da9225748bcd56dff2994ea15a2ae06debad869622",
+      "kind": "post",
+      "title": "Reclaiming Email with Astroid",
+      "files": {
+        "light": "reclaim-email-astroid-light.pdf",
+        "dark": "reclaim-email-astroid-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/reclaim-email-astroid/"
+    },
+    "remap-keys-xkb-klfc": {
+      "digest": "93dabbe13923b583a90365210879b4a8878aa27b25790825a61ea07665442f7a",
+      "kind": "post",
+      "title": "Remapping Keys with XKB and KLFC",
+      "files": {
+        "light": "remap-keys-xkb-klfc-light.pdf",
+        "dark": "remap-keys-xkb-klfc-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/remap-keys-xkb-klfc/"
+    },
+    "remote-access-cvpn": {
+      "digest": "99ffd1f54d2584f08e63a7dfb47139450770aa2d20da1a9b29db024e3e989765",
+      "kind": "post",
+      "title": "Simplified SSH access via container VPNs",
+      "files": {
+        "light": "remote-access-cvpn-light.pdf",
+        "dark": "remote-access-cvpn-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/remote-access-cvpn/"
+    },
+    "rep-zoom-obs": {
+      "digest": "beedc6ba6019b4aab01a8370aae06b37a33e96868262f3bd8f3eb912c85b8d01",
+      "kind": "post",
+      "title": "Replacing Zoom with Open Broadcaster Software",
+      "files": {
+        "light": "rep-zoom-obs-light.pdf",
+        "dark": "rep-zoom-obs-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/rep-zoom-obs/"
+    },
+    "rethinking-r-nix": {
+      "digest": "237d37bcb8f2e87334fbb6b69e35319461f43be2c774b7829832b094465c6ef0",
+      "kind": "post",
+      "title": "Statistical Rethinking and Nix",
+      "files": {
+        "light": "rethinking-r-nix-light.pdf",
+        "dark": "rethinking-r-nix-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/rethinking-r-nix/"
+    },
+    "revisiting-wayland-2021-archlinux": {
+      "digest": "ad481c8b25e50435b5683da1ca2d75b9124883656faca58e697990d1051f505c",
+      "kind": "post",
+      "title": "Revisiting Wayland for ArchLinux",
+      "files": {
+        "light": "revisiting-wayland-2021-archlinux-light.pdf",
+        "dark": "revisiting-wayland-2021-archlinux-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/revisiting-wayland-2021-archlinux/"
+    },
+    "rg-collection-weblinks": {
+      "digest": "a3eac2031f984cb1c47a1d07719dffa82497cfd507a028f62646ff9b213f5fd4",
+      "kind": "post",
+      "title": "Collection of WebLinks",
+      "files": {
+        "light": "rg-collection-weblinks-light.pdf",
+        "dark": "rg-collection-weblinks-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/rg-collection-weblinks/"
+    },
+    "sane-custom-forge": {
+      "digest": "8f35b3e07c8c1b570a8658a15fd6b87e733b88a61ef216902306caaad026208b",
+      "kind": "post",
+      "title": "Saner conda-forge interactions with a custom forge",
+      "files": {
+        "light": "sane-custom-forge-light.pdf",
+        "dark": "sane-custom-forge-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/sane-custom-forge/"
+    },
+    "scicomprs-2024-meta": {
+      "digest": "c9e8b0ef58b9cffdd77e07c3ad100f396afd5f030732829fbc94867f4a74af65",
+      "kind": "post",
+      "title": "Talk Supplements for Scientific Computing in Rust 2024",
+      "files": {
+        "light": "scicomprs-2024-meta-light.pdf",
+        "dark": "scicomprs-2024-meta-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/scicomprs-2024-meta/"
+    },
+    "scipycon-2022-meta": {
+      "digest": "cdd72459bf4e6d813f943fbb288996926042d32e0a944e47562d704981842bf7",
+      "kind": "post",
+      "title": "Supplements for SciPy 2022",
+      "files": {
+        "light": "scipycon-2022-meta-light.pdf",
+        "dark": "scipycon-2022-meta-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/scipycon-2022-meta/"
+    },
+    "scp-onboarding": {
+      "digest": "dec7d7568fc386de2fdd5bdf494dde8fd55a88a8a99d82d50facfc02f613d885",
+      "kind": "post",
+      "title": "On-boarding for Code in Place",
+      "files": {
+        "light": "scp-onboarding-light.pdf",
+        "dark": "scp-onboarding-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/scp-onboarding/"
+    },
+    "scp-smallgrp-meet1": {
+      "digest": "5bcd08bcc94ef6f3e91a4d4a273ebdfec22d0c1467f2162291ca16b50acde81f",
+      "kind": "post",
+      "title": "CS106A Section Meeting I",
+      "files": {
+        "light": "scp-smallgrp-meet1-light.pdf",
+        "dark": "scp-smallgrp-meet1-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/scp-smallgrp-meet1/"
+    },
+    "scp-smallgrp-trainig": {
+      "digest": "85868bd62d48fc438daeed865817308e12c4130300b40f738d8ff612f05fd485",
+      "kind": "post",
+      "title": "CS106A Small Group Training",
+      "files": {
+        "light": "scp-smallgrp-trainig-light.pdf",
+        "dark": "scp-smallgrp-trainig-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/scp-smallgrp-trainig/"
+    },
+    "scp-smallgrp": {
+      "digest": "56896fabcd2d5d54a1a1962500e9ca949b2e1a6909e7e6326da0a1590f8acd75",
+      "kind": "post",
+      "title": "Small Section On-boarding",
+      "files": {
+        "light": "scp-smallgrp-light.pdf",
+        "dark": "scp-smallgrp-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/scp-smallgrp/"
+    },
+    "seri-2021-meta": {
+      "digest": "0067a91d71999b90ce8f5882f7bb0ea6567c01b4f23511ca1d9c87532ce57d23",
+      "kind": "post",
+      "title": "Talk Supplements for SERI'21",
+      "files": {
+        "light": "seri-2021-meta-light.pdf",
+        "dark": "seri-2021-meta-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/seri-2021-meta/"
+    },
+    "shortpost": {
+      "digest": "026fd9c2935fc7aeaf695d99a677e742a271aceede91c1b88356358c74893108",
+      "kind": "post",
+      "title": "Shorter Posts",
+      "files": {
+        "light": "shortpost-light.pdf",
+        "dark": "shortpost-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/shortpost/"
+    },
+    "some-sol-sr2": {
+      "digest": "be6b79600087a59fece52f6ef98adca31d6a10ba550fc9db6bf600efbe464cf0",
+      "kind": "post",
+      "title": "A Short Guide to Statistical Rethinking²",
+      "files": {
+        "light": "some-sol-sr2-light.pdf",
+        "dark": "some-sol-sr2-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/some-sol-sr2/"
+    },
+    "spack-pytorch-dev-workflow": {
+      "digest": "e9303f61b0fa68b282008f883536de635c3291b11db0cd286eb1e933a041a348",
+      "kind": "post",
+      "title": "Spack and PyTorch Development Workflows",
+      "files": {
+        "light": "spack-pytorch-dev-workflow-light.pdf",
+        "dark": "spack-pytorch-dev-workflow-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/spack-pytorch-dev-workflow/"
+    },
+    "symengine-gsod20": {
+      "digest": "5d0dd8cf08b3567bbbe6b78ba8249d5609713104d1f3e5ae514a4e03ae293451",
+      "kind": "post",
+      "title": "SymEngine and the Season of Docs",
+      "files": {
+        "light": "symengine-gsod20-light.pdf",
+        "dark": "symengine-gsod20-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/symengine-gsod20/"
+    },
+    "tinyssh-dockerdev-env": {
+      "digest": "bedaa4484dc8f89396562158c8e0d8e8bd9d6bc383ac9609f503b0391562d7f4",
+      "kind": "post",
+      "title": "TinySSH for Docker Development Environments",
+      "files": {
+        "light": "tinyssh-dockerdev-env-light.pdf",
+        "dark": "tinyssh-dockerdev-env-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/tinyssh-dockerdev-env/"
+    },
+    "trees-and-bags": {
+      "digest": "639a1a803175d1c9307da8a30dce523db7498f69082e360c5f3bebdd5b0d66dc",
+      "kind": "post",
+      "title": "Trees and Bags",
+      "files": {
+        "light": "trees-and-bags-light.pdf",
+        "dark": "trees-and-bags-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/trees-and-bags/"
+    },
+    "tug-2021-meta": {
+      "digest": "98f67187021f2cbe4d0376a6950cab942e65eeccf2c099560d3ec1357499af06",
+      "kind": "post",
+      "title": "42nd Annual Confereence of the Tex Users Group",
+      "files": {
+        "light": "tug-2021-meta-light.pdf",
+        "dark": "tug-2021-meta-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/tug-2021-meta/"
+    },
+    "types-fortran-python-opaque": {
+      "digest": "07f3b0ba0e0e95de3053680f3a40c76b43ba4e72c5ffde251200fdecae17fcc6",
+      "kind": "post",
+      "title": "Types from Fortran to Python via Opaque Pointers",
+      "files": {
+        "light": "types-fortran-python-opaque-light.pdf",
+        "dark": "types-fortran-python-opaque-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/types-fortran-python-opaque/"
+    },
+    "windows-compat-sci-cpp": {
+      "digest": "0404bfccd1220255f8be5204764b746d0ec8715aecd4731e617d838fffa81df1",
+      "kind": "post",
+      "title": "Windows Compatibility and Scientific Computing",
+      "files": {
+        "light": "windows-compat-sci-cpp-light.pdf",
+        "dark": "windows-compat-sci-cpp-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/windows-compat-sci-cpp/"
+    },
+    "writing-r-packages": {
+      "digest": "374ebc55fef6b1deb92fe2f63afaa1d9912784dc76f3c7b97673e008d7a681be",
+      "kind": "post",
+      "title": "Writing R Packages",
+      "files": {
+        "light": "writing-r-packages-light.pdf",
+        "dark": "writing-r-packages-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/writing-r-packages/"
+    },
+    "xcompose-keys-linux-icelandic": {
+      "digest": "6e476416d77aeb15aee69fa5c69921844dad998888c5f9987b1aac776aa7ad91",
+      "kind": "post",
+      "title": "Icelandic with Compose Keys on Linux",
+      "files": {
+        "light": "xcompose-keys-linux-icelandic-light.pdf",
+        "dark": "xcompose-keys-linux-icelandic-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/xcompose-keys-linux-icelandic/"
+    },
+    "xonsh-excursion": {
+      "digest": "0a1f2a099974fa2fefb8835ed7f0ab43d61bdb64857b14c8b5a3dab41e3a957d",
+      "kind": "post",
+      "title": "xonsh Excursions",
+      "files": {
+        "light": "xonsh-excursion-light.pdf",
+        "dark": "xonsh-excursion-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/xonsh-excursion/"
+    },
+    "zotero-biblatex-bibtex": {
+      "digest": "d8d4d12cc2189d40281d808c015c3d2024db4fcc5a59d8cb813163ac4cbd88c0",
+      "kind": "post",
+      "title": "Biblatex to Bibtex for Sphinx",
+      "files": {
+        "light": "zotero-biblatex-bibtex-light.pdf",
+        "dark": "zotero-biblatex-bibtex-dark.pdf"
+      },
+      "url": "https://rgoswami.me/posts/zotero-biblatex-bibtex/"
+    },
+    "_index": {
+      "digest": "e793e8bbfd9c7f028d126250e26b2a855dac0997d0e161d8edb452650594a25b",
+      "kind": "post",
+      "title": "Snippets",
+      "files": {
+        "light": "_index-light.pdf",
+        "dark": "_index-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/_index/"
+    },
+    "act-local-caching": {
+      "digest": "73c0f5ac0ae771292c96a4edc1fedc82809082ab1f5df872130e7df0f7a2d10d",
+      "kind": "post",
+      "title": "act locally for sccache",
+      "files": {
+        "light": "act-local-caching-light.pdf",
+        "dark": "act-local-caching-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/act-local-caching/"
+    },
+    "auto-disc-meson-tests": {
+      "digest": "4a5a42646ef25037aaa02709461953e1aa3f23f57c1d93061af04aeff111c07b",
+      "kind": "post",
+      "title": "Auto-discovering meson tests",
+      "files": {
+        "light": "auto-disc-meson-tests-light.pdf",
+        "dark": "auto-disc-meson-tests-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/auto-disc-meson-tests/"
+    },
+    "caching-accel-meson": {
+      "digest": "7e58aed5f5171cc3fdfcc29d6ff31b0c12d3c184e7b28f13d2f6473b9ad638b7",
+      "kind": "post",
+      "title": "Caching and accelerating meson builds",
+      "files": {
+        "light": "caching-accel-meson-light.pdf",
+        "dark": "caching-accel-meson-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/caching-accel-meson/"
+    },
+    "catch2-meson-tests": {
+      "digest": "0a700cc57012d5a9a59fc048de72cc753d4c84bcaff1208f4ec02c4ef34ec135",
+      "kind": "post",
+      "title": "Catch2 and meson",
+      "files": {
+        "light": "catch2-meson-tests-light.pdf",
+        "dark": "catch2-meson-tests-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/catch2-meson-tests/"
+    },
+    "cold-storage-compression": {
+      "digest": "ab5d6408566b18401b4b4c8d47a397a146f134152a6b24ac55e6022912f732d3",
+      "kind": "post",
+      "title": "Cold storage compression",
+      "files": {
+        "light": "cold-storage-compression-light.pdf",
+        "dark": "cold-storage-compression-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/cold-storage-compression/"
+    },
+    "compile-flags-txt": {
+      "digest": "4c1ce4269e06b9a312260d7ef0b036bb256fff4bd11cc2be6ed9c48dd2873ef4",
+      "kind": "post",
+      "title": "Lightweight C++ config with compile_flags.txt",
+      "files": {
+        "light": "compile-flags-txt-light.pdf",
+        "dark": "compile-flags-txt-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/compile-flags-txt/"
+    },
+    "db-btl-drives": {
+      "digest": "5cdcaf2aa4dbc87450cbbd024a654b491a45ba747c80ac0e10f77fa23a3efe5c",
+      "kind": "post",
+      "title": "Dual-boot Bitlocker Drives",
+      "files": {
+        "light": "db-btl-drives-light.pdf",
+        "dark": "db-btl-drives-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/db-btl-drives/"
+    },
+    "dir-locals-formatting-rust": {
+      "digest": "628c839df0d135f2265e2a84b84ed24d9884cd344ad3203950cec4aa078a81dc",
+      "kind": "post",
+      "title": "Disabling Rust auto-formatting in Emacs per-project",
+      "files": {
+        "light": "dir-locals-formatting-rust-light.pdf",
+        "dark": "dir-locals-formatting-rust-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/dir-locals-formatting-rust/"
+    },
+    "docker-dev-envs": {
+      "digest": "537a38b87e9610b28ec6feb7499270bd0006ed6e898c1cf72538b6ca4d4e12f7",
+      "kind": "post",
+      "title": "Docker Development Environments",
+      "files": {
+        "light": "docker-dev-envs-light.pdf",
+        "dark": "docker-dev-envs-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/docker-dev-envs/"
+    },
+    "environments-cibuildwheel": {
+      "digest": "61f6531321ab69438f6637897afbab3f182463779f3071603df9528ea2213838",
+      "kind": "post",
+      "title": "Handling environments with cibuildwheel",
+      "files": {
+        "light": "environments-cibuildwheel-light.pdf",
+        "dark": "environments-cibuildwheel-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/environments-cibuildwheel/"
+    },
+    "forward-multiport": {
+      "digest": "a1d080ee9905df65423476a2cab7a22e5a2862eba7bcd1df30a1d0700e124a1d",
+      "kind": "post",
+      "title": "Forwarding Multiple Local Ports",
+      "files": {
+        "light": "forward-multiport-light.pdf",
+        "dark": "forward-multiport-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/forward-multiport/"
+    },
+    "git-filter-cherry-pick": {
+      "digest": "a9ba407b1b1c327008c55bd82f7cb47b4f35580ba1002cb68d44602e8e0fcb65",
+      "kind": "post",
+      "title": "Search and merge with git filtered repositories",
+      "files": {
+        "light": "git-filter-cherry-pick-light.pdf",
+        "dark": "git-filter-cherry-pick-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/git-filter-cherry-pick/"
+    },
+    "git-subrepo-josh-filter": {
+      "digest": "5c29c824894865dcbb2bdc13b2795025f7ffd7a8c5a65b1001b394cb775948c3",
+      "kind": "post",
+      "title": "Replacing git-subrepo with josh-filter",
+      "files": {
+        "light": "git-subrepo-josh-filter-light.pdf",
+        "dark": "git-subrepo-josh-filter-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/git-subrepo-josh-filter/"
+    },
+    "git-unmerged-cycle": {
+      "digest": "388fa541ebef38f3957407b54a8c6ad35f7f5c879489275dc3fafb0910cde4e3",
+      "kind": "post",
+      "title": "Cycling through unmerged git files",
+      "files": {
+        "light": "git-unmerged-cycle-light.pdf",
+        "dark": "git-unmerged-cycle-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/git-unmerged-cycle/"
+    },
+    "gui-tmux-desktop": {
+      "digest": "145da40942c439d32755394c09b6eda8ecf77ea3f03258b5d57ac411a9767254",
+      "kind": "post",
+      "title": "GUI desktop files and tmux sessions",
+      "files": {
+        "light": "gui-tmux-desktop-light.pdf",
+        "dark": "gui-tmux-desktop-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/gui-tmux-desktop/"
+    },
+    "hyread-adb-rules": {
+      "digest": "5ff706e4d144453ea42b09fcb5a72b30963b3a44efb8d01f828cd107021f79e0",
+      "kind": "post",
+      "title": "Hyread Color E-Ink adb rules",
+      "files": {
+        "light": "hyread-adb-rules-light.pdf",
+        "dark": "hyread-adb-rules-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/hyread-adb-rules/"
+    },
+    "julia-conda-libopenlibm": {
+      "digest": "0e3ae0f80d601c807456a8ba48aae5ed0c2a88490e73094971fde15638f45e7b",
+      "kind": "post",
+      "title": "julia and the conda libraries",
+      "files": {
+        "light": "julia-conda-libopenlibm-light.pdf",
+        "dark": "julia-conda-libopenlibm-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/julia-conda-libopenlibm/"
+    },
+    "jup-dat-helper": {
+      "digest": "91144aa33d4a5530371ede700296430581999bece59d16d6b280748b338b6acf",
+      "kind": "post",
+      "title": "Jupyter data helpers",
+      "files": {
+        "light": "jup-dat-helper-light.pdf",
+        "dark": "jup-dat-helper-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/jup-dat-helper/"
+    },
+    "lldb-macos-remote": {
+      "digest": "ff62b3cc9d39305bf06a4684ddecd57c5183145cb3f3db38c5d46113cc4c4ea6",
+      "kind": "post",
+      "title": "Remote lldb on MacOS",
+      "files": {
+        "light": "lldb-macos-remote-light.pdf",
+        "dark": "lldb-macos-remote-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/lldb-macos-remote/"
+    },
+    "local-precommit-dependencies": {
+      "digest": "9398fb5087676b2b091a0c93098597ba5d455953ec0910c8c05b2dfbd257dbfd",
+      "kind": "post",
+      "title": "Local precommit dependencies",
+      "files": {
+        "light": "local-precommit-dependencies-light.pdf",
+        "dark": "local-precommit-dependencies-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/local-precommit-dependencies/"
+    },
+    "mach-nix-shell-env": {
+      "digest": "f9d9d48730d7799a9db8c95991cfc24e7ed564c44fd93479f80e200e9f8a26f6",
+      "kind": "post",
+      "title": "Mach-Nix and Shell Environments",
+      "files": {
+        "light": "mach-nix-shell-env-light.pdf",
+        "dark": "mach-nix-shell-env-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/mach-nix-shell-env/"
+    },
+    "mamba-colab-usage": {
+      "digest": "11f8cf3924f5941088abce11b11ccfbb06663486db9bcf4e0067fd175f83fae2",
+      "kind": "post",
+      "title": "Mamba and Colab",
+      "files": {
+        "light": "mamba-colab-usage-light.pdf",
+        "dark": "mamba-colab-usage-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/mamba-colab-usage/"
+    },
+    "manual-tests-popd-spin": {
+      "digest": "99309cad942b54096ed7410d43f22f67de9eaef7beefa96639cc3c5fdd58697d",
+      "kind": "post",
+      "title": "Faster manual tests with popd",
+      "files": {
+        "light": "manual-tests-popd-spin-light.pdf",
+        "dark": "manual-tests-popd-spin-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/manual-tests-popd-spin/"
+    },
+    "mesa-sway-bugs": {
+      "digest": "9ec658550dfa398944f40a683e81a4593d2a2573cb8d0e772cfa004753cd42a7",
+      "kind": "post",
+      "title": "Mesa Bugs with Sway",
+      "files": {
+        "light": "mesa-sway-bugs-light.pdf",
+        "dark": "mesa-sway-bugs-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/mesa-sway-bugs/"
+    },
+    "nix-collection-overwrite-attrs": {
+      "digest": "26fc71a257bcb4c83faa15d5562b08800017fd38592c57a04d6763be3ccf03ee",
+      "kind": "post",
+      "title": "Overwriting Attributes",
+      "files": {
+        "light": "nix-collection-overwrite-attrs-light.pdf",
+        "dark": "nix-collection-overwrite-attrs-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/nix-collection-overwrite-attrs/"
+    },
+    "nix-shell-locale": {
+      "digest": "78f90d0523be0a5a1546d01a143f457ded60b5052b5897bcbaefd11c953fff85",
+      "kind": "post",
+      "title": "Nix Shell and Locales",
+      "files": {
+        "light": "nix-shell-locale-light.pdf",
+        "dark": "nix-shell-locale-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/nix-shell-locale/"
+    },
+    "notify-pdf-compilation": {
+      "digest": "7de46ab1c39450cc8298daa17aea78c71586daf878e8d5ce200af45f478247ce",
+      "kind": "post",
+      "title": "Notify on pdf compilation",
+      "files": {
+        "light": "notify-pdf-compilation-light.pdf",
+        "dark": "notify-pdf-compilation-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/notify-pdf-compilation/"
+    },
+    "off-brand-conda": {
+      "digest": "b0a4be718cbea7dd41c51c271fce2b851f53c8edb11f2eae0b7553157581f3a6",
+      "kind": "post",
+      "title": "conda-smithy notes for off-brand conda packages",
+      "files": {
+        "light": "off-brand-conda-light.pdf",
+        "dark": "off-brand-conda-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/off-brand-conda/"
+    },
+    "orgmode-enumerate-counter-cookies": {
+      "digest": "d64cc64e3f213fc941aeea663fe7dfc1337aebd497504fa8d51163acaf7fcfb6",
+      "kind": "post",
+      "title": "Continuing numbered Org lists across intervening paragraphs",
+      "files": {
+        "light": "orgmode-enumerate-counter-cookies-light.pdf",
+        "dark": "orgmode-enumerate-counter-cookies-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/orgmode-enumerate-counter-cookies/"
+    },
+    "orgmode-inline-review-comments": {
+      "digest": "4404dcfa2d4ffb620ce8d6208bb50312da7c12f7ad21e28b67fa5ecc54986c06",
+      "kind": "post",
+      "title": "Togglable inline review comments in orgmode LaTeX export",
+      "files": {
+        "light": "orgmode-inline-review-comments-light.pdf",
+        "dark": "orgmode-inline-review-comments-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/orgmode-inline-review-comments/"
+    },
+    "orgmode-workbench": {
+      "digest": "306f72f78044f4efb8a8e9739e74be02d037a438fea9a0a39520c937390d8c7d",
+      "kind": "post",
+      "title": "orgmode for workbench lessons",
+      "files": {
+        "light": "orgmode-workbench-light.pdf",
+        "dark": "orgmode-workbench-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/orgmode-workbench/"
+    },
+    "oshelf-ocr-dl": {
+      "digest": "a029c53d2ddddd5a7de1bb60e373c3435a22f9e549a58d79ff6b25b8c0a1ecd4",
+      "kind": "post",
+      "title": "Off the shelf OCR and Deep Learning",
+      "files": {
+        "light": "oshelf-ocr-dl-light.pdf",
+        "dark": "oshelf-ocr-dl-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/oshelf-ocr-dl/"
+    },
+    "pixi-global-consistent": {
+      "digest": "79976b2f20087fed8d427c4a81389e50c3829c8f453f92fa23634a3f343678ba",
+      "kind": "post",
+      "title": "pixi global environments consistent formatting",
+      "files": {
+        "light": "pixi-global-consistent-light.pdf",
+        "dark": "pixi-global-consistent-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/pixi-global-consistent/"
+    },
+    "pixi-orgmode-notebooks": {
+      "digest": "e2731e9ffa2039f12c39a7634c3d8a14edff1971d50032555843b4c2f7d89113",
+      "kind": "post",
+      "title": "Using pixi environments for orgmode notebooks",
+      "files": {
+        "light": "pixi-orgmode-notebooks-light.pdf",
+        "dark": "pixi-orgmode-notebooks-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/pixi-orgmode-notebooks/"
+    },
+    "pixi-shebang-ghcoauth": {
+      "digest": "2c00f8fac89b77ebc9c826a23bc19d40bc9625a56a5fa56c28a5c088dad1d8b3",
+      "kind": "post",
+      "title": "Co-authoring Github commits with pixi",
+      "files": {
+        "light": "pixi-shebang-ghcoauth-light.pdf",
+        "dark": "pixi-shebang-ghcoauth-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/pixi-shebang-ghcoauth/"
+    },
+    "precommit-selections": {
+      "digest": "c7667142adc54c0d7a932708b5b74fd40fc7d3e563212dba76e64bebf3284205",
+      "kind": "post",
+      "title": "precommit selections",
+      "files": {
+        "light": "precommit-selections-light.pdf",
+        "dark": "precommit-selections-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/precommit-selections/"
+    },
+    "prog-lang-man": {
+      "digest": "a89e4268e8d1bebad7bb0cc373ff9245e406f0b8de057bd80468adfe99a04c57",
+      "kind": "post",
+      "title": "Programming Language Management",
+      "files": {
+        "light": "prog-lang-man-light.pdf",
+        "dark": "prog-lang-man-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/prog-lang-man/"
+    },
+    "pytorch-conda-pip": {
+      "digest": "04e569b3330ef6d737907cf13e881f76043e507766f7c8331372f3d52f7781e7",
+      "kind": "post",
+      "title": "PyTorch woes across conda and pip",
+      "files": {
+        "light": "pytorch-conda-pip-light.pdf",
+        "dark": "pytorch-conda-pip-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/pytorch-conda-pip/"
+    },
+    "pytorch-deterministic-regression": {
+      "digest": "47f0b2d3ec86ddab026100347a03eb7855af3ad3209eb69a1b93ffbc4497da98",
+      "kind": "post",
+      "title": "Deterministic PyTorch regression tests",
+      "files": {
+        "light": "pytorch-deterministic-regression-light.pdf",
+        "dark": "pytorch-deterministic-regression-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/pytorch-deterministic-regression/"
+    },
+    "refactoring-ox-hugo-orgmode": {
+      "digest": "e1cb4d493c5bdf21c64c995040d8dc809b4e7480b2273623106658b7824240f0",
+      "kind": "post",
+      "title": "Refactoring an ox-hugo site for newer orgmode",
+      "files": {
+        "light": "refactoring-ox-hugo-orgmode-light.pdf",
+        "dark": "refactoring-ox-hugo-orgmode-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/refactoring-ox-hugo-orgmode/"
+    },
+    "rm2-ss": {
+      "digest": "a01765ea716bd01bb7dd7077d918e18bf99cdc12de743fa557635bc52852080a",
+      "kind": "post",
+      "title": "reMarkable Screen Sharing",
+      "files": {
+        "light": "rm2-ss-light.pdf",
+        "dark": "rm2-ss-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/rm2-ss/"
+    },
+    "share-db-bluetooth-keys": {
+      "digest": "edb7e6614fa0e516537e8cb732b6e175c14c5357e2593de63468fc32006ff6f8",
+      "kind": "post",
+      "title": "Sharing Bluetooth Keys",
+      "files": {
+        "light": "share-db-bluetooth-keys-light.pdf",
+        "dark": "share-db-bluetooth-keys-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/share-db-bluetooth-keys/"
+    },
+    "slurm-double-checked-locking": {
+      "digest": "ecf92ed18f53d43c78ae4fa9618b103e173537fe76693de9130a3d9f89e6e64b",
+      "kind": "post",
+      "title": "Double-checked locking for SLURM container tasks",
+      "files": {
+        "light": "slurm-double-checked-locking-light.pdf",
+        "dark": "slurm-double-checked-locking-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/slurm-double-checked-locking/"
+    },
+    "ssh-port-forwarding": {
+      "digest": "5d3712146f219da005451d34e295dbea5946199384ba454d91d660a1dcd8212b",
+      "kind": "post",
+      "title": "SSH Port Forwarding",
+      "files": {
+        "light": "ssh-port-forwarding-light.pdf",
+        "dark": "ssh-port-forwarding-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/ssh-port-forwarding/"
+    },
+    "sway-mon-ext": {
+      "digest": "50667c2c583e555d397647c8c740ca9b750ef73980a9d32ac4cc16eb239faa7b",
+      "kind": "post",
+      "title": "Extending sway monitors",
+      "files": {
+        "light": "sway-mon-ext-light.pdf",
+        "dark": "sway-mon-ext-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/sway-mon-ext/"
+    },
+    "terminal-slack-pidgin": {
+      "digest": "94bfd9dc7eb4489d15a630326a6d81bc4ab4096d9d3a1486365211269d4d8a65",
+      "kind": "post",
+      "title": "Terminal Slack with Pidgin",
+      "files": {
+        "light": "terminal-slack-pidgin-light.pdf",
+        "dark": "terminal-slack-pidgin-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/terminal-slack-pidgin/"
+    },
+    "tikz-tectonic-pixi": {
+      "digest": "a093d950d2b5ffb319caef135264e73ea7a6a990ec115881ad5bd5fc01278c89",
+      "kind": "post",
+      "title": "Standalone TikZ to PNG with tectonic and pixi",
+      "files": {
+        "light": "tikz-tectonic-pixi-light.pdf",
+        "dark": "tikz-tectonic-pixi-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/tikz-tectonic-pixi/"
+    },
+    "trivial-llms-old-hardware": {
+      "digest": "dcb9533c41d85727bc335c89a2b82666bdef447a3942692aa1e95201aff8a234",
+      "kind": "post",
+      "title": "Trivial LLMs on old hardware",
+      "files": {
+        "light": "trivial-llms-old-hardware-light.pdf",
+        "dark": "trivial-llms-old-hardware-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/trivial-llms-old-hardware/"
+    },
+    "watch-files": {
+      "digest": "99ee645e0979110b4f8cce660dc0e99e1434483b53e9d64f76ca339ae71489c1",
+      "kind": "post",
+      "title": "Watching Files",
+      "files": {
+        "light": "watch-files-light.pdf",
+        "dark": "watch-files-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/watch-files/"
+    },
+    "zotero-connector-blog-posts": {
+      "digest": "4f7409ef6675087ca1b37b2448fe497de9ae7de04bc2d02c25f2db96cbe354f1",
+      "kind": "post",
+      "title": "Zotero Connector and Blog Posts",
+      "files": {
+        "light": "zotero-connector-blog-posts-light.pdf",
+        "dark": "zotero-connector-blog-posts-dark.pdf"
+      },
+      "url": "https://rgoswami.me/snippets/zotero-connector-blog-posts/"
+    }
+  }
+}
