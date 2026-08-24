@@ -24,7 +24,7 @@
     "pngout": "^1.0.0",
     "postcss": "^8.5.26",
     "postcss-cli": "^11.0.1",
-    "sass-embedded-linux-x64": "^1.102.0",
+    "sass-embedded-linux-x64": "^1.103.1",
     "svgo": "^4.0.0"
   },
   "overrides": {
