@@ -328,6 +328,11 @@ ecosystems:
     summary: DLPack integration for Rust.
     registry_url: https://crates.io/crates/dlpk
     homepage: https://github.com/metatensor/dlpk
+  - name: eb_stack
+    version: 0.3.0
+    summary: Resolvo-solved variants and CycloneDX SBOMs from conda-forge, Spack, and EasyBuild recipes.
+    registry_url: https://crates.io/crates/eb_stack
+    homepage: https://github.com/HaoZeke/eb-stack
   - name: eindir-core
     version: 0.5.0
     summary: Typed primitives for ND objective functions and bounded sampling.
@@ -383,6 +388,41 @@ ecosystems:
     summary: Semantic line-break formatter for Org, LaTeX, Markdown, plaintext.
     registry_url: https://crates.io/crates/snapper-fmt
     homepage: https://github.com/TurtleTech-ehf/snapper
+  - name: vissue-cli
+    version: 0.8.0
+    summary: Command line over per-project orgmode tracker files.
+    registry_url: https://crates.io/crates/vissue-cli
+    homepage: https://github.com/HaoZeke/vissue
+  - name: vissue-control
+    version: 0.8.0
+    summary: JSON-RPC control wire for the tracker Unix socket.
+    registry_url: https://crates.io/crates/vissue-control
+    homepage: https://github.com/HaoZeke/vissue
+  - name: vissue-core
+    version: 0.8.0
+    summary: Model, store, queries, and org parser for the tracker.
+    registry_url: https://crates.io/crates/vissue-core
+    homepage: https://github.com/HaoZeke/vissue
+  - name: vissue-hud
+    version: 0.8.0
+    summary: Summonable icedtea task board; home is the project list.
+    registry_url: https://crates.io/crates/vissue-hud
+    homepage: https://github.com/HaoZeke/vissue
+  - name: vissue-mcp
+    version: 0.8.0
+    summary: MCP server exposing orgmode tracker files to agents.
+    registry_url: https://crates.io/crates/vissue-mcp
+    homepage: https://github.com/HaoZeke/vissue
+  - name: vissue-serve
+    version: 0.8.0
+    summary: Unix-socket control owner (bind, detach, handshake).
+    registry_url: https://crates.io/crates/vissue-serve
+    homepage: https://github.com/HaoZeke/vissue
+  - name: vissue-tui
+    version: 0.8.0
+    summary: Terminal board over ready, claims, agenda, and search.
+    registry_url: https://crates.io/crates/vissue-tui
+    homepage: https://github.com/HaoZeke/vissue
 - id: spack
   name: Spack
   label: Spack package manager
