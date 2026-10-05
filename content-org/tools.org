@@ -18,63 +18,55 @@
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments false
 :END:
 #+begin_description
-The small web tools I hand to a class or a meeting.
+Stuff I actually send people, and a few things I just live in.
 #+end_description
 
-Profiles and talks that mention me stay on the
-[[https://rgoswami.me/posts/rg-collection-weblinks/][collection of links]]. This
-page lists the short set I send to other people.
+The [[https://rgoswami.me/posts/rg-collection-weblinks/][weblinks]] page is
+the pile of places that mention me. This one is shorter. It is what I
+hand someone when we need a time, a clock, or a scribble, and then the
+things older posts already named, corrected where I have moved on.
 
 ** Scheduling
-I collect a time with [[https://crab.fit/][crab.fit]]. I name the event, paint the
-hours I can make, and send the link. Everyone else paints theirs. The
-overlap shows up as a heat map, and the page updates as the replies
-come in. Ben Grant writes it. The code sits in the
-[[https://github.com/GRA0007/crab.fit][repository]] under GPLv3. A name
-on an event can carry a password, and that password only protects that
-person's row. Crab Fit deletes an idle event after 3 months. The page
-carries no ads, so I send it instead of
-[[http://whenisgood.net/][WhenIsGood]].
+When a group needs a time I send [[https://crab.fit/][crab.fit]]. I paint
+the hours I can make, they paint theirs, and you can watch the overlap
+fill in. [[https://github.com/GRA0007][Ben Grant]] wrote it, ~GPLv3~, and
+the [[https://github.com/GRA0007/crab.fit][repository]] is the whole
+story. A name can have a password, but that only stops someone else
+editing that one row. Leave an event alone for three months and it goes
+away, which is fine. No ads. [[http://whenisgood.net/][WhenIsGood]] is
+the same grid and I stopped sending it because of the ads.
 
-** A clock
-I put Garrick Aden-Buie's
-[[https://pkg.garrickadenbuie.com/countdown/][countdown]] package for R
-on a slide. Click or Space starts and stops the timer. Double-click or
-Escape resets it. The same clock runs full screen, with no R session,
-at [[https://apps.garrickadenbuie.com/countdown/][apps.garrickadenbuie.com/countdown]].
+** Countdown
+The timer on a slide is Garrick Aden-Buie's [[https://pkg.garrickadenbuie.com/countdown/][countdown]]
+package. ~countdown(minutes = 5)~, click or space to start, double-click
+or escape to reset. If the room does not have R open, the same clock is
+full screen at [[https://apps.garrickadenbuie.com/countdown/][apps.garrickadenbuie.com/countdown]].
 
-** A board
-[[https://jamboard.google.com/][Jamboard]] no longer runs. Google's note
-says Google converted the old Jams to PDFs in 2025.
-[[https://whiteboardfox.com/][Whiteboard Fox]] opens on a host such as
-[[https://r8.whiteboardfox.com/][r8.whiteboardfox.com]], and a free board
-shows ads, so I do not send it. For a shared scribble I open
-[[https://wbo.ophir.dev/][WBO]]. A private board is a link, and the
-drawing stays on the server. The code is
-[[https://github.com/lovasoa/whitebophir][whitebophir]]. The page I
-loaded carries no ads. A scribble I keep goes in
-[[https://github.com/xournalpp/xournalpp][Xournal++]], the same setup as
-[[https://rgoswami.me/posts/multi-monitor-touch/][the touchscreen post]].
+** Scribbles
+[[https://jamboard.google.com/][Jamboard]] is gone. Google turned the old
+jams into PDFs in 2025, which is an archive, not a board.
+[[https://whiteboardfox.com/][Whiteboard Fox]] looked like the
+replacement (a room lands on a host like
+[[https://r8.whiteboardfox.com/][r8.whiteboardfox.com]], that ~r8~ is not
+a code) but the free boards carry ads, so I don't send those. What I
+send is [[https://wbo.ophir.dev/][WBO]]. Make a private board, send the
+link, the drawing stays. The code is
+[[https://github.com/lovasoa/whitebophir][whitebophir]], and there are
+no ads. A scribble I want on my own machine afterwards is still
+[[https://github.com/xournalpp/xournalpp][Xournal++]], same as the
+[[https://rgoswami.me/posts/multi-monitor-touch/][touchscreen post]].
 
-** From the teaching set
-Three of these remain from
-[[https://rgoswami.me/posts/cip2021-fin/][Code in Place 2021]]. Jamboard
-was the fourth name on that list, and the board section above replaces it.
-- [[https://dateful.com/eventlink][dateful.com]], which used to be Starts at, for a link that carries the timezone
-- [[https://www.strawpoll.com/][Straw Poll]] for a quick vote
-- [[https://hackmd.io/][HackMD]] for shared notes and code sketches
+** Code in Place
+Still from [[https://rgoswami.me/posts/cip2021-fin/][that writeup]], minus
+Jamboard:
+- [[https://dateful.com/eventlink][Dateful]] (it used to be Starts at) when the link itself has to carry the timezone
+- [[https://www.strawpoll.com/][Straw Poll]] when I only need a quick vote
+- [[https://hackmd.io/][HackMD]] for notes, and for the pseudocode you write while people are watching
 
-** Already written down
-These stay on the machine. I do not send them to a class.
-- [[https://www.zotero.org/][Zotero]] for the bibliography, in the
-  [[https://rgoswami.me/posts/org-note-workflow/][note workflow]] and the
-  [[https://rgoswami.me/posts/my-life-in-eink/][e-ink post]]
-- [[https://koreader.rocks/][KOReader]] on the Kobo, in that same e-ink post
-- [[https://dotdoom.rgoswami.me/][Doom Emacs]]
-- [[https://rgoswami.me/posts/xcompose-keys-linux-icelandic/][Sway]], in the
-  2024 compose-keys post. The 2020
-  [[https://rgoswami.me/posts/colemak-switch/][Colemak post]] still names
-  i3, Vimium, and Zathura
-- The command-line table in the
-  [[https://rgoswami.me/posts/hpc-conf-2021/][2021 HPC post]]: bat, bottom,
-  ripgrep, fd, and the rest of that table
+** Older posts, updated
+The posts lag a bit.
+- The bibliography is [[https://ridley.turtletech.us/][Ridley]] now, not Zotero. The [[https://rgoswami.me/posts/org-note-workflow/][note workflow]] and the [[https://rgoswami.me/posts/my-life-in-eink/][e-ink post]] still say Zotero, because that is what I was using then.
+- On the Kobo I read in [[https://koreader.rocks/][KOReader]], which is most of that e-ink post. I still don't use the stock interface.
+- [[https://dotdoom.rgoswami.me/][Doom Emacs]], the literate config.
+- The window manager these days is Sway, written up in the [[https://rgoswami.me/posts/xcompose-keys-linux-icelandic/][compose-keys post]]. The [[https://rgoswami.me/posts/colemak-switch/][Colemak post]] is older and still talks about i3, Vimium, and Zathura.
+- ~bat~, ~bottom~, ~ripgrep~, ~fd~, and the rest of that little table live in the [[https://rgoswami.me/posts/hpc-conf-2021/][2021 HPC post]].
