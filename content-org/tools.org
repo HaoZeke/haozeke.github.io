@@ -45,13 +45,14 @@ at [[https://apps.garrickadenbuie.com/countdown/][apps.garrickadenbuie.com/count
 
 ** A board
 [[https://jamboard.google.com/][Jamboard]] no longer runs. Google's note
-says Google converted the old Jams to PDFs in 2025. For a shared
-scribble I open [[https://whiteboardfox.com/][Whiteboard Fox]]. A new
-board opens on a numbered host, such as
-[[https://r8.whiteboardfox.com/][r8.whiteboardfox.com]]. Whoever has the
-link can draw. A free board draws in 7 colors and expires after 14 days.
-Pro, at $7.90 a month, removes the ads, so a free board still shows
-them. A scribble I keep goes in
+says Google converted the old Jams to PDFs in 2025.
+[[https://whiteboardfox.com/][Whiteboard Fox]] opens on a host such as
+[[https://r8.whiteboardfox.com/][r8.whiteboardfox.com]], and a free board
+shows ads, so I do not send it. For a shared scribble I open
+[[https://wbo.ophir.dev/][WBO]]. A private board is a link, and the
+drawing stays on the server. The code is
+[[https://github.com/lovasoa/whitebophir][whitebophir]]. The page I
+loaded carries no ads. A scribble I keep goes in
 [[https://github.com/xournalpp/xournalpp][Xournal++]], the same setup as
 [[https://rgoswami.me/posts/multi-monitor-touch/][the touchscreen post]].
 
@@ -62,3 +63,18 @@ was the fourth name on that list, and the board section above replaces it.
 - [[https://dateful.com/eventlink][dateful.com]], which used to be Starts at, for a link that carries the timezone
 - [[https://www.strawpoll.com/][Straw Poll]] for a quick vote
 - [[https://hackmd.io/][HackMD]] for shared notes and code sketches
+
+** Already written down
+These stay on the machine. I do not send them to a class.
+- [[https://www.zotero.org/][Zotero]] for the bibliography, in the
+  [[https://rgoswami.me/posts/org-note-workflow/][note workflow]] and the
+  [[https://rgoswami.me/posts/my-life-in-eink/][e-ink post]]
+- [[https://koreader.rocks/][KOReader]] on the Kobo, in that same e-ink post
+- [[https://dotdoom.rgoswami.me/][Doom Emacs]]
+- [[https://rgoswami.me/posts/xcompose-keys-linux-icelandic/][Sway]], in the
+  2024 compose-keys post. The 2020
+  [[https://rgoswami.me/posts/colemak-switch/][Colemak post]] still names
+  i3, Vimium, and Zathura
+- The command-line table in the
+  [[https://rgoswami.me/posts/hpc-conf-2021/][2021 HPC post]]: bat, bottom,
+  ripgrep, fd, and the rest of that table
