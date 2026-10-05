@@ -1,0 +1,447 @@
+#+author: Rohit Goswami
+#+hugo_base_dir: ../
+#+hugo_front_matter_format: yaml
+#+hugo_front_matter_key_replace: description>summary
+#+hugo_auto_set_lastmod: nil
+#+bibliography: biblio/refs.bib
+
+* DONE Inheritance and Operator Overloading :@notes:python:fortran:numpy:f2py:ramblings:
+CLOSED: [2026-10-05 Mon 21:00]
+:PROPERTIES:
+:EXPORT_FILE_NAME: f2py-inheritance-operators
+:EXPORT_HUGO_PANDOC_CITATIONS: t
+:EXPORT_BIBLIOGRAPHY: biblio/Quansight.bib, biblio/refs.bib
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true :link-citations true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :series '("Bridging Fortran \& Python")
+:END:
+
+#+begin_quote
+Fortran and Python disagree about what inheritance means. The goal
+is to make a user on either side of the boundary forget the other side exists.
+#+end_quote
+
+** Background
+
+[[https://rgoswami.me/posts/f2py-finalizers-generics/][Last time]] we covered finalizers and
+generic type-bound procedures. Now we tackle two features that make Fortran
+derived types feel like proper Python objects: type extension (~extends()~, F2018
+7.5.7)[fn:f18ref] and operator overloading (~interface operator()~, F2018
+7.5.11).
+
+The code corresponds to the [[https://github.com/HaoZeke/numpy/releases/tag/post/f2py-inheritance-operators][post/f2py-inheritance-operators]] tag.
+
+** Type inheritance via extends()
+
+*** The Fortran types
+
+A two-level hierarchy: ~Particle~ has ~mass~ and ~charge~. ~ChargedParticle~
+extends it with ~spin~.
+
+#+begin_src f90
+module inheritance_mod
+  use iso_c_binding
+  implicit none
+
+  type :: Particle
+    double precision :: mass
+    integer :: charge
+  end type Particle
+
+  type, extends(Particle) :: ChargedParticle
+    double precision :: spin
+  end type ChargedParticle
+
+contains
+  subroutine scale_mass(p, factor)
+    type(Particle), intent(inout) :: p
+    double precision, intent(in) :: factor
+    p%mass = p%mass * factor
+  end subroutine
+end module
+#+end_src
+
+A ~ChargedParticle~ has three members: ~mass~ and ~charge~ from ~Particle~,
+plus its own ~spin~. The standard calls this "type extension" (F2018 7.5.7.1).
+
+*** Manual wrappers
+
+You might expect the child to reuse the parent's getters. It can't. Each type
+gets its own complete set of wrappers, accessing inherited members through the
+child's layout[fn:layoutluck]:
+
+#+begin_export html
+<details>
+<summary>Full inheritance wrapper module (click to expand)</summary>
+#+end_export
+
+#+begin_src f90
+module particle_wrappers
+  use inheritance_mod
+  use iso_c_binding
+  implicit none
+contains
+  function particle_create(mass, charge) result(cptr) bind(c)
+    real(c_double), value :: mass
+    integer(c_int), value :: charge
+    type(c_ptr) :: cptr
+    type(Particle), pointer :: obj
+    allocate(obj)
+    obj%mass = mass; obj%charge = charge
+    cptr = c_loc(obj)
+  end function
+
+  subroutine particle_destroy(cptr) bind(c)
+    type(c_ptr), value :: cptr
+    type(Particle), pointer :: obj
+    call c_f_pointer(cptr, obj)
+    deallocate(obj)
+  end subroutine
+
+  function particle_get_mass(cptr) result(val) bind(c)
+    type(c_ptr), value :: cptr
+    real(c_double) :: val
+    type(Particle), pointer :: obj
+    call c_f_pointer(cptr, obj)
+    val = obj%mass
+  end function
+
+  function particle_get_charge(cptr) result(val) bind(c)
+    type(c_ptr), value :: cptr
+    integer(c_int) :: val
+    type(Particle), pointer :: obj
+    call c_f_pointer(cptr, obj)
+    val = obj%charge
+  end function
+
+  ! Child: ChargedParticle gets its OWN accessors for inherited members
+  function charged_create(mass, charge, spin) result(cptr) bind(c)
+    real(c_double), value :: mass
+    integer(c_int), value :: charge
+    real(c_double), value :: spin
+    type(c_ptr) :: cptr
+    type(ChargedParticle), pointer :: obj
+    allocate(obj)
+    obj%mass = mass; obj%charge = charge; obj%spin = spin
+    cptr = c_loc(obj)
+  end function
+
+  subroutine charged_destroy(cptr) bind(c)
+    type(c_ptr), value :: cptr
+    type(ChargedParticle), pointer :: obj
+    call c_f_pointer(cptr, obj)
+    deallocate(obj)
+  end subroutine
+
+  function charged_get_mass(cptr) result(val) bind(c)
+    type(c_ptr), value :: cptr
+    real(c_double) :: val
+    type(ChargedParticle), pointer :: obj
+    call c_f_pointer(cptr, obj)
+    val = obj%mass   ! accesses via ChargedParticle layout
+  end function
+
+  function charged_get_spin(cptr) result(val) bind(c)
+    type(c_ptr), value :: cptr
+    real(c_double) :: val
+    type(ChargedParticle), pointer :: obj
+    call c_f_pointer(cptr, obj)
+    val = obj%spin
+  end function
+end module
+#+end_src
+
+#+begin_export html
+</details>
+#+end_export
+
+Notice ~charged_get_mass~ does ~c_f_pointer~ into ~type(ChargedParticle)~, not
+~type(Particle)~. It accesses ~obj%mass~ through the child's type descriptor.
+This is why we cannot reuse the parent's getters: the capsule holds a
+~ChargedParticle~ pointer, and interpreting it as a ~Particle~ pointer would
+work by accident on every compiler I have tested[fn:layoutluck] but is not
+guaranteed by the standard.
+
+*** Testing from C
+
+#+begin_export html
+<details>
+<summary>C test (click to expand)</summary>
+#+end_export
+
+#+begin_src c
+/* test_inherit.c */
+#include <stdio.h>
+
+extern void *particle_create(double mass, int charge);
+extern void particle_destroy(void *cptr);
+extern double particle_get_mass(void *cptr);
+extern int particle_get_charge(void *cptr);
+extern void *charged_create(double mass, int charge, double spin);
+extern void charged_destroy(void *cptr);
+extern double charged_get_mass(void *cptr);
+extern double charged_get_spin(void *cptr);
+
+int main() {
+    void *p = particle_create(1.5, -1);
+    printf("Particle: mass=%.1f charge=%d\n",
+           particle_get_mass(p), particle_get_charge(p));
+
+    void *cp = charged_create(0.511, -1, 0.5);
+    printf("ChargedParticle: mass=%.3f spin=%.1f\n",
+           charged_get_mass(cp), charged_get_spin(cp));
+
+    particle_destroy(p);
+    charged_destroy(cp);
+    printf("Destroyed.\n");
+    return 0;
+}
+#+end_src
+
+#+begin_src bash
+$ meson setup bbdir && meson compile -C bbdir
+$ ./bbdir/test_inherit
+Particle: mass=1.5 charge=-1
+ChargedParticle: mass=0.511 spin=0.5
+Destroyed.
+#+end_src
+
+#+begin_export html
+</details>
+#+end_export
+
+*** Python-side inheritance via tp_base
+
+CPython's type system supports single inheritance through ~tp_base~. If
+~ChargedParticleType.tp_base~ points to ~ParticleType~, then
+~isinstance(cp, ParticleType)~ returns ~True~:
+
+#+begin_src c
+static PyTypeObject PyChargedParticle_Type = {
+    PyVarObject_HEAD_INIT(NULL, 0)
+    .tp_name = "charged_particle",
+    .tp_basicsize = sizeof(PyChargedParticleObject),
+    .tp_base = &PyParticle_Type,    /* inheritance */
+    /* ... */
+};
+#+end_src
+
+The ~tp_base~ enables ~isinstance()~ but doesn't contribute attribute access.
+Each type has its own complete getset table because the opaque pointer pattern
+needs type-specific accessors.
+
+** Operator overloading
+
+*** The Fortran module
+
+#+begin_src f90
+module operator_mod
+  use iso_c_binding
+  implicit none
+
+  type :: Vec2
+    double precision :: x, y
+  end type Vec2
+
+  interface operator(+)
+    module procedure vec2_add
+  end interface
+  interface operator(==)
+    module procedure vec2_eq
+  end interface
+
+contains
+  function vec2_add(a, b) result(c)
+    type(Vec2), intent(in) :: a, b
+    type(Vec2) :: c
+    c%x = a%x + b%x
+    c%y = a%y + b%y
+  end function
+
+  function vec2_eq(a, b) result(eq)
+    type(Vec2), intent(in) :: a, b
+    logical :: eq
+    eq = (a%x == b%x) .and. (a%y == b%y)
+  end function
+end module
+#+end_src
+
+*** Manual wrappers for operators
+
+Arithmetic operators take two ~c_ptr~ arguments and return a new ~c_ptr~.
+Comparison operators return a boolean. The full wrapper module also needs
+create/destroy/getters (the same mechanical pattern as every other post):
+
+#+begin_export html
+<details>
+<summary>Full Vec2 wrapper module (click to expand)</summary>
+#+end_export
+
+#+begin_src f90
+module vec2_wrappers
+  use operator_mod
+  use iso_c_binding
+  implicit none
+contains
+  function vec2_create(x, y) result(cptr) bind(c)
+    real(c_double), value :: x, y
+    type(c_ptr) :: cptr
+    type(Vec2), pointer :: obj
+    allocate(obj)
+    obj%x = x; obj%y = y
+    cptr = c_loc(obj)
+  end function
+
+  subroutine vec2_destroy(cptr) bind(c)
+    type(c_ptr), value :: cptr
+    type(Vec2), pointer :: obj
+    call c_f_pointer(cptr, obj)
+    deallocate(obj)
+  end subroutine
+
+  function vec2_get_x(cptr) result(val) bind(c)
+    type(c_ptr), value :: cptr
+    real(c_double) :: val
+    type(Vec2), pointer :: obj
+    call c_f_pointer(cptr, obj)
+    val = obj%x
+  end function
+
+  function vec2_get_y(cptr) result(val) bind(c)
+    type(c_ptr), value :: cptr
+    real(c_double) :: val
+    type(Vec2), pointer :: obj
+    call c_f_pointer(cptr, obj)
+    val = obj%y
+  end function
+
+  function vec2_wrap_add(a_ptr, b_ptr) result(c_ptr_out) bind(c)
+    type(c_ptr), value :: a_ptr, b_ptr
+    type(c_ptr) :: c_ptr_out
+    type(Vec2), pointer :: a, b, c_obj
+    call c_f_pointer(a_ptr, a)
+    call c_f_pointer(b_ptr, b)
+    allocate(c_obj)
+    c_obj = vec2_add(a, b)
+    c_ptr_out = c_loc(c_obj)
+  end function
+
+  function vec2_wrap_eq(a_ptr, b_ptr) result(eq) bind(c)
+    type(c_ptr), value :: a_ptr, b_ptr
+    logical(c_bool) :: eq
+    type(Vec2), pointer :: a, b
+    call c_f_pointer(a_ptr, a)
+    call c_f_pointer(b_ptr, b)
+    eq = vec2_eq(a, b)
+  end function
+end module
+#+end_src
+
+#+begin_export html
+</details>
+#+end_export
+
+*** Testing from C
+
+#+begin_export html
+<details>
+<summary>C test (click to expand)</summary>
+#+end_export
+
+#+begin_src c
+/* test_operator.c */
+#include <stdio.h>
+#include <stdbool.h>
+
+extern void *vec2_create(double x, double y);
+extern void vec2_destroy(void *cptr);
+extern double vec2_get_x(void *cptr);
+extern double vec2_get_y(void *cptr);
+extern void *vec2_wrap_add(void *a, void *b);
+extern bool vec2_wrap_eq(void *a, void *b);
+
+int main() {
+    void *v1 = vec2_create(1.0, 2.0);
+    void *v2 = vec2_create(3.0, 4.0);
+
+    void *v3 = vec2_wrap_add(v1, v2);
+    printf("v1 + v2 = (%.1f, %.1f)\n",
+           vec2_get_x(v3), vec2_get_y(v3));
+
+    printf("v1 == v2: %d\n", vec2_wrap_eq(v1, v2));
+    printf("v1 == v1: %d\n", vec2_wrap_eq(v1, v1));
+
+    vec2_destroy(v1);
+    vec2_destroy(v2);
+    vec2_destroy(v3);
+    printf("Destroyed.\n");
+    return 0;
+}
+#+end_src
+
+#+begin_src meson
+project('inherit_operator_test', 'c', 'fortran',
+        version : '0.1',
+        default_options : ['warning_level=2', 'buildtype=debug'])
+executable('test_inherit',
+           'inheritance_mod.f90',
+           'particle_wrappers.f90',
+           'test_inherit.c')
+executable('test_operator',
+           'operator_mod.f90',
+           'vec2_wrappers.f90',
+           'test_operator.c')
+#+end_src
+
+#+begin_src bash
+$ meson setup bbdir && meson compile -C bbdir
+$ ./bbdir/test_operator
+v1 + v2 = (4.0, 6.0)
+v1 == v2: 0
+v1 == v1: 1
+Destroyed.
+#+end_src
+
+#+begin_export html
+</details>
+#+end_export
+
+Arithmetic returns a new heap-allocated object. Comparison returns a boolean.
+
+*** Python number protocol
+
+CPython exposes arithmetic via ~PyNumberMethods~ slots (~nb_add~, ~nb_subtract~)
+and comparison via ~tp_richcompare~. The generated C code checks both operands
+are the right type and returns ~NotImplemented~ otherwise[fn:notimpl]:
+
+#+begin_src c
+static PyObject *
+Pyvec2_nb_add(PyObject *left, PyObject *right) {
+    if (!Py_IS_TYPE(left, &Pyvec2_Type) ||
+        !Py_IS_TYPE(right, &Pyvec2_Type)) {
+        Py_RETURN_NOTIMPLEMENTED;
+    }
+    /* extract capsules, call vec2_wrap_add, wrap result */
+}
+#+end_src
+
+** f2py automation
+
+f2py detects ~extends()~ from crackfortran's parsed output and sets ~tp_base~.
+It generates a complete getset table for each type (child re-declares parent
+members). Operator interfaces are scanned from the module body and mapped to
+~PyNumberMethods~ slots (arithmetic) or ~tp_richcompare~ (comparison).
+
+** Conclusions
+
+Type extension maps to ~tp_base~, giving ~isinstance()~ support. Children
+re-declare parent getset entries because the opaque pointer pattern requires
+type-specific accessors.
+
+Operator overloading maps to ~PyNumberMethods~ and ~tp_richcompare~. Type
+mismatches return ~NotImplemented~ following Python's cooperative operator
+protocol.
+
+[fn:f18ref] All F2018 section numbers refer to the J3/18-007r1 interpretation document (WD 1539-1).
+[fn:layoutluck] Inherited components are always laid out first on every compiler I have tested. But "works on every compiler I tried" is not "the standard guarantees it," so we generate type-specific accessors.
+[fn:notimpl] This is Python's cooperative operator protocol. If ~a + b~ fails, CPython tries ~b.__radd__(a)~ before giving up. Returning ~NotImplemented~ opts into this.
+
