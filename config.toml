@@ -228,6 +228,10 @@ siteID = "rg95ru-rgoswami.me"
     name       = "Packages"
     url        = "/packages"
   [[menu.main]]
+    identifier = "tools"
+    name       = "Tools"
+    url        = "/tools"
+  [[menu.main]]
     identifier = "blog"
     name       = "Blog"
     url        = "/posts"

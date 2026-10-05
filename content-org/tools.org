@@ -1,0 +1,64 @@
+#+author: Rohit Goswami
+#+hugo_base_dir: ../
+#+hugo_front_matter_format: yaml
+#+hugo_weight: nil
+#+hugo_front_matter_key_replace: description>summary
+
+#+seq_todo: TODO DRAFT DONE
+
+#+property: header-args :eval never-export
+
+#+startup: nologdone indent overview inlineimages
+
+* DONE Tools I Use :@personal:notes:tools:
+:PROPERTIES:
+:EXPORT_HUGO_SECTION: /
+:EXPORT_FILE_NAME: tools
+:EXPORT_DATE: 2026-10-05
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true :comments false
+:END:
+#+begin_description
+The small web tools I hand to a class or a meeting.
+#+end_description
+
+Profiles and talks that mention me stay on the
+[[https://rgoswami.me/posts/rg-collection-weblinks/][collection of links]]. This
+page lists the short set I send to other people.
+
+** Scheduling
+I collect a time with [[https://crab.fit/][crab.fit]]. I name the event, paint the
+hours I can make, and send the link. Everyone else paints theirs. The
+overlap shows up as a heat map, and the page updates as the replies
+come in. Ben Grant writes it. The code sits in the
+[[https://github.com/GRA0007/crab.fit][repository]] under GPLv3. A name
+on an event can carry a password, and that password only protects that
+person's row. Crab Fit deletes an idle event after 3 months. The page
+carries no ads, so I send it instead of
+[[http://whenisgood.net/][WhenIsGood]].
+
+** A clock
+I put Garrick Aden-Buie's
+[[https://pkg.garrickadenbuie.com/countdown/][countdown]] package for R
+on a slide. Click or Space starts and stops the timer. Double-click or
+Escape resets it. The same clock runs full screen, with no R session,
+at [[https://apps.garrickadenbuie.com/countdown/][apps.garrickadenbuie.com/countdown]].
+
+** A board
+[[https://jamboard.google.com/][Jamboard]] no longer runs. Google's note
+says Google converted the old Jams to PDFs in 2025. For a shared
+scribble I open [[https://whiteboardfox.com/][Whiteboard Fox]]. A new
+board opens on a numbered host, such as
+[[https://r8.whiteboardfox.com/][r8.whiteboardfox.com]]. Whoever has the
+link can draw. A free board draws in 7 colors and expires after 14 days.
+Pro, at $7.90 a month, removes the ads, so a free board still shows
+them. A scribble I keep goes in
+[[https://github.com/xournalpp/xournalpp][Xournal++]], the same setup as
+[[https://rgoswami.me/posts/multi-monitor-touch/][the touchscreen post]].
+
+** From the teaching set
+Three of these remain from
+[[https://rgoswami.me/posts/cip2021-fin/][Code in Place 2021]]. Jamboard
+was the fourth name on that list, and the board section above replaces it.
+- [[https://dateful.com/eventlink][dateful.com]], which used to be Starts at, for a link that carries the timezone
+- [[https://www.strawpoll.com/][Straw Poll]] for a quick vote
+- [[https://hackmd.io/][HackMD]] for shared notes and code sketches
