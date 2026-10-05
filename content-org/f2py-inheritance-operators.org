@@ -59,7 +59,7 @@ A ~ChargedParticle~ has ~mass~ and ~charge~ from ~Particle~, and its own ~spin~.
 
 *** Manual wrappers
 
-I expected the child to reuse the parent's getters. It can't. Each type gets its own wrappers, and the child reads the inherited members through its own layout[fn:layoutluck]:
+One might expect the child to reuse the parent's getters. It can't. Each type gets its own wrappers, and the child reads the inherited members through its own layout[fn:layoutluck]:
 
 #+begin_export html
 <details>
