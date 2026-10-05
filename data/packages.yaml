@@ -755,8 +755,8 @@ ecosystems:
 upstream:
   title: Write access
   description: Repositories I can push to.
-  total: 867
-  org_count: 99
+  total: 1151
+  org_count: 101
   forge_count: 2
   data_url: /data/write-access.json
   notables:
@@ -832,10 +832,26 @@ upstream:
     access: write
     url: https://gitlab.com/gpaw/gpaw
     forge: gitlab
-  - name: groupe_mousseau/artn
-    access: write
-    url: https://gitlab.com/groupe_mousseau/artn
-    forge: gitlab
+  - name: leidarljos/ljos
+    access: admin
+    url: https://github.com/leidarljos/ljos
+    forge: github
+  - name: leidarljos/claimdag
+    access: admin
+    url: https://github.com/leidarljos/claimdag
+    forge: github
+  - name: leidarljos/deedar
+    access: admin
+    url: https://github.com/leidarljos/deedar
+    forge: github
+  - name: leidarljos/packset
+    access: admin
+    url: https://github.com/leidarljos/packset
+    forge: github
+  - name: leidarljos/bench
+    access: admin
+    url: https://github.com/leidarljos/bench
+    forge: github
   - name: HaoZeke/artn-plugin
     access: admin
     url: https://gitlab.com/HaoZeke/artn-plugin
@@ -868,13 +884,13 @@ upstream:
   - id: github
     name: GitHub
     host: github.com
-    total: 652
-    org_count: 64
+    total: 976
+    org_count: 68
   - id: gitlab
     name: GitLab
     host: gitlab.com
-    total: 215
-    org_count: 35
+    total: 175
+    org_count: 33
 retired:
   title: Retired
   description: Packaging I no longer update.
