@@ -35,7 +35,16 @@
             {{ end }}
 
             <div class="post-content">
-                {{ .Content }}
+                {{- $body := .Content -}}
+                {{- if eq .File.ContentBaseName "about" -}}
+                  {{- /* Pointer to /tools/, kept out of the header. */ -}}
+                  {{- if not (in .Content "involving me.") -}}
+                    {{- errorf "about page is missing the tools-link sentence" -}}
+                  {{- end -}}
+                  {{- $tools := printf "<a href=%q>tools I send people</a>" ("tools/" | relLangURL) -}}
+                  {{- $body = replace $body "involving me." (printf "involving me. The %s are on a shorter page." $tools) -}}
+                {{- end -}}
+                {{ $body | safeHTML }}
             </div>
         </article>
 
