@@ -180,7 +180,11 @@ task :postPdfMintLinks do
   minter.write_json!(dest, result.table)
   puts "postPdfMintLinks: created=#{result.created} replayed=#{result.replayed} errors=#{result.errors.size} → #{dest}"
   result.errors.each { |e| warn "  ! #{e["slug"]}/#{e["theme"]}: #{e["error"]}" }
-  abort "postPdfMintLinks: #{result.errors.size} error(s)" unless result.errors.empty?
+  blocking = PostPdf::AnticsLinks.blocking_link_errors(result.errors)
+  abort "postPdfMintLinks: #{blocking.size} error(s)" unless blocking.empty?
+  unless result.errors.empty?
+    warn "postPdfMintLinks: active-link quota reached; remaining short links were not minted"
+  end
 end
 
 desc "Force-push static/pdf to orphan branch (single commit; CV pdfs pattern)"

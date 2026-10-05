@@ -128,6 +128,7 @@ class TestAnticsLinks < Minitest::Test
     assert_equal 1, result.errors.size
     assert_match(/429/, result.errors[0]["error"])
     assert_empty result.table
+    assert_empty PostPdf::AnticsLinks.blocking_link_errors(result.errors)
   end
 
   def test_write_json

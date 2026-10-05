@@ -23,6 +23,12 @@ module PostPdf
 
     Result = Struct.new(:table, :created, :replayed, :errors, keyword_init: true)
 
+    # A 429 is the active-link quota. Minting stops there. It does not
+    # fail the site build; the PDF button stays on the same-origin file.
+    def self.blocking_link_errors(errors)
+      errors.reject { |err| err["error"].to_s.include?(" 429:") }
+    end
+
     def initialize(api_url: DEFAULT_API, token:, site: DEFAULT_SITE, post: nil)
       @api_url = api_url.to_s.chomp("/")
       @token = token.to_s
