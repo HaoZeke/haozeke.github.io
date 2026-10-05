@@ -16,26 +16,21 @@ CLOSED: [2026-10-05 Mon 21:00]
 :END:
 
 #+begin_quote
-Fortran and Python disagree about what inheritance means. The goal
-is to make a user on either side of the boundary forget the other side exists.
+A ChargedParticle in Fortran is a Particle with one more field. Python will
+not believe that unless the wrapper says so.
 #+end_quote
 
 ** Background
 
-[[https://rgoswami.me/posts/f2py-finalizers-generics/][Last time]] we covered finalizers and
-generic type-bound procedures. Now we tackle two features that make Fortran
-derived types feel like proper Python objects: type extension (~extends()~, F2018
-7.5.7)[fn:f18ref] and operator overloading (~interface operator()~, F2018
-7.5.11).
+The [[https://rgoswami.me/posts/f2py-parameterized-types/][parameterized types post]] is the one that went out before this. Finalizers and generic bindings are further back, in [[https://rgoswami.me/posts/f2py-finalizers-generics/][that post]]. This one is the inheritance piece I had sitting behind them: type extension (~extends()~, F2018 7.5.7)[fn:f18ref] and operator overloading (~interface operator()~, F2018 7.5.11).
 
-The code corresponds to the [[https://github.com/HaoZeke/numpy/releases/tag/post/f2py-inheritance-operators][post/f2py-inheritance-operators]] tag.
+Same plan as the allocatable post. Wrappers by hand first, then what ~f2py~ generates. The code is the [[https://github.com/HaoZeke/numpy/releases/tag/post/f2py-inheritance-operators][post/f2py-inheritance-operators]] tag.
 
 ** Type inheritance via extends()
 
 *** The Fortran types
 
-A two-level hierarchy: ~Particle~ has ~mass~ and ~charge~. ~ChargedParticle~
-extends it with ~spin~.
+Start small. ~Particle~ has ~mass~ and ~charge~. ~ChargedParticle~ extends it and adds ~spin~.
 
 #+begin_src f90
 module inheritance_mod
@@ -60,14 +55,11 @@ contains
 end module
 #+end_src
 
-A ~ChargedParticle~ has three members: ~mass~ and ~charge~ from ~Particle~,
-plus its own ~spin~. The standard calls this "type extension" (F2018 7.5.7.1).
+A ~ChargedParticle~ has ~mass~ and ~charge~ from ~Particle~, and its own ~spin~. The standard calls that type extension (F2018 7.5.7.1).
 
 *** Manual wrappers
 
-You might expect the child to reuse the parent's getters. It can't. Each type
-gets its own complete set of wrappers, accessing inherited members through the
-child's layout[fn:layoutluck]:
+I expected the child to reuse the parent's getters. It can't. Each type gets its own wrappers, and the child reads the inherited members through its own layout[fn:layoutluck]:
 
 #+begin_export html
 <details>
@@ -154,12 +146,7 @@ end module
 </details>
 #+end_export
 
-Notice ~charged_get_mass~ does ~c_f_pointer~ into ~type(ChargedParticle)~, not
-~type(Particle)~. It accesses ~obj%mass~ through the child's type descriptor.
-This is why we cannot reuse the parent's getters: the capsule holds a
-~ChargedParticle~ pointer, and interpreting it as a ~Particle~ pointer would
-work by accident on every compiler I have tested[fn:layoutluck] but is not
-guaranteed by the standard.
+~charged_get_mass~ does ~c_f_pointer~ into ~type(ChargedParticle)~, not ~type(Particle)~, and then reads ~obj%mass~. The capsule holds a ~ChargedParticle~. Reading that memory as a ~Particle~ works on every compiler I have tried[fn:layoutluck], and the standard does not promise it, so the wrappers stay type-specific.
 
 *** Testing from C
 
@@ -211,9 +198,7 @@ Destroyed.
 
 *** Python-side inheritance via tp_base
 
-CPython's type system supports single inheritance through ~tp_base~. If
-~ChargedParticleType.tp_base~ points to ~ParticleType~, then
-~isinstance(cp, ParticleType)~ returns ~True~:
+CPython does single inheritance with ~tp_base~. Point ~ChargedParticleType.tp_base~ at ~ParticleType~ and ~isinstance(cp, ParticleType)~ is true:
 
 #+begin_src c
 static PyTypeObject PyChargedParticle_Type = {
@@ -225,9 +210,7 @@ static PyTypeObject PyChargedParticle_Type = {
 };
 #+end_src
 
-The ~tp_base~ enables ~isinstance()~ but doesn't contribute attribute access.
-Each type has its own complete getset table because the opaque pointer pattern
-needs type-specific accessors.
+~tp_base~ is what makes ~isinstance()~ work. It does not hand you the attributes. Each type still has its own getset table, because the opaque pointer needs an accessor that knows the type.
 
 ** Operator overloading
 
@@ -267,9 +250,7 @@ end module
 
 *** Manual wrappers for operators
 
-Arithmetic operators take two ~c_ptr~ arguments and return a new ~c_ptr~.
-Comparison operators return a boolean. The full wrapper module also needs
-create/destroy/getters (the same mechanical pattern as every other post):
+Addition takes two ~c_ptr~ arguments and returns a new ~c_ptr~. Comparison returns a boolean. The wrapper module also needs create, destroy, and the getters. That part is the same mechanical pattern as the other posts:
 
 #+begin_export html
 <details>
@@ -405,13 +386,11 @@ Destroyed.
 </details>
 #+end_export
 
-Arithmetic returns a new heap-allocated object. Comparison returns a boolean.
+Addition returns a new object on the heap. Comparison returns a boolean. gfortran 16 warns on the real comparison in ~vec2_eq~. The values in the test are exact, so the printed result is still 0 and 1.
 
 *** Python number protocol
 
-CPython exposes arithmetic via ~PyNumberMethods~ slots (~nb_add~, ~nb_subtract~)
-and comparison via ~tp_richcompare~. The generated C code checks both operands
-are the right type and returns ~NotImplemented~ otherwise[fn:notimpl]:
+CPython puts arithmetic in ~PyNumberMethods~ (~nb_add~, ~nb_subtract~) and comparison in ~tp_richcompare~. The generated C checks both operands and returns ~NotImplemented~ when either has the wrong type[fn:notimpl]:
 
 #+begin_src c
 static PyObject *
@@ -426,22 +405,15 @@ Pyvec2_nb_add(PyObject *left, PyObject *right) {
 
 ** f2py automation
 
-f2py detects ~extends()~ from crackfortran's parsed output and sets ~tp_base~.
-It generates a complete getset table for each type (child re-declares parent
-members). Operator interfaces are scanned from the module body and mapped to
-~PyNumberMethods~ slots (arithmetic) or ~tp_richcompare~ (comparison).
+~f2py~ sees ~extends()~ in what crackfortran parsed and sets ~tp_base~. It writes a full getset table for each type, and the child lists the parent's members again. Operator interfaces in the module body go to ~PyNumberMethods~ for arithmetic and ~tp_richcompare~ for comparison. I re-ran the inheritance and operator tests at the series tip, and those passed. The abstract-type tests on that same commit do not, so this post does not claim those.
 
 ** Conclusions
 
-Type extension maps to ~tp_base~, giving ~isinstance()~ support. Children
-re-declare parent getset entries because the opaque pointer pattern requires
-type-specific accessors.
+Type extension becomes ~tp_base~, so ~isinstance~ works. The child still lists the parent's getset entries, because each accessor has to know which type the capsule is.
 
-Operator overloading maps to ~PyNumberMethods~ and ~tp_richcompare~. Type
-mismatches return ~NotImplemented~ following Python's cooperative operator
-protocol.
+Operator overloading becomes ~PyNumberMethods~ and ~tp_richcompare~. A type mismatch returns ~NotImplemented~, and that is how Python tries the reflected operator before it gives up.
 
-[fn:f18ref] All F2018 section numbers refer to the J3/18-007r1 interpretation document (WD 1539-1).
-[fn:layoutluck] Inherited components are always laid out first on every compiler I have tested. But "works on every compiler I tried" is not "the standard guarantees it," so we generate type-specific accessors.
-[fn:notimpl] This is Python's cooperative operator protocol. If ~a + b~ fails, CPython tries ~b.__radd__(a)~ before giving up. Returning ~NotImplemented~ opts into this.
+[fn:f18ref] The F2018 section numbers are from the J3/18-007r1 interpretation document (WD 1539-1).
+[fn:layoutluck] Inherited components come first in the layout on every compiler I have tried. That is not a promise in the standard, so the generated accessors stay type-specific.
+[fn:notimpl] If ~a + b~ does not work, CPython tries ~b.__radd__(a)~ before it fails. Returning ~NotImplemented~ is what opts into that.
 
