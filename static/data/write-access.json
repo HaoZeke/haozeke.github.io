@@ -139,6 +139,12 @@
       "forge": "github"
     },
     {
+      "name": "leidarljos/vissue",
+      "access": "admin",
+      "url": "https://github.com/leidarljos/vissue",
+      "forge": "github"
+    },
+    {
       "name": "leidarljos/claimdag",
       "access": "admin",
       "url": "https://github.com/leidarljos/claimdag",
