@@ -2,7 +2,7 @@
 # Edit this file to add/remove packages. Run: python scripts/check_packages_catalog.py
 # Re-scan nixpkgs: python scripts/scan_nixpkgs_maintainers.py /path/to/nixpkgs HaoZeke
 
-updated: '2026-08-11'
+updated: '2026-10-05'
 title: Packages I maintain
 intro: Packages I maintain, images I push, and repositories I can commit to.
 ecosystems:
@@ -34,17 +34,17 @@ ecosystems:
     registry_url: https://aur.archlinux.org/packages/flowy-code
     homepage: https://github.com/flowy-code/flowy
   - name: journey-cloud
-    version: 2.14.6-1
+    version: 5.2.3-1
     summary: Private diary, journal and companion (Journey Cloud).
     registry_url: https://aur.archlinux.org/packages/journey-cloud
     homepage: https://journey.cloud/
   - name: klfc
-    version: 1.5.7-5
+    version: 1.5.7-7
     summary: Create advanced keyboard layouts in various formats.
     registry_url: https://aur.archlinux.org/packages/klfc
     homepage: https://github.com/39aldo39/klfc
   - name: pp-git
-    version: r174.7e2866f-1
+    version: r198.2708b25-1
     summary: Text preprocessor designed for Pandoc (Markdown / reST).
     registry_url: https://aur.archlinux.org/packages/pp-git
     homepage: http://cdsoft.fr/pp
@@ -90,12 +90,12 @@ ecosystems:
     registry_url: https://aur.archlinux.org/packages/rtrash
     homepage: https://github.com/HaoZeke/rtrash
   - name: tmetric-rpm
-    version: 20.2.4-1
+    version: 20.2.4-2
     summary: TMetric time tracker, packaged from the RPM to reduce breakage.
     registry_url: https://aur.archlinux.org/packages/tmetric-rpm
     homepage: https://tmetric.com
   - name: ttf-neuton
-    version: 01git-1
+    version: 20260521-1
     summary: Neuton — clean, dark, Dutch-inspired serif font.
     registry_url: https://aur.archlinux.org/packages/ttf-neuton
     homepage: https://fonts.google.com/specimen/Neuton
@@ -107,23 +107,23 @@ ecosystems:
   registry_host: prefix.dev
   packages:
   - name: eon
-    version: 2.16.0
+    version: 3.5.0
     summary: Algorithms for long timescales and PES exploration (EON).
     registry_url: https://prefix.dev/channels/conda-forge/packages/eon
     feedstock_url: https://github.com/conda-forge/eon-feedstock
     homepage: https://github.com/TheochemUI/EON
   - name: rgpycrumbs
-    version: 1.8.0
+    version: 1.10.10
     summary: Dispatcher-based analytical and visualization suite for chemical physics.
     registry_url: https://prefix.dev/channels/conda-forge/packages/rgpycrumbs
     feedstock_url: https://github.com/conda-forge/rgpycrumbs-feedstock
   - name: pychum
-    version: 1.4.2
+    version: 1.4.3
     summary: Input file generators for computational chemistry.
     registry_url: https://prefix.dev/channels/conda-forge/packages/pychum
     feedstock_url: https://github.com/conda-forge/pychum-feedstock
   - name: anneal
-    version: 0.5.0
+    version: 0.9.0
     summary: Simulated annealing and quenching for Python.
     registry_url: https://prefix.dev/channels/conda-forge/packages/anneal
     feedstock_url: https://github.com/conda-forge/anneal-feedstock
@@ -135,7 +135,7 @@ ecosystems:
     feedstock_url: https://github.com/conda-forge/pytest-pep723-feedstock
     homepage: https://github.com/HaoZeke/pytest-pep723
   - name: chemparseplot
-    version: 1.8.0
+    version: 1.11.0
     summary: Chemical plotters and parsers.
     registry_url: https://prefix.dev/channels/conda-forge/packages/chemparseplot
     feedstock_url: https://github.com/conda-forge/chemparseplot-feedstock
@@ -166,7 +166,7 @@ ecosystems:
     feedstock_url: https://github.com/conda-forge/asv-feedstock
     role: co-maintainer
   - name: asv_runner
-    version: 0.2.5
+    version: 0.3.1
     summary: Core Python benchmark code for ASV.
     registry_url: https://prefix.dev/channels/conda-forge/packages/asv_runner
     feedstock_url: https://github.com/conda-forge/asv_runner-feedstock
@@ -182,7 +182,7 @@ ecosystems:
     registry_url: https://prefix.dev/channels/conda-forge/packages/latex-rubber
     feedstock_url: https://github.com/conda-forge/latex-rubber-feedstock
   - name: libmetatensor
-    version: 0.2.2
+    version: 0.2.5
     summary: Self-describing sparse tensor format for atomistic ML.
     registry_url: https://prefix.dev/channels/conda-forge/packages/libmetatensor
     feedstock_url: https://github.com/conda-forge/libmetatensor-feedstock
@@ -194,13 +194,13 @@ ecosystems:
     feedstock_url: https://github.com/conda-forge/metatensor-feedstock
     role: co-maintainer
   - name: python-metatensor-core
-    version: 0.2.2
+    version: 0.2.5
     summary: Python bindings for metatensor-core.
     registry_url: https://prefix.dev/channels/conda-forge/packages/python-metatensor-core
     feedstock_url: https://github.com/conda-forge/python-metatensor-core-feedstock
     role: co-maintainer
   - name: python-metatensor-torch
-    version: 0.10.0
+    version: 0.10.6
     summary: Python bindings for metatensor-torch.
     registry_url: https://prefix.dev/channels/conda-forge/packages/python-metatensor-torch
     feedstock_url: https://github.com/conda-forge/python-metatensor-torch-feedstock
@@ -212,25 +212,25 @@ ecosystems:
     feedstock_url: https://github.com/conda-forge/python-metatensor-operations-feedstock
     role: co-maintainer
   - name: python-metatensor-learn
-    version: 0.5.0
+    version: 0.6.2
     summary: Building blocks for atomistic ML models (PyTorch / NumPy).
     registry_url: https://prefix.dev/channels/conda-forge/packages/python-metatensor-learn
     feedstock_url: https://github.com/conda-forge/python-metatensor-learn-feedstock
     role: co-maintainer
   - name: libmetatensor-torch
-    version: 0.10.0
+    version: 0.10.6
     summary: TorchScript/C++ bindings to metatensor.
     registry_url: https://prefix.dev/channels/conda-forge/packages/libmetatensor-torch
     feedstock_url: https://github.com/conda-forge/libmetatensor-torch-feedstock
     role: co-maintainer
   - name: libmetatomic-torch
-    version: 0.1.15
+    version: 0.1.19
     summary: Atomistic ML models usable everywhere (C++ / Torch).
     registry_url: https://prefix.dev/channels/conda-forge/packages/libmetatomic-torch
     feedstock_url: https://github.com/conda-forge/libmetatomic-torch-feedstock
     role: co-maintainer
   - name: python-metatomic-torch
-    version: 0.1.15
+    version: 0.1.19
     summary: Python bindings for metatomic-torch.
     registry_url: https://prefix.dev/channels/conda-forge/packages/python-metatomic-torch
     feedstock_url: https://github.com/conda-forge/python-metatomic-torch-feedstock
@@ -243,17 +243,17 @@ ecosystems:
   registry_host: pypi.org
   packages:
   - name: rgpycrumbs
-    version: 1.9.13
+    version: 1.11.0
     summary: Dispatcher-based analytical and computational suite for chemical physics.
     registry_url: https://pypi.org/project/rgpycrumbs/
     stats_url: https://pypistats.org/packages/rgpycrumbs
   - name: pychum
-    version: 1.4.2
+    version: 1.4.3
     summary: Input file generators for computational chemistry.
     registry_url: https://pypi.org/project/pychum/
     stats_url: https://pypistats.org/packages/pychum
   - name: anneal
-    version: 0.5.0
+    version: 0.9.0
     summary: Various annealing and quenching techniques.
     registry_url: https://pypi.org/project/anneal/
     homepage: https://github.com/HaoZeke/anneal
@@ -265,26 +265,32 @@ ecosystems:
     homepage: https://github.com/HaoZeke/pytest-pep723
     stats_url: https://pypistats.org/packages/pytest-pep723
   - name: chemparseplot
-    version: 1.9.7
+    version: 1.11.0
     summary: Parsers and plotting tools for computational chemistry.
     registry_url: https://pypi.org/project/chemparseplot/
     stats_url: https://pypistats.org/packages/chemparseplot
   - name: sphinx-rustdoc-postprocess
-    version: 0.1.0
+    version: 0.1.1
     summary: Post-process sphinxcontrib-rust RST (markdown leftovers via pandoc).
     registry_url: https://pypi.org/project/sphinx-rustdoc-postprocess/
     stats_url: https://pypistats.org/packages/sphinx-rustdoc-postprocess
   - name: wailord
-    version: 0.0.2
+    version: 0.2.0
     summary: Python library to interact with ORCA.
     registry_url: https://pypi.org/project/wailord/
     homepage: https://wailord.xyz
     stats_url: https://pypistats.org/packages/wailord
   - name: pydseamslib
-    version: 0.0.2
+    version: 2.9.1
     summary: Python bindings for seams-core.
     registry_url: https://pypi.org/project/pydseamslib/
     stats_url: https://pypistats.org/packages/pydseamslib
+  - name: pyrsx
+    version: 0.2.10
+    summary: Python bindings for rsx, a RAD-seq sex-determination toolkit.
+    registry_url: https://pypi.org/project/pyrsx/
+    homepage: https://github.com/HaoZeke/rsx-rs
+    stats_url: https://pypistats.org/packages/pyrsx
   - name: asv
     version: 0.6.6
     summary: 'Airspeed Velocity: Python history benchmarking with web reports.'
@@ -293,7 +299,7 @@ ecosystems:
     homepage: https://github.com/airspeed-velocity/asv
     role: co-maintainer
   - name: asv-runner
-    version: 0.2.5
+    version: 0.3.1
     summary: Core Python benchmark code for ASV.
     registry_url: https://pypi.org/project/asv-runner/
     stats_url: https://pypistats.org/packages/asv-runner
@@ -314,27 +320,67 @@ ecosystems:
   registry_host: crates.io
   packages:
   - name: anneal-core
-    version: 0.5.0
+    version: 0.9.0
     summary: Simulated annealing components built on eindir typed primitives.
     registry_url: https://crates.io/crates/anneal-core
     homepage: https://github.com/HaoZeke/anneal
   - name: bless
-    version: 0.2.0
+    version: 0.4.0
     summary: CLI logging helper for repeated runs with metadata tracking.
     registry_url: https://crates.io/crates/bless
     homepage: https://github.com/HaoZeke/bless
+  - name: claimdag
+    version: 0.6.2
+    summary: CAS claim and complete on a DAG.
+    registry_url: https://crates.io/crates/claimdag
+    homepage: https://leidarljos.github.io/claimdag/
+  - name: claimdag-cli
+    version: 0.6.2
+    summary: Command line over a claimdag work.bin directory.
+    registry_url: https://crates.io/crates/claimdag-cli
+    homepage: https://leidarljos.github.io/claimdag/
+  - name: claimdag-mcp
+    version: 0.6.2
+    summary: MCP server over a claim graph, who holds a claim, and the lease on it.
+    registry_url: https://crates.io/crates/claimdag-mcp
+    homepage: https://leidarljos.github.io/claimdag/
+  - name: claimdag-tui
+    version: 0.6.2
+    summary: Terminal work graph over a claimdag work.bin.
+    registry_url: https://crates.io/crates/claimdag-tui
+    homepage: https://leidarljos.github.io/claimdag/
   - name: dlpk
-    version: 0.4.0
+    version: 0.4.1
     summary: DLPack integration for Rust.
     registry_url: https://crates.io/crates/dlpk
     homepage: https://github.com/metatensor/dlpk
+  - name: deedar
+    version: 0.3.3
+    summary: One-writer deed store and Cap'n Proto client.
+    registry_url: https://crates.io/crates/deedar
+    homepage: https://leidarljos.github.io/deedar/
+  - name: deedar-cli
+    version: 0.3.3
+    summary: Operator commands for creating, reading, and tracing deeds.
+    registry_url: https://crates.io/crates/deedar-cli
+    homepage: https://leidarljos.github.io/deedar/
+  - name: deedar-deed
+    version: 0.3.3
+    summary: A unit of named work, with its kind, trail, and accession.
+    registry_url: https://crates.io/crates/deedar-deed
+    homepage: https://leidarljos.github.io/deedar/
+  - name: deedar-mcp
+    version: 0.3.3
+    summary: MCP server over a deed store and what a unit of work produced.
+    registry_url: https://crates.io/crates/deedar-mcp
+    homepage: https://leidarljos.github.io/deedar/
   - name: eb_stack
     version: 0.3.0
     summary: Resolvo-solved variants and CycloneDX SBOMs from conda-forge, Spack, and EasyBuild recipes.
     registry_url: https://crates.io/crates/eb_stack
     homepage: https://github.com/HaoZeke/eb-stack
   - name: eindir-core
-    version: 0.5.0
+    version: 0.6.0
     summary: Typed primitives for ND objective functions and bounded sampling.
     registry_url: https://crates.io/crates/eindir-core
     homepage: https://github.com/HaoZeke/eindir
@@ -343,31 +389,106 @@ ecosystems:
     summary: Rust bindings for GaussJacobiQuad (Fortran via C ABI).
     registry_url: https://crates.io/crates/gauss-jacobi-quad
     homepage: https://github.com/HaoZeke/GaussJacobiQuad
+  - name: linkcell
+    version: 0.3.8
+    summary: Periodic linked-cell cutoff pairs and k-nearest neighbour search.
+    registry_url: https://crates.io/crates/linkcell
+    homepage: https://github.com/d-SEAMS/linkcell
+  - name: ljos
+    version: 0.24.3
+    summary: Persistent memory, a work tracker, and a shell-command gate over MCP and hooks.
+    registry_url: https://crates.io/crates/ljos
+    homepage: https://leidarljos.github.io
+  - name: ljos-consensus
+    version: 0.6.0
+    summary: DeGroot and Friedkin-Johnsen updates over a trust graph.
+    registry_url: https://crates.io/crates/ljos-consensus
+    homepage: https://github.com/leidarljos/consensus
+  - name: ljos-hud
+    version: 0.22.0
+    summary: Summonable pane over due reviews, live claims, and trust.
+    registry_url: https://crates.io/crates/ljos-hud
+    homepage: https://leidarljos.github.io
+  - name: ljos-mcp
+    version: 0.14.0
+    summary: MCP server for ljos.
+    registry_url: https://crates.io/crates/ljos-mcp
+    homepage: https://leidarljos.github.io
+  - name: ljos-policyd
+    version: 0.2.5
+    summary: Argv checks for the Leidarljos seat.
+    registry_url: https://crates.io/crates/ljos-policyd
+    homepage: https://leidarljos.github.io/ljos-policyd/
+  - name: minimage
+    version: 0.1.3
+    summary: Minimum-image convention for periodic parallelepiped cells.
+    registry_url: https://crates.io/crates/minimage
+    homepage: https://lode-org.github.io/minimage/
   - name: ookcite-mcp
-    version: 0.4.10
+    version: 0.6.5
     summary: MCP server for OokCite citation validation and formatting.
     registry_url: https://crates.io/crates/ookcite-mcp
     homepage: https://github.com/TurtleTech-ehf/ookcite-mcp
+  - name: packset
+    version: 0.11.0
+    summary: Standing memory for claims written on purpose.
+    registry_url: https://crates.io/crates/packset
+    homepage: https://leidarljos.github.io/packset/
+  - name: packset-client
+    version: 0.11.0
+    summary: HTTP client for the packset daemon.
+    registry_url: https://crates.io/crates/packset-client
+    homepage: https://leidarljos.github.io/packset/
+  - name: packset-core
+    version: 0.11.0
+    summary: Atom schema, fuse and diversify, decay, and extract filters.
+    registry_url: https://crates.io/crates/packset-core
+    homepage: https://leidarljos.github.io/packset/
+  - name: packset-daemon
+    version: 0.9.21
+    summary: Loopback pack writer, one process for every client.
+    registry_url: https://crates.io/crates/packset-daemon
+    homepage: https://leidarljos.github.io/packset/
+  - name: packset-embed
+    version: 0.11.0
+    summary: Dense projection from text to vectors.
+    registry_url: https://crates.io/crates/packset-embed
+    homepage: https://leidarljos.github.io/packset/
+  - name: packset-mcp
+    version: 0.9.21
+    summary: MCP server over a pack and the claims it cites.
+    registry_url: https://crates.io/crates/packset-mcp
+    homepage: https://leidarljos.github.io/packset/
   - name: radsex-core
     version: 0.2.3
     summary: Core library for RADSex sex-determination analysis.
     registry_url: https://crates.io/crates/radsex-core
     homepage: https://github.com/HaoZeke/rsx-rs
   - name: readcon-core
-    version: 0.14.0
+    version: 0.16.1
     summary: Oxidized CON file reader/writer with FFI for C/C++.
     registry_url: https://crates.io/crates/readcon-core
     homepage: https://github.com/lode-org/readcon-core
   - name: readcon-db
-    version: 0.1.2
+    version: 0.1.6
     summary: Mmap-backed CON frame corpus (Heed/LMDB) with multi-language FFI.
     registry_url: https://crates.io/crates/readcon-db
     homepage: https://github.com/lode-org/readcon-db
+  - name: rgmin
+    version: 0.3.0
+    summary: Local first-order minimization over eindir differentiable objectives.
+    registry_url: https://crates.io/crates/rgmin
+    homepage: https://github.com/OmniPotentRPC/rgmin
   - name: rgpot-core
-    version: 2.2.1
+    version: 3.4.0
     summary: Core Rust library for rgpot RPC potential energy surfaces.
     registry_url: https://crates.io/crates/rgpot-core
     homepage: https://github.com/OmniPotentRPC/rgpot
+  - name: rgsaddle
+    version: 0.2.0
+    summary: Band and minimum-mode saddle mechanics over rgmin steppers.
+    registry_url: https://crates.io/crates/rgsaddle
+    homepage: https://github.com/OmniPotentRPC/rgsaddle
   - name: rsx-cli
     version: 0.2.5
     summary: CLI for RAD-seq sex-determination marker analysis.
@@ -379,47 +500,47 @@ ecosystems:
     registry_url: https://crates.io/crates/rsxcore
     homepage: https://github.com/HaoZeke/rsx-rs
   - name: rtrash
-    version: 0.1.3
+    version: 0.1.4
     summary: Fast freedesktop.org trash tool with an rm-compatible interface.
     registry_url: https://crates.io/crates/rtrash
     homepage: https://github.com/HaoZeke/rtrash
   - name: snapper-fmt
-    version: 0.7.8
+    version: 0.11.9
     summary: Semantic line-break formatter for Org, LaTeX, Markdown, plaintext.
     registry_url: https://crates.io/crates/snapper-fmt
     homepage: https://github.com/TurtleTech-ehf/snapper
   - name: vissue-cli
-    version: 0.8.0
+    version: 0.20.0
     summary: Command line over per-project orgmode tracker files.
     registry_url: https://crates.io/crates/vissue-cli
     homepage: https://github.com/HaoZeke/vissue
   - name: vissue-control
-    version: 0.8.0
+    version: 0.20.0
     summary: JSON-RPC control wire for the tracker Unix socket.
     registry_url: https://crates.io/crates/vissue-control
     homepage: https://github.com/HaoZeke/vissue
   - name: vissue-core
-    version: 0.8.0
+    version: 0.20.0
     summary: Model, store, queries, and org parser for the tracker.
     registry_url: https://crates.io/crates/vissue-core
     homepage: https://github.com/HaoZeke/vissue
   - name: vissue-hud
-    version: 0.8.0
+    version: 0.20.0
     summary: Summonable icedtea task board; home is the project list.
     registry_url: https://crates.io/crates/vissue-hud
     homepage: https://github.com/HaoZeke/vissue
   - name: vissue-mcp
-    version: 0.8.0
+    version: 0.20.0
     summary: MCP server exposing orgmode tracker files to agents.
     registry_url: https://crates.io/crates/vissue-mcp
     homepage: https://github.com/HaoZeke/vissue
   - name: vissue-serve
-    version: 0.8.0
+    version: 0.20.0
     summary: Unix-socket control owner (bind, detach, handshake).
     registry_url: https://crates.io/crates/vissue-serve
     homepage: https://github.com/HaoZeke/vissue
   - name: vissue-tui
-    version: 0.8.0
+    version: 0.20.0
     summary: Terminal board over ready, claims, agenda, and search.
     registry_url: https://crates.io/crates/vissue-tui
     homepage: https://github.com/HaoZeke/vissue
