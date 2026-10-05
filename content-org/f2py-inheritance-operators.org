@@ -16,9 +16,9 @@ CLOSED: [2026-10-05 Mon 21:00]
 :END:
 
 #+begin_quote
-Type extension is a claim about where members sit in memory. Operator
-overloading is a claim about which procedure an expression calls. C has no
-syntax for either, so the wrapper has to state both.
+One might expect a ChargedParticle to be a Particle.
+One might also expect + to add two of them.
+Fortran agrees on both counts. The argument starts in the wrapper.
 #+end_quote
 
 ** Background
