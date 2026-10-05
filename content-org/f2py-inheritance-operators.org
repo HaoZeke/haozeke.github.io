@@ -16,8 +16,9 @@ CLOSED: [2026-10-05 Mon 21:00]
 :END:
 
 #+begin_quote
-A ChargedParticle in Fortran is a Particle with one more field. Python will
-not believe that unless the wrapper says so.
+Type extension is a claim about where members sit in memory. Operator
+overloading is a claim about which procedure an expression calls. C has no
+syntax for either, so the wrapper has to state both.
 #+end_quote
 
 ** Background
