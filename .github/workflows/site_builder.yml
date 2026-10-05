@@ -92,7 +92,7 @@ jobs:
           mkdir -p ../temp_metrics
           cp .sent_trackbacks.log .page_count ../temp_metrics/
           [ -f .unverified_trackbacks.log ] && cp .unverified_trackbacks.log ../temp_metrics/ || true
-          git checkout bot-metrics || git checkout --orphan bot-metrics
+          git checkout -f bot-metrics || git checkout --orphan bot-metrics
           git rm -rf . || true
           cp ../temp_metrics/.sent_trackbacks.log ../temp_metrics/.page_count .
           [ -f ../temp_metrics/.unverified_trackbacks.log ] && cp ../temp_metrics/.unverified_trackbacks.log . || true
