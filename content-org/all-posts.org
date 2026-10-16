@@ -26709,8 +26709,7 @@ Notes on reading eOn NEB output past the energy profile, with RMSD axes, 2D proj
 A smooth nudged elastic band (NEB) energy profile with the climbing image
 near the top is not enough on its own. It does not say which images were
 still moving, what the final forces were, or whether the band went the long
-way round. Those details sit in the run directory's ~neb_*.dat~ files. I
-started drawing the plots in this post before writing down any barrier.
+way round. Those details sit in the run directory's ~neb_*.dat~ files.
 
 The methods come out of the
 [[https://research.rgoswami.me/research/transition-state/][transition-state work]]
