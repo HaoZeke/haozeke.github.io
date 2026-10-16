@@ -26709,7 +26709,10 @@ Notes on reading eOn NEB output past the energy profile, with RMSD axes, 2D proj
 A smooth nudged elastic band (NEB) energy profile with the climbing image
 near the top is not enough on its own. It does not say which images were
 still moving, what the final forces were, or whether the band went the long
-way round. Those details sit in the run directory's ~neb_*.dat~ files.
+way round. Those details sit in the run directory's ~neb_*.dat~ files. A
+first-order saddle is a critical point, $\nabla E \approx 0$, with an index-1
+Hessian (one negative eigenvalue). A smooth profile does not measure the
+gradient or the index.
 
 The methods come out of the
 [[https://research.rgoswami.me/research/transition-state/][transition-state work]]
@@ -26774,8 +26777,8 @@ down to the columns the figures use, and
 
 ** One dimension, three coordinates
 A standard NEB profile fixes the horizontal axis before you look at it. I plot
-three versions. Path length gives the usual barrier. Image index lets me
-compare bands with different numbers of images. The third axis is the
+three versions. Path length is the arc length along the band. Image index
+lets me compare bands with different numbers of images. The third axis is the
 root-mean-square deviation (RMSD) from the reactant, as defined in the
 [[https://research.rgoswami.me/glossary/#glossary-rmsd][glossary]], computed
 after alignment with iterative rotations and assignments (IRA). Its unit is
@@ -26789,14 +26792,16 @@ python -m rgpycrumbs.cli eon plt-neb \
   --strip-renderer xyzrender --perspective-tilt 8 --rotation 15x,55y,0z
 #+end_src
 
-#+caption: Energy against path length; the peak gives the barrier. The piecewise cubic Hermite spline uses the parallel forces, so the curve matches dE/ds at every image instead of wiggling between points. Dark to light traces the optimization, and the converged path is black. R, SP, and P sit in a strip under the panel, off the curve.
+#+caption: Energy against path length. The peak is the highest-image energy relative to the reactant on this band. The piecewise cubic Hermite spline uses the parallel forces, so the curve matches dE/ds at every image instead of wiggling between points. Dark to light traces the optimization, and the last band is black. R, SP, and P sit in a strip under the panel, off the curve. SP marks the highest image.
 [[file:images/neb-viz/neb-viz-1d-path.png]]
 
-For the cycloaddition, the path-length plot is the familiar one. The barrier
-drops from about 1.52 eV on the initial band to about 1.03 eV by step 29. The
-product ends about 0.34 eV below the reactant. This plot has no way to show
-motion perpendicular to the band, gaps between images, or a top image in a
-narrow channel.
+For the cycloaddition, the path-length plot is the familiar one. From the
+initial band to the last one, the highest image drops from about 1.52 eV
+above the reactant to about 1.03 eV. The product ends about 0.34 eV below the
+reactant. The max parallel force on this band is still near 2.9 eV/A. The
+band is not force-converged, and 1.03 eV is only the energy of that highest
+image. This plot has no way to show motion perpendicular to the band, gaps
+between images, or a top image in a narrow channel.
 
 #+caption: Energy against image index. Even spacing makes bands with different image counts comparable. The curve is a smooth cubic through the energies and not a Hermite spline, since the force slopes are not dE/d(index). Same strip layout as the path-length panel.
 [[file:images/neb-viz/neb-viz-1d-index.png]]
@@ -26804,7 +26809,7 @@ narrow channel.
 #+caption: Energy against RMSD from the reactant, so the horizontal coordinate measures Angstroms of real geometric change. Structures stay below the axes to keep the curve readable.
 [[file:images/neb-viz/neb-viz-1d-rmsd.png]]
 
-The path-length plot can look finished while the image-index
+The path-length plot can look smooth while the image-index
 plot shows images still sliding along the band. The RMSD plot picks up
 geometric changes that path length absorbs into arc length.
 
@@ -26897,19 +26902,19 @@ python -m rgpycrumbs.cli eon plt-neb \
   ORCA
 #+end_src
 
-#+caption: Cycloaddition in the s-d frame. Ruhi energy surface, sampled structures as black dots, converged path as open circles, posterior-variance contours as dashed curves, and the ORCA B3LYP-D3 saddle as a star (strip label: ORCA).
+#+caption: Cycloaddition in the s-d frame. Ruhi energy surface, sampled structures as black dots, the last band as open circles, posterior-variance contours as dashed curves, and the ORCA B3LYP-D3 saddle as a star (strip label: ORCA).
 [[file:images/neb-viz/neb-viz-2d-cyclo-ruhi.png]]
 
 The panel shows the GP energy surface, the sampled structures, the path
 history, the variance contours, and an external reference saddle. For the
-cycloaddition the black sample points stay close to the converged path, so the
+cycloaddition the black sample points stay close to the last band, so the
 optimizer did not leave that channel. The ORCA B3LYP-D3 saddle
 [@asgeirssonNudgedElasticBand2021] comes from an independent calculation and
-falls in the same barrier region as the PET-MAD/eOn path. The dashed variance
-contours are tight near the samples and widen toward the edges, where the
-surface has few data points. When the two barrier values differ, this plot
-shows in which direction the two saddles are offset, which a pair of numbers
-cannot.
+falls in the same part of the $s,d$ plane as the PET-MAD/eOn band. The dashed
+variance contours are tight near the samples and widen toward the edges, where
+the surface has few data points. If the highest-image energy and the ORCA
+barrier differ, the plot shows the offset between the band and that reference.
+A pair of numbers cannot.
 
 ** When the path turns
 The cycloaddition stays near the diagonal. The Grignard addition
@@ -26918,24 +26923,33 @@ mlFSM work [@marksIncorporationInternalCoordinates2025] do not. Both bow away
 from the reactant-product diagonal in the $s,d$ plane. A 1D profile counts that
 bend as extra arc length and drops its direction.
 
-#+caption: Grignard addition. The band bows off the reactant-to-product line, and Birkholz's reference saddle sits just above and left of the band SP. The converged path zigzags between s of 1 and 2.2 Angstrom, where the images are far apart (see the spacing plot), and the surface below d of -0.5 has almost no samples, so its colour there is the GP mean rather than data. The 1D coordinate counts the whole bend as arc length.
+#+caption: Grignard addition. The band bows off the reactant-to-product line, and Birkholz's reference saddle sits just above and left of the highest image (marked SP). The last band zigzags between s of 1 and 2.2 Angstrom, where the images are far apart (see the spacing plot), and the surface below d of -0.5 has almost no samples, so its colour there is the GP mean rather than data. The 1D coordinate counts the whole bend as arc length.
 [[file:images/neb-viz/neb-viz-2d-grignard-ruhi.png]]
 
-#+caption: Bicyclobutane ring opening. The kink near s of 0.4 Angstrom shows up as off-diagonal motion. The mlFSM reference saddle sits slightly below the band SP. The warm region at the lower right has no samples behind it, so read it off the variance contours, not the colour.
+#+caption: Bicyclobutane ring opening. The kink near s of 0.4 Angstrom shows up as off-diagonal motion. The mlFSM reference saddle sits slightly below the highest image (marked SP). The warm region at the lower right has no samples behind it, so read it off the variance contours, not the colour.
 [[file:images/neb-viz/neb-viz-2d-bicyclo-ruhi.png]]
 
 ** What the force tables say
-I check the GP surfaces against the force tables every time. The Grignard run
-has force spikes, minimum mode following (MMF) back-off steps, and lost dimer
-modes before it settles enough to plot. I kept those steps in the figures,
-since removing them would misrepresent the run. The tables answer
-three narrower questions. Has the barrier stopped changing? Which images are
-still moving? How evenly are the final images spaced?
+The tables say whether the band is force-converged. A first-order saddle is a
+critical point, $\nabla E \approx 0$, with an index-1 Hessian (one negative
+eigenvalue). A barrier that has stopped changing means the highest-image
+energy is steady from step to step. That is not $\nabla E \approx 0$, and it
+says nothing about the Hessian index.
 
-#+caption: Cycloaddition barrier (top) and max parallel force (bottom) over the 29 NEB steps (0 to 28). The barrier stays near 1.03 eV from step 8 on, while the max force never drops below about 2.7 eV/A and ends near 2.9 eV/A, so the band is not force-converged.
+I check the GP surfaces against these tables every time. The Grignard run
+has force spikes, minimum mode following (MMF) back-off steps, and lost dimer
+modes. I kept those steps in the figures. Removing them would misrepresent
+the run.
+
+On the cycloaddition the checks are narrower. Has the maximum parallel force
+dropped? Which images still carry large parallel forces? How even is the
+final spacing? The highest-image energy is on the same figure so the flat
+trace sits next to the forces. The flat trace is not a check.
+
+#+caption: Highest-image energy relative to the reactant (top) and max parallel force (bottom) for the cycloaddition, over the 29 NEB steps (0 to 28). The energy stays near 1.03 eV from step 8 on. The max parallel force never drops below about 2.7 eV/A and ends near 2.9 eV/A. A flat energy trace does not locate a critical point. The band is not force-converged.
 [[file:images/neb-viz/neb-viz-convergence.png]]
 
-#+caption: Parallel-force magnitude by image and optimization step for the cycloaddition. The dashed line marks the highest image (12). From step 8 on, the large forces sit on images 13 to 16, on the product side of the climbing image, and not at the top.
+#+caption: Parallel-force magnitude by image and optimization step for the cycloaddition. The dashed line marks the highest image (12). From step 8 on, the large forces sit on images 13 to 16, on the product side of the climbing image, and not at the top. Those forces are why the band is not force-converged.
 [[file:images/neb-viz/neb-viz-force-heatmap.png]]
 
 #+caption: Path-length spacing between neighbouring images on the final band (segment i joins images i and i+1). The cycloaddition is even at about 0.1 Angstrom. The Grignard band has a 5.6 Angstrom first segment and stays above 1.3 Angstrom past segment 7, and the bicyclobutane band opens up at both ends.
@@ -26948,7 +26962,8 @@ from [@goswamiEnhancedClimbingImage2026]. Plain CI-NEB
 band tangent. That reaches the saddle region in few steps. Near the top, though, the
 tangent is a poor estimate of the unstable mode, and most of the iterations go
 into that last stretch. Along a low-curvature mode the climbing image can stop
-moving before it reaches a first-order saddle.
+moving before it is a first-order saddle, which needs $\nabla E \approx 0$ and
+an index-1 Hessian.
 
 Once the curvature indicates that the top image is in
 the transition basin, eOn hands that image to
@@ -26967,16 +26982,16 @@ adaptive criterion.
 The images here are built from the reduced tables in =repro/neb-visualizations/=.
 
 ** Conclusions
-For the cycloaddition, the scalar profile alone would have had me report a
-1.03 eV barrier. The largest parallel force on that band was still near 2.9
-eV/A, mostly on images 13 to 16. The RMSD axis and the $s,d$ projection did not
-change the barrier. They did show that the sampled structures stayed in one
-channel, and that the ORCA saddle sits in the same region. For the Grignard and
-bicyclobutane bands, the projection and the spacing plot showed bends and gaps.
-The 1D profile reports those only as extra arc length. I now draw the plots in
-that order before I quote a barrier. The scalar profile comes first, then RMSD,
-then $s,d$, then the force and spacing tables. The companion repository
-regenerates all of them from the eOn output.
+On the cycloaddition the highest image levels off near 1.03 eV above the
+reactant, and the largest parallel force stays near 2.9 eV/A, mostly on
+images 13 to 16. The band is not force-converged, so 1.03 eV stays the
+highest-image energy of an unconverged path. A saddle energy needs
+$\nabla E \approx 0$ and an index-1 Hessian. The RMSD axis and the $s,d$
+projection show that the sampled structures stayed in one channel, and that
+the ORCA saddle sits in the same region. On the Grignard and
+bicyclobutane bands, the projection and the spacing plot show bends and gaps.
+The 1D profile records those only as extra arc length. The companion
+repository regenerates the figures from the eOn output.
 
 ** Reading list
 The 11 references behind these diagnostics, covering the OCI-NEB and RMSD
