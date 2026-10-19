@@ -19,7 +19,7 @@
   "dependencies": {
     "autoprefixer": "^10.5.4",
     "glob-parent": ">=6.0.2",
-    "normalize-url": ">=9.0.1",
+    "normalize-url": ">=10.0.0",
     "npm-check-updates": "^23.0.2",
     "pngout": "^1.0.0",
     "postcss": "^8.5.26",
