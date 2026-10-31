@@ -22,7 +22,7 @@
     "normalize-url": ">=10.0.0",
     "npm-check-updates": "^23.0.2",
     "pngout": "^1.0.0",
-    "postcss": "^8.5.26",
+    "postcss": "^8.5.30",
     "postcss-cli": "^11.0.1",
     "sass-embedded-linux-x64": "^1.105.2",
     "svgo": "^4.0.0"
