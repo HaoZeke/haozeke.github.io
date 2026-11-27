@@ -374,6 +374,16 @@ ecosystems:
     summary: MCP server over a deed store and what a unit of work produced.
     registry_url: https://crates.io/crates/deedar-mcp
     homepage: https://leidarljos.github.io/deedar/
+  - name: dseams
+    version: 2.14.2
+    summary: 'Rust d-SEAMS API: CHILL/+, Steinhardt, neighbours, rings, cages, RDF/CN, H-bonds, density, fingerprints, contacts, domains, prisms, monolayers, symmetry and brine; LAMMPS/XYZ, optional CON/chemfiles.'
+    registry_url: https://crates.io/crates/dseams
+    homepage: https://dseams.info
+  - name: dseams-sys
+    version: 2.14.2
+    summary: 'Raw d-SEAMS FFI: CHILL/+, Steinhardt, neighbours, rings, cages, RDF/CN, H-bonds, density, fingerprints, contacts, domains, prisms, monolayers, symmetry and brine; LAMMPS/XYZ, optional CON/chemfiles.'
+    registry_url: https://crates.io/crates/dseams-sys
+    homepage: https://dseams.info
   - name: eb_stack
     version: 0.3.0
     summary: Resolvo-solved variants and CycloneDX SBOMs from conda-forge, Spack, and EasyBuild recipes.
@@ -474,6 +484,21 @@ ecosystems:
     summary: Mmap-backed CON frame corpus (Heed/LMDB) with multi-language FFI.
     registry_url: https://crates.io/crates/readcon-db
     homepage: https://github.com/lode-org/readcon-db
+  - name: rfc9162
+    version: 0.11.0
+    summary: RFC 9162 Merkle tree hashes, inclusion and consistency proofs, over leaf hashes.
+    registry_url: https://crates.io/crates/rfc9162
+    homepage: https://github.com/stackhands/rfc9162
+  - name: rfc9162-log
+    version: 0.11.0
+    summary: 'An authenticated, indexed, append-only log over rfc9162 and rfc9162-tiles: sorted runs whose manifests are logged, so a checkpoint signs the index.'
+    registry_url: https://crates.io/crates/rfc9162-log
+    homepage: https://github.com/stackhands/rfc9162
+  - name: rfc9162-tiles
+    version: 0.11.0
+    summary: 'Tiled, indexed storage for an RFC 9162 log: tlog-tiles layout, entry bundles, key sidecars, C2SP checkpoints.'
+    registry_url: https://crates.io/crates/rfc9162-tiles
+    homepage: https://github.com/stackhands/rfc9162
   - name: rgmin
     version: 0.3.0
     summary: Local first-order minimization over eindir differentiable objectives.
